@@ -167,6 +167,7 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
     private var accessToken: NSString
     private var task: NSURLSessionDataTask?
     private(set) var calculating = false
+    private(set) var cancelled = false
 
     init(request: MBDirectionsRequest, accessToken: NSString) {
         self.request = request
@@ -175,6 +176,8 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
     }
 
     func calculateDirectionsWithCompletionHandler(handler: MBDirectionsHandler!) {
+
+        self.cancelled = false
 
         var serverRequestString = "http://api.tiles.mapbox.com/v4/directions/mapbox.driving/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
@@ -208,9 +211,13 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
                             }())
                     parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
                 }
-                handler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+                if (!self.cancelled) {
+                    handler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+                }
             } else {
-                handler(nil, error)
+                if (!self.cancelled) {
+                    handler(nil, error)
+                }
             }
         }
         self.task!.resume()
@@ -221,6 +228,7 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
 //    }
 
     func cancel() {
+        self.cancelled = true
         self.task?.cancel()
     }
 
