@@ -212,11 +212,15 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
                     parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
                 }
                 if (!self.cancelled) {
-                    handler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
+                        handler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+                    }
                 }
             } else {
                 if (!self.cancelled) {
-                    handler(nil, error)
+                    dispatch_sync(dispatch_get_main_queue()) {
+                        handler(nil, error)
+                    }
                 }
             }
         }
