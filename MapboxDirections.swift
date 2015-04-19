@@ -230,37 +230,40 @@ public class MBDirections: NSObject, NSURLConnectionDelegate, NSURLConnectionDat
 
         self.calculating = true
 
-        self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [unowned self] (data, response, error) in
-
-            self.calculating = false
-
-            if (error == nil) {
-                var parsedRoutes = [MBRoute]()
-                let json = JSON(data: data)
-                for route: JSON in json["routes"].arrayValue {
-                    let origin = MBPoint(name: json["origin"]["properties"]["name"].stringValue,
-                        coordinate: {
-                            let coordinates = json["origin"]["geometry"]["coordinates"].arrayValue
-                            return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                longitude: coordinates[0].doubleValue)
-                            }())
-                    let destination = MBPoint(name: json["destination"]["properties"]["name"].stringValue,
-                        coordinate: {
-                            let coordinates = json["destination"]["geometry"]["coordinates"].arrayValue
-                            return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                longitude: coordinates[0].doubleValue)
-                            }())
-                    parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
-                }
-                if (!self.cancelled) {
-                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                        handler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+        self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
+            if let strongSelf = self {
+                strongSelf.calculating = false
+                
+                if (error == nil) {
+                    var parsedRoutes = [MBRoute]()
+                    let json = JSON(data: data)
+                    for route: JSON in json["routes"].arrayValue {
+                        let origin = MBPoint(name: json["origin"]["properties"]["name"].stringValue,
+                            coordinate: {
+                                let coordinates = json["origin"]["geometry"]["coordinates"].arrayValue
+                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
+                                    longitude: coordinates[0].doubleValue)
+                                }())
+                        let destination = MBPoint(name: json["destination"]["properties"]["name"].stringValue,
+                            coordinate: {
+                                let coordinates = json["destination"]["geometry"]["coordinates"].arrayValue
+                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
+                                    longitude: coordinates[0].doubleValue)
+                                }())
+                        parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
                     }
-                }
-            } else {
-                if (!self.cancelled) {
-                    dispatch_sync(dispatch_get_main_queue()) {
-                        handler(nil, error)
+                    if (!strongSelf.cancelled) {
+                        dispatch_sync(dispatch_get_main_queue()) { [weak strongSelf] in
+                            if let strongerSelf = strongSelf {
+                                handler(MBDirectionsResponse(sourceCoordinate: strongerSelf.request.sourceCoordinate, destinationCoordinate: strongerSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                            }
+                        }
+                    }
+                } else {
+                    if (!strongSelf.cancelled) {
+                        dispatch_sync(dispatch_get_main_queue()) {
+                            handler(nil, error)
+                        }
                     }
                 }
             }
