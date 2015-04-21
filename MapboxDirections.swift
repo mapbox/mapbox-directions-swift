@@ -232,7 +232,7 @@ public class MBDirections: NSObject {
 
         self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
             if let dataTaskSelf = self {
-                self.calculating = false
+                dataTaskSelf.calculating = false
 
                 if (error == nil) {
                     var parsedRoutes = [MBRoute]()
@@ -254,7 +254,10 @@ public class MBDirections: NSObject {
                     }
                     if (!dataTaskSelf.cancelled) {
                         dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
-                            completionHandler(MBDirectionsResponse(sourceCoordinate: dataTaskSelf.request.sourceCoordinate, destinationCoordinate: dataTaskSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                            if let completionSelf = dataTaskSelf {
+                                completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
+                                    destinationCoordinate: completionSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                            }
                         }
                     }
                 } else {
