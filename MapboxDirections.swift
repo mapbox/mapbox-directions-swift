@@ -230,37 +230,38 @@ public class MBDirections: NSObject {
 
         self.calculating = true
 
-        self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [unowned self] (data, response, error) in
+        self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
+            if let dataTaskSelf = self {
+                self.calculating = false
 
-            self.calculating = false
-
-            if (error == nil) {
-                var parsedRoutes = [MBRoute]()
-                let json = JSON(data: data)
-                for route: JSON in json["routes"].arrayValue {
-                    let origin = MBPoint(name: json["origin"]["properties"]["name"].stringValue,
-                        coordinate: {
-                            let coordinates = json["origin"]["geometry"]["coordinates"].arrayValue
-                            return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                longitude: coordinates[0].doubleValue)
-                            }())
-                    let destination = MBPoint(name: json["destination"]["properties"]["name"].stringValue,
-                        coordinate: {
-                            let coordinates = json["destination"]["geometry"]["coordinates"].arrayValue
-                            return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                longitude: coordinates[0].doubleValue)
-                            }())
-                    parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
-                }
-                if (!self.cancelled) {
-                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                        completionHandler(MBDirectionsResponse(sourceCoordinate: self.request.sourceCoordinate, destinationCoordinate: self.request.destinationCoordinate, routes: parsedRoutes), nil)
+                if (error == nil) {
+                    var parsedRoutes = [MBRoute]()
+                    let json = JSON(data: data)
+                    for route: JSON in json["routes"].arrayValue {
+                        let origin = MBPoint(name: json["origin"]["properties"]["name"].stringValue,
+                            coordinate: {
+                                let coordinates = json["origin"]["geometry"]["coordinates"].arrayValue
+                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
+                                    longitude: coordinates[0].doubleValue)
+                                }())
+                        let destination = MBPoint(name: json["destination"]["properties"]["name"].stringValue,
+                            coordinate: {
+                                let coordinates = json["destination"]["geometry"]["coordinates"].arrayValue
+                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
+                                    longitude: coordinates[0].doubleValue)
+                                }())
+                        parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
                     }
-                }
-            } else {
-                if (!self.cancelled) {
-                    dispatch_sync(dispatch_get_main_queue()) { [unowned self] in
-                        completionHandler(nil, error)
+                    if (!dataTaskSelf.cancelled) {
+                        dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
+                            completionHandler(MBDirectionsResponse(sourceCoordinate: dataTaskSelf.request.sourceCoordinate, destinationCoordinate: dataTaskSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                        }
+                    }
+                } else {
+                    if (!dataTaskSelf.cancelled) {
+                        dispatch_sync(dispatch_get_main_queue()) {
+                            completionHandler(nil, error)
+                        }
                     }
                 }
             }
