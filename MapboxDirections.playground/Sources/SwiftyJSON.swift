@@ -1,1 +1,0 @@
-../../SwiftyJSON/Source/SwiftyJSON.swift
