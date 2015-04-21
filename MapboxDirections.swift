@@ -66,18 +66,18 @@ public typealias MBDirectionsHandler = (MBDirectionsResponse!, NSError!) -> Void
     }
 
 //    var polyline: MKPolyline! { get }
-    private(set) var instructions: String! = ""
+    internal(set) var instructions: String! = ""
 //    var notice: String! { get }
-    private(set) var distance: CLLocationDistance = 0
+    internal(set) var distance: CLLocationDistance = 0
 //    var transportType: MKDirectionsTransportType { get }
 
     // Mapbox-specific stuff
-    private(set) var duration: NSTimeInterval? = nil
-    private(set) var way_name: String? = nil
-    private(set) var direction: Direction? = nil
-    private(set) var heading: CLLocationDegrees? = nil
-    private(set) var maneuverType: ManeuverType? = nil
-    private(set) var maneuverLocation: CLLocationCoordinate2D? = nil
+    internal(set) var duration: NSTimeInterval? = nil
+    internal(set) var way_name: String? = nil
+    internal(set) var direction: Direction? = nil
+    internal(set) var heading: CLLocationDegrees? = nil
+    internal(set) var maneuverType: ManeuverType? = nil
+    internal(set) var maneuverLocation: CLLocationCoordinate2D? = nil
 
     internal init?(json: JSON) {
         var valid = false
