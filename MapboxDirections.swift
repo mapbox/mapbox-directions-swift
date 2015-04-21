@@ -207,7 +207,7 @@ public class MBDirections: NSObject {
     private let request: MBDirectionsRequest
     private let accessToken: NSString
     private var task: NSURLSessionDataTask?
-    private(set) public var calculating = false
+    private var calculating = false
     private(set) public var cancelled = false
 
     public init(request: MBDirectionsRequest, accessToken: String) {
