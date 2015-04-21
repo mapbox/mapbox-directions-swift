@@ -66,7 +66,7 @@ public class MBRouteStep {
     }
 
     //    var polyline: MKPolyline! { get }
-    internal(set) public var instructions: String = ""
+    internal(set) public var instructions: String! = ""
     //    var notice: String! { get }
     internal(set) public var distance: CLLocationDistance = 0
     //    var transportType: MKDirectionsTransportType { get }
@@ -123,7 +123,7 @@ public class MBRouteStep {
 public class MBRoute {
 
     //    var polyline: MKPolyline! { get }
-    public let steps: [MBRouteStep]
+    public let steps: [MBRouteStep]!
     //    var name: String! { get }
     //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
@@ -188,8 +188,8 @@ public class MBDirectionsRequest {
 
 public class MBDirectionsResponse {
 
-    public let sourceCoordinate: CLLocationCoordinate2D!
-    public let destinationCoordinate: CLLocationCoordinate2D!
+    public let sourceCoordinate: CLLocationCoordinate2D
+    public let destinationCoordinate: CLLocationCoordinate2D
     public let routes: [MBRoute]!
 
     internal init(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D, routes: [MBRoute]) {
