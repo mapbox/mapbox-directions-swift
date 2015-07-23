@@ -18,8 +18,8 @@
 		DD6254521AE70C1700017857 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD6254531AE70C1700017857 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD6254551AE70C1700017857 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DD6254731AE70CB700017857 /* MapboxDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapboxDirections.swift; path = ../../MapboxDirections.swift; sourceTree = "<group>"; };
-		DD6254751AE70D1000017857 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = ../../SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = "<group>"; };
+		DD6254731AE70CB700017857 /* MapboxDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapboxDirections.swift; path = ../MapboxDirections.swift; sourceTree = "<group>"; };
+		DD6254751AE70D1000017857 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = ../SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
