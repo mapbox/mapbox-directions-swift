@@ -75,7 +75,7 @@ public class MBRouteStep {
     internal(set) public var duration: NSTimeInterval?
     internal(set) public var way_name: String?
     internal(set) public var direction: Direction?
-    internal(set) public var heading: CLLocationDegrees?
+    internal(set) public var heading: CLLocationDirection?
     internal(set) public var maneuverType: ManeuverType?
     internal(set) public var maneuverLocation: CLLocationCoordinate2D?
 
