@@ -167,10 +167,17 @@ public class MBRoute {
 
 public class MBDirectionsRequest {
 
+    public enum MBDirectionsTransportType: Int {
+        case Automobile
+        case Walking
+        case Cycling
+        case Any
+    }
+
     public let sourceCoordinate: CLLocationCoordinate2D
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
-    //    var transportType: MBDirectionsTransportType
+    public var transportType = MBDirectionsTransportType.Automobile
     //    var departureDate: NSDate!
     //    var arrivalDate: NSDate!
 
@@ -220,7 +227,18 @@ public class MBDirections: NSObject {
 
         self.cancelled = false
 
-        var serverRequestString = "http://api.tiles.mapbox.com/v4/directions/mapbox.driving/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        var endpoint: String
+
+        switch request.transportType {
+            case .Walking:
+                endpoint = "walking"
+            case .Cycling:
+                endpoint = "cycling"
+            default:
+                endpoint = "driving"
+        }
+
+        var serverRequestString = "http://api.tiles.mapbox.com/v4/directions/mapbox.\(endpoint)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
         if (self.request.requestsAlternateRoutes) {
             serverRequestString += "&alternatives=true"
