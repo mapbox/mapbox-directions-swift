@@ -10,7 +10,6 @@
 		DD6254541AE70C1700017857 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254531AE70C1700017857 /* AppDelegate.swift */; };
 		DD6254561AE70C1700017857 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254551AE70C1700017857 /* ViewController.swift */; };
 		DD6254741AE70CB700017857 /* MapboxDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MapboxDirections.swift */; };
-		DD6254761AE70D1000017857 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254751AE70D1000017857 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,7 +18,6 @@
 		DD6254531AE70C1700017857 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD6254551AE70C1700017857 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD6254731AE70CB700017857 /* MapboxDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapboxDirections.swift; path = ../MapboxDirections.swift; sourceTree = "<group>"; };
-		DD6254751AE70D1000017857 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = ../SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				DD6254731AE70CB700017857 /* MapboxDirections.swift */,
-				DD6254751AE70D1000017857 /* SwiftyJSON.swift */,
 			);
 			name = Directions;
 			sourceTree = "<group>";
@@ -147,7 +144,6 @@
 				DD6254561AE70C1700017857 /* ViewController.swift in Sources */,
 				DD6254741AE70CB700017857 /* MapboxDirections.swift in Sources */,
 				DD6254541AE70C1700017857 /* AppDelegate.swift in Sources */,
-				DD6254761AE70D1000017857 /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +272,7 @@
 				DD62546F1AE70C1700017857 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
