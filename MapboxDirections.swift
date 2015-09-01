@@ -80,7 +80,7 @@ public class MBRouteStep {
     internal(set) public var maneuverLocation: CLLocationCoordinate2D?
     
     internal init?(json: [String: AnyObject]) {
-        if let
+        guard let
             maneuver = json["maneuver"] as? [String: AnyObject],
             instruction = maneuver["instruction"] as? String,
             distance = json["distance"] as? Double,
@@ -89,18 +89,18 @@ public class MBRouteStep {
             direction = json["direction"] as? String,
             heading = json["heading"] as? Double,
             maneuverType = (maneuver["type"] as? String).flatMap({ ManeuverType(rawValue: $0) }),
-            coordinates = json["location"]?["coordinates"] as? [Double] {
-                self.instructions = instruction
-                self.distance = distance
-                self.duration = duration
-                self.way_name = wayName
-                self.direction = Direction(rawValue: direction)
-                self.heading = heading
-                self.maneuverType = maneuverType
-                self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
-        } else {
-            return nil
+            coordinates = json["location"]?["coordinates"] as? [Double] else {
+                return nil
         }
+        self.instructions = instruction
+        self.distance = distance
+        self.duration = duration
+        self.way_name = wayName
+        self.direction = Direction(rawValue: direction)
+        self.heading = heading
+        self.maneuverType = maneuverType
+        self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
+        
     }
     
 }
@@ -127,15 +127,7 @@ public class MBRoute {
     internal init(origin: MBPoint, destination: MBPoint, json: [String: AnyObject]) {
         self.origin = origin
         self.destination = destination
-        self.steps = {
-            var steps = [MBRouteStep]()
-            for step in json["steps"] as! [[String: AnyObject]] {
-                if let routeStep = MBRouteStep(json: step) {
-                    steps.append(routeStep)
-                }
-            }
-            return steps
-            }()
+        self.steps = (json["steps"] as! [[String: AnyObject]]).flatMap(MBRouteStep.init)
         self.distance = json["distance"] as! Double
         self.expectedTravelTime = json["duration"] as! Double
         self.summary = json["summary"] as! String
@@ -212,9 +204,7 @@ public class MBDirections: NSObject {
         
         self.cancelled = false
         
-        var endpoint: String
-        
-        var serverRequestString = "http://api.tiles.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        var serverRequestString = "https://api.tiles.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
         
         if (self.request.requestsAlternateRoutes) {
             serverRequestString += "&alternatives=true"
@@ -225,50 +215,53 @@ public class MBDirections: NSObject {
         self.calculating = true
         
         self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
-            if let dataTaskSelf = self {
-                dataTaskSelf.calculating = false
-                
-                if let error = error where !dataTaskSelf.cancelled {
+            guard let dataTaskSelf = self else { return }
+            dataTaskSelf.calculating = false
+            
+            if let error = error where !dataTaskSelf.cancelled {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    completionHandler(nil, error)
+                }
+                return
+            }
+            guard let
+                data = data,
+                json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? [String: AnyObject],
+                originDict = json["origin"] as? [String: AnyObject],
+                destinationDict = json["destination"] as? [String: AnyObject] else {
                     dispatch_sync(dispatch_get_main_queue()) {
-                        completionHandler(nil, error)
+                        completionHandler(nil, NSError(domain: "mapbox", code: 0x11122233, userInfo: [NSLocalizedDescriptionKey: "Invalid Data"]))
                     }
                     return
-                }
-                var parsedRoutes = [MBRoute]()
-                if let
-                    json = NSJSONSerialization.JSONObjectWithData(data, options: .allZeros, error: nil) as? [String: AnyObject],
-                    origin = json["origin"] as? [String: AnyObject],
-                    destination = json["destination"] as? [String: AnyObject] {
-                        
-                        let origin = MBPoint(name: origin["properties"]!["name"] as! String,
-                            coordinate: {
-                                let coordinates = origin["geometry"]!["coordinates"] as! [Double]
-                                return CLLocationCoordinate2D(latitude: coordinates[1],
-                                    longitude: coordinates[0])
-                                }())
-                        let destination = MBPoint(name: destination["properties"]!["name"] as! String,
-                            coordinate: {
-                                let coordinates = destination["geometry"]!["coordinates"] as! [Double]
-                                return CLLocationCoordinate2D(latitude: coordinates[1],
-                                    longitude: coordinates[0])
-                                }())
-                        for route in json["routes"] as! [[String: AnyObject]] {
-                            parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
-                        }
-                        if !dataTaskSelf.cancelled {
-                            dispatch_sync(dispatch_get_main_queue()) {
-                                completionHandler(MBDirectionsResponse(sourceCoordinate: dataTaskSelf.request.sourceCoordinate,
-                                    destinationCoordinate: dataTaskSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
-                            }
-                        }
+            }
+            
+            let origin = MBPoint(name: originDict["properties"]!["name"] as! String,
+                coordinate: {
+                    let coordinates = originDict["geometry"]!["coordinates"] as! [Double]
+                    return CLLocationCoordinate2D(latitude: coordinates[1],
+                        longitude: coordinates[0])
+                    }())
+            let destination = MBPoint(name: destinationDict["properties"]!["name"] as! String,
+                coordinate: {
+                    let coordinates = destinationDict["geometry"]!["coordinates"] as! [Double]
+                    return CLLocationCoordinate2D(latitude: coordinates[1],
+                        longitude: coordinates[0])
+                    }())
+            let parsedRoutes = (json["routes"] as! [[String: AnyObject]]).map { route in
+                MBRoute(origin: origin, destination: destination, json: route)
+            }
+            if !dataTaskSelf.cancelled {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    completionHandler(MBDirectionsResponse(sourceCoordinate: dataTaskSelf.request.sourceCoordinate,
+                        destinationCoordinate: dataTaskSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
                 }
             }
         }
         self.task!.resume()
     }
-    
+
     //    public func calculateETAWithCompletionHandler(MBETAHandler!)
-    
+
     public func cancel() {
         self.cancelled = true
         self.task?.cancel()

@@ -100,6 +100,8 @@
 		DD6254461AE70C1700017857 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Mapbox;
 				TargetAttributes = {
