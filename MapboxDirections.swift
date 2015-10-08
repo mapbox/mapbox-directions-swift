@@ -220,7 +220,7 @@ public class MBDirections: NSObject {
 
         self.cancelled = false
 
-        var serverRequestString = "http://api.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        var serverRequestString = "https://api.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
         if self.request.requestsAlternateRoutes {
             serverRequestString += "&alternatives=true"
