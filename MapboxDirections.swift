@@ -2,6 +2,7 @@ import Foundation
 import CoreLocation
 
 public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
+internal typealias JSON = [String: AnyObject]
 
 //public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
 
@@ -81,36 +82,24 @@ public class MBRouteStep {
 
     internal init?(json: JSON) {
         var valid = false
-        if (json["maneuver"]["instruction"].string != nil) {
-            if (json["distance"].double != nil) {
-                if (json["duration"].double != nil) {
-                    if (json["way_name"].string != nil) {
-                        if (json["direction"].string != nil) {
-                            if (json["heading"].double != nil) {
-                                if (json["maneuver"]["type"].string != nil) {
-                                    if (json["maneuver"]["location"]["coordinates"].array != nil) {
-                                        valid = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if valid {
-            self.instructions = json["maneuver"]["instruction"].stringValue
-            self.distance = json["distance"].doubleValue
-            self.duration = json["duration"].doubleValue
-            self.way_name = json["way_name"].stringValue
-            self.direction = Direction(rawValue: json["direction"].stringValue)
-            self.heading = json["heading"].doubleValue
-            self.maneuverType = ManeuverType(rawValue: json["maneuver"]["type"].stringValue)!
-            self.maneuverLocation = {
-                let coordinates = json["maneuver"]["location"]["coordinates"].arrayValue
-                let location = CLLocationCoordinate2D(latitude: coordinates[1].doubleValue, longitude: coordinates[0].doubleValue)
-                return location
-                }()
+        if let maneuver = json["maneuver"] as? JSON,
+          let instruction = maneuver["instruction"] as? String,
+          let distance = json["distance"] as? Double,
+          let duration = json["duration"] as? Double,
+          let way_name = json["way_name"] as? String,
+          let direction = json["direction"] as? String,
+          let heading = json["heading"] as? Double,
+          let type = maneuver["type"] as? String,
+          let location = maneuver["location"] as? JSON,
+          let coordinates = location["coordinates"] as? [Double] {
+            self.instructions = instruction
+            self.distance = distance
+            self.duration = duration
+            self.way_name = way_name
+            self.direction = Direction(rawValue: direction)
+            self.heading = heading
+            self.maneuverType = ManeuverType(rawValue: type)!
+            self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
         } else {
             return nil
         }
@@ -142,20 +131,25 @@ public class MBRoute {
         self.destination = destination
         self.steps = {
             var steps = [MBRouteStep]()
-            for step: JSON in json["steps"].arrayValue {
-                if let routeStep = MBRouteStep(json: step) {
-                    steps.append(routeStep)
+            if let jsonSteps = json["steps"] as? [JSON] {
+                for jsonStep in jsonSteps {
+                    if let routeStep = MBRouteStep(json: jsonStep) {
+                        steps.append(routeStep)
+                    }
                 }
             }
             return steps
             }()
-        self.distance = json["distance"].doubleValue
-        self.expectedTravelTime = json["duration"].doubleValue
-        self.summary = json["summary"].stringValue
+        self.distance = json["distance"] as! Double
+        self.expectedTravelTime = json["duration"] as! Double
+        self.summary = json["summary"] as! String
         self.geometry = {
             var points = [CLLocationCoordinate2D]()
-            for point: JSON in json["geometry"]["coordinates"].arrayValue {
-                points.append(CLLocationCoordinate2D(latitude: point.arrayValue[1].doubleValue, longitude: point.arrayValue[0].doubleValue))
+            if let geometry = json["geometry"] as? JSON,
+              let coordinates = geometry["coordinates"] as? [[Double]] {
+                for coordinate in coordinates {
+                    points.append(CLLocationCoordinate2D(latitude: coordinate[1], longitude: coordinate[0]))
+                }
             }
             return points
             }()
@@ -245,27 +239,34 @@ public class MBDirections: NSObject {
 
                 if error == nil {
                     var parsedRoutes = [MBRoute]()
-                    let json = JSON(data: data)
-                    for route: JSON in json["routes"].arrayValue {
-                        let origin = MBPoint(name: json["origin"]["properties"]["name"].stringValue,
-                            coordinate: {
-                                let coordinates = json["origin"]["geometry"]["coordinates"].arrayValue
-                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                    longitude: coordinates[0].doubleValue)
-                                }())
-                        let destination = MBPoint(name: json["destination"]["properties"]["name"].stringValue,
-                            coordinate: {
-                                let coordinates = json["destination"]["geometry"]["coordinates"].arrayValue
-                                return CLLocationCoordinate2D(latitude: coordinates[1].doubleValue,
-                                    longitude: coordinates[0].doubleValue)
-                                }())
-                        parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
-                    }
-                    if !dataTaskSelf.cancelled {
-                        dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
-                            if let completionSelf = dataTaskSelf {
-                                completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
-                                    destinationCoordinate: completionSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                    if let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? JSON,
+                      let routes = json["routes"] as? [JSON] {
+                        for route in routes {
+                            if let origin = json["origin"] as? JSON,
+                              let originProperties = origin["properties"] as? JSON,
+                              let originName = originProperties["name"] as? String,
+                              let originGeometry = origin["geometry"] as? JSON,
+                              let originCoordinates = originGeometry["coordinates"] as? [Double],
+                              let destination = json["destination"] as? JSON,
+                              let destinationProperties = destination["properties"] as? JSON,
+                              let destinationName = destinationProperties["name"] as? String,
+                              let destinationGeometry = destination["geometry"] as? JSON,
+                              let destinationCoordinates = destinationGeometry["coordinates"] as? [Double] {
+                                let routeOrigin = MBPoint(name: originName,
+                                    coordinate: CLLocationCoordinate2D(latitude: originCoordinates[1],
+                                        longitude: originCoordinates[0]))
+                                let routeDestination = MBPoint(name: destinationName,
+                                    coordinate: CLLocationCoordinate2D(latitude: destinationCoordinates[1],
+                                        longitude: destinationCoordinates[0]))
+                                parsedRoutes.append(MBRoute(origin: routeOrigin, destination: routeDestination, json: route))
+                            }
+                        }
+                        if !dataTaskSelf.cancelled {
+                            dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
+                                if let completionSelf = dataTaskSelf {
+                                    completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
+                                        destinationCoordinate: completionSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
+                                }
                             }
                         }
                     }
