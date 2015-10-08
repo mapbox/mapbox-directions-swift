@@ -13,7 +13,7 @@ class ViewController: UIViewController {
                 y: (self.view.bounds.size.height - 40) / 2,
                 width: 200,
                 height: 40))
-            label.autoresizingMask = .FlexibleLeftMargin | .FlexibleRightMargin | .FlexibleTopMargin | .FlexibleBottomMargin
+            label.autoresizingMask = [ .FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin ]
             label.textColor = UIColor.whiteColor()
             label.textAlignment = .Center
             label.text = "Check the console"
@@ -29,13 +29,13 @@ class ViewController: UIViewController {
 
         directions!.calculateDirectionsWithCompletionHandler { (response, error) in
             if let route = response?.routes.first {
-                println("Route summary:")
-                println("Distance: \(route.distance) meters (\(route.steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
+                print("Route summary:")
+                print("Distance: \(route.distance) meters (\(route.steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
                 for step in route.steps {
-                    println("\(step.instructions) \(step.distance) meters")
+                    print("\(step.instructions) \(step.distance) meters")
                 }
             } else {
-                println("Error calculating directions: \(error)")
+                print("Error calculating directions: \(error)")
             }
         }
     }

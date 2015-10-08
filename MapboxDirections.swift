@@ -81,7 +81,6 @@ public class MBRouteStep {
     internal(set) public var maneuverLocation: CLLocationCoordinate2D?
 
     internal init?(json: JSON) {
-        var valid = false
         if let maneuver = json["maneuver"] as? JSON,
           let instruction = maneuver["instruction"] as? String,
           let distance = json["distance"] as? Double,
@@ -237,9 +236,9 @@ public class MBDirections: NSObject {
             if let dataTaskSelf = self {
                 dataTaskSelf.calculating = false
 
-                if error == nil {
+                if let data = data {
                     var parsedRoutes = [MBRoute]()
-                    if let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? JSON,
+                    if let json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
                       let routes = json["routes"] as? [JSON] {
                         for route in routes {
                             if let origin = json["origin"] as? JSON,
