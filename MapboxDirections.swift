@@ -98,7 +98,7 @@ public class MBRouteStep {
                 }
             }
         }
-        if (valid) {
+        if valid {
             self.instructions = json["maneuver"]["instruction"].stringValue
             self.distance = json["distance"].doubleValue
             self.duration = json["duration"].doubleValue
@@ -231,7 +231,7 @@ public class MBDirections: NSObject {
 
         var serverRequestString = "http://api.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
-        if (self.request.requestsAlternateRoutes) {
+        if self.request.requestsAlternateRoutes {
             serverRequestString += "&alternatives=true"
         }
 
@@ -243,7 +243,7 @@ public class MBDirections: NSObject {
             if let dataTaskSelf = self {
                 dataTaskSelf.calculating = false
 
-                if (error == nil) {
+                if error == nil {
                     var parsedRoutes = [MBRoute]()
                     let json = JSON(data: data)
                     for route: JSON in json["routes"].arrayValue {
@@ -261,7 +261,7 @@ public class MBDirections: NSObject {
                                 }())
                         parsedRoutes.append(MBRoute(origin: origin, destination: destination, json: route))
                     }
-                    if (!dataTaskSelf.cancelled) {
+                    if !dataTaskSelf.cancelled {
                         dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
                             if let completionSelf = dataTaskSelf {
                                 completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
@@ -270,7 +270,7 @@ public class MBDirections: NSObject {
                         }
                     }
                 } else {
-                    if (!dataTaskSelf.cancelled) {
+                    if !dataTaskSelf.cancelled {
                         dispatch_sync(dispatch_get_main_queue()) {
                             completionHandler(nil, error)
                         }
