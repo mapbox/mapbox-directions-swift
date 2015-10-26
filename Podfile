@@ -1,7 +1,5 @@
 use_frameworks!
 
 target 'Unit Tests' do
-  pod 'OHHTTPStubs/Swift',
-    :git => 'git@github.com:AliSoftware/OHHTTPStubs.git',
-    :branch => 'fix/umbrella-header'
+  pod 'OHHTTPStubs/Swift', '~> 4.4.0'
 end
