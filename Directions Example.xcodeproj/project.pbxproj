@@ -188,7 +188,6 @@
 					};
 					DDF1E8631BD8580800C40C78 = {
 						CreatedOnToolsVersion = 7.0.1;
-						TestTargetID = DD62544D1AE70C1700017857;
 					};
 				};
 			};
@@ -416,14 +415,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4657820F4366F9DB1C432FB /* Pods-Unit Tests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = "Unit Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mapbox.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Directions Example.app/Directions Example";
 			};
 			name = Debug;
 		};
@@ -431,13 +428,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EE172AE7D4B472E6B85700BA /* Pods-Unit Tests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "Unit Tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mapbox.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Directions Example.app/Directions Example";
 			};
 			name = Release;
 		};
