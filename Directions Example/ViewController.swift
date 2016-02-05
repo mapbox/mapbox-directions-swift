@@ -1,6 +1,10 @@
 import UIKit
 import CoreLocation
 
+// A Mapbox access token is required to use the Directions API.
+// https://www.mapbox.com/help/create-api-access-token/
+let MapboxAccessToken = "<# your Mapbox access token #>"
+
 class ViewController: UIViewController {
 
     var directions: MBDirections?
@@ -25,7 +29,7 @@ class ViewController: UIViewController {
 
         let request = MBDirectionsRequest(sourceCoordinate: mb, destinationCoordinate: wh)
 
-        directions = MBDirections(request: request, accessToken: "pk.eyJ1IjoianVzdGluIiwiYSI6IlpDbUJLSUEifQ.4mG8vhelFMju6HpIY-Hi5A")
+        directions = MBDirections(request: request, accessToken: MapboxAccessToken)
 
         directions!.calculateDirectionsWithCompletionHandler { (response, error) in
             if let route = response?.routes.first {
