@@ -161,16 +161,24 @@ public class MBRoute {
 public class MBDirectionsRequest {
 
     public enum MBDirectionsTransportType: String {
-        case Automobile = "driving"
-        case Walking    = "walking"
-        case Cycling    = "cycling"
-        case Any        = ""
+        case Automobile = "mapbox.driving"
+        case Walking    = "mapbox.walking"
+        case Cycling    = "mapbox.cycling"
+//        case Any        = ""
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
-    public var transportType = MBDirectionsTransportType.Automobile
+    public var transportType: MBDirectionsTransportType {
+        get {
+            return MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+        }
+        set {
+            profileIdentifier = newValue.rawValue
+        }
+    }
+    public var profileIdentifier: String = MBDirectionsTransportType.Automobile.rawValue
     //    var departureDate: NSDate!
     //    var arrivalDate: NSDate!
 
@@ -220,7 +228,7 @@ public class MBDirections: NSObject {
 
         self.cancelled = false
 
-        var serverRequestString = "https://api.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        var serverRequestString = "https://api.mapbox.com/v4/directions/\(request.profileIdentifier)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
         if self.request.requestsAlternateRoutes {
             serverRequestString += "&alternatives=true"
