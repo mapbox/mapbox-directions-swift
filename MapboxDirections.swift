@@ -67,18 +67,18 @@ public class MBRouteStep {
     }
 
     //    var polyline: MKPolyline! { get }
-    internal(set) public var instructions: String! = ""
+    internal(set) public var instructions: String
     //    var notice: String! { get }
-    internal(set) public var distance: CLLocationDistance = 0
+    internal(set) public var distance: CLLocationDistance
     //    var transportType: MKDirectionsTransportType { get }
 
     // Mapbox-specific stuff
-    internal(set) public var duration: NSTimeInterval?
-    internal(set) public var way_name: String?
+    internal(set) public var duration: NSTimeInterval
+    internal(set) public var way_name: String
     internal(set) public var direction: Direction?
-    internal(set) public var heading: CLLocationDirection?
+    internal(set) public var heading: CLLocationDirection
     internal(set) public var maneuverType: ManeuverType?
-    internal(set) public var maneuverLocation: CLLocationCoordinate2D?
+    internal(set) public var maneuverLocation: CLLocationCoordinate2D
 
     internal init?(json: JSON) {
         if let maneuver = json["maneuver"] as? JSON,
@@ -86,19 +86,19 @@ public class MBRouteStep {
           let distance = json["distance"] as? Double,
           let duration = json["duration"] as? Double,
           let way_name = json["way_name"] as? String,
-          let direction = json["direction"] as? String,
+          let directionString = json["direction"] as? String,
           let heading = json["heading"] as? Double,
-          let type = maneuver["type"] as? String,
+          let typeString = maneuver["type"] as? String,
           let location = maneuver["location"] as? JSON,
           let coordinates = location["coordinates"] as? [Double] {
             self.instructions = instruction
             self.distance = distance
             self.duration = duration
             self.way_name = way_name
-            self.direction = Direction(rawValue: direction)
+            direction = Direction(rawValue: directionString)
             self.heading = heading
-            self.maneuverType = ManeuverType(rawValue: type)!
-            self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
+            maneuverType = ManeuverType(rawValue: typeString)!
+            maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
         } else {
             return nil
         }
