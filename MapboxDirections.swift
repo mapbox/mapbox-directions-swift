@@ -10,10 +10,10 @@ internal typealias JSON = [String: AnyObject]
 
 public class MBPoint {
 
-    public let name: String
+    public let name: String?
     public let coordinate: CLLocationCoordinate2D
 
-    internal init(name: String, coordinate: CLLocationCoordinate2D) {
+    internal init(name: String?, coordinate: CLLocationCoordinate2D) {
         self.name = name
         self.coordinate = coordinate
     }
@@ -130,10 +130,12 @@ public class MBRoute {
     public let geometry: [CLLocationCoordinate2D]
 
     public let origin: MBPoint
+    public let waypoints: [MBPoint]
     public let destination: MBPoint
 
-    internal init(origin: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
+    internal init(origin: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String) {
         self.origin = origin
+        self.waypoints = waypoints
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         if let jsonSteps = json["steps"] as? [JSON] {
@@ -169,6 +171,7 @@ public class MBDirectionsRequest {
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
+    public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
     public var transportType: MBDirectionsTransportType {
@@ -186,9 +189,10 @@ public class MBDirectionsRequest {
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
 
-    public init(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) {
+    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D) {
         self.sourceCoordinate = sourceCoordinate
         self.destinationCoordinate = destinationCoordinate
+        self.waypointCoordinates = waypointCoordinates
     }
 
 }
@@ -230,7 +234,10 @@ public class MBDirections: NSObject {
         self.cancelled = false
 
         let profileIdentifier = request.profileIdentifier
-        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        let coordinates = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{$0}.map {
+            "\($0.longitude),\($0.latitude)"
+        }.joinWithSeparator(";")
+        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(coordinates).json?access_token=\(self.accessToken)"
 
         if self.request.requestsAlternateRoutes {
             serverRequestString += "&alternatives=true"
@@ -249,23 +256,31 @@ public class MBDirections: NSObject {
                     if let json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
                       let routes = json["routes"] as? [JSON] {
                         for route in routes {
+                            let waypoints = json["waypoints"] as? [JSON] ?? []
                             if let origin = json["origin"] as? JSON,
-                              let originProperties = origin["properties"] as? JSON,
-                              let originName = originProperties["name"] as? String,
-                              let originGeometry = origin["geometry"] as? JSON,
-                              let originCoordinates = originGeometry["coordinates"] as? [Double],
-                              let destination = json["destination"] as? JSON,
-                              let destinationProperties = destination["properties"] as? JSON,
-                              let destinationName = destinationProperties["name"] as? String,
-                              let destinationGeometry = destination["geometry"] as? JSON,
-                              let destinationCoordinates = destinationGeometry["coordinates"] as? [Double] {
+                                originProperties = origin["properties"] as? JSON,
+                                originName = originProperties["name"] as? String,
+                                originGeometry = origin["geometry"] as? JSON,
+                                originCoordinates = originGeometry["coordinates"] as? [Double],
+                                
+                                destination = json["destination"] as? JSON,
+                                destinationProperties = destination["properties"] as? JSON,
+                                destinationName = destinationProperties["name"] as? String,
+                                destinationGeometry = destination["geometry"] as? JSON,
+                                destinationCoordinates = destinationGeometry["coordinates"] as? [Double] {
+                                let waypointsCoordinates = waypoints.flatMap { $0["geometry"] as? JSON }.flatMap {
+                                    $0["coordinates"] as? [Double]
+                                }.map {
+                                    MBPoint(name: nil, coordinate: CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0]))
+                                }
+                                
                                 let routeOrigin = MBPoint(name: originName,
                                     coordinate: CLLocationCoordinate2D(latitude: originCoordinates[1],
                                         longitude: originCoordinates[0]))
                                 let routeDestination = MBPoint(name: destinationName,
                                     coordinate: CLLocationCoordinate2D(latitude: destinationCoordinates[1],
                                         longitude: destinationCoordinates[0]))
-                                parsedRoutes.append(MBRoute(origin: routeOrigin, destination: routeDestination, json: route, profileIdentifier: profileIdentifier))
+                                parsedRoutes.append(MBRoute(origin: routeOrigin, waypoints: waypointsCoordinates, destination: routeDestination, json: route, profileIdentifier: profileIdentifier))
                             }
                         }
                         if !dataTaskSelf.cancelled {
