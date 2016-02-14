@@ -70,7 +70,10 @@ public class MBRouteStep {
     internal(set) public var instructions: String! = ""
     //    var notice: String! { get }
     internal(set) public var distance: CLLocationDistance = 0
-    //    var transportType: MKDirectionsTransportType { get }
+    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
+        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    }
+    public let profileIdentifier: String
 
     // Mapbox-specific stuff
     internal(set) public var duration: NSTimeInterval?
@@ -80,7 +83,8 @@ public class MBRouteStep {
     internal(set) public var maneuverType: ManeuverType?
     internal(set) public var maneuverLocation: CLLocationCoordinate2D?
 
-    internal init?(json: JSON) {
+    internal init?(json: JSON, profileIdentifier: String) {
+        self.profileIdentifier = profileIdentifier
         if let maneuver = json["maneuver"] as? JSON,
           let instruction = maneuver["instruction"] as? String,
           let distance = json["distance"] as? Double,
@@ -116,7 +120,10 @@ public class MBRoute {
     //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
-    //    var transportType: MKDirectionsTransportType { get }
+    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
+        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    }
+    public let profileIdentifier: String
 
     // Mapbox-specific stuff
     public let summary: String
@@ -125,33 +132,27 @@ public class MBRoute {
     public let origin: MBPoint
     public let destination: MBPoint
 
-    internal init(origin: MBPoint, destination: MBPoint, json: JSON) {
+    internal init(origin: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
         self.origin = origin
         self.destination = destination
-        self.steps = {
-            var steps = [MBRouteStep]()
-            if let jsonSteps = json["steps"] as? [JSON] {
-                for jsonStep in jsonSteps {
-                    if let routeStep = MBRouteStep(json: jsonStep) {
-                        steps.append(routeStep)
-                    }
-                }
+        self.profileIdentifier = profileIdentifier
+        if let jsonSteps = json["steps"] as? [JSON] {
+            steps = jsonSteps.flatMap {
+                MBRouteStep(json: $0, profileIdentifier: profileIdentifier)
             }
-            return steps
-            }()
+        } else {
+            steps = []
+        }
         self.distance = json["distance"] as! Double
         self.expectedTravelTime = json["duration"] as! Double
         self.summary = json["summary"] as! String
-        self.geometry = {
-            var points = [CLLocationCoordinate2D]()
-            if let geometry = json["geometry"] as? JSON,
-              let coordinates = geometry["coordinates"] as? [[Double]] {
-                for coordinate in coordinates {
-                    points.append(CLLocationCoordinate2D(latitude: coordinate[1], longitude: coordinate[0]))
-                }
+        if let jsonGeometry = json["geometry"] as? JSON, coordinates = jsonGeometry["coordinates"] as? [[Double]] {
+            geometry = coordinates.map {
+                CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
             }
-            return points
-            }()
+        } else {
+            geometry = []
+        }
     }
 
 }
@@ -161,16 +162,24 @@ public class MBRoute {
 public class MBDirectionsRequest {
 
     public enum MBDirectionsTransportType: String {
-        case Automobile = "driving"
-        case Walking    = "walking"
-        case Cycling    = "cycling"
-        case Any        = ""
+        case Automobile = "mapbox.driving"
+        case Walking    = "mapbox.walking"
+        case Cycling    = "mapbox.cycling"
+//        case Any        = ""
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
-    public var transportType = MBDirectionsTransportType.Automobile
+    public var transportType: MBDirectionsTransportType {
+        get {
+            return MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+        }
+        set {
+            profileIdentifier = newValue.rawValue
+        }
+    }
+    public var profileIdentifier: String = MBDirectionsTransportType.Automobile.rawValue
     //    var departureDate: NSDate!
     //    var arrivalDate: NSDate!
 
@@ -220,7 +229,8 @@ public class MBDirections: NSObject {
 
         self.cancelled = false
 
-        var serverRequestString = "https://api.mapbox.com/v4/directions/mapbox.\(request.transportType.rawValue)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
+        let profileIdentifier = request.profileIdentifier
+        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(self.request.sourceCoordinate.longitude),\(self.request.sourceCoordinate.latitude);\(self.request.destinationCoordinate.longitude),\(self.request.destinationCoordinate.latitude).json?access_token=\(self.accessToken)"
 
         if self.request.requestsAlternateRoutes {
             serverRequestString += "&alternatives=true"
@@ -255,7 +265,7 @@ public class MBDirections: NSObject {
                                 let routeDestination = MBPoint(name: destinationName,
                                     coordinate: CLLocationCoordinate2D(latitude: destinationCoordinates[1],
                                         longitude: destinationCoordinates[0]))
-                                parsedRoutes.append(MBRoute(origin: routeOrigin, destination: routeDestination, json: route))
+                                parsedRoutes.append(MBRoute(origin: routeOrigin, destination: routeDestination, json: route, profileIdentifier: profileIdentifier))
                             }
                         }
                         if !dataTaskSelf.cancelled {
