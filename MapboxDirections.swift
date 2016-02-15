@@ -2,6 +2,7 @@ import Foundation
 import CoreLocation
 
 public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
+public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
 internal typealias JSON = [String: AnyObject]
 
 //public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
@@ -25,11 +26,13 @@ public class MBPoint {
 public class MBETAResponse {
 
     public let sourceCoordinate: CLLocationCoordinate2D
+    public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public let expectedTravelTime: NSTimeInterval
 
-    internal init(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D, expectedTravelTime: NSTimeInterval) {
+    internal init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, expectedTravelTime: NSTimeInterval) {
         self.sourceCoordinate = sourceCoordinate
+        self.waypointCoordinates = waypointCoordinates
         self.destinationCoordinate = destinationCoordinate
         self.expectedTravelTime = expectedTravelTime
     }
@@ -194,7 +197,25 @@ public class MBDirectionsRequest {
         self.destinationCoordinate = destinationCoordinate
         self.waypointCoordinates = waypointCoordinates
     }
-
+    
+    private func URLRequestWithAccessToken(accessToken: String, includingGeometry includesGeometry: Bool, includingSteps includesSteps: Bool) -> NSURLRequest {
+        let coordinates = [[sourceCoordinate], waypointCoordinates, [destinationCoordinate]].flatMap{$0}.map {
+            "\($0.longitude),\($0.latitude)"
+        }.joinWithSeparator(";")
+        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(coordinates).json?access_token=\(accessToken)"
+        
+        if requestsAlternateRoutes {
+            serverRequestString += "&alternatives=true"
+        }
+        if !includesGeometry {
+            serverRequestString += "&geometry=false"
+        }
+        if !includesSteps {
+            serverRequestString += "&steps=false"
+        }
+        
+        return NSURLRequest(URL: NSURL(string: serverRequestString)!)
+    }
 }
 
 // MARK: - Directions Response
@@ -202,11 +223,13 @@ public class MBDirectionsRequest {
 public class MBDirectionsResponse {
 
     public let sourceCoordinate: CLLocationCoordinate2D
+    public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public let routes: [MBRoute]!
 
-    internal init(sourceCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D, routes: [MBRoute]) {
+    internal init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, routes: [MBRoute]) {
         self.sourceCoordinate = sourceCoordinate
+        self.waypointCoordinates = waypointCoordinates
         self.destinationCoordinate = destinationCoordinate
         self.routes = routes
     }
@@ -218,7 +241,7 @@ public class MBDirectionsResponse {
 public class MBDirections: NSObject {
 
     private let request: MBDirectionsRequest
-    private let accessToken: NSString
+    private let accessToken: String
     private var task: NSURLSessionDataTask?
     private var calculating = false
     private(set) public var cancelled = false
@@ -231,30 +254,21 @@ public class MBDirections: NSObject {
 
     public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) {
 
-        self.cancelled = false
+        cancelled = false
 
         let profileIdentifier = request.profileIdentifier
-        let coordinates = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{$0}.map {
-            "\($0.longitude),\($0.latitude)"
-        }.joinWithSeparator(";")
-        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(coordinates).json?access_token=\(self.accessToken)"
+        let serverRequest = request.URLRequestWithAccessToken(accessToken, includingGeometry: true, includingSteps: true)
 
-        if self.request.requestsAlternateRoutes {
-            serverRequestString += "&alternatives=true"
-        }
+        calculating = true
 
-        let serverRequest = NSURLRequest(URL: NSURL(string: serverRequestString)!)
-
-        self.calculating = true
-
-        self.task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
+        task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
             if let dataTaskSelf = self {
                 dataTaskSelf.calculating = false
 
                 if let data = data {
                     var parsedRoutes = [MBRoute]()
                     if let json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
-                      let routes = json["routes"] as? [JSON] {
+                        routes = json["routes"] as? [JSON] {
                         for route in routes {
                             let waypoints = json["waypoints"] as? [JSON] ?? []
                             if let origin = json["origin"] as? JSON,
@@ -287,6 +301,7 @@ public class MBDirections: NSObject {
                             dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
                                 if let completionSelf = dataTaskSelf {
                                     completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
+                                        waypointCoordinates: completionSelf.request.waypointCoordinates,
                                         destinationCoordinate: completionSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
                                 }
                             }
@@ -301,10 +316,43 @@ public class MBDirections: NSObject {
                 }
             }
         }
-        self.task!.resume()
+        task!.resume()
     }
 
-    //    public func calculateETAWithCompletionHandler(MBETAHandler!)
+    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) {
+        cancelled = false
+        
+        let serverRequest = request.URLRequestWithAccessToken(accessToken, includingGeometry: false, includingSteps: false)
+        
+        calculating = true
+        
+        task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
+            if let dataTaskSelf = self {
+                dataTaskSelf.calculating = false
+                if let data = data,
+                    json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
+                    routes = json["routes"] as? [JSON] where !dataTaskSelf.cancelled {
+                    let expectedTravelTime = routes.flatMap {
+                        $0["duration"] as? NSTimeInterval
+                    }.minElement()
+                    if let expectedTravelTime = expectedTravelTime {
+                        dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
+                            if let completionSelf = dataTaskSelf {
+                                completionHandler(MBETAResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
+                                    waypointCoordinates: completionSelf.request.waypointCoordinates,
+                                    destinationCoordinate: completionSelf.request.destinationCoordinate, expectedTravelTime: expectedTravelTime), nil)
+                            }
+                        }
+                    }
+                } else if !dataTaskSelf.cancelled {
+                    dispatch_sync(dispatch_get_main_queue()) {
+                        completionHandler(nil, error)
+                    }
+                }
+            }
+        }
+        task!.resume()
+    }
 
     public func cancel() {
         self.cancelled = true
