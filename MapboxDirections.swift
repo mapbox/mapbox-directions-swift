@@ -204,8 +204,8 @@ public class MBDirectionsRequest {
         }.joinWithSeparator(";")
         var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(coordinates).json?access_token=\(accessToken)"
         
-        if requestsAlternateRoutes {
-            serverRequestString += "&alternatives=true"
+        if !requestsAlternateRoutes {
+            serverRequestString += "&alternatives=false"
         }
         if !includesGeometry {
             serverRequestString += "&geometry=false"
