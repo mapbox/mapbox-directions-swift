@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        assert(MapboxAccessToken != "<# your Mapbox access token #>", "You must enter your Mapbox access token at the top of the view controller in order for this demo to work.")
+
         view.addSubview({ [unowned self] in
             let label = UILabel(frame: CGRect(x: (self.view.bounds.size.width - 200) / 2,
                 y: (self.view.bounds.size.height - 40) / 2,
