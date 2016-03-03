@@ -9,7 +9,7 @@ internal typealias JSON = [String: AnyObject]
 
 // MARK: - Point
 
-public class MBPoint {
+public class MBPoint: NSObject {
 
     public let name: String?
     public let coordinate: CLLocationCoordinate2D
@@ -23,7 +23,7 @@ public class MBPoint {
 
 // MARK: - ETA Response
 
-public class MBETAResponse {
+public class MBETAResponse: NSObject {
 
     public let sourceCoordinate: CLLocationCoordinate2D
     public let waypointCoordinates: [CLLocationCoordinate2D]
@@ -41,7 +41,7 @@ public class MBETAResponse {
 
 // MARK: - Step
 
-public class MBRouteStep {
+public class MBRouteStep: NSObject {
 
     public enum Direction: String {
         case N = "N"
@@ -115,7 +115,7 @@ public class MBRouteStep {
 
 // MARK: - Route
 
-public class MBRoute {
+public class MBRoute: NSObject {
 
     //    var polyline: MKPolyline! { get }
     public let steps: [MBRouteStep]!
@@ -164,7 +164,7 @@ public class MBRoute {
 
 // MARK: - Request
 
-public class MBDirectionsRequest {
+public class MBDirectionsRequest: NSObject {
 
     public enum MBDirectionsTransportType: String {
         case Automobile = "mapbox.driving"
@@ -191,6 +191,10 @@ public class MBDirectionsRequest {
 
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
+
+    public convenience init(originCoordinate: CLLocationCoordinate2D, destinationCoordinate: CLLocationCoordinate2D) {
+        self.init(sourceCoordinate: originCoordinate, waypointCoordinates: [], destinationCoordinate: destinationCoordinate)
+    }
 
     public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D) {
         self.sourceCoordinate = sourceCoordinate
@@ -220,7 +224,7 @@ public class MBDirectionsRequest {
 
 // MARK: - Directions Response
 
-public class MBDirectionsResponse {
+public class MBDirectionsResponse: NSObject {
 
     public let sourceCoordinate: CLLocationCoordinate2D
     public let waypointCoordinates: [CLLocationCoordinate2D]

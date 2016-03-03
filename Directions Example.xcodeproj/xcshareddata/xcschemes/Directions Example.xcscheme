@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD62544D1AE70C1700017857"
-               BuildableName = "Directions Example.app"
-               BlueprintName = "Directions Example"
+               BuildableName = "Example (Swift).app"
+               BlueprintName = "Example (Swift)"
                ReferencedContainer = "container:Directions Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions Example.app"
-            BlueprintName = "Directions Example"
+            BuildableName = "Example (Swift).app"
+            BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:Directions Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -80,8 +80,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions Example.app"
-            BlueprintName = "Directions Example"
+            BuildableName = "Example (Swift).app"
+            BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:Directions Example.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -99,8 +99,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions Example.app"
-            BlueprintName = "Directions Example"
+            BuildableName = "Example (Swift).app"
+            BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:Directions Example.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
