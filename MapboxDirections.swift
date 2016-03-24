@@ -21,106 +21,151 @@ public class MBPoint {
 
 }
 
+private func CLLocationCoordinate2DFromJSONArray(array: [Double]) -> CLLocationCoordinate2D? {
+    guard array.count == 2 else {
+        return nil
+    }
+    
+    return CLLocationCoordinate2D(latitude: array[0], longitude: array[1])
+}
+
 // MARK: - ETA Response
 
-public class MBETAResponse {
+internal protocol MBResponse {
+    var source: MBPoint { get }
+    var waypoints: [MBPoint] { get }
+    var destination: MBPoint { get }
+}
 
-    public let sourceCoordinate: CLLocationCoordinate2D
-    public let waypointCoordinates: [CLLocationCoordinate2D]
-    public let destinationCoordinate: CLLocationCoordinate2D
+public class MBETAResponse: MBResponse {
+    public let source: MBPoint
+    public let waypoints: [MBPoint]
+    public let destination: MBPoint
     public let expectedTravelTime: NSTimeInterval
 
-    internal init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, expectedTravelTime: NSTimeInterval) {
-        self.sourceCoordinate = sourceCoordinate
-        self.waypointCoordinates = waypointCoordinates
-        self.destinationCoordinate = destinationCoordinate
+    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, expectedTravelTime: NSTimeInterval) {
+        self.source = source
+        self.waypoints = waypoints
+        self.destination = destination
         self.expectedTravelTime = expectedTravelTime
     }
-
 }
 
 // MARK: - Step
 
 public class MBRouteStep {
-
-    public enum Direction: String {
-        case N = "N"
-        case NE = "NE"
-        case E = "E"
-        case SE = "SE"
-        case S = "S"
-        case SW = "SW"
-        case W = "W"
-        case NW = "NW"
-    }
-
     public enum ManeuverType: String {
-        case Continue = "continue"
-        case BearRight = "bear right"
-        case TurnRight = "turn right"
-        case SharpRight = "sharp right"
-        case UTurn = "u-turn"
-        case SharpLeft = "sharp left"
-        case TurnLeft = "turn left"
-        case BearLeft = "bear left"
-        case Waypoint = "waypoint"
-        case Depart = "depart"
+        case Turn = "turn"
+        case PassNameChange = "new name"
+        case PassWaypoint = "waypoint"
+        case PassInformationalPoint = "suppressed"
+        case Merge = "merge"
+        case TakeRamp = "ramp"
+        case ReachFork = "fork"
+        case ReachEnd = "end of road"
         case EnterRoundabout = "enter roundabout"
+        case ExitRoundabout = "exit roundabout"
+        
+        // Undocumented but present in API responses
+        case Depart = "depart"
         case Arrive = "arrive"
+    }
+    
+    public enum ManeuverDirection: String {
+        case UTurn = "uturn"
+        case SharpRight = "sharp right"
+        case Right = "right"
+        case SlightRight = "slight right"
+        case StraightAhead = "straight"
+        case SlightLeft = "slight left"
+        case Left = "left"
+        case SharpLeft = "sharp left"
     }
 
     //    var polyline: MKPolyline! { get }
-    internal(set) public var instructions: String! = ""
+    public let instructions: String
     //    var notice: String! { get }
-    internal(set) public var distance: CLLocationDistance = 0
+    public let distance: CLLocationDistance
+    public let transportType: MBDirectionsRequest.MBDirectionsTransportType
+    public let profileIdentifier: String
+
+    // Mapbox-specific stuff
+    public let geometry: [CLLocationCoordinate2D]
+    public let duration: NSTimeInterval
+    public let name: String?
+    public let initialHeading: CLLocationDirection?
+    public let finalHeading: CLLocationDirection?
+    public let maneuverType: ManeuverType
+    public let maneuverDirection: ManeuverDirection?
+    public let maneuverLocation: CLLocationCoordinate2D
+    public let exitIndex: NSInteger?
+
+    internal init(json: JSON, profileIdentifier: String) {
+        self.profileIdentifier = profileIdentifier
+        if let mode = json["mode"] as? String {
+            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: "mapbox/\(mode)") ?? .Automobile
+        } else {
+            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+        }
+        
+        let maneuver = json["maneuver"] as! JSON
+        instructions = maneuver["instruction"] as! String
+        initialHeading = maneuver["bearing_before"] as? Double
+        finalHeading = maneuver["bearing_after"] as? Double
+        maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
+        maneuverDirection = ManeuverDirection(rawValue: maneuver["modifier"] as! String)!
+        exitIndex = maneuver["exit"] as? Int
+        
+        let location = maneuver["location"] as! [Double]
+        maneuverLocation = CLLocationCoordinate2DFromJSONArray(location)!
+        
+        distance = json["distance"] as! Double
+        duration = json["duration"] as! Double
+        name = json["name"] as? String
+        
+        let jsonGeometry = json["geometry"] as? JSON
+        let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
+        geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
+    }
+}
+
+// MARK: - Leg
+
+public class MBRouteLeg {
+//    var polyline: MKPolyline! { get }
+    public let steps: [MBRouteStep]
+    public let name: String
+//    var advisoryNotices: [AnyObject]! { get }
+    public let distance: CLLocationDistance
+    public let expectedTravelTime: NSTimeInterval
     public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
         return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
 
-    // Mapbox-specific stuff
-    internal(set) public var duration: NSTimeInterval?
-    internal(set) public var way_name: String?
-    internal(set) public var direction: Direction?
-    internal(set) public var heading: CLLocationDirection?
-    internal(set) public var maneuverType: ManeuverType?
-    internal(set) public var maneuverLocation: CLLocationCoordinate2D?
+    public let origin: MBPoint
+    public let destination: MBPoint
 
-    internal init?(json: JSON, profileIdentifier: String) {
+    internal init(origin: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
+        self.origin = origin
+        self.destination = destination
         self.profileIdentifier = profileIdentifier
-        if let maneuver = json["maneuver"] as? JSON,
-          let instruction = maneuver["instruction"] as? String,
-          let distance = json["distance"] as? Double,
-          let duration = json["duration"] as? Double,
-          let way_name = json["way_name"] as? String,
-          let direction = json["direction"] as? String,
-          let heading = json["heading"] as? Double,
-          let type = maneuver["type"] as? String,
-          let location = maneuver["location"] as? JSON,
-          let coordinates = location["coordinates"] as? [Double] {
-            self.instructions = instruction
-            self.distance = distance
-            self.duration = duration
-            self.way_name = way_name
-            self.direction = Direction(rawValue: direction)
-            self.heading = heading
-            self.maneuverType = ManeuverType(rawValue: type)!
-            self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
-        } else {
-            return nil
+        steps = (json["steps"] as? [JSON] ?? []).map {
+            MBRouteStep(json: $0, profileIdentifier: profileIdentifier)
         }
+        distance = json["distance"] as! Double
+        expectedTravelTime = json["duration"] as! Double
+        name = json["summary"] as! String
     }
-
 }
 
 // MARK: - Route
 
 public class MBRoute {
-
-    //    var polyline: MKPolyline! { get }
-    public let steps: [MBRouteStep]!
-    //    var name: String! { get }
-    //    var advisoryNotices: [AnyObject]! { get }
+//    var polyline: MKPolyline! { get }
+    public let legs: [MBRouteLeg]
+//    public let name: String
+//    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
     public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
@@ -129,37 +174,32 @@ public class MBRoute {
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
-    public let summary: String
     public let geometry: [CLLocationCoordinate2D]
 
-    public let origin: MBPoint
+    public let source: MBPoint
     public let waypoints: [MBPoint]
     public let destination: MBPoint
 
-    internal init(origin: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String) {
-        self.origin = origin
+    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String) {
+        self.source = source
         self.waypoints = waypoints
         self.destination = destination
         self.profileIdentifier = profileIdentifier
-        if let jsonSteps = json["steps"] as? [JSON] {
-            steps = jsonSteps.flatMap {
-                MBRouteStep(json: $0, profileIdentifier: profileIdentifier)
-            }
-        } else {
-            steps = []
+        
+        // Associate each leg JSON with an origin and destination. The sequence
+        // of destinations is offset by one from the sequence of origins.
+        let legInfo = zip(zip([source] + waypoints, waypoints + [destination]),
+                          json["legs"] as? [JSON] ?? [])
+        legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
+            MBRouteLeg(origin: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier)
         }
-        self.distance = json["distance"] as! Double
-        self.expectedTravelTime = json["duration"] as! Double
-        self.summary = json["summary"] as! String
-        if let jsonGeometry = json["geometry"] as? JSON, coordinates = jsonGeometry["coordinates"] as? [[Double]] {
-            geometry = coordinates.map {
-                CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
-            }
-        } else {
-            geometry = []
-        }
+        
+        distance = json["distance"] as! Double
+        expectedTravelTime = json["duration"] as! Double
+        let jsonGeometry = json["geometry"] as? JSON
+        let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
+        geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
     }
-
 }
 
 // MARK: - Request
@@ -167,9 +207,9 @@ public class MBRoute {
 public class MBDirectionsRequest {
 
     public enum MBDirectionsTransportType: String {
-        case Automobile = "mapbox.driving"
-        case Walking    = "mapbox.walking"
-        case Cycling    = "mapbox.cycling"
+        case Automobile = "mapbox/driving"
+        case Walking    = "mapbox/walking"
+        case Cycling    = "mapbox/cycling"
 //        case Any        = ""
     }
 
@@ -199,18 +239,19 @@ public class MBDirectionsRequest {
     }
     
     private func URLRequestWithAccessToken(accessToken: String, includingGeometry includesGeometry: Bool, includingSteps includesSteps: Bool) -> NSURLRequest {
-        let coordinates = [[sourceCoordinate], waypointCoordinates, [destinationCoordinate]].flatMap{$0}.map {
+        let coordinates = [[sourceCoordinate], waypointCoordinates, [destinationCoordinate]].flatMap{ $0 }.map {
             "\($0.longitude),\($0.latitude)"
         }.joinWithSeparator(";")
-        var serverRequestString = "https://api.mapbox.com/v4/directions/\(profileIdentifier)/\(coordinates).json?access_token=\(accessToken)"
+        var serverRequestString = "https://api.mapbox.com/directions/v5/\(profileIdentifier)/\(coordinates).json?access_token=\(accessToken)"
         
         if !requestsAlternateRoutes {
-            serverRequestString += "&alternatives=false"
+            serverRequestString += "&alternative=false"
         }
-        if !includesGeometry {
-            serverRequestString += "&geometry=false"
-        }
-        if !includesSteps {
+        serverRequestString += "&overview="
+        serverRequestString += includesGeometry ? "full" : "false"
+        if includesSteps {
+            serverRequestString += "&geometries=geojson"
+        } else {
             serverRequestString += "&steps=false"
         }
         
@@ -220,20 +261,18 @@ public class MBDirectionsRequest {
 
 // MARK: - Directions Response
 
-public class MBDirectionsResponse {
+public class MBDirectionsResponse: MBResponse {
+    public let source: MBPoint
+    public let waypoints: [MBPoint]
+    public let destination: MBPoint
+    public let routes: [MBRoute]
 
-    public let sourceCoordinate: CLLocationCoordinate2D
-    public let waypointCoordinates: [CLLocationCoordinate2D]
-    public let destinationCoordinate: CLLocationCoordinate2D
-    public let routes: [MBRoute]!
-
-    internal init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, routes: [MBRoute]) {
-        self.sourceCoordinate = sourceCoordinate
-        self.waypointCoordinates = waypointCoordinates
-        self.destinationCoordinate = destinationCoordinate
+    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, routes: [MBRoute]) {
+        self.source = source
+        self.waypoints = waypoints
+        self.destination = destination
         self.routes = routes
     }
-
 }
 
 // MARK: - Manager
@@ -260,62 +299,15 @@ public class MBDirections: NSObject {
         let serverRequest = request.URLRequestWithAccessToken(accessToken, includingGeometry: true, includingSteps: true)
 
         calculating = true
-
-        task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
-            if let dataTaskSelf = self {
-                dataTaskSelf.calculating = false
-
-                if let data = data {
-                    var parsedRoutes = [MBRoute]()
-                    if let json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
-                        routes = json["routes"] as? [JSON] {
-                        for route in routes {
-                            let waypoints = json["waypoints"] as? [JSON] ?? []
-                            if let origin = json["origin"] as? JSON,
-                                originProperties = origin["properties"] as? JSON,
-                                originName = originProperties["name"] as? String,
-                                originGeometry = origin["geometry"] as? JSON,
-                                originCoordinates = originGeometry["coordinates"] as? [Double],
-                                
-                                destination = json["destination"] as? JSON,
-                                destinationProperties = destination["properties"] as? JSON,
-                                destinationName = destinationProperties["name"] as? String,
-                                destinationGeometry = destination["geometry"] as? JSON,
-                                destinationCoordinates = destinationGeometry["coordinates"] as? [Double] {
-                                let waypointsCoordinates = waypoints.flatMap { $0["geometry"] as? JSON }.flatMap {
-                                    $0["coordinates"] as? [Double]
-                                }.map {
-                                    MBPoint(name: nil, coordinate: CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0]))
-                                }
-                                
-                                let routeOrigin = MBPoint(name: originName,
-                                    coordinate: CLLocationCoordinate2D(latitude: originCoordinates[1],
-                                        longitude: originCoordinates[0]))
-                                let routeDestination = MBPoint(name: destinationName,
-                                    coordinate: CLLocationCoordinate2D(latitude: destinationCoordinates[1],
-                                        longitude: destinationCoordinates[0]))
-                                parsedRoutes.append(MBRoute(origin: routeOrigin, waypoints: waypointsCoordinates, destination: routeDestination, json: route, profileIdentifier: profileIdentifier))
-                            }
-                        }
-                        if !dataTaskSelf.cancelled {
-                            dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
-                                if let completionSelf = dataTaskSelf {
-                                    completionHandler(MBDirectionsResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
-                                        waypointCoordinates: completionSelf.request.waypointCoordinates,
-                                        destinationCoordinate: completionSelf.request.destinationCoordinate, routes: parsedRoutes), nil)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if !dataTaskSelf.cancelled {
-                        dispatch_sync(dispatch_get_main_queue()) {
-                            completionHandler(nil, error)
-                        }
-                    }
-                }
-            }
-        }
+        
+        task = taskWithRequest(serverRequest, completionHandler: { (source, waypoints, destination, routes, error) in
+            let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
+                MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier)
+            })
+            completionHandler(response, nil)
+        }, errorHandler: { (error) in
+            completionHandler(nil, error)
+        })
         task!.resume()
     }
 
@@ -326,32 +318,52 @@ public class MBDirections: NSObject {
         
         calculating = true
         
-        task = NSURLSession.sharedSession().dataTaskWithRequest(serverRequest) { [weak self] (data, response, error) in
-            if let dataTaskSelf = self {
-                dataTaskSelf.calculating = false
-                if let data = data,
-                    json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
-                    routes = json["routes"] as? [JSON] where !dataTaskSelf.cancelled {
-                    let expectedTravelTime = routes.flatMap {
-                        $0["duration"] as? NSTimeInterval
-                    }.minElement()
-                    if let expectedTravelTime = expectedTravelTime {
-                        dispatch_sync(dispatch_get_main_queue()) { [weak dataTaskSelf] in
-                            if let completionSelf = dataTaskSelf {
-                                completionHandler(MBETAResponse(sourceCoordinate: completionSelf.request.sourceCoordinate,
-                                    waypointCoordinates: completionSelf.request.waypointCoordinates,
-                                    destinationCoordinate: completionSelf.request.destinationCoordinate, expectedTravelTime: expectedTravelTime), nil)
-                            }
-                        }
-                    }
-                } else if !dataTaskSelf.cancelled {
-                    dispatch_sync(dispatch_get_main_queue()) {
-                        completionHandler(nil, error)
-                    }
+        task = taskWithRequest(serverRequest, completionHandler: { (source, waypoints, destination, routes, error) in
+            let expectedTravelTime = routes.flatMap {
+                $0["duration"] as? NSTimeInterval
+            }.minElement()
+            if let expectedTravelTime = expectedTravelTime {
+                let response = MBETAResponse(source: source, waypoints: waypoints, destination: destination, expectedTravelTime: expectedTravelTime)
+                completionHandler(response, nil)
+            } else {
+                completionHandler(nil, nil)
+            }
+        }, errorHandler: { (error) in
+            completionHandler(nil, error)
+        })
+        task!.resume()
+    }
+    
+    internal func taskWithRequest(request: NSURLRequest, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask {
+        return NSURLSession.sharedSession().dataTaskWithRequest(request) { [weak self] (data, response, error) in
+            guard let dataTaskSelf = self where !dataTaskSelf.cancelled else {
+                return
+            }
+            dataTaskSelf.calculating = false
+            
+            if let data = data,
+                json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
+                routes = json["routes"] as? [JSON] {
+                let points = (json["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
+                    let location = waypoint["location"] as! [Double]
+                    let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
+                    return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
+                }
+                
+                let source = points.first!
+                let destination = points.last!
+                var waypoints = points.suffixFrom(1)
+                waypoints = waypoints.prefixUpTo(waypoints.count)
+                
+                dispatch_sync(dispatch_get_main_queue()) {
+                    completion(source, Array(waypoints), destination, routes, error)
+                }
+            } else {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    errorHandler(error)
                 }
             }
         }
-        task!.resume()
     }
 
     public func cancel() {
