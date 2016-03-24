@@ -143,11 +143,11 @@ public class MBRouteLeg {
     }
     public let profileIdentifier: String
 
-    public let origin: MBPoint
+    public let source: MBPoint
     public let destination: MBPoint
 
-    internal init(origin: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
-        self.origin = origin
+    internal init(source: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
+        self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         steps = (json["steps"] as? [JSON] ?? []).map {
@@ -191,7 +191,7 @@ public class MBRoute {
         let legInfo = zip(zip([source] + waypoints, waypoints + [destination]),
                           json["legs"] as? [JSON] ?? [])
         legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
-            MBRouteLeg(origin: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier)
+            MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier)
         }
         
         distance = json["distance"] as! Double
