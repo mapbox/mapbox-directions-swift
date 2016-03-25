@@ -26,7 +26,7 @@ private func CLLocationCoordinate2DFromJSONArray(array: [Double]) -> CLLocationC
         return nil
     }
     
-    return CLLocationCoordinate2D(latitude: array[0], longitude: array[1])
+    return CLLocationCoordinate2D(latitude: array[1], longitude: array[0])
 }
 
 // MARK: - ETA Response
@@ -69,6 +69,7 @@ public class MBRouteStep {
         // Undocumented but present in API responses
         case Depart = "depart"
         case Arrive = "arrive"
+        case Continue = "continue"
     }
     
     public enum ManeuverDirection: String {
@@ -113,7 +114,11 @@ public class MBRouteStep {
         initialHeading = maneuver["bearing_before"] as? Double
         finalHeading = maneuver["bearing_after"] as? Double
         maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
-        maneuverDirection = ManeuverDirection(rawValue: maneuver["modifier"] as! String)!
+        if let modifier = maneuver["modifier"] as? String {
+            maneuverDirection = ManeuverDirection(rawValue: modifier)
+        } else {
+            maneuverDirection = nil
+        }
         exitIndex = maneuver["exit"] as? Int
         
         let location = maneuver["location"] as! [Double]
