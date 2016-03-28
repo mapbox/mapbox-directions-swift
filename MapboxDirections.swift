@@ -282,6 +282,14 @@ public class MBDirectionsResponse: MBResponse {
 
 // MARK: - Manager
 
+public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
+
+public enum MBDirectionsErrorCode: UInt {
+    case DirectionsNotFound = 200
+    case ProfileNotFound = 404
+    case InvalidInput = 422
+}
+
 public class MBDirections: NSObject {
 
     private let request: MBDirectionsRequest
@@ -346,27 +354,40 @@ public class MBDirections: NSObject {
             }
             dataTaskSelf.calculating = false
             
-            if let data = data,
-                json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON,
-                routes = json["routes"] as? [JSON] {
-                let points = (json["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
-                    let location = waypoint["location"] as! [Double]
-                    let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
-                    return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
-                }
-                
-                let source = points.first!
-                let destination = points.last!
-                var waypoints = points.suffixFrom(1)
-                waypoints = waypoints.prefixUpTo(waypoints.count)
-                
+            let statusCode = (response as! NSHTTPURLResponse).statusCode
+            guard let data = data, json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON else {
+                let apiError = NSError(domain: MBDirectionsErrorDomain, code: statusCode, userInfo: nil)
                 dispatch_sync(dispatch_get_main_queue()) {
-                    completion(source, Array(waypoints), destination, routes, error)
+                    errorHandler(apiError)
                 }
-            } else {
+                return
+            }
+            
+            guard let code = json["code"] as? String where code == "ok" else {
+                let userInfo = [
+                    NSLocalizedFailureReasonErrorKey: json["message"] as! String,
+                ]
+                let apiError = NSError(domain: MBDirectionsErrorDomain, code: statusCode, userInfo: userInfo)
                 dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(error)
+                    errorHandler(apiError)
                 }
+                return
+            }
+            
+            let routes = json["routes"] as! [JSON]
+            let points = (json["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
+                let location = waypoint["location"] as! [Double]
+                let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
+                return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
+            }
+            
+            let source = points.first!
+            let destination = points.last!
+            var waypoints = points.suffixFrom(1)
+            waypoints = waypoints.prefixUpTo(waypoints.count)
+            
+            dispatch_sync(dispatch_get_main_queue()) {
+                completion(source, Array(waypoints), destination, routes, error)
             }
         }
     }
