@@ -110,7 +110,7 @@ public class MBRouteStep {
         }
         
         let maneuver = json["maneuver"] as! JSON
-        instructions = maneuver["instruction"] as! String
+        instructions = maneuver["instruction"] as? String ?? "" // mapbox/api-directions#515
         initialHeading = maneuver["bearing_before"] as? Double
         finalHeading = maneuver["bearing_after"] as? Double
         maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
