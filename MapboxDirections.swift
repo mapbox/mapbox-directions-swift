@@ -332,8 +332,8 @@ public class MBDirections: NSObject {
         })
     }
     
-    internal func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask {
-        router.loadJSON(JSON.self) { [weak self] (json, error) in
+    internal func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
+        return router.loadJSON(JSON.self) { [weak self] (json, error) in
             guard let dataTaskSelf = self where !dataTaskSelf.cancelled else {
                 return
             }
@@ -373,9 +373,6 @@ public class MBDirections: NSObject {
                 completion(source, Array(waypoints), destination, routes, error as? NSError)
             }
         }
-        
-        // TODO: Return task so it can be canceled.
-        return NSURLSessionDataTask()
     }
 
     public func cancel() {
