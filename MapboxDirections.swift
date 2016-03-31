@@ -210,7 +210,12 @@ public class MBRoute {
 // MARK: - Request
 
 public class MBDirectionsRequest {
-
+    public enum APIVersion: UInt {
+        case Four = 4
+        case Five = 5
+    }
+    public let version: APIVersion
+    
     public enum MBDirectionsTransportType: String {
         case Automobile = "mapbox/driving"
         case Walking    = "mapbox/walking"
@@ -237,30 +242,11 @@ public class MBDirectionsRequest {
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
 
-    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D) {
+    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, version: APIVersion = .Five) {
         self.sourceCoordinate = sourceCoordinate
         self.destinationCoordinate = destinationCoordinate
         self.waypointCoordinates = waypointCoordinates
-    }
-    
-    private func URLRequestWithAccessToken(accessToken: String, includingGeometry includesGeometry: Bool, includingSteps includesSteps: Bool) -> NSURLRequest {
-        let coordinates = [[sourceCoordinate], waypointCoordinates, [destinationCoordinate]].flatMap{ $0 }.map {
-            "\($0.longitude),\($0.latitude)"
-        }.joinWithSeparator(";")
-        var serverRequestString = "https://api.mapbox.com/directions/v5/\(profileIdentifier)/\(coordinates).json?access_token=\(accessToken)"
-        
-        if !requestsAlternateRoutes {
-            serverRequestString += "&alternative=false"
-        }
-        serverRequestString += "&overview="
-        serverRequestString += includesGeometry ? "full" : "false"
-        if includesSteps {
-            serverRequestString += "&geometries=geojson"
-        } else {
-            serverRequestString += "&steps=false"
-        }
-        
-        return NSURLRequest(URL: NSURL(string: serverRequestString)!)
+        self.version = version
     }
 }
 
@@ -293,27 +279,27 @@ public enum MBDirectionsErrorCode: UInt {
 public class MBDirections: NSObject {
 
     private let request: MBDirectionsRequest
-    private let accessToken: String
+    private let configuration: MBDirectionsConfiguration
     private var task: NSURLSessionDataTask?
-    private var calculating = false
+    public var calculating = false
     private(set) public var cancelled = false
 
     public init(request: MBDirectionsRequest, accessToken: String) {
         self.request = request
-        self.accessToken = accessToken
+        configuration = MBDirectionsConfiguration(accessToken)
         super.init()
     }
 
     public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) {
-
         cancelled = false
-
+        
         let profileIdentifier = request.profileIdentifier
-        let serverRequest = request.URLRequestWithAccessToken(accessToken, includingGeometry: true, includingSteps: true)
-
+        let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
+        let router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
+        
         calculating = true
         
-        task = taskWithRequest(serverRequest, completionHandler: { (source, waypoints, destination, routes, error) in
+        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
             let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
                 MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier)
             })
@@ -321,17 +307,17 @@ public class MBDirections: NSObject {
         }, errorHandler: { (error) in
             completionHandler(nil, error)
         })
-        task!.resume()
     }
 
     public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) {
         cancelled = false
         
-        let serverRequest = request.URLRequestWithAccessToken(accessToken, includingGeometry: false, includingSteps: false)
+        let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
+        let router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypoints, false, .GeoJSON, .None, false, nil)
         
         calculating = true
         
-        task = taskWithRequest(serverRequest, completionHandler: { (source, waypoints, destination, routes, error) in
+        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
             let expectedTravelTime = routes.flatMap {
                 $0["duration"] as? NSTimeInterval
             }.minElement()
@@ -344,38 +330,35 @@ public class MBDirections: NSObject {
         }, errorHandler: { (error) in
             completionHandler(nil, error)
         })
-        task!.resume()
     }
     
-    internal func taskWithRequest(request: NSURLRequest, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask {
-        return NSURLSession.sharedSession().dataTaskWithRequest(request) { [weak self] (data, response, error) in
+    internal func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask {
+        router.loadJSON(JSON.self) { [weak self] (json, error) in
             guard let dataTaskSelf = self where !dataTaskSelf.cancelled else {
                 return
             }
             dataTaskSelf.calculating = false
             
-            let statusCode = (response as! NSHTTPURLResponse).statusCode
-            guard let data = data, json = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? JSON else {
-                let apiError = NSError(domain: MBDirectionsErrorDomain, code: statusCode, userInfo: nil)
+            guard error == nil else {
                 dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(apiError)
+                    errorHandler(error as? NSError)
                 }
                 return
             }
             
-            guard let code = json["code"] as? String where code == "ok" else {
+            guard let code = json?["code"] as? String where code == "ok" else {
                 let userInfo = [
-                    NSLocalizedFailureReasonErrorKey: json["message"] as! String,
+                    NSLocalizedFailureReasonErrorKey: json!["message"] as! String,
                 ]
-                let apiError = NSError(domain: MBDirectionsErrorDomain, code: statusCode, userInfo: userInfo)
+                let apiError = NSError(domain: MBDirectionsErrorDomain, code: 200, userInfo: userInfo)
                 dispatch_sync(dispatch_get_main_queue()) {
                     errorHandler(apiError)
                 }
                 return
             }
             
-            let routes = json["routes"] as! [JSON]
-            let points = (json["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
+            let routes = json!["routes"] as! [JSON]
+            let points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
                 let location = waypoint["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
                 return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
@@ -387,9 +370,12 @@ public class MBDirections: NSObject {
             waypoints = waypoints.prefixUpTo(waypoints.count)
             
             dispatch_sync(dispatch_get_main_queue()) {
-                completion(source, Array(waypoints), destination, routes, error)
+                completion(source, Array(waypoints), destination, routes, error as? NSError)
             }
         }
+        
+        // TODO: Return task so it can be canceled.
+        return NSURLSessionDataTask()
     }
 
     public func cancel() {
