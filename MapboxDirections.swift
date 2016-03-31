@@ -293,9 +293,16 @@ public class MBDirections: NSObject {
     public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) {
         cancelled = false
         
-        let profileIdentifier = request.profileIdentifier
+        var profileIdentifier = request.profileIdentifier
         let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
-        let router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
+        let router: MBDirectionsRouter
+        switch request.version {
+        case .Four:
+            profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, nil, nil, nil)
+        case .Five:
+            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
+        }
         
         calculating = true
         
@@ -313,7 +320,14 @@ public class MBDirections: NSObject {
         cancelled = false
         
         let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
-        let router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypoints, false, .GeoJSON, .None, false, nil)
+        let router: MBDirectionsRouter
+        switch request.version {
+        case .Four:
+            let profileIdentifier = request.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypoints, false, nil, .None, false)
+        case .Five:
+            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypoints, false, .GeoJSON, .None, false, nil)
+        }
         
         calculating = true
         
