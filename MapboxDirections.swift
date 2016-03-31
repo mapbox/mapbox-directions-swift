@@ -70,6 +70,17 @@ public class MBRouteStep {
         case Depart = "depart"
         case Arrive = "arrive"
         case Continue = "continue"
+        
+        init?(v4RawValue: String) {
+            let rawValue: String
+            switch v4RawValue {
+            case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
+                rawValue = "turn"
+            default:
+                rawValue = v4RawValue
+            }
+            self.init(rawValue: rawValue)
+        }
     }
     
     public enum ManeuverDirection: String {
@@ -81,6 +92,21 @@ public class MBRouteStep {
         case SlightLeft = "slight left"
         case Left = "left"
         case SharpLeft = "sharp left"
+        
+        init?(v4RawValue: String) {
+            let rawValue: String
+            switch v4RawValue {
+            case "bear right", "bear left":
+                rawValue = v4RawValue.stringByReplacingOccurrencesOfString("bear", withString: "slight")
+            case "turn right", "turn left":
+                rawValue = v4RawValue.stringByReplacingOccurrencesOfString("turn ", withString: "")
+            case "u-turn":
+                rawValue = "uturn"
+            default:
+                rawValue = v4RawValue
+            }
+            self.init(rawValue: rawValue)
+        }
     }
 
     //    var polyline: MKPolyline! { get }
@@ -91,7 +117,7 @@ public class MBRouteStep {
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
-    public let geometry: [CLLocationCoordinate2D]
+    public let geometry: [CLLocationCoordinate2D]?
     public let duration: NSTimeInterval
     public let name: String?
     public let initialHeading: CLLocationDirection?
@@ -101,7 +127,7 @@ public class MBRouteStep {
     public let maneuverLocation: CLLocationCoordinate2D
     public let exitIndex: NSInteger?
 
-    internal init(json: JSON, profileIdentifier: String) {
+    internal init(json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.profileIdentifier = profileIdentifier
         if let mode = json["mode"] as? String {
             transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: "mapbox/\(mode)") ?? .Automobile
@@ -111,26 +137,41 @@ public class MBRouteStep {
         
         let maneuver = json["maneuver"] as! JSON
         instructions = maneuver["instruction"] as? String ?? "" // mapbox/api-directions#515
-        initialHeading = maneuver["bearing_before"] as? Double
-        finalHeading = maneuver["bearing_after"] as? Double
-        maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
-        if let modifier = maneuver["modifier"] as? String {
-            maneuverDirection = ManeuverDirection(rawValue: modifier)
-        } else {
-            maneuverDirection = nil
+        
+        distance = json["distance"] as? Double ?? 0
+        duration = json["duration"] as? Double ?? 0
+        
+        switch version {
+        case .Four:
+            initialHeading = nil
+            finalHeading = json["heading"] as? Double
+            maneuverType = ManeuverType(v4RawValue: maneuver["type"] as! String)!
+            maneuverDirection = ManeuverDirection(v4RawValue: maneuver["type"] as! String)
+            exitIndex = nil
+            
+            let location = maneuver["location"] as! JSON
+            let coordinates = location["coordinates"] as! [Double]
+            maneuverLocation = CLLocationCoordinate2DFromJSONArray(coordinates)!
+            
+            name = json["way_name"] as? String
+            
+            geometry = nil
+        case .Five:
+            initialHeading = maneuver["bearing_before"] as? Double
+            finalHeading = maneuver["bearing_after"] as? Double
+            maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
+            maneuverDirection = ManeuverDirection(rawValue: maneuver["modifier"] as? String ?? "")
+            exitIndex = maneuver["exit"] as? Int
+            
+            name = json["name"] as? String
+            
+            let location = maneuver["location"] as! [Double]
+            maneuverLocation = CLLocationCoordinate2DFromJSONArray(location)!
+            
+            let jsonGeometry = json["geometry"] as? JSON
+            let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
+            geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
         }
-        exitIndex = maneuver["exit"] as? Int
-        
-        let location = maneuver["location"] as! [Double]
-        maneuverLocation = CLLocationCoordinate2DFromJSONArray(location)!
-        
-        distance = json["distance"] as! Double
-        duration = json["duration"] as! Double
-        name = json["name"] as? String
-        
-        let jsonGeometry = json["geometry"] as? JSON
-        let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-        geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
     }
 }
 
@@ -151,12 +192,12 @@ public class MBRouteLeg {
     public let source: MBPoint
     public let destination: MBPoint
 
-    internal init(source: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String) {
+    internal init(source: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         steps = (json["steps"] as? [JSON] ?? []).map {
-            MBRouteStep(json: $0, profileIdentifier: profileIdentifier)
+            MBRouteStep(json: $0, profileIdentifier: profileIdentifier, version: version)
         }
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
@@ -185,18 +226,23 @@ public class MBRoute {
     public let waypoints: [MBPoint]
     public let destination: MBPoint
 
-    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String) {
+    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.source = source
         self.waypoints = waypoints
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         
-        // Associate each leg JSON with an origin and destination. The sequence
-        // of destinations is offset by one from the sequence of origins.
-        let legInfo = zip(zip([source] + waypoints, waypoints + [destination]),
-                          json["legs"] as? [JSON] ?? [])
-        legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
-            MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier)
+        switch version {
+        case .Four:
+            legs = [MBRouteLeg(source: source, destination: destination, json: json, profileIdentifier: profileIdentifier, version: version)]
+        case .Five:
+            // Associate each leg JSON with an origin and destination. The sequence
+            // of destinations is offset by one from the sequence of origins.
+            let legInfo = zip(zip([source] + waypoints, waypoints + [destination]),
+                              json["legs"] as? [JSON] ?? [])
+            legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
+                MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier, version: version)
+            }
         }
         
         distance = json["distance"] as! Double
@@ -294,8 +340,9 @@ public class MBDirections: NSObject {
         
         var profileIdentifier = request.profileIdentifier
         let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
+        let version = request.version
         let router: MBDirectionsRouter
-        switch request.version {
+        switch version {
         case .Four:
             profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
             router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, nil, nil, nil)
@@ -307,7 +354,7 @@ public class MBDirections: NSObject {
         
         task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
             let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
-                MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier)
+                MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier, version: version)
             })
             completionHandler(response, nil)
         }, errorHandler: { (error) in
