@@ -352,16 +352,29 @@ public class MBDirections: NSObject {
             }
             dataTaskSelf.calculating = false
             
-            guard error == nil else {
+            guard error == nil && json != nil else {
                 dispatch_sync(dispatch_get_main_queue()) {
                     errorHandler(error as? NSError)
                 }
                 return
             }
             
-            guard let code = json?["code"] as? String where code == "ok" else {
+            let version: MBDirectionsRequest.APIVersion
+            var errorMessage: String? = nil
+            switch router {
+            case .V4:
+                version = .Four
+                errorMessage = json!["error"] as? String
+            case .V5:
+                version = .Five
+                if json!["code"] as? String != "ok" {
+                    errorMessage = json!["message"] as! String
+                }
+            }
+            
+            guard errorMessage == nil else {
                 let userInfo = [
-                    NSLocalizedFailureReasonErrorKey: json!["message"] as! String,
+                    NSLocalizedFailureReasonErrorKey: errorMessage!,
                 ]
                 let apiError = NSError(domain: MBDirectionsErrorDomain, code: 200, userInfo: userInfo)
                 dispatch_sync(dispatch_get_main_queue()) {
@@ -371,10 +384,35 @@ public class MBDirections: NSObject {
             }
             
             let routes = json!["routes"] as! [JSON]
-            let points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
-                let location = waypoint["location"] as! [Double]
-                let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
-                return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
+            let points: [MBPoint]
+            switch version {
+            case .Four:
+                let origin = json!["origin"] as! JSON
+                let originProperties = origin["properties"] as! JSON
+                let originGeometry = origin["geometry"] as! JSON
+                let originCoordinate = CLLocationCoordinate2DFromJSONArray(originGeometry["coordinates"] as! [Double])!
+                let originPoint = MBPoint(name: originProperties["name"] as? String, coordinate: originCoordinate)
+                
+                let destination = json!["destination"] as! JSON
+                let destinationProperties = destination["properties"] as! JSON
+                let destinationGeometry = destination["geometry"] as! JSON
+                let destinationCoordinate = CLLocationCoordinate2DFromJSONArray(destinationGeometry["coordinates"] as! [Double])!
+                let destinationPoint = MBPoint(name: destinationProperties["name"] as? String, coordinate: destinationCoordinate)
+                
+                let waypoints = json!["waypoints"] as? [JSON] ?? []
+                let waypointPoints = waypoints.flatMap { $0["geometry"] as? JSON }.flatMap {
+                    CLLocationCoordinate2DFromJSONArray($0["coordinates"] as! [Double])
+                }.map {
+                    MBPoint(name: nil, coordinate: $0)
+                }
+                
+                points = [[originPoint], waypointPoints, [destinationPoint]].flatMap{ $0 }
+            case .Five:
+                points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
+                    let location = waypoint["location"] as! [Double]
+                    let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
+                    return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
+                }
             }
             
             let source = points.first!
