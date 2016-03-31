@@ -214,7 +214,7 @@ public class MBDirectionsRequest {
         case Four = 4
         case Five = 5
     }
-    public let version: APIVersion
+    public var version: APIVersion = .Five
     
     public enum MBDirectionsTransportType: String {
         case Automobile = "mapbox/driving"
@@ -242,11 +242,10 @@ public class MBDirectionsRequest {
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
 
-    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, version: APIVersion = .Five) {
+    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D) {
         self.sourceCoordinate = sourceCoordinate
         self.destinationCoordinate = destinationCoordinate
         self.waypointCoordinates = waypointCoordinates
-        self.version = version
     }
 }
 
