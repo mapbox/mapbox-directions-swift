@@ -104,7 +104,7 @@ public class MBRouteStep {
             self.way_name = way_name
             self.direction = Direction(rawValue: direction)
             self.heading = heading
-            self.maneuverType = ManeuverType(rawValue: type)!
+            self.maneuverType = type == "turn" ? .Depart : ManeuverType(rawValue: type)!
             self.maneuverLocation = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
         } else {
             return nil
