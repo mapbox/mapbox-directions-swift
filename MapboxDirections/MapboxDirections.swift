@@ -265,6 +265,7 @@ public class MBDirectionsRequest {
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
+    public let sourceHeading: CLHeading?
     public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
@@ -283,10 +284,11 @@ public class MBDirectionsRequest {
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
 
-    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D) {
+    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, sourceHeading: CLHeading? = nil) {
         self.sourceCoordinate = sourceCoordinate
         self.destinationCoordinate = destinationCoordinate
         self.waypointCoordinates = waypointCoordinates
+        self.sourceHeading = sourceHeading
     }
 }
 
@@ -334,15 +336,14 @@ public class MBDirections: NSObject {
         cancelled = false
         
         var profileIdentifier = request.profileIdentifier
-        let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
         let version = request.version
         let router: MBDirectionsRouter
         switch version {
         case .Four:
             profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, nil, nil, nil)
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, nil, nil, nil)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypoints, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
+            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
         }
         
         calculating = true
@@ -360,14 +361,13 @@ public class MBDirections: NSObject {
     public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) {
         cancelled = false
         
-        let waypoints = [[request.sourceCoordinate], request.waypointCoordinates, [request.destinationCoordinate]].flatMap{ $0 }.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
         let router: MBDirectionsRouter
         switch request.version {
         case .Four:
             let profileIdentifier = request.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypoints, false, nil, .None, false)
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, false, nil, .None, false)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypoints, false, .GeoJSON, .None, false, nil)
+            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections, false, .GeoJSON, .None, false, nil)
         }
         
         calculating = true
@@ -385,6 +385,18 @@ public class MBDirections: NSObject {
         }, errorHandler: { (error) in
             completionHandler(nil, error)
         })
+    }
+    
+    internal var waypointsForDirections: [MBDirectionsWaypoint] {
+        var sourceHeading: MBDirectionsWaypoint.Heading? = nil
+        if let heading = request.sourceHeading {
+            let accuracy = heading.headingAccuracy >= 0 ? heading.headingAccuracy : 90
+            sourceHeading = MBDirectionsWaypoint.Heading(heading: heading.trueHeading, headingAccuracy: accuracy)
+        }
+        let intermediateWaypoints = request.waypointCoordinates.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
+        return [[MBDirectionsWaypoint(coordinate: request.sourceCoordinate, accuracy: nil, heading: sourceHeading)],
+            intermediateWaypoints,
+            [MBDirectionsWaypoint(coordinate: request.destinationCoordinate, accuracy: nil, heading: nil)]].flatMap{ $0 }
     }
     
     internal func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
