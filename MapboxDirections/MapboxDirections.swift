@@ -5,8 +5,6 @@ public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
 public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
 internal typealias JSON = [String: AnyObject]
 
-//public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
-
 // MARK: - Point
 
 public class MBPoint {

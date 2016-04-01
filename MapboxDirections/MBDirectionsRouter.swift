@@ -69,10 +69,10 @@ internal enum MBDirectionsRouter: Router {
     var params: [String: String] {
         switch self {
         case .V4(let config, _, _, let includeAlternatives, let instructionFormat, let geometryFormat, let includeSteps):
-            var params: [String: String] = ["access_token": config.accessToken!]
-            if let includeAlternatives = includeAlternatives {
-                params["alternatives"] = String(includeAlternatives)
-            }
+            var params: [String: String] = [
+                "access_token": config.accessToken!,
+                "alternatives": String(includeAlternatives ?? false),
+            ]
             if let instructionFormat = instructionFormat {
                 params["instructions"] = instructionFormat.rawValue
             }

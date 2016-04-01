@@ -52,6 +52,16 @@
                ReferencedContainer = "container:Directions Example.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
+               BuildableName = "MapboxDirectionsTests.xctest"
+               BlueprintName = "MapboxDirectionsTests"
+               ReferencedContainer = "container:Directions Example.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
