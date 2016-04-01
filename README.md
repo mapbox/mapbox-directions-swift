@@ -23,7 +23,7 @@ directions.calculateDirectionsWithCompletionHandler { (response, error) in
 }
 ```
 
-Note: This library currently supports both versions 4 and 5 of the Mapbox Directions API. However, only v4 is currently available to Mapbox accounts while v5 is in development. To 
+Note: This library currently supports both versions 4 and 5 of the Mapbox Directions API. However, only v4 is currently available to Mapbox accounts while v5 is in development.
 
 ### Tests
 
