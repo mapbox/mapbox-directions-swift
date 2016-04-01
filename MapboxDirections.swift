@@ -21,11 +21,8 @@ public class MBPoint {
 
 }
 
-private func CLLocationCoordinate2DFromJSONArray(array: [Double]) -> CLLocationCoordinate2D? {
-    guard array.count == 2 else {
-        return nil
-    }
-    
+private func CLLocationCoordinate2DFromJSONArray(array: [Double]) -> CLLocationCoordinate2D {
+    assert(array.count == 2)
     return CLLocationCoordinate2D(latitude: array[1], longitude: array[0])
 }
 
@@ -151,7 +148,7 @@ public class MBRouteStep {
             
             let location = maneuver["location"] as! JSON
             let coordinates = location["coordinates"] as! [Double]
-            maneuverLocation = CLLocationCoordinate2DFromJSONArray(coordinates)!
+            maneuverLocation = CLLocationCoordinate2DFromJSONArray(coordinates)
             
             name = json["way_name"] as? String
             
@@ -166,11 +163,11 @@ public class MBRouteStep {
             name = json["name"] as? String
             
             let location = maneuver["location"] as! [Double]
-            maneuverLocation = CLLocationCoordinate2DFromJSONArray(location)!
+            maneuverLocation = CLLocationCoordinate2DFromJSONArray(location)
             
             let jsonGeometry = json["geometry"] as? JSON
             let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-            geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
+            geometry = coordinates.map(CLLocationCoordinate2DFromJSONArray)
         }
     }
 }
@@ -249,7 +246,7 @@ public class MBRoute {
         expectedTravelTime = json["duration"] as! Double
         let jsonGeometry = json["geometry"] as? JSON
         let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-        geometry = coordinates.flatMap(CLLocationCoordinate2DFromJSONArray)
+        geometry = coordinates.map(CLLocationCoordinate2DFromJSONArray)
     }
 }
 
@@ -415,7 +412,7 @@ public class MBDirections: NSObject {
             case .V5:
                 version = .Five
                 if json!["code"] as? String != "ok" {
-                    errorMessage = json!["message"] as! String
+                    errorMessage = json!["message"] as? String
                 }
             }
             
@@ -437,27 +434,25 @@ public class MBDirections: NSObject {
                 let origin = json!["origin"] as! JSON
                 let originProperties = origin["properties"] as! JSON
                 let originGeometry = origin["geometry"] as! JSON
-                let originCoordinate = CLLocationCoordinate2DFromJSONArray(originGeometry["coordinates"] as! [Double])!
+                let originCoordinate = CLLocationCoordinate2DFromJSONArray(originGeometry["coordinates"] as! [Double])
                 let originPoint = MBPoint(name: originProperties["name"] as? String, coordinate: originCoordinate)
                 
                 let destination = json!["destination"] as! JSON
                 let destinationProperties = destination["properties"] as! JSON
                 let destinationGeometry = destination["geometry"] as! JSON
-                let destinationCoordinate = CLLocationCoordinate2DFromJSONArray(destinationGeometry["coordinates"] as! [Double])!
+                let destinationCoordinate = CLLocationCoordinate2DFromJSONArray(destinationGeometry["coordinates"] as! [Double])
                 let destinationPoint = MBPoint(name: destinationProperties["name"] as? String, coordinate: destinationCoordinate)
                 
                 let waypoints = json!["waypoints"] as? [JSON] ?? []
-                let waypointPoints = waypoints.flatMap { $0["geometry"] as? JSON }.flatMap {
-                    CLLocationCoordinate2DFromJSONArray($0["coordinates"] as! [Double])
-                }.map {
-                    MBPoint(name: nil, coordinate: $0)
+                let waypointPoints = waypoints.map { $0["geometry"] as! JSON }.map {
+                    MBPoint(name: nil, coordinate: CLLocationCoordinate2DFromJSONArray($0["coordinates"] as! [Double]))
                 }
                 
                 points = [[originPoint], waypointPoints, [destinationPoint]].flatMap{ $0 }
             case .Five:
                 points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
                     let location = waypoint["location"] as! [Double]
-                    let coordinate = CLLocationCoordinate2DFromJSONArray(location)!
+                    let coordinate = CLLocationCoordinate2DFromJSONArray(location)
                     return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
                 }
             }
