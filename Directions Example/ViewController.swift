@@ -1,5 +1,6 @@
 import UIKit
 import CoreLocation
+import MapboxDirections
 
 // A Mapbox access token is required to use the Directions API.
 // https://www.mapbox.com/help/create-api-access-token/
@@ -28,14 +29,16 @@ class ViewController: UIViewController {
         let wh = CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365)
 
         let request = MBDirectionsRequest(sourceCoordinate: mb, destinationCoordinate: wh)
+        request.version = .Four
 
         directions = MBDirections(request: request, accessToken: MapboxAccessToken)
 
         directions!.calculateDirectionsWithCompletionHandler { (response, error) in
             if let route = response?.routes.first {
                 print("Route summary:")
-                print("Distance: \(route.distance) meters (\(route.steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
-                for step in route.steps {
+                let steps = route.legs.first!.steps
+                print("Distance: \(route.distance) meters (\(steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
+                for step in steps {
                     print("\(step.instructions) \(step.distance) meters")
                 }
             } else {
