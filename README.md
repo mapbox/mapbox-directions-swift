@@ -3,9 +3,27 @@ MapboxDirections.swift
 
 [![Build Status](https://www.bitrise.io/app/2f82077d3f083479.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479)
 
-[Mapbox Directions](https://www.mapbox.com/developers/api/directions/) for Swift. 
+MapboxDirections.swift makes it easy to connect your iOS or OS X application to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions). MapboxDirections.swift combines the power of the OSRM routing engine with the simplicity of MapKit’s directions API (but without depending on MapKit).
 
-Meant for use as as drop-in replacement for Apple's `MKDirections` API, but it doesn't need MapKit. 
+### Example
+
+```swift
+let mapBox = CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047)
+let whiteHouse = CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365)
+let request = MBDirectionsRequest(sourceCoordinate: mapBox, destinationCoordinate: whiteHouse)
+
+// Use the older v4 endpoint for now, while v5 is in development.
+request.version = .Four
+
+let directions = MBDirections(request: request, accessToken: MapboxAccessToken)
+directions.calculateDirectionsWithCompletionHandler { (response, error) in
+    if let route = response?.routes.first {
+        print("Enjoy a trip down \(route.legs.first!.name)!")
+    }
+}
+```
+
+Note: This library currently supports both versions 4 and 5 of the Mapbox Directions API. However, only v4 is currently available to Mapbox accounts while v5 is in development. To 
 
 ### Tests
 
