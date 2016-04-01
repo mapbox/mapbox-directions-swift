@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		8543D22E59F4F058585E18B9 /* Pods_MapboxDirectionsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B856631C2DD5B041A03A48 /* Pods_MapboxDirectionsTests.framework */; };
 		BB44F9743C24BD97DFD53E9F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779CA65749150F5A75B46628 /* Pods.framework */; };
+		DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA2133B11CAEEE3200AA2594 /* RequestKit.framework */; };
+		DA2133B31CAEEFE100AA2594 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
 		DA6C9D8B1CAE442B00094FBC /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA6C9D921CAE442B00094FBC /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
 		DA6C9D991CAE442B00094FBC /* MBDirectionsConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9D981CAE442B00094FBC /* MBDirectionsConfigurationTests.swift */; };
-		DA6C9D9D1CAE442B00094FBC /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
-		DA6C9D9F1CAE442B00094FBC /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DA6C9DA61CAE462800094FBC /* MapboxDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MapboxDirections.swift */; };
 		DA6C9DA71CAE462C00094FBC /* MBDirectionsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAA48291CACF99B0084F5B8 /* MBDirectionsConfiguration.swift */; };
 		DA6C9DA81CAE462F00094FBC /* MBDirectionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAA482B1CAD00AF0084F5B8 /* MBDirectionsRouter.swift */; };
@@ -25,6 +25,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DA2133B41CAEEFE900AA2594 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD6254461AE70C1700017857 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA6C9D871CAE442B00094FBC;
+			remoteInfo = MapboxDirections;
+		};
 		DA6C9D931CAE442B00094FBC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DD6254461AE70C1700017857 /* Project object */;
@@ -39,28 +46,7 @@
 			remoteGlobalIDString = DD62544D1AE70C1700017857;
 			remoteInfo = "Directions Example";
 		};
-		DA6C9D9B1CAE442B00094FBC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD6254461AE70C1700017857 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DA6C9D871CAE442B00094FBC;
-			remoteInfo = MapboxDirections;
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		DA6C9D9E1CAE442B00094FBC /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				DA6C9D9F1CAE442B00094FBC /* MapboxDirections.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		371BFE7855E3EA8B44CA2B5F /* Pods_Unit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +56,7 @@
 		A338BDE4A863FFF749998470 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B2FF88ACFEC9E7E276EF93DA /* Pods-MapboxDirectionsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4657820F4366F9DB1C432FB /* Pods-Unit Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unit Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unit Tests/Pods-Unit Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		DA2133B11CAEEE3200AA2594 /* RequestKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RequestKit.framework; path = "Pods/../build/Debug-iphoneos/RequestKit.framework"; sourceTree = "<group>"; };
 		DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapboxDirections.h; sourceTree = "<group>"; };
 		DA6C9D8C1CAE442B00094FBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,8 +99,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA2133B31CAEEFE100AA2594 /* MapboxDirections.framework in Frameworks */,
 				BB44F9743C24BD97DFD53E9F /* Pods.framework in Frameworks */,
-				DA6C9D9D1CAE442B00094FBC /* MapboxDirections.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +110,7 @@
 		4025371970E36C6D8BF67116 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA2133B11CAEEE3200AA2594 /* RequestKit.framework */,
 				371BFE7855E3EA8B44CA2B5F /* Pods_Unit_Tests.framework */,
 				779CA65749150F5A75B46628 /* Pods.framework */,
 				72B856631C2DD5B041A03A48 /* Pods_MapboxDirectionsTests.framework */,
@@ -286,12 +275,11 @@
 				DD62544C1AE70C1700017857 /* Resources */,
 				F6403B2799E9AB734D56FB91 /* Embed Pods Frameworks */,
 				BA728D8F55424500EC3A81A2 /* Copy Pods Resources */,
-				DA6C9D9E1CAE442B00094FBC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DA6C9D9C1CAE442B00094FBC /* PBXTargetDependency */,
+				DA2133B51CAEEFE900AA2594 /* PBXTargetDependency */,
 			);
 			name = "Directions Example";
 			productName = "Directions Example";
@@ -491,6 +479,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DA2133B51CAEEFE900AA2594 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
+			targetProxy = DA2133B41CAEEFE900AA2594 /* PBXContainerItemProxy */;
+		};
 		DA6C9D941CAE442B00094FBC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
@@ -500,11 +493,6 @@
 			isa = PBXTargetDependency;
 			target = DD62544D1AE70C1700017857 /* Directions Example */;
 			targetProxy = DA6C9D951CAE442B00094FBC /* PBXContainerItemProxy */;
-		};
-		DA6C9D9C1CAE442B00094FBC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
-			targetProxy = DA6C9D9B1CAE442B00094FBC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
