@@ -92,7 +92,7 @@ internal enum MBDirectionsRouter: Router {
             let hasHeadings = !(waypoints.flatMap { $0.heading }.isEmpty)
             if hasHeadings {
                 params["bearings"] = waypoints.map {
-                    return $0.heading != nil ? "\($0.heading)" : ""
+                    return $0.heading != nil ? "\($0.heading!)" : ""
                 }.joinWithSeparator(";")
             }
             if let geometryFormat = geometryFormat {
@@ -104,7 +104,7 @@ internal enum MBDirectionsRouter: Router {
             let hasAccuracies = !(waypoints.flatMap { $0.accuracy }.isEmpty)
             if hasAccuracies {
                 params["radiuses"] = waypoints.map {
-                    return $0.accuracy != nil ? "\($0.accuracy)" : ""
+                    return $0.accuracy != nil ? "\($0.accuracy!)" : ""
                 }.joinWithSeparator(";")
             }
             if let includeSteps = includeSteps {
