@@ -265,7 +265,7 @@ public class MBDirectionsRequest {
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
-    public let sourceHeading: CLHeading?
+    public let sourceHeading: CLLocationDirection?
     public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
@@ -284,7 +284,7 @@ public class MBDirectionsRequest {
     //    class func isDirectionsRequestURL
     //    func initWithContentsOfURL
 
-    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, sourceHeading: CLHeading? = nil) {
+    public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, sourceHeading: CLLocationDirection? = nil) {
         self.sourceCoordinate = sourceCoordinate
         self.destinationCoordinate = destinationCoordinate
         self.waypointCoordinates = waypointCoordinates
@@ -390,8 +390,7 @@ public class MBDirections: NSObject {
     internal var waypointsForDirections: [MBDirectionsWaypoint] {
         var sourceHeading: MBDirectionsWaypoint.Heading? = nil
         if let heading = request.sourceHeading {
-            let accuracy = heading.headingAccuracy >= 0 ? heading.headingAccuracy : 90
-            sourceHeading = MBDirectionsWaypoint.Heading(heading: heading.trueHeading, headingAccuracy: accuracy)
+            sourceHeading = MBDirectionsWaypoint.Heading(heading: heading, headingAccuracy: 90)
         }
         let intermediateWaypoints = request.waypointCoordinates.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
         return [[MBDirectionsWaypoint(coordinate: request.sourceCoordinate, accuracy: nil, heading: sourceHeading)],
