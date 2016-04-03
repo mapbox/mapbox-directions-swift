@@ -17,7 +17,7 @@
                BlueprintIdentifier = "DA6C9D871CAE442B00094FBC"
                BuildableName = "MapboxDirections.framework"
                BlueprintName = "MapboxDirections"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
                BuildableName = "MapboxDirectionsTests.xctest"
                BlueprintName = "MapboxDirectionsTests"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,7 +45,7 @@
             BlueprintIdentifier = "DA6C9D871CAE442B00094FBC"
             BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirections"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -67,7 +67,7 @@
             BlueprintIdentifier = "DA6C9D871CAE442B00094FBC"
             BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirections"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -85,7 +85,7 @@
             BlueprintIdentifier = "DA6C9D871CAE442B00094FBC"
             BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirections"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -17,7 +17,7 @@
                BlueprintIdentifier = "DD62544D1AE70C1700017857"
                BuildableName = "Directions Example.app"
                BlueprintName = "Directions Example"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "DD6254621AE70C1700017857"
                BuildableName = "Directions ExampleTests.xctest"
                BlueprintName = "Directions ExampleTests"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "DDF1E8631BD8580800C40C78"
                BuildableName = "Unit Tests.xctest"
                BlueprintName = "Unit Tests"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -59,7 +59,7 @@
                BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
                BuildableName = "MapboxDirectionsTests.xctest"
                BlueprintName = "MapboxDirectionsTests"
-               ReferencedContainer = "container:Directions Example.xcodeproj">
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,7 +69,7 @@
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
             BuildableName = "Directions Example.app"
             BlueprintName = "Directions Example"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -92,7 +92,7 @@
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
             BuildableName = "Directions Example.app"
             BlueprintName = "Directions Example"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -111,7 +111,7 @@
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
             BuildableName = "Directions Example.app"
             BlueprintName = "Directions Example"
-            ReferencedContainer = "container:Directions Example.xcodeproj">
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

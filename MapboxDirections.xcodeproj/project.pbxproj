@@ -314,7 +314,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DD6254491AE70C1700017857 /* Build configuration list for PBXProject "Directions Example" */;
+			buildConfigurationList = DD6254491AE70C1700017857 /* Build configuration list for PBXProject "MapboxDirections" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -702,7 +702,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DD6254491AE70C1700017857 /* Build configuration list for PBXProject "Directions Example" */ = {
+		DD6254491AE70C1700017857 /* Build configuration list for PBXProject "MapboxDirections" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD62546B1AE70C1700017857 /* Debug */,
