@@ -28,7 +28,7 @@ public class MBPoint {
 extension CLLocationCoordinate2D {
     internal init(JSONArray array: [Double]) {
         assert(array.count == 2)
-        self.init(latitude: array[0], longitude: array[1])
+        self.init(latitude: array[1], longitude: array[0])
     }
 }
 
