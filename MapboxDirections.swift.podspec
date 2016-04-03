@@ -77,7 +77,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/mapbox/MapboxDirections.swift.git", :tag => "v#{m.version.to_s}" }
+  s.source       = { :git => "https://github.com/mapbox/MapboxDirections.swift.git", :tag => "v#{s.version.to_s}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
