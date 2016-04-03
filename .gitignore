@@ -1,4 +1,12 @@
-Directions Example.xcworkspace
-Podfile.lock
-Pods
+MapboxDirections.xcworkspace
 
+.DS_Store
+
+xcuserdata
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+Pods/
+Podfile.lock
