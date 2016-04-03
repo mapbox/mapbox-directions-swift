@@ -3,7 +3,7 @@ MapboxDirections.swift
 
 [![Build Status](https://www.bitrise.io/app/2f82077d3f083479.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479)
 
-MapboxDirections.swift makes it easy to connect your iOS or OS X application to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions). MapboxDirections.swift combines the power of the OSRM routing engine with the simplicity of MapKit’s directions API (but without depending on MapKit).
+MapboxDirections.swift makes it easy to connect your iOS or OS X application to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions). MapboxDirections.swift combines the power of the [OSRM](http://project-osrm.org/) routing engine with the simplicity of MapKit’s directions API (but without depending on MapKit).
 
 ### Example
 
@@ -30,5 +30,5 @@ Note: This library currently supports both versions 4 and 5 of the Mapbox Direct
 To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
 
 1. `pod install`
-1. `open Directions Example.xcworkspace`
+1. `open MapboxDirections.xcworkspace`
 1. `Command+U` or `xcodebuild test`
