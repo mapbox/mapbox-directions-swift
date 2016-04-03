@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   MapboxDirections.swift makes it easy to connect your iOS or OS X application to the Mapbox Directions API. MapboxDirections.swift combines the power of the OSRM routing engine with the simplicity of MapKit’s directions API.
                    DESC
 
-  s.homepage     = "https://www.mapbox.com/developers/api/directions-v5/"
+  s.homepage     = "https://www.mapbox.com/api-documentation/#directions"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -77,7 +77,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/mapbox/MapboxDirections.swift.git", :branch => "api-v5" }
+  s.source       = { :git => "https://github.com/mapbox/MapboxDirections.swift.git", :tag => "v#{m.version.to_s}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -88,7 +88,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "MapboxDirections/*.{h,swift}"
+  s.source_files  = "MapboxDirections"
 
   # s.public_header_files = "Classes/**/*.h"
 

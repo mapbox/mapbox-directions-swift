@@ -135,15 +135,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		DA2E03F31CB0FE6400D1269A /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				DAAA48291CACF99B0084F5B8 /* MBDirectionsConfiguration.swift */,
+				DAAA482B1CAD00AF0084F5B8 /* MBDirectionsRouter.swift */,
+			);
+			name = Router;
+			sourceTree = "<group>";
+		};
 		DA6C9D891CAE442B00094FBC /* MapboxDirections */ = {
 			isa = PBXGroup;
 			children = (
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				DD6254731AE70CB700017857 /* MBDirections.swift */,
-				DAAA48291CACF99B0084F5B8 /* MBDirectionsConfiguration.swift */,
 				DA2E03EA1CB0E13D00D1269A /* MBDirectionsRequest.swift */,
 				DA2E03E81CB0E0B000D1269A /* MBDirectionsResponse.swift */,
-				DAAA482B1CAD00AF0084F5B8 /* MBDirectionsRouter.swift */,
+				DA2E03F31CB0FE6400D1269A /* Router */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 			);
 			path = MapboxDirections;
