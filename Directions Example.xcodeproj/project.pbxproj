@@ -11,10 +11,12 @@
 		BB44F9743C24BD97DFD53E9F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779CA65749150F5A75B46628 /* Pods.framework */; };
 		DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA2133B11CAEEE3200AA2594 /* RequestKit.framework */; };
 		DA2133B31CAEEFE100AA2594 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
+		DA2E03E91CB0E0B000D1269A /* MBDirectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03E81CB0E0B000D1269A /* MBDirectionsResponse.swift */; };
+		DA2E03EB1CB0E13D00D1269A /* MBDirectionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03EA1CB0E13D00D1269A /* MBDirectionsRequest.swift */; };
 		DA6C9D8B1CAE442B00094FBC /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA6C9D921CAE442B00094FBC /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
 		DA6C9D991CAE442B00094FBC /* MBDirectionsConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9D981CAE442B00094FBC /* MBDirectionsConfigurationTests.swift */; };
-		DA6C9DA61CAE462800094FBC /* MapboxDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MapboxDirections.swift */; };
+		DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA6C9DA71CAE462C00094FBC /* MBDirectionsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAA48291CACF99B0084F5B8 /* MBDirectionsConfiguration.swift */; };
 		DA6C9DA81CAE462F00094FBC /* MBDirectionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAA482B1CAD00AF0084F5B8 /* MBDirectionsRouter.swift */; };
 		DA6C9DAC1CAEC72800094FBC /* MapboxDirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9DAB1CAEC72800094FBC /* MapboxDirectionsTests.swift */; };
@@ -57,6 +59,8 @@
 		B2FF88ACFEC9E7E276EF93DA /* Pods-MapboxDirectionsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4657820F4366F9DB1C432FB /* Pods-Unit Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unit Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unit Tests/Pods-Unit Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		DA2133B11CAEEE3200AA2594 /* RequestKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RequestKit.framework; path = "Pods/../build/Debug-iphoneos/RequestKit.framework"; sourceTree = "<group>"; };
+		DA2E03E81CB0E0B000D1269A /* MBDirectionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBDirectionsResponse.swift; sourceTree = "<group>"; };
+		DA2E03EA1CB0E13D00D1269A /* MBDirectionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBDirectionsRequest.swift; sourceTree = "<group>"; };
 		DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapboxDirections.h; sourceTree = "<group>"; };
 		DA6C9D8C1CAE442B00094FBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,7 +77,7 @@
 		DD6254521AE70C1700017857 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD6254531AE70C1700017857 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD6254551AE70C1700017857 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DD6254731AE70CB700017857 /* MapboxDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapboxDirections.swift; sourceTree = "<group>"; };
+		DD6254731AE70CB700017857 /* MBDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBDirections.swift; sourceTree = "<group>"; };
 		EE172AE7D4B472E6B85700BA /* Pods-Unit Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unit Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Unit Tests/Pods-Unit Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,8 +139,10 @@
 			isa = PBXGroup;
 			children = (
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
-				DD6254731AE70CB700017857 /* MapboxDirections.swift */,
+				DD6254731AE70CB700017857 /* MBDirections.swift */,
 				DAAA48291CACF99B0084F5B8 /* MBDirectionsConfiguration.swift */,
+				DA2E03EA1CB0E13D00D1269A /* MBDirectionsRequest.swift */,
+				DA2E03E81CB0E0B000D1269A /* MBDirectionsResponse.swift */,
 				DAAA482B1CAD00AF0084F5B8 /* MBDirectionsRouter.swift */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 			);
@@ -451,9 +457,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA2E03EB1CB0E13D00D1269A /* MBDirectionsRequest.swift in Sources */,
 				DA6C9DA81CAE462F00094FBC /* MBDirectionsRouter.swift in Sources */,
-				DA6C9DA61CAE462800094FBC /* MapboxDirections.swift in Sources */,
+				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				DA6C9DA71CAE462C00094FBC /* MBDirectionsConfiguration.swift in Sources */,
+				DA2E03E91CB0E0B000D1269A /* MBDirectionsResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
