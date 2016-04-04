@@ -68,9 +68,8 @@ internal enum MBDirectionsRouter: Router {
     
     var params: [String: String] {
         switch self {
-        case .V4(let config, _, _, let includeAlternatives, let instructionFormat, let geometryFormat, let includeSteps):
+        case .V4(_, _, _, let includeAlternatives, let instructionFormat, let geometryFormat, let includeSteps):
             var params: [String: String] = [
-                "access_token": config.accessToken!,
                 "alternatives": String(includeAlternatives ?? false),
             ]
             if let instructionFormat = instructionFormat {
@@ -84,8 +83,8 @@ internal enum MBDirectionsRouter: Router {
             }
             return params
             
-        case .V5(let config, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowPointUTurns):
-            var params: [String: String] = ["access_token": config.accessToken!]
+        case .V5(_, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowPointUTurns):
+            var params: [String: String] = [:]
             if let includeAlternative = includeAlternative {
                 params["alternative"] = String(includeAlternative)
             }
