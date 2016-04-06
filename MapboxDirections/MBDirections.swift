@@ -1,4 +1,5 @@
 import Foundation
+import Alamofire
 import CoreLocation
 
 public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
@@ -36,10 +37,6 @@ public class MBDirections: NSObject {
 
     private let request: MBDirectionsRequest
     private let configuration: MBDirectionsConfiguration
-    private var task: NSURLSessionDataTask?
-    public var calculating: Bool {
-        return task?.state == .Running
-    }
     
     private var errorForSimultaneousRequests: NSError {
         let userInfo = [
@@ -54,11 +51,7 @@ public class MBDirections: NSObject {
         super.init()
     }
 
-    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) {
-        guard !calculating else {
-            completionHandler(nil, errorForSimultaneousRequests)
-            return
-        }
+    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) -> Request? {
         
         var profileIdentifier = request.profileIdentifier
         let version = request.version
@@ -71,7 +64,7 @@ public class MBDirections: NSObject {
             router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
         }
         
-        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
+        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, request, error) in
             let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
                 MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier, version: version)
             })
@@ -81,11 +74,7 @@ public class MBDirections: NSObject {
         })
     }
 
-    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) {
-        guard !calculating else {
-            completionHandler(nil, errorForSimultaneousRequests)
-            return
-        }
+    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) -> Request? {
         
         let router: MBDirectionsRouter
         switch request.version {
@@ -96,7 +85,7 @@ public class MBDirections: NSObject {
             router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections, false, .GeoJSON, .None, false, nil)
         }
         
-        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
+        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, request, error) in
             let expectedTravelTime = routes.flatMap {
                 $0["duration"] as? NSTimeInterval
             }.minElement()
@@ -122,16 +111,14 @@ public class MBDirections: NSObject {
             [MBDirectionsWaypoint(coordinate: request.destinationCoordinate, accuracy: nil, heading: nil)]].flatMap{ $0 }
     }
     
-    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
-        return router.loadJSON(JSON.self) { [weak self] (json, error) in
-            guard let dataTaskSelf = self where dataTaskSelf.task?.state == .Completed else {
-                return
-            }
+    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], MBDirectionsRequest, NSError?) -> Void, errorHandler: (NSError?) -> Void) -> Request? {
+        let httpRequest = Alamofire.request(router).responseJSON { response in
+            
+            let error = response.result.error
+            let json = response.result.value
             
             guard error == nil && json != nil else {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(error as? NSError)
-                }
+                errorHandler(error)
                 return
             }
             
@@ -153,9 +140,7 @@ public class MBDirections: NSObject {
                     NSLocalizedFailureReasonErrorKey: errorMessage!,
                 ]
                 let apiError = NSError(domain: MBDirectionsErrorDomain, code: 200, userInfo: userInfo)
-                dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(apiError)
-                }
+                errorHandler(apiError)
                 return
             }
             
@@ -195,14 +180,9 @@ public class MBDirections: NSObject {
             var waypoints = points.suffixFrom(1)
             waypoints = waypoints.prefixUpTo(waypoints.count)
             
-            dispatch_sync(dispatch_get_main_queue()) {
-                completion(source, Array(waypoints), destination, routes, error as? NSError)
-            }
+            completion(source, Array(waypoints), destination, routes, self.request, error)
         }
+        
+        return httpRequest
     }
-
-    public func cancel() {
-        self.task?.cancel()
-    }
-
 }

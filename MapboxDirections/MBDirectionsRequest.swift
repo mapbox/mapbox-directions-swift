@@ -12,7 +12,6 @@ public class MBDirectionsRequest {
         case Automobile = "mapbox/driving"
         case Walking    = "mapbox/walking"
         case Cycling    = "mapbox/cycling"
-//        case Any        = ""
     }
 
     public let sourceCoordinate: CLLocationCoordinate2D
@@ -29,11 +28,6 @@ public class MBDirectionsRequest {
         }
     }
     public var profileIdentifier: String = MBDirectionsTransportType.Automobile.rawValue
-    //    var departureDate: NSDate!
-    //    var arrivalDate: NSDate!
-
-    //    class func isDirectionsRequestURL
-    //    func initWithContentsOfURL
 
     public init(sourceCoordinate: CLLocationCoordinate2D, waypointCoordinates: [CLLocationCoordinate2D] = [], destinationCoordinate: CLLocationCoordinate2D, sourceHeading: CLLocationDirection? = nil) {
         self.sourceCoordinate = sourceCoordinate

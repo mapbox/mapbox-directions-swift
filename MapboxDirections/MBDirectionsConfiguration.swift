@@ -1,7 +1,6 @@
 import Foundation
-import RequestKit
 
-internal struct MBDirectionsConfiguration: Configuration {
+internal struct MBDirectionsConfiguration {
     internal var apiEndpoint: String = "https://api.mapbox.com"
     internal var accessToken: String?
     

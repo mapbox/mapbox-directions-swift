@@ -1,6 +1,6 @@
 import Foundation
 import CoreLocation
-import RequestKit
+import Alamofire
 
 internal struct MBDirectionsWaypoint: CustomStringConvertible {
     struct Heading: CustomStringConvertible {
@@ -23,7 +23,8 @@ internal struct MBDirectionsWaypoint: CustomStringConvertible {
     }
 }
 
-internal enum MBDirectionsRouter: Router {
+internal enum MBDirectionsRouter: URLRequestConvertible {
+    
     enum InstructionFormat: String {
         case Text = "text"
         case HTML = "html"
@@ -32,13 +33,11 @@ internal enum MBDirectionsRouter: Router {
     enum GeometryFormatV4: String {
         case None = "false"
         case GeoJSON = "geojson"
-        /// Encoded polyline; see <https://github.com/mapbox/polyline>.
         case Polyline = "polyline"
     }
     
     enum GeometryFormatV5: String {
         case GeoJSON = "geojson"
-        /// Encoded polyline; see <https://github.com/mapbox/polyline>.
         case Polyline = "polyline"
     }
     
@@ -48,30 +47,16 @@ internal enum MBDirectionsRouter: Router {
         case Full = "full"
     }
     
-    case V4(Configuration, String, [MBDirectionsWaypoint], Bool?, InstructionFormat?, GeometryFormatV4?, Bool?)
-    case V5(Configuration, String, [MBDirectionsWaypoint], Bool?, GeometryFormatV5?, OverviewGranularity?, Bool?, Bool?)
+    case V4(MBDirectionsConfiguration, String, [MBDirectionsWaypoint], Bool?, InstructionFormat?, GeometryFormatV4?, Bool?)
+    case V5(MBDirectionsConfiguration, String, [MBDirectionsWaypoint], Bool?, GeometryFormatV5?, OverviewGranularity?, Bool?, Bool?)
     
-    var method: HTTPMethod {
-        return .GET
-    }
-    
-    var encoding: HTTPEncoding {
-        return .URL
-    }
-    
-    var configuration: Configuration {
+    var URLRequest: NSMutableURLRequest {
+        let result: (configuration: MBDirectionsConfiguration, path: String, parameters: [String: AnyObject])
         switch self {
-        case .V4(let config, _, _, _, _, _, _): return config
-        case .V5(let config, _, _, _, _, _, _, _): return config
-        }
-    }
-    
-    var params: [String: String] {
-        switch self {
-        case .V4(_, _, _, let includeAlternatives, let instructionFormat, let geometryFormat, let includeSteps):
-            var params: [String: String] = [
-                "alternatives": String(includeAlternatives ?? false),
-            ]
+        case .V4(let configuration, let profileIdentifier, let waypoints, let includeAlternatives, let instructionFormat, let geometryFormat, let includeSteps):
+            var params: [String:AnyObject] = ["access_token": configuration.accessToken!]
+            let coordinates = waypoints.map{ "\($0)" }.joinWithSeparator(";")
+            params["alternatives"] = String(includeAlternatives ?? false)
             if let instructionFormat = instructionFormat {
                 params["instructions"] = instructionFormat.rawValue
             }
@@ -81,10 +66,11 @@ internal enum MBDirectionsRouter: Router {
             if let includeSteps = includeSteps {
                 params["steps"] = String(includeSteps)
             }
-            return params
+            result = (configuration, "/v4/directions/\(profileIdentifier)/\(coordinates).json", params)
             
-        case .V5(_, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowPointUTurns):
-            var params: [String: String] = [:]
+        case .V5(let configuration, let profileIdentifier, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowPointUTurns):
+            var params: [String:AnyObject] = ["access_token": configuration.accessToken!]
+            let coordinates = waypoints.map{ "\($0)" }.joinWithSeparator(";")
             if let includeAlternative = includeAlternative {
                 params["alternative"] = String(includeAlternative)
             }
@@ -92,7 +78,7 @@ internal enum MBDirectionsRouter: Router {
             if hasHeadings {
                 params["bearings"] = waypoints.map {
                     return $0.heading != nil ? "\($0.heading!)" : ""
-                }.joinWithSeparator(";")
+                    }.joinWithSeparator(";")
             }
             if let geometryFormat = geometryFormat {
                 params["geometries"] = geometryFormat.rawValue
@@ -104,7 +90,7 @@ internal enum MBDirectionsRouter: Router {
             if hasAccuracies {
                 params["radiuses"] = waypoints.map {
                     return $0.accuracy != nil ? "\($0.accuracy!)" : ""
-                }.joinWithSeparator(";")
+                    }.joinWithSeparator(";")
             }
             if let includeSteps = includeSteps {
                 params["steps"] = String(includeSteps)
@@ -112,19 +98,13 @@ internal enum MBDirectionsRouter: Router {
             if let allowPointUTurns = allowPointUTurns {
                 params["uturns"] = String(allowPointUTurns)
             }
-            return params
+            result = (configuration, "/directions/v5/\(profileIdentifier)/\(coordinates).json", params)
         }
-    }
-    
-    var path: String {
-        switch self {
-        case .V4(_, let profileIdentifier, let waypoints, _, _, _, _):
-            let coordinates = waypoints.map{ "\($0)" }.joinWithSeparator(";")
-            return "v4/directions/\(profileIdentifier)/\(coordinates).json"
-            
-        case .V5(_, let profileIdentifier, let waypoints, _, _, _, _, _):
-            let coordinates = waypoints.map{ "\($0)" }.joinWithSeparator(";")
-            return "directions/v5/\(profileIdentifier)/\(coordinates).json"
-        }
+        
+        let URL = NSURL(string: result.configuration.apiEndpoint + result.path)!
+        let URLRequest = NSURLRequest(URL: URL)
+        let encoding = Alamofire.ParameterEncoding.URL
+        
+        return encoding.encode(URLRequest, parameters: result.parameters).0
     }
 }

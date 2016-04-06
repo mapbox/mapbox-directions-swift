@@ -130,7 +130,7 @@ Pod::Spec.new do |s|
   s.module_name = "MapboxDirections"
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  s.dependency "NBNRequestKit"
+  s.dependency "Alamofire", "~> 3.0"
   s.dependency "Polyline", "~> 3.0"
 
 end

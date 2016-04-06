@@ -23,10 +23,7 @@ public class MBDirectionsResponse: MBResponse {
 }
 
 public class MBRoute {
-//    var polyline: MKPolyline! { get }
     public let legs: [MBRouteLeg]
-//    public let name: String
-//    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
     public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
@@ -66,17 +63,14 @@ public class MBRoute {
 }
 
 public class MBRouteLeg {
-//    var polyline: MKPolyline! { get }
     public let steps: [MBRouteStep]
     public let name: String
-//    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
     public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
         return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
-
     public let source: MBPoint
     public let destination: MBPoint
 
@@ -149,9 +143,7 @@ public class MBRouteStep {
         }
     }
 
-    //    var polyline: MKPolyline! { get }
     public let instructions: String
-    //    var notice: String! { get }
     public let distance: CLLocationDistance
     public let transportType: MBDirectionsRequest.MBDirectionsTransportType
     public let profileIdentifier: String
