@@ -1,4 +1,5 @@
 import Foundation
+import Polyline
 import CoreLocation
 
 internal protocol MBResponse {
@@ -34,7 +35,7 @@ public class MBRoute {
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
-    public let geometry: [CLLocationCoordinate2D]
+    public let geometry: [CLLocationCoordinate2D]?
 
     public let source: MBPoint
     public let waypoints: [MBPoint]
@@ -58,12 +59,9 @@ public class MBRoute {
                 MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier, version: version)
             }
         }
-        
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
-        let jsonGeometry = json["geometry"] as? JSON
-        let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-        geometry = coordinates.map(CLLocationCoordinate2D.init(JSONArray:))
+        geometry = decodePolyline(json["geometry"] as! String, precision: 1e6)
     }
 }
 

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8543D22E59F4F058585E18B9 /* Pods_MapboxDirectionsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B856631C2DD5B041A03A48 /* Pods_MapboxDirectionsTests.framework */; };
+		910EA7231CB5734F00858D31 /* driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = 910EA7221CB5734F00858D31 /* driving_dc_polyline.json */; };
+		9151CBAA1CB5A36C006CF17B /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 910EA7241CB5917000858D31 /* Polyline.framework */; };
 		BB44F9743C24BD97DFD53E9F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779CA65749150F5A75B46628 /* Pods.framework */; };
 		DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA2133B11CAEEE3200AA2594 /* RequestKit.framework */; };
 		DA2133B31CAEEFE100AA2594 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
@@ -55,6 +57,8 @@
 		72B856631C2DD5B041A03A48 /* Pods_MapboxDirectionsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapboxDirectionsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		779CA65749150F5A75B46628 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78F47212D6DC575EFAC36509 /* Pods-MapboxDirectionsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.release.xcconfig"; sourceTree = "<group>"; };
+		910EA7221CB5734F00858D31 /* driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = driving_dc_polyline.json; sourceTree = "<group>"; };
+		910EA7241CB5917000858D31 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = "../../Library/Developer/Xcode/DerivedData/MapboxDirections-cxcrsxhcoorbtxaohfcuxrgxzrsg/Build/Products/Debug-iphonesimulator/Polyline.framework"; sourceTree = "<group>"; };
 		A338BDE4A863FFF749998470 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B2FF88ACFEC9E7E276EF93DA /* Pods-MapboxDirectionsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4657820F4366F9DB1C432FB /* Pods-Unit Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unit Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unit Tests/Pods-Unit Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9151CBAA1CB5A36C006CF17B /* Polyline.framework in Frameworks */,
 				DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +119,7 @@
 		4025371970E36C6D8BF67116 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				910EA7241CB5917000858D31 /* Polyline.framework */,
 				DA2133B11CAEEE3200AA2594 /* RequestKit.framework */,
 				371BFE7855E3EA8B44CA2B5F /* Pods_Unit_Tests.framework */,
 				779CA65749150F5A75B46628 /* Pods.framework */,
@@ -180,6 +186,7 @@
 		DA6C9DAE1CAEC95900094FBC /* v4 */ = {
 			isa = PBXGroup;
 			children = (
+				910EA7221CB5734F00858D31 /* driving_dc_polyline.json */,
 				DA6C9DAF1CAEC99E00094FBC /* driving_dc.json */,
 			);
 			path = v4;
@@ -354,6 +361,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				910EA7231CB5734F00858D31 /* driving_dc_polyline.json in Resources */,
 				DA6C9DB01CAEC99E00094FBC /* driving_dc.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

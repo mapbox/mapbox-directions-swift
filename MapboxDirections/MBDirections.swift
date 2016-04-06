@@ -66,9 +66,9 @@ public class MBDirections: NSObject {
         switch version {
         case .Four:
             profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, nil, nil, nil)
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, nil, .Polyline, nil)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .GeoJSON, .Full, true, nil)
+            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
         }
         
         task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
@@ -158,6 +158,7 @@ public class MBDirections: NSObject {
                 }
                 return
             }
+            
             
             let routes = json!["routes"] as! [JSON]
             let points: [MBPoint]
