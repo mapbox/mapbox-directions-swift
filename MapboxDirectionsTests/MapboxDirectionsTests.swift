@@ -39,12 +39,12 @@ class MapboxDirectionsTests: XCTestCase {
         }
         
         XCTAssertEqual(routes.count, 2)
-        XCTAssertEqual(routes.first!.geometry!.count, 28268)
+        XCTAssertEqual(routes.first!.geometry.count, 28268)
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(routes.first!.geometry!.first!.latitude), 38)
-        XCTAssertEqual(round(routes.first!.geometry!.first!.longitude), -122)
+        XCTAssertEqual(round(routes.first!.geometry.first!.latitude), 38)
+        XCTAssertEqual(round(routes.first!.geometry.first!.longitude), -122)
         XCTAssertEqual(routes.first!.legs.count, 1)
         XCTAssertEqual(routes.first!.legs.first!.steps.count, 136)
         XCTAssertEqual(routes.first!.legs.first!.steps[24].distance, 106_258)
