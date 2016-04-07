@@ -35,7 +35,7 @@ public class MBRoute {
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
-    public let geometry: [CLLocationCoordinate2D]?
+    public let geometry: [CLLocationCoordinate2D]
 
     public let source: MBPoint
     public let waypoints: [MBPoint]
@@ -61,7 +61,7 @@ public class MBRoute {
         }
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
-        geometry = decodePolyline(json["geometry"] as! String, precision: 1e6)
+        geometry = decodePolyline(json["geometry"] as! String, precision: 1e6)!
     }
 }
 
