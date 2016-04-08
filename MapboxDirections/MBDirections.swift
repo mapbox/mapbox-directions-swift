@@ -15,7 +15,6 @@ public enum MBDirectionsErrorCode: UInt {
 }
 
 public class MBPoint {
-
     public let name: String?
     public let coordinate: CLLocationCoordinate2D
 
@@ -23,7 +22,6 @@ public class MBPoint {
         self.name = name
         self.coordinate = coordinate
     }
-
 }
 
 extension CLLocationCoordinate2D {
@@ -35,23 +33,15 @@ extension CLLocationCoordinate2D {
 
 public class MBDirections: NSObject {
 
-    private let request: MBDirectionsRequest
     private let configuration: MBDirectionsConfiguration
-    
-    private var errorForSimultaneousRequests: NSError {
-        let userInfo = [
-            NSLocalizedFailureReasonErrorKey: "Cannot calculate directions on an MBDirections object that is already calculating.",
-        ]
-        return NSError(domain: MBDirectionsErrorDomain, code: -1, userInfo: userInfo)
-    }
 
-    public init(request: MBDirectionsRequest, accessToken: String) {
-        self.request = request
+    public init(accessToken: String) {
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders = ["User-Agent": "MapboxDirections.swift/0.4.0"]
         configuration = MBDirectionsConfiguration(accessToken)
         super.init()
     }
 
-    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) -> Request? {
+    public func calculateDirectionsWithCompletionHandler(request: MBDirectionsRequest, completionHandler: MBDirectionsHandler) -> Request? {
         
         var profileIdentifier = request.profileIdentifier
         let version = request.version
@@ -59,12 +49,12 @@ public class MBDirections: NSObject {
         switch version {
         case .Four:
             profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, nil, .Polyline, nil)
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections(request), request.requestsAlternateRoutes, nil, .Polyline, nil)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
+            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections(request), request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
         }
         
-        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, request, error) in
+        return taskWithRouter(router, request: request, completionHandler: { (source, waypoints, destination, routes, request, error) in
             let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
                 MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier, version: version)
             })
@@ -74,18 +64,18 @@ public class MBDirections: NSObject {
         })
     }
 
-    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) -> Request? {
+    public func calculateETAWithCompletionHandler(request: MBDirectionsRequest, completionHandler: MBETAHandler) -> Request? {
         
         let router: MBDirectionsRouter
         switch request.version {
         case .Four:
             let profileIdentifier = request.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, false, nil, .None, false)
+            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections(request), false, nil, .None, false)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections, false, .GeoJSON, .None, false, nil)
+            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections(request), false, .GeoJSON, .None, false, nil)
         }
         
-        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, request, error) in
+        return taskWithRouter(router, request: request, completionHandler: { (source, waypoints, destination, routes, request, error) in
             let expectedTravelTime = routes.flatMap {
                 $0["duration"] as? NSTimeInterval
             }.minElement()
@@ -100,7 +90,7 @@ public class MBDirections: NSObject {
         })
     }
     
-    private var waypointsForDirections: [MBDirectionsWaypoint] {
+    private func waypointsForDirections(request: MBDirectionsRequest) -> [MBDirectionsWaypoint] {
         var sourceHeading: MBDirectionsWaypoint.Heading? = nil
         if let heading = request.sourceHeading {
             sourceHeading = MBDirectionsWaypoint.Heading(heading: heading, headingAccuracy: 90)
@@ -111,9 +101,8 @@ public class MBDirections: NSObject {
             [MBDirectionsWaypoint(coordinate: request.destinationCoordinate, accuracy: nil, heading: nil)]].flatMap{ $0 }
     }
     
-    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], MBDirectionsRequest, NSError?) -> Void, errorHandler: (NSError?) -> Void) -> Request? {
+    private func taskWithRouter(router: MBDirectionsRouter, request: MBDirectionsRequest, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], MBDirectionsRequest, NSError?) -> Void, errorHandler: (NSError?) -> Void) -> Request? {
         let httpRequest = Alamofire.request(router).responseJSON { response in
-            
             let error = response.result.error
             let json = response.result.value
             
@@ -180,7 +169,7 @@ public class MBDirections: NSObject {
             var waypoints = points.suffixFrom(1)
             waypoints = waypoints.prefixUpTo(waypoints.count)
             
-            completion(source, Array(waypoints), destination, routes, self.request, error)
+            completion(source, Array(waypoints), destination, routes, request, error)
         }
         
         return httpRequest
