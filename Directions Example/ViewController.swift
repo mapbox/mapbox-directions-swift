@@ -31,9 +31,9 @@ class ViewController: UIViewController {
         let request = MBDirectionsRequest(sourceCoordinate: mb, destinationCoordinate: wh)
         request.version = .Four
 
-        directions = MBDirections(request: request, accessToken: MapboxAccessToken)
+        directions = MBDirections(accessToken: MapboxAccessToken)
 
-        directions!.calculateDirectionsWithCompletionHandler { (response, error) in
+        directions!.calculateDirectionsWithCompletionHandler(request) { (response, error) in
             if let route = response?.routes.first {
                 print("Route summary:")
                 let steps = route.legs.first!.steps
