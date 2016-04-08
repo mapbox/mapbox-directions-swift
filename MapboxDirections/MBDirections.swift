@@ -14,6 +14,10 @@ public enum MBDirectionsErrorCode: UInt {
     case InvalidInput = 422
 }
 
+/**
+ A named coordinate commonly used to represent a waypoint
+ along a route
+ */
 public class MBPoint {
     public let name: String?
     public let coordinate: CLLocationCoordinate2D
@@ -41,6 +45,10 @@ public class MBDirections: NSObject {
         super.init()
     }
 
+    /**
+     Run a Directions API request against the web service, returning
+     the request and calling a completion handler on success or failure
+     */
     public func calculateDirectionsWithCompletionHandler(request: MBDirectionsRequest, completionHandler: MBDirectionsHandler) -> Request? {
         
         var profileIdentifier = request.profileIdentifier

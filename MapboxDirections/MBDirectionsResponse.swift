@@ -88,6 +88,9 @@ public class MBRouteLeg {
 }
 
 public class MBRouteStep {
+    /**
+     A maneuver is an action that is required along a route
+     */
     public enum ManeuverType: String {
         case Turn = "turn"
         case PassNameChange = "new name"
