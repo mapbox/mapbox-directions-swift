@@ -5,6 +5,8 @@ MapboxDirections.swift
 
 MapboxDirections.swift makes it easy to connect your iOS or OS X application to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/#directions). MapboxDirections.swift combines the power of the [OSRM](http://project-osrm.org/) routing engine with the simplicity of MapKit’s directions API (but without depending on MapKit).
 
+MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), and the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx).
+
 ### Example
 
 ```swift
