@@ -179,7 +179,7 @@ public class MBRouteStep {
         }
         
         let maneuver = json["maneuver"] as! JSON
-        instructions = maneuver["instruction"] as? String ?? "" // mapbox/api-directions#515
+        instructions = maneuver["instruction"] as! String
         
         distance = json["distance"] as? Double ?? 0
         duration = json["duration"] as? Double ?? 0
