@@ -47,9 +47,11 @@ public class MBRoute {
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         
+        let precision: Double
         switch version {
         case .Four:
             legs = [MBRouteLeg(source: source, destination: destination, json: json, profileIdentifier: profileIdentifier, version: version)]
+            precision = 1e6
         case .Five:
             // Associate each leg JSON with an origin and destination. The sequence
             // of destinations is offset by one from the sequence of origins.
@@ -58,10 +60,11 @@ public class MBRoute {
             legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
                 MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier, version: version)
             }
+            precision = 1e5
         }
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
-        geometry = decodePolyline(json["geometry"] as! String, precision: 1e6)!
+        geometry = decodePolyline(json["geometry"] as! String, precision: precision)!
     }
 }
 
