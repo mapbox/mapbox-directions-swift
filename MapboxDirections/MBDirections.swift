@@ -56,10 +56,7 @@ public class MBDirections: NSObject {
      */
     public init(request: MBDirectionsRequest, accessToken: String, host: String? = nil) {
         self.request = request
-        let baseURLComponents = NSURLComponents()
-        baseURLComponents.scheme = "https"
-        baseURLComponents.host = host
-        configuration = MBDirectionsConfiguration(accessToken, apiEndpoint: baseURLComponents.string)
+        configuration = MBDirectionsConfiguration(accessToken, host: host)
         super.init()
     }
 
