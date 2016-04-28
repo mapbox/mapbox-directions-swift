@@ -48,9 +48,15 @@ public class MBDirections: NSObject {
         return NSError(domain: MBDirectionsErrorDomain, code: -1, userInfo: userInfo)
     }
 
-    public init(request: MBDirectionsRequest, accessToken: String) {
+    /**
+     Initializes and returns a directions object using the given request, access token, and optional host.
+     
+     - param accessToken: A Mapbox access token.
+     - param host: An optional hostname to the server API. The Mapbox Directions API endpoint is used by default.
+     */
+    public init(request: MBDirectionsRequest, accessToken: String, host: String? = nil) {
         self.request = request
-        configuration = MBDirectionsConfiguration(accessToken)
+        configuration = MBDirectionsConfiguration(accessToken, host: host)
         super.init()
     }
 
