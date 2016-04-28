@@ -165,7 +165,7 @@ public class MBRouteStep {
     public let name: String?
     public let initialHeading: CLLocationDirection?
     public let finalHeading: CLLocationDirection?
-    public let maneuverType: ManeuverType
+    public let maneuverType: ManeuverType?
     public let maneuverDirection: ManeuverDirection?
     public let maneuverLocation: CLLocationCoordinate2D
     public let exitIndex: NSInteger?
@@ -188,7 +188,7 @@ public class MBRouteStep {
         case .Four:
             initialHeading = nil
             finalHeading = json["heading"] as? Double
-            maneuverType = ManeuverType(v4RawValue: maneuver["type"] as! String)!
+            maneuverType = ManeuverType(v4RawValue: maneuver["type"] as! String)
             maneuverDirection = ManeuverDirection(v4RawValue: maneuver["type"] as! String)
             exitIndex = nil
             
@@ -202,7 +202,7 @@ public class MBRouteStep {
         case .Five:
             initialHeading = maneuver["bearing_before"] as? Double
             finalHeading = maneuver["bearing_after"] as? Double
-            maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)!
+            maneuverType = ManeuverType(rawValue: maneuver["type"] as! String)
             maneuverDirection = ManeuverDirection(rawValue: maneuver["modifier"] as? String ?? "")
             exitIndex = maneuver["exit"] as? Int
             
