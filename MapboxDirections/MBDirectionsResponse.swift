@@ -29,8 +29,8 @@ public class MBRoute {
 //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
-    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
-        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    public var transportType: MBDirectionsRequest.TransportType {
+        return MBDirectionsRequest.TransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
 
@@ -75,8 +75,8 @@ public class MBRouteLeg {
 //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
-    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
-        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    public var transportType: MBDirectionsRequest.TransportType {
+        return MBDirectionsRequest.TransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
 
@@ -97,6 +97,27 @@ public class MBRouteLeg {
 }
 
 public class MBRouteStep {
+    public enum TransportType: String {
+        // mapbox/driving
+        case Automobile = "driving"
+        case Ferry = "ferry"
+        case MovableBridge = "moveable bridge"
+        case Inaccessible = "unaccessible"
+        
+        // mapbox/walking
+        case Walking = "walking"
+        // case Ferry = "ferry"
+        // case Inaccessible = "unaccessible"
+        
+        // mapbox/cycling
+        case Cycling = "cycling"
+        // case Walking = "walking"
+        // case Ferry = "ferry"
+        case Train = "train"
+        // case MovableBridge = "moveable bridge"
+        // case Inaccessible = "unaccessible"
+    }
+    
     public enum ManeuverType: String {
         case Turn = "turn"
         case PassNameChange = "new name"
@@ -156,7 +177,7 @@ public class MBRouteStep {
     public let instructions: String
     //    var notice: String! { get }
     public let distance: CLLocationDistance
-    public let transportType: MBDirectionsRequest.MBDirectionsTransportType
+    public let transportType: TransportType?
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
@@ -172,11 +193,8 @@ public class MBRouteStep {
 
     internal init(json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.profileIdentifier = profileIdentifier
-        if let mode = json["mode"] as? String {
-            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: "mapbox/\(mode)") ?? .Automobile
-        } else {
-            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
-        }
+        // v4 supplies no mode in the arrival step.
+        transportType = TransportType(rawValue: json["mode"] as? String ?? "")
         
         let maneuver = json["maneuver"] as! JSON
         instructions = maneuver["instruction"] as! String
