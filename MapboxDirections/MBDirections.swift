@@ -8,9 +8,9 @@ internal typealias JSON = [String: AnyObject]
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
 public enum MBDirectionsErrorCode: UInt {
-    case DirectionsNotFound = 200
-    case ProfileNotFound = 404
-    case InvalidInput = 422
+    case DirectionsNotFound = 200 // code = NoRoute, NoSegment
+    case ProfileNotFound = 404 // code = ProfileNotFound
+    case InvalidInput = 422 // code = InvalidInput
 }
 
 public class MBPoint {

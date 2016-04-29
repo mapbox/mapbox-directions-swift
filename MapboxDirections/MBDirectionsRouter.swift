@@ -83,10 +83,10 @@ internal enum MBDirectionsRouter: Router {
             }
             return params
             
-        case .V5(_, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowPointUTurns):
+        case .V5(_, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowUTurnAtWaypoint):
             var params: [String: String] = [:]
             if let includeAlternative = includeAlternative {
-                params["alternative"] = String(includeAlternative)
+                params["alternatives"] = String(includeAlternative)
             }
             let hasHeadings = !(waypoints.flatMap { $0.heading }.isEmpty)
             if hasHeadings {
@@ -109,8 +109,8 @@ internal enum MBDirectionsRouter: Router {
             if let includeSteps = includeSteps {
                 params["steps"] = String(includeSteps)
             }
-            if let allowPointUTurns = allowPointUTurns {
-                params["uturns"] = String(allowPointUTurns)
+            if let allowUTurnAtWaypoint = allowUTurnAtWaypoint {
+                params["continue_straight"] = String(allowUTurnAtWaypoint)
             }
             return params
         }
