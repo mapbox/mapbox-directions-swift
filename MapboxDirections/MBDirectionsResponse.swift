@@ -29,8 +29,8 @@ public class MBRoute {
 //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
-    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
-        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    public var transportType: MBDirectionsRequest.TransportType {
+        return MBDirectionsRequest.TransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
 
@@ -75,8 +75,8 @@ public class MBRouteLeg {
 //    var advisoryNotices: [AnyObject]! { get }
     public let distance: CLLocationDistance
     public let expectedTravelTime: NSTimeInterval
-    public var transportType: MBDirectionsRequest.MBDirectionsTransportType {
-        return MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+    public var transportType: MBDirectionsRequest.TransportType {
+        return MBDirectionsRequest.TransportType(rawValue: profileIdentifier) ?? .Automobile
     }
     public let profileIdentifier: String
 
@@ -87,38 +87,70 @@ public class MBRouteLeg {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
-        steps = (json["steps"] as? [JSON] ?? []).map {
-            MBRouteStep(json: $0, profileIdentifier: profileIdentifier, version: version)
+        let name = json["summary"] as? String
+        var stepNamesByDistance: [String: CLLocationDistance] = [:]
+        steps = (json["steps"] as? [JSON] ?? []).map { json in
+            let step = MBRouteStep(json: json, profileIdentifier: profileIdentifier, version: version)
+            // If no summary is provided for some reason, synthesize one out of the two names that make up the longest cumulative distance along the route.
+            if let name = name where !name.isEmpty {
+                if let stepName = step.name where !stepName.isEmpty {
+                    stepNamesByDistance[stepName] = (stepNamesByDistance[stepName] ?? 0) + step.distance
+                }
+            }
+            return step
         }
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
-        name = json["summary"] as! String
+        let longestNames = Array(stepNamesByDistance.sort { $0.1 > $1.1 }.prefix(2))
+        self.name = name ?? longestNames.map { $0.0 }.joinWithSeparator(" – ")
     }
 }
 
 public class MBRouteStep {
+    public enum TransportType: String {
+        // mapbox/driving
+        case Automobile = "driving"
+        case Ferry = "ferry"
+        case MovableBridge = "moveable bridge"
+        case Inaccessible = "unaccessible"
+        
+        // mapbox/walking
+        case Walking = "walking"
+        // case Ferry = "ferry"
+        // case Inaccessible = "unaccessible"
+        
+        // mapbox/cycling
+        case Cycling = "cycling"
+        // case Walking = "walking"
+        // case Ferry = "ferry"
+        case Train = "train"
+        // case MovableBridge = "moveable bridge"
+        // case Inaccessible = "unaccessible"
+    }
+    
     public enum ManeuverType: String {
+        case Depart = "depart"
         case Turn = "turn"
+        case Continue = "continue"
         case PassNameChange = "new name"
-        case PassWaypoint = "waypoint"
-        case PassInformationalPoint = "suppressed"
         case Merge = "merge"
         case TakeRamp = "ramp"
         case ReachFork = "fork"
         case ReachEnd = "end of road"
-        case EnterRoundabout = "enter roundabout"
-        case ExitRoundabout = "exit roundabout"
-        
-        // Undocumented but present in API responses
-        case Depart = "depart"
+        case TakeRoundabout = "roundabout"
+        case HeedWarning = "notification"
         case Arrive = "arrive"
-        case Continue = "continue"
+        
+        // Compatibility with v4
+        case PassWaypoint = "waypoint"
         
         init?(v4RawValue: String) {
             let rawValue: String
             switch v4RawValue {
             case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
                 rawValue = "turn"
+            case "enter roundabout":
+                rawValue = "roundabout"
             default:
                 rawValue = v4RawValue
             }
@@ -156,7 +188,7 @@ public class MBRouteStep {
     public let instructions: String
     //    var notice: String! { get }
     public let distance: CLLocationDistance
-    public let transportType: MBDirectionsRequest.MBDirectionsTransportType
+    public let transportType: TransportType?
     public let profileIdentifier: String
 
     // Mapbox-specific stuff
@@ -172,11 +204,8 @@ public class MBRouteStep {
 
     internal init(json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.profileIdentifier = profileIdentifier
-        if let mode = json["mode"] as? String {
-            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: "mapbox/\(mode)") ?? .Automobile
-        } else {
-            transportType = MBDirectionsRequest.MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
-        }
+        // v4 supplies no mode in the arrival step.
+        transportType = TransportType(rawValue: json["mode"] as? String ?? "")
         
         let maneuver = json["maneuver"] as! JSON
         instructions = maneuver["instruction"] as! String

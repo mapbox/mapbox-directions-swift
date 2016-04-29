@@ -8,7 +8,7 @@ public class MBDirectionsRequest {
     }
     public var version: APIVersion = .Five
     
-    public enum MBDirectionsTransportType: String {
+    public enum TransportType: String {
         case Automobile = "mapbox/driving"
         case Walking    = "mapbox/walking"
         case Cycling    = "mapbox/cycling"
@@ -20,15 +20,15 @@ public class MBDirectionsRequest {
     public let waypointCoordinates: [CLLocationCoordinate2D]
     public let destinationCoordinate: CLLocationCoordinate2D
     public var requestsAlternateRoutes = false
-    public var transportType: MBDirectionsTransportType {
+    public var transportType: TransportType {
         get {
-            return MBDirectionsTransportType(rawValue: profileIdentifier) ?? .Automobile
+            return TransportType(rawValue: profileIdentifier) ?? .Automobile
         }
         set {
             profileIdentifier = newValue.rawValue
         }
     }
-    public var profileIdentifier: String = MBDirectionsTransportType.Automobile.rawValue
+    public var profileIdentifier: String = TransportType.Automobile.rawValue
     //    var departureDate: NSDate!
     //    var arrivalDate: NSDate!
 
