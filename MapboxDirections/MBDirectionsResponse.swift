@@ -129,27 +129,28 @@ public class MBRouteStep {
     }
     
     public enum ManeuverType: String {
+        case Depart = "depart"
         case Turn = "turn"
+        case Continue = "continue"
         case PassNameChange = "new name"
-        case PassWaypoint = "waypoint"
-        case PassInformationalPoint = "suppressed"
         case Merge = "merge"
         case TakeRamp = "ramp"
         case ReachFork = "fork"
         case ReachEnd = "end of road"
-        case EnterRoundabout = "enter roundabout"
-        case ExitRoundabout = "exit roundabout"
-        
-        // Undocumented but present in API responses
-        case Depart = "depart"
+        case TakeRoundabout = "roundabout"
+        case HeedWarning = "notification"
         case Arrive = "arrive"
-        case Continue = "continue"
+        
+        // Compatibility with v4
+        case PassWaypoint = "waypoint"
         
         init?(v4RawValue: String) {
             let rawValue: String
             switch v4RawValue {
             case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
                 rawValue = "turn"
+            case "enter roundabout":
+                rawValue = "roundabout"
             default:
                 rawValue = v4RawValue
             }
