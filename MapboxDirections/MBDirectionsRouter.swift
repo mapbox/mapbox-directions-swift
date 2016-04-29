@@ -110,7 +110,7 @@ internal enum MBDirectionsRouter: Router {
                 params["steps"] = String(includeSteps)
             }
             if let allowUTurnAtWaypoint = allowUTurnAtWaypoint {
-                params["continue_straight"] = String(allowUTurnAtWaypoint)
+                params["continue_straight"] = String(!allowUTurnAtWaypoint)
             }
             return params
         }
