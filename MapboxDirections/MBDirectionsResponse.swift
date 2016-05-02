@@ -92,7 +92,7 @@ public class MBRouteLeg {
         steps = (json["steps"] as? [JSON] ?? []).map { json in
             let step = MBRouteStep(json: json, profileIdentifier: profileIdentifier, version: version)
             // If no summary is provided for some reason, synthesize one out of the two names that make up the longest cumulative distance along the route.
-            if let name = name where !name.isEmpty {
+            if name == nil || name!.isEmpty {
                 if let stepName = step.name where !stepName.isEmpty {
                     stepNamesByDistance[stepName] = (stepNamesByDistance[stepName] ?? 0) + step.distance
                 }
