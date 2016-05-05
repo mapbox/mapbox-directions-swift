@@ -24,18 +24,19 @@ class MapboxDirectionsTests: XCTestCase {
         request.requestsAlternateRoutes = true
         let directions = MBDirections(request: request, accessToken: BogusToken)
         var routes: [MBRoute] = []
-        directions.calculateDirectionsWithCompletionHandler { (response, error) in
+        let task = directions.calculateDirectionsWithCompletionHandler { (response, error) in
             XCTAssertNil(error, "Error: \(error)")
-            XCTAssertFalse(directions.calculating)
             
             XCTAssertNotNil(response)
             routes = response!.routes
             
             expectation.fulfill()
         }
+        XCTAssertNotNil(task)
+        
         waitForExpectationsWithTimeout(2) { (error) in
             XCTAssertNil(error, "Error: \(error)")
-            XCTAssertFalse(directions.calculating)
+            XCTAssertEqual(task?.state, .Completed)
         }
         
         XCTAssertEqual(routes.count, 2)

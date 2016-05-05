@@ -36,17 +36,9 @@ public class MBDirections: NSObject {
 
     private let request: MBDirectionsRequest
     private let configuration: MBDirectionsConfiguration
-    private var task: NSURLSessionDataTask?
-    public var calculating: Bool {
-        return task?.state == .Running
-    }
     
-    private var errorForSimultaneousRequests: NSError {
-        let userInfo = [
-            NSLocalizedFailureReasonErrorKey: "Cannot calculate directions on an MBDirections object that is already calculating.",
-        ]
-        return NSError(domain: MBDirectionsErrorDomain, code: -1, userInfo: userInfo)
-    }
+    private static let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
+    public var session = NSURLSession(configuration: sessionConfiguration)
 
     /**
      Initializes and returns a directions object using the given request, access token, and optional host.
@@ -60,12 +52,7 @@ public class MBDirections: NSObject {
         super.init()
     }
 
-    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) {
-        guard !calculating else {
-            completionHandler(nil, errorForSimultaneousRequests)
-            return
-        }
-        
+    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) -> NSURLSessionDataTask? {
         var profileIdentifier = request.profileIdentifier
         let version = request.version
         let router: MBDirectionsRouter
@@ -77,7 +64,7 @@ public class MBDirections: NSObject {
             router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
         }
         
-        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
+        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
             let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
                 MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier, version: version)
             })
@@ -87,12 +74,7 @@ public class MBDirections: NSObject {
         })
     }
 
-    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) {
-        guard !calculating else {
-            completionHandler(nil, errorForSimultaneousRequests)
-            return
-        }
-        
+    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) -> NSURLSessionDataTask? {
         let router: MBDirectionsRouter
         switch request.version {
         case .Four:
@@ -102,7 +84,7 @@ public class MBDirections: NSObject {
             router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections, false, .GeoJSON, .None, false, nil)
         }
         
-        task = taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
+        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
             let expectedTravelTime = routes.flatMap {
                 $0["duration"] as? NSTimeInterval
             }.minElement()
@@ -129,11 +111,7 @@ public class MBDirections: NSObject {
     }
     
     private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
-        return router.loadJSON(JSON.self) { [weak self] (json, error) in
-            guard let dataTaskSelf = self where dataTaskSelf.task?.state == .Completed else {
-                return
-            }
-            
+        return router.loadJSON(session, expectedResultType: JSON.self) { (json, error) in
             guard error == nil && json != nil else {
                 dispatch_sync(dispatch_get_main_queue()) {
                     errorHandler(error as? NSError)
@@ -204,11 +182,12 @@ public class MBDirections: NSObject {
             dispatch_sync(dispatch_get_main_queue()) {
                 completion(source, Array(waypoints), destination, routes, error as? NSError)
             }
-        }
+        } as? NSURLSessionDataTask
     }
 
     public func cancel() {
-        self.task?.cancel()
+        session.invalidateAndCancel()
+        session = NSURLSession(configuration: MBDirections.sessionConfiguration)
     }
 
 }
