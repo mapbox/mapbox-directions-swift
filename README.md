@@ -7,7 +7,16 @@ MapboxDirections.swift makes it easy to connect your iOS or OS X application to 
 
 MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), and the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx).
 
-### Example
+### Installation
+
+Import `MapboxDirections.framework` into your project, then use `MBDirections` as a drop-in replacement for Apple’s `MKDirections`. Alternatively, for the bleeding-edge version of this framework, specify the following dependencies in your [CocoaPods](http://cocoapods.org/) Podfile:
+
+```podspec
+pod 'NBNRequestKit', :git => 'https://github.com/1ec5/RequestKit.git', :branch => 'mapbox-podspec' # temporarily until nerdishbynature/RequestKit#14 is merged
+pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :branch => 'master'
+```
+
+### Usage
 
 ```swift
 let mapBox = CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047)
@@ -17,7 +26,8 @@ let request = MBDirectionsRequest(sourceCoordinate: mapBox, destinationCoordinat
 // Use the older v4 endpoint for now, while v5 is in development.
 request.version = .Four
 
-let directions = MBDirections(request: request, accessToken: MapboxAccessToken)
+// The surrounding class should hold a strong reference to this MBDirections object.
+directions = MBDirections(request: request, accessToken: MapboxAccessToken)
 directions.calculateDirectionsWithCompletionHandler { (response, error) in
     if let route = response?.routes.first {
         print("Enjoy a trip down \(route.legs.first!.name)!")
