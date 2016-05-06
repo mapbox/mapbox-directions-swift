@@ -23,9 +23,6 @@ let mapBox = CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047
 let whiteHouse = CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365)
 let request = MBDirectionsRequest(sourceCoordinate: mapBox, destinationCoordinate: whiteHouse)
 
-// Use the older v4 endpoint for now, while v5 is in development.
-request.version = .Four
-
 // The surrounding class should hold a strong reference to this MBDirections object.
 directions = MBDirections(request: request, accessToken: MapboxAccessToken)
 directions.calculateDirectionsWithCompletionHandler { (response, error) in
@@ -35,7 +32,7 @@ directions.calculateDirectionsWithCompletionHandler { (response, error) in
 }
 ```
 
-Note: This library currently supports both versions 4 and 5 of the Mapbox Directions API. However, only v4 is currently available to Mapbox accounts while v5 is in development.
+This library currently supports both versions 4 and 5 of the Mapbox Directions API. Version 5 is used by default.
 
 ### Tests
 
