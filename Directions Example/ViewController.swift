@@ -31,8 +31,7 @@ class ViewController: UIViewController {
         let wh = CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365)
 
         let request = MBDirectionsRequest(sourceCoordinate: mb, destinationCoordinate: wh)
-        request.version = .Four
-
+        
         directions = MBDirections(request: request, accessToken: MapboxAccessToken)
 
         directions!.calculateDirectionsWithCompletionHandler { (response, error) in
