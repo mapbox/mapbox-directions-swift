@@ -34,6 +34,8 @@ directions.calculateDirectionsWithCompletionHandler { (response, error) in
 
 This library currently supports both versions 4 and 5 of the Mapbox Directions API. Version 5 is used by default.
 
+This repository includes an example application written in Swift. More examples are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#geocoding).
+
 ### Tests
 
 To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
