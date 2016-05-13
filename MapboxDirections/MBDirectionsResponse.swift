@@ -134,10 +134,12 @@ public class MBRouteStep {
         case Continue = "continue"
         case PassNameChange = "new name"
         case Merge = "merge"
-        case TakeRamp = "ramp"
+        case TakeOnRamp = "on ramp"
+        case TakeOffRamp = "off ramp"
         case ReachFork = "fork"
         case ReachEnd = "end of road"
         case TakeRoundabout = "roundabout"
+        case TurnAtRoundabout = "roundabout turn"
         case HeedWarning = "notification"
         case Arrive = "arrive"
         
