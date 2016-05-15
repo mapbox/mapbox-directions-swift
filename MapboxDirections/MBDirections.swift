@@ -59,9 +59,9 @@ public class MBDirections: NSObject {
         switch version {
         case .Four:
             profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, nil, .Polyline, nil)
+            router = MBDirectionsRouter.V4(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: request.requestsAlternateRoutes, instructionFormat: nil, geometryFormat: .Polyline, includeSteps: nil)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, profileIdentifier, waypointsForDirections, request.requestsAlternateRoutes, .Polyline, .Full, true, nil)
+            router = MBDirectionsRouter.V5(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: request.requestsAlternateRoutes, geometryFormat: .Polyline, overviewGranularity: .Full, includeSteps: true, allowUTurnAtWaypoint: nil)
         }
         
         return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
@@ -79,9 +79,9 @@ public class MBDirections: NSObject {
         switch request.version {
         case .Four:
             let profileIdentifier = request.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(configuration, profileIdentifier, waypointsForDirections, false, nil, .None, false)
+            router = MBDirectionsRouter.V4(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: false, instructionFormat: nil, geometryFormat: .None, includeSteps: false)
         case .Five:
-            router = MBDirectionsRouter.V5(configuration, request.profileIdentifier, waypointsForDirections, false, .GeoJSON, .None, false, nil)
+            router = MBDirectionsRouter.V5(config: configuration, profileIdentifier: request.profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: false, geometryFormat: .GeoJSON, overviewGranularity: .None, includeSteps: false, allowUTurnAtWaypoint: nil)
         }
         
         return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in

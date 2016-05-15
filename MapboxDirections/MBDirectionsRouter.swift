@@ -48,8 +48,8 @@ internal enum MBDirectionsRouter: Router {
         case Full = "full"
     }
     
-    case V4(Configuration, String, [MBDirectionsWaypoint], Bool?, InstructionFormat?, GeometryFormatV4?, Bool?)
-    case V5(Configuration, String, [MBDirectionsWaypoint], Bool?, GeometryFormatV5?, OverviewGranularity?, Bool?, Bool?)
+    case V4(config: Configuration, profileIdentifier: String, waypoints: [MBDirectionsWaypoint], includeAlternatives: Bool?, instructionFormat: InstructionFormat?, geometryFormat: GeometryFormatV4?, includeSteps: Bool?)
+    case V5(config: Configuration, profileIdentifier: String, waypoints: [MBDirectionsWaypoint], includeAlternatives: Bool?, geometryFormat: GeometryFormatV5?, overviewGranularity: OverviewGranularity?, includeSteps: Bool?, allowUTurnAtWaypoint: Bool?)
     
     var method: HTTPMethod {
         return .GET
@@ -83,10 +83,10 @@ internal enum MBDirectionsRouter: Router {
             }
             return params
             
-        case .V5(_, _, let waypoints, let includeAlternative, let geometryFormat, let overviewGranularity, let includeSteps, let allowUTurnAtWaypoint):
+        case .V5(_, _, let waypoints, let includeAlternatives, let geometryFormat, let overviewGranularity, let includeSteps, let allowUTurnAtWaypoint):
             var params: [String: String] = [:]
-            if let includeAlternative = includeAlternative {
-                params["alternatives"] = String(includeAlternative)
+            if let includeAlternatives = includeAlternatives {
+                params["alternatives"] = String(includeAlternatives)
             }
             let hasHeadings = !(waypoints.flatMap { $0.heading }.isEmpty)
             if hasHeadings {
