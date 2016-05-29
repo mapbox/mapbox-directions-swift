@@ -1,9 +1,4 @@
-import Foundation
-import CoreLocation
-
-public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
-public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
-internal typealias JSON = [String: AnyObject]
+typealias JSONDictionary = [String: AnyObject]
 
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
@@ -13,27 +8,38 @@ public enum MBDirectionsErrorCode: UInt {
     case InvalidInput = 422 // code = InvalidInput
 }
 
-public class MBPoint {
-
-    public let name: String?
-    public let coordinate: CLLocationCoordinate2D
-
-    internal init(name: String?, coordinate: CLLocationCoordinate2D) {
-        self.name = name
-        self.coordinate = coordinate
-    }
-
-}
+/// The Mapbox access token specified in the main application bundle’s Info.plist.
+let defaultAccessToken = NSBundle.mainBundle().objectForInfoDictionaryKey("MGLMapboxAccessToken") as? String
 
 extension CLLocationCoordinate2D {
-    internal init(JSONArray array: [Double]) {
+    /**
+     Initializes a coordinate pair based on the given GeoJSON array.
+     */
+    internal init(geoJSON array: [Double]) {
         assert(array.count == 2)
         self.init(latitude: array[1], longitude: array[0])
     }
 }
 
+public class MBNamedLocation: CLLocation {
+    public let name: String?
+
+    internal init(name: String?, coordinate: CLLocationCoordinate2D) {
+        self.name = name
+        super.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        name = decoder.decodeObjectForKey("name") as? String
+        super.init(coder: decoder)
+    }
+}
+
 public class MBDirections: NSObject {
 
+    public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
+    public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
+    
     private let request: MBDirectionsRequest
     private let configuration: MBDirectionsConfiguration
     
@@ -110,8 +116,8 @@ public class MBDirections: NSObject {
             [MBDirectionsWaypoint(coordinate: request.destinationCoordinate, accuracy: nil, heading: nil)]].flatMap{ $0 }
     }
     
-    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
-        return router.loadJSON(session, expectedResultType: JSON.self) { (json, error) in
+    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBNamedLocation, [MBNamedLocation], MBNamedLocation, [JSONDictionary], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
+        return router.loadJSON(session, expectedResultType: JSONDictionary.self) { (json, error) in
             guard error == nil && json != nil else {
                 dispatch_sync(dispatch_get_main_queue()) {
                     errorHandler(error as? NSError)
@@ -144,33 +150,33 @@ public class MBDirections: NSObject {
             }
             
             
-            let routes = json!["routes"] as! [JSON]
-            let points: [MBPoint]
+            let routes = json!["routes"] as! [JSONDictionary]
+            let points: [MBNamedLocation]
             switch version {
             case .Four:
-                let origin = json!["origin"] as! JSON
-                let originProperties = origin["properties"] as! JSON
-                let originGeometry = origin["geometry"] as! JSON
-                let originCoordinate = CLLocationCoordinate2D(JSONArray: originGeometry["coordinates"] as! [Double])
-                let originPoint = MBPoint(name: originProperties["name"] as? String, coordinate: originCoordinate)
+                let origin = json!["origin"] as! JSONDictionary
+                let originProperties = origin["properties"] as! JSONDictionary
+                let originGeometry = origin["geometry"] as! JSONDictionary
+                let originCoordinate = CLLocationCoordinate2D(geoJSON: originGeometry["coordinates"] as! [Double])
+                let originPoint = MBNamedLocation(name: originProperties["name"] as? String, coordinate: originCoordinate)
                 
-                let destination = json!["destination"] as! JSON
-                let destinationProperties = destination["properties"] as! JSON
-                let destinationGeometry = destination["geometry"] as! JSON
-                let destinationCoordinate = CLLocationCoordinate2D(JSONArray: destinationGeometry["coordinates"] as! [Double])
-                let destinationPoint = MBPoint(name: destinationProperties["name"] as? String, coordinate: destinationCoordinate)
+                let destination = json!["destination"] as! JSONDictionary
+                let destinationProperties = destination["properties"] as! JSONDictionary
+                let destinationGeometry = destination["geometry"] as! JSONDictionary
+                let destinationCoordinate = CLLocationCoordinate2D(geoJSON: destinationGeometry["coordinates"] as! [Double])
+                let destinationPoint = MBNamedLocation(name: destinationProperties["name"] as? String, coordinate: destinationCoordinate)
                 
-                let waypoints = json!["waypoints"] as? [JSON] ?? []
-                let waypointPoints = waypoints.map { $0["geometry"] as! JSON }.map {
-                    MBPoint(name: nil, coordinate: CLLocationCoordinate2D(JSONArray: $0["coordinates"] as! [Double]))
+                let waypoints = json!["waypoints"] as? [JSONDictionary] ?? []
+                let waypointPoints = waypoints.map { $0["geometry"] as! JSONDictionary }.map {
+                    MBNamedLocation(name: nil, coordinate: CLLocationCoordinate2D(geoJSON: $0["coordinates"] as! [Double]))
                 }
                 
                 points = [[originPoint], waypointPoints, [destinationPoint]].flatMap{ $0 }
             case .Five:
-                points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
+                points = (json!["waypoints"] as? [JSONDictionary] ?? []).map { waypoint -> MBNamedLocation in
                     let location = waypoint["location"] as! [Double]
-                    let coordinate = CLLocationCoordinate2D(JSONArray: location)
-                    return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
+                    let coordinate = CLLocationCoordinate2D(geoJSON: location)
+                    return MBNamedLocation(name: waypoint["name"] as? String, coordinate: coordinate)
                 }
             }
             

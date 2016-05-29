@@ -1,20 +1,18 @@
-import Foundation
 import Polyline
-import CoreLocation
 
 internal protocol MBResponse {
-    var source: MBPoint { get }
-    var waypoints: [MBPoint] { get }
-    var destination: MBPoint { get }
+    var source: MBNamedLocation { get }
+    var waypoints: [MBNamedLocation] { get }
+    var destination: MBNamedLocation { get }
 }
 
 public class MBDirectionsResponse: MBResponse {
-    public let source: MBPoint
-    public let waypoints: [MBPoint]
-    public let destination: MBPoint
+    public let source: MBNamedLocation
+    public let waypoints: [MBNamedLocation]
+    public let destination: MBNamedLocation
     public let routes: [MBRoute]
 
-    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, routes: [MBRoute]) {
+    internal init(source: MBNamedLocation, waypoints: [MBNamedLocation] = [], destination: MBNamedLocation, routes: [MBRoute]) {
         self.source = source
         self.waypoints = waypoints
         self.destination = destination
@@ -37,11 +35,11 @@ public class MBRoute {
     // Mapbox-specific stuff
     public let geometry: [CLLocationCoordinate2D]
 
-    public let source: MBPoint
-    public let waypoints: [MBPoint]
-    public let destination: MBPoint
+    public let source: MBNamedLocation
+    public let waypoints: [MBNamedLocation]
+    public let destination: MBNamedLocation
 
-    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
+    internal init(source: MBNamedLocation, waypoints: [MBNamedLocation] = [], destination: MBNamedLocation, json: JSONDictionary, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.source = source
         self.waypoints = waypoints
         self.destination = destination
@@ -56,7 +54,7 @@ public class MBRoute {
             // Associate each leg JSON with an origin and destination. The sequence
             // of destinations is offset by one from the sequence of origins.
             let legInfo = zip(zip([source] + waypoints, waypoints + [destination]),
-                              json["legs"] as? [JSON] ?? [])
+                              json["legs"] as? [JSONDictionary] ?? [])
             legs = legInfo.map { (endpoints, json) -> MBRouteLeg in
                 MBRouteLeg(source: endpoints.0, destination: endpoints.1, json: json, profileIdentifier: profileIdentifier, version: version)
             }
@@ -80,16 +78,16 @@ public class MBRouteLeg {
     }
     public let profileIdentifier: String
 
-    public let source: MBPoint
-    public let destination: MBPoint
+    public let source: MBNamedLocation
+    public let destination: MBNamedLocation
 
-    internal init(source: MBPoint, destination: MBPoint, json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
+    internal init(source: MBNamedLocation, destination: MBNamedLocation, json: JSONDictionary, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
         let name = json["summary"] as? String
         var stepNamesByDistance: [String: CLLocationDistance] = [:]
-        steps = (json["steps"] as? [JSON] ?? []).map { json in
+        steps = (json["steps"] as? [JSONDictionary] ?? []).map { json in
             let step = MBRouteStep(json: json, profileIdentifier: profileIdentifier, version: version)
             // If no summary is provided for some reason, synthesize one out of the two names that make up the longest cumulative distance along the route.
             if name == nil || name!.isEmpty {
@@ -204,12 +202,12 @@ public class MBRouteStep {
     public let maneuverLocation: CLLocationCoordinate2D
     public let exitIndex: NSInteger?
 
-    internal init(json: JSON, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
+    internal init(json: JSONDictionary, profileIdentifier: String, version: MBDirectionsRequest.APIVersion) {
         self.profileIdentifier = profileIdentifier
         // v4 supplies no mode in the arrival step.
         transportType = TransportType(rawValue: json["mode"] as? String ?? "")
         
-        let maneuver = json["maneuver"] as! JSON
+        let maneuver = json["maneuver"] as! JSONDictionary
         instructions = maneuver["instruction"] as! String
         
         distance = json["distance"] as? Double ?? 0
@@ -223,9 +221,9 @@ public class MBRouteStep {
             maneuverDirection = ManeuverDirection(v4RawValue: maneuver["type"] as! String)
             exitIndex = nil
             
-            let location = maneuver["location"] as! JSON
+            let location = maneuver["location"] as! JSONDictionary
             let coordinates = location["coordinates"] as! [Double]
-            maneuverLocation = CLLocationCoordinate2D(JSONArray: coordinates)
+            maneuverLocation = CLLocationCoordinate2D(geoJSON: coordinates)
             
             name = json["way_name"] as? String
             
@@ -240,22 +238,22 @@ public class MBRouteStep {
             name = json["name"] as? String
             
             let location = maneuver["location"] as! [Double]
-            maneuverLocation = CLLocationCoordinate2D(JSONArray: location)
+            maneuverLocation = CLLocationCoordinate2D(geoJSON: location)
             
-            let jsonGeometry = json["geometry"] as? JSON
+            let jsonGeometry = json["geometry"] as? JSONDictionary
             let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-            geometry = coordinates.map(CLLocationCoordinate2D.init(JSONArray:))
+            geometry = coordinates.map(CLLocationCoordinate2D.init(geoJSON:))
         }
     }
 }
 
 public class MBETAResponse: MBResponse {
-    public let source: MBPoint
-    public let waypoints: [MBPoint]
-    public let destination: MBPoint
+    public let source: MBNamedLocation
+    public let waypoints: [MBNamedLocation]
+    public let destination: MBNamedLocation
     public let expectedTravelTime: NSTimeInterval
 
-    internal init(source: MBPoint, waypoints: [MBPoint] = [], destination: MBPoint, expectedTravelTime: NSTimeInterval) {
+    internal init(source: MBNamedLocation, waypoints: [MBNamedLocation] = [], destination: MBNamedLocation, expectedTravelTime: NSTimeInterval) {
         self.source = source
         self.waypoints = waypoints
         self.destination = destination

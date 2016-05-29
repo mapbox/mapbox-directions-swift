@@ -1,6 +1,3 @@
-import Foundation
-import CoreLocation
-
 public class MBDirectionsRequest {
     public enum APIVersion: UInt {
         case Four = 4
