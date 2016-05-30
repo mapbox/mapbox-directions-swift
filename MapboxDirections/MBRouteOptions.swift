@@ -80,7 +80,7 @@ public class RouteOptions: NSObject {
         
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? MBDirectionsProfileIdentifierAutomobile
-        self.allowUTurnAtWaypoint = self.profileIdentifier == MBDirectionsProfileIdentifierAutomobile
+        self.allowUTurnAtWaypoint = self.profileIdentifier != MBDirectionsProfileIdentifierAutomobile
     }
     
     public convenience init(locations: [CLLocation], profileIdentifier: String? = nil) {
@@ -96,6 +96,12 @@ public class RouteOptions: NSObject {
     // MARK: Specifying the Path of the Route
     
     public var waypoints: [Waypoint]
+    
+    /**
+     A Boolean value that indicates whether a returned route may require a U-turn at an intermediate waypoint.
+     
+     If the value of this property is `true`, a returned route may require a U-turn at an intermediate waypoint. If the value of this property is `false`, all returned routes may continue straight ahead or turn but may not U-turn at an intermediate waypoint. This property has no effect if only two waypoints are specified. The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` and `true` otherwise.
+     */
     public var allowUTurnAtWaypoint: Bool
     
     // MARK: Specifying Transportation Options
