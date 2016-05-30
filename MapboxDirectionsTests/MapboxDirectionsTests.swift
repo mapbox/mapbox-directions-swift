@@ -25,8 +25,8 @@ class MapboxDirectionsTests: XCTestCase {
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
-        options.includeSteps = true
-        options.includeAlternativeRoutes = true
+        options.includesSteps = true
+        options.includesAlternativeRoutes = true
         options.routeShapeResolution = .Full
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculateDirections(options: options) { (waypoints, routes, error) in

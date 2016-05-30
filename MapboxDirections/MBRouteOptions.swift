@@ -80,7 +80,7 @@ public class RouteOptions: NSObject {
         
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? MBDirectionsProfileIdentifierAutomobile
-        self.allowUTurnAtWaypoint = self.profileIdentifier != MBDirectionsProfileIdentifierAutomobile
+        self.allowsUTurnAtWaypoint = self.profileIdentifier != MBDirectionsProfileIdentifierAutomobile
     }
     
     public convenience init(locations: [CLLocation], profileIdentifier: String? = nil) {
@@ -102,7 +102,7 @@ public class RouteOptions: NSObject {
      
      If the value of this property is `true`, a returned route may require a U-turn at an intermediate waypoint. If the value of this property is `false`, all returned routes may continue straight ahead or turn but may not U-turn at an intermediate waypoint. This property has no effect if only two waypoints are specified. The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` and `true` otherwise.
      */
-    public var allowUTurnAtWaypoint: Bool
+    public var allowsUTurnAtWaypoint: Bool
     
     // MARK: Specifying Transportation Options
     
@@ -110,8 +110,27 @@ public class RouteOptions: NSObject {
     
     // MARK: Specifying the Response Format
     
-    public var includeAlternativeRoutes = false
-    public var includeSteps = false
+    /**
+     A Boolean value indicating whether alternative routes should be included in the response.
+     
+     If the value of this property is `false`, the server only calculates a single route that visits each of the waypoints. If the value of this property is `true`, the server attempts to find additional reasonable routes that visit the waypoints. Regardless, multiple routes are only returned if it is possible to visit the waypoints by a different route without significantly increasing the distance or travel time. The alternative routes may partially overlap with the preferred route, especially if intermediate waypoints are specified.
+     
+     Alternative routes may take longer to calculate and make the response significantly larger, so only request alternative routes if you intend to display them to the user or let the user choose them over the preferred route. For example, do not request alternative routes if you only want to know the distance or estimated travel time to a destination.
+     
+     The default value of this property is `false`.
+     */
+    public var includesAlternativeRoutes = false
+    
+    /**
+     A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
+     
+     If the value of this property is `true`, the returned route contains turn-by-turn instructions. Each returned `MBRoute` object contains one or more `MBRouteLeg` object that in turn contains one or more `MBRouteStep` objects. On the other hand, if the value of this property is `false`, the `MBRouteLeg` objects contain no `MBRouteStep` objects.
+     
+     If you only want to know the distance or estimated travel time to a destination, set this property to `false` to minimize the size of the response and the time it takes to calculate the response. If you need to display turn-by-turn instructions, set this property to `true`.
+     
+     The default value of this property is `false`.
+     */
+    public var includesSteps = false
     
     /**
      Format of the data from which the shapes of the returned route and its steps are derived.
@@ -141,11 +160,11 @@ public class RouteOptions: NSObject {
      */
     internal var params: [NSURLQueryItem] {
         var params: [NSURLQueryItem] = [
-            NSURLQueryItem(name: "alternatives", value: String(includeAlternativeRoutes)),
+            NSURLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             NSURLQueryItem(name: "geometries", value: String(shapeFormat)),
             NSURLQueryItem(name: "overview", value: String(routeShapeResolution)),
-            NSURLQueryItem(name: "steps", value: String(includeSteps)),
-            NSURLQueryItem(name: "continue_straight", value: String(!allowUTurnAtWaypoint)),
+            NSURLQueryItem(name: "steps", value: String(includesSteps)),
+            NSURLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
         ]
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.

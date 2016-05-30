@@ -28,7 +28,7 @@ class ViewController: UIViewController {
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
         ])
-        options.includeSteps = true
+        options.includesSteps = true
         
         Directions(accessToken: MapboxAccessToken).calculateDirections(options: options) { (waypoints, routes, error) in
             if let route = routes?.first {
