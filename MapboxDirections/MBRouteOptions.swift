@@ -148,7 +148,7 @@ public class RouteOptions: NSObject {
             params.append(NSURLQueryItem(name: "bearings", value: headings))
         }
         
-        // Include location accuracies if any waypoint’s location has a nonnegative horizontal accuracy.
+        // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
         if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
             let accuracies = waypoints.map {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"

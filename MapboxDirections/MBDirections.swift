@@ -104,7 +104,7 @@ public class Directions: NSObject {
     }
     
     /**
-     Returns a URL session task for the given URL that will run the given blocks on completion or error.
+     Returns a URL session task for the given URL that will run the given closures on completion or error.
      
      - parameter url: The URL to request.
      - parameter completionHandler: The closure to call with the parsed JSON response dictionary.
