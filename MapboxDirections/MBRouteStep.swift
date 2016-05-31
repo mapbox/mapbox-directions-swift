@@ -421,6 +421,10 @@ public class RouteStep: NSObject {
      */
     public let instructions: String
     
+    public override var description: String {
+        return instructions
+    }
+    
     /**
      The user’s heading immediately before performing the maneuver.
      */

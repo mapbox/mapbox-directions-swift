@@ -82,6 +82,10 @@ public class Route: NSObject {
      */
     public let legs: [RouteLeg]
     
+    public override var description: String {
+        return legs.map { $0.name }.joinWithSeparator(" – ")
+    }
+    
     // MARK: Getting Additional Route Details
     
     /**

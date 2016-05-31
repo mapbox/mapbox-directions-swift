@@ -124,4 +124,8 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another. When you get an array of waypoints back in the completion handler of the `Directions.calculateDirections(options:completionHandler:)` method.
      */
     public var name: String?
+    
+    public override var description: String {
+        return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
+    }
 }

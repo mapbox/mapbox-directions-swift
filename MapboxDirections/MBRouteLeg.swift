@@ -43,6 +43,10 @@ public class RouteLeg: NSObject {
      */
     public let name: String
     
+    public override var description: String {
+        return name
+    }
+    
     /**
      The route leg’s distance, measured in meters.
      
