@@ -31,12 +31,14 @@ class ViewController: UIViewController {
         options.includesSteps = true
         
         Directions(accessToken: MapboxAccessToken).calculateDirections(options: options) { (waypoints, routes, error) in
-            if let route = routes?.first {
-                print("Route summary:")
-                let steps = route.legs.first!.steps
-                print("Distance: \(route.distance) meters (\(steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
-                for step in steps {
-                    print("\(step.instructions) \(step.distance) meters")
+            if let route = routes?.first, leg = route.legs.first {
+                print("Route via \(leg.name):")
+                let formattedDistance = NSLengthFormatter().stringFromMeters(route.distance)
+                let formattedTravelTime = NSDateComponentsFormatter().stringFromTimeInterval(route.expectedTravelTime)
+                print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+                for step in leg.steps {
+                    let formattedDistance = NSLengthFormatter().stringFromMeters(step.distance)
+                    print("\(step.instructions) \(formattedDistance)")
                 }
             } else {
                 print("Error calculating directions: \(error)")
