@@ -18,7 +18,7 @@ class MapboxDirectionsTests: XCTestCase {
 
     func testDriving() {
         let json = Fixture.stringFromFileNamed("driving_dc_polyline")
-        stubRequest("GET", "https://api.mapbox.com/directions/v5/mapbox/driving/-122.42,37.78%3B-77.03,38.91.json?alternatives=true&geometries=polyline&overview=full&steps=true&continue_straight=false&access_token=\(BogusToken)").andReturn(200).withHeaders(["Content-Type": "application/json"]).withBody(json)
+        stubRequest("GET", "https://api.mapbox.com/directions/v5/mapbox/driving/-122.42,37.78%3B-77.03,38.91.json?alternatives=true&geometries=polyline&overview=full&steps=true&continue_straight=true&access_token=\(BogusToken)").andReturn(200).withHeaders(["Content-Type": "application/json"]).withBody(json)
         
         let expectation = expectationWithDescription("v4")
         let options = RouteOptions(coordinates: [
