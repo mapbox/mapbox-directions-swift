@@ -129,3 +129,23 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
 }
+
+// MARK: Support for Directions API v4
+
+extension Waypoint {
+    /**
+     Initializes a new waypoint object with the given GeoJSON point feature data.
+     
+     - parameter json: A point feature in GeoJSON format.
+     */
+    internal convenience init?(geoJSON json: JSONDictionary) {
+        assert(json["type"] as? String == "Feature")
+        
+        let coordinate = CLLocationCoordinate2D(geoJSON: json["geometry"] as! JSONDictionary)
+        
+        let propertiesJSON = json["properties"] as? JSONDictionary
+        let name = propertiesJSON?["name"] as? String
+        
+        self.init(coordinate: coordinate, name: name)
+    }
+}

@@ -116,7 +116,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
 }
 
 /**
- A structure that specifies the criteria for results returned by the Mapbox Directions API.
+ A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
  
  Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
  */
@@ -239,6 +239,16 @@ public class RouteOptions: NSObject {
     // MARK: Constructing the Request URL
     
     /**
+     The path of the request URL, not including the hostname or any parameters.
+     */
+    internal var path: String {
+        assert(!queries.isEmpty, "No query")
+        
+        let queryComponent = queries.joinWithSeparator(";")
+        return "directions/v5/\(profileIdentifier)/\(queryComponent).json"
+    }
+    
+    /**
      An array of geocoding query strings to include in the request URL.
      */
     internal var queries: [String] {
@@ -272,5 +282,118 @@ public class RouteOptions: NSObject {
         }
         
         return params
+    }
+    
+    /**
+     Returns response objects that represent the given JSON dictionary data.
+     
+     - parameter json: The API response in JSON dictionary format.
+     - returns: A tuple containing an array of waypoints and an array of routes.
+     */
+    internal func response(json json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+        let waypoints = (json["waypoints"] as? [JSONDictionary])?.map { waypoint -> Waypoint in
+            let location = waypoint["location"] as! [Double]
+            let coordinate = CLLocationCoordinate2D(geoJSON: location)
+            return Waypoint(coordinate: coordinate, name: waypoint["name"] as? String)
+        }
+        let routes = (json["routes"] as? [JSONDictionary])?.map {
+            Route(json: $0, waypoints: waypoints ?? self.waypoints, profileIdentifier: profileIdentifier)
+        }
+        return (waypoints, routes)
+    }
+}
+
+// MARK: Support for Directions API v4
+
+/**
+ A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
+ */
+@objc(MBInstructionFormat)
+public enum InstructionFormat: UInt, CustomStringConvertible {
+    /**
+     The route steps’ instructions are delivered in plain text format.
+     */
+    case Text
+    /**
+     The route steps’ instructions are delivered in HTML format.
+     
+     Key phrases are boldfaced.
+     */
+    case HTML
+    
+    public init?(description: String) {
+        let format: InstructionFormat
+        switch description {
+        case "text":
+            format = .Text
+        case "html":
+            format = .HTML
+        default:
+            return nil
+        }
+        self.init(rawValue: format.rawValue)
+    }
+    
+    public var description: String {
+        switch self {
+        case .Text:
+            return "text"
+        case .HTML:
+            return "html"
+        }
+    }
+}
+
+/**
+ A `RouteOptionsV4` object is a structure that specifies the criteria for results returned by the Mapbox Directions API v4.
+ 
+ Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
+ */
+@objc(MBRouteOptionsV4)
+public class RouteOptionsV4: RouteOptions {
+    // MARK: Specifying the Response Format
+    
+    /**
+     The format of the returned route steps’ instructions.
+     
+     By default, the value of this property is `Text`, specifying plain text instructions.
+     */
+    public var instructionFormat: InstructionFormat = .Text
+    
+    /**
+     A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
+     
+     If the value of this property is `true`, the returned routes and their route steps include coordinates; if the value of this property is `false, they do not.
+     
+     The default value of this property is `true`.
+     */
+    public var includesShapes: Bool = true
+    
+    override var path: String {
+        assert(!queries.isEmpty, "No query")
+        
+        let profileIdentifier = self.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
+        let queryComponent = queries.joinWithSeparator(";")
+        return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
+    }
+    
+    override var params: [NSURLQueryItem] {
+        return [
+            NSURLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
+            NSURLQueryItem(name: "instructions", value: String(instructionFormat)),
+            NSURLQueryItem(name: "geometry", value: includesShapes ? String(false) : String(shapeFormat)),
+            NSURLQueryItem(name: "steps", value: String(includesSteps)),
+        ]
+    }
+    
+    override func response(json json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+        let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
+        let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
+        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
+        let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
+        let routes = (json["routes"] as? [JSONDictionary])?.map {
+            RouteV4(json: $0, waypoints: waypoints, profileIdentifier: profileIdentifier)
+        }
+        return (waypoints, routes)
     }
 }

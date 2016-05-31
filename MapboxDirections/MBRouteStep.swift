@@ -197,6 +197,13 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case Arrive
     
+    /**
+     The step requires the user to arrive at an intermediate waypoint.
+     
+     This maneuver type is only used by version 4 of the Mapbox Directions API.
+     */
+    case PassWaypoint // v4
+    
     public init?(description: String) {
         let type: ManeuverType
         switch description {
@@ -226,6 +233,8 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .HeedWarning
         case "arrive":
             type = .Arrive
+        case "waypoint": // v4
+            type = .PassWaypoint
         default:
             return nil
         }
@@ -260,6 +269,8 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "notification"
         case .Arrive:
             return "arrive"
+        case .PassWaypoint: // v4
+            return "waypoint"
         }
     }
 }
@@ -495,7 +506,7 @@ public class RouteStep: NSObject {
     
     // MARK: Creating a Step
     
-    internal init(json: JSONDictionary) {
+    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
         let maneuver = json["maneuver"] as! JSONDictionary
@@ -505,18 +516,79 @@ public class RouteStep: NSObject {
         expectedTravelTime = json["duration"] as? Double ?? 0
         
         initialHeading = maneuver["bearing_before"] as? Double
-        finalHeading = maneuver["bearing_after"] as? Double
-        maneuverType = ManeuverType(description: maneuver["type"] as! String)
-        maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
+        self.finalHeading = finalHeading
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
         exitIndex = maneuver["exit"] as? Int
         
-        name = json["name"] as? String
+        self.name = name
         
-        let location = maneuver["location"] as! [Double]
-        maneuverLocation = CLLocationCoordinate2D(geoJSON: location)
+        self.maneuverLocation = maneuverLocation
+        self.coordinates = coordinates
+    }
+    
+    internal convenience init(json: JSONDictionary) {
+        let maneuver = json["maneuver"] as! JSONDictionary
+        let finalHeading = maneuver["bearing_after"] as? Double
+        let maneuverType = ManeuverType(description: maneuver["type"] as! String)
+        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
+        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
         
-        let jsonGeometry = json["geometry"] as? JSONDictionary
-        let coordinates = jsonGeometry?["coordinates"] as? [[Double]] ?? []
-        self.coordinates = coordinates.map(CLLocationCoordinate2D.init(geoJSON:))
+        let name = json["name"] as? String
+        
+        var coordinates: [CLLocationCoordinate2D]? = nil
+        if let geometry = json["geometry"] as? JSONDictionary {
+            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+        }
+        
+        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
+    }
+}
+
+// MARK: Support for Directions API v4
+
+extension ManeuverType {
+    private init?(v4Description: String) {
+        let description: String
+        switch v4Description {
+        case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
+            description = "turn"
+        case "enter roundabout":
+            description = "roundabout"
+        default:
+            description = v4Description
+        }
+        self.init(description: description)
+    }
+}
+
+extension ManeuverDirection {
+    private init?(v4TypeDescription: String) {
+        let description: String
+        switch v4TypeDescription {
+        case "bear right", "bear left":
+            description = v4TypeDescription.stringByReplacingOccurrencesOfString("bear", withString: "slight")
+        case "turn right", "turn left":
+            description = v4TypeDescription.stringByReplacingOccurrencesOfString("turn ", withString: "")
+        case "u-turn":
+            description = "uturn"
+        default:
+            description = v4TypeDescription
+        }
+        self.init(description: description)
+    }
+}
+
+internal class RouteStepV4: RouteStep {
+    internal convenience init(json: JSONDictionary) {
+        let maneuver = json["maneuver"] as! JSONDictionary
+        let heading = maneuver["heading"] as? Double
+        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
+        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
+        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
+        
+        let name = json["way_name"] as? String
+        
+        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
     }
 }

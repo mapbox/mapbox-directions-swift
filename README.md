@@ -109,6 +109,8 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
 }];
 ```
 
+This library uses version 5 of the Mapbox Directions API by default. To use version 4 instead, replace RouteOptions with RouteOptionsV4 (or MBRouteOptions with MBRouteOptionsV4).
+
 ## Tests
 
 To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 

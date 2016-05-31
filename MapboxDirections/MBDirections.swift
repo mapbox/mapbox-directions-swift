@@ -8,11 +8,25 @@ let defaultAccessToken = NSBundle.mainBundle().objectForInfoDictionaryKey("MGLMa
 
 extension CLLocationCoordinate2D {
     /**
-     Initializes a coordinate pair based on the given GeoJSON array.
+     Initializes a coordinate pair based on the given GeoJSON coordinates array.
      */
     internal init(geoJSON array: [Double]) {
         assert(array.count == 2)
         self.init(latitude: array[1], longitude: array[0])
+    }
+    
+    /**
+     Initializes a coordinate pair based on the given GeoJSON point object.
+     */
+    internal init(geoJSON point: JSONDictionary) {
+        assert(point["type"] as? String == "Point")
+        self.init(geoJSON: point["coordinates"] as! [Double])
+    }
+    
+    internal static func coordinates(geoJSON lineString: JSONDictionary) -> [CLLocationCoordinate2D] {
+        assert(lineString["type"] as? String == "LineString")
+        let coordinates = lineString["coordinates"] as! [[Double]]
+        return coordinates.map { self.init(geoJSON: $0) }
     }
 }
 
@@ -105,16 +119,8 @@ public class Directions: NSObject {
     public func calculateDirections(options options: RouteOptions, completionHandler: CompletionHandler) -> NSURLSessionDataTask {
         let url = URLForCalculatingDirections(options: options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
-            let waypoints = (json["waypoints"] as? [JSONDictionary])?.map { waypoint -> Waypoint in
-                let location = waypoint["location"] as! [Double]
-                let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                return Waypoint(coordinate: coordinate, name: waypoint["name"] as? String)
-            }
-            let routes = (json["routes"] as? [JSONDictionary])?.map {
-                Route(json: $0, waypoints: waypoints ?? options.waypoints, profileIdentifier: options.profileIdentifier)
-            }
-            
-            completionHandler(waypoints: waypoints, routes: routes, error: nil)
+            let response = options.response(json: json)
+            completionHandler(waypoints: response.0, routes: response.1, error: nil)
         }) { (error) in
             completionHandler(waypoints: nil, routes: nil, error: error)
         }
@@ -131,7 +137,7 @@ public class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    private func dataTaskWithURL(url: NSURL, completionHandler: (json: AnyObject) -> Void, errorHandler: (error: NSError) -> Void) -> NSURLSessionDataTask {
+    private func dataTaskWithURL(url: NSURL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> NSURLSessionDataTask {
         return NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data {
@@ -167,10 +173,7 @@ public class Directions: NSObject {
             NSURLQueryItem(name: "access_token", value: accessToken),
         ]
         
-        assert(!options.queries.isEmpty, "No query")
-        
-        let queryComponent = options.queries.joinWithSeparator(";")
-        let unparameterizedURL = NSURL(string: "directions/v5/\(options.profileIdentifier)/\(queryComponent).json", relativeToURL: apiEndpoint)!
+        let unparameterizedURL = NSURL(string: options.path, relativeToURL: apiEndpoint)!
         let components = NSURLComponents(URL: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.URL!
@@ -209,7 +212,8 @@ public class Directions: NSObject {
                     recoverySuggestion = "Wait until \(formattedDate) before retrying."
                 }
             default:
-                failureReason = json["message"] as? String
+                // `message` is v4 or v5; `error` is v4
+                failureReason = json["message"] as? String ?? json["error"] as? String
             }
             userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? NSHTTPURLResponse.localizedStringForStatusCode(error?.code ?? -1)
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]

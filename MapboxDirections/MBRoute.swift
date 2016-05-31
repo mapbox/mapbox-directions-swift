@@ -9,6 +9,14 @@ import Polyline
 public class Route: NSObject {
     // MARK: Creating a Route
     
+    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]) {
+        self.profileIdentifier = profileIdentifier
+        self.legs = legs
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.coordinates = coordinates
+    }
+    
     /**
      Initializes a new route object with the given JSON dictionary representation and waypoints.
      
@@ -18,18 +26,18 @@ public class Route: NSObject {
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    public init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
-        self.profileIdentifier = profileIdentifier
-        
+    public convenience init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefixUpTo(waypoints.endIndex - 1), waypoints.suffixFrom(1)),
                           json["legs"] as? [JSONDictionary] ?? [])
-        legs = legInfo.map { (endpoints, json) -> RouteLeg in
+        let legs = legInfo.map { (endpoints, json) -> RouteLeg in
             RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
         }
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        coordinates = decodePolyline(json["geometry"] as! String, precision: 1e5)!
+        let distance = json["distance"] as! Double
+        let expectedTravelTime = json["duration"] as! Double
+        let coordinates: [CLLocationCoordinate2D] = decodePolyline(json["geometry"] as! String, precision: 1e5)!
+        
+        self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
     
     // MARK: Getting the Route Geometry
@@ -108,4 +116,17 @@ public class Route: NSObject {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
     public let profileIdentifier: String
+}
+
+// MARK: Support for Directions API v4
+
+internal class RouteV4: Route {
+    convenience init(json: JSONDictionary, waypoints: [Waypoint], profileIdentifier: String) {
+        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: profileIdentifier)
+        let distance = json["distance"] as! Double
+        let expectedTravelTime = json["duration"] as! Double
+        let coordinates: [CLLocationCoordinate2D] = decodePolyline(json["geometry"] as! String, precision: 1e6)!
+        
+        self.init(profileIdentifier: profileIdentifier, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+    }
 }
