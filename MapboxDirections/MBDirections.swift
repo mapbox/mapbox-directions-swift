@@ -200,9 +200,9 @@ public class Directions: NSObject {
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
             case (429, _):
                 if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? NSTimeInterval, maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
-                    let components = NSDateComponents()
-                    components.second = Int(round(timeInterval))
-                    let formattedInterval = NSDateComponentsFormatter.localizedStringFromDateComponents(components, unitsStyle: .Full)
+                    let intervalFormatter = NSDateComponentsFormatter()
+                    intervalFormatter.unitsStyle = .Full
+                    let formattedInterval = intervalFormatter.stringFromTimeInterval(timeInterval)
                     let formattedCount = NSNumberFormatter.localizedStringFromNumber(maximumCountOfRequests, numberStyle: .DecimalStyle)
                     failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
                 }
