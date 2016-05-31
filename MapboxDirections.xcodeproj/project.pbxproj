@@ -11,7 +11,6 @@
 		9151CBAA1CB5A36C006CF17B /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 910EA7241CB5917000858D31 /* Polyline.framework */; };
 		97AA03EF5E0858F85E930708 /* Pods_Directions_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631AF10EEE2AEA937D72A8E7 /* Pods_Directions_Example.framework */; };
 		C6BB2001C88EEC2CD7D0B914 /* Pods_MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C0BE684BDAC6904D8772FE /* Pods_MapboxDirections.framework */; };
-		DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA2133B11CAEEE3200AA2594 /* RequestKit.framework */; };
 		DA2133B31CAEEFE100AA2594 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
 		DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */; };
 		DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */; };
@@ -90,7 +89,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9151CBAA1CB5A36C006CF17B /* Polyline.framework in Frameworks */,
-				DA2133B21CAEEE3200AA2594 /* RequestKit.framework in Frameworks */,
 				C6BB2001C88EEC2CD7D0B914 /* Pods_MapboxDirections.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
