@@ -159,6 +159,8 @@ public class Directions: NSObject {
     
     /**
      The HTTP URL used to fetch the routes from the API.
+     
+     After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
     public func URLForCalculatingDirections(options options: RouteOptions) -> NSURL {
         let params = options.params + [

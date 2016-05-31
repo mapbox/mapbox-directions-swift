@@ -3,10 +3,35 @@ import Polyline
 /**
  A `Route` object defines a single route that the user can follow to visit a series of waypoints in order. The route object includes information about the route, such as its distance and expected travel time. Depending on the criteria used to calculate the route, the route object may also include detailed turn-by-turn instructions.
  
- You do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+ Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method. However, if you use the `Directions.URLForCalculatingDirections(options:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
  */
 @objc(MBRoute)
 public class Route: NSObject {
+    // MARK: Creating a Route
+    
+    /**
+     Initializes a new route object with the given JSON dictionary representation and waypoints.
+     
+     This initializer is intended for use in conjunction with the `Directions.URLForCalculatingDirections(options:)` method.
+     
+     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
+     - parameter waypoints: An array of waypoints that the route visits in chronological order.
+     - parameter profileIdentifier: The profile identifier used to request the routes.
+     */
+    public init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
+        self.profileIdentifier = profileIdentifier
+        
+        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
+        let legInfo = zip(zip(waypoints.prefixUpTo(waypoints.endIndex - 1), waypoints.suffixFrom(1)),
+                          json["legs"] as? [JSONDictionary] ?? [])
+        legs = legInfo.map { (endpoints, json) -> RouteLeg in
+            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
+        }
+        distance = json["distance"] as! Double
+        expectedTravelTime = json["duration"] as! Double
+        coordinates = decodePolyline(json["geometry"] as! String, precision: 1e5)!
+    }
+    
     // MARK: Getting the Route Geometry
     
     /**
@@ -79,20 +104,4 @@ public class Route: NSObject {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
     public let profileIdentifier: String
-    
-    // MARK: Creating a Route
-    
-    internal init(json: JSONDictionary, waypoints: [Waypoint], profileIdentifier: String) {
-        self.profileIdentifier = profileIdentifier
-        
-        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let legInfo = zip(zip(waypoints.prefixUpTo(waypoints.endIndex - 1), waypoints.suffixFrom(1)),
-                          json["legs"] as? [JSONDictionary] ?? [])
-        legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
-        }
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        coordinates = decodePolyline(json["geometry"] as! String, precision: 1e5)!
-    }
 }
