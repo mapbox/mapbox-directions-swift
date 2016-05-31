@@ -194,7 +194,7 @@ public class Directions: NSObject {
                 recoverySuggestion = "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
             case (200, "NoSegment"):
                 failureReason = "A specified location could not be associated with a roadway or pathway."
-                recoverySuggestion = "Make sure the locations are close enough to a roadway or pathway. Try setting the horizontalAccuracy property of the location property of all the waypoints to a negative value."
+                recoverySuggestion = "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to a negative value."
             case (404, "ProfileNotFound"):
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
