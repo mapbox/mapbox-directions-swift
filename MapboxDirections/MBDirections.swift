@@ -1,5 +1,6 @@
 typealias JSONDictionary = [String: AnyObject]
 
+/// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
@@ -24,8 +25,24 @@ extension CLLocation {
     }
 }
 
+/**
+ A `Directions` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.
+ 
+ Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
+ */
 @objc(MBDirections)
 public class Directions: NSObject {
+    /**
+     A closure (block) to be called when a directions request is complete.
+     
+     - parameter waypoints: An array of `Waypoint` objects. Each waypoint object corresponds to a `Waypoint` object in the original `RouteOptions` object. The locations and names of these waypoints are the result of conflating the original waypoints to known roads. The waypoints may include additional information that was not specified in the original waypoints.
+        
+        If the request was canceled or there was an error obtaining the routes, this parameter may be `nil`.
+     - parameter routes: An array of `Route` objects. The preferred route is first; any alternative routes come next if the `RouteOptions` object’s `includesAlternativeRoutes` property was set to `true`. The preferred route depends on the route options object’s `profileIdentifier` property.
+        
+        If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
+     - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
+     */
     public typealias CompletionHandler = (waypoints: [Waypoint]?, routes: [Route]?, error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
@@ -47,7 +64,7 @@ public class Directions: NSObject {
      Initializes a newly created directions object with an optional access token and host.
      
      - parameter accessToken: A Mapbox [access token](https://www.mapbox.com/help/define-access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
-     - parameter host: An optional hostname to the server API. The Mapbox Directions API endpoint is used by default.
+     - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint is used by default.
      */
     public init(accessToken: String?, host: String?) {
         let accessToken = accessToken ?? defaultAccessToken
@@ -64,7 +81,7 @@ public class Directions: NSObject {
     /**
      Initializes a newly created directions object with an optional access token.
      
-     The directions object sends requests to the Mapbox Directions API endpoint.
+     The directions object sends requests to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint.
      
      - parameter accessToken: A Mapbox [access token](https://www.mapbox.com/help/define-access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
@@ -78,6 +95,8 @@ public class Directions: NSObject {
      Begins asynchronously calculating the route or routes using the given options and delivers the results to a closure.
      
      This method retrieves the routes asynchronously over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     Routes may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/). They may be cached but may not be stored permanently. To use the results in other contexts or store them permanently, [upgrade to a Mapbox enterprise plan](https://www.mapbox.com/directions/#pricing).
      
      - parameter options: A `RouteOptions` object specifying the requirements for the resulting routes.
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
