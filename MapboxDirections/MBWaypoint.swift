@@ -106,7 +106,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      A value of 0 degrees means that the approach must match the specified `heading` exactly – an unlikely scenario. A value of 180 degrees or more means that the approach may be as much as 180 degrees in either direction from the specified `heading`, effectively allowing a candidate route to approach the waypoint from any direction.
      
-     If you set the `heading` property, you should set this property to a value such as 90 degrees, to avoid filter out routes whose approaches differ only slightly from the specified `heading`. Otherwise, if the `heading` property is set to a negative value, this property is ignored.
+     If you set the `heading` property, you should set this property to a value such as 90 degrees, to avoid filtering out routes whose approaches differ only slightly from the specified `heading`. Otherwise, if the `heading` property is set to a negative value, this property is ignored.
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
      */
