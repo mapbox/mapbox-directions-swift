@@ -149,7 +149,7 @@ public class Directions: NSObject {
             }
             
             let apiStatusCode = json["code"] as? String
-            guard data != nil && error == nil && apiStatusCode == "Ok" else {
+            guard data != nil && error == nil && (apiStatusCode == nil || apiStatusCode == "Ok") else {
                 let apiError = Directions.descriptiveError(json, response: response, underlyingError: error)
                 dispatch_async(dispatch_get_main_queue()) {
                     errorHandler(error: apiError)

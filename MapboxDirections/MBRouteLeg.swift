@@ -74,7 +74,7 @@ public class RouteLeg: NSObject {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
-        self.steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
+        self.steps = steps
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
