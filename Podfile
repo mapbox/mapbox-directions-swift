@@ -13,7 +13,3 @@ target 'MapboxDirectionsTests' do
   pod 'Nocilla'
   shared_pods
 end
-
-target 'Directions Example' do
-    shared_pods
-end
