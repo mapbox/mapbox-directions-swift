@@ -9,7 +9,7 @@ import Polyline
 public class Route: NSObject {
     // MARK: Creating a Route
     
-    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]) {
+    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.profileIdentifier = profileIdentifier
         self.legs = legs
         self.distance = distance
@@ -35,7 +35,12 @@ public class Route: NSObject {
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
-        let coordinates: [CLLocationCoordinate2D] = decodePolyline(json["geometry"] as! String, precision: 1e5)!
+        let coordinates: [CLLocationCoordinate2D]?
+        if let geometry = json["geometry"] as? String {
+            coordinates = decodePolyline(geometry, precision: 1e5)!
+        } else {
+            coordinates = nil
+        }
         
         self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
@@ -45,11 +50,11 @@ public class Route: NSObject {
     /**
      An array of geographic coordinates defining the path of the route from start to finish.
      
-     This array may be empty or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
+     This array may be `nil` or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    public let coordinates: [CLLocationCoordinate2D]
+    public let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
@@ -59,7 +64,7 @@ public class Route: NSObject {
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
     public var coordinateCount: UInt {
-        return UInt(coordinates.count)
+        return UInt(coordinates?.count ?? 0)
     }
     
     /**
@@ -76,8 +81,8 @@ public class Route: NSObject {
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
     public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
-        for i in 0..<self.coordinates.count {
-            coordinates.advancedBy(i).memory = self.coordinates[i]
+        for i in 0..<(self.coordinates?.count ?? 0) {
+            coordinates.advancedBy(i).memory = self.coordinates![i]
         }
     }
     
@@ -125,7 +130,12 @@ internal class RouteV4: Route {
         let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: profileIdentifier)
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
-        let coordinates: [CLLocationCoordinate2D] = decodePolyline(json["geometry"] as! String, precision: 1e6)!
+        let coordinates: [CLLocationCoordinate2D]?
+        if let geometry = json["geometry"] as? String {
+            coordinates = decodePolyline(geometry, precision: 1e6)!
+        } else {
+            coordinates = nil
+        }
         
         self.init(profileIdentifier: profileIdentifier, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
