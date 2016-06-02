@@ -70,15 +70,28 @@ let options = RouteOptions(waypoints: [
 options.includesSteps = true
 
 let task = directions.calculateDirections(options: options) { (waypoints, routes, error) in
-    if let route = routes?.first {
-        print("Route summary:")
-        let steps = route.legs.first!.steps
-        print("Distance: \(route.distance) meters (\(steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
-        for step in steps {
-            print("\(step.instructions) \(step.distance) meters")
+    guard error == nil else {
+        print("Error calculating directions: \(error!)")
+        return
+    }
+    
+    if let route = routes?.first, leg = route.legs.first {
+        print("Route via \(leg):")
+        
+        let distanceFormatter = NSLengthFormatter()
+        let formattedDistance = distanceFormatter.stringFromMeters(route.distance)
+        
+        let travelTimeFormatter = NSDateComponentsFormatter()
+        travelTimeFormatter.unitsStyle = .Short
+        let formattedTravelTime = travelTimeFormatter.stringFromTimeInterval(route.expectedTravelTime)
+        
+        print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+        
+        for step in leg.steps {
+            print("\(step.instructions)")
+            let formattedDistance = distanceFormatter.stringFromMeters(step.distance)
+            print("— \(formattedDistance) —")
         }
-    } else {
-        print("Error calculating directions: \(error)")
     }
 }
 ```
@@ -96,15 +109,30 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
                                                       completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints,
                                                                           NSArray<MBRoute *> * _Nullable routes,
                                                                           NSError * _Nullable error) {
-    if (routes.firstObject) {
-        NSLog(@"Route summary:");
-        NSArray<MBRouteStep *> *steps = route.legs.firstObject.steps;
-        NSLog(@"Distance: %f meters (%ld route steps) in %f minutes", route.distance, steps.count, route.expectedTravelTime / 60);
-        for (MBRouteStep *step in steps) {
-            NSLog(@"%@ %f meters", step.instructions, step.distance);
-        }
-    } else {
+    if (error) {
         NSLog(@"Error calculating directions: %@", error);
+        return;
+    }
+    
+    MBRoute *route = routes.firstObject;
+    MBRouteLeg *leg = route.legs.firstObject;
+    if (leg) {
+        NSLog(@"Route via %@:", leg);
+        
+        NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
+        NSString *formattedDistance = [distanceFormatter stringFromMeters:leg.distance];
+        
+        NSDateComponentsFormatter *travelTimeFormatter = [[NSDateComponentsFormatter alloc] init];
+        travelTimeFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
+        NSString *formattedTravelTime = [travelTimeFormatter stringFromTimeInterval:route.expectedTravelTime];
+        
+        NSLog(@"Distance: %@; ETA: %@", formattedDistance, formattedTravelTime);
+        
+        for (MBRouteStep *step in leg.steps) {
+            NSLog(@"%@", step.instructions);
+            NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
+            NSLog(@"— %@ —", formattedDistance);
+        }
     }
 }];
 ```
