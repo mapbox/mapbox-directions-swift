@@ -2,6 +2,8 @@ import XCTest
 import Nocilla
 @testable import MapboxDirections
 
+let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
+
 class MapboxDirectionsTests: XCTestCase {
     override func setUp() {
         super.setUp()
@@ -14,21 +16,25 @@ class MapboxDirectionsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testV4Router() {
+    func testDriving() {
         let json = Fixture.stringFromFileNamed("driving_dc_polyline")
-        stubRequest("GET", "https://api.mapbox.com/v4/directions/mapbox.driving/-122.42,37.78;-77.03,38.91.json?access_token=\(BogusToken)&alternatives=true&geometry=polyline").andReturn(200).withHeaders(["Content-Type": "application/json"]).withBody(json)
+        stubRequest("GET", "https://api.mapbox.com/directions/v5/mapbox/driving/-122.42,37.78%3B-77.03,38.91.json?alternatives=true&geometries=polyline&overview=full&steps=true&continue_straight=true&access_token=\(BogusToken)").andReturn(200).withHeaders(["Content-Type": "application/json"]).withBody(json)
         
         let expectation = expectationWithDescription("v4")
-        let request = MBDirectionsRequest(sourceCoordinate: CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42), destinationCoordinate: CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03))
-        request.version = .Four
-        request.requestsAlternateRoutes = true
-        let directions = MBDirections(request: request, accessToken: BogusToken)
-        var routes: [MBRoute] = []
-        let task = directions.calculateDirectionsWithCompletionHandler { (response, error) in
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+        ])
+        options.includesSteps = true
+        options.includesAlternativeRoutes = true
+        options.routeShapeResolution = .Full
+        var route: Route?
+        let task = Directions(accessToken: BogusToken).calculateDirections(options: options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error)")
             
-            XCTAssertNotNil(response)
-            routes = response!.routes
+            XCTAssertNotNil(routes)
+            XCTAssertEqual(routes!.count, 2)
+            route = routes!.first!
             
             expectation.fulfill()
         }
@@ -36,20 +42,21 @@ class MapboxDirectionsTests: XCTestCase {
         
         waitForExpectationsWithTimeout(2) { (error) in
             XCTAssertNil(error, "Error: \(error)")
-            XCTAssertEqual(task?.state, .Completed)
+            XCTAssertEqual(task.state, NSURLSessionTaskState.Completed)
         }
         
-        XCTAssertEqual(routes.count, 2)
-        XCTAssertEqual(routes.first!.geometry.count, 28268)
+        XCTAssertNotNil(route)
+        XCTAssertNotNil(route!.coordinates)
+        XCTAssertEqual(route!.coordinates!.count, 28372)
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(routes.first!.geometry.first!.latitude), 38)
-        XCTAssertEqual(round(routes.first!.geometry.first!.longitude), -122)
-        XCTAssertEqual(routes.first!.legs.count, 1)
-        XCTAssertEqual(routes.first!.legs.first!.steps.count, 136)
-        XCTAssertEqual(routes.first!.legs.first!.steps[24].distance, 106_258)
-        XCTAssertEqual(routes.first!.legs.first!.steps[24].duration, 3_929)
-        XCTAssertEqual(routes.first!.legs.first!.steps[24].name, "I 80")
+        XCTAssertEqual(round(route!.coordinates!.first!.latitude), 38)
+        XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
+        XCTAssertEqual(route!.legs.count, 1)
+        XCTAssertEqual(route!.legs.first!.steps.count, 81)
+        XCTAssertEqual(route!.legs.first!.steps[24].distance, 12_623.1)
+        XCTAssertEqual(route!.legs.first!.steps[24].expectedTravelTime, 422.6)
+        XCTAssertEqual(route!.legs.first!.steps[24].name, "I 80;US 93 ALT")
     }
 }

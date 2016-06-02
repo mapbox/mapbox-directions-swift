@@ -1,193 +1,224 @@
-import Foundation
-import CoreLocation
+typealias JSONDictionary = [String: AnyObject]
 
-public typealias MBDirectionsHandler = (MBDirectionsResponse?, NSError?) -> Void
-public typealias MBETAHandler = (MBETAResponse?, NSError?) -> Void
-internal typealias JSON = [String: AnyObject]
-
+/// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
-public enum MBDirectionsErrorCode: UInt {
-    case DirectionsNotFound = 200 // code = NoRoute, NoSegment
-    case ProfileNotFound = 404 // code = ProfileNotFound
-    case InvalidInput = 422 // code = InvalidInput
-}
-
-public class MBPoint {
-
-    public let name: String?
-    public let coordinate: CLLocationCoordinate2D
-
-    internal init(name: String?, coordinate: CLLocationCoordinate2D) {
-        self.name = name
-        self.coordinate = coordinate
-    }
-
-}
+/// The Mapbox access token specified in the main application bundle’s Info.plist.
+let defaultAccessToken = NSBundle.mainBundle().objectForInfoDictionaryKey("MGLMapboxAccessToken") as? String
 
 extension CLLocationCoordinate2D {
-    internal init(JSONArray array: [Double]) {
+    /**
+     Initializes a coordinate pair based on the given GeoJSON coordinates array.
+     */
+    internal init(geoJSON array: [Double]) {
         assert(array.count == 2)
         self.init(latitude: array[1], longitude: array[0])
     }
+    
+    /**
+     Initializes a coordinate pair based on the given GeoJSON point object.
+     */
+    internal init(geoJSON point: JSONDictionary) {
+        assert(point["type"] as? String == "Point")
+        self.init(geoJSON: point["coordinates"] as! [Double])
+    }
+    
+    internal static func coordinates(geoJSON lineString: JSONDictionary) -> [CLLocationCoordinate2D] {
+        assert(lineString["type"] as? String == "LineString")
+        let coordinates = lineString["coordinates"] as! [[Double]]
+        return coordinates.map { self.init(geoJSON: $0) }
+    }
 }
 
-public class MBDirections: NSObject {
-
-    private let request: MBDirectionsRequest
-    private let configuration: MBDirectionsConfiguration
-    
-    private static let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-    public var session = NSURLSession(configuration: sessionConfiguration)
-
+extension CLLocation {
     /**
-     Initializes and returns a directions object using the given request, access token, and optional host.
-     
-     - param accessToken: A Mapbox access token.
-     - param host: An optional hostname to the server API. The Mapbox Directions API endpoint is used by default.
+     Initializes a CLLocation object with the given coordinate pair.
      */
-    public init(request: MBDirectionsRequest, accessToken: String, host: String? = nil) {
-        self.request = request
-        configuration = MBDirectionsConfiguration(accessToken, host: host)
-        super.init()
+    internal convenience init(coordinate: CLLocationCoordinate2D) {
+        self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
+}
 
-    public func calculateDirectionsWithCompletionHandler(completionHandler: MBDirectionsHandler) -> NSURLSessionDataTask? {
-        var profileIdentifier = request.profileIdentifier
-        let version = request.version
-        let router: MBDirectionsRouter
-        switch version {
-        case .Four:
-            profileIdentifier = profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: request.requestsAlternateRoutes, instructionFormat: nil, geometryFormat: .Polyline, includeSteps: nil)
-        case .Five:
-            router = MBDirectionsRouter.V5(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: request.requestsAlternateRoutes, geometryFormat: .Polyline, overviewGranularity: .Full, includeSteps: true, allowUTurnAtWaypoint: nil)
-        }
+/**
+ A `Directions` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.
+ 
+ Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
+ */
+@objc(MBDirections)
+public class Directions: NSObject {
+    /**
+     A closure (block) to be called when a directions request is complete.
+     
+     - parameter waypoints: An array of `Waypoint` objects. Each waypoint object corresponds to a `Waypoint` object in the original `RouteOptions` object. The locations and names of these waypoints are the result of conflating the original waypoints to known roads. The waypoints may include additional information that was not specified in the original waypoints.
         
-        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
-            let response = MBDirectionsResponse(source: source, waypoints: Array(waypoints), destination: destination, routes: routes.map {
-                MBRoute(source: source, waypoints: Array(waypoints), destination: destination, json: $0, profileIdentifier: profileIdentifier, version: version)
-            })
-            completionHandler(response, nil)
-        }, errorHandler: { (error) in
-            completionHandler(nil, error)
-        })
+        If the request was canceled or there was an error obtaining the routes, this parameter may be `nil`.
+     - parameter routes: An array of `Route` objects. The preferred route is first; any alternative routes come next if the `RouteOptions` object’s `includesAlternativeRoutes` property was set to `true`. The preferred route depends on the route options object’s `profileIdentifier` property.
+        
+        If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
+     - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
+     */
+    public typealias CompletionHandler = (waypoints: [Waypoint]?, routes: [Route]?, error: NSError?) -> Void
+    
+    // MARK: Creating a Directions Object
+    
+    /**
+     The shared directions object.
+     
+     To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
+     */
+    public static let sharedDirections = Directions(accessToken: nil)
+    
+    /// The API endpoint to request the directions from.
+    internal var apiEndpoint: NSURL
+    
+    /// The Mapbox access token to associate the request with.
+    internal let accessToken: String
+    
+    /**
+     Initializes a newly created directions object with an optional access token and host.
+     
+     - parameter accessToken: A Mapbox [access token](https://www.mapbox.com/help/define-access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
+     - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint is used by default.
+     */
+    public init(accessToken: String?, host: String?) {
+        let accessToken = accessToken ?? defaultAccessToken
+        assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
+        
+        self.accessToken = accessToken!
+        
+        let baseURLComponents = NSURLComponents()
+        baseURLComponents.scheme = "https"
+        baseURLComponents.host = host ?? "api.mapbox.com"
+        self.apiEndpoint = baseURLComponents.URL!
     }
-
-    public func calculateETAWithCompletionHandler(completionHandler: MBETAHandler) -> NSURLSessionDataTask? {
-        let router: MBDirectionsRouter
-        switch request.version {
-        case .Four:
-            let profileIdentifier = request.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-            router = MBDirectionsRouter.V4(config: configuration, profileIdentifier: profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: false, instructionFormat: nil, geometryFormat: .None, includeSteps: false)
-        case .Five:
-            router = MBDirectionsRouter.V5(config: configuration, profileIdentifier: request.profileIdentifier, waypoints: waypointsForDirections, includeAlternatives: false, geometryFormat: .GeoJSON, overviewGranularity: .None, includeSteps: false, allowUTurnAtWaypoint: nil)
+    
+    /**
+     Initializes a newly created directions object with an optional access token.
+     
+     The directions object sends requests to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint.
+     
+     - parameter accessToken: A Mapbox [access token](https://www.mapbox.com/help/define-access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
+     */
+    public convenience init(accessToken: String?) {
+        self.init(accessToken: accessToken, host: nil)
+    }
+    
+    // MARK: Getting Directions
+    
+    /**
+     Begins asynchronously calculating the route or routes using the given options and delivers the results to a closure.
+     
+     This method retrieves the routes asynchronously over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     Routes may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/). They may be cached but may not be stored permanently. To use the results in other contexts or store them permanently, [upgrade to a Mapbox enterprise plan](https://www.mapbox.com/directions/#pricing).
+     
+     - parameter options: A `RouteOptions` object specifying the requirements for the resulting routes.
+     - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
+     */
+    public func calculateDirections(options options: RouteOptions, completionHandler: CompletionHandler) -> NSURLSessionDataTask {
+        let url = URLForCalculatingDirections(options: options)
+        let task = dataTaskWithURL(url, completionHandler: { (json) in
+            let response = options.response(json: json)
+            completionHandler(waypoints: response.0, routes: response.1, error: nil)
+        }) { (error) in
+            completionHandler(waypoints: nil, routes: nil, error: error)
         }
-        
-        return taskWithRouter(router, completionHandler: { (source, waypoints, destination, routes, error) in
-            let expectedTravelTime = routes.flatMap {
-                $0["duration"] as? NSTimeInterval
-            }.minElement()
-            if let expectedTravelTime = expectedTravelTime {
-                let response = MBETAResponse(source: source, waypoints: waypoints, destination: destination, expectedTravelTime: expectedTravelTime)
-                completionHandler(response, nil)
-            } else {
-                completionHandler(nil, nil)
+        task.resume()
+        return task
+    }
+    
+    /**
+     Returns a URL session task for the given URL that will run the given closures on completion or error.
+     
+     - parameter url: The URL to request.
+     - parameter completionHandler: The closure to call with the parsed JSON response dictionary.
+     - parameter errorHandler: The closure to call when there is an error.
+     - returns: The data task for the URL.
+     - postcondition: The caller must resume the returned task.
+     */
+    private func dataTaskWithURL(url: NSURL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> NSURLSessionDataTask {
+        return NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+            var json: JSONDictionary = [:]
+            if let data = data {
+                do {
+                    json = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                } catch {
+                    assert(false, "Invalid data")
+                }
             }
-        }, errorHandler: { (error) in
-            completionHandler(nil, error)
-        })
-    }
-    
-    private var waypointsForDirections: [MBDirectionsWaypoint] {
-        var sourceHeading: MBDirectionsWaypoint.Heading? = nil
-        if let heading = request.sourceHeading {
-            sourceHeading = MBDirectionsWaypoint.Heading(heading: heading, headingAccuracy: 90)
-        }
-        let intermediateWaypoints = request.waypointCoordinates.map { MBDirectionsWaypoint(coordinate: $0, accuracy: nil, heading: nil) }
-        return [[MBDirectionsWaypoint(coordinate: request.sourceCoordinate, accuracy: nil, heading: sourceHeading)],
-            intermediateWaypoints,
-            [MBDirectionsWaypoint(coordinate: request.destinationCoordinate, accuracy: nil, heading: nil)]].flatMap{ $0 }
-    }
-    
-    private func taskWithRouter(router: MBDirectionsRouter, completionHandler completion: (MBPoint, [MBPoint], MBPoint, [JSON], NSError?) -> Void, errorHandler: (NSError?) -> Void) -> NSURLSessionDataTask? {
-        return router.loadJSON(session, expectedResultType: JSON.self) { (json, error) in
-            guard error == nil && json != nil else {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(error as? NSError)
+            
+            let apiStatusCode = json["code"] as? String
+            guard data != nil && error == nil && (apiStatusCode == nil || apiStatusCode == "Ok") else {
+                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error)
+                dispatch_async(dispatch_get_main_queue()) {
+                    errorHandler(error: apiError)
                 }
                 return
             }
             
-            let version: MBDirectionsRequest.APIVersion
-            var errorMessage: String? = nil
-            switch router {
-            case .V4:
-                version = .Four
-                errorMessage = json!["error"] as? String
-            case .V5:
-                version = .Five
-                if json!["code"] as? String != "ok" {
-                    errorMessage = json!["message"] as? String
-                }
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(json: json)
             }
-            
-            guard errorMessage == nil else {
-                let userInfo = [
-                    NSLocalizedFailureReasonErrorKey: errorMessage!,
-                ]
-                let apiError = NSError(domain: MBDirectionsErrorDomain, code: 200, userInfo: userInfo)
-                dispatch_sync(dispatch_get_main_queue()) {
-                    errorHandler(apiError)
-                }
-                return
-            }
-            
-            
-            let routes = json!["routes"] as! [JSON]
-            let points: [MBPoint]
-            switch version {
-            case .Four:
-                let origin = json!["origin"] as! JSON
-                let originProperties = origin["properties"] as! JSON
-                let originGeometry = origin["geometry"] as! JSON
-                let originCoordinate = CLLocationCoordinate2D(JSONArray: originGeometry["coordinates"] as! [Double])
-                let originPoint = MBPoint(name: originProperties["name"] as? String, coordinate: originCoordinate)
-                
-                let destination = json!["destination"] as! JSON
-                let destinationProperties = destination["properties"] as! JSON
-                let destinationGeometry = destination["geometry"] as! JSON
-                let destinationCoordinate = CLLocationCoordinate2D(JSONArray: destinationGeometry["coordinates"] as! [Double])
-                let destinationPoint = MBPoint(name: destinationProperties["name"] as? String, coordinate: destinationCoordinate)
-                
-                let waypoints = json!["waypoints"] as? [JSON] ?? []
-                let waypointPoints = waypoints.map { $0["geometry"] as! JSON }.map {
-                    MBPoint(name: nil, coordinate: CLLocationCoordinate2D(JSONArray: $0["coordinates"] as! [Double]))
-                }
-                
-                points = [[originPoint], waypointPoints, [destinationPoint]].flatMap{ $0 }
-            case .Five:
-                points = (json!["waypoints"] as? [JSON] ?? []).map { waypoint -> MBPoint in
-                    let location = waypoint["location"] as! [Double]
-                    let coordinate = CLLocationCoordinate2D(JSONArray: location)
-                    return MBPoint(name: waypoint["name"] as? String, coordinate: coordinate)
-                }
-            }
-            
-            let source = points.first!
-            let destination = points.last!
-            var waypoints = points.suffixFrom(1)
-            waypoints = waypoints.prefixUpTo(waypoints.count)
-            
-            dispatch_sync(dispatch_get_main_queue()) {
-                completion(source, Array(waypoints), destination, routes, error as? NSError)
-            }
-        } as? NSURLSessionDataTask
+        }
     }
-
-    public func cancel() {
-        session.invalidateAndCancel()
-        session = NSURLSession(configuration: MBDirections.sessionConfiguration)
+    
+    /**
+     The HTTP URL used to fetch the routes from the API.
+     
+     After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
+     */
+    public func URLForCalculatingDirections(options options: RouteOptions) -> NSURL {
+        let params = options.params + [
+            NSURLQueryItem(name: "access_token", value: accessToken),
+        ]
+        
+        let unparameterizedURL = NSURL(string: options.path, relativeToURL: apiEndpoint)!
+        let components = NSURLComponents(URL: unparameterizedURL, resolvingAgainstBaseURL: true)!
+        components.queryItems = params
+        return components.URL!
     }
-
+    
+    /**
+     Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
+     */
+    private static func descriptiveError(json: JSONDictionary, response: NSURLResponse?, underlyingError error: NSError?) -> NSError {
+        let apiStatusCode = json["code"] as? String
+        var userInfo = error?.userInfo ?? [:]
+        if let response = response as? NSHTTPURLResponse {
+            var failureReason: String? = nil
+            var recoverySuggestion: String? = nil
+            switch (response.statusCode, apiStatusCode ?? "") {
+            case (200, "NoRoute"):
+                failureReason = "No route could be found between the specified locations."
+                recoverySuggestion = "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
+            case (200, "NoSegment"):
+                failureReason = "A specified location could not be associated with a roadway or pathway."
+                recoverySuggestion = "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to a negative value."
+            case (404, "ProfileNotFound"):
+                failureReason = "Unrecognized profile identifier."
+                recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
+            case (429, _):
+                if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? NSTimeInterval, maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
+                    let intervalFormatter = NSDateComponentsFormatter()
+                    intervalFormatter.unitsStyle = .Full
+                    let formattedInterval = intervalFormatter.stringFromTimeInterval(timeInterval)
+                    let formattedCount = NSNumberFormatter.localizedStringFromNumber(maximumCountOfRequests, numberStyle: .DecimalStyle)
+                    failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
+                }
+                if let rolloverTimestamp = response.allHeaderFields["x-rate-limit-reset"] as? Double {
+                    let date = NSDate(timeIntervalSince1970: rolloverTimestamp)
+                    let formattedDate = NSDateFormatter.localizedStringFromDate(date, dateStyle: .LongStyle, timeStyle: .FullStyle)
+                    recoverySuggestion = "Wait until \(formattedDate) before retrying."
+                }
+            default:
+                // `message` is v4 or v5; `error` is v4
+                failureReason = json["message"] as? String ?? json["error"] as? String
+            }
+            userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? NSHTTPURLResponse.localizedStringForStatusCode(error?.code ?? -1)
+            userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
+        }
+        userInfo[NSUnderlyingErrorKey] = error
+        return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
+    }
 }

@@ -7,9 +7,6 @@ import MapboxDirections
 let MapboxAccessToken = "<# your Mapbox access token #>"
 
 class ViewController: UIViewController {
-
-    var directions: MBDirections?
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -27,25 +24,38 @@ class ViewController: UIViewController {
             return label
             }())
 
-        let mb = CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047)
-        let wh = CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365)
-
-        let request = MBDirectionsRequest(sourceCoordinate: mb, destinationCoordinate: wh)
+        let options = RouteOptions(waypoints: [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
+        ])
+        options.includesSteps = true
         
-        directions = MBDirections(request: request, accessToken: MapboxAccessToken)
-
-        directions!.calculateDirectionsWithCompletionHandler { (response, error) in
-            if let route = response?.routes.first {
-                print("Route summary:")
-                let steps = route.legs.first!.steps
-                print("Distance: \(route.distance) meters (\(steps.count) route steps) in \(route.expectedTravelTime / 60) minutes")
-                for step in steps {
-                    print("\(step.instructions) \(step.distance) meters")
+        Directions(accessToken: MapboxAccessToken).calculateDirections(options: options) { (waypoints, routes, error) in
+            guard error == nil else {
+                print("Error calculating directions: \(error!)")
+                return
+            }
+            
+            if let route = routes?.first, leg = route.legs.first {
+                print("Route via \(leg):")
+                
+                let distanceFormatter = NSLengthFormatter()
+                let formattedDistance = distanceFormatter.stringFromMeters(route.distance)
+                
+                let travelTimeFormatter = NSDateComponentsFormatter()
+                travelTimeFormatter.unitsStyle = .Short
+                let formattedTravelTime = travelTimeFormatter.stringFromTimeInterval(route.expectedTravelTime)
+                
+                print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+                
+                for step in leg.steps {
+                    print("\(step.instructions)")
+                    if step.distance > 0 {
+                        let formattedDistance = distanceFormatter.stringFromMeters(step.distance)
+                        print("— \(formattedDistance) —")
+                    }
                 }
-            } else {
-                print("Error calculating directions: \(error)")
             }
         }
     }
-
 }
