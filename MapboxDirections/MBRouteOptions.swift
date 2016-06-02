@@ -381,7 +381,7 @@ public class RouteOptionsV4: RouteOptions {
         return [
             NSURLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             NSURLQueryItem(name: "instructions", value: String(instructionFormat)),
-            NSURLQueryItem(name: "geometry", value: includesShapes ? String(false) : String(shapeFormat)),
+            NSURLQueryItem(name: "geometry", value: includesShapes ? String(shapeFormat) : String(false)),
             NSURLQueryItem(name: "steps", value: String(includesSteps)),
         ]
     }
