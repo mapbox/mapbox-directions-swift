@@ -147,10 +147,12 @@ This library uses version 5 of the Mapbox Directions API by default. To use vers
 With the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx), you can easily draw the route on a map:
 
 ```swift
+// main.swift
+
 if route.coordinateCount > 0 {
     // Convert the route’s coordinates into a polyline.
     var routeCoordinates = route.coordinates!
-    let routeLine = MGLPolyline(coordinates:&routeCoordinates, count: route.coordinateCount)
+    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
     
     // Add the polyline to the map and fit the viewport to the polyline.
     mapView.addAnnotation(routeLine)
@@ -159,8 +161,10 @@ if route.coordinateCount > 0 {
 ```
 
 ```objc
-// Convert the route’s coordinates into a polyline.
+// main.m
+
 if (route.coordinateCount) {
+    // Convert the route’s coordinates into a polyline.
     CLLocationCoordinate2D *routeCoordinates = malloc(route.coordinateCount * sizeof(CLLocationCoordinate2D));
     [route getCoordinates:routeCoordinates];
     MGLPolyline *routeLine = [MGLPolyline polylineWithCoordinates:routeCoordinates count:route.coordinateCount];
