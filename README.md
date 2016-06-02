@@ -63,10 +63,11 @@ With the directions object in hand, construct a RouteOptions or MBRouteOptions o
 ```swift
 // main.swift
 
-let options = RouteOptions(waypoints: [
+let waypoints = [
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
-])
+]
+let options = RouteOptions(waypoints: waypoints, profileIdentifier: MBDirectionsProfileIdentifierAutomobile)
 options.includesSteps = true
 
 let task = directions.calculateDirections(options: options) { (waypoints, routes, error) in
@@ -99,10 +100,12 @@ let task = directions.calculateDirections(options: options) { (waypoints, routes
 ```
 // main.m
 
-MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:@[
+NSArray<MBWaypoint *> *waypoints = @[
     [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.9131752, -77.0324047), @"Mapbox"],
     [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.8977, -77.0365), @"White House"],
-]];
+];
+MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:waypoints
+                                                  profileIdentifier:MBDirectionsProfileIdentifierAutomobile];
 options.includesSteps = YES;
 
 NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
@@ -138,6 +141,38 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
 ```
 
 This library uses version 5 of the Mapbox Directions API by default. To use version 4 instead, replace RouteOptions with RouteOptionsV4 (or MBRouteOptions with MBRouteOptionsV4).
+
+### Drawing the route on a map
+
+With the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx), you can easily draw the route on a map:
+
+```swift
+if route.coordinateCount > 0 {
+    // Convert the route’s coordinates into a polyline.
+    var routeCoordinates = route.coordinates!
+    let routeLine = MGLPolyline(coordinates:&routeCoordinates, count: route.coordinateCount)
+    
+    // Add the polyline to the map and fit the viewport to the polyline.
+    mapView.addAnnotation(routeLine)
+    mapView.setVisibleCoordinates(routeCoordinates, count: route.coordinateCount, edgePadding: UIEdgeInsetsZero, animated: true)
+}
+```
+
+```objc
+// Convert the route’s coordinates into a polyline.
+if (route.coordinateCount) {
+    CLLocationCoordinate2D *routeCoordinates = malloc(route.coordinateCount * sizeof(CLLocationCoordinate2D));
+    [route getCoordinates:routeCoordinates];
+    MGLPolyline *routeLine = [MGLPolyline polylineWithCoordinates:routeCoordinates count:route.coordinateCount];
+    
+    // Add the polyline to the map and fit the viewport to the polyline.
+    [mapView addAnnotation:routeLine];
+    [mapView setVisibleCoordinates:routeCoordinates count:route.coordinateCount edgePadding:UIEdgeInsetsZero animated:YES];
+    
+    // Make sure to free this array to avoid leaking memory.
+    free(routeCoordinates);
+}
+```
 
 ## Tests
 
