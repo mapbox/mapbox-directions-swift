@@ -97,7 +97,7 @@ let task = directions.calculateDirections(options: options) { (waypoints, routes
 }
 ```
 
-```
+```objc
 // main.m
 
 NSArray<MBWaypoint *> *waypoints = @[
