@@ -6,6 +6,51 @@ public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = NSBundle.mainBundle().objectForInfoDictionaryKey("MGLMapboxAccessToken") as? String
 
+/// The user agent string for any HTTP requests performed directly within this library.
+let userAgent: String = {
+    var components: [String] = []
+    
+    if let appName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String ?? NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as? String {
+        let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        components.append("\(appName)/\(version)")
+    }
+    
+    let libraryBundle: NSBundle? = NSBundle(forClass: Directions.self)
+    
+    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
+        components.append("\(libraryName)/\(version)")
+    }
+    
+    let system: String
+    #if os(OSX)
+        system = "OS X"
+    #elseif os(iOS)
+        system = "iOS"
+    #elseif os(watchOS)
+        system = "watchOS"
+    #elseif os(tvOS)
+        system = "tvOS"
+    #elseif os(Linux)
+        system = "Linux"
+    #endif
+    let systemVersion = NSProcessInfo().operatingSystemVersion
+    components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
+    
+    let chip: String
+    #if arch(x86_64)
+        chip = "x86_64"
+    #elseif arch(arm)
+        chip = "arm"
+    #elseif arch(arm64)
+        chip = "arm64"
+    #elseif arch(i386)
+        chip = "i386"
+    #endif
+    components.append("(\(chip))")
+    
+    return components.joinWithSeparator(" ")
+}()
+
 extension CLLocationCoordinate2D {
     /**
      Initializes a coordinate pair based on the given GeoJSON coordinates array.
@@ -138,7 +183,9 @@ public class Directions: NSObject {
      - postcondition: The caller must resume the returned task.
      */
     private func dataTaskWithURL(url: NSURL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> NSURLSessionDataTask {
-        return NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
+        let request = NSMutableURLRequest(URL: url)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        return NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data {
                 do {
