@@ -121,7 +121,6 @@
 		83C0BE684BDAC6904D8772FE /* Pods_MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B8A6B18AB25E1ED023074 /* Pods-MapboxDirectionsTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTV/Pods-MapboxDirectionsTV.release.xcconfig"; sourceTree = "<group>"; };
 		8742F3B5D746590C8C2FA4CA /* Pods-MapboxDirectionsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.release.xcconfig"; sourceTree = "<group>"; };
-		910EA7241CB5917000858D31 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = "../../Library/Developer/Xcode/DerivedData/MapboxDirections-cxcrsxhcoorbtxaohfcuxrgxzrsg/Build/Products/Debug-iphonesimulator/Polyline.framework"; sourceTree = "<group>"; };
 		982B076C0E044A2F180CE50D /* Pods-MapboxDirectionsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6C14CAB4265B5BBE0668F98 /* Pods_MapboxDirectionsMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapboxDirectionsMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A2AC67B9674D3F14B1FD6E /* Pods_MapboxDirectionsMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapboxDirectionsMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				DA1A11161D011670009F82FA /* Polyline.framework */,
-				910EA7241CB5917000858D31 /* Polyline.framework */,
 				83C0BE684BDAC6904D8772FE /* Pods_MapboxDirections.framework */,
 				D5A2AC67B9674D3F14B1FD6E /* Pods_MapboxDirectionsMac.framework */,
 				111718728E71A72F760BFBCE /* Pods_MapboxDirectionsTests.framework */,
