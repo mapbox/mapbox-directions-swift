@@ -1,26 +1,31 @@
 import XCTest
-import Nocilla
+import OHHTTPStubs
 @testable import MapboxDirections
 
-let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
-
-class MapboxDirectionsTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        LSNocilla.sharedInstance().start()
-    }
-    
+class DrivingV5Tests: XCTestCase {
     override func tearDown() {
-        LSNocilla.sharedInstance().clearStubs()
-        LSNocilla.sharedInstance().stop()
+        OHHTTPStubs.removeAllStubs()
         super.tearDown()
     }
-
-    func testDriving() {
-        let json = Fixture.stringFromFileNamed("driving_dc_polyline")
-        stubRequest("GET", "https://api.mapbox.com/directions/v5/mapbox/driving/-122.42,37.78%3B-77.03,38.91.json?alternatives=true&geometries=polyline&overview=full&steps=true&continue_straight=true&access_token=\(BogusToken)").andReturn(200).withHeaders(["Content-Type": "application/json"]).withBody(json)
+    
+    func testDirections() {
+        let expectation = expectationWithDescription("calculating directions should return results")
         
-        let expectation = expectationWithDescription("v4")
+        let queryParams: [String: String?] = [
+            "alternatives": String(true),
+            "geometries": "polyline",
+            "overview": "full",
+            "steps": String(true),
+            "continue_straight": String(true),
+            "access_token": BogusToken,
+        ]
+        stub(isHost("api.mapbox.com")
+            && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
+            && containsQueryParams(queryParams)) { _ in
+            let path = NSBundle(forClass: self.dynamicType).pathForResource("driving_dc_polyline", ofType: "json")
+            return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        }
+        
         let options = RouteOptions(coordinates: [
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),

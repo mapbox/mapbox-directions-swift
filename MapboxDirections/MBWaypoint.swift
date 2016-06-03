@@ -20,6 +20,25 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         self.name = name
     }
     
+    #if os(tvOS) || os(watchOS)
+    /**
+     Initializes a new waypoint object with the given `CLLocation` object and an optional heading value and name.
+     
+     - note: This initializer is intended for `CLLocation` objects created using the `CLLocation.init(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.
+     
+     - parameter location: A `CLLocation` object representing the waypoint’s location. This initializer respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `coordinate` and `coordinateAccuracy` properties, respectively.
+     - parameter heading: A `CLLocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
+     - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
+     */
+    public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
+        coordinate = location.coordinate
+        coordinateAccuracy = location.horizontalAccuracy
+        if let heading = heading where heading >= 0 {
+            self.heading = heading
+        }
+        self.name = name
+    }
+    #else
     /**
      Initializes a new waypoint object with the given `CLLocation` object and an optional `CLHeading` object and name.
      
@@ -37,6 +56,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         }
         self.name = name
     }
+    #endif
     
     public required init?(coder decoder: NSCoder) {
         let latitude = decoder.decodeDoubleForKey("latitude")
