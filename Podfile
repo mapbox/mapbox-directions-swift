@@ -45,5 +45,6 @@ target 'MapboxDirectionsWatch' do
 end
 
 target 'Example (Swift)' do
-    shared_pods
+  platform :ios, '8.0'
+  shared_pods
 end
