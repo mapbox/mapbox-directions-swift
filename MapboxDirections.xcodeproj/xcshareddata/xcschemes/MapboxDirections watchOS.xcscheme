@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DA1A10FA1D010361009F82FA"
-               BuildableName = "MapboxDirectionsWatch.framework"
+               BuildableName = "MapboxDirections.framework"
                BlueprintName = "MapboxDirectionsWatch"
                ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DA1A10FA1D010361009F82FA"
-            BuildableName = "MapboxDirectionsWatch.framework"
+            BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirectionsWatch"
             ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DA1A10FA1D010361009F82FA"
-            BuildableName = "MapboxDirectionsWatch.framework"
+            BuildableName = "MapboxDirections.framework"
             BlueprintName = "MapboxDirectionsWatch"
             ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
