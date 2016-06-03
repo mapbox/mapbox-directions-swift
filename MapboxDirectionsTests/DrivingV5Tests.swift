@@ -12,15 +12,15 @@ class DrivingV5Tests: XCTestCase {
         let expectation = expectationWithDescription("calculating directions should return results")
         
         let queryParams: [String: String?] = [
-            "alternatives": "true",
+            "alternatives": String(true),
             "geometries": "polyline",
             "overview": "full",
-            "steps": "true",
-            "continue_straight": "true",
+            "steps": String(true),
+            "continue_straight": String(true),
             "access_token": BogusToken,
         ]
         stub(isHost("api.mapbox.com")
-            && isPath("/directions/v5/mapbox/driving/-122.42,37.78%3B-77.03,38.91.json")
+            && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
             let path = NSBundle(forClass: self.dynamicType).pathForResource("driving_dc_polyline", ofType: "json")
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])

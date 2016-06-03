@@ -5,6 +5,7 @@ def shared_pods
 end
 
 def shared_test_pods
+  shared_pods
   pod 'OHHTTPStubs/Swift', '~> 5.0.0', :configurations => ['Debug']
 end
 
@@ -41,4 +42,8 @@ end
 target 'MapboxDirectionsWatch' do
   platform :watchos, '2.0'
   shared_pods
+end
+
+target 'Example (Swift)' do
+    shared_pods
 end
