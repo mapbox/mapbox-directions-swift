@@ -72,6 +72,7 @@ class DrivingV5Tests: XCTestCase {
         
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 699)
+        XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
         let coordinate = step.coordinates!.first!
         XCTAssertEqual(round(coordinate.latitude), 41)
         XCTAssertEqual(round(coordinate.longitude), -115)
