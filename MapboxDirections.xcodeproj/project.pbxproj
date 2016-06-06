@@ -52,6 +52,9 @@
 		DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA6C9DAC1CAEC72800094FBC /* DrivingV5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9DAB1CAEC72800094FBC /* DrivingV5Tests.swift */; };
 		DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9DB11CAECA0E00094FBC /* Fixture.swift */; };
+		DA737EE41D05F91E005BDA16 /* driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* driving_dc_geojson.json */; };
+		DA737EE51D05F91E005BDA16 /* driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* driving_dc_geojson.json */; };
+		DA737EE61D05F91E005BDA16 /* driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* driving_dc_geojson.json */; };
 		DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */; };
 		DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
 		DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */; };
@@ -141,6 +144,7 @@
 		DA6C9D9A1CAE442B00094FBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA6C9DAB1CAEC72800094FBC /* DrivingV5Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrivingV5Tests.swift; sourceTree = "<group>"; };
 		DA6C9DB11CAECA0E00094FBC /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
+		DA737EE31D05F91E005BDA16 /* driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = driving_dc_geojson.json; sourceTree = "<group>"; };
 		DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBWaypoint.swift; sourceTree = "<group>"; };
 		DAC05F171CFC075300FA0071 /* MBRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoute.swift; sourceTree = "<group>"; };
 		DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRouteLeg.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC05F1B1CFC1E5300FA0071 /* driving_dc_polyline.json */,
+				DA737EE31D05F91E005BDA16 /* driving_dc_geojson.json */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -631,6 +636,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA737EE51D05F91E005BDA16 /* driving_dc_geojson.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* driving_dc_polyline.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -646,6 +652,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA737EE61D05F91E005BDA16 /* driving_dc_geojson.json in Resources */,
 				DA1A10F31D010251009F82FA /* driving_dc_polyline.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA737EE41D05F91E005BDA16 /* driving_dc_geojson.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* driving_dc_polyline.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
