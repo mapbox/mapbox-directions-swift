@@ -2,7 +2,7 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-class DrivingV5Tests: XCTestCase {
+class V5Tests: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
@@ -22,7 +22,7 @@ class DrivingV5Tests: XCTestCase {
         stub(isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = NSBundle(forClass: self.dynamicType).pathForResource("driving_dc_\(shapeFormat)", ofType: "json")
+                let path = NSBundle(forClass: self.dynamicType).pathForResource("v5_driving_dc_\(shapeFormat)", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -63,12 +63,18 @@ class DrivingV5Tests: XCTestCase {
         XCTAssertEqual(route!.legs.count, 1)
         
         let leg = route!.legs.first!
+        XCTAssertEqual(leg.name, "I 80, I 80;US 30")
         XCTAssertEqual(leg.steps.count, 80)
         
         let step = leg.steps[24]
         XCTAssertEqual(step.distance, 223581.6)
         XCTAssertEqual(step.expectedTravelTime, 7219.2)
+        XCTAssertEqual(step.instructions, "Go straight onto I 80;US 93 Alternate, I 80;US 93 ALT becomes I 80;US 93 Alternate")
         XCTAssertEqual(step.name, "I 80;US 93 Alternate")
+        XCTAssertEqual(step.maneuverType, ManeuverType.PassNameChange)
+        XCTAssertEqual(step.maneuverDirection, ManeuverDirection.StraightAhead)
+        XCTAssertEqual(step.initialHeading, 89.0)
+        XCTAssertEqual(step.finalHeading, 90.0)
         
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 699)
