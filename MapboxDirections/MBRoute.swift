@@ -35,10 +35,14 @@ public class Route: NSObject {
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
-        let coordinates: [CLLocationCoordinate2D]?
-        if let geometry = json["geometry"] as? String {
+        
+        var coordinates: [CLLocationCoordinate2D]?
+        switch json["geometry"] {
+        case let geometry as JSONDictionary:
+            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+        case let geometry as String:
             coordinates = decodePolyline(geometry, precision: 1e5)!
-        } else {
+        default:
             coordinates = nil
         }
         
@@ -130,10 +134,14 @@ internal class RouteV4: Route {
         let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: profileIdentifier)
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
-        let coordinates: [CLLocationCoordinate2D]?
-        if let geometry = json["geometry"] as? String {
+        
+        var coordinates: [CLLocationCoordinate2D]?
+        switch json["geometry"] {
+        case let geometry as JSONDictionary:
+            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+        case let geometry as String:
             coordinates = decodePolyline(geometry, precision: 1e6)!
-        } else {
+        default:
             coordinates = nil
         }
         

@@ -69,7 +69,8 @@ extension CLLocationCoordinate2D {
     }
     
     internal static func coordinates(geoJSON lineString: JSONDictionary) -> [CLLocationCoordinate2D] {
-        assert(lineString["type"] as? String == "LineString")
+        let type = lineString["type"] as? String
+        assert(type == "LineString" || type == "Point")
         let coordinates = lineString["coordinates"] as! [[Double]]
         return coordinates.map { self.init(geoJSON: $0) }
     }

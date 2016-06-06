@@ -1,3 +1,5 @@
+import Polyline
+
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
@@ -536,9 +538,14 @@ public class RouteStep: NSObject {
         
         let name = json["name"] as? String
         
-        var coordinates: [CLLocationCoordinate2D]? = nil
-        if let geometry = json["geometry"] as? JSONDictionary {
+        var coordinates: [CLLocationCoordinate2D]?
+        switch json["geometry"] {
+        case let geometry as JSONDictionary:
             coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+        case let geometry as String:
+            coordinates = decodePolyline(geometry, precision: 1e5)!
+        default:
+            coordinates = nil
         }
         
         self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
