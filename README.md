@@ -20,6 +20,7 @@ pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirection
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
+github "raphaelmor/Polyline" ~> 3.2
 github "Mapbox/MapboxDirections.swift" ~> 0.6.0
 ```
 
