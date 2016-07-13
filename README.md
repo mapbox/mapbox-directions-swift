@@ -105,8 +105,8 @@ let task = directions.calculateDirections(options: options) { (waypoints, routes
 // main.m
 
 NSArray<MBWaypoint *> *waypoints = @[
-    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.9131752, -77.0324047), @"Mapbox"],
-    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.8977, -77.0365), @"White House"],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.9131752, -77.0324047) name:@"Mapbox"],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.8977, -77.0365) name:@"White House"],
 ];
 MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:waypoints
                                                   profileIdentifier:MBDirectionsProfileIdentifierAutomobile];
@@ -160,7 +160,7 @@ if route.coordinateCount > 0 {
     
     // Add the polyline to the map and fit the viewport to the polyline.
     mapView.addAnnotation(routeLine)
-    mapView.setVisibleCoordinates(routeCoordinates, count: route.coordinateCount, edgePadding: UIEdgeInsetsZero, animated: true)
+    mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: UIEdgeInsetsZero, animated: true)
 }
 ```
 
