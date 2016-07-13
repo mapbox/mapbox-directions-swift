@@ -1,28 +1,28 @@
 import UIKit
 import CoreLocation
 import MapboxDirections
+import Mapbox
 
 // A Mapbox access token is required to use the Directions API.
 // https://www.mapbox.com/help/create-api-access-token/
 let MapboxAccessToken = "<# your Mapbox access token #>"
 
 class ViewController: UIViewController {
+    @IBOutlet var mapView: MGLMapView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        assert(MapboxAccessToken != "<# your Mapbox access token #>", "You must set `MapboxAccessToken` to your Mapbox access token.")
+        MGLAccountManager.setAccessToken(MapboxAccessToken)
+        
+        mapView = MGLMapView(frame: view.bounds)
+        mapView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.addSubview(mapView)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
-        assert(MapboxAccessToken != "<# your Mapbox access token #>", "You must set `MapboxAccessToken` to your Mapbox access token.")
-
-        view.addSubview({ [unowned self] in
-            let label = UILabel(frame: CGRect(x: (self.view.bounds.size.width - 200) / 2,
-                y: (self.view.bounds.size.height - 40) / 2,
-                width: 200,
-                height: 40))
-            label.autoresizingMask = [ .FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin ]
-            label.textColor = UIColor.whiteColor()
-            label.textAlignment = .Center
-            label.text = "Check the console"
-            return label
-            }())
 
         let options = RouteOptions(waypoints: [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
@@ -54,6 +54,16 @@ class ViewController: UIViewController {
                         let formattedDistance = distanceFormatter.stringFromMeters(step.distance)
                         print("— \(formattedDistance) —")
                     }
+                }
+                
+                if route.coordinateCount > 0 {
+                    // Convert the route’s coordinates into a polyline.
+                    var routeCoordinates = route.coordinates!
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+                    
+                    // Add the polyline to the map and fit the viewport to the polyline.
+                    self.mapView.addAnnotation(routeLine)
+                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding:                 UIEdgeInsetsZero, animated: true)
                 }
             }
         }
