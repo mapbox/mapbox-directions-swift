@@ -53,7 +53,7 @@ MBDirections *directions = [[MBDirections alloc] initWithAccessToken:@"<#your ac
 ```
 
 ```applescript
-// AppDelegate.applescript
+-- AppDelegate.applescript
 set theDirections to alloc of MBDirections of the current application
 tell theDirections to initWithAccessToken:"<#your access token#>"
 ```
@@ -71,7 +71,7 @@ MBDirections *directions = [MBDirections sharedDirections];
 ```
 
 ```applescript
-// AppDelegate.applescript
+-- AppDelegate.applescript
 set theDirections to sharedDirections of MBDirections of the current application
 ```
 
@@ -158,7 +158,7 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
 ```
 
 ```
-// AppDelegate.applescript
+-- AppDelegate.applescript
 
 set mapbox to alloc of MBWaypoint of the current application
 tell mapbox to initWithCoordinate:{38.9131752, -77.0324047} coordinateAccuracy:-1 |name|:"Mapbox"
