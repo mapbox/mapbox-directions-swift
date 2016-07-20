@@ -47,5 +47,5 @@ end
 target 'Example (Swift)' do
   platform :ios, '8.0'
   shared_pods
-  pod 'Mapbox-iOS-SDK', '~> 3.2'
+  pod 'Mapbox-iOS-SDK', '~> 3.3'
 end
