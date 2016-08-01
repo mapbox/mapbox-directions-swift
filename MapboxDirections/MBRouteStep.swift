@@ -506,10 +506,17 @@ public class RouteStep: NSObject {
      */
     public let transportType: TransportType?
     
+    
+    /**
+     Destinations signs for the current way.
+     */
+    public let destinations: String?
+    
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
+        destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
         instructions = maneuver["instruction"] as! String

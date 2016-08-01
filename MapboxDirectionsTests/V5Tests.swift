@@ -75,6 +75,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(step.maneuverDirection, ManeuverDirection.StraightAhead)
         XCTAssertEqual(step.initialHeading, 89.0)
         XCTAssertEqual(step.finalHeading, 90.0)
+        XCTAssertEqual(step.destinations, nil)
         
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 699)
