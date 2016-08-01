@@ -508,7 +508,9 @@ public class RouteStep: NSObject {
     
     
     /**
-     Destinations signs for the current way.
+     Destinations, such as control cities, that appear on guide signage for the road identified in the name property.
+     
+     This property is typically available in steps leading to or from a freeway or expressway.
      */
     public let destinations: String?
     
