@@ -506,9 +506,8 @@ public class RouteStep: NSObject {
      */
     public let transportType: TransportType?
     
-    
     /**
-     Destinations, such as control cities, that appear on guide signage for the road identified in the name property.
+     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road identified in the `name` property.
      
      This property is typically available in steps leading to or from a freeway or expressway.
      */
