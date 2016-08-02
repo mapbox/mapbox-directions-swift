@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         view.addSubview(mapView)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         let options = RouteOptions(waypoints: [

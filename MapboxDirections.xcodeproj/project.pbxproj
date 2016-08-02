@@ -629,6 +629,7 @@
 					};
 					DD62544D1AE70C1700017857 = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -1527,6 +1528,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
 				PRODUCT_NAME = "Directions (Swift)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1538,6 +1540,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
 				PRODUCT_NAME = "Directions (Swift)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
