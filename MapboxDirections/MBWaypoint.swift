@@ -59,29 +59,29 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
     #endif
     
     public required init?(coder decoder: NSCoder) {
-        let latitude = decoder.decodeDoubleForKey("latitude")
-        let longitude = decoder.decodeDoubleForKey("longitude")
+        let latitude = decoder.decodeDouble(forKey: "latitude")
+        let longitude = decoder.decodeDouble(forKey: "longitude")
         coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        coordinateAccuracy = decoder.decodeDoubleForKey("coordinateAccuracy")
-        heading = decoder.decodeDoubleForKey("heading")
-        headingAccuracy = decoder.decodeDoubleForKey("headingAccuracy")
-        name = decoder.decodeObjectForKey("name") as? String
+        coordinateAccuracy = decoder.decodeDouble(forKey: "coordinateAccuracy")
+        heading = decoder.decodeDouble(forKey: "heading")
+        headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
+        name = decoder.decodeObject(forKey: "name") as? String
     }
     
-    public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeDouble(coordinate.latitude, forKey: "latitude")
-        coder.encodeDouble(coordinate.longitude, forKey: "longitude")
-        coder.encodeDouble(coordinateAccuracy, forKey: "coordinateAccuracy")
-        coder.encodeDouble(heading, forKey: "heading")
-        coder.encodeDouble(headingAccuracy, forKey: "headingAccuracy")
-        coder.encodeObject(name, forKey: "name")
+    public func encode(with coder: NSCoder) {
+        coder.encode(coordinate.latitude, forKey: "latitude")
+        coder.encode(coordinate.longitude, forKey: "longitude")
+        coder.encode(coordinateAccuracy, forKey: "coordinateAccuracy")
+        coder.encode(heading, forKey: "heading")
+        coder.encode(headingAccuracy, forKey: "headingAccuracy")
+        coder.encode(name, forKey: "name")
     }
     
     public static func supportsSecureCoding() -> Bool {
         return true
     }
     
-    public func copyWithZone(zone: NSZone) -> AnyObject {
+    public func copy(with zone: NSZone?) -> AnyObject {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
@@ -133,7 +133,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
     public var headingAccuracy: CLLocationDirection = -1
     
     internal var headingDescription: String {
-        return heading >= 0 && headingAccuracy >= 0 ? "\(heading % 360),\(min(headingAccuracy, 180))" : ""
+        return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
     }
     
     // MARK: Getting the Waypoint’s Name

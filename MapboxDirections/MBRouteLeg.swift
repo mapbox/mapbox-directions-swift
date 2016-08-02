@@ -59,7 +59,7 @@ public class RouteLeg: NSObject {
      
      The value of this property reflects the time it takes to traverse the route leg under ideal conditions. You should not assume that the user would travel along the route leg at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the route leg makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      */
-    public let expectedTravelTime: NSTimeInterval
+    public let expectedTravelTime: TimeInterval
     
     /**
      A string specifying the primary mode of transportation for the route leg.

@@ -9,7 +9,7 @@ import Polyline
 public class Route: NSObject {
     // MARK: Creating a Route
     
-    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.profileIdentifier = profileIdentifier
         self.legs = legs
         self.distance = distance
@@ -28,7 +28,7 @@ public class Route: NSObject {
      */
     public convenience init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let legInfo = zip(zip(waypoints.prefixUpTo(waypoints.endIndex - 1), waypoints.suffixFrom(1)),
+        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
             RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
@@ -84,9 +84,9 @@ public class Route: NSObject {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
+    public func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
         for i in 0..<(self.coordinates?.count ?? 0) {
-            coordinates.advancedBy(i).memory = self.coordinates![i]
+            coordinates.advanced(by: i).pointee = self.coordinates![i]
         }
     }
     
@@ -100,7 +100,7 @@ public class Route: NSObject {
     public let legs: [RouteLeg]
     
     public override var description: String {
-        return legs.map { $0.name }.joinWithSeparator(" – ")
+        return legs.map { $0.name }.joined(separator: " – ")
     }
     
     // MARK: Getting Additional Route Details
@@ -117,7 +117,7 @@ public class Route: NSObject {
      
      The value of this property reflects the time it takes to traverse the entire route under ideal conditions. It is the sum of the `expectedTravelTime` properties of the route’s legs. You should not assume that the user would travel along the route at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the route makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      */
-    public let expectedTravelTime: NSTimeInterval
+    public let expectedTravelTime: TimeInterval
     
     /**
      A string specifying the primary mode of transportation for the route.

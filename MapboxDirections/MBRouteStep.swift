@@ -12,28 +12,28 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile`.
      */
-    case Automobile // automobile
+    case automobile // automobile
     
     /**
      The route requires the user to board a ferry.
      
      The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that his or her vehicle is permitted onboard the ferry.
      */
-    case Ferry // automobile, walking, cycling
+    case ferry // automobile, walking, cycling
     
     /**
      The route requires the user to cross a movable bridge.
      
      The user may need to wait for the movable bridge to become passable before continuing.
      */
-    case MovableBridge // automobile, cycling
+    case movableBridge // automobile, cycling
     
     /**
      The route becomes impassable at this point.
      
      You should not encounter this transport type under normal circumstances.
      */
-    case Inaccessible // automobile, walking, cycling
+    case inaccessible // automobile, walking, cycling
     
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`
     
@@ -42,7 +42,7 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`. For cycling directions, this value indicates that the user is expected to dismount.
      */
-    case Walking // walking, cycling
+    case walking // walking, cycling
     
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`
     
@@ -51,32 +51,32 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`.
      */
-    case Cycling // cycling
+    case cycling // cycling
     
     /**
      The route requires the user to board a train.
      
      The user should consult the train’s timetable. For cycling directions, the user should also verify that bicycles are permitted onboard the train.
      */
-    case Train // cycling
+    case train // cycling
     
     public init?(description: String) {
         let type: TransportType
         switch description {
         case "driving":
-            type = .Automobile
+            type = .automobile
         case "ferry":
-            type = .Ferry
+            type = .ferry
         case "moveable bridge":
-            type = .MovableBridge
+            type = .movableBridge
         case "unaccessible":
-            type = .Inaccessible
+            type = .inaccessible
         case "walking":
-            type = .Walking
+            type = .walking
         case "cycling":
-            type = .Cycling
+            type = .cycling
         case "train":
-            type = .Train
+            type = .train
         default:
             return nil
         }
@@ -85,19 +85,19 @@ public enum TransportType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .Automobile:
+        case .automobile:
             return "driving"
-        case .Ferry:
+        case .ferry:
             return "ferry"
-        case .MovableBridge:
+        case .movableBridge:
             return "moveable bridge"
-        case .Inaccessible:
+        case .inaccessible:
             return "unaccessible"
-        case .Walking:
+        case .walking:
             return "walking"
-        case .Cycling:
+        case .cycling:
             return "cycling"
-        case .Train:
+        case .train:
             return "train"
         }
     }
@@ -115,73 +115,73 @@ public enum ManeuverType: Int, CustomStringConvertible {
      
      If the waypoint is some distance away from the nearest road, the maneuver direction indicates the direction the user must turn upon reaching the road.
      */
-    case Depart
+    case depart
     
     /**
      The step requires the user to turn.
      
      The maneuver direction indicates the direction in which the user must turn relative to the current direction of travel. The exit index indicates the number of intersections, large or small, from the previous maneuver up to and including the intersection at which the user must turn.
      */
-    case Turn
+    case turn
     
     /**
      The step requires the user to continue after a turn.
      */
-    case Continue
+    case `continue`
     
     /**
      The step requires the user to continue on the current road as it changes names.
      
      The step’s name contains the road’s new name. To get the road’s old name, use the previous step’s name.
      */
-    case PassNameChange
+    case passNameChange
     
     /**
      The step requires the user to merge onto another road.
      
      The maneuver direction indicates the side from which the other road approaches the intersection relative to the user.
      */
-    case Merge
+    case merge
     
     /**
      The step requires the user to take a entrance ramp (slip road) onto a highway.
      */
-    case TakeOnRamp
+    case takeOnRamp
     
     /**
      The step requires the user to take an exit ramp (slip road) off a highway.
      
      The maneuver direction indicates the side of the highway from which the user must exit. The exit index indicates the number of highway exits from the previous maneuver up to and including the exit that the user must take.
      */
-    case TakeOffRamp
+    case takeOffRamp
     
     /**
      The step requires the user to choose a fork at a Y-shaped fork in the road.
      
      The maneuver direction indicates which fork to take.
      */
-    case ReachFork
+    case reachFork
     
     /**
      The step requires the user to turn at either a T-shaped three-way intersection or a sharp bend in the road where the road also changes names.
      
      This maneuver type is called out separately so that the user may be able to proceed more confidently, without fear of having overshot the turn. If this distinction is unimportant to you, you may treat the maneuver as an ordinary `Turn`.
      */
-    case ReachEnd
+    case reachEnd
     
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
      The exit index indicates the number of roundabout exits up to and including the exit that the user must take.
      */
-    case TakeRoundabout
+    case takeRoundabout
     
     /**
      The step requires the user to enter and exit a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
      
      This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
      */
-    case TurnAtRoundabout
+    case turnAtRoundabout
     
     /**
      The step requires the user to respond to a change in travel conditions.
@@ -190,53 +190,53 @@ public enum ManeuverType: Int, CustomStringConvertible {
      
      Similar changes can occur simultaneously with other maneuvers, such as when the road changes its name at the site of a movable bridge. In such cases, `HeedWarning` is suppressed in favor of another maneuver type.
      */
-    case HeedWarning
+    case heedWarning
     
     /**
      The step requires the user to arrive at a waypoint.
      
      The distance and expected travel time for this step are set to zero, indicating that the route or route leg is complete. The maneuver direction indicates the side of the road on which the waypoint can be found (or whether it is straight ahead).
      */
-    case Arrive
+    case arrive
     
     /**
      The step requires the user to arrive at an intermediate waypoint.
      
      This maneuver type is only used by version 4 of the Mapbox Directions API.
      */
-    case PassWaypoint // v4
+    case passWaypoint // v4
     
     public init?(description: String) {
         let type: ManeuverType
         switch description {
         case "depart":
-            type = .Depart
+            type = .depart
         case "turn":
-            type = .Turn
+            type = .turn
         case "continue":
-            type = .Continue
+            type = .continue
         case "new name":
-            type = .PassNameChange
+            type = .passNameChange
         case "merge":
-            type = .Merge
+            type = .merge
         case "on ramp":
-            type = .TakeOnRamp
+            type = .takeOnRamp
         case "off ramp":
-            type = .TakeOffRamp
+            type = .takeOffRamp
         case "fork":
-            type = .ReachFork
+            type = .reachFork
         case "end of road":
-            type = .ReachEnd
+            type = .reachEnd
         case "roundabout":
-            type = .TakeRoundabout
+            type = .takeRoundabout
         case "roundabout turn":
-            type = .TurnAtRoundabout
+            type = .turnAtRoundabout
         case "notification":
-            type = .HeedWarning
+            type = .heedWarning
         case "arrive":
-            type = .Arrive
+            type = .arrive
         case "waypoint": // v4
-            type = .PassWaypoint
+            type = .passWaypoint
         default:
             return nil
         }
@@ -245,33 +245,33 @@ public enum ManeuverType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .Depart:
+        case .depart:
             return "depart"
-        case .Turn:
+        case .turn:
             return "turn"
-        case .Continue:
+        case .continue:
             return "continue"
-        case .PassNameChange:
+        case .passNameChange:
             return "new name"
-        case .Merge:
+        case .merge:
             return "merge"
-        case .TakeOnRamp:
+        case .takeOnRamp:
             return "on ramp"
-        case .TakeOffRamp:
+        case .takeOffRamp:
             return "off ramp"
-        case .ReachFork:
+        case .reachFork:
             return "fork"
-        case .ReachEnd:
+        case .reachEnd:
             return "end of road"
-        case .TakeRoundabout:
+        case .takeRoundabout:
             return "roundabout"
-        case .TurnAtRoundabout:
+        case .turnAtRoundabout:
             return "roundabout turn"
-        case .HeedWarning:
+        case .heedWarning:
             return "notification"
-        case .Arrive:
+        case .arrive:
             return "arrive"
-        case .PassWaypoint: // v4
+        case .passWaypoint: // v4
             return "waypoint"
         }
     }
@@ -285,64 +285,64 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     /**
      The maneuver requires a sharp turn to the right.
      */
-    case SharpRight
+    case sharpRight
     
     /**
      The maneuver requires a turn to the right, a merge to the right, or an exit on the right, or the destination is on the right.
      */
-    case Right
+    case right
     
     /**
      The maneuver requires a slight turn to the right.
      */
-    case SlightRight
+    case slightRight
     
     /**
      The maneuver requires no notable change in direction, or the destination is straight ahead.
      */
-    case StraightAhead
+    case straightAhead
     
     /**
      The maneuver requires a slight turn to the left.
      */
-    case SlightLeft
+    case slightLeft
     
     /**
      The maneuver requires a turn to the left, a merge to the left, or an exit on the left, or the destination is on the right.
      */
-    case Left
+    case left
     
     /**
      The maneuver requires a sharp turn to the left.
      */
-    case SharpLeft
+    case sharpLeft
     
     /**
      The maneuver requires a U-turn when possible.
      
      Use the difference between the step’s initial and final headings to distinguish between a U-turn to the left (typical in countries that drive on the right) and a U-turn on the right (typical in countries that drive on the left). If the difference in headings is greater than 180 degrees, the maneuver requires a U-turn to the left. If the difference in headings is less than 180 degrees, the maneuver requires a U-turn to the right.
      */
-    case UTurn
+    case uTurn
     
     public init?(description: String) {
         let direction: ManeuverDirection
         switch description {
         case "sharp right":
-            direction = .SharpRight
+            direction = .sharpRight
         case "right":
-            direction = .Right
+            direction = .right
         case "slight right":
-            direction = .SlightRight
+            direction = .slightRight
         case "straight":
-            direction = .StraightAhead
+            direction = .straightAhead
         case "slight left":
-            direction = .SlightLeft
+            direction = .slightLeft
         case "left":
-            direction = .Left
+            direction = .left
         case "sharp left":
-            direction = .SharpLeft
+            direction = .sharpLeft
         case "uturn":
-            direction = .UTurn
+            direction = .uTurn
         default:
             return nil
         }
@@ -351,21 +351,21 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .SharpRight:
+        case .sharpRight:
             return "sharp right"
-        case .Right:
+        case .right:
             return "right"
-        case .SlightRight:
+        case .slightRight:
             return "slight right"
-        case .StraightAhead:
+        case .straightAhead:
             return "straight"
-        case .SlightLeft:
+        case .slightLeft:
             return "slight left"
-        case .Left:
+        case .left:
             return "left"
-        case .SharpLeft:
+        case .sharpLeft:
             return "sharp left"
-        case .UTurn:
+        case .uTurn:
             return "uturn"
         }
     }
@@ -414,13 +414,13 @@ public class RouteStep: NSObject {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
+    public func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
         guard let stepCoordinates = self.coordinates else {
             return false
         }
         
         for i in 0..<stepCoordinates.count {
-            coordinates.advancedBy(i).memory = stepCoordinates[i]
+            coordinates.advanced(by: i).pointee = stepCoordinates[i]
         }
         return true
     }
@@ -488,7 +488,7 @@ public class RouteStep: NSObject {
      
      The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location under ideal conditions. You should not assume that the user would travel along the step at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      */
-    public let expectedTravelTime: NSTimeInterval
+    public let expectedTravelTime: TimeInterval
     
     /**
      The name of the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -582,9 +582,9 @@ extension ManeuverDirection {
         let description: String
         switch v4TypeDescription {
         case "bear right", "bear left":
-            description = v4TypeDescription.stringByReplacingOccurrencesOfString("bear", withString: "slight")
+            description = v4TypeDescription.replacingOccurrences(of: "bear", with: "slight")
         case "turn right", "turn left":
-            description = v4TypeDescription.stringByReplacingOccurrencesOfString("turn ", withString: "")
+            description = v4TypeDescription.replacingOccurrences(of: "turn ", with: "")
         case "u-turn":
             description = "uturn"
         default:

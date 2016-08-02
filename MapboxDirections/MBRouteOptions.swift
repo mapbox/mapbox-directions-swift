@@ -33,21 +33,21 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
      
      This standard format is human-readable and can be parsed straightforwardly, but it is far more verbose than `Polyline`.
      */
-    case GeoJSON
+    case geoJSON
     /**
      The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format.
      
      This machine-readable format is considerably more compact than `GeoJSON`.
      */
-    case Polyline
+    case polyline
     
     public init?(description: String) {
         let format: RouteShapeFormat
         switch description {
         case "geojson":
-            format = .GeoJSON
+            format = .geoJSON
         case "polyline":
-            format = .Polyline
+            format = .polyline
         default:
             return nil
         }
@@ -56,9 +56,9 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .GeoJSON:
+        case .geoJSON:
             return "geojson"
-        case .Polyline:
+        case .polyline:
             return "polyline"
         }
     }
@@ -74,29 +74,29 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
      
      Specify this resolution if you do not intend to show the route line to the user or analyze the route line in any way.
      */
-    case None
+    case none
     /**
      The route’s shape is simplified.
      
      This resolution considerably reduces the size of the response. The resulting shape is suitable for display at a low zoom level, but it lacks the detail necessary for focusing on individual segments of the route.
      */
-    case Low
+    case low
     /**
      The route’s shape is as detailed as possible.
      
      The resulting shape is equivalent to concatenating the shapes of all the route’s consitituent steps. You can focus on individual segments of this route while faithfully representing the path of the route. If you only intend to show a route overview and do not need to analyze the route line in any way, consider specifying `Low` instead to considerably reduce the size of the response.
      */
-    case Full
+    case full
     
     public init?(description: String) {
         let granularity: RouteShapeResolution
         switch description {
         case "false":
-            granularity = .None
+            granularity = .none
         case "simplified":
-            granularity = .Low
+            granularity = .low
         case "full":
-            granularity = .Full
+            granularity = .full
         default:
             return nil
         }
@@ -105,11 +105,11 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .None:
+        case .none:
             return "false"
-        case .Low:
+        case .low:
             return "simplified"
-        case .Full:
+        case .full:
             return "full"
         }
     }
@@ -225,7 +225,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `Polyline`.
      */
-    public var shapeFormat = RouteShapeFormat.Polyline
+    public var shapeFormat = RouteShapeFormat.polyline
     
     /**
      Resolution of the shape of the returned route.
@@ -234,7 +234,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `Low`, specifying a low-resolution route shape.
      */
-    public var routeShapeResolution = RouteShapeResolution.Low
+    public var routeShapeResolution = RouteShapeResolution.low
     
     // MARK: Constructing the Request URL
     
@@ -244,7 +244,7 @@ public class RouteOptions: NSObject {
     internal var path: String {
         assert(!queries.isEmpty, "No query")
         
-        let queryComponent = queries.joinWithSeparator(";")
+        let queryComponent = queries.joined(separator: ";")
         return "directions/v5/\(profileIdentifier)/\(queryComponent).json"
     }
     
@@ -258,27 +258,27 @@ public class RouteOptions: NSObject {
     /**
      An array of URL parameters to include in the request URL.
      */
-    internal var params: [NSURLQueryItem] {
-        var params: [NSURLQueryItem] = [
-            NSURLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            NSURLQueryItem(name: "geometries", value: String(shapeFormat)),
-            NSURLQueryItem(name: "overview", value: String(routeShapeResolution)),
-            NSURLQueryItem(name: "steps", value: String(includesSteps)),
-            NSURLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
+    internal var params: [URLQueryItem] {
+        var params: [URLQueryItem] = [
+            URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
+            URLQueryItem(name: "geometries", value: String(shapeFormat)),
+            URLQueryItem(name: "overview", value: String(routeShapeResolution)),
+            URLQueryItem(name: "steps", value: String(includesSteps)),
+            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
         ]
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
         if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
-            let headings = waypoints.map { $0.headingDescription }.joinWithSeparator(";")
-            params.append(NSURLQueryItem(name: "bearings", value: headings))
+            let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
+            params.append(URLQueryItem(name: "bearings", value: headings))
         }
         
         // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
         if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
             let accuracies = waypoints.map {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-            }.joinWithSeparator(";")
-            params.append(NSURLQueryItem(name: "radiuses", value: accuracies))
+            }.joined(separator: ";")
+            params.append(URLQueryItem(name: "radiuses", value: accuracies))
         }
         
         return params
@@ -290,7 +290,7 @@ public class RouteOptions: NSObject {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(json json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let waypoints = (json["waypoints"] as? [JSONDictionary])?.map { waypoint -> Waypoint in
             let location = waypoint["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
@@ -313,21 +313,21 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
     /**
      The route steps’ instructions are delivered in plain text format.
      */
-    case Text
+    case text
     /**
      The route steps’ instructions are delivered in HTML format.
      
      Key phrases are boldfaced.
      */
-    case HTML
+    case html
     
     public init?(description: String) {
         let format: InstructionFormat
         switch description {
         case "text":
-            format = .Text
+            format = .text
         case "html":
-            format = .HTML
+            format = .html
         default:
             return nil
         }
@@ -336,9 +336,9 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .Text:
+        case .text:
             return "text"
-        case .HTML:
+        case .html:
             return "html"
         }
     }
@@ -358,7 +358,7 @@ public class RouteOptionsV4: RouteOptions {
      
      By default, the value of this property is `Text`, specifying plain text instructions.
      */
-    public var instructionFormat: InstructionFormat = .Text
+    public var instructionFormat: InstructionFormat = .text
     
     /**
      A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
@@ -372,21 +372,21 @@ public class RouteOptionsV4: RouteOptions {
     override var path: String {
         assert(!queries.isEmpty, "No query")
         
-        let profileIdentifier = self.profileIdentifier.stringByReplacingOccurrencesOfString("/", withString: ".")
-        let queryComponent = queries.joinWithSeparator(";")
+        let profileIdentifier = self.profileIdentifier.replacingOccurrences(of: "/", with: ".")
+        let queryComponent = queries.joined(separator: ";")
         return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
     }
     
-    override var params: [NSURLQueryItem] {
+    override var params: [URLQueryItem] {
         return [
-            NSURLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            NSURLQueryItem(name: "instructions", value: String(instructionFormat)),
-            NSURLQueryItem(name: "geometry", value: includesShapes ? String(shapeFormat) : String(false)),
-            NSURLQueryItem(name: "steps", value: String(includesSteps)),
+            URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
+            URLQueryItem(name: "instructions", value: String(instructionFormat)),
+            URLQueryItem(name: "geometry", value: includesShapes ? String(shapeFormat) : String(false)),
+            URLQueryItem(name: "steps", value: String(includesSteps)),
         ]
     }
     
-    override func response(json json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    override func response(json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
