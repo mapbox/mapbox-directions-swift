@@ -506,10 +506,18 @@ public class RouteStep: NSObject {
      */
     public let transportType: TransportType?
     
+    /**
+     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road identified in the `name` property.
+     
+     This property is typically available in steps leading to or from a freeway or expressway.
+     */
+    public let destinations: String?
+    
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
+        destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
         instructions = maneuver["instruction"] as! String

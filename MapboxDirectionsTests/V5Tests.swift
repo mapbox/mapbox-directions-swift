@@ -40,7 +40,7 @@ class V5Tests: XCTestCase {
             XCTAssertNil(error, "Error: \(error)")
             
             XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 2)
+            XCTAssertEqual(routes!.count, 1)
             route = routes!.first!
             
             expectation.fulfill()
@@ -54,7 +54,7 @@ class V5Tests: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 28375)
+        XCTAssertEqual(route!.coordinates!.count, 842)
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
@@ -63,25 +63,29 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(route!.legs.count, 1)
         
         let leg = route!.legs.first!
-        XCTAssertEqual(leg.name, "I 80, I 80;US 30")
-        XCTAssertEqual(leg.steps.count, 80)
+        XCTAssertEqual(leg.name, "CA 24, Camino Tassajara")
+        XCTAssertEqual(leg.steps.count, 22)
         
-        let step = leg.steps[24]
-        XCTAssertEqual(step.distance, 223581.6)
-        XCTAssertEqual(step.expectedTravelTime, 7219.2)
-        XCTAssertEqual(step.instructions, "Go straight onto I 80;US 93 Alternate, I 80;US 93 ALT becomes I 80;US 93 Alternate")
-        XCTAssertEqual(step.name, "I 80;US 93 Alternate")
-        XCTAssertEqual(step.maneuverType, ManeuverType.PassNameChange)
-        XCTAssertEqual(step.maneuverDirection, ManeuverDirection.StraightAhead)
-        XCTAssertEqual(step.initialHeading, 89.0)
-        XCTAssertEqual(step.finalHeading, 90.0)
+        let step = leg.steps[16]
+        XCTAssertEqual(round(step.distance), 166)
+        XCTAssertEqual(round(step.expectedTravelTime), 13)
+        XCTAssertEqual(step.instructions, "Take the ramp on the right")
+        
+        XCTAssertEqual(step.name, "")
+        XCTAssertEqual(step.destinations, "Sycamore Valley Road")
+        XCTAssertEqual(step.maneuverType, ManeuverType.TakeOffRamp)
+        XCTAssertEqual(step.maneuverDirection, ManeuverDirection.SlightRight)
+        XCTAssertEqual(step.initialHeading, 182)
+        XCTAssertEqual(step.finalHeading, 196)
         
         XCTAssertNotNil(step.coordinates)
-        XCTAssertEqual(step.coordinates!.count, 699)
+        XCTAssertEqual(step.coordinates!.count, 5)
         XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
         let coordinate = step.coordinates!.first!
-        XCTAssertEqual(round(coordinate.latitude), 41)
-        XCTAssertEqual(round(coordinate.longitude), -115)
+        XCTAssertEqual(round(coordinate.latitude), 38)
+        XCTAssertEqual(round(coordinate.longitude), -122)
+        
+        XCTAssertEqual(leg.steps[18].name, "Sycamore Valley Road West")
     }
     
     func testGeoJSON() {
