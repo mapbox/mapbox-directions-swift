@@ -5,6 +5,8 @@
 public class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
     
+    public static var supportsSecureCoding = true
+    
     /**
      Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.
      
@@ -33,7 +35,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
     public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
-        if let heading = heading where heading >= 0 {
+        if let heading = heading , heading >= 0 {
             self.heading = heading
         }
         self.name = name
@@ -75,10 +77,6 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(heading, forKey: "heading")
         coder.encode(headingAccuracy, forKey: "headingAccuracy")
         coder.encode(name, forKey: "name")
-    }
-    
-    public static func supportsSecureCoding() -> Bool {
-        return true
     }
     
     public func copy(with zone: NSZone?) -> AnyObject {

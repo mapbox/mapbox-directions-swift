@@ -17,7 +17,7 @@ let userAgent: String = {
     
     let libraryBundle: Bundle? = Bundle(for: Directions.self)
     
-    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
+    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, let version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
         components.append("\(libraryName)/\(version)")
     }
     
@@ -186,7 +186,7 @@ public class Directions: NSObject {
     private func dataTaskWithURL(_ url: URL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> URLSessionDataTask {
         let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        return URLSession.shared.dataTask(with: request) { (data, response, error) in
+        return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data {
                 do {
@@ -223,7 +223,7 @@ public class Directions: NSObject {
         ]
         
         let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
-        let components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
+        var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!
     }
@@ -248,7 +248,7 @@ public class Directions: NSObject {
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
             case (429, _):
-                if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? TimeInterval, maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
+                if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? TimeInterval, let maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
                     let intervalFormatter = DateComponentsFormatter()
                     intervalFormatter.unitsStyle = .full
                     let formattedInterval = intervalFormatter.string(from: timeInterval)

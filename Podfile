@@ -1,7 +1,7 @@
 use_frameworks!
 
 def shared_pods
-  pod 'Polyline', '~> 3.2'
+  pod 'Polyline', :git => 'https://github.com/superpeteblaze/Polyline', :branch => 'swift3'
 end
 
 def shared_test_pods

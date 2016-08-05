@@ -627,6 +627,7 @@
 					};
 					DA6C9D901CAE442B00094FBC = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					DD62544D1AE70C1700017857 = {
 						CreatedOnToolsVersion = 6.3;
