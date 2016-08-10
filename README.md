@@ -16,6 +16,7 @@ MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com
 Specify the following dependency in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
+pod 'Polyline', :git => 'https://github.com/superpeteblaze/Polyline', :branch => 'swift3'
 pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :tag => 'v0.6.0'
 ```
 
