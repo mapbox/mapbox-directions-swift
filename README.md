@@ -238,3 +238,5 @@ To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org
 1. `pod install`
 1. `open MapboxDirections.xcworkspace`
 1. Switch to the MapboxDirections scheme and go to Product ‣ Test.
+
+The workspace requires CocoaPods 1.1.0.beta.1 or greater if opening inside Xcode 8.
