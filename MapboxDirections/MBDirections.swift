@@ -190,7 +190,7 @@ public class Directions: NSObject {
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data {
-                do  {
+                do {
                     json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
                 } catch {
                     assert(false, "Invalid data")
