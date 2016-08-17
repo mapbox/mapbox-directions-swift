@@ -103,7 +103,7 @@ public class Directions: NSObject {
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias CompletionHandler = (waypoints: [Waypoint]?, routes: [Route]?, error: NSError?) -> Void
+    public typealias CompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -166,9 +166,9 @@ public class Directions: NSObject {
         let url = URLForCalculatingDirections(options: options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
             let response = options.response(json: json)
-            completionHandler(waypoints: response.0, routes: response.1, error: nil)
+            completionHandler(response.0, response.1, nil)
         }) { (error) in
-            completionHandler(waypoints: nil, routes: nil, error: error)
+            completionHandler(nil, nil, error)
         }
         task.resume()
         return task
@@ -183,13 +183,14 @@ public class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    private func dataTaskWithURL(_ url: URL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> URLSessionDataTask {
+    private func dataTaskWithURL(_ url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+        
         let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data {
-                do {
+                do  {
                     json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
                 } catch {
                     assert(false, "Invalid data")
@@ -199,15 +200,15 @@ public class Directions: NSObject {
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
             guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
-                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error)
+                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error as NSError?)
                 DispatchQueue.main.async {
-                    errorHandler(error: apiError)
+                    errorHandler(apiError)
                 }
                 return
             }
             
             DispatchQueue.main.async {
-                completionHandler(json: json)
+                completionHandler(json)
             }
         }
     }
@@ -252,7 +253,7 @@ public class Directions: NSObject {
                     let intervalFormatter = DateComponentsFormatter()
                     intervalFormatter.unitsStyle = .full
                     let formattedInterval = intervalFormatter.string(from: timeInterval)
-                    let formattedCount = NumberFormatter.localizedString(from: maximumCountOfRequests, number: .decimal)
+                    let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: maximumCountOfRequests), number: .decimal)
                     failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
                 }
                 if let rolloverTimestamp = response.allHeaderFields["x-rate-limit-reset"] as? Double {

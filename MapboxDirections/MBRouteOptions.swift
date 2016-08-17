@@ -261,8 +261,8 @@ public class RouteOptions: NSObject {
     internal var params: [URLQueryItem] {
         var params: [URLQueryItem] = [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "geometries", value: String(shapeFormat)),
-            URLQueryItem(name: "overview", value: String(routeShapeResolution)),
+            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
+            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
         ]
@@ -380,8 +380,8 @@ public class RouteOptionsV4: RouteOptions {
     override var params: [URLQueryItem] {
         return [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "instructions", value: String(instructionFormat)),
-            URLQueryItem(name: "geometry", value: includesShapes ? String(shapeFormat) : String(false)),
+            URLQueryItem(name: "instructions", value: String(describing: instructionFormat)),
+            URLQueryItem(name: "geometry", value: includesShapes ? String(describing: shapeFormat) : String(false)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
         ]
     }

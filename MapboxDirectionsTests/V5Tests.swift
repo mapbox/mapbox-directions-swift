@@ -22,7 +22,7 @@ class V5Tests: XCTestCase {
         stub(isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = NSBundle(forClass: self.dynamicType).pathForResource("v5_driving_dc_\(shapeFormat)", ofType: "json")
+                let path = NSBundle(forClass: type(of: self)).pathForResource("v5_driving_dc_\(shapeFormat)", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         

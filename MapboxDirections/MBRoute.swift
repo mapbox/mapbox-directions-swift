@@ -9,7 +9,7 @@ import Polyline
 public class Route: NSObject {
     // MARK: Creating a Route
     
-    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    internal init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.profileIdentifier = profileIdentifier
         self.legs = legs
         self.distance = distance

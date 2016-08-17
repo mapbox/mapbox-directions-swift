@@ -563,7 +563,7 @@ public class RouteStep: NSObject {
 // MARK: Support for Directions API v4
 
 extension ManeuverType {
-    private init?(v4Description: String) {
+    internal init?(v4Description: String) {
         let description: String
         switch v4Description {
         case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
@@ -578,7 +578,7 @@ extension ManeuverType {
 }
 
 extension ManeuverDirection {
-    private init?(v4TypeDescription: String) {
+    internal init?(v4TypeDescription: String) {
         let description: String
         switch v4TypeDescription {
         case "bear right", "bear left":

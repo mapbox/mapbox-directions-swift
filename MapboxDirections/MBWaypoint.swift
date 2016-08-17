@@ -79,7 +79,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(name, forKey: "name")
     }
     
-    public func copy(with zone: NSZone?) -> AnyObject {
+    public func copy(with zone: NSZone?) -> Any {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
