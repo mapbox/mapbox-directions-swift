@@ -17,14 +17,14 @@ Specify the following dependency in your [CocoaPods](http://cocoapods.org/) Podf
 
 ```podspec
 pod 'Polyline', :git => 'https://github.com/superpeteblaze/Polyline', :branch => 'swift3'
-pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :tag => 'v0.6.0'
+pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :branch => 'swift3'
 ```
 
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
 github "superpeteblaze/Polyline" "swift3"
-github "Mapbox/MapboxDirections.swift" ~> 0.6.0
+github "Mapbox/MapboxDirections.swift" "Swift3"
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
