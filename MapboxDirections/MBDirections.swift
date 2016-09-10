@@ -91,7 +91,7 @@ extension CLLocation {
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
 @objc(MBDirections)
-public class Directions: NSObject {
+open class Directions: NSObject {
     /**
      A closure (block) to be called when a directions request is complete.
      
@@ -112,7 +112,7 @@ public class Directions: NSObject {
      
      To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    public static let sharedDirections = Directions(accessToken: nil)
+    open static let sharedDirections = Directions(accessToken: nil)
     
     /// The API endpoint to request the directions from.
     internal var apiEndpoint: URL
@@ -162,10 +162,10 @@ public class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    public func calculateDirections(options: RouteOptions, completionHandler: CompletionHandler) -> URLSessionDataTask {
-        let url = URLForCalculatingDirections(options: options)
+    open func calculateDirections(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+        let url = URLForCalculatingDirections(options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
-            let response = options.response(json: json)
+            let response = options.response(json)
             completionHandler(response.0, response.1, nil)
         }) { (error) in
             completionHandler(nil, nil, error)
@@ -183,7 +183,7 @@ public class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    private func dataTaskWithURL(_ url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTaskWithURL(_ url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -218,7 +218,7 @@ public class Directions: NSObject {
      
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
-    public func URLForCalculatingDirections(options: RouteOptions) -> URL {
+    open func URLForCalculatingDirections(_ options: RouteOptions) -> URL {
         let params = options.params + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
@@ -232,7 +232,7 @@ public class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    private static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
+    fileprivate static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         let apiStatusCode = json["code"] as? String
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {

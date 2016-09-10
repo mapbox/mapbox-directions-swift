@@ -121,7 +121,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
  Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
-public class RouteOptions: NSObject {
+open class RouteOptions: NSObject {
     // MARK: Creating a Route Options Object
     
     /**
@@ -172,7 +172,7 @@ public class RouteOptions: NSObject {
      
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
-    public var waypoints: [Waypoint]
+    open var waypoints: [Waypoint]
     
     /**
      A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.
@@ -183,7 +183,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` and `true` otherwise.
      */
-    public var allowsUTurnAtWaypoint: Bool
+    open var allowsUTurnAtWaypoint: Bool
     
     // MARK: Specifying Transportation Options
     
@@ -192,7 +192,7 @@ public class RouteOptions: NSObject {
      
      This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
-    public var profileIdentifier: String
+    open var profileIdentifier: String
     
     // MARK: Specifying the Response Format
     
@@ -205,7 +205,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `false`.
      */
-    public var includesAlternativeRoutes = false
+    open var includesAlternativeRoutes = false
     
     /**
      A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
@@ -216,7 +216,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `false`.
      */
-    public var includesSteps = false
+    open var includesSteps = false
     
     /**
      Format of the data from which the shapes of the returned route and its steps are derived.
@@ -225,7 +225,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `Polyline`.
      */
-    public var shapeFormat = RouteShapeFormat.polyline
+    open var shapeFormat = RouteShapeFormat.polyline
     
     /**
      Resolution of the shape of the returned route.
@@ -234,7 +234,7 @@ public class RouteOptions: NSObject {
      
      The default value of this property is `Low`, specifying a low-resolution route shape.
      */
-    public var routeShapeResolution = RouteShapeResolution.low
+    open var routeShapeResolution = RouteShapeResolution.low
     
     // MARK: Constructing the Request URL
     
@@ -290,7 +290,7 @@ public class RouteOptions: NSObject {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(_ json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let waypoints = (json["waypoints"] as? [JSONDictionary])?.map { waypoint -> Waypoint in
             let location = waypoint["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
@@ -350,7 +350,7 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
  Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
  */
 @objc(MBRouteOptionsV4)
-public class RouteOptionsV4: RouteOptions {
+open class RouteOptionsV4: RouteOptions {
     // MARK: Specifying the Response Format
     
     /**
@@ -358,7 +358,7 @@ public class RouteOptionsV4: RouteOptions {
      
      By default, the value of this property is `Text`, specifying plain text instructions.
      */
-    public var instructionFormat: InstructionFormat = .text
+    open var instructionFormat: InstructionFormat = .text
     
     /**
      A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
@@ -367,7 +367,7 @@ public class RouteOptionsV4: RouteOptions {
      
      The default value of this property is `true`.
      */
-    public var includesShapes: Bool = true
+    open var includesShapes: Bool = true
     
     override var path: String {
         assert(!queries.isEmpty, "No query")
@@ -386,7 +386,7 @@ public class RouteOptionsV4: RouteOptions {
         ]
     }
     
-    override func response(json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    override func response(_ json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }

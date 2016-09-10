@@ -2,10 +2,10 @@
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculateDirections(options:completionHandler:)` method.
  */
 @objc(MBWaypoint)
-public class Waypoint: NSObject, NSCopying, NSSecureCoding {
+open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
     
-    public static var supportsSecureCoding = true
+    open static var supportsSecureCoding = true
     
     /**
      Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.
@@ -70,7 +70,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         name = decoder.decodeObject(forKey: "name") as? String
     }
     
-    public func encode(with coder: NSCoder) {
+    open func encode(with coder: NSCoder) {
         coder.encode(coordinate.latitude, forKey: "latitude")
         coder.encode(coordinate.longitude, forKey: "longitude")
         coder.encode(coordinateAccuracy, forKey: "coordinateAccuracy")
@@ -79,7 +79,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(name, forKey: "name")
     }
     
-    public func copy(with zone: NSZone?) -> Any {
+    open func copy(with zone: NSZone?) -> Any {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
@@ -91,7 +91,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The geographic coordinate of the waypoint.
      */
-    public let coordinate: CLLocationCoordinate2D
+    open let coordinate: CLLocationCoordinate2D
     
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -100,7 +100,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number.
      */
-    public var coordinateAccuracy: CLLocationAccuracy = -1
+    open var coordinateAccuracy: CLLocationAccuracy = -1
     
     // MARK: Getting the Direction of Approach
     
@@ -117,7 +117,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var heading: CLLocationDirection = -1
+    open var heading: CLLocationDirection = -1
     
     /**
      The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from `heading` in either direction in order to be considered viable.
@@ -128,7 +128,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var headingAccuracy: CLLocationDirection = -1
+    open var headingAccuracy: CLLocationDirection = -1
     
     internal var headingDescription: String {
         return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
@@ -141,9 +141,9 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another. When you get an array of waypoints back in the completion handler of the `Directions.calculateDirections(options:completionHandler:)` method.
      */
-    public var name: String?
+    open var name: String?
     
-    public override var description: String {
+    open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
 }
