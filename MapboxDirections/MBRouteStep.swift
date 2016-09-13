@@ -377,7 +377,7 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
 @objc(MBRouteStep)
-public class RouteStep: NSObject {
+public class RouteStep: NSObject, NSSecureCoding {
     // MARK: Getting the Step Geometry
     
     /**
@@ -472,7 +472,7 @@ public class RouteStep: NSObject {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    public let exitIndex: NSInteger?
+    public let exitIndex: Int?
     
     // MARK: Getting Details About the Approach to the Next Maneuver
     
@@ -557,6 +557,77 @@ public class RouteStep: NSObject {
         }
         
         self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateValues = decoder.decodeObjectForKey("coordinates") as? [NSValue]
+        coordinates = coordinateValues?.map({ (value) -> CLLocationCoordinate2D in
+            var coordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+            value.getValue(&coordinate)
+            return coordinate
+        })
+        
+        instructions = decoder.decodeObjectForKey("instructions") as! String
+        initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
+        finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
+        
+        let maneuverTypeDescription = decoder.decodeObjectForKey("maneuverType") as! String
+        maneuverType = ManeuverType(description: maneuverTypeDescription)
+        let maneuverDirectionDescription = decoder.decodeObjectForKey("maneuverDirection") as! String
+        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        
+        let maneuverLocationValue = decoder.decodeObjectForKey("maneuverLocation") as! NSValue
+        var maneuverLocation = kCLLocationCoordinate2DInvalid
+        maneuverLocationValue.getValue(&maneuverLocation)
+        self.maneuverLocation = maneuverLocation
+        
+        exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        name = decoder.decodeObjectForKey("name") as? String
+        
+        let transportTypeDescription = decoder.decodeObjectForKey("transportType") as! String
+        transportType = TransportType(description: transportTypeDescription)
+        
+        destinations = decoder.decodeObjectForKey("destinations") as? String
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        let coordinateValues = coordinates?.map { (coordinate) -> NSValue in
+            var coordinate = coordinate
+            return NSValue(bytes: &coordinate, objCType: "{dd}")
+        }
+        coder.encodeObject(coordinateValues, forKey: "coordinates")
+        
+        coder.encodeObject(instructions, forKey: "instructions")
+        
+        if let initialHeading = initialHeading {
+            coder.encodeDouble(initialHeading, forKey: "initialHeading")
+        }
+        if let finalHeading = finalHeading {
+            coder.encodeDouble(finalHeading, forKey: "finalHeading")
+        }
+        
+        coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
+        coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
+        
+        var maneuverLocation = self.maneuverLocation
+        let maneuverLocationValue = NSValue(bytes: &maneuverLocation, objCType: "{dd}")
+        coder.encodeObject(maneuverLocationValue, forKey: "maneuverLocation")
+        
+        if let exitIndex = exitIndex {
+            coder.encodeInteger(exitIndex, forKey: "exitIndex")
+        }
+        
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(transportType?.description, forKey: "transportType")
+        coder.encodeObject(destinations, forKey: "destinations")
     }
 }
 

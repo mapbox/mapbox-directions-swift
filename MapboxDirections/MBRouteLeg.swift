@@ -6,7 +6,7 @@ import Polyline
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
  */
 @objc(MBRouteLeg)
-public class RouteLeg: NSObject {
+public class RouteLeg: NSObject, NSSecureCoding {
     // MARK: Getting the Leg Geometry
     
     /**
@@ -83,6 +83,30 @@ public class RouteLeg: NSObject {
     internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        source = decoder.decodeObjectForKey("source") as! Waypoint
+        destination = decoder.decodeObjectForKey("destination") as! Waypoint
+        steps = decoder.decodeObjectForKey("steps") as? [RouteStep] ?? []
+        name = decoder.decodeObjectForKey("name") as! String
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        profileIdentifier = decoder.decodeObjectForKey("profileIdentifier") as! String
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(source, forKey: "source")
+        coder.encodeObject(destination, forKey: "destination")
+        coder.encodeObject(steps, forKey: "steps")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
     }
 }
 
