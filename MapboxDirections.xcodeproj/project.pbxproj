@@ -1431,7 +1431,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AB05E29E43D55326F7FA67B /* Pods-WatchExample.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1456,7 +1455,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 05045275F3647340E9698D26 /* Pods-WatchExample.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
