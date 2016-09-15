@@ -6,7 +6,7 @@ end
 
 def shared_test_pods
   shared_pods
-  pod 'OHHTTPStubs/Swift', :git => 'https://github.com/AliSoftware/OHHTTPStubs.git', :commit => '4995ecd762abdd81227d14faf65fde003fbbe789', :configurations => ['Debug']
+  pod 'OHHTTPStubs/Swift', '~> 5.0', :configurations => ['Debug']
 end
 
 target 'MapboxDirections' do
