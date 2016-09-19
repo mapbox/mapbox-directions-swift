@@ -50,12 +50,8 @@ public class Route: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateValues = decoder.decodeObjectForKey("coordinates") as? [NSValue]
-        coordinates = coordinateValues?.map({ (value) -> CLLocationCoordinate2D in
-            var coordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
-            value.getValue(&coordinate)
-            return coordinate
-        })
+        let coordinateDictionaries = decoder.decodeObjectForKey("coordinates") as? [[String: CLLocationDegrees]]
+        coordinates = coordinateDictionaries?.map { CLLocationCoordinate2D(latitude: $0["latitude"]!, longitude: $0["longitude"]!) }
         
         legs = decoder.decodeObjectForKey("legs") as? [RouteLeg] ?? []
         distance = decoder.decodeDoubleForKey("distance")
@@ -68,11 +64,11 @@ public class Route: NSObject, NSSecureCoding {
     }
     
     public func encodeWithCoder(coder: NSCoder) {
-        let coordinateValues = coordinates?.map { (coordinate) -> NSValue in
-            var coordinate = coordinate
-            return NSValue(bytes: &coordinate, objCType: "{dd}")
-        }
-        coder.encodeObject(coordinateValues, forKey: "coordinates")
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+        ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
         
         coder.encodeObject(legs, forKey: "legs")
         coder.encodeDouble(distance, forKey: "distance")

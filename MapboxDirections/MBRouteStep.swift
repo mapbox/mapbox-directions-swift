@@ -560,12 +560,8 @@ public class RouteStep: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateValues = decoder.decodeObjectForKey("coordinates") as? [NSValue]
-        coordinates = coordinateValues?.map({ (value) -> CLLocationCoordinate2D in
-            var coordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
-            value.getValue(&coordinate)
-            return coordinate
-        })
+        let coordinateDictionaries = decoder.decodeObjectForKey("coordinates") as? [[String: CLLocationDegrees]]
+        coordinates = coordinateDictionaries?.map { CLLocationCoordinate2D(latitude: $0["latitude"]!, longitude: $0["longitude"]!) }
         
         instructions = decoder.decodeObjectForKey("instructions") as! String
         initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
@@ -576,10 +572,11 @@ public class RouteStep: NSObject, NSSecureCoding {
         let maneuverDirectionDescription = decoder.decodeObjectForKey("maneuverDirection") as! String
         maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         
-        let maneuverLocationValue = decoder.decodeObjectForKey("maneuverLocation") as! NSValue
-        var maneuverLocation = kCLLocationCoordinate2DInvalid
-        maneuverLocationValue.getValue(&maneuverLocation)
-        self.maneuverLocation = maneuverLocation
+        if let maneuverLocationDictionary = decoder.decodeObjectForKey("maneuverLocation") as? [String: CLLocationDegrees] {
+            maneuverLocation = CLLocationCoordinate2D(latitude: maneuverLocationDictionary["latitude"]!, longitude: maneuverLocationDictionary["longitude"]!)
+        } else {
+            maneuverLocation = kCLLocationCoordinate2DInvalid
+        }
         
         exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
         distance = decoder.decodeDoubleForKey("distance")
@@ -597,11 +594,11 @@ public class RouteStep: NSObject, NSSecureCoding {
     }
     
     public func encodeWithCoder(coder: NSCoder) {
-        let coordinateValues = coordinates?.map { (coordinate) -> NSValue in
-            var coordinate = coordinate
-            return NSValue(bytes: &coordinate, objCType: "{dd}")
-        }
-        coder.encodeObject(coordinateValues, forKey: "coordinates")
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+            ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
         
         coder.encodeObject(instructions, forKey: "instructions")
         
@@ -615,9 +612,10 @@ public class RouteStep: NSObject, NSSecureCoding {
         coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
         coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
         
-        var maneuverLocation = self.maneuverLocation
-        let maneuverLocationValue = NSValue(bytes: &maneuverLocation, objCType: "{dd}")
-        coder.encodeObject(maneuverLocationValue, forKey: "maneuverLocation")
+        coder.encodeObject([
+            "latitude": maneuverLocation.latitude,
+            "longitude": maneuverLocation.longitude,
+        ], forKey: "maneuverLocation")
         
         if let exitIndex = exitIndex {
             coder.encodeInteger(exitIndex, forKey: "exitIndex")
