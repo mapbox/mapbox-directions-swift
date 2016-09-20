@@ -6,7 +6,7 @@ import Polyline
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method. However, if you use the `Directions.URLForCalculatingDirections(options:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
  */
 @objc(MBRoute)
-public class Route: NSObject {
+public class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
     private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]?) {
@@ -47,6 +47,33 @@ public class Route: NSObject {
         }
         
         self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateDictionaries = decoder.decodeObjectForKey("coordinates") as? [[String: CLLocationDegrees]]
+        coordinates = coordinateDictionaries?.map { CLLocationCoordinate2D(latitude: $0["latitude"]!, longitude: $0["longitude"]!) }
+        
+        legs = decoder.decodeObjectForKey("legs") as? [RouteLeg] ?? []
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        profileIdentifier = decoder.decodeObjectForKey("profileIdentifier") as! String
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+        ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        
+        coder.encodeObject(legs, forKey: "legs")
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
     }
     
     // MARK: Getting the Route Geometry
