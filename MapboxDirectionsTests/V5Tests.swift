@@ -88,6 +88,45 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(leg.steps[18].name, "Sycamore Valley Road West")
     }
     
+    func testWithBadToken() {
+        let expectation = expectationWithDescription("bad token should return error")
+        
+        let queryParams: [String: String?] = [
+            "alternatives": "true",
+            "geometries": "polyline",
+            "overview": "full",
+            "steps": "true",
+            "continue_straight": "true",
+            "access_token": BogusToken,
+            ]
+        stub(isHost("api.mapbox.com")
+            && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
+            && containsQueryParams(queryParams)) { _ in
+                let path = NSBundle(forClass: self.dynamicType).pathForResource("v5_bad_token", ofType: "json")
+                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 401, headers: ["Content-Type": "application/json"])
+        }
+        
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+            ])
+        options.shapeFormat = RouteShapeFormat.GeoJSON
+        options.includesSteps = true
+        options.includesAlternativeRoutes = true
+        options.routeShapeResolution = .Full
+        let task = Directions(accessToken: BogusToken).calculateDirections(options: options) { (waypoints, routes, error) in
+            XCTAssertNotNil(error)
+            XCTAssertEqual(String(error!.userInfo[NSLocalizedFailureReasonErrorKey]!), "Not Authorized - Invalid Token")
+            expectation.fulfill()
+        }
+        XCTAssertNotNil(task)
+        
+        waitForExpectationsWithTimeout(2) { (error) in
+            XCTAssertNil(error, "Error: \(error)")
+            XCTAssertEqual(task.state, NSURLSessionTaskState.Completed)
+        }
+    }
+    
     func testGeoJSON() {
         XCTAssertEqual(String(RouteShapeFormat.GeoJSON), "geojson")
         testWithFormat(.GeoJSON)
