@@ -16,15 +16,14 @@ MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com
 Specify the following dependency in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
-pod 'Polyline', :git => 'https://github.com/superpeteblaze/Polyline', :branch => 'swift3'
 pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :branch => 'swift3'
 ```
 
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "superpeteblaze/Polyline" "swift3"
-github "Mapbox/MapboxDirections.swift" "Swift3"
+github "raphaelmor/Polyline" ~> 4.0.0
+github "Mapbox/MapboxDirections.swift" "swift3"
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
