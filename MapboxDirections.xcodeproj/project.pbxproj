@@ -15,6 +15,10 @@
 		A6270373DE8FBAB9E187546B /* Pods_MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C0BE684BDAC6904D8772FE /* Pods_MapboxDirections.framework */; };
 		B225EEC832101659D42306C0 /* Pods_MapboxDirectionsMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5A2AC67B9674D3F14B1FD6E /* Pods_MapboxDirectionsMac.framework */; };
 		BCC275D33FD809E4CA0C29E3 /* Pods_WatchExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3125F8C3D3D120492CC28912 /* Pods_WatchExample.framework */; };
+		C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
+		C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
+		C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
+		C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		DA15B1A01D5D501500C8042B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA15B19E1D5D501500C8042B /* Interface.storyboard */; };
 		DA15B1A21D5D501500C8042B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA15B1A11D5D501500C8042B /* Assets.xcassets */; };
 		DA15B1A91D5D501500C8042B /* WatchExample Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DA15B1A81D5D501500C8042B /* WatchExample Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -208,6 +212,7 @@
 		B215B2487667504F84228843 /* Pods-MapboxDirectionsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTests/Pods-MapboxDirectionsTests.release.xcconfig"; sourceTree = "<group>"; };
 		BEAF6404FB359F49700E9114 /* Pods-MapboxDirectionsTVTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTVTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTVTests/Pods-MapboxDirectionsTVTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5216CD064790304C0D12E08 /* Pods-MapboxDirectionsMacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsMacTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsMacTests/Pods-MapboxDirectionsMacTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		D39D92434CEA7E755F68A0DD /* Pods-MapboxDirectionsTVTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapboxDirectionsTVTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapboxDirectionsTVTests/Pods-MapboxDirectionsTVTests.release.xcconfig"; sourceTree = "<group>"; };
 		D5A2AC67B9674D3F14B1FD6E /* Pods_MapboxDirectionsMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapboxDirectionsMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA15B19C1D5D501500C8042B /* WatchExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,6 +414,7 @@
 				DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */,
 				DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */,
 				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
+				C57D55001DB5669600B94B74 /* MBIntersection.swift */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 			);
 			path = MapboxDirections;
@@ -1295,6 +1301,7 @@
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* MBRouteStep.swift in Sources */,
+				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1320,6 +1327,7 @@
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
 				DA1A10F11D010247009F82FA /* MBRouteStep.swift in Sources */,
+				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1345,6 +1353,7 @@
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* MBRouteStep.swift in Sources */,
+				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1358,6 +1367,7 @@
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
+				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
