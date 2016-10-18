@@ -29,17 +29,33 @@ public class Intersection: NSObject, NSSecureCoding {
     */
     public var location: CLLocationCoordinate2D
     
-    
+    /**
+     An array of CLLocationDirection values that are available at the intersection.
+     
+     The bearings describe all available roads at the intersection.
+    */
     public var headings: [CLLocationDirection]
+    
+    /**
+     Array of Lane objects that denote the available turn lanes at the intersection.
+     
+     If no lane information is available for an intersection, the lanes property will not be present.
+    */
     public var lanes: [Lane]?
     
-    internal init(approachIndex: Int?, outletIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?) {
+    /**
+     Set of Lane objects that have a valid turn. 
+    */
+    public var usableLanes: Set<Lane>?
+    
+    internal init(approachIndex: Int?, outletIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?, usableLanes: Set<Lane>) {
         self.approachIndex = approachIndex
         self.outletIndex = outletIndex
         self.entry = entry
         self.location = location
         self.headings = headings
         self.lanes = lanes
+        self.usableLanes = usableLanes
     }
     
     internal convenience init(json: JSONDictionary) {
@@ -50,9 +66,18 @@ public class Intersection: NSObject, NSSecureCoding {
         let location = CLLocationCoordinate2D(latitude: locationArray[0], longitude: locationArray[1])
         let headings = json["bearings"] as! [CLLocationDirection]
         let lanesJSON = json["lanes"] as? [JSONDictionary]
-        let lanes = lanesJSON?.map { Lane(json: $0) }
+        var lanes = [Lane]()
+        var usableLanes = Set<Lane>()
         
-        self.init(approachIndex: approachIndex, outletIndex: outletIndex, entry: entry, location: location, headings: headings, lanes: lanes)
+        lanesJSON?.forEach({ (laneJSON) in
+            let lane = Lane(json: laneJSON)
+            lanes.append(lane)
+            if laneJSON["valid"] as! Bool {
+                usableLanes.insert(lane)
+            }
+        })
+        
+        self.init(approachIndex: approachIndex, outletIndex: outletIndex, entry: entry, location: location, headings: headings, lanes: lanes, usableLanes: usableLanes)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -62,6 +87,7 @@ public class Intersection: NSObject, NSSecureCoding {
         let coordinateDictionaries = decoder.decodeObjectForKey("location") as? [String: CLLocationDegrees]
         location = CLLocationCoordinate2D(latitude: coordinateDictionaries!["latitude"]!, longitude: coordinateDictionaries!["longitude"]!)
         headings = decoder.decodeObjectForKey("headings") as! [CLLocationDirection]
+        usableLanes = decoder.decodeObjectForKey("usableLanes") as? Set<Lane>
     }
     
     public static func supportsSecureCoding() -> Bool {
@@ -73,6 +99,7 @@ public class Intersection: NSObject, NSSecureCoding {
         coder.encodeObject(outletIndex, forKey: "outletIndex")
         coder.encodeObject(entry, forKey: "entry")
         coder.encodeObject(headings, forKey: "headings")
+        coder.encodeObject(usableLanes, forKey: "usableLanes")
         coder.encodeObject([
             "latitude": location.latitude,
             "longitude": location.longitude

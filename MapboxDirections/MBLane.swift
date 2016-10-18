@@ -102,36 +102,20 @@ public enum LaneIndication: Int, CustomStringConvertible {
 @objc(MBLane)
 public class Lane: NSObject {
     
-    /**
-     A boolean indicating whether the lane is a valid choice in the current maneuver.
-    */
-    public var validTurn: Bool
-    
-    /**
-     An indication (e.g. marking on the road) specifying the turn lane.
-     
-     A road can have multiple indications (e.g. an arrow pointing straight and left). The indications are given in an array, each containing one of the following types. Further indications might be added on without an API version change.
-    */
     public let indications: [LaneIndication]
     
-    
-    /**
-     Objectice-c helper function for indication
-    */
     public var indicationValues: [NSValue] {
         return indications.map { $0.rawValue as NSValue }
     }
     
-    internal init(validTurn: Bool, indications: [LaneIndication]) {
-        self.validTurn = validTurn
+    internal init(indications: [LaneIndication]) {
         self.indications = indications
     }
     
     internal convenience init(json: JSONDictionary) {
-        let validTurn = json["valid"] as! Bool
         let indicationsJSON = json["indications"] as! [String]
         let indications = indicationsJSON.map{ LaneIndication(description: $0)! }
         
-        self.init(validTurn: validTurn, indications: indications)
+        self.init(indications: indications)
     }
 }
