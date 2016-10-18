@@ -97,6 +97,7 @@ class V5Tests: XCTestCase {
         
         let lane = intersection.lanes!.first
         XCTAssertEqual(lane?.indications.first, LaneIndicationType.Left)
+        XCTAssertEqual(lane?.validTurn, true)
     }
     
     func testGeoJSON() {
