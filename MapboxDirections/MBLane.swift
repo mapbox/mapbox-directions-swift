@@ -1,24 +1,55 @@
 import Foundation
 
-public enum LaneIndicationType: Int, CustomStringConvertible {
+@objc(MBLaneIndication)
+public enum LaneIndication: Int, CustomStringConvertible {
+    
+    /**
+     An indication indicating a turn to the left.
+     */
     case Left
     
+    /**
+     An indication indicating a turn to the right.
+     */
     case Right
     
+    /**
+     An indication indicating a sharp turn to the left.
+     */
     case SharpLeft
     
+    /**
+     An indication indicating a sharp turn to the right.
+     */
     case SharpRight
     
+    /**
+     An indication indicating a slight turn to the left.
+     */
     case SlightLeft
     
+    /**
+     An indication indicating a slight turn to the right.
+     */
     case SlightRight
     
-    case Straight
+    /**
+     No dedicated indication is shown.
+     */
+    case StraightAhead
     
+    /**
+     An indication signaling the possibility to reverse
+    */
     case Uturn
     
+    /**
+     No dedicated indication is shown.
+    */
+    case None
+    
     public init?(description: String) {
-        let type: LaneIndicationType
+        let type: LaneIndication
         switch description {
         case "left":
             type = .Left
@@ -33,9 +64,11 @@ public enum LaneIndicationType: Int, CustomStringConvertible {
         case "slight right":
             type = .SlightRight
         case "straight":
-            type = .Straight
+            type = .StraightAhead
         case "uturn":
             type = .Uturn
+        case "none":
+            type = .None
         default:
             return nil
         }
@@ -56,19 +89,40 @@ public enum LaneIndicationType: Int, CustomStringConvertible {
             return "slight left"
         case .SlightRight:
             return "slight right"
-        case .Straight:
+        case .StraightAhead:
             return "straight"
         case .Uturn:
             return "uturn"
+        case .None:
+            return "None"
         }
     }
 }
 
+@objc(MBLane)
 public class Lane: NSObject {
-    public var validTurn: Bool
-    public var indications: [LaneIndicationType]
     
-    internal init(validTurn: Bool, indications: [LaneIndicationType]) {
+    /**
+     A boolean indicating whether the lane is a valid choice in the current maneuver.
+    */
+    public var validTurn: Bool
+    
+    /**
+     An indication (e.g. marking on the road) specifying the turn lane.
+     
+     A road can have multiple indications (e.g. an arrow pointing straight and left). The indications are given in an array, each containing one of the following types. Further indications might be added on without an API version change.
+    */
+    public let indications: [LaneIndication]
+    
+    
+    /**
+     Objectice-c helper function for indication
+    */
+    public var indicationValues: [NSValue] {
+        return indications.map { $0.rawValue as NSValue }
+    }
+    
+    internal init(validTurn: Bool, indications: [LaneIndication]) {
         self.validTurn = validTurn
         self.indications = indications
     }
@@ -76,7 +130,7 @@ public class Lane: NSObject {
     internal convenience init(json: JSONDictionary) {
         let validTurn = json["valid"] as! Bool
         let indicationsJSON = json["indications"] as! [String]
-        let indications = indicationsJSON.map{ LaneIndicationType(description: $0)! }
+        let indications = indicationsJSON.map{ LaneIndication(description: $0)! }
         
         self.init(validTurn: validTurn, indications: indications)
     }

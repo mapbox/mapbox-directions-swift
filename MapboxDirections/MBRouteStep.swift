@@ -514,7 +514,9 @@ public class RouteStep: NSObject, NSSecureCoding {
     public let destinations: String?
     
     /**
-     Array of interersections
+     An intersection gives a full representation of any cross-way the path passes bay.
+     
+     For every step, the very first intersection (intersections[0]) corresponds to the location of the maneuver. Further intersections are listed for every cross-way until the next maneuver.
     */
     public let intersections: [Intersection]?
     
