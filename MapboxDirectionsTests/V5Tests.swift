@@ -89,14 +89,14 @@ class V5Tests: XCTestCase {
         
         let intersection = step.intersections![0]
         XCTAssertEqual(intersection.entry, [false, true, true])
-        XCTAssertEqual(intersection.inIndex, 0)
-        XCTAssertEqual(intersection.outIndex, 2)
+        XCTAssertEqual(intersection.approachIndex, 0)
+        XCTAssertEqual(intersection.outletIndex, 2)
         XCTAssertEqual(intersection.headings, [0, 180, 195])
         XCTAssertNotNil(intersection.location.latitude)
         XCTAssertNotNil(intersection.location.longitude)
         
         let lane = intersection.lanes!.first
-        XCTAssertEqual(lane?.indications.first, LaneIndicationType.Left)
+        XCTAssertEqual(lane?.indications.first, LaneIndication.Left)
         XCTAssertEqual(lane?.validTurn, true)
     }
     
