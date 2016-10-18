@@ -50,13 +50,13 @@ public class Route: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObjectForKey("coordinates") as? [[String: CLLocationDegrees]]
+        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
         coordinates = coordinateDictionaries?.map { CLLocationCoordinate2D(latitude: $0["latitude"]!, longitude: $0["longitude"]!) }
         
-        legs = decoder.decodeObjectForKey("legs") as? [RouteLeg] ?? []
+        legs = decoder.decodeObjectOfClasses([NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
         distance = decoder.decodeDoubleForKey("distance")
         expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        profileIdentifier = decoder.decodeObjectForKey("profileIdentifier") as! String
+        profileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as! String
     }
     
     public static func supportsSecureCoding() -> Bool {

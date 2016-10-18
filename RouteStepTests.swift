@@ -20,8 +20,20 @@ class RouteStepTests: XCTestCase {
         
         let step = RouteStep(finalHeading: 59, maneuverType: .ReachFork, maneuverDirection: .Left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: nil, coordinates: coordinates, json: json)
         
-        let data = NSKeyedArchiver.archivedDataWithRootObject(step)
-        let unarchivedStep = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! RouteStep
+        // Encode and decode the route step securely
+        // This may raise an Obj-C exception if an error is encountered which will fail the tests
+        
+        let encodedData = NSMutableData()
+        let keyedArchiver = NSKeyedArchiver(forWritingWithMutableData: encodedData)
+        keyedArchiver.requiresSecureCoding = true
+        keyedArchiver.encodeObject(step, forKey: "step")
+        keyedArchiver.finishEncoding()
+        
+        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWithData: encodedData)
+        keyedUnarchiver.requiresSecureCoding = true
+        let unarchivedStep = keyedUnarchiver.decodeObjectOfClass(RouteStep.self, forKey: "step")!
+        keyedUnarchiver.finishDecoding()
+        
         XCTAssertNotNil(unarchivedStep)
         
         XCTAssertEqual(unarchivedStep.coordinates?.count, step.coordinates?.count)

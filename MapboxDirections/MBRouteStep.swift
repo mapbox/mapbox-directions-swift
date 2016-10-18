@@ -560,19 +560,19 @@ public class RouteStep: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObjectForKey("coordinates") as? [[String: CLLocationDegrees]]
+        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
         coordinates = coordinateDictionaries?.map { CLLocationCoordinate2D(latitude: $0["latitude"]!, longitude: $0["longitude"]!) }
         
-        instructions = decoder.decodeObjectForKey("instructions") as! String
+        instructions = decoder.decodeObjectOfClass(NSString.self, forKey: "instructions") as! String
         initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
         finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
         
-        let maneuverTypeDescription = decoder.decodeObjectForKey("maneuverType") as! String
+        let maneuverTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverType") as! String
         maneuverType = ManeuverType(description: maneuverTypeDescription)
-        let maneuverDirectionDescription = decoder.decodeObjectForKey("maneuverDirection") as! String
+        let maneuverDirectionDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverDirection") as! String
         maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         
-        if let maneuverLocationDictionary = decoder.decodeObjectForKey("maneuverLocation") as? [String: CLLocationDegrees] {
+        if let maneuverLocationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees] {
             maneuverLocation = CLLocationCoordinate2D(latitude: maneuverLocationDictionary["latitude"]!, longitude: maneuverLocationDictionary["longitude"]!)
         } else {
             maneuverLocation = kCLLocationCoordinate2DInvalid
@@ -583,10 +583,10 @@ public class RouteStep: NSObject, NSSecureCoding {
         expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
         name = decoder.decodeObjectForKey("name") as? String
         
-        let transportTypeDescription = decoder.decodeObjectForKey("transportType") as! String
+        let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as! String
         transportType = TransportType(description: transportTypeDescription)
         
-        destinations = decoder.decodeObjectForKey("destinations") as? String
+        destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
     }
     
     public static func supportsSecureCoding() -> Bool {
