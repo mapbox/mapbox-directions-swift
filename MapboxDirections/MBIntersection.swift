@@ -1,5 +1,4 @@
 import Foundation
-import CoreLocation
 
 public class Intersection: NSObject, NSSecureCoding {
     public var inIndex: Int?
@@ -7,13 +6,15 @@ public class Intersection: NSObject, NSSecureCoding {
     public var entry: [Bool]
     public var location: CLLocationCoordinate2D
     public var headings: [CLLocationDirection]
+    public var lanes: [Lane]?
     
-    internal init(inIndex: Int?, outIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection]) {
+    internal init(inIndex: Int?, outIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?) {
         self.inIndex = inIndex
         self.outIndex = outIndex
         self.entry = entry
         self.location = location
         self.headings = headings
+        self.lanes = lanes
     }
     
     internal convenience init(json: JSONDictionary) {
@@ -23,8 +24,10 @@ public class Intersection: NSObject, NSSecureCoding {
         let locationArray = json["location"] as! [Double]
         let location = CLLocationCoordinate2D(latitude: locationArray[0], longitude: locationArray[1])
         let headings = json["bearings"] as! [CLLocationDirection]
+        let lanesJSON = json["lanes"] as? [JSONDictionary]
+        let lanes = lanesJSON?.map { Lane(json: $0) }
         
-        self.init(inIndex: inIndex, outIndex: outIndex, entry: entry, location: location, headings: headings)
+        self.init(inIndex: inIndex, outIndex: outIndex, entry: entry, location: location, headings: headings, lanes: lanes)
     }
     
     public required init?(coder decoder: NSCoder) {
