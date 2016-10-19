@@ -3,27 +3,29 @@ import Foundation
 public typealias LaneIndication = MBLaneIndication
 
 extension LaneIndication: CustomStringConvertible {
-    
+    /**
+     Creates a lane indication from given descriptions
+    */
     public init?(descriptions: [String]) {
         var scope: LaneIndication = []
         for description in descriptions {
             switch description {
-            case "left":
-                scope.insert(.Left)
-            case "right":
-                scope.insert(.Right)
-            case "sharp left":
-                scope.insert(.SharpLeft)
             case "sharp right":
                 scope.insert(.SharpRight)
-            case "slight left":
-                scope.insert(.SlightLeft)
+            case "right":
+                scope.insert(.Right)
             case "slight right":
                 scope.insert(.SlightRight)
             case "straight":
                 scope.insert(.StraightAhead)
+            case "slight left":
+                scope.insert(.SlightLeft)
+            case "sharp left":
+                scope.insert(.SharpLeft)
+            case "left":
+                scope.insert(.Left)
             case "uturn":
-                scope.insert(.Uturn)
+                scope.insert(.UTurn)
             case "none":
                 scope.insert(.None)
             default:
@@ -35,20 +37,11 @@ extension LaneIndication: CustomStringConvertible {
     
     public var description: String {
         var descriptions: [String] = []
-        if contains(LaneIndication.Left) {
-            descriptions.append("Left")
-        }
-        if contains(LaneIndication.Right) {
-            descriptions.append("right")
-        }
-        if contains(LaneIndication.SharpLeft) {
-            descriptions.append("sharp left")
-        }
         if contains(LaneIndication.SharpRight) {
             descriptions.append("sharp right")
         }
-        if contains(LaneIndication.SlightLeft) {
-            descriptions.append("slight left")
+        if contains(LaneIndication.SharpRight) {
+            descriptions.append("sharp right")
         }
         if contains(LaneIndication.SlightRight) {
             descriptions.append("slight right")
@@ -56,7 +49,16 @@ extension LaneIndication: CustomStringConvertible {
         if contains(LaneIndication.StraightAhead) {
             descriptions.append("straight")
         }
-        if contains(LaneIndication.Uturn) {
+        if contains(LaneIndication.SlightLeft) {
+            descriptions.append("slight left")
+        }
+        if contains(LaneIndication.Left) {
+            descriptions.append("Left")
+        }
+        if contains(LaneIndication.SharpLeft) {
+            descriptions.append("sharp left")
+        }
+        if contains(LaneIndication.UTurn) {
             descriptions.append("uturn")
         }
         if contains(LaneIndication.None) {
