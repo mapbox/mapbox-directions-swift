@@ -4,18 +4,18 @@ typedef NS_OPTIONS(NSUInteger, MBLaneIndication) {
     Left = (1 << 1),
     // Indicates a turn to the right.
     Right = (1 << 2),
-    // An indication indicating a sharp turn to the left.
+    // Indicates a sharp turn to the left.
     SharpLeft = (1 << 3),
-    // An indication indicating a sharp turn to the right.
+    // Indicates a sharp turn to the right.
     SharpRight = (1 << 4),
-    // An indication indicating a slight turn to the left.
+    // Indicates a slight turn to the left.
     SlightLeft = (1 << 5),
-    // An indication indicating a slight turn to the right.
+    // Indicates a slight turn to the right.
     SlightRight = (1 << 6),
-    // An indication indicating no turn.
+    // Indicates no turn.
     StraightAhead = (1 << 7),
-    // An indication indicating a turn
+    // Indicates no turn
     Uturn = (1 << 8),
-    // An indication indicating no turn.
+    // Indicates a uturn.
     None = (1 << 9),
 };
