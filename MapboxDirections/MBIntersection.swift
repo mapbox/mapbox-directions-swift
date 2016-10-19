@@ -1,5 +1,8 @@
 import Foundation
 
+/**
+ A single cross street along a step.
+ */
 @objc(MBIntersection)
 public class Intersection: NSObject, NSSecureCoding {
     
@@ -37,7 +40,7 @@ public class Intersection: NSObject, NSSecureCoding {
     /**
      Array of Lane objects.
      
-     If no lane information is available for an intersection, the lanes property will not be present.
+     If no lane information is available for an intersection, the lanes property will not be present. The first lane represents the left most lane, while the last represents the right most lane.
     */
     public var lanes: [Lane]?
     

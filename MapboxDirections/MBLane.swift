@@ -1,5 +1,9 @@
 import Foundation
 
+/**
+ A single lane at an intersection. 
+*/
+
 @objc(MBLaneIndication)
 public enum LaneIndication: Int, CustomStringConvertible {
     
