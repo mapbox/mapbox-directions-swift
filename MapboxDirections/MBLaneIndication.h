@@ -7,7 +7,7 @@ typedef NS_OPTIONS(NSUInteger, MBLaneIndication) {
     Right = (1 << 2),
     
     // Indicates a turn to the right.
-    Right = (1 << 2),
+    SlightRight = (1 << 2),
     
     // Indicates no turn.
     StraightAhead = (1 << 7),
