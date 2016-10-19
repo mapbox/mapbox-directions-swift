@@ -97,7 +97,8 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(intersection.usableLanes?.count, 2)
         
         let lane = intersection.lanes!.first
-        XCTAssertEqual(lane?.indications.first, LaneIndication.Left)
+        let ind = lane?.indications
+        XCTAssertTrue(ind!.contains(LaneIndication.Left))
     }
     
     func testGeoJSON() {

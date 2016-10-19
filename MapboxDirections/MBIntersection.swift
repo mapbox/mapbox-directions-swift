@@ -11,14 +11,14 @@ public class Intersection: NSObject, NSSecureCoding {
      
      The index of the item in the headings array that corresponds to the road that the containing route step uses to approach the intersection.
     */
-    public var approachIndex: Int = -1
+    public var approachIndex: Int
     
     /**
      Index into the bearings/entry array.
      
      The index of the item in the headings array that corresponds to the road that the containing route step uses to leave the intersection.
     */
-    public var outletIndex: Int = -1
+    public var outletIndex: Int
     
     /**
      An array of booleans, corresponding in a 1:1 relationship to the headings.
@@ -49,9 +49,9 @@ public class Intersection: NSObject, NSSecureCoding {
     */
     public var usableLanes: Set<Lane>?
     
-    internal init(approachIndex: Int, outletIndex: Int, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?, usableLanes: Set<Lane>) {
-        self.approachIndex = approachIndex
-        self.outletIndex = outletIndex
+    internal init(approachIndex: Int?, outletIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?, usableLanes: Set<Lane>) {
+        self.approachIndex = approachIndex ?? -1
+        self.outletIndex = outletIndex ?? -1
         self.entry = entry
         self.location = location
         self.headings = headings
@@ -60,8 +60,8 @@ public class Intersection: NSObject, NSSecureCoding {
     }
     
     internal convenience init(json: JSONDictionary) {
-        let approachIndex = json["in"] as? Int ?? -1
-        let outletIndex = json["out"] as? Int ?? -1
+        let approachIndex = json["in"] as? Int
+        let outletIndex = json["out"] as? Int
         let entry = json["entry"] as! [Bool]
         let coords = json["location"] as! [Double]
         let location = CLLocationCoordinate2D.init(geoJSON: coords)
