@@ -45,7 +45,7 @@ public class Intersection: NSObject, NSSecureCoding {
     public var lanes: [Lane]?
     
     /**
-     Set of Lane objects that have a valid turn.
+     Set of Lane objects that have a valid turn. This is a subset of the lanes object.
     */
     public var usableLanes: Set<Lane>?
     
