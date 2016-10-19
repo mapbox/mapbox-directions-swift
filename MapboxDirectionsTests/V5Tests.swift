@@ -87,7 +87,7 @@ class V5Tests: XCTestCase {
         
         XCTAssertEqual(leg.steps[18].name, "Sycamore Valley Road West")
         
-        let intersection = step.intersections![0]
+        let intersection = step.intersections!.first!
         XCTAssertEqual(intersection.entry, [false, true, true])
         XCTAssertEqual(intersection.approachIndex, 0)
         XCTAssertEqual(intersection.outletIndex, 2)

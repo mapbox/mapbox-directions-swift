@@ -6,45 +6,43 @@ public class Intersection: NSObject, NSSecureCoding {
     /**
      Index into bearings/entry array.
      
-     Used to calculate the bearing just before the turn. Namely, the clockwise angle from true north to the direction of travel immediately before the maneuver/passing the intersection. Bearings are given relative to the intersection. To get the bearing in the direction of driving, the bearing has to be rotated by a value of 180. The value is not supplied for depart maneuvers.
+     The index of the item in the headings array that corresponds to the road that the containing route step uses to approach the intersection.
     */
-    public let approachIndex: Int?
+    public let approachIndex: Int = -1
     
     /**
      Index into the bearings/entry array.
      
-     Used to extract the bearing just after the turn. Namely, The clockwise angle from true north to the direction of travel immediately after the maneuver/passing the intersection. The value is not supplied for arrive maneuvers.
+     The index of the item in the headings array that corresponds to the road that the containing route step uses to leave the intersection.
     */
-    public let outletIndex: Int?
+    public let outletIndex: Int = -1
     
     /**
-     An array of booleans, corresponding in a 1:1 relationship to the bearings.
+     An array of booleans, corresponding in a 1:1 relationship to the headings.
      
      A value of true indicates that the respective road could be entered on a valid route. false indicates that the turn onto the respective road would violate a restriction.
      */
-    public var entry: [Bool]
+    public let entry: [Bool]
     
     /**
      CLLocationCoordinate2D representing the location of the intersection
     */
-    public var location: CLLocationCoordinate2D
+    public let location: CLLocationCoordinate2D
     
     /**
-     An array of CLLocationDirection values that are available at the intersection.
-     
-     The bearings describe all available roads at the intersection.
+     The geographic coordinates at the center of the intersection.
     */
     public var headings: [CLLocationDirection]
     
     /**
-     Array of Lane objects that denote the available turn lanes at the intersection.
+     Array of Lane objects.
      
      If no lane information is available for an intersection, the lanes property will not be present.
     */
     public var lanes: [Lane]?
     
     /**
-     Set of Lane objects that have a valid turn. 
+     Set of Lane objects that have a valid turn.
     */
     public var usableLanes: Set<Lane>?
     
@@ -62,20 +60,20 @@ public class Intersection: NSObject, NSSecureCoding {
         let approachIndex = json["in"] as? Int
         let outletIndex = json["out"] as? Int
         let entry = json["entry"] as! [Bool]
-        let locationArray = json["location"] as! [Double]
-        let location = CLLocationCoordinate2D(latitude: locationArray[0], longitude: locationArray[1])
+        let coords = json["location"] as! [Double]
+        let location = CLLocationCoordinate2D.init(geoJSON: coords)
         let headings = json["bearings"] as! [CLLocationDirection]
         let lanesJSON = json["lanes"] as? [JSONDictionary]
         var lanes = [Lane]()
         var usableLanes = Set<Lane>()
         
-        lanesJSON?.forEach({ (laneJSON) in
+        for laneJSON in lanesJSON! {
             let lane = Lane(json: laneJSON)
             lanes.append(lane)
             if laneJSON["valid"] as! Bool {
                 usableLanes.insert(lane)
             }
-        })
+        }
         
         self.init(approachIndex: approachIndex, outletIndex: outletIndex, entry: entry, location: location, headings: headings, lanes: lanes, usableLanes: usableLanes)
     }

@@ -4,12 +4,12 @@ import Foundation
 public enum LaneIndication: Int, CustomStringConvertible {
     
     /**
-     An indication indicating a turn to the left.
+     Indicates a turn to the left.
      */
     case Left
     
     /**
-     An indication indicating a turn to the right.
+     Indicates a turn to the right.
      */
     case Right
     
