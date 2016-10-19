@@ -64,7 +64,7 @@ public class Intersection: NSObject, NSSecureCoding {
         let outletIndex = json["out"] as? Int
         let entry = json["entry"] as! [Bool]
         let coords = json["location"] as! [Double]
-        let location = CLLocationCoordinate2D.init(geoJSON: coords)
+        let location = CLLocationCoordinate2D(geoJSON: coords)
         let headings = json["bearings"] as! [CLLocationDirection]
         let lanesJSON = json["lanes"] as? [JSONDictionary]
         var lanes = [Lane]()
