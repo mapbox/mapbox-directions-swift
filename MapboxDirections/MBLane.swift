@@ -53,7 +53,7 @@ extension LaneIndication: CustomStringConvertible {
             descriptions.append("slight left")
         }
         if contains(LaneIndication.Left) {
-            descriptions.append("Left")
+            descriptions.append("left")
         }
         if contains(LaneIndication.SharpLeft) {
             descriptions.append("sharp left")
