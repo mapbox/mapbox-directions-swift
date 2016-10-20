@@ -58,7 +58,3 @@ target 'Example (Objective-C)' do
   platform :ios, '8.0'
   shared_example_pods
 end
-
-target 'WatchExample' do
-  platform :watchos, '2.0'
-end
