@@ -8,6 +8,11 @@
 public let MBDirectionsProfileIdentifierAutomobile = "mapbox/driving"
 
 /**
+ The returned directions are appropriate for driving and incorporates current traffic conditions when determining the fastest route.
+ */
+public let MBDirectionsProfileIdentifierAutomobileTraffic = "mapbox/driving-traffic"
+
+/**
  The returned directions are appropriate for riding a bicycle.
  
  This profile prioritizes short, safe routes by avoiding highways and preferring cycling infrastructure, such as bike lanes on surface streets. A cycling route may, where necessary, use other modes of transportation, such as ferries or trains, or require dismounting the bicycle for a distance.
