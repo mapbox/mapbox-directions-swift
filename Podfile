@@ -9,6 +9,11 @@ def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 5.0', :configurations => ['Debug']
 end
 
+def shared_example_pods
+  shared_pods
+  pod 'Mapbox-iOS-SDK', '~> 3.3'
+end
+
 target 'MapboxDirections' do
   platform :ios, '8.0'
   shared_pods
@@ -46,10 +51,10 @@ end
 
 target 'Example (Swift)' do
   platform :ios, '8.0'
-  shared_pods
-  pod 'Mapbox-iOS-SDK', '~> 3.3'
+  shared_example_pods
 end
 
-target 'WatchExample' do
-  platform :watchos, '2.0'
+target 'Example (Objective-C)' do
+  platform :ios, '8.0'
+  shared_example_pods
 end

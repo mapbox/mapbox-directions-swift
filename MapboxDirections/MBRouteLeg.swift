@@ -6,7 +6,7 @@ import Polyline
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
  */
 @objc(MBRouteLeg)
-public class RouteLeg: NSObject {
+public class RouteLeg: NSObject, NSSecureCoding {
     // MARK: Getting the Leg Geometry
     
     /**
@@ -83,6 +83,47 @@ public class RouteLeg: NSObject {
     internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        guard let decodedSource = decoder.decodeObjectOfClass(Waypoint.self, forKey: "source") else {
+            return nil
+        }
+        source = decodedSource
+        
+        guard let decodedDestination = decoder.decodeObjectOfClass(Waypoint.self, forKey: "destination") else {
+            return nil
+        }
+        destination = decodedDestination
+        
+        steps = decoder.decodeObjectOfClasses([NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+        
+        guard let decodedName = decoder.decodeObjectOfClass(NSString.self, forKey: "name") as String? else {
+            return nil
+        }
+        name = decodedName
+        
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(source, forKey: "source")
+        coder.encodeObject(destination, forKey: "destination")
+        coder.encodeObject(steps, forKey: "steps")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
     }
 }
 

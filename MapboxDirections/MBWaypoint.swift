@@ -65,7 +65,7 @@ public class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coordinateAccuracy = decoder.decodeDoubleForKey("coordinateAccuracy")
         heading = decoder.decodeDoubleForKey("heading")
         headingAccuracy = decoder.decodeDoubleForKey("headingAccuracy")
-        name = decoder.decodeObjectForKey("name") as? String
+        name = decoder.decodeObjectOfClass(NSString.self, forKey: "name") as? String
     }
     
     public func encodeWithCoder(coder: NSCoder) {

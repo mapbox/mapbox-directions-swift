@@ -377,7 +377,7 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
 @objc(MBRouteStep)
-public class RouteStep: NSObject {
+public class RouteStep: NSObject, NSSecureCoding {
     // MARK: Getting the Step Geometry
     
     /**
@@ -472,7 +472,7 @@ public class RouteStep: NSObject {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    public let exitIndex: NSInteger?
+    public let exitIndex: Int?
     
     // MARK: Getting Details About the Approach to the Next Maneuver
     
@@ -557,6 +557,92 @@ public class RouteStep: NSObject {
         }
         
         self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+		
+        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
+            if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
+                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            } else {
+                return nil
+            }
+        })
+        
+        guard let decodedInstructions = decoder.decodeObjectOfClass(NSString.self, forKey: "instructions") as String? else {
+            return nil
+        }
+        instructions = decodedInstructions
+		
+        initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
+        finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
+        
+        guard let maneuverTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverType") as String? else {
+            return nil
+        }
+        maneuverType = ManeuverType(description: maneuverTypeDescription)
+        let maneuverDirectionDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverDirection") as! String
+        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        
+        if let maneuverLocationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
+            let latitude = maneuverLocationDictionary["latitude"],
+            let longitude = maneuverLocationDictionary["longitude"] {
+            maneuverLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        } else {
+            maneuverLocation = kCLLocationCoordinate2DInvalid
+        }
+        
+        exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        name = decoder.decodeObjectForKey("name") as? String
+        
+        guard let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as? String else {
+            return nil
+        }
+        transportType = TransportType(description: transportTypeDescription)
+        
+        destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+            ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        
+        coder.encodeObject(instructions, forKey: "instructions")
+        
+        if let initialHeading = initialHeading {
+            coder.encodeDouble(initialHeading, forKey: "initialHeading")
+        }
+        if let finalHeading = finalHeading {
+            coder.encodeDouble(finalHeading, forKey: "finalHeading")
+        }
+        
+        coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
+        coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
+        
+        coder.encodeObject([
+            "latitude": maneuverLocation.latitude,
+            "longitude": maneuverLocation.longitude,
+        ], forKey: "maneuverLocation")
+        
+        if let exitIndex = exitIndex {
+            coder.encodeInteger(exitIndex, forKey: "exitIndex")
+        }
+        
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(transportType?.description, forKey: "transportType")
+        coder.encodeObject(destinations, forKey: "destinations")
     }
 }
 

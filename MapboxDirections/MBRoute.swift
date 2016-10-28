@@ -6,7 +6,7 @@ import Polyline
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method. However, if you use the `Directions.URLForCalculatingDirections(options:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
  */
 @objc(MBRoute)
-public class Route: NSObject {
+public class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
     private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]?) {
@@ -47,6 +47,43 @@ public class Route: NSObject {
         }
         
         self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
+            if let latitude = coordinateDictionary["latitude"], longitude = coordinateDictionary["longitude"] {
+                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            } else {
+                return nil
+            }
+        })
+        
+        legs = decoder.decodeObjectOfClasses([NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+        ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        
+        coder.encodeObject(legs, forKey: "legs")
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
     }
     
     // MARK: Getting the Route Geometry
