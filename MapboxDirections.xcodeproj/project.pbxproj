@@ -1389,7 +1389,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5216CD064790304C0D12E08 /* Pods-MapboxDirectionsMacTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1407,7 +1406,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7E3FF4F9120D6C9E60708335 /* Pods-MapboxDirectionsMacTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1477,7 +1475,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEAF6404FB359F49700E9114 /* Pods-MapboxDirectionsTVTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = MapboxDirectionsTests/Info.plist;
@@ -1494,7 +1491,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D39D92434CEA7E755F68A0DD /* Pods-MapboxDirectionsTVTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				INFOPLIST_FILE = MapboxDirectionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1563,7 +1559,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BCCCE5847449F3E3DC3C47DD /* Pods-Example (Objective-C).debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1582,7 +1577,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AC8D78F2AFDD3C48B47A899A /* Pods-Example (Objective-C).release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -1649,7 +1643,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46B778CDD353A9BEFD44A098 /* Pods-MapboxDirectionsTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = MapboxDirectionsTests/Info.plist;
@@ -1665,7 +1658,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B215B2487667504F84228843 /* Pods-MapboxDirectionsTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				INFOPLIST_FILE = MapboxDirectionsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -1773,7 +1765,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 280512B2AFE7777BE47B598C /* Pods-Example (Swift).debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
@@ -1786,7 +1777,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5ABC95CC4D6BF3BCA6667F5C /* Pods-Example (Swift).release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
