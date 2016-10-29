@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DD62544D1AE70C1700017857"
-               BuildableName = "Directions (Swift).app"
-               BlueprintName = "Example (Swift)"
+               BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+               BuildableName = "WatchExample.app"
+               BlueprintName = "WatchExample"
                ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,33 +28,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DDF1E8631BD8580800C40C78"
-               BuildableName = "Unit Tests.xctest"
-               BlueprintName = "Unit Tests"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
-               BuildableName = "MapboxDirectionsTests.xctest"
-               BlueprintName = "MapboxDirectionsTests"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
-            BlueprintName = "Example (Swift)"
+            BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+            BuildableName = "WatchExample.app"
+            BlueprintName = "WatchExample"
             ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -70,17 +50,29 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      allowLocationSimulation = "YES"
+      notificationPayloadFile = "WatchExample Extension/PushNotificationPayload.apns">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/Directions (Swift)">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
-            BlueprintName = "Example (Swift)"
+            BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+            BuildableName = "WatchExample.app"
+            BlueprintName = "WatchExample"
             ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+            BuildableName = "WatchExample.app"
+            BlueprintName = "WatchExample"
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +82,27 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/Directions (Swift)">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
-            BlueprintName = "Example (Swift)"
+            BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+            BuildableName = "WatchExample.app"
+            BlueprintName = "WatchExample"
             ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "DA15B19B1D5D501500C8042B"
+            BuildableName = "WatchExample.app"
+            BlueprintName = "WatchExample"
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
