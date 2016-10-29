@@ -59,6 +59,10 @@ target 'Example (Objective-C)' do
   shared_example_pods
 end
 
+target 'WatchExample' do
+  platform :watchos, '2.0'
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     if target.platform_name != :osx then
