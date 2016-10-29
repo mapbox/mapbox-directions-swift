@@ -84,6 +84,8 @@
 		DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
 		DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */; };
 		DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */; };
+		DAE8006A1DC5444E004188A7 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10FB1D010361009F82FA /* MapboxDirections.framework */; };
+		DAE8006B1DC5444E004188A7 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10FB1D010361009F82FA /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DAEF6CAD1D8BC017006A108F /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF6CAC1D8BC017006A108F /* RouteStepTests.swift */; };
 		DAEF6CAE1D8BC017006A108F /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF6CAC1D8BC017006A108F /* RouteStepTests.swift */; };
 		DAEF6CAF1D8BC017006A108F /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF6CAC1D8BC017006A108F /* RouteStepTests.swift */; };
@@ -150,6 +152,13 @@
 			remoteGlobalIDString = DA6C9D871CAE442B00094FBC;
 			remoteInfo = MapboxDirections;
 		};
+		DAE8006C1DC5444E004188A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD6254461AE70C1700017857 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1A10FA1D010361009F82FA;
+			remoteInfo = MapboxDirectionsWatch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -204,6 +213,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				DA1ACF8D1DB76F0F0054BFE7 /* MapboxDirections.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAE8006E1DC5444E004188A7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DAE8006B1DC5444E004188A7 /* MapboxDirections.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +363,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE8006A1DC5444E004188A7 /* MapboxDirections.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,10 +677,12 @@
 				DA15B1A41D5D501500C8042B /* Sources */,
 				DA15B1A51D5D501500C8042B /* Frameworks */,
 				DA15B1A61D5D501500C8042B /* Resources */,
+				DAE8006E1DC5444E004188A7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DAE8006D1DC5444E004188A7 /* PBXTargetDependency */,
 			);
 			name = "WatchExample Extension";
 			productName = "WatchExample Extension";
@@ -1573,6 +1596,11 @@
 			isa = PBXTargetDependency;
 			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
 			targetProxy = DA6C9D931CAE442B00094FBC /* PBXContainerItemProxy */;
+		};
+		DAE8006D1DC5444E004188A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1A10FA1D010361009F82FA /* MapboxDirectionsWatch */;
+			targetProxy = DAE8006C1DC5444E004188A7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
