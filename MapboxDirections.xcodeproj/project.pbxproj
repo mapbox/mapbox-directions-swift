@@ -1906,7 +1906,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirections;
 				PRODUCT_NAME = MapboxDirections;
 				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1933,7 +1933,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirections;
 				PRODUCT_NAME = MapboxDirections;
 				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				VERSIONING_SYSTEM = "apple-generic";
