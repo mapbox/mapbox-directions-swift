@@ -86,6 +86,20 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(round(coordinate.longitude), -122)
         
         XCTAssertEqual(leg.steps[18].name, "Sycamore Valley Road West")
+        
+        let intersection = step.intersections!.first!
+        XCTAssertEqual(intersection.outletIndexes, NSIndexSet(indexesInRange: NSRange(location: 1, length: 2)))
+        XCTAssertEqual(intersection.approachIndex, 0)
+        XCTAssertEqual(intersection.outletIndex, 2)
+        XCTAssertEqual(intersection.headings, [0, 180, 195])
+        XCTAssertNotNil(intersection.location.latitude)
+        XCTAssertNotNil(intersection.location.longitude)
+        XCTAssertEqual(intersection.usableApproachLanes, NSIndexSet(indexesInRange: NSRange(location: 0, length: 2)))
+        
+        let lane = intersection.approachLanes?.first
+        let indications = lane?.indications
+        XCTAssertNotNil(indications)
+        XCTAssertTrue(indications!.contains(.Left))
     }
     
     func testGeoJSON() {

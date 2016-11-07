@@ -513,6 +513,13 @@ public class RouteStep: NSObject, NSSecureCoding {
      */
     public let destinations: String?
     
+    /**
+     An array of intersections along the step.
+     
+     Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
+    */
+    public let intersections: [Intersection]?
+    
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
@@ -524,6 +531,9 @@ public class RouteStep: NSObject, NSSecureCoding {
         
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
+        
+        let intersectionsJSON = json["intersections"] as? [JSONDictionary]
+        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -604,6 +614,8 @@ public class RouteStep: NSObject, NSSecureCoding {
         transportType = TransportType(description: transportTypeDescription)
         
         destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
+        
+        intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
     }
     
     public static func supportsSecureCoding() -> Bool {
@@ -628,6 +640,8 @@ public class RouteStep: NSObject, NSSecureCoding {
         
         coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
         coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
+        
+        coder.encodeObject(intersections, forKey: "intersections")
         
         coder.encodeObject([
             "latitude": maneuverLocation.latitude,
