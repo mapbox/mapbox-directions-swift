@@ -5,90 +5,119 @@ import Foundation
  */
 @objc(MBIntersection)
 public class Intersection: NSObject, NSSecureCoding {
-    
     /**
-     Index into bearings/entry array.
-     
-     The index of the item in the headings array that corresponds to the road that the containing route step uses to approach the intersection.
-    */
-    public var approachIndex: Int
-    
-    /**
-     Index into the bearings/entry array.
-     
-     The index of the item in the headings array that corresponds to the road that the containing route step uses to leave the intersection.
-    */
-    public var outletIndex: Int
-    
-    /**
-     An array of booleans, corresponding in a 1:1 relationship to the headings.
-     
-     A value of true indicates that the respective road could be entered on a valid route. false indicates that the turn onto the respective road would violate a restriction.
+     The geographic coordinates at the center of the intersection.
      */
-    public let entry: [Bool]
-    
-    /**
-     CLLocationCoordinate2D representing the location of the intersection
-    */
     public let location: CLLocationCoordinate2D
     
     /**
-     The geographic coordinates at the center of the intersection.
-    */
-    public var headings: [CLLocationDirection]
-    
-    /**
-     Array of Lane objects.
+     An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
      
-     If no lane information is available for an intersection, the lanes property will not be present. The first lane represents the left most lane, while the last represents the right most lane.
-    */
-    public var lanes: [Lane]?
+     A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
+     
+     A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
+     */
+    public let headings: [CLLocationDirection]
     
     /**
-     Set of Lane objects that have a valid turn. This is a subset of the lanes object.
-    */
-    public var usableLanes: Set<Lane>?
-    
-    internal init(approachIndex: Int?, outletIndex: Int?, entry: [Bool], location: CLLocationCoordinate2D, headings: [CLLocationDirection], lanes: [Lane]?, usableLanes: Set<Lane>) {
-        self.approachIndex = approachIndex ?? -1
-        self.outletIndex = outletIndex ?? -1
-        self.entry = entry
-        self.location = location
-        self.headings = headings
-        self.lanes = lanes
-        self.usableLanes = usableLanes
+     An array of `NSNumber`s containing `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
+     
+     A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
+     
+     A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
+     
+     This property exists for Objective-C compatibility. In Swift, use the `headings` property instead.
+     */
+    public var headingDirections: [NSNumber] {
+        return headings.map { $0 as NSNumber }
     }
     
-    internal convenience init(json: JSONDictionary) {
-        let approachIndex = json["in"] as? Int
-        let outletIndex = json["out"] as? Int
-        let entry = json["entry"] as! [Bool]
-        let coords = json["location"] as! [Double]
-        let location = CLLocationCoordinate2D(geoJSON: coords)
-        let headings = json["bearings"] as! [CLLocationDirection]
-        let lanesJSON = json["lanes"] as? [JSONDictionary]
-        var lanes = [Lane]()
-        var usableLanes = Set<Lane>()
+    /**
+     The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
+     
+     This index set effectively excludes any one-way road that leads toward the intersection.
+     */
+    public let outletIndexes: NSIndexSet
+    
+    /**
+     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
+     */
+    public let approachIndex: Int
+    
+    /**
+     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to leave the intersection.
+     */
+    public let outletIndex: Int
+    
+    /**
+     An array of `Lane` objects representing all the lanes of the road that the containing route step uses to approach the intersection.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
+     */
+    public let approachLanes: [Lane]?
+    
+    /**
+     The indices of the items in the `approachLanes` array that correspond to the roads that may be used to execute the maneuver.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`.
+     */
+    public var usableApproachLanes: NSIndexSet?
+    
+    internal init(json: JSONDictionary) {
+        location = CLLocationCoordinate2D(geoJSON: json["location"] as! [Double])
+        headings = json["bearings"] as! [CLLocationDirection]
         
-        for laneJSON in lanesJSON ?? [] {
-            let lane = Lane(json: laneJSON)
-            lanes.append(lane)
-            if laneJSON["valid"] as! Bool {
-                usableLanes.insert(lane)
-            }
+        let outletsArray = json["entry"] as! [Bool]
+        let outletIndexes = NSMutableIndexSet()
+        for (i, _) in outletsArray.enumerate().filter({ $1 }) {
+            outletIndexes.addIndex(i)
         }
+        self.outletIndexes = outletIndexes
         
-        self.init(approachIndex: approachIndex, outletIndex: outletIndex, entry: entry, location: location, headings: headings, lanes: lanes, usableLanes: usableLanes)
+        approachIndex = json["in"] as? Int ?? -1
+        outletIndex = json["out"] as? Int ?? -1
+        
+        if let lanesJSON = json["lanes"] as? [JSONDictionary] {
+            var lanes: [Lane] = []
+            let usableApproachLanes = NSMutableIndexSet()
+            
+            for (i, laneJSON) in lanesJSON.enumerate() {
+                lanes.append(Lane(json: laneJSON))
+                if laneJSON["valid"] as! Bool {
+                    usableApproachLanes.addIndex(i)
+                }
+            }
+            self.approachLanes = lanes
+            self.usableApproachLanes = usableApproachLanes
+        } else {
+            approachLanes = nil
+            usableApproachLanes = nil
+        }
     }
     
     public required init?(coder decoder: NSCoder) {
-        approachIndex = decoder.decodeObjectForKey("approachIndex") as! Int
-        outletIndex = decoder.decodeObjectForKey("outletIndex") as! Int
-        entry = decoder.decodeObjectForKey("entry") as! [Bool]
-        let coordinateDictionaries = decoder.decodeObjectForKey("location") as? [String: CLLocationDegrees]
-        location = CLLocationCoordinate2D(latitude: coordinateDictionaries!["latitude"]!, longitude: coordinateDictionaries!["longitude"]!)
-        headings = decoder.decodeObjectForKey("headings") as! [CLLocationDirection]
-        usableLanes = decoder.decodeObjectForKey("usableLanes") as? Set<Lane>
+        guard let locationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
+            let latitude = locationDictionary["latitude"],
+            let longitude = locationDictionary["longitude"] else {
+            return nil
+        }
+        location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        guard let headings = decoder.decodeObjectOfClasses([NSArray.self, NSNumber.self], forKey: "headings") as? [CLLocationDirection] else {
+            return nil
+        }
+        self.headings = headings
+        
+        guard let outletIndexes = decoder.decodeObjectOfClass(NSIndexSet.self, forKey: "outletIndexes") else {
+            return nil
+        }
+        self.outletIndexes = outletIndexes
+        
+        approachIndex = decoder.decodeIntegerForKey("approachIndex")
+        outletIndex = decoder.decodeIntegerForKey("outletIndex")
+        
+        approachLanes = decoder.decodeObjectOfClasses([NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
+        usableApproachLanes = decoder.decodeObjectOfClass(NSIndexSet.self, forKey: "usableApproachLanes")
     }
     
     public static func supportsSecureCoding() -> Bool {
@@ -96,14 +125,18 @@ public class Intersection: NSObject, NSSecureCoding {
     }
     
     public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(approachIndex, forKey: "approachIndex")
-        coder.encodeObject(outletIndex, forKey: "outletIndex")
-        coder.encodeObject(entry, forKey: "entry")
-        coder.encodeObject(headings, forKey: "headings")
-        coder.encodeObject(usableLanes, forKey: "usableLanes")
         coder.encodeObject([
             "latitude": location.latitude,
-            "longitude": location.longitude
+            "longitude": location.longitude,
         ], forKey: "location")
+        
+        coder.encodeObject(headings, forKey: "headings")
+        coder.encodeObject(outletIndexes, forKey: "outletIndexes")
+        
+        coder.encodeInteger(approachIndex, forKey: "approachIndex")
+        coder.encodeInteger(outletIndex, forKey: "outletIndex")
+        
+        coder.encodeObject(approachLanes, forKey: "approachLanes")
+        coder.encodeObject(usableApproachLanes, forKey: "usableApproachLanes")
     }
 }

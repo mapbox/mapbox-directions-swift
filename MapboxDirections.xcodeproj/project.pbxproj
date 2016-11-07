@@ -87,6 +87,10 @@
 		DA737EF21D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
 		DA737EF31D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
 		DA737EF41D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
+		DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
+		DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
+		DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
+		DAA76D6B1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
 		DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */; };
 		DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
 		DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */; };
@@ -256,6 +260,7 @@
 		DA737EE71D0611CB005BDA16 /* V4Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V4Tests.swift; sourceTree = "<group>"; };
 		DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_geojson.json; sourceTree = "<group>"; };
 		DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_polyline.json; sourceTree = "<group>"; };
+		DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLaneIndication.swift; sourceTree = "<group>"; };
 		DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBWaypoint.swift; sourceTree = "<group>"; };
 		DAC05F171CFC075300FA0071 /* MBRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoute.swift; sourceTree = "<group>"; };
 		DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRouteLeg.swift; sourceTree = "<group>"; };
@@ -423,11 +428,12 @@
 				DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */,
 				DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */,
 				DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */,
-				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
-				C57D55071DB58C0200B94B74 /* MBLane.swift */,
 				C57D55001DB5669600B94B74 /* MBIntersection.swift */,
-				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
+				C57D55071DB58C0200B94B74 /* MBLane.swift */,
 				C57B2E951DB8171300E9123A /* MBLaneIndication.h */,
+				DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */,
+				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
+				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 			);
 			path = MapboxDirections;
 			sourceTree = "<group>";
@@ -1316,6 +1322,7 @@
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
+				DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */,
@@ -1343,6 +1350,7 @@
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
+				DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A10F11D010247009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */,
@@ -1370,6 +1378,7 @@
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
+				DAA76D6B1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */,
@@ -1385,6 +1394,7 @@
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
+				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
