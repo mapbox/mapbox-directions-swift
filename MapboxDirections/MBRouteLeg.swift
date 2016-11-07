@@ -86,13 +86,30 @@ public class RouteLeg: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        source = decoder.decodeObjectForKey("source") as! Waypoint
-        destination = decoder.decodeObjectForKey("destination") as! Waypoint
-        steps = decoder.decodeObjectForKey("steps") as? [RouteStep] ?? []
-        name = decoder.decodeObjectForKey("name") as! String
+        guard let decodedSource = decoder.decodeObjectOfClass(Waypoint.self, forKey: "source") else {
+            return nil
+        }
+        source = decodedSource
+        
+        guard let decodedDestination = decoder.decodeObjectOfClass(Waypoint.self, forKey: "destination") else {
+            return nil
+        }
+        destination = decodedDestination
+        
+        steps = decoder.decodeObjectOfClasses([NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+        
+        guard let decodedName = decoder.decodeObjectOfClass(NSString.self, forKey: "name") as String? else {
+            return nil
+        }
+        name = decodedName
+        
         distance = decoder.decodeDoubleForKey("distance")
         expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        profileIdentifier = decoder.decodeObjectForKey("profileIdentifier") as! String
+        
+        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
     }
     
     public static func supportsSecureCoding() -> Bool {
