@@ -1,12 +1,17 @@
 use_frameworks!
 
 def shared_pods
-  pod 'Polyline', :git => 'https://github.com/superpeteblaze/Polyline', :branch => 'swift3'
+  pod 'Polyline', '~> 4.0'
 end
 
 def shared_test_pods
   shared_pods
-  pod 'OHHTTPStubs/Swift', '~> 5.0.0', :configurations => ['Debug']
+  pod 'OHHTTPStubs/Swift', '~> 5.2', :configurations => ['Debug']
+end
+
+def shared_example_pods
+  shared_pods
+  pod 'Mapbox-iOS-SDK', '~> 3.3'
 end
 
 target 'MapboxDirections' do
@@ -46,6 +51,10 @@ end
 
 target 'Example (Swift)' do
   platform :ios, '8.0'
-  shared_pods
-  pod 'Mapbox-iOS-SDK', '~> 3.3'
+  shared_example_pods
+end
+
+target 'Example (Objective-C)' do
+  platform :ios, '8.0'
+  shared_example_pods
 end

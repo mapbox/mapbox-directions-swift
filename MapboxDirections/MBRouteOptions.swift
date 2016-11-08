@@ -118,7 +118,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
 /**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
  
- Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
+ Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
 open class RouteOptions: NSObject {
@@ -347,7 +347,7 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
 /**
  A `RouteOptionsV4` object is a structure that specifies the criteria for results returned by the Mapbox Directions API v4.
  
- Pass an instance of this class into the `Directions.calculateDirections(options:completionHandler:)` method.
+ Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptionsV4)
 open class RouteOptionsV4: RouteOptions {

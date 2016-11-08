@@ -3,10 +3,10 @@ import Polyline
 /**
  A `Route` object defines a single route that the user can follow to visit a series of waypoints in order. The route object includes information about the route, such as its distance and expected travel time. Depending on the criteria used to calculate the route, the route object may also include detailed turn-by-turn instructions.
  
- Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method. However, if you use the `Directions.URLForCalculatingDirections(options:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
+ Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.urlForCalculating(_:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
  */
 @objc(MBRoute)
-open class Route: NSObject {
+open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
     internal init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
@@ -20,13 +20,13 @@ open class Route: NSObject {
     /**
      Initializes a new route object with the given JSON dictionary representation and waypoints.
      
-     This initializer is intended for use in conjunction with the `Directions.URLForCalculatingDirections(options:)` method.
+     This initializer is intended for use in conjunction with the `Directions.urlForCalculating(_:)` method.
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    public convenience init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
+    public convenience init(json: [String: Any], waypoints: [Waypoint], profileIdentifier: String) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
@@ -47,6 +47,42 @@ open class Route: NSObject {
         }
         
         self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
+            if let latitude = coordinateDictionary["latitude"],
+                let longitude = coordinateDictionary["longitude"] {
+                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            } else {
+                return nil
+            }
+        })
+        
+        legs = decoder.decodeObject(of: [NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
+        distance = decoder.decodeDouble(forKey: "distance")
+        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    open static var supportsSecureCoding = true
+    
+    public func encode(with coder: NSCoder) {
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+        ] }
+        coder.encode(coordinateDictionaries, forKey: "coordinates")
+        
+        coder.encode(legs, forKey: "legs")
+        coder.encode(distance, forKey: "distance")
+        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encode(profileIdentifier, forKey: "profileIdentifier")
     }
     
     // MARK: Getting the Route Geometry

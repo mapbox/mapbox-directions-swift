@@ -7,7 +7,7 @@
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. The Mapbox Directions API is powered by the [OSRM](http://project-osrm.org/) routing engine and open data from the [OpenStreetMap](https://www.openstreetmap.org/) project.
 
-Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift.
+Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift 3.
 
 MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), and the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos).
 
@@ -22,7 +22,7 @@ pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirection
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "raphaelmor/Polyline" ~> 4.0.0
+github "raphaelmor/Polyline" ~> 4.0
 github "Mapbox/MapboxDirections.swift" "swift3"
 ```
 
@@ -62,7 +62,7 @@ Alternatively, you can place your access token in the `MGLMapboxAccessToken` key
 
 ```swift
 // main.swift
-let directions = Directions.sharedDirections
+let directions = Directions.shared
 ```
 
 ```objc
@@ -75,7 +75,7 @@ MBDirections *directions = [MBDirections sharedDirections];
 set theDirections to sharedDirections of MBDirections of the current application
 ```
 
-With the directions object in hand, construct a RouteOptions or MBRouteOptions object and pass it into the `Directions.calculateDirections(options:completionHandler:)` method.
+With the directions object in hand, construct a RouteOptions or MBRouteOptions object and pass it into the `Directions.calculate(_:completionHandler:)` method.
 
 ```swift
 // main.swift
@@ -87,7 +87,7 @@ let waypoints = [
 let options = RouteOptions(waypoints: waypoints, profileIdentifier: MBDirectionsProfileIdentifierAutomobile)
 options.includesSteps = true
 
-let task = directions.calculateDirections(options: options) { (waypoints, routes, error) in
+let task = directions.calculate(options) { (waypoints, routes, error) in
     guard error == nil else {
         print("Error calculating directions: \(error!)")
         return
@@ -96,18 +96,18 @@ let task = directions.calculateDirections(options: options) { (waypoints, routes
     if let route = routes?.first, leg = route.legs.first {
         print("Route via \(leg):")
         
-        let distanceFormatter = NSLengthFormatter()
-        let formattedDistance = distanceFormatter.stringFromMeters(route.distance)
+        let distanceFormatter = LengthFormatter()
+        let formattedDistance = distanceFormatter.string(fromMeters: route.distance)
         
-        let travelTimeFormatter = NSDateComponentsFormatter()
-        travelTimeFormatter.unitsStyle = .Short
-        let formattedTravelTime = travelTimeFormatter.stringFromTimeInterval(route.expectedTravelTime)
+        let travelTimeFormatter = DateComponentsFormatter()
+        travelTimeFormatter.unitsStyle = .short
+        let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
         
         print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
         
         for step in leg.steps {
             print("\(step.instructions)")
-            let formattedDistance = distanceFormatter.stringFromMeters(step.distance)
+            let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
             print("— \(formattedDistance) —")
         }
     }
@@ -209,7 +209,7 @@ if route.coordinateCount > 0 {
     
     // Add the polyline to the map and fit the viewport to the polyline.
     mapView.addAnnotation(routeLine)
-    mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: UIEdgeInsetsZero, animated: true)
+    mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
 }
 ```
 
@@ -238,3 +238,5 @@ To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org
 1. `pod install`
 1. `open MapboxDirections.xcworkspace`
 1. Switch to the MapboxDirections scheme and go to Product ‣ Test.
+
+The workspace requires CocoaPods 1.1.0.beta.1 or greater if opening inside Xcode 8.

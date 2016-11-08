@@ -3,10 +3,10 @@ import Polyline
 /**
  A `RouteLeg` object defines a single leg of a route between two waypoints. If the overall route has only two waypoints, it has a single `RouteLeg` object that covers the entire route. The route leg object includes information about the leg, such as its name, distance, and expected travel time. Depending on the criteria used to calculate the route, the route leg object may also include detailed turn-by-turn instructions.
  
- You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+ You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteLeg)
-open class RouteLeg: NSObject {
+open class RouteLeg: NSObject, NSSecureCoding {
     // MARK: Getting the Leg Geometry
     
     /**
@@ -83,6 +83,45 @@ open class RouteLeg: NSObject {
     internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        guard let decodedSource = decoder.decodeObject(of: Waypoint.self, forKey: "source") else {
+            return nil
+        }
+        source = decodedSource
+        
+        guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
+            return nil
+        }
+        destination = decodedDestination
+        
+        steps = decoder.decodeObject(of: [NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+        
+        guard let decodedName = decoder.decodeObject(of: NSString.self, forKey: "name") as String? else {
+            return nil
+        }
+        name = decodedName
+        
+        distance = decoder.decodeDouble(forKey: "distance")
+        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    open static var supportsSecureCoding = true
+    
+    public func encode(with coder: NSCoder) {
+        coder.encode(source, forKey: "source")
+        coder.encode(destination, forKey: "destination")
+        coder.encode(steps, forKey: "steps")
+        coder.encode(name, forKey: "name")
+        coder.encode(distance, forKey: "distance")
+        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encode(profileIdentifier, forKey: "profileIdentifier")
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculateDirections(options:completionHandler:)` method.
+ A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBWaypoint)
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
@@ -67,7 +67,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coordinateAccuracy = decoder.decodeDouble(forKey: "coordinateAccuracy")
         heading = decoder.decodeDouble(forKey: "heading")
         headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
-        name = decoder.decodeObject(forKey: "name") as? String
+        name = decoder.decodeObject(of: NSString.self, forKey: "name") as? String
     }
     
     open func encode(with coder: NSCoder) {
@@ -139,7 +139,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The name of the waypoint.
      
-     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another. When you get an array of waypoints back in the completion handler of the `Directions.calculateDirections(options:completionHandler:)` method.
+     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another. When you get an array of waypoints back in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
     open var name: String?
     

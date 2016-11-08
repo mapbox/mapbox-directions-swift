@@ -1,7 +1,7 @@
-typealias JSONDictionary = [String: AnyObject]
+typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
-public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
+public let MBDirectionsErrorDomain: NSErrorDomain = "MBDirectionsErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
@@ -112,7 +112,8 @@ open class Directions: NSObject {
      
      To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    open static let sharedDirections = Directions(accessToken: nil)
+    @objc(sharedDirections)
+    open static let shared = Directions(accessToken: nil)
     
     /// The API endpoint to request the directions from.
     internal var apiEndpoint: URL
@@ -162,8 +163,9 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    open func calculateDirections(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
-        let url = URLForCalculatingDirections(options)
+    @objc(calculateDirectionsWithOptions:completionHandler:)
+    open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+        let url = urlForCalculating(options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
             let response = options.response(json)
             completionHandler(response.0, response.1, nil)
@@ -189,7 +191,7 @@ open class Directions: NSObject {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
-            if let data = data {
+            if let data = data, response?.mimeType == "application/json" {
                 do {
                     json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
                 } catch {
@@ -218,7 +220,8 @@ open class Directions: NSObject {
      
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
-    open func URLForCalculatingDirections(_ options: RouteOptions) -> URL {
+    @objc(URLForCalculatingDirectionsWithOptions:)
+    open func urlForCalculating(_ options: RouteOptions) -> URL {
         let params = options.params + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
