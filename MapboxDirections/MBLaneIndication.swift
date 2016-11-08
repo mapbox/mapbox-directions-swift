@@ -26,6 +26,8 @@ extension LaneIndication: CustomStringConvertible {
                 scope.insert(.left)
             case "uturn":
                 scope.insert(.uTurn)
+            case "none":
+                break
             default:
                 return nil
             }
