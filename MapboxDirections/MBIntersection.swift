@@ -24,7 +24,7 @@ public class Intersection: NSObject, NSSecureCoding {
      
      This index set effectively excludes any one-way road that leads toward the intersection.
      */
-    public let outletIndexes: NSIndexSet
+    public let outletIndexes: IndexSet
     
     /**
      The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
@@ -48,30 +48,27 @@ public class Intersection: NSObject, NSSecureCoding {
      
      If no lane information is available for an intersection, this property’s value is `nil`.
      */
-    public var usableApproachLanes: NSIndexSet?
+    public let usableApproachLanes: IndexSet?
     
     internal init(json: JSONDictionary) {
         location = CLLocationCoordinate2D(geoJSON: json["location"] as! [Double])
         headings = json["bearings"] as! [CLLocationDirection]
         
         let outletsArray = json["entry"] as! [Bool]
-        let outletIndexes = NSMutableIndexSet()
-        for (i, _) in outletsArray.enumerated().filter({ $1 }) {
-            outletIndexes.add(i)
-        }
-        self.outletIndexes = outletIndexes
+        let outletIndexes = outletsArray.enumerated().filter{ $1 }.map { $0.offset }
+        self.outletIndexes = IndexSet(outletIndexes)
         
         approachIndex = json["in"] as? Int ?? -1
         outletIndex = json["out"] as? Int ?? -1
         
         if let lanesJSON = json["lanes"] as? [JSONDictionary] {
             var lanes: [Lane] = []
-            let usableApproachLanes = NSMutableIndexSet()
+            var usableApproachLanes = IndexSet()
             
             for (i, laneJSON) in lanesJSON.enumerated() {
                 lanes.append(Lane(json: laneJSON))
                 if laneJSON["valid"] as! Bool {
-                    usableApproachLanes.add(i)
+                    usableApproachLanes.update(with: i)
                 }
             }
             self.approachLanes = lanes
@@ -98,13 +95,13 @@ public class Intersection: NSObject, NSSecureCoding {
         guard let outletIndexes = decoder.decodeObject(of: NSIndexSet.self, forKey: "outletIndexes") else {
             return nil
         }
-        self.outletIndexes = outletIndexes
+        self.outletIndexes = outletIndexes as IndexSet
         
         approachIndex = decoder.decodeInteger(forKey: "approachIndex")
         outletIndex = decoder.decodeInteger(forKey: "outletIndex")
         
         approachLanes = decoder.decodeObject(of: [NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
-        usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes")
+        usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as? IndexSet
     }
     
     open static var supportsSecureCoding = true
