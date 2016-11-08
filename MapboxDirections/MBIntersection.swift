@@ -20,19 +20,6 @@ public class Intersection: NSObject, NSSecureCoding {
     public let headings: [CLLocationDirection]
     
     /**
-     An array of `NSNumber`s containing `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
-     
-     A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
-     
-     A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
-     
-     This property exists for Objective-C compatibility. In Swift, use the `headings` property instead.
-     */
-    public var headingDirections: [NSNumber] {
-        return headings.map { $0 as NSNumber }
-    }
-    
-    /**
      The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
      
      This index set effectively excludes any one-way road that leads toward the intersection.
