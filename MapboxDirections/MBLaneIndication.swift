@@ -20,10 +20,10 @@ extension LaneIndication: CustomStringConvertible {
                 scope.insert(.straightAhead)
             case "slight left":
                 scope.insert(.slightLeft)
-            case "sharp left":
-                scope.insert(.sharpLeft)
             case "left":
                 scope.insert(.left)
+            case "sharp left":
+                scope.insert(.sharpLeft)
             case "uturn":
                 scope.insert(.uTurn)
             case "none":
@@ -36,12 +36,16 @@ extension LaneIndication: CustomStringConvertible {
     }
     
     public var description: String {
+        if isEmpty {
+            return "none"
+        }
+        
         var descriptions: [String] = []
         if contains(LaneIndication.sharpRight) {
             descriptions.append("sharp right")
         }
-        if contains(LaneIndication.sharpRight) {
-            descriptions.append("sharp right")
+        if contains(LaneIndication.right) {
+            descriptions.append("right")
         }
         if contains(LaneIndication.slightRight) {
             descriptions.append("slight right")
