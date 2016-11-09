@@ -546,8 +546,15 @@ public class RouteStep: NSObject, NSSecureCoding {
         self.maneuverLocation = maneuverLocation
         self.coordinates = coordinates
     }
-    
-    internal convenience init(json: JSONDictionary) {
+
+    /**
+     Initializes a new route step object with the given JSON dictionary representation
+
+     Typically, users would not create instances of this class directly. It is exposed publically for testing purposes.
+
+     - parameter json: A JSON dictionary representation of a step object as returnd by the Mapbox Directions API.
+     */
+    public convenience init(json: [String: AnyObject]) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
         let maneuverType = ManeuverType(description: maneuver["type"] as! String)

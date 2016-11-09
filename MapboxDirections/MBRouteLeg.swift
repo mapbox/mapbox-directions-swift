@@ -79,8 +79,15 @@ public class RouteLeg: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
     }
-    
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
+
+    /**
+     Initializes a new route leg object with the given JSON dictionary representation
+
+     Typically, users would not create instances of this class directly. It is exposed publically for testing purposes.
+
+     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
+     */
+    public convenience init(json: [String: AnyObject], source: Waypoint, destination: Waypoint, profileIdentifier: String) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
     }
