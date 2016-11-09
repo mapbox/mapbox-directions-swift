@@ -20,10 +20,10 @@ extension LaneIndication: CustomStringConvertible {
                 scope.insert(.StraightAhead)
             case "slight left":
                 scope.insert(.SlightLeft)
-            case "sharp left":
-                scope.insert(.SharpLeft)
             case "left":
                 scope.insert(.Left)
+            case "sharp left":
+                scope.insert(.SharpLeft)
             case "uturn":
                 scope.insert(.UTurn)
             case "none":
@@ -36,12 +36,16 @@ extension LaneIndication: CustomStringConvertible {
     }
     
     public var description: String {
+        if isEmpty {
+            return "none"
+        }
+        
         var descriptions: [String] = []
         if contains(LaneIndication.SharpRight) {
             descriptions.append("sharp right")
         }
-        if contains(LaneIndication.SharpRight) {
-            descriptions.append("sharp right")
+        if contains(LaneIndication.Right) {
+            descriptions.append("right")
         }
         if contains(LaneIndication.SlightRight) {
             descriptions.append("slight right")
