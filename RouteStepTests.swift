@@ -49,8 +49,8 @@ class RouteStepTests: XCTestCase {
         XCTAssertEqual(unarchivedStep.exitIndex, step.exitIndex)
         XCTAssertEqual(unarchivedStep.distance, step.distance)
         XCTAssertEqual(unarchivedStep.expectedTravelTime, step.expectedTravelTime)
-        XCTAssertEqual(unarchivedStep.name, step.name)
+        XCTAssertEqual(unarchivedStep.names ?? [], step.names ?? [])
         XCTAssertEqual(unarchivedStep.transportType, step.transportType)
-        XCTAssertEqual(unarchivedStep.destinations, step.destinations)
+        XCTAssertEqual(unarchivedStep.destinations ?? [], step.destinations ?? [])
     }
 }

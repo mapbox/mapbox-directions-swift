@@ -40,7 +40,7 @@ class V5Tests: XCTestCase {
             XCTAssertNil(error, "Error: \(error)")
             
             XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 1)
+            XCTAssertEqual(routes!.count, 2)
             route = routes!.first!
             
             expectation.fulfill()
@@ -54,7 +54,7 @@ class V5Tests: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 842)
+        XCTAssertEqual(route!.coordinates!.count, 28_442)
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
@@ -63,40 +63,47 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(route!.legs.count, 1)
         
         let leg = route!.legs.first!
-        XCTAssertEqual(leg.name, "CA 24, Camino Tassajara")
-        XCTAssertEqual(leg.steps.count, 22)
+        XCTAssertEqual(leg.name, "I 80, I 80;US 30")
+        XCTAssertEqual(leg.steps.count, 59)
         
-        let step = leg.steps[16]
-        XCTAssertEqual(round(step.distance), 166)
-        XCTAssertEqual(round(step.expectedTravelTime), 13)
-        XCTAssertEqual(step.instructions, "Take the ramp on the right")
+        let step = leg.steps[43]
+        XCTAssertEqual(round(step.distance), 688)
+        XCTAssertEqual(round(step.expectedTravelTime), 30)
+        XCTAssertEqual(step.instructions, "Take the ramp on the right towards Washington")
         
-        XCTAssertEqual(step.name, "")
-        XCTAssertEqual(step.destinations, "Sycamore Valley Road")
+        XCTAssertNil(step.names)
+        XCTAssertNotNil(step.destinations)
+        XCTAssertEqual(step.destinations ?? [], ["Washington"])
         XCTAssertEqual(step.maneuverType, ManeuverType.TakeOffRamp)
         XCTAssertEqual(step.maneuverDirection, ManeuverDirection.SlightRight)
-        XCTAssertEqual(step.initialHeading, 182)
-        XCTAssertEqual(step.finalHeading, 196)
+        XCTAssertEqual(step.initialHeading, 90)
+        XCTAssertEqual(step.finalHeading, 96)
         
         XCTAssertNotNil(step.coordinates)
-        XCTAssertEqual(step.coordinates!.count, 5)
+        XCTAssertEqual(step.coordinates!.count, 17)
         XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
         let coordinate = step.coordinates!.first!
-        XCTAssertEqual(round(coordinate.latitude), 38)
-        XCTAssertEqual(round(coordinate.longitude), -122)
+        XCTAssertEqual(round(coordinate.latitude), 39)
+        XCTAssertEqual(round(coordinate.longitude), -77)
         
-        XCTAssertEqual(leg.steps[18].name, "Sycamore Valley Road West")
+        XCTAssertNil(leg.steps[28].names)
+        XCTAssertEqual(leg.steps[28].codes ?? [], ["I 80"])
+        XCTAssertEqual(leg.steps[28].destinations ?? [], ["Toll Road"])
         
-        let intersection = step.intersections!.first!
-        XCTAssertEqual(intersection.outletIndexes, NSIndexSet(indexesInRange: NSRange(location: 1, length: 2)))
-        XCTAssertEqual(intersection.approachIndex, 0)
-        XCTAssertEqual(intersection.outletIndex, 2)
-        XCTAssertEqual(intersection.headings, [0, 180, 195])
-        XCTAssertNotNil(intersection.location.latitude)
-        XCTAssertNotNil(intersection.location.longitude)
-        XCTAssertEqual(intersection.usableApproachLanes, NSIndexSet(indexesInRange: NSRange(location: 0, length: 2)))
+        let intersections = leg.steps[40].intersections
+        XCTAssertNotNil(intersections)
+        XCTAssertEqual(intersections?.count, 7)
+        let intersection = intersections?[2]
+        XCTAssertEqual(intersection?.outletIndexes.containsIndex(0), true)
+        XCTAssertEqual(intersection?.outletIndexes.containsIndexesInRange(NSRange(location: 2, length: 2)), true)
+        XCTAssertEqual(intersection?.approachIndex, 1)
+        XCTAssertEqual(intersection?.outletIndex, 3)
+        XCTAssertEqual(intersection?.headings ?? [], [15, 90, 195, 270])
+        XCTAssertNotNil(intersection?.location.latitude)
+        XCTAssertNotNil(intersection?.location.longitude)
+        XCTAssertEqual(intersection?.usableApproachLanes ?? [], NSIndexSet(indexesInRange: NSRange(location: 1, length: 3)))
         
-        let lane = intersection.approachLanes?.first
+        let lane = intersection?.approachLanes?.first
         let indications = lane?.indications
         XCTAssertNotNil(indications)
         XCTAssertTrue(indications!.contains(.Left))

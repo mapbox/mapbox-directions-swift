@@ -371,6 +371,60 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     }
 }
 
+extension String {
+    internal func tagValuesSeparatedByString(separator: String) -> [String] {
+        return componentsSeparatedByString(separator).map { $0.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()) }.filter { !$0.isEmpty }
+    }
+}
+
+/**
+ Encapsulates all the information about a road.
+ */
+struct Road {
+    let names: [String]?
+    let codes: [String]?
+    let destinations: [String]?
+    let destinationCodes: [String]?
+    
+    init(name: String?, ref: String?, destination: String?) {
+        var codes: [String]?
+        if let names = name, let ref = ref ?? destination {
+            // OSRM v5.5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
+            let parenthetical = "(\(ref))"
+            if names == ref {
+                self.names = nil
+            } else {
+                self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+            }
+            codes = ref.tagValuesSeparatedByString(";")
+        } else if let names = name, let codesRange = names.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: names.startIndex..<names.endIndex) {
+            // OSRM v5.0 encodes the ref inside a parenthetical. Remove the ref from the name.
+            let parenthetical = names.substringWithRange(codesRange)
+            if names == ref ?? destination {
+                self.names = nil
+            } else {
+                self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+            }
+            codes = parenthetical.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "()")).tagValuesSeparatedByString(";")
+        } else {
+            self.names = name?.tagValuesSeparatedByString(";")
+            codes = nil
+        }
+        
+        // OSRM v5.5 combines the destination’s ref and name.
+        if let destination = destination where destination.containsString(": ") {
+            let destinationComponents = destination.componentsSeparatedByString(": ")
+            self.destinationCodes = destinationComponents.first?.tagValuesSeparatedByString(",")
+            self.destinations = destinationComponents.dropFirst().joinWithSeparator(": ").tagValuesSeparatedByString(",")
+        } else {
+            self.destinationCodes = nil
+            self.destinations = destination?.tagValuesSeparatedByString(",")
+        }
+        
+        self.codes = codes
+    }
+}
+
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
@@ -382,7 +436,11 @@ public class RouteStep: NSObject, NSSecureCoding {
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
-        destinations = json["destinations"] as? String
+        
+        let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String)
+        names = road.names
+        codes = road.codes ?? road.destinationCodes
+        destinations = road.destinations
         
         let maneuver = json["maneuver"] as! JSONDictionary
         instructions = maneuver["instruction"] as! String
@@ -398,8 +456,6 @@ public class RouteStep: NSObject, NSSecureCoding {
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
         exitIndex = maneuver["exit"] as? Int
-        
-        self.name = name
         
         self.maneuverLocation = maneuverLocation
         self.coordinates = coordinates
@@ -471,14 +527,15 @@ public class RouteStep: NSObject, NSSecureCoding {
         exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
         distance = decoder.decodeDoubleForKey("distance")
         expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        name = decoder.decodeObjectForKey("name") as? String
+        names = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "names") as? [String]
         
         guard let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as? String else {
             return nil
         }
         transportType = TransportType(description: transportTypeDescription)
         
-        destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
+        codes = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "codes") as? [String]
+        destinations = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "destinations") as? [String]
         
         intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
     }
@@ -519,8 +576,9 @@ public class RouteStep: NSObject, NSSecureCoding {
         
         coder.encodeDouble(distance, forKey: "distance")
         coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(names, forKey: "names")
         coder.encodeObject(transportType?.description, forKey: "transportType")
+        coder.encodeObject(codes, forKey: "codes")
         coder.encodeObject(destinations, forKey: "destinations")
     }
     
@@ -637,11 +695,20 @@ public class RouteStep: NSObject, NSSecureCoding {
     public let expectedTravelTime: NSTimeInterval
     
     /**
-     The name of the road or path leading from this step’s maneuver to the next step’s maneuver.
+     The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
      
-     If the maneuver is a turning maneuver, the step’s name is the name of the road or path onto which the user turns. The name includes any route designations assigned to the road. If you display the name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
+     If the maneuver is a turning maneuver, the step’s name is the name of the road or path onto which the user turns. If you display the name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
      */
-    public let name: String?
+    public let names: [String]?
+    
+    /**
+     Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
+     
+     A route reference code commonly consists of an alphabetic network code, a space, and a route number. You should not assume that the network code is globally unique: for example, a network code of “NH” may indicate a “National Highway” or “New Hampshire”. Moreover, a route number may not even uniqely identify a route within a given network.
+     
+     If a highway off-ramp is part of a numbered route, its reference code takes precedence over any reference code associated with the ramp’s destinations.
+     */
+    public let codes: [String]?
     
     // MARK: Getting Additional Step Details
     
@@ -657,7 +724,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      This property is typically available in steps leading to or from a freeway or expressway.
      */
-    public let destinations: String?
+    public let destinations: [String]?
     
     /**
      An array of intersections along the step.
