@@ -36,6 +36,10 @@ extension LaneIndication: CustomStringConvertible {
     }
     
     public var description: String {
+        if isEmpty {
+            return "none"
+        }
+        
         var descriptions: [String] = []
         if contains(LaneIndication.SharpRight) {
             descriptions.append("sharp right")
