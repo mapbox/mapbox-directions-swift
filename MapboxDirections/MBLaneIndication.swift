@@ -41,28 +41,28 @@ extension LaneIndication: CustomStringConvertible {
         }
         
         var descriptions: [String] = []
-        if contains(LaneIndication.sharpRight) {
+        if contains(.sharpRight) {
             descriptions.append("sharp right")
         }
-        if contains(LaneIndication.right) {
+        if contains(.right) {
             descriptions.append("right")
         }
-        if contains(LaneIndication.slightRight) {
+        if contains(.slightRight) {
             descriptions.append("slight right")
         }
-        if contains(LaneIndication.straightAhead) {
+        if contains(.straightAhead) {
             descriptions.append("straight")
         }
-        if contains(LaneIndication.slightLeft) {
+        if contains(.slightLeft) {
             descriptions.append("slight left")
         }
-        if contains(LaneIndication.left) {
+        if contains(.left) {
             descriptions.append("left")
         }
-        if contains(LaneIndication.sharpLeft) {
+        if contains(.sharpLeft) {
             descriptions.append("sharp left")
         }
-        if contains(LaneIndication.uTurn) {
+        if contains(.uTurn) {
             descriptions.append("uturn")
         }
         return descriptions.joined(separator: ",")
