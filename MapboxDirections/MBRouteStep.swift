@@ -169,6 +169,13 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case ReachEnd
     
+      /**
+     The step requires the user to enter, traverse, and exit a named rotary (traffic circle or roundabout).
+     
+     The exit index indicates the number of rotary exits up to and including the exit that the user must take.
+     */
+    case TakeRotary
+     
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
@@ -191,6 +198,13 @@ public enum ManeuverType: Int, CustomStringConvertible {
      Similar changes can occur simultaneously with other maneuvers, such as when the road changes its name at the site of a movable bridge. In such cases, `HeedWarning` is suppressed in favor of another maneuver type.
      */
     case HeedWarning
+    
+    /**
+     The step requires the user to use certain lanes
+    
+     The modifiers and lane indications of the lanes will always be straight
+     */
+    case UseLane
     
     /**
      The step requires the user to arrive at a waypoint.
@@ -227,12 +241,16 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .ReachFork
         case "end of road":
             type = .ReachEnd
+        case "rotary":
+            type = .TakeRotary
         case "roundabout":
             type = .TakeRoundabout
         case "roundabout turn":
             type = .TurnAtRoundabout
         case "notification":
             type = .HeedWarning
+        case "use lane":
+            type = .UseLane
         case "arrive":
             type = .Arrive
         case "waypoint": // v4
@@ -263,12 +281,16 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "fork"
         case .ReachEnd:
             return "end of road"
+        case .TakeRotary:
+            return "rotary"
         case .TakeRoundabout:
             return "roundabout"
         case .TurnAtRoundabout:
             return "roundabout turn"
         case .HeedWarning:
             return "notification"
+        case .UseLane:
+            return "use lane"
         case .Arrive:
             return "arrive"
         case .PassWaypoint: // v4
