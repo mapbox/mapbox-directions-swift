@@ -385,7 +385,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
-        instructions = maneuver["instruction"] as! String
+        instructions = maneuver["instruction"] as? String
         
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
@@ -574,14 +574,14 @@ public class RouteStep: NSObject, NSSecureCoding {
     // MARK: Getting Details About the Maneuver
     
     /**
-     A string with instructions in English explaining how to perform the step’s maneuver.
+     A string with instructions explaining how to perform the step’s maneuver.
      
      You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
      */
-    public let instructions: String
+    public let instructions: String?
     
     public override var description: String {
-        return instructions
+        return instructions ?? maneuverType?.description ?? maneuverDirection?.description ?? "step"
     }
     
     /**
