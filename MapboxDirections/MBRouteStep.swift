@@ -404,13 +404,13 @@ public class RouteStep: NSObject, NSSecureCoding {
         self.maneuverLocation = maneuverLocation
         self.coordinates = coordinates
     }
-
+    
     /**
-     Initializes a new route step object with the given JSON dictionary representation
-
-     Typically, users would not create instances of this class directly. It is exposed publically for testing purposes.
-
-     - parameter json: A JSON dictionary representation of a step object as returnd by the Mapbox Directions API.
+     Initializes a new route step object with the given JSON dictionary representation.
+     
+     Normally, you do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
+     
+     - parameter json: A JSON dictionary representation of a route step object as returnd by the Mapbox Directions API.
      */
     public convenience init(json: [String: AnyObject]) {
         let maneuver = json["maneuver"] as! JSONDictionary
