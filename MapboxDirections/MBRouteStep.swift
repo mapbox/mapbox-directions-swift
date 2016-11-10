@@ -169,17 +169,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case ReachEnd
     
-      /**
-     The step requires the user to enter, traverse, and exit a named rotary (traffic circle or roundabout).
-     
-     The exit index indicates the number of rotary exits up to and including the exit that the user must take.
-     */
-    case TakeRotary
-    
     /**
      The step requires the user to get into a specific lane in order to continue along the current road.
      
-     The `maneuverDirection` property is set to `StraightAhead`. Each lane specified by the first intersection’s `usableApproachLanes` property also has an `indications` property set to `StraightAhead`. A maneuver in a different direction would instead have a maneuver type of `Turn`.
+     The maneuver direction is set to `StraightAhead`. Each of the first intersection’s usable approach lanes also has an indication of `StraightAhead`. A maneuver in a different direction would instead have a maneuver type of `Turn`.
      
      This maneuver type is called out separately so that the application can present the user with lane guidance based on the first element in the `intersections` property. If lane guidance is unimportant to you, you may treat the maneuver as an ordinary `Continue` or ignore it.
      */
@@ -188,14 +181,21 @@ public enum ManeuverType: Int, CustomStringConvertible {
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
-     The exit index indicates the number of roundabout exits up to and including the exit that the user must take.
+     The step’s name is the name of the road to take after exiting the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
      */
     case TakeRoundabout
     
     /**
+     The step requires the user to enter, traverse, and exit a large, named roundabout (traffic circle or rotary).
+     
+     The step’s name is the name of the road to take after exiting the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
+     */
+    case TakeRotary
+    
+    /**
      The step requires the user to enter and exit a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
      
-     This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
+     The step’s name is the name of the road to take after exiting the roundabout. This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
      */
     case TurnAtRoundabout
     
