@@ -141,7 +141,7 @@ public class RouteOptions: NSObject {
         
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? MBDirectionsProfileIdentifierAutomobile
-        self.allowsUTurnAtWaypoint = self.profileIdentifier != MBDirectionsProfileIdentifierAutomobile
+        self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifierAutomobile, MBDirectionsProfileIdentifierAutomobileAvoidingTraffic].contains(self.profileIdentifier)
     }
     
     /**
