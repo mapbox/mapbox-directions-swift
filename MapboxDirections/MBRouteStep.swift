@@ -432,7 +432,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
      */
-    open let instructions: String
+    open let instructions: String!
     
     open override var description: String {
         return instructions
@@ -527,7 +527,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
-        instructions = maneuver["instruction"] as! String
+        instructions = maneuver["instruction"] as? String ?? "\(maneuverType) \(maneuverDirection)"
         
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
@@ -547,7 +547,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         self.coordinates = coordinates
     }
     
-    internal convenience init(json: JSONDictionary) {
+    public convenience init(json: [String: Any]) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
         let maneuverType = ManeuverType(description: maneuver["type"] as! String)
