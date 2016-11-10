@@ -169,6 +169,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case reachEnd
     
+
+    case useLane
+    case takeRotary
+
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
@@ -227,6 +231,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .reachFork
         case "end of road":
             type = .reachEnd
+        case "use lane":
+            type = .useLane
+        case "rotary":
+            type = .takeRotary
         case "roundabout":
             type = .takeRoundabout
         case "roundabout turn":
@@ -263,6 +271,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "fork"
         case .reachEnd:
             return "end of road"
+        case .useLane:
+            return "use lane"
+        case .takeRotary:
+            return "rotary"
         case .takeRoundabout:
             return "roundabout"
         case .turnAtRoundabout:
