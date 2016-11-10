@@ -378,148 +378,6 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
  */
 @objc(MBRouteStep)
 public class RouteStep: NSObject, NSSecureCoding {
-    // MARK: Getting the Step Geometry
-    
-    /**
-     An array of geographic coordinates defining the path of the route step from the location of the maneuver to the location of the next step’s maneuver.
-     
-     The value of this property may be `nil`, for example when the maneuver type is `Arrive`.
-     
-     Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
-     */
-    public let coordinates: [CLLocationCoordinate2D]?
-    
-    /**
-     The number of coordinates.
-     
-     The value of this property may be zero, for example when the maneuver type is `Arrive`.
-     
-     - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
-     */
-    public var coordinateCount: UInt {
-        return UInt(coordinates?.count ?? 0)
-    }
-    
-    /**
-     Retrieves the coordinates.
-     
-     The array may be empty, for example when the maneuver type is `Arrive`.
-     
-     Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
-     
-     - parameter coordinates: A pointer to a C array of `CLLocationCoordinate2D` instances. On output, this array contains all the vertices of the overlay.
-     - returns: True if the step has coordinates and `coordinates` has been populated, or false if the step has no coordinates and `coordinates` has not been modified.
-     
-     - precondition: `coordinates` must be large enough to hold `coordinateCount` instances of `CLLocationCoordinate2D`.
-     
-     - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
-     */
-    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
-        guard let stepCoordinates = self.coordinates else {
-            return false
-        }
-        
-        for i in 0..<stepCoordinates.count {
-            coordinates.advancedBy(i).memory = stepCoordinates[i]
-        }
-        return true
-    }
-    
-    // MARK: Getting Details About the Maneuver
-    
-    /**
-     A string with instructions in English explaining how to perform the step’s maneuver.
-     
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
-     */
-    public let instructions: String
-    
-    public override var description: String {
-        return instructions
-    }
-    
-    /**
-     The user’s heading immediately before performing the maneuver.
-     */
-    public let initialHeading: CLLocationDirection?
-    
-    /**
-     The user’s heading immediately after performing the maneuver.
-     
-     The value of this property may differ from the user’s heading after traveling along the road past the maneuver.
-     */
-    public let finalHeading: CLLocationDirection?
-    
-    /**
-     The type of maneuver required for beginning this step.
-     */
-    public let maneuverType: ManeuverType?
-    
-    /**
-     Additional directional information to clarify the maneuver type.
-     */
-    public let maneuverDirection: ManeuverDirection?
-    
-    /**
-     The location of the maneuver at the beginning of this step.
-     */
-    public let maneuverLocation: CLLocationCoordinate2D
-    
-    /**
-     The number of exits from the previous maneuver up to and including this step’s maneuver.
-     
-     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances.
-     
-     In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
-     */
-    public let exitIndex: Int?
-    
-    // MARK: Getting Details About the Approach to the Next Maneuver
-    
-    /**
-     The step’s distance, measured in meters.
-     
-     The value of this property accounts for the distance that the user must travel to go from this step’s maneuver location to the next step’s maneuver location. It is not the sum of the direct distances between the route’s waypoints, nor should you assume that the user would travel along this distance at a fixed speed.
-     */
-    public let distance: CLLocationDistance
-    
-    /**
-     The step’s expected travel time, measured in seconds.
-     
-     The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location under ideal conditions. You should not assume that the user would travel along the step at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
-     */
-    public let expectedTravelTime: NSTimeInterval
-    
-    /**
-     The name of the road or path leading from this step’s maneuver to the next step’s maneuver.
-     
-     If the maneuver is a turning maneuver, the step’s name is the name of the road or path onto which the user turns. The name includes any route designations assigned to the road. If you display the name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
-     */
-    public let name: String?
-    
-    // MARK: Getting Additional Step Details
-    
-    /**
-     The mode of transportation used for the step.
-     
-     This step may use a different mode of transportation than the overall route.
-     */
-    public let transportType: TransportType?
-    
-    /**
-     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road identified in the `name` property.
-     
-     This property is typically available in steps leading to or from a freeway or expressway.
-     */
-    public let destinations: String?
-    
-    /**
-     An array of intersections along the step.
-     
-     Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
-    */
-    public let intersections: [Intersection]?
-    
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
@@ -665,6 +523,148 @@ public class RouteStep: NSObject, NSSecureCoding {
         coder.encodeObject(transportType?.description, forKey: "transportType")
         coder.encodeObject(destinations, forKey: "destinations")
     }
+    
+    // MARK: Getting the Step Geometry
+    
+    /**
+     An array of geographic coordinates defining the path of the route step from the location of the maneuver to the location of the next step’s maneuver.
+     
+     The value of this property may be `nil`, for example when the maneuver type is `Arrive`.
+     
+     Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
+     */
+    public let coordinates: [CLLocationCoordinate2D]?
+    
+    /**
+     The number of coordinates.
+     
+     The value of this property may be zero, for example when the maneuver type is `Arrive`.
+     
+     - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
+     */
+    public var coordinateCount: UInt {
+        return UInt(coordinates?.count ?? 0)
+    }
+    
+    /**
+     Retrieves the coordinates.
+     
+     The array may be empty, for example when the maneuver type is `Arrive`.
+     
+     Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
+     
+     - parameter coordinates: A pointer to a C array of `CLLocationCoordinate2D` instances. On output, this array contains all the vertices of the overlay.
+     - returns: True if the step has coordinates and `coordinates` has been populated, or false if the step has no coordinates and `coordinates` has not been modified.
+     
+     - precondition: `coordinates` must be large enough to hold `coordinateCount` instances of `CLLocationCoordinate2D`.
+     
+     - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
+     */
+    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
+        guard let stepCoordinates = self.coordinates else {
+            return false
+        }
+        
+        for i in 0..<stepCoordinates.count {
+            coordinates.advancedBy(i).memory = stepCoordinates[i]
+        }
+        return true
+    }
+    
+    // MARK: Getting Details About the Maneuver
+    
+    /**
+     A string with instructions in English explaining how to perform the step’s maneuver.
+     
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
+     */
+    public let instructions: String
+    
+    public override var description: String {
+        return instructions
+    }
+    
+    /**
+     The user’s heading immediately before performing the maneuver.
+     */
+    public let initialHeading: CLLocationDirection?
+    
+    /**
+     The user’s heading immediately after performing the maneuver.
+     
+     The value of this property may differ from the user’s heading after traveling along the road past the maneuver.
+     */
+    public let finalHeading: CLLocationDirection?
+    
+    /**
+     The type of maneuver required for beginning this step.
+     */
+    public let maneuverType: ManeuverType?
+    
+    /**
+     Additional directional information to clarify the maneuver type.
+     */
+    public let maneuverDirection: ManeuverDirection?
+    
+    /**
+     The location of the maneuver at the beginning of this step.
+     */
+    public let maneuverLocation: CLLocationCoordinate2D
+    
+    /**
+     The number of exits from the previous maneuver up to and including this step’s maneuver.
+     
+     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances.
+     
+     In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
+     */
+    public let exitIndex: Int?
+    
+    // MARK: Getting Details About the Approach to the Next Maneuver
+    
+    /**
+     The step’s distance, measured in meters.
+     
+     The value of this property accounts for the distance that the user must travel to go from this step’s maneuver location to the next step’s maneuver location. It is not the sum of the direct distances between the route’s waypoints, nor should you assume that the user would travel along this distance at a fixed speed.
+     */
+    public let distance: CLLocationDistance
+    
+    /**
+     The step’s expected travel time, measured in seconds.
+     
+     The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location under ideal conditions. You should not assume that the user would travel along the step at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
+     */
+    public let expectedTravelTime: NSTimeInterval
+    
+    /**
+     The name of the road or path leading from this step’s maneuver to the next step’s maneuver.
+     
+     If the maneuver is a turning maneuver, the step’s name is the name of the road or path onto which the user turns. The name includes any route designations assigned to the road. If you display the name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
+     */
+    public let name: String?
+    
+    // MARK: Getting Additional Step Details
+    
+    /**
+     The mode of transportation used for the step.
+     
+     This step may use a different mode of transportation than the overall route.
+     */
+    public let transportType: TransportType?
+    
+    /**
+     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road identified in the `name` property.
+     
+     This property is typically available in steps leading to or from a freeway or expressway.
+     */
+    public let destinations: String?
+    
+    /**
+     An array of intersections along the step.
+     
+     Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
+    */
+    public let intersections: [Intersection]?
 }
 
 // MARK: Support for Directions API v4
