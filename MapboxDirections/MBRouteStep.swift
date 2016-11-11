@@ -385,8 +385,21 @@ public class RouteStep: NSObject, NSSecureCoding {
         destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
-        instructions = maneuver["instruction"] as? String
-        
+
+        if maneuver["instruction"] != nil {
+            instructions = maneuver["instruction"] as! String
+        } else {
+            if let mt = maneuverType?.description, let md = maneuverDirection?.description {
+                instructions = "\(mt) \(md)"
+            } else if let mt = maneuverType?.description {
+                instructions = mt
+            } else if let md = maneuverDirection?.description {
+                instructions = md
+            } else {
+                instructions = ""
+            }
+        }
+
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
         
@@ -575,13 +588,15 @@ public class RouteStep: NSObject, NSSecureCoding {
     
     /**
      A string with instructions explaining how to perform the step’s maneuver.
-     
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
+
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct them yourself using the step’s other properties with [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions)
+
+     - note: This string is populated by the Mapbox Directions API only, if you use OSRM it will only contain the type and modifier. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to generate instructions then.
      */
-    public let instructions: String?
+    public let instructions: String
     
     public override var description: String {
-        return instructions ?? maneuverType?.description ?? maneuverDirection?.description ?? "step"
+        return instructions
     }
     
     /**
