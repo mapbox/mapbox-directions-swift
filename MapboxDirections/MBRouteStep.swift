@@ -378,6 +378,152 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
  */
 @objc(MBRouteStep)
 public class RouteStep: NSObject, NSSecureCoding {
+    // MARK: Creating a Step
+    
+    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
+        transportType = TransportType(description: json["mode"] as! String)
+        destinations = json["destinations"] as? String
+        
+        let maneuver = json["maneuver"] as! JSONDictionary
+        instructions = maneuver["instruction"] as! String
+        
+        distance = json["distance"] as? Double ?? 0
+        expectedTravelTime = json["duration"] as? Double ?? 0
+        
+        let intersectionsJSON = json["intersections"] as? [JSONDictionary]
+        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
+        
+        initialHeading = maneuver["bearing_before"] as? Double
+        self.finalHeading = finalHeading
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
+        exitIndex = maneuver["exit"] as? Int
+        
+        self.name = name
+        
+        self.maneuverLocation = maneuverLocation
+        self.coordinates = coordinates
+    }
+    
+    /**
+     Initializes a new route step object with the given JSON dictionary representation.
+     
+     Normally, you do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
+     
+     - parameter json: A JSON dictionary representation of a route step object as returnd by the Mapbox Directions API.
+     */
+    public convenience init(json: [String: AnyObject]) {
+        let maneuver = json["maneuver"] as! JSONDictionary
+        let finalHeading = maneuver["bearing_after"] as? Double
+        let maneuverType = ManeuverType(description: maneuver["type"] as! String)
+        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
+        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
+        
+        let name = json["name"] as? String
+        
+        var coordinates: [CLLocationCoordinate2D]?
+        switch json["geometry"] {
+        case let geometry as JSONDictionary:
+            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+        case let geometry as String:
+            coordinates = decodePolyline(geometry, precision: 1e5)!
+        default:
+            coordinates = nil
+        }
+        
+        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+		
+        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
+            if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
+                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            } else {
+                return nil
+            }
+        })
+        
+        guard let decodedInstructions = decoder.decodeObjectOfClass(NSString.self, forKey: "instructions") as String? else {
+            return nil
+        }
+        instructions = decodedInstructions
+		
+        initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
+        finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
+        
+        guard let maneuverTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverType") as String? else {
+            return nil
+        }
+        maneuverType = ManeuverType(description: maneuverTypeDescription)
+        let maneuverDirectionDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverDirection") as! String
+        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        
+        if let maneuverLocationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
+            let latitude = maneuverLocationDictionary["latitude"],
+            let longitude = maneuverLocationDictionary["longitude"] {
+            maneuverLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        } else {
+            maneuverLocation = kCLLocationCoordinate2DInvalid
+        }
+        
+        exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        name = decoder.decodeObjectForKey("name") as? String
+        
+        guard let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as? String else {
+            return nil
+        }
+        transportType = TransportType(description: transportTypeDescription)
+        
+        destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
+        
+        intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        let coordinateDictionaries = coordinates?.map { [
+            "latitude": $0.latitude,
+            "longitude": $0.longitude,
+            ] }
+        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        
+        coder.encodeObject(instructions, forKey: "instructions")
+        
+        if let initialHeading = initialHeading {
+            coder.encodeDouble(initialHeading, forKey: "initialHeading")
+        }
+        if let finalHeading = finalHeading {
+            coder.encodeDouble(finalHeading, forKey: "finalHeading")
+        }
+        
+        coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
+        coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
+        
+        coder.encodeObject(intersections, forKey: "intersections")
+        
+        coder.encodeObject([
+            "latitude": maneuverLocation.latitude,
+            "longitude": maneuverLocation.longitude,
+        ], forKey: "maneuverLocation")
+        
+        if let exitIndex = exitIndex {
+            coder.encodeInteger(exitIndex, forKey: "exitIndex")
+        }
+        
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(transportType?.description, forKey: "transportType")
+        coder.encodeObject(destinations, forKey: "destinations")
+    }
+    
     // MARK: Getting the Step Geometry
     
     /**
@@ -519,145 +665,6 @@ public class RouteStep: NSObject, NSSecureCoding {
      Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
     */
     public let intersections: [Intersection]?
-    
-    // MARK: Creating a Step
-    
-    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
-        transportType = TransportType(description: json["mode"] as! String)
-        destinations = json["destinations"] as? String
-        
-        let maneuver = json["maneuver"] as! JSONDictionary
-        instructions = maneuver["instruction"] as! String
-        
-        distance = json["distance"] as? Double ?? 0
-        expectedTravelTime = json["duration"] as? Double ?? 0
-        
-        let intersectionsJSON = json["intersections"] as? [JSONDictionary]
-        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
-        
-        initialHeading = maneuver["bearing_before"] as? Double
-        self.finalHeading = finalHeading
-        self.maneuverType = maneuverType
-        self.maneuverDirection = maneuverDirection
-        exitIndex = maneuver["exit"] as? Int
-        
-        self.name = name
-        
-        self.maneuverLocation = maneuverLocation
-        self.coordinates = coordinates
-    }
-    
-    internal convenience init(json: JSONDictionary) {
-        let maneuver = json["maneuver"] as! JSONDictionary
-        let finalHeading = maneuver["bearing_after"] as? Double
-        let maneuverType = ManeuverType(description: maneuver["type"] as! String)
-        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
-        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
-        
-        let name = json["name"] as? String
-        
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
-        
-        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
-    }
-    
-    public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
-		
-        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
-            if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
-                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            } else {
-                return nil
-            }
-        })
-        
-        guard let decodedInstructions = decoder.decodeObjectOfClass(NSString.self, forKey: "instructions") as String? else {
-            return nil
-        }
-        instructions = decodedInstructions
-		
-        initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
-        finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
-        
-        guard let maneuverTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverType") as String? else {
-            return nil
-        }
-        maneuverType = ManeuverType(description: maneuverTypeDescription)
-        let maneuverDirectionDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverDirection") as! String
-        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
-        
-        if let maneuverLocationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
-            let latitude = maneuverLocationDictionary["latitude"],
-            let longitude = maneuverLocationDictionary["longitude"] {
-            maneuverLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        } else {
-            maneuverLocation = kCLLocationCoordinate2DInvalid
-        }
-        
-        exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
-        distance = decoder.decodeDoubleForKey("distance")
-        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        name = decoder.decodeObjectForKey("name") as? String
-        
-        guard let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as? String else {
-            return nil
-        }
-        transportType = TransportType(description: transportTypeDescription)
-        
-        destinations = decoder.decodeObjectOfClass(NSString.self, forKey: "destinations") as? String
-        
-        intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
-    }
-    
-    public static func supportsSecureCoding() -> Bool {
-        return true
-    }
-    
-    public func encodeWithCoder(coder: NSCoder) {
-        let coordinateDictionaries = coordinates?.map { [
-            "latitude": $0.latitude,
-            "longitude": $0.longitude,
-            ] }
-        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
-        
-        coder.encodeObject(instructions, forKey: "instructions")
-        
-        if let initialHeading = initialHeading {
-            coder.encodeDouble(initialHeading, forKey: "initialHeading")
-        }
-        if let finalHeading = finalHeading {
-            coder.encodeDouble(finalHeading, forKey: "finalHeading")
-        }
-        
-        coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
-        coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
-        
-        coder.encodeObject(intersections, forKey: "intersections")
-        
-        coder.encodeObject([
-            "latitude": maneuverLocation.latitude,
-            "longitude": maneuverLocation.longitude,
-        ], forKey: "maneuverLocation")
-        
-        if let exitIndex = exitIndex {
-            coder.encodeInteger(exitIndex, forKey: "exitIndex")
-        }
-        
-        coder.encodeDouble(distance, forKey: "distance")
-        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encodeObject(name, forKey: "name")
-        coder.encodeObject(transportType?.description, forKey: "transportType")
-        coder.encodeObject(destinations, forKey: "destinations")
-    }
 }
 
 // MARK: Support for Directions API v4

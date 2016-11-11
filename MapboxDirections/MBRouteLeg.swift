@@ -7,6 +7,74 @@ import Polyline
  */
 @objc(MBRouteLeg)
 public class RouteLeg: NSObject, NSSecureCoding {
+    // MARK: Creating a Leg
+    
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
+        self.source = source
+        self.destination = destination
+        self.profileIdentifier = profileIdentifier
+        self.steps = steps
+        distance = json["distance"] as! Double
+        expectedTravelTime = json["duration"] as! Double
+        self.name = json["summary"] as! String
+    }
+    
+    /**
+     Initializes a new route leg object with the given JSON dictionary representation and waypoints.
+     
+     Normally, you do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+     
+     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
+     - parameter source: The waypoint at the beginning of the leg.
+     - parameter destination: The waypoint at the end of the leg.
+     - parameter profileIdentifier: The profile identifier used to request the routes.
+     */
+    public convenience init(json: [String: AnyObject], source: Waypoint, destination: Waypoint, profileIdentifier: String) {
+        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        guard let decodedSource = decoder.decodeObjectOfClass(Waypoint.self, forKey: "source") else {
+            return nil
+        }
+        source = decodedSource
+        
+        guard let decodedDestination = decoder.decodeObjectOfClass(Waypoint.self, forKey: "destination") else {
+            return nil
+        }
+        destination = decodedDestination
+        
+        steps = decoder.decodeObjectOfClasses([NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+        
+        guard let decodedName = decoder.decodeObjectOfClass(NSString.self, forKey: "name") as String? else {
+            return nil
+        }
+        name = decodedName
+        
+        distance = decoder.decodeDoubleForKey("distance")
+        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    public static func supportsSecureCoding() -> Bool {
+        return true
+    }
+    
+    public func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(source, forKey: "source")
+        coder.encodeObject(destination, forKey: "destination")
+        coder.encodeObject(steps, forKey: "steps")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeDouble(distance, forKey: "distance")
+        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
+    }
+    
     // MARK: Getting the Leg Geometry
     
     /**
@@ -67,64 +135,6 @@ public class RouteLeg: NSObject, NSSecureCoding {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     public let profileIdentifier: String
-    
-    // MARK: Creating a Leg
-    
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
-        self.source = source
-        self.destination = destination
-        self.profileIdentifier = profileIdentifier
-        self.steps = steps
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        self.name = json["summary"] as! String
-    }
-    
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
-    }
-    
-    public required init?(coder decoder: NSCoder) {
-        guard let decodedSource = decoder.decodeObjectOfClass(Waypoint.self, forKey: "source") else {
-            return nil
-        }
-        source = decodedSource
-        
-        guard let decodedDestination = decoder.decodeObjectOfClass(Waypoint.self, forKey: "destination") else {
-            return nil
-        }
-        destination = decodedDestination
-        
-        steps = decoder.decodeObjectOfClasses([NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
-        
-        guard let decodedName = decoder.decodeObjectOfClass(NSString.self, forKey: "name") as String? else {
-            return nil
-        }
-        name = decodedName
-        
-        distance = decoder.decodeDoubleForKey("distance")
-        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        
-        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
-            return nil
-        }
-        profileIdentifier = decodedProfileIdentifier
-    }
-    
-    public static func supportsSecureCoding() -> Bool {
-        return true
-    }
-    
-    public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(source, forKey: "source")
-        coder.encodeObject(destination, forKey: "destination")
-        coder.encodeObject(steps, forKey: "steps")
-        coder.encodeObject(name, forKey: "name")
-        coder.encodeDouble(distance, forKey: "distance")
-        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
-    }
 }
 
 // MARK: Support for Directions API v4
