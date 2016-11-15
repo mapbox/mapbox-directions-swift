@@ -5,12 +5,12 @@ import Polyline
  */
 @objc(MBTransportType)
 public enum TransportType: Int, CustomStringConvertible {
-    // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile`
+    // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
     
     /**
      The route requires the user to drive or ride a car, truck, or motorcycle.
      
-     This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile`.
+     This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`.
      */
     case automobile // automobile
     
