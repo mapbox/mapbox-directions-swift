@@ -385,8 +385,19 @@ public class RouteStep: NSObject, NSSecureCoding {
         destinations = json["destinations"] as? String
         
         let maneuver = json["maneuver"] as! JSONDictionary
-        instructions = maneuver["instruction"] as! String
-        
+
+        if let instructions = maneuver["instruction"] as? String {
+            self.instructions = instructions
+        } else if let mt = maneuverType, md = maneuverDirection {
+            instructions = "\(mt) \(md)"
+        } else if let mt = maneuverType {
+            instructions = String(mt)
+        } else if let md = maneuverDirection {
+            instructions = String(md)
+        } else {
+            instructions = ""
+        }
+
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
         
@@ -574,9 +585,11 @@ public class RouteStep: NSObject, NSSecureCoding {
     // MARK: Getting Details About the Maneuver
     
     /**
-     A string with instructions in English explaining how to perform the step’s maneuver.
+     A string with instructions explaining how to perform the step’s maneuver.
      
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct the instructions yourself using the step’s other properties.
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need localized or customized instructions, you can construct them yourself from the step’s other properties or use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions).
+     
+     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to construct a complete instruction string for display.
      */
     public let instructions: String
     
