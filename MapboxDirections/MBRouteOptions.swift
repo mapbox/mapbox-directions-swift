@@ -8,6 +8,15 @@
 public let MBDirectionsProfileIdentifierAutomobile = "mapbox/driving"
 
 /**
+ The returned directions are appropriate for driving or riding a car, truck, or motorcycle.
+ 
+ This profile avoids traffic congestion based on current traffic data. A driving route may use a ferry where necessary.
+ 
+ - experiment: This profile is experimental. Where traffic data is absent, this profile prefers high-speed roads like highways, similar to `MBDirectionsProfileIdentifierAutomobile`.
+ */
+public let MBDirectionsProfileIdentifierAutomobileAvoidingTraffic = "mapbox/driving-traffic"
+
+/**
  The returned directions are appropriate for riding a bicycle.
  
  This profile prioritizes short, safe routes by avoiding highways and preferring cycling infrastructure, such as bike lanes on surface streets. A cycling route may, where necessary, use other modes of transportation, such as ferries or trains, or require dismounting the bicycle for a distance.
@@ -128,7 +137,7 @@ open class RouteOptions: NSObject {
      Initializes a route options object for routes between the given waypoints and an optional profile identifier.
      
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
     public init(waypoints: [Waypoint], profileIdentifier: String? = nil) {
         assert(waypoints.count >= 2, "A route requires at least a source and destination.")
@@ -136,7 +145,7 @@ open class RouteOptions: NSObject {
         
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? MBDirectionsProfileIdentifierAutomobile
-        self.allowsUTurnAtWaypoint = self.profileIdentifier != MBDirectionsProfileIdentifierAutomobile
+        self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifierAutomobile, MBDirectionsProfileIdentifierAutomobileAvoidingTraffic].contains(self.profileIdentifier)
     }
     
     /**
@@ -145,7 +154,7 @@ open class RouteOptions: NSObject {
      - note: This initializer is intended for `CLLocation` objects created using the `CLLocation.init(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint.
      
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
     public convenience init(locations: [CLLocation], profileIdentifier: String? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
@@ -156,7 +165,7 @@ open class RouteOptions: NSObject {
      Initializes a route options object for routes between the given geographic coordinates and an optional profile identifier.
      
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
     public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: String? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
@@ -181,7 +190,7 @@ open class RouteOptions: NSObject {
      
      Set this property to `true` if you expect the user to traverse each leg of the trip separately. For example, it would be quite easy for the user to effectively “U-turn” at a waypoint if the user first parks the car and patronizes a restaurant there before embarking on the next leg of the trip. Set this property to `false` if you expect the user to proceed to the next waypoint immediately upon arrival. For example, if the user only needs to drop off a passenger or package at the waypoint before continuing, it would be inconvenient to perform a U-turn at that location.
      
-     The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` and `true` otherwise.
+     The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` and `true` otherwise.
      */
     open var allowsUTurnAtWaypoint: Bool
     
@@ -190,7 +199,7 @@ open class RouteOptions: NSObject {
     /**
      A string specifying the primary mode of transportation for the routes.
      
-     This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
+     This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
     open var profileIdentifier: String
     
