@@ -386,18 +386,16 @@ public class RouteStep: NSObject, NSSecureCoding {
         
         let maneuver = json["maneuver"] as! JSONDictionary
 
-        if maneuver["instruction"] != nil {
-            instructions = maneuver["instruction"] as! String
+        if let instructions = maneuver["instruction"] as? String {
+            self.instructions = instructions
+        } else if let mt = maneuverType, md = maneuverDirection {
+            instructions = "\(mt) \(md)"
+        } else if let mt = maneuverType {
+            instructions = String(mt)
+        } else if let md = maneuverDirection {
+            instructions = String(md)
         } else {
-            if let mt = maneuverType?.description, let md = maneuverDirection?.description {
-                instructions = "\(mt) \(md)"
-            } else if let mt = maneuverType?.description {
-                instructions = mt
-            } else if let md = maneuverDirection?.description {
-                instructions = md
-            } else {
-                instructions = ""
-            }
+            instructions = ""
         }
 
         distance = json["distance"] as? Double ?? 0
@@ -588,10 +586,10 @@ public class RouteStep: NSObject, NSSecureCoding {
     
     /**
      A string with instructions explaining how to perform the step’s maneuver.
-
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need to localize or otherwise customize the instructions, you can construct them yourself using the step’s other properties with [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions)
-
-     - note: This string is populated by the Mapbox Directions API only, if you use OSRM it will only contain the type and modifier. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to generate instructions then.
+     
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need localized or customized instructions, you can construct them yourself from the step’s other properties or use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions).
+     
+     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to construct a complete instruction string for display.
      */
     public let instructions: String
     
