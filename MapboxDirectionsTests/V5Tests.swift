@@ -88,7 +88,13 @@ class V5Tests: XCTestCase {
         
         XCTAssertNil(leg.steps[28].names)
         XCTAssertEqual(leg.steps[28].codes ?? [], ["I 80"])
+        XCTAssertEqual(leg.steps[28].destinationCodes ?? [], ["I 80 East", "I 90"])
         XCTAssertEqual(leg.steps[28].destinations ?? [], ["Toll Road"])
+        
+        XCTAssertEqual(leg.steps[30].names ?? [], ["Ohio Turnpike"])
+        XCTAssertEqual(leg.steps[30].codes ?? [], ["I 80", "I 90"])
+        XCTAssertNil(leg.steps[30].destinationCodes)
+        XCTAssertNil(leg.steps[30].destinations)
         
         let intersections = leg.steps[40].intersections
         XCTAssertNotNil(intersections)
@@ -102,6 +108,11 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(intersection?.location.latitude)
         XCTAssertNotNil(intersection?.location.longitude)
         XCTAssertEqual(intersection?.usableApproachLanes ?? [], NSIndexSet(indexesInRange: NSRange(location: 1, length: 3)))
+        
+        XCTAssertEqual(leg.steps[57].names ?? [], ["Logan Circle Northwest"])
+        XCTAssertNil(leg.steps[57].codes)
+        XCTAssertNil(leg.steps[57].destinationCodes)
+        XCTAssertNil(leg.steps[57].destinations)
         
         let lane = intersection?.approachLanes?.first
         let indications = lane?.indications

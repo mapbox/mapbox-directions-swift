@@ -388,19 +388,19 @@ struct Road {
     
     init(name: String?, ref: String?, destination: String?) {
         var codes: [String]?
-        if let names = name, let gloss = ref ?? destination {
-            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref or destination in the name for backwards compatibility. Remove the ref or destination from the name.
-            let parenthetical = "(\(gloss))"
-            if names == gloss {
+        if let names = name, let ref = ref {
+            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
+            let parenthetical = "(\(ref))"
+            if names == ref {
                 self.names = nil
             } else {
                 self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
             }
-            codes = gloss.tagValuesSeparatedByString(";")
+            codes = ref.tagValuesSeparatedByString(";")
         } else if let names = name, let codesRange = names.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: names.startIndex..<names.endIndex) {
-            // Mapbox Directions API v4 encodes the ref or destination inside a parenthetical. Remove the ref or destination from the name.
+            // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
             let parenthetical = names.substringWithRange(codesRange)
-            if names == ref ?? destination {
+            if names == ref {
                 self.names = nil
             } else {
                 self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
@@ -439,7 +439,8 @@ public class RouteStep: NSObject, NSSecureCoding {
         
         let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String)
         names = road.names
-        codes = road.codes ?? road.destinationCodes
+        codes = road.codes
+        destinationCodes = road.destinationCodes
         destinations = road.destinations
         
         let maneuver = json["maneuver"] as! JSONDictionary
@@ -449,7 +450,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as? Double ?? 0
         
         let intersectionsJSON = json["intersections"] as? [JSONDictionary]
-        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
+        intersections = intersectionsJSON?.map { Intersection(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -535,6 +536,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         transportType = TransportType(description: transportTypeDescription)
         
         codes = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "codes") as? [String]
+        destinationCodes = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "destinationCodes") as? [String]
         destinations = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "destinations") as? [String]
         
         intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
@@ -579,6 +581,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         coder.encodeObject(names, forKey: "names")
         coder.encodeObject(transportType?.description, forKey: "transportType")
         coder.encodeObject(codes, forKey: "codes")
+        coder.encodeObject(destinationCodes, forKey: "destinationCodes")
         coder.encodeObject(destinations, forKey: "destinations")
     }
     
@@ -704,9 +707,9 @@ public class RouteStep: NSObject, NSSecureCoding {
     /**
      Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
      
-     A route reference code commonly consists of an alphabetic network code, a space, and a route number. You should not assume that the network code is globally unique: for example, a network code of “NH” may indicate a “National Highway” or “New Hampshire”. Moreover, a route number may not even uniqely identify a route within a given network.
+     A route reference code commonly consists of an alphabetic network code, a space or hyphen, and a route number. You should not assume that the network code is globally unique: for example, a network code of “NH” may indicate a “National Highway” or “New Hampshire”. Moreover, a route number may not even uniqely identify a route within a given network.
      
-     If a highway off-ramp is part of a numbered route, its reference code takes precedence over any reference code associated with the ramp’s destinations.
+     If a highway ramp is part of a numbered route, its reference code is contained in this property. On the other hand, guide signage for a highway ramp usually indicates route reference codes of the adjoining road; use the `destinationCodes` property for those route reference codes.
      */
     public let codes: [String]?
     
@@ -720,7 +723,16 @@ public class RouteStep: NSObject, NSSecureCoding {
     public let transportType: TransportType?
     
     /**
-     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road identified in the `name` property.
+     Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
+     
+     This property is typically available in steps leading to or from a freeway or expressway. This property contains route reference codes associated with a road later in the route. If a highway ramp is itself part of a numbered route, its reference code is contained in the `codes` property.
+     
+     A route reference code commonly consists of an alphabetic network code, a space or hyphen, and a route number. You should not assume that the network code is globally unique: for example, a network code of “NH” may indicate a “National Highway” or “New Hampshire”. Moreover, a route number may not even uniqely identify a route within a given network. A destination code for a divided road is often suffixed with the cardinal direction of travel, for example “I 80 East”.
+     */
+    public let destinationCodes: [String]?
+    
+    /**
+     Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
      
      This property is typically available in steps leading to or from a freeway or expressway.
      */
