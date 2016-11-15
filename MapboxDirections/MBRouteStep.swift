@@ -170,16 +170,32 @@ public enum ManeuverType: Int, CustomStringConvertible {
     case ReachEnd
     
     /**
+     The step requires the user to get into a specific lane in order to continue along the current road.
+     
+     The maneuver direction is set to `StraightAhead`. Each of the first intersection’s usable approach lanes also has an indication of `StraightAhead`. A maneuver in a different direction would instead have a maneuver type of `Turn`.
+     
+     This maneuver type is called out separately so that the application can present the user with lane guidance based on the first element in the `intersections` property. If lane guidance is unimportant to you, you may treat the maneuver as an ordinary `Continue` or ignore it.
+     */
+    case UseLane
+     
+    /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
-     The exit index indicates the number of roundabout exits up to and including the exit that the user must take.
+     The step has no name, but the exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
      */
     case TakeRoundabout
     
     /**
+     The step requires the user to enter, traverse, and exit a large, named roundabout (traffic circle or rotary).
+     
+     The step’s name is the name of the roundabout. The exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
+     */
+    case TakeRotary
+    
+    /**
      The step requires the user to enter and exit a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
      
-     This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
+     The step’s name is the name of the road to take after exiting the roundabout. This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
      */
     case TurnAtRoundabout
     
@@ -227,6 +243,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .ReachFork
         case "end of road":
             type = .ReachEnd
+        case "use lane":
+            type = .UseLane
+        case "rotary":
+            type = .TakeRotary
         case "roundabout":
             type = .TakeRoundabout
         case "roundabout turn":
@@ -263,6 +283,10 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "fork"
         case .ReachEnd:
             return "end of road"
+        case .UseLane:
+            return "use lane"
+        case .TakeRotary:
+            return "rotary"
         case .TakeRoundabout:
             return "roundabout"
         case .TurnAtRoundabout:
@@ -385,8 +409,9 @@ struct Road {
     let codes: [String]?
     let destinations: [String]?
     let destinationCodes: [String]?
+    let rotaryNames: [String]?
     
-    init(name: String, ref: String?, destination: String?) {
+    init(name: String, ref: String?, destination: String?, rotaryName: String?) {
         var codes: [String]?
         if !name.isEmpty, let ref = ref {
             // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
@@ -422,6 +447,7 @@ struct Road {
         }
         
         self.codes = codes
+        self.rotaryNames = rotaryName?.tagValuesSeparatedByString(";")
     }
 }
 
@@ -437,8 +463,14 @@ public class RouteStep: NSObject, NSSecureCoding {
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
-        let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String)
-        names = road.names
+        let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
+        if maneuverType == .TakeRotary || maneuverType == .TakeRoundabout {
+            names = road.rotaryNames
+            exitNames = road.names
+        } else {
+            names = road.names
+            exitNames = nil
+        }
         codes = road.codes
         destinationCodes = road.destinationCodes
         destinations = road.destinations
@@ -537,6 +569,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         }
         
         exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
+        exitNames = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "exitNames") as? [String]
         distance = decoder.decodeDoubleForKey("distance")
         expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
         names = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "names") as? [String]
@@ -587,6 +620,7 @@ public class RouteStep: NSObject, NSSecureCoding {
             coder.encodeInteger(exitIndex, forKey: "exitIndex")
         }
         
+        coder.encodeObject(exitNames, forKey: "exitNames")
         coder.encodeDouble(distance, forKey: "distance")
         coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encodeObject(names, forKey: "names")
@@ -688,11 +722,20 @@ public class RouteStep: NSObject, NSSecureCoding {
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
      
-     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances.
+     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances. If the maneuver is a roundabout maneuver, the exit index is the number of exits from the approach to the recommended outlet.
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
     public let exitIndex: Int?
+    
+    /**
+     The names of the roundabout exit.
+     
+     This property is only set for roundabout (traffic circle or rotary) maneuvers. For the signposted names associated with a highway exit, use the `destinations` property.
+     
+     If you display a name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
+     */
+    public let exitNames: [String]?
     
     // MARK: Getting Details About the Approach to the Next Maneuver
     
@@ -713,7 +756,9 @@ public class RouteStep: NSObject, NSSecureCoding {
     /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
      
-     If the maneuver is a turning maneuver, the step’s name is the name of the road or path onto which the user turns. If you display the name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
+     If the maneuver is a turning maneuver, the step’s names are the name of the road or path onto which the user turns. If you display a name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
+     
+     If the maneuver is a roundabout maneuver, the outlet to take is named in the `exitNames` property; the `names` property is only set for large roundabouts that have their own names.
      */
     public let names: [String]?
     
