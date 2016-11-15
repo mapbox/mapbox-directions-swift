@@ -181,14 +181,14 @@ public enum ManeuverType: Int, CustomStringConvertible {
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
-     The step’s name is the name of the road to take after exiting the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
+     The step has no name, but the exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
      */
     case TakeRoundabout
     
     /**
      The step requires the user to enter, traverse, and exit a large, named roundabout (traffic circle or rotary).
      
-     The step’s name is the name of the road to take after exiting the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
+     The step’s name is the name of the roundabout. The exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
      */
     case TakeRotary
     
