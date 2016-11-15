@@ -109,7 +109,8 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(intersection?.location.longitude)
         XCTAssertEqual(intersection?.usableApproachLanes ?? [], NSIndexSet(indexesInRange: NSRange(location: 1, length: 3)))
         
-        XCTAssertEqual(leg.steps[57].names ?? [], ["Logan Circle Northwest"])
+        XCTAssertNil(leg.steps[57].names)
+        XCTAssertEqual(leg.steps[57].exitNames ?? [], ["Logan Circle Northwest"])
         XCTAssertNil(leg.steps[57].codes)
         XCTAssertNil(leg.steps[57].destinationCodes)
         XCTAssertNil(leg.steps[57].destinations)
