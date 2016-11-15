@@ -389,7 +389,7 @@ struct Road {
     init(name: String?, ref: String?, destination: String?) {
         var codes: [String]?
         if let names = name, let ref = ref ?? destination {
-            // OSRM v5.5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
+            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
             let parenthetical = "(\(ref))"
             if names == ref {
                 self.names = nil
@@ -398,7 +398,7 @@ struct Road {
             }
             codes = ref.tagValuesSeparatedByString(";")
         } else if let names = name, let codesRange = names.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: names.startIndex..<names.endIndex) {
-            // OSRM v5.0 encodes the ref inside a parenthetical. Remove the ref from the name.
+            // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
             let parenthetical = names.substringWithRange(codesRange)
             if names == ref ?? destination {
                 self.names = nil
@@ -411,7 +411,7 @@ struct Road {
             codes = nil
         }
         
-        // OSRM v5.5 combines the destination’s ref and name.
+        // Mapbox Directions API v5 combines the destination’s ref and name.
         if let destination = destination where destination.containsString(": ") {
             let destinationComponents = destination.componentsSeparatedByString(": ")
             self.destinationCodes = destinationComponents.first?.tagValuesSeparatedByString(",")
