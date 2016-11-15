@@ -388,17 +388,17 @@ struct Road {
     
     init(name: String?, ref: String?, destination: String?) {
         var codes: [String]?
-        if let names = name, let ref = ref ?? destination {
-            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
-            let parenthetical = "(\(ref))"
-            if names == ref {
+        if let names = name, let gloss = ref ?? destination {
+            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref or destination in the name for backwards compatibility. Remove the ref or destination from the name.
+            let parenthetical = "(\(gloss))"
+            if names == gloss {
                 self.names = nil
             } else {
                 self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
             }
-            codes = ref.tagValuesSeparatedByString(";")
+            codes = gloss.tagValuesSeparatedByString(";")
         } else if let names = name, let codesRange = names.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: names.startIndex..<names.endIndex) {
-            // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
+            // Mapbox Directions API v4 encodes the ref or destination inside a parenthetical. Remove the ref or destination from the name.
             let parenthetical = names.substringWithRange(codesRange)
             if names == ref ?? destination {
                 self.names = nil
