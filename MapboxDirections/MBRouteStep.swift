@@ -386,28 +386,28 @@ struct Road {
     let destinations: [String]?
     let destinationCodes: [String]?
     
-    init(name: String?, ref: String?, destination: String?) {
+    init(name: String, ref: String?, destination: String?) {
         var codes: [String]?
-        if let names = name, let ref = ref {
+        if !name.isEmpty, let ref = ref {
             // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
             let parenthetical = "(\(ref))"
-            if names == ref {
+            if name == ref {
                 self.names = nil
             } else {
-                self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+                self.names = name.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
             }
             codes = ref.tagValuesSeparatedByString(";")
-        } else if let names = name, let codesRange = names.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: names.startIndex..<names.endIndex) {
+        } else if !name.isEmpty, let codesRange = name.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: name.startIndex..<name.endIndex) {
             // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
-            let parenthetical = names.substringWithRange(codesRange)
-            if names == ref {
+            let parenthetical = name.substringWithRange(codesRange)
+            if name == ref {
                 self.names = nil
             } else {
-                self.names = names.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+                self.names = name.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
             }
             codes = parenthetical.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "()")).tagValuesSeparatedByString(";")
         } else {
-            self.names = name?.tagValuesSeparatedByString(";")
+            self.names = name.isEmpty ? nil : name.tagValuesSeparatedByString(";")
             codes = nil
         }
         
@@ -434,7 +434,7 @@ struct Road {
 public class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
-    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String?, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
+    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
         let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String)
@@ -476,7 +476,7 @@ public class RouteStep: NSObject, NSSecureCoding {
         let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
         
-        let name = json["name"] as? String
+        let name = json["name"] as! String
         
         var coordinates: [CLLocationCoordinate2D]?
         switch json["geometry"] {
@@ -788,7 +788,7 @@ internal class RouteStepV4: RouteStep {
         let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
         
-        let name = json["way_name"] as? String
+        let name = json["way_name"] as! String
         
         self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
     }

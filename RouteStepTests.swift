@@ -18,7 +18,7 @@ class RouteStepTests: XCTestCase {
             "duration": 75.6,
         ]
         
-        let step = RouteStep(finalHeading: 59, maneuverType: .ReachFork, maneuverDirection: .Left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: nil, coordinates: coordinates, json: json)
+        let step = RouteStep(finalHeading: 59, maneuverType: .ReachFork, maneuverDirection: .Left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
         
         // Encode and decode the route step securely
         // This may raise an Obj-C exception if an error is encountered which will fail the tests
