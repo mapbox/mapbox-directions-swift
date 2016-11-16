@@ -383,6 +383,65 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+extension String {
+    internal func tagValues(separatedBy separator: String) -> [String] {
+        return components(separatedBy: separator).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+    }
+}
+
+/**
+ Encapsulates all the information about a road.
+ */
+struct Road {
+    let names: [String]?
+    let codes: [String]?
+    let destinations: [String]?
+    let destinationCodes: [String]?
+    let rotaryNames: [String]?
+    
+    init(name: String, ref: String?, destination: String?, rotaryName: String?) {
+        var codes: [String]?
+        if !name.isEmpty, let ref = ref {
+            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
+            let parenthetical = "(\(ref))"
+            if name == ref {
+                self.names = nil
+            } else {
+                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
+            }
+            codes = ref.tagValues(separatedBy: ";")
+        } else if !name.isEmpty, let codesRange = name.range(of: "\\(.+?\\)$", options: .regularExpression, range: name.startIndex..<name.endIndex) {
+            // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
+            let parenthetical = name.substring(with: codesRange)
+            if name == ref {
+                self.names = nil
+            } else {
+                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
+            }
+            codes = parenthetical.trimmingCharacters(in: CharacterSet(charactersIn: "()")).tagValues(separatedBy: ";")
+        } else {
+            self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
+            codes = ref?.tagValues(separatedBy: ";")
+        }
+        
+        // Mapbox Directions API v5 combines the destination’s ref and name.
+        if let destination = destination, destination.contains(": ") {
+            let destinationComponents = destination.components(separatedBy: ": ")
+            self.destinationCodes = destinationComponents.first?.tagValues(separatedBy: ",")
+            self.destinations = destinationComponents.dropFirst().joined(separator: ": ").tagValues(separatedBy: ",")
+        } else {
+            self.destinationCodes = nil
+            self.destinations = destination?.tagValues(separatedBy: ",")
+        }
+        
+        self.codes = codes
+        self.rotaryNames = rotaryName?.tagValues(separatedBy: ";")
+    }
+}
+
+>>>>>>> Stashed changes
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
