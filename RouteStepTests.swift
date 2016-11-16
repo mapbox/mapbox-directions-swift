@@ -18,7 +18,7 @@ class RouteStepTests: XCTestCase {
             "duration": 75.6,
         ] as [String: Any]
         
-        let step = RouteStep(finalHeading: 59, maneuverType: .reachFork, maneuverDirection: .left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: nil, coordinates: coordinates, json: json)
+        let step = RouteStep(finalHeading: 59, maneuverType: .reachFork, maneuverDirection: .left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
         
         // Encode and decode the route step securely
         // This may raise an Obj-C exception if an error is encountered which will fail the tests
@@ -49,8 +49,8 @@ class RouteStepTests: XCTestCase {
         XCTAssertEqual(unarchivedStep.exitIndex, step.exitIndex)
         XCTAssertEqual(unarchivedStep.distance, step.distance)
         XCTAssertEqual(unarchivedStep.expectedTravelTime, step.expectedTravelTime)
-        XCTAssertEqual(unarchivedStep.name, step.name)
+        XCTAssertEqual(unarchivedStep.names ?? [], step.names ?? [])
         XCTAssertEqual(unarchivedStep.transportType, step.transportType)
-        XCTAssertEqual(unarchivedStep.destinations, step.destinations)
+        XCTAssertEqual(unarchivedStep.destinations ?? [], step.destinations ?? [])
     }
 }
