@@ -4,6 +4,7 @@
 [🖥💻&nbsp;![macOS Build Status](https://www.bitrise.io/app/3e18d5c284ee7fe4.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
 [📺&nbsp;![tvOS Build Status](https://www.bitrise.io/app/0dd69f13a42252d6.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
 [⌚️&nbsp;![watchOS Build Status](https://www.bitrise.io/app/6db52b89a8fbfb40.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. The Mapbox Directions API is powered by the [OSRM](http://project-osrm.org/) routing engine and open data from the [OpenStreetMap](https://www.openstreetmap.org/) project.
 
@@ -22,7 +23,6 @@ pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirection
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "raphaelmor/Polyline" ~> 4.0
 github "Mapbox/MapboxDirections.swift" "swift3"
 ```
 
@@ -233,10 +233,8 @@ if (route.coordinateCount) {
 
 ## Tests
 
-To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
+To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) to install the dependencies. 
 
-1. `pod install`
+1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcworkspace`
 1. Switch to the MapboxDirections scheme and go to Product ‣ Test.
-
-The workspace requires CocoaPods 1.1.0.beta.1 or greater if opening inside Xcode 8.

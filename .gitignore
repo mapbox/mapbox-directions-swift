@@ -8,4 +8,5 @@ xcuserdata
 *.xcuserstate
 *.xcscmblueprint
 
-Pods/
+Carthage/Build
+Carthage/Checkouts
