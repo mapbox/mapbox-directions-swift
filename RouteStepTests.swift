@@ -1,6 +1,96 @@
 import XCTest
 @testable import MapboxDirections
 
+class RoadTests: XCTestCase {
+    func testEmpty() {
+        let r = Road(name: "", ref: nil, destination: nil, rotaryName: nil)
+        XCTAssertNil(r.names)
+        XCTAssertNil(r.codes)
+        XCTAssertNil(r.destinations)
+        XCTAssertNil(r.destinationCodes)
+        XCTAssertNil(r.rotaryNames)
+    }
+
+    func testNamesCodes() {
+        var r: Road
+
+        // Name only
+        r = Road(name: "Way Name", ref: nil, destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name" ])
+        XCTAssertNil(r.codes)
+        r = Road(name: "Way Name 1; Way Name 2", ref: nil, destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2" ])
+        XCTAssertNil(r.codes)
+
+        // Ref only
+        r = Road(name: "", ref: "Ref 1", destination: nil, rotaryName: nil)
+        XCTAssertNil(r.names)
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1" ])
+        r = Road(name: "", ref: "Ref 1; Ref 2", destination: nil, rotaryName: nil)
+        XCTAssertNil(r.names)
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+
+        // Separate Name and Ref
+        r = Road(name: "Way Name", ref: "Ref 1", destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name" ])
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1" ])
+        r = Road(name: "Way Name 1; Way Name 2", ref: "Ref 1; Ref 2", destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2" ])
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+        r = Road(name: "Way Name 1;Way Name 2", ref: "Ref 1;Ref 2", destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2" ])
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+
+        // Name in Ref (Mapbox Directions API v4)
+        r = Road(name: "Way Name (Ref)", ref: nil, destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name" ])
+        XCTAssertEqual(r.codes ?? [], [ "Ref" ])
+        r = Road(name: "Way Name 1; Way Name 2 (Ref 1; Ref 2)", ref: nil, destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2"])
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+
+        // Ref duplicated in Name (Mapbox Directions API v5)
+        r = Road(name: "Way Name (Ref)", ref: "Ref", destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name" ])
+        XCTAssertEqual(r.codes ?? [], [ "Ref" ])
+        r = Road(name: "Way Name 1; Way Name 2 (Ref 1; Ref 2)", ref: "Ref 1; Ref 2", destination: nil, rotaryName: nil)
+        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2"])
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+        r = Road(name: "Ref 1; Ref 2", ref: "Ref 1; Ref 2", destination: nil, rotaryName: nil)
+        XCTAssertNil(r.names)
+        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
+    }
+
+    func testRotaryNames() {
+        var r: Road
+
+        r = Road(name: "", ref: nil, destination: nil, rotaryName: "Rotary Name")
+        XCTAssertEqual(r.rotaryNames ?? [], [ "Rotary Name" ])
+        r = Road(name: "", ref: nil, destination: nil, rotaryName: "Rotary Name 1;Rotary Name 2")
+        XCTAssertEqual(r.rotaryNames ?? [], [ "Rotary Name 1", "Rotary Name 2" ])
+    }
+
+    func testDestinations() {
+        var r: Road
+
+        // No ref
+        r = Road(name: "", ref: nil, destination: "Destination", rotaryName: nil)
+        XCTAssertEqual(r.destinations ?? [], [ "Destination" ])
+        XCTAssertNil(r.destinationCodes)
+        r = Road(name: "", ref: nil, destination: "Destination 1, Destination 2", rotaryName: nil)
+        XCTAssertEqual(r.destinations ?? [], [ "Destination 1", "Destination 2" ])
+        XCTAssertNil(r.destinationCodes)
+
+        // With ref
+        r = Road(name: "", ref: nil, destination: "Ref 1: Destination", rotaryName: nil)
+        XCTAssertEqual(r.destinations ?? [], [ "Destination" ])
+        XCTAssertEqual(r.destinationCodes ?? [], [ "Ref 1" ])
+        r = Road(name: "", ref: nil, destination: "Ref 1, Ref 2: Destination 1, Destination 2, Destination 3", rotaryName: nil)
+        XCTAssertEqual(r.destinations ?? [], [ "Destination 1", "Destination 2", "Destination 3" ])
+        XCTAssertEqual(r.destinationCodes ?? [], [ "Ref 1", "Ref 2" ])
+    }
+}
+
 class RouteStepTests: XCTestCase {
     func testCoding() {
         let coordinates = [
