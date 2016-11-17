@@ -231,10 +231,18 @@ if (route.coordinateCount) {
 }
 ```
 
+## Example
+
+An example App is located in the `Example` folder. To run the project, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
+
+1. `cd Example`
+1. `pod install`
+1. `open DirectionsExample.xcworkspace`
+
 ## Tests
 
 To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) to install the dependencies. 
 
 1. `carthage build --platform iOS`
-1. `open MapboxDirections.xcworkspace`
-1. Switch to the MapboxDirections scheme and go to Product ‣ Test.
+1. `open MapboxDirections.xcodeproj`
+1. Go to Product ‣ Test.
