@@ -433,7 +433,7 @@ struct Road {
             codes = parenthetical.trimmingCharacters(in: CharacterSet(charactersIn: "()")).tagValues(separatedBy: ";")
         } else {
             self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
-            codes = nil
+            codes = ref?.tagValues(separatedBy: ";")
         }
         
         // Mapbox Directions API v5 combines the destination’s ref and name.
