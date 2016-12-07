@@ -75,18 +75,18 @@
 		4860A7B80F8BD72BFF7DC2D2 /* Pods_Example__Swift_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example__Swift_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C2A14C50E6E37A85EB7EB3A /* Pods-Example (Swift).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example (Swift).release.xcconfig"; path = "Pods/Target Support Files/Pods-Example (Swift)/Pods-Example (Swift).release.xcconfig"; sourceTree = "<group>"; };
 		96A67E0F740AE52AACBC0896 /* Pods-Example (Objective-C).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example (Objective-C).release.xcconfig"; path = "Pods/Target Support Files/Pods-Example (Objective-C)/Pods-Example (Objective-C).release.xcconfig"; sourceTree = "<group>"; };
-		DA1ACF751DB76A650054BFE7 /* Example (Objective-C).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example (Objective-C).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1ACF751DB76A650054BFE7 /* DirectionsObjc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectionsObjc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1ACF781DB76A660054BFE7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DA1ACF7A1DB76A660054BFE7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DA1ACF7B1DB76A660054BFE7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DA1ACF7D1DB76A660054BFE7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		DA1ACF7E1DB76A660054BFE7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		DD62544E1AE70C1700017857 /* Directions (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Directions (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD62544E1AE70C1700017857 /* DirectionsSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectionsSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD6254521AE70C1700017857 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD6254531AE70C1700017857 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD6254551AE70C1700017857 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F4BD346C1DF75B5F0000B708 /* Example Tests (Swift).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example Tests (Swift).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4BD347A1DF75BA40000B708 /* Example Tests (Objective-C).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example Tests (Objective-C).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4BD346C1DF75B5F0000B708 /* DirectionsTestsSwift.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DirectionsTestsSwift.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4BD347A1DF75BA40000B708 /* DirectionsTestsObjc.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DirectionsTestsObjc.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CB3C431DF7EA4900E7D107 /* DummyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyTest.m; sourceTree = "<group>"; };
 		F4CB3C451DF7EA5900E7D107 /* DummyTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,10 +169,10 @@
 		DD62544F1AE70C1700017857 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DD62544E1AE70C1700017857 /* Directions (Swift).app */,
-				DA1ACF751DB76A650054BFE7 /* Example (Objective-C).app */,
-				F4BD346C1DF75B5F0000B708 /* Example Tests (Swift).xctest */,
-				F4BD347A1DF75BA40000B708 /* Example Tests (Objective-C).xctest */,
+				DD62544E1AE70C1700017857 /* DirectionsSwift.app */,
+				DA1ACF751DB76A650054BFE7 /* DirectionsObjc.app */,
+				F4BD346C1DF75B5F0000B708 /* DirectionsTestsSwift.xctest */,
+				F4BD347A1DF75BA40000B708 /* DirectionsTestsObjc.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -236,7 +236,7 @@
 			);
 			name = "Example (Objective-C)";
 			productName = "Directions (Objective-C)";
-			productReference = DA1ACF751DB76A650054BFE7 /* Example (Objective-C).app */;
+			productReference = DA1ACF751DB76A650054BFE7 /* DirectionsObjc.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DD62544D1AE70C1700017857 /* Example (Swift) */ = {
@@ -258,7 +258,7 @@
 			);
 			name = "Example (Swift)";
 			productName = "Directions Example";
-			productReference = DD62544E1AE70C1700017857 /* Directions (Swift).app */;
+			productReference = DD62544E1AE70C1700017857 /* DirectionsSwift.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F4BD346B1DF75B5F0000B708 /* Example Tests (Swift) */ = {
@@ -276,7 +276,7 @@
 			);
 			name = "Example Tests (Swift)";
 			productName = "Example Tests (Swift)";
-			productReference = F4BD346C1DF75B5F0000B708 /* Example Tests (Swift).xctest */;
+			productReference = F4BD346C1DF75B5F0000B708 /* DirectionsTestsSwift.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		F4BD34791DF75BA40000B708 /* Example Tests (Objective-C) */ = {
@@ -294,7 +294,7 @@
 			);
 			name = "Example Tests (Objective-C)";
 			productName = "Example Tests (Objective-C)";
-			productReference = F4BD347A1DF75BA40000B708 /* Example Tests (Objective-C).xctest */;
+			productReference = F4BD347A1DF75BA40000B708 /* DirectionsTestsObjc.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -544,7 +544,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.objc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DirectionsObjc;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -566,7 +566,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.objc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DirectionsObjc;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -675,7 +675,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
-				PRODUCT_NAME = "Directions (Swift)";
+				PRODUCT_NAME = DirectionsSwift;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -693,7 +693,7 @@
 				INFOPLIST_FILE = "Directions Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExample.swift;
-				PRODUCT_NAME = "Directions (Swift)";
+				PRODUCT_NAME = DirectionsSwift;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -711,11 +711,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExampleTests.swift;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DirectionsTestsSwift;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Directions (Swift).app/Directions (Swift)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DirectionsSwift.app/DirectionsSwift";
 			};
 			name = Debug;
 		};
@@ -731,9 +731,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExampleTests.swift;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DirectionsTestsSwift;
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Directions (Swift).app/Directions (Swift)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DirectionsSwift.app/DirectionsSwift";
 			};
 			name = Release;
 		};
@@ -749,8 +749,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExampleTests.objc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example (Objective-C).app/Example (Objective-C)";
+				PRODUCT_NAME = DirectionsTestsObjc;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DirectionsObjc.app/DirectionsObjc";
 			};
 			name = Debug;
 		};
@@ -765,8 +765,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExampleTests.objc;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example (Objective-C).app/Example (Objective-C)";
+				PRODUCT_NAME = DirectionsTestsObjc;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DirectionsObjc.app/DirectionsObjc";
 			};
 			name = Release;
 		};
