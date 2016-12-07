@@ -814,6 +814,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D61335C6B259059E6BDCCF40 /* Pods-Example Tests (Swift).debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -836,6 +837,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 049C592C08A19F0118B0BD77 /* Pods-Example Tests (Swift).release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
