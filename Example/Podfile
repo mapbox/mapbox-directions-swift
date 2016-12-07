@@ -8,9 +8,19 @@ end
 target 'Example (Swift)' do
   platform :ios, '8.0'
   shared_pods
+  
+  target 'Example Tests (Swift)' do
+      inherit! :search_paths
+  end
+  
 end
 
 target 'Example (Objective-C)' do
   platform :ios, '8.0'
   shared_pods
+  
+  target 'Example Tests (Objective-C)' do
+      inherit! :search_paths
+  end
+  
 end

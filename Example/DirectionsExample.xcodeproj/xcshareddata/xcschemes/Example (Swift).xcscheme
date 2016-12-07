@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD62544D1AE70C1700017857"
-               BuildableName = "Directions (Swift).app"
+               BuildableName = "DirectionsSwift.app"
                BlueprintName = "Example (Swift)"
                ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F4BD346B1DF75B5F0000B708"
-               BuildableName = "Example Tests (Swift).xctest"
+               BuildableName = "DirectionsTestsSwift.xctest"
                BlueprintName = "Example Tests (Swift)"
                ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
@@ -85,7 +85,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
             ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
