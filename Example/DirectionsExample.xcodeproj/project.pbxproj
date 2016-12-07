@@ -14,6 +14,8 @@
 		DD6254541AE70C1700017857 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254531AE70C1700017857 /* AppDelegate.swift */; };
 		DD6254561AE70C1700017857 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254551AE70C1700017857 /* ViewController.swift */; };
 		DDCAE55C45D176B41F679CF9 /* Pods_Example__Objective_C_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F945087D99935C7803B320 /* Pods_Example__Objective_C_.framework */; };
+		F4CB3C461DF7EA5900E7D107 /* DummyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CB3C451DF7EA5900E7D107 /* DummyTest.swift */; };
+		F4CB3C471DF7EA6600E7D107 /* DummyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4CB3C431DF7EA4900E7D107 /* DummyTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,8 @@
 		DD6254551AE70C1700017857 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F4BD346C1DF75B5F0000B708 /* Example Tests (Swift).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example Tests (Swift).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BD347A1DF75BA40000B708 /* Example Tests (Objective-C).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Example Tests (Objective-C).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4CB3C431DF7EA4900E7D107 /* DummyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyTest.m; sourceTree = "<group>"; };
+		F4CB3C451DF7EA5900E7D107 /* DummyTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				DD6254501AE70C1700017857 /* Directions Example */,
+				F4CB3C421DF7EA3200E7D107 /* Directions Example Tests */,
 				DD62544F1AE70C1700017857 /* Products */,
 				FCAAEF112130113E5F27EEAE /* Pods */,
 				1FBFA8B89FFB6A6539161BCD /* Frameworks */,
@@ -188,6 +193,15 @@
 				DD6254521AE70C1700017857 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F4CB3C421DF7EA3200E7D107 /* Directions Example Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F4CB3C431DF7EA4900E7D107 /* DummyTest.m */,
+				F4CB3C451DF7EA5900E7D107 /* DummyTest.swift */,
+			);
+			path = "Directions Example Tests";
 			sourceTree = "<group>";
 		};
 		FCAAEF112130113E5F27EEAE /* Pods */ = {
@@ -304,6 +318,7 @@
 					};
 					F4BD346B1DF75B5F0000B708 = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						TestTargetID = DD62544D1AE70C1700017857;
 					};
@@ -483,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CB3C461DF7EA5900E7D107 /* DummyTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +506,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CB3C471DF7EA6600E7D107 /* DummyTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,6 +703,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -695,6 +713,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.MapboxDirectionsExampleTests.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Directions (Swift).app/Directions (Swift)";
 			};
@@ -705,6 +724,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				INFOPLIST_FILE = "Directions Example/Info.plist";
@@ -787,6 +807,7 @@
 				F4BD34741DF75B600000B708 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F4BD34811DF75BA40000B708 /* Build configuration list for PBXNativeTarget "Example Tests (Objective-C)" */ = {
 			isa = XCConfigurationList;
@@ -795,6 +816,7 @@
 				F4BD34831DF75BA40000B708 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
