@@ -157,7 +157,7 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
 }];
 ```
 
-```
+```applescript
 -- AppDelegate.applescript
 
 set mapbox to alloc of MBWaypoint of the current application
