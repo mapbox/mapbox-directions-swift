@@ -6,12 +6,12 @@ end
 
 def shared_test_pods
   shared_pods
-  pod 'OHHTTPStubs/Swift', '~> 5.0', :configurations => ['Debug']
+  pod 'OHHTTPStubs/Swift', '~> 5.2', :configurations => ['Debug']
 end
 
 def shared_example_pods
   shared_pods
-  pod 'Mapbox-iOS-SDK', '~> 3.3'
+  pod 'Mapbox-iOS-SDK', '~> 3.4'
 end
 
 target 'MapboxDirections' do
