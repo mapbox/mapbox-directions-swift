@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.module_name = "MapboxDirections"
 
-  s.dependency "Polyline", "~> 4.0.0"
+  s.dependency "Polyline", "~> 4.0"
 
   s.xcconfig = {
     "SWIFT_VERSION" => "3.0"
