@@ -67,6 +67,7 @@
 		DA737EF21D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
 		DA737EF31D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
 		DA737EF41D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
+		DA9E1B131E5A675F0081EDC7 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9E1B121E5A675F0081EDC7 /* Polyline.framework */; };
 		DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
 		DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
 		DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
@@ -135,6 +136,7 @@
 		DA737EE71D0611CB005BDA16 /* V4Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V4Tests.swift; sourceTree = "<group>"; };
 		DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_geojson.json; sourceTree = "<group>"; };
 		DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_polyline.json; sourceTree = "<group>"; };
+		DA9E1B121E5A675F0081EDC7 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/watchOS/Polyline.framework; sourceTree = "<group>"; };
 		DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLaneIndication.swift; sourceTree = "<group>"; };
 		DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBWaypoint.swift; sourceTree = "<group>"; };
 		DAC05F171CFC075300FA0071 /* MBRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoute.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA9E1B131E5A675F0081EDC7 /* Polyline.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +285,14 @@
 			path = v4;
 			sourceTree = "<group>";
 		};
+		DA9E1B111E5A675F0081EDC7 /* watchOS Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA9E1B121E5A675F0081EDC7 /* Polyline.framework */,
+			);
+			name = "watchOS Frameworks";
+			sourceTree = "<group>";
+		};
 		DD6254451AE70C1700017857 = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +302,7 @@
 				4025371970E36C6D8BF67116 /* iOS Frameworks */,
 				F448F8321DDCC676000BC343 /* macOS Frameworks */,
 				F448F8331DDCC68D000BC343 /* tvOS Frameworks */,
+				DA9E1B111E5A675F0081EDC7 /* watchOS Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -951,6 +963,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = MapboxDirections/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -977,6 +993,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = MapboxDirections/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
