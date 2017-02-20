@@ -14,16 +14,16 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DD62544D1AE70C1700017857"
-               BuildableName = "DirectionsSwift.app"
-               BlueprintName = "Example (Swift)"
-               ReferencedContainer = "container:DirectionsExample.xcodeproj">
+               BlueprintIdentifier = "DADD27CF1E5AAFFD00D31FAD"
+               BuildableName = "Example (Objective-C).app"
+               BlueprintName = "Example (Objective-C)"
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -32,20 +32,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4BD346B1DF75B5F0000B708"
-               BuildableName = "DirectionsTestsSwift.xctest"
-               BlueprintName = "Example Tests (Swift)"
-               ReferencedContainer = "container:DirectionsExample.xcodeproj">
+               BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
+               BuildableName = "MapboxDirectionsTests.xctest"
+               BlueprintName = "MapboxDirectionsTests"
+               ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "DirectionsSwift.app"
-            BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:DirectionsExample.xcodeproj">
+            BlueprintIdentifier = "DADD27CF1E5AAFFD00D31FAD"
+            BuildableName = "Example (Objective-C).app"
+            BlueprintName = "Example (Objective-C)"
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +65,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "DirectionsSwift.app"
-            BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:DirectionsExample.xcodeproj">
+            BlueprintIdentifier = "DADD27CF1E5AAFFD00D31FAD"
+            BuildableName = "Example (Objective-C).app"
+            BlueprintName = "Example (Objective-C)"
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -84,10 +84,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "DirectionsSwift.app"
-            BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:DirectionsExample.xcodeproj">
+            BlueprintIdentifier = "DADD27CF1E5AAFFD00D31FAD"
+            BuildableName = "Example (Objective-C).app"
+            BlueprintName = "Example (Objective-C)"
+            ReferencedContainer = "container:MapboxDirections.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
