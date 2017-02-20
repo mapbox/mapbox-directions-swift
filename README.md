@@ -30,7 +30,7 @@ Then `import MapboxDirections` or `@import MapboxDirections;`.
 
 v0.7.0 is the last release of MapboxDirections.swift written in Swift 2.3. The `swift2.3` branch corresponds to this release, plus any critical bug fixes that have been applied since. All subsequent releases will be based on the `master` branch, which is written in Swift 3. The Swift examples below are written in Swift 3; see the `swift2.3` branch’s readme for Swift 2.3 examples.
 
-The Examples directory in this repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [CocoaPods](http://cocoapods.org) 1.2 to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
+This repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
 
 ## Usage
 
@@ -235,7 +235,7 @@ if (route.coordinateCount) {
 
 ## Tests
 
-To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) to install the dependencies. 
+To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. 
 
 1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcodeproj`
