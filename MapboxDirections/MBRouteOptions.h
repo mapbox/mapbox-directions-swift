@@ -19,7 +19,7 @@ extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierAutomobi
  
  This profile avoids traffic congestion based on current traffic data. A driving route may use a ferry where necessary.
  
- - experiment: This profile is experimental. Where traffic data is absent, this profile prefers high-speed roads like highways, similar to `MBDirectionsProfileIdentifierAutomobile`.
+ Where traffic data is absent, this profile prefers high-speed roads like highways, similar to `MBDirectionsProfileIdentifierAutomobile`.
  */
 extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierAutomobileAvoidingTraffic;
 
