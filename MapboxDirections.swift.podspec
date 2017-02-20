@@ -45,8 +45,4 @@ Pod::Spec.new do |s|
 
   s.dependency "Polyline", "~> 4.0"
 
-  s.xcconfig = {
-    "SWIFT_VERSION" => "3.0"
-  }
-
 end
