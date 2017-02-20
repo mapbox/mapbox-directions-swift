@@ -2,7 +2,7 @@ use_frameworks!
 
 def shared_pods
   pod 'MapboxDirections.swift', :path => '..'
-  pod 'Mapbox-iOS-SDK', '~> 3.3'
+  pod 'Mapbox-iOS-SDK', '~> 3.4'
 end
 
 target 'Example (Swift)' do

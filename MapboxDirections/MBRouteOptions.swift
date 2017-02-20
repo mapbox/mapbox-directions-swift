@@ -6,13 +6,13 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
      
-     This standard format is human-readable and can be parsed straightforwardly, but it is far more verbose than `Polyline`.
+     This standard format is human-readable and can be parsed straightforwardly, but it is far more verbose than `polyline`.
      */
     case geoJSON
     /**
      The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format.
      
-     This machine-readable format is considerably more compact than `GeoJSON`.
+     This machine-readable format is considerably more compact than `geoJSON`.
      */
     case polyline
     
@@ -59,7 +59,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
     /**
      The route’s shape is as detailed as possible.
      
-     The resulting shape is equivalent to concatenating the shapes of all the route’s consitituent steps. You can focus on individual segments of this route while faithfully representing the path of the route. If you only intend to show a route overview and do not need to analyze the route line in any way, consider specifying `Low` instead to considerably reduce the size of the response.
+     The resulting shape is equivalent to concatenating the shapes of all the route’s consitituent steps. You can focus on individual segments of this route while faithfully representing the path of the route. If you only intend to show a route overview and do not need to analyze the route line in any way, consider specifying `low` instead to considerably reduce the size of the response.
      */
     case full
     
@@ -198,7 +198,7 @@ open class RouteOptions: NSObject {
      
      This property has no effect on the returned shape objects, although the choice of format can significantly affect the size of the underlying HTTP response.
      
-     The default value of this property is `Polyline`.
+     The default value of this property is `polyline`.
      */
     open var shapeFormat = RouteShapeFormat.polyline
     
@@ -207,7 +207,7 @@ open class RouteOptions: NSObject {
      
      This property has no effect on the shape of the returned route’s steps.
      
-     The default value of this property is `Low`, specifying a low-resolution route shape.
+     The default value of this property is `low`, specifying a low-resolution route shape.
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
@@ -331,7 +331,7 @@ open class RouteOptionsV4: RouteOptions {
     /**
      The format of the returned route steps’ instructions.
      
-     By default, the value of this property is `Text`, specifying plain text instructions.
+     By default, the value of this property is `text`, specifying plain text instructions.
      */
     open var instructionFormat: InstructionFormat = .text
     

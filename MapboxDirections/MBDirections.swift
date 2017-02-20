@@ -235,7 +235,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    fileprivate static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
+    static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         let apiStatusCode = json["code"] as? String
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {
@@ -252,16 +252,15 @@ open class Directions: NSObject {
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
             case (429, _):
-                if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? TimeInterval, let maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
+                if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
                     let intervalFormatter = DateComponentsFormatter()
                     intervalFormatter.unitsStyle = .full
-                    let formattedInterval = intervalFormatter.string(from: timeInterval)
+                    let formattedInterval = intervalFormatter.string(from: timeInterval) ?? "\(timeInterval) seconds"
                     let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: maximumCountOfRequests), number: .decimal)
                     failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
                 }
-                if let rolloverTimestamp = response.allHeaderFields["x-rate-limit-reset"] as? Double {
-                    let date = Date(timeIntervalSince1970: rolloverTimestamp)
-                    let formattedDate = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .full)
+                if let rolloverTime = response.rateLimitResetTime {
+                    let formattedDate = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .full)
                     recoverySuggestion = "Wait until \(formattedDate) before retrying."
                 }
             default:
@@ -271,7 +270,41 @@ open class Directions: NSObject {
             userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? HTTPURLResponse.localizedString(forStatusCode: error?.code ?? -1)
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
         }
-        userInfo[NSUnderlyingErrorKey] = error
+        if let error = error {
+            userInfo[NSUnderlyingErrorKey] = error
+        }
         return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
     }
+}
+
+extension HTTPURLResponse {
+    
+    @nonobjc static let rateLimitIntervalHeaderKey = "X-Rate-Limit-Interval"
+    @nonobjc static let rateLimitLimitHeaderKey = "X-Rate-Limit-Limit"
+    @nonobjc static let rateLimitResetHeaderKey = "X-Rate-Limit-Reset"
+    
+    var rateLimit: UInt? {
+        guard let limit = allHeaderFields[HTTPURLResponse.rateLimitLimitHeaderKey] as? String else {
+            return nil
+        }
+        return UInt(limit)
+    }
+    
+    var rateLimitInterval: TimeInterval? {
+        guard let interval = allHeaderFields[HTTPURLResponse.rateLimitIntervalHeaderKey] as? String else {
+            return nil
+        }
+        return TimeInterval(interval)
+    }
+    
+    var rateLimitResetTime: Date? {
+        guard let resetTime = allHeaderFields[HTTPURLResponse.rateLimitResetHeaderKey] as? String else {
+            return nil
+        }
+        guard let resetTimeNumber = Double(resetTime) else {
+            return nil
+        }
+        return Date(timeIntervalSince1970: resetTimeNumber)
+    }
+
 }

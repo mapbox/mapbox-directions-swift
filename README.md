@@ -3,36 +3,38 @@
 [📱&nbsp;![iOS Build Status](https://www.bitrise.io/app/2f82077d3f083479.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479) &nbsp;&nbsp;&nbsp;
 [🖥💻&nbsp;![macOS Build Status](https://www.bitrise.io/app/3e18d5c284ee7fe4.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
 [📺&nbsp;![tvOS Build Status](https://www.bitrise.io/app/0dd69f13a42252d6.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
-[⌚️&nbsp;![watchOS Build Status](https://www.bitrise.io/app/6db52b89a8fbfb40.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40)
+[⌚️&nbsp;![watchOS Build Status](https://www.bitrise.io/app/6db52b89a8fbfb40.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40) &nbsp;&nbsp;&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. The Mapbox Directions API is powered by the [OSRM](http://project-osrm.org/) routing engine and open data from the [OpenStreetMap](https://www.openstreetmap.org/) project.
 
 Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift 3.
 
-MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), and the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos).
+MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), [MapboxNavigation.swift](https://github.com/mapbox/MapboxNavigation.swift), and the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/).
 
 ## Getting started
 
-Specify the following dependency in your [CocoaPods](http://cocoapods.org/) Podfile:
-
-```podspec
-pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :branch => 'swift3'
-```
-
-Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
+Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "Mapbox/MapboxDirections.swift" "swift3"
+github "Mapbox/MapboxDirections.swift" "master"
+```
+
+Or in your [CocoaPods](http://cocoapods.org/) Podfile:
+
+```podspec
+pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :branch => 'master'
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
 
-This repository includes a example application written in Swift demonstrating how to use the framework. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
+v0.7.0 is the last release of MapboxDirections.swift written in Swift 2.3. The `swift2.3` branch corresponds to this release, plus any critical bug fixes that have been applied since. All subsequent releases will be based on the `master` branch, which is written in Swift 3. The Swift examples below are written in Swift 3; see the `swift2.3` branch’s readme for Swift 2.3 examples.
+
+The Examples directory in this repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [CocoaPods](http://cocoapods.org) 1.2 to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
 
 ## Usage
 
-You’ll need a [Mapbox access token](https://www.mapbox.com/developers/api/#access-tokens) in order to use the API. If you’re already using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos), MapboxDirections.swift automatically recognizes your access token, as long as you’ve placed it in the `MGLMapboxAccessToken` key of your application’s Info.plist file.
+You’ll need a [Mapbox access token](https://www.mapbox.com/developers/api/#access-tokens) in order to use the API. If you’re already using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), MapboxDirections.swift automatically recognizes your access token, as long as you’ve placed it in the `MGLMapboxAccessToken` key of your application’s Info.plist file.
 
 ### Basics
 
@@ -93,7 +95,7 @@ let task = directions.calculate(options) { (waypoints, routes, error) in
         return
     }
     
-    if let route = routes?.first, leg = route.legs.first {
+    if let route = routes?.first, let leg = route.legs.first {
         print("Route via \(leg):")
         
         let distanceFormatter = LengthFormatter()
@@ -197,7 +199,7 @@ This library uses version 5 of the Mapbox Directions API by default. To use vers
 
 ### Drawing the route on a map
 
-With the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos), you can easily draw the route on a map in Swift or Objective-C:
+With the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), you can easily draw the route on a map in Swift or Objective-C:
 
 ```swift
 // main.swift
@@ -230,14 +232,6 @@ if (route.coordinateCount) {
     free(routeCoordinates);
 }
 ```
-
-## Example
-
-An example App is located in the `Example` folder. To run the project, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
-
-1. `cd Example`
-1. `pod install`
-1. `open DirectionsExample.xcworkspace`
 
 ## Tests
 
