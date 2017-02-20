@@ -14,39 +14,38 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA1A10D41D0101ED009F82FA"
-               BuildableName = "MapboxDirections.framework"
-               BlueprintName = "MapboxDirectionsTV"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
+               BlueprintIdentifier = "DD62544D1AE70C1700017857"
+               BuildableName = "DirectionsSwift.app"
+               BlueprintName = "Example (Swift)"
+               ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA1A10DD1D0101ED009F82FA"
-               BuildableName = "MapboxDirectionsTests.xctest"
-               BlueprintName = "MapboxDirectionsTVTests"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
+               BlueprintIdentifier = "F4BD346B1DF75B5F0000B708"
+               BuildableName = "DirectionsTestsSwift.xctest"
+               BlueprintName = "Example Tests (Swift)"
+               ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DA1A10D41D0101ED009F82FA"
-            BuildableName = "MapboxDirections.framework"
-            BlueprintName = "MapboxDirectionsTV"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            BlueprintIdentifier = "DD62544D1AE70C1700017857"
+            BuildableName = "DirectionsSwift.app"
+            BlueprintName = "Example (Swift)"
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -62,15 +61,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DA1A10D41D0101ED009F82FA"
-            BuildableName = "MapboxDirections.framework"
-            BlueprintName = "MapboxDirectionsTV"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            BlueprintIdentifier = "DD62544D1AE70C1700017857"
+            BuildableName = "DirectionsSwift.app"
+            BlueprintName = "Example (Swift)"
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,15 +80,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DA1A10D41D0101ED009F82FA"
-            BuildableName = "MapboxDirections.framework"
-            BlueprintName = "MapboxDirectionsTV"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            BlueprintIdentifier = "DD62544D1AE70C1700017857"
+            BuildableName = "DirectionsSwift.app"
+            BlueprintName = "Example (Swift)"
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

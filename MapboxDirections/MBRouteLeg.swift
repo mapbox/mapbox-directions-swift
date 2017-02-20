@@ -3,10 +3,76 @@ import Polyline
 /**
  A `RouteLeg` object defines a single leg of a route between two waypoints. If the overall route has only two waypoints, it has a single `RouteLeg` object that covers the entire route. The route leg object includes information about the leg, such as its name, distance, and expected travel time. Depending on the criteria used to calculate the route, the route leg object may also include detailed turn-by-turn instructions.
  
- You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+ You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteLeg)
-open class RouteLeg: NSObject {
+open class RouteLeg: NSObject, NSSecureCoding {
+    // MARK: Creating a Leg
+    
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
+        self.source = source
+        self.destination = destination
+        self.profileIdentifier = profileIdentifier
+        self.steps = steps
+        distance = json["distance"] as! Double
+        expectedTravelTime = json["duration"] as! Double
+        self.name = json["summary"] as! String
+    }
+    
+    /**
+     Initializes a new route leg object with the given JSON dictionary representation and waypoints.
+     
+     Normally, you do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+     
+     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
+     - parameter source: The waypoint at the beginning of the leg.
+     - parameter destination: The waypoint at the end of the leg.
+     - parameter profileIdentifier: The profile identifier used to request the routes.
+     */
+    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: String) {
+        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        guard let decodedSource = decoder.decodeObject(of: Waypoint.self, forKey: "source") else {
+            return nil
+        }
+        source = decodedSource
+        
+        guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
+            return nil
+        }
+        destination = decodedDestination
+        
+        steps = decoder.decodeObject(of: [NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+        
+        guard let decodedName = decoder.decodeObject(of: NSString.self, forKey: "name") as String? else {
+            return nil
+        }
+        name = decodedName
+        
+        distance = decoder.decodeDouble(forKey: "distance")
+        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
+        
+        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        profileIdentifier = decodedProfileIdentifier
+    }
+    
+    open static var supportsSecureCoding = true
+    
+    public func encode(with coder: NSCoder) {
+        coder.encode(source, forKey: "source")
+        coder.encode(destination, forKey: "destination")
+        coder.encode(steps, forKey: "steps")
+        coder.encode(name, forKey: "name")
+        coder.encode(distance, forKey: "distance")
+        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encode(profileIdentifier, forKey: "profileIdentifier")
+    }
+    
     // MARK: Getting the Leg Geometry
     
     /**
@@ -64,26 +130,9 @@ open class RouteLeg: NSObject {
     /**
      A string specifying the primary mode of transportation for the route leg.
      
-     The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
+     The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     open let profileIdentifier: String
-    
-    // MARK: Creating a Leg
-    
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
-        self.source = source
-        self.destination = destination
-        self.profileIdentifier = profileIdentifier
-        self.steps = steps
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        self.name = json["summary"] as! String
-    }
-    
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: String) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
-    }
 }
 
 // MARK: Support for Directions API v4

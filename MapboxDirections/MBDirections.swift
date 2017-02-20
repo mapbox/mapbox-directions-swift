@@ -1,4 +1,4 @@
-typealias JSONDictionary = [String: AnyObject]
+typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
@@ -112,7 +112,8 @@ open class Directions: NSObject {
      
      To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    open static let sharedDirections = Directions(accessToken: nil)
+    @objc(sharedDirections)
+    open static let shared = Directions(accessToken: nil)
     
     /// The API endpoint to request the directions from.
     internal var apiEndpoint: URL
@@ -162,8 +163,9 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    open func calculateDirections(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
-        let url = URLForCalculatingDirections(options)
+    @objc(calculateDirectionsWithOptions:completionHandler:)
+    open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+        let url = urlForCalculating(options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
             let response = options.response(json)
             completionHandler(response.0, response.1, nil)
@@ -189,7 +191,7 @@ open class Directions: NSObject {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
-            if let data = data {
+            if let data = data, response?.mimeType == "application/json" {
                 do {
                     json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
                 } catch {
@@ -218,7 +220,8 @@ open class Directions: NSObject {
      
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
-    open func URLForCalculatingDirections(_ options: RouteOptions) -> URL {
+    @objc(URLForCalculatingDirectionsWithOptions:)
+    open func urlForCalculating(_ options: RouteOptions) -> URL {
         let params = options.params + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
@@ -232,7 +235,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    fileprivate static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
+    static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         let apiStatusCode = json["code"] as? String
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {
@@ -249,16 +252,15 @@ open class Directions: NSObject {
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
             case (429, _):
-                if let timeInterval = response.allHeaderFields["x-rate-limit-interval"] as? TimeInterval, let maximumCountOfRequests = response.allHeaderFields["x-rate-limit-limit"] as? UInt {
+                if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
                     let intervalFormatter = DateComponentsFormatter()
                     intervalFormatter.unitsStyle = .full
-                    let formattedInterval = intervalFormatter.string(from: timeInterval)
+                    let formattedInterval = intervalFormatter.string(from: timeInterval) ?? "\(timeInterval) seconds"
                     let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: maximumCountOfRequests), number: .decimal)
                     failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
                 }
-                if let rolloverTimestamp = response.allHeaderFields["x-rate-limit-reset"] as? Double {
-                    let date = Date(timeIntervalSince1970: rolloverTimestamp)
-                    let formattedDate = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .full)
+                if let rolloverTime = response.rateLimitResetTime {
+                    let formattedDate = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .full)
                     recoverySuggestion = "Wait until \(formattedDate) before retrying."
                 }
             default:
@@ -268,7 +270,41 @@ open class Directions: NSObject {
             userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? HTTPURLResponse.localizedString(forStatusCode: error?.code ?? -1)
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
         }
-        userInfo[NSUnderlyingErrorKey] = error
+        if let error = error {
+            userInfo[NSUnderlyingErrorKey] = error
+        }
         return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
     }
+}
+
+extension HTTPURLResponse {
+    
+    @nonobjc static let rateLimitIntervalHeaderKey = "X-Rate-Limit-Interval"
+    @nonobjc static let rateLimitLimitHeaderKey = "X-Rate-Limit-Limit"
+    @nonobjc static let rateLimitResetHeaderKey = "X-Rate-Limit-Reset"
+    
+    var rateLimit: UInt? {
+        guard let limit = allHeaderFields[HTTPURLResponse.rateLimitLimitHeaderKey] as? String else {
+            return nil
+        }
+        return UInt(limit)
+    }
+    
+    var rateLimitInterval: TimeInterval? {
+        guard let interval = allHeaderFields[HTTPURLResponse.rateLimitIntervalHeaderKey] as? String else {
+            return nil
+        }
+        return TimeInterval(interval)
+    }
+    
+    var rateLimitResetTime: Date? {
+        guard let resetTime = allHeaderFields[HTTPURLResponse.rateLimitResetHeaderKey] as? String else {
+            return nil
+        }
+        guard let resetTimeNumber = Double(resetTime) else {
+            return nil
+        }
+        return Date(timeIntervalSince1970: resetTimeNumber)
+    }
+
 }

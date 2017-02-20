@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         MGLAccountManager.setAccessToken(MapboxAccessToken)
         
         mapView = MGLMapView(frame: view.bounds)
-        mapView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(mapView)
     }
     
@@ -30,28 +30,28 @@ class ViewController: UIViewController {
         ])
         options.includesSteps = true
         
-        Directions(accessToken: MapboxAccessToken).calculateDirections(options: options) { (waypoints, routes, error) in
+        _ = Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
             guard error == nil else {
                 print("Error calculating directions: \(error!)")
                 return
             }
             
-            if let route = routes?.first, leg = route.legs.first {
+            if let route = routes?.first, let leg = route.legs.first {
                 print("Route via \(leg):")
                 
-                let distanceFormatter = NSLengthFormatter()
-                let formattedDistance = distanceFormatter.stringFromMeters(route.distance)
+                let distanceFormatter = LengthFormatter()
+                let formattedDistance = distanceFormatter.string(fromMeters: route.distance)
                 
-                let travelTimeFormatter = NSDateComponentsFormatter()
-                travelTimeFormatter.unitsStyle = .Short
-                let formattedTravelTime = travelTimeFormatter.stringFromTimeInterval(route.expectedTravelTime)
+                let travelTimeFormatter = DateComponentsFormatter()
+                travelTimeFormatter.unitsStyle = .short
+                let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
                 
                 print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
                 
                 for step in leg.steps {
                     print("\(step.instructions)")
                     if step.distance > 0 {
-                        let formattedDistance = distanceFormatter.stringFromMeters(step.distance)
+                        let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
                         print("— \(formattedDistance) —")
                     }
                 }
@@ -63,7 +63,7 @@ class ViewController: UIViewController {
                     
                     // Add the polyline to the map and fit the viewport to the polyline.
                     self.mapView.addAnnotation(routeLine)
-                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding:                 UIEdgeInsetsZero, animated: true)
+                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
                 }
             }
         }
