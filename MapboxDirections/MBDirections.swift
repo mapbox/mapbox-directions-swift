@@ -128,6 +128,8 @@ open class Directions: NSObject {
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint is used by default.
      */
     public init(accessToken: String?, host: String?) {
+        print("⚠️ This application was linked against a build of MapboxDirections.swift that was built from the “swift3” branch of the mapbox/MapboxDirections.swift repository. Development of the Swift 3 version of MapboxDirections.swift has moved to the “master” branch. If you are integrating MapboxDirections.swift via CocoaPods or Carthage, please update your Podfile or Cartfile to require a specific commit on the “master” branch or the “master” branch itself. The “swift3” branch is no longer being updated and will soon be deleted.")
+        
         let accessToken = accessToken ?? defaultAccessToken
         assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
         
