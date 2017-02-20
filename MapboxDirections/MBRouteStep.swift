@@ -633,7 +633,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      An array of geographic coordinates defining the path of the route step from the location of the maneuver to the location of the next step’s maneuver.
      
-     The value of this property may be `nil`, for example when the maneuver type is `Arrive`.
+     The value of this property may be `nil`, for example when the maneuver type is `arrive`.
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      */
@@ -642,7 +642,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      The number of coordinates.
      
-     The value of this property may be zero, for example when the maneuver type is `Arrive`.
+     The value of this property may be zero, for example when the maneuver type is `arrive`.
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
@@ -653,7 +653,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      Retrieves the coordinates.
      
-     The array may be empty, for example when the maneuver type is `Arrive`.
+     The array may be empty, for example when the maneuver type is `arrive`.
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      
