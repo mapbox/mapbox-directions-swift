@@ -16,14 +16,14 @@ MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com
 Specify the following dependency in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
-pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :tag => 'v0.6.0'
+pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', :tag => 'v0.7.0'
 ```
 
 Or in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "raphaelmor/Polyline" ~> 3.2
-github "Mapbox/MapboxDirections.swift" ~> 0.6.0
+github "raphaelmor/Polyline" ~> 3.3
+github "Mapbox/MapboxDirections.swift" ~> 0.7.0
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
@@ -233,10 +233,8 @@ if (route.coordinateCount) {
 
 ## Tests
 
-To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
+To run the included unit tests, you need to use [CocoaPods](http://cocoapods.org) 1.2 or above to install the dependencies. 
 
 1. `pod install`
 1. `open MapboxDirections.xcworkspace`
 1. Switch to the MapboxDirections scheme and go to Product ‣ Test.
-
-The workspace requires CocoaPods 1.1.0.beta.1 or greater if opening inside Xcode 8.
