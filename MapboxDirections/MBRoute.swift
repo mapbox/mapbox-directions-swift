@@ -3,13 +3,13 @@ import Polyline
 /**
  A `Route` object defines a single route that the user can follow to visit a series of waypoints in order. The route object includes information about the route, such as its distance and expected travel time. Depending on the criteria used to calculate the route, the route object may also include detailed turn-by-turn instructions.
  
- Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method. However, if you use the `Directions.URLForCalculatingDirections(options:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
+ Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.urlForCalculating(_:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
  */
 @objc(MBRoute)
-public class Route: NSObject, NSSecureCoding {
+open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    private init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: NSTimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    internal init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.profileIdentifier = profileIdentifier
         self.legs = legs
         self.distance = distance
@@ -20,15 +20,15 @@ public class Route: NSObject, NSSecureCoding {
     /**
      Initializes a new route object with the given JSON dictionary representation and waypoints.
      
-     This initializer is intended for use in conjunction with the `Directions.URLForCalculatingDirections(options:)` method.
+     This initializer is intended for use in conjunction with the `Directions.urlForCalculating(_:)` method.
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    public convenience init(json: [String: AnyObject], waypoints: [Waypoint], profileIdentifier: String) {
+    public convenience init(json: [String: Any], waypoints: [Waypoint], profileIdentifier: String) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let legInfo = zip(zip(waypoints.prefixUpTo(waypoints.endIndex - 1), waypoints.suffixFrom(1)),
+        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
             RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
@@ -50,40 +50,39 @@ public class Route: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+        let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
         coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
-            if let latitude = coordinateDictionary["latitude"], longitude = coordinateDictionary["longitude"] {
+            if let latitude = coordinateDictionary["latitude"],
+                let longitude = coordinateDictionary["longitude"] {
                 return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             } else {
                 return nil
             }
         })
         
-        legs = decoder.decodeObjectOfClasses([NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
-        distance = decoder.decodeDoubleForKey("distance")
-        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
+        legs = decoder.decodeObject(of: [NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
+        distance = decoder.decodeDouble(forKey: "distance")
+        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         
-        guard let decodedProfileIdentifier = decoder.decodeObjectOfClass(NSString.self, forKey: "profileIdentifier") as String? else {
+        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
             return nil
         }
         profileIdentifier = decodedProfileIdentifier
     }
     
-    public static func supportsSecureCoding() -> Bool {
-        return true
-    }
+    open static var supportsSecureCoding = true
     
-    public func encodeWithCoder(coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         let coordinateDictionaries = coordinates?.map { [
             "latitude": $0.latitude,
             "longitude": $0.longitude,
         ] }
-        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        coder.encode(coordinateDictionaries, forKey: "coordinates")
         
-        coder.encodeObject(legs, forKey: "legs")
-        coder.encodeDouble(distance, forKey: "distance")
-        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encodeObject(profileIdentifier, forKey: "profileIdentifier")
+        coder.encode(legs, forKey: "legs")
+        coder.encode(distance, forKey: "distance")
+        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encode(profileIdentifier, forKey: "profileIdentifier")
     }
     
     // MARK: Getting the Route Geometry
@@ -95,7 +94,7 @@ public class Route: NSObject, NSSecureCoding {
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    public let coordinates: [CLLocationCoordinate2D]?
+    open let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
@@ -104,7 +103,7 @@ public class Route: NSObject, NSSecureCoding {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
-    public var coordinateCount: UInt {
+    open var coordinateCount: UInt {
         return UInt(coordinates?.count ?? 0)
     }
     
@@ -121,9 +120,9 @@ public class Route: NSObject, NSSecureCoding {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
+    open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
         for i in 0..<(self.coordinates?.count ?? 0) {
-            coordinates.advancedBy(i).memory = self.coordinates![i]
+            coordinates.advanced(by: i).pointee = self.coordinates![i]
         }
     }
     
@@ -134,10 +133,10 @@ public class Route: NSObject, NSSecureCoding {
      
      To determine the name of the route, concatenate the names of the route’s legs.
      */
-    public let legs: [RouteLeg]
+    open let legs: [RouteLeg]
     
-    public override var description: String {
-        return legs.map { $0.name }.joinWithSeparator(" – ")
+    open override var description: String {
+        return legs.map { $0.name }.joined(separator: " – ")
     }
     
     // MARK: Getting Additional Route Details
@@ -147,21 +146,21 @@ public class Route: NSObject, NSSecureCoding {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: CLLocationDistance
+    open let distance: CLLocationDistance
     
     /**
      The route’s expected travel time, measured in seconds.
      
      The value of this property reflects the time it takes to traverse the entire route under ideal conditions. It is the sum of the `expectedTravelTime` properties of the route’s legs. You should not assume that the user would travel along the route at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the route makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      */
-    public let expectedTravelTime: NSTimeInterval
+    open let expectedTravelTime: TimeInterval
     
     /**
      A string specifying the primary mode of transportation for the route.
      
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    public let profileIdentifier: String
+    open let profileIdentifier: String
 }
 
 // MARK: Support for Directions API v4

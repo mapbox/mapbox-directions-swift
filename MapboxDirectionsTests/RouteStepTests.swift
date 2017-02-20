@@ -106,22 +106,22 @@ class RouteStepTests: XCTestCase {
             ],
             "distance": 1669.7,
             "duration": 75.6,
-        ]
+        ] as [String: Any]
         
-        let step = RouteStep(finalHeading: 59, maneuverType: .ReachFork, maneuverDirection: .Left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
+        let step = RouteStep(finalHeading: 59, maneuverType: .reachFork, maneuverDirection: .left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
         
         // Encode and decode the route step securely
         // This may raise an Obj-C exception if an error is encountered which will fail the tests
         
         let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWithMutableData: encodedData)
+        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
         keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encodeObject(step, forKey: "step")
+        keyedArchiver.encode(step, forKey: "step")
         keyedArchiver.finishEncoding()
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWithData: encodedData)
+        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
         keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedStep = keyedUnarchiver.decodeObjectOfClass(RouteStep.self, forKey: "step")!
+        let unarchivedStep = keyedUnarchiver.decodeObject(of: RouteStep.self, forKey: "step")!
         keyedUnarchiver.finishDecoding()
         
         XCTAssertNotNil(unarchivedStep)

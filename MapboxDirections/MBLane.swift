@@ -21,18 +21,16 @@ public class Lane: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        guard let descriptions = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "indications") as? [String],
+        guard let descriptions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "indications") as? [String],
             let indications = LaneIndication(descriptions: descriptions) else {
             return nil
         }
         self.indications = indications
     }
     
-    public static func supportsSecureCoding() -> Bool {
-        return true
-    }
+    open static var supportsSecureCoding = true
     
-    public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(indications.description.componentsSeparatedByString(","), forKey: "indications")
+    public func encode(with coder: NSCoder) {
+        coder.encode(indications.description.components(separatedBy: ","), forKey: "indications")
     }
 }

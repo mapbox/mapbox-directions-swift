@@ -8,20 +8,20 @@ class V4Tests: XCTestCase {
         super.tearDown()
     }
     
-    func testWithFormat(shapeFormat: RouteShapeFormat) {
-        let expectation = expectationWithDescription("calculating directions should return results")
+    func test(shapeFormat: RouteShapeFormat) {
+        let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
             "alternatives": "true",
             "instructions": "text",
-            "geometry": String(shapeFormat),
+            "geometry": String(describing: shapeFormat),
             "steps": "true",
             "access_token": BogusToken,
         ]
-        stub(isHost("api.mapbox.com")
+        stub(condition: isHost("api.mapbox.com")
             && isPath("/v4/directions/mapbox.driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = NSBundle(forClass: self.dynamicType).pathForResource("v4_driving_dc_\(shapeFormat)", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: "v4_driving_dc_\(shapeFormat)", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -29,12 +29,12 @@ class V4Tests: XCTestCase {
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
-        XCTAssertEqual(options.shapeFormat, RouteShapeFormat.Polyline, "Route shape format should be Polyline by default.")
+        XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
         options.shapeFormat = shapeFormat
         options.includesSteps = true
         options.includesAlternativeRoutes = true
         var route: Route?
-        let task = Directions(accessToken: BogusToken).calculateDirections(options: options) { (waypoints, routes, error) in
+        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error)")
             
             XCTAssertNotNil(routes)
@@ -45,9 +45,9 @@ class V4Tests: XCTestCase {
         }
         XCTAssertNotNil(task)
         
-        waitForExpectationsWithTimeout(2) { (error) in
+        waitForExpectations(timeout: 2) { (error) in
             XCTAssertNil(error, "Error: \(error)")
-            XCTAssertEqual(task.state, NSURLSessionTaskState.Completed)
+            XCTAssertEqual(task.state, .completed)
         }
         
         XCTAssertNotNil(route)
@@ -68,7 +68,7 @@ class V4Tests: XCTestCase {
         XCTAssertEqual(step.instructions, "Go straight onto I 80;US 93 Alternate, I 80;US 93 ALT becomes I 80;US 93 Alternate")
         XCTAssertNotNil(step.names)
         XCTAssertEqual(step.names ?? [], ["I 80", "US 93 Alternate"])
-        XCTAssertEqual(step.maneuverType, ManeuverType.Continue)
+        XCTAssertEqual(step.maneuverType, .continue)
         XCTAssertNil(step.maneuverDirection)
         XCTAssertNil(step.initialHeading)
         XCTAssertNil(step.finalHeading)
@@ -78,12 +78,12 @@ class V4Tests: XCTestCase {
     }
     
     func testGeoJSON() {
-        XCTAssertEqual(String(RouteShapeFormat.GeoJSON), "geojson")
-        testWithFormat(.GeoJSON)
+        XCTAssertEqual(String(describing: RouteShapeFormat.geoJSON), "geojson")
+        test(shapeFormat: .geoJSON)
     }
     
     func testPolyline() {
-        XCTAssertEqual(String(RouteShapeFormat.Polyline), "polyline")
-        testWithFormat(.Polyline)
+        XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
+        test(shapeFormat: .polyline)
     }
 }

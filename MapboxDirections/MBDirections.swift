@@ -1,23 +1,23 @@
-typealias JSONDictionary = [String: AnyObject]
+typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
-let defaultAccessToken = NSBundle.mainBundle().objectForInfoDictionaryKey("MGLMapboxAccessToken") as? String
+let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
 
 /// The user agent string for any HTTP requests performed directly within this library.
 let userAgent: String = {
     var components: [String] = []
     
-    if let appName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String ?? NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as? String {
-        let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    if let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         components.append("\(appName)/\(version)")
     }
     
-    let libraryBundle: NSBundle? = NSBundle(forClass: Directions.self)
+    let libraryBundle: Bundle? = Bundle(for: Directions.self)
     
-    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
+    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, let version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
         components.append("\(libraryName)/\(version)")
     }
     
@@ -33,7 +33,7 @@ let userAgent: String = {
     #elseif os(Linux)
         system = "Linux"
     #endif
-    let systemVersion = NSProcessInfo().operatingSystemVersion
+    let systemVersion = ProcessInfo().operatingSystemVersion
     components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
     
     let chip: String
@@ -48,7 +48,7 @@ let userAgent: String = {
     #endif
     components.append("(\(chip))")
     
-    return components.joinWithSeparator(" ")
+    return components.joined(separator: " ")
 }()
 
 extension CLLocationCoordinate2D {
@@ -91,7 +91,7 @@ extension CLLocation {
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
 @objc(MBDirections)
-public class Directions: NSObject {
+open class Directions: NSObject {
     /**
      A closure (block) to be called when a directions request is complete.
      
@@ -103,7 +103,7 @@ public class Directions: NSObject {
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias CompletionHandler = (waypoints: [Waypoint]?, routes: [Route]?, error: NSError?) -> Void
+    public typealias CompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -112,10 +112,11 @@ public class Directions: NSObject {
      
      To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    public static let sharedDirections = Directions(accessToken: nil)
+    @objc(sharedDirections)
+    open static let shared = Directions(accessToken: nil)
     
     /// The API endpoint to request the directions from.
-    internal var apiEndpoint: NSURL
+    internal var apiEndpoint: URL
     
     /// The Mapbox access token to associate the request with.
     internal let accessToken: String
@@ -132,10 +133,10 @@ public class Directions: NSObject {
         
         self.accessToken = accessToken!
         
-        let baseURLComponents = NSURLComponents()
+        var baseURLComponents = URLComponents()
         baseURLComponents.scheme = "https"
         baseURLComponents.host = host ?? "api.mapbox.com"
-        self.apiEndpoint = baseURLComponents.URL!
+        self.apiEndpoint = baseURLComponents.url!
     }
     
     /**
@@ -162,13 +163,14 @@ public class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    public func calculateDirections(options options: RouteOptions, completionHandler: CompletionHandler) -> NSURLSessionDataTask {
-        let url = URLForCalculatingDirections(options: options)
+    @objc(calculateDirectionsWithOptions:completionHandler:)
+    open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+        let url = urlForCalculating(options)
         let task = dataTaskWithURL(url, completionHandler: { (json) in
-            let response = options.response(json: json)
-            completionHandler(waypoints: response.0, routes: response.1, error: nil)
+            let response = options.response(json)
+            completionHandler(response.0, response.1, nil)
         }) { (error) in
-            completionHandler(waypoints: nil, routes: nil, error: error)
+            completionHandler(nil, nil, error)
         }
         task.resume()
         return task
@@ -183,14 +185,15 @@ public class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    private func dataTaskWithURL(url: NSURL, completionHandler: (json: JSONDictionary) -> Void, errorHandler: (error: NSError) -> Void) -> NSURLSessionDataTask {
-        let request = NSMutableURLRequest(URL: url)
+    fileprivate func dataTaskWithURL(_ url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+        
+        let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        return NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+        return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
-            if let data = data where response?.MIMEType == "application/json" {
+            if let data = data, response?.mimeType == "application/json" {
                 do {
-                    json = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! JSONDictionary
+                    json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
                 } catch {
                     assert(false, "Invalid data")
                 }
@@ -199,15 +202,15 @@ public class Directions: NSObject {
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
             guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
-                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error)
-                dispatch_async(dispatch_get_main_queue()) {
-                    errorHandler(error: apiError)
+                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error as NSError?)
+                DispatchQueue.main.async {
+                    errorHandler(apiError)
                 }
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(json: json)
+            DispatchQueue.main.async {
+                completionHandler(json)
             }
         }
     }
@@ -217,24 +220,25 @@ public class Directions: NSObject {
      
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
-    public func URLForCalculatingDirections(options options: RouteOptions) -> NSURL {
+    @objc(URLForCalculatingDirectionsWithOptions:)
+    open func urlForCalculating(_ options: RouteOptions) -> URL {
         let params = options.params + [
-            NSURLQueryItem(name: "access_token", value: accessToken),
+            URLQueryItem(name: "access_token", value: accessToken),
         ]
         
-        let unparameterizedURL = NSURL(string: options.path, relativeToURL: apiEndpoint)!
-        let components = NSURLComponents(URL: unparameterizedURL, resolvingAgainstBaseURL: true)!
+        let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
+        var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
-        return components.URL!
+        return components.url!
     }
     
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func descriptiveError(json: JSONDictionary, response: NSURLResponse?, underlyingError error: NSError?) -> NSError {
+    static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         let apiStatusCode = json["code"] as? String
         var userInfo = error?.userInfo ?? [:]
-        if let response = response as? NSHTTPURLResponse {
+        if let response = response as? HTTPURLResponse {
             var failureReason: String? = nil
             var recoverySuggestion: String? = nil
             switch (response.statusCode, apiStatusCode ?? "") {
@@ -249,21 +253,21 @@ public class Directions: NSObject {
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
             case (429, _):
                 if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
-                    let intervalFormatter = NSDateComponentsFormatter()
-                    intervalFormatter.unitsStyle = .Full
-                    let formattedInterval = intervalFormatter.stringFromTimeInterval(timeInterval) ?? "\(timeInterval) seconds"
-                    let formattedCount = NSNumberFormatter.localizedStringFromNumber(maximumCountOfRequests, numberStyle: .DecimalStyle)
+                    let intervalFormatter = DateComponentsFormatter()
+                    intervalFormatter.unitsStyle = .full
+                    let formattedInterval = intervalFormatter.string(from: timeInterval) ?? "\(timeInterval) seconds"
+                    let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: maximumCountOfRequests), number: .decimal)
                     failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
                 }
                 if let rolloverTime = response.rateLimitResetTime {
-                    let formattedDate = NSDateFormatter.localizedStringFromDate(rolloverTime, dateStyle: .LongStyle, timeStyle: .FullStyle)
+                    let formattedDate = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .full)
                     recoverySuggestion = "Wait until \(formattedDate) before retrying."
                 }
             default:
                 // `message` is v4 or v5; `error` is v4
                 failureReason = json["message"] as? String ?? json["error"] as? String
             }
-            userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? NSHTTPURLResponse.localizedStringForStatusCode(error?.code ?? -1)
+            userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? HTTPURLResponse.localizedString(forStatusCode: error?.code ?? -1)
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
         }
         if let error = error {
@@ -273,34 +277,34 @@ public class Directions: NSObject {
     }
 }
 
-extension NSHTTPURLResponse {
+extension HTTPURLResponse {
     
     @nonobjc static let rateLimitIntervalHeaderKey = "X-Rate-Limit-Interval"
     @nonobjc static let rateLimitLimitHeaderKey = "X-Rate-Limit-Limit"
     @nonobjc static let rateLimitResetHeaderKey = "X-Rate-Limit-Reset"
     
     var rateLimit: UInt? {
-        guard let limit = allHeaderFields[NSHTTPURLResponse.rateLimitLimitHeaderKey] as? String else {
+        guard let limit = allHeaderFields[HTTPURLResponse.rateLimitLimitHeaderKey] as? String else {
             return nil
         }
         return UInt(limit)
     }
     
-    var rateLimitInterval: NSTimeInterval? {
-        guard let interval = allHeaderFields[NSHTTPURLResponse.rateLimitIntervalHeaderKey] as? String else {
+    var rateLimitInterval: TimeInterval? {
+        guard let interval = allHeaderFields[HTTPURLResponse.rateLimitIntervalHeaderKey] as? String else {
             return nil
         }
-        return NSTimeInterval(interval)
+        return TimeInterval(interval)
     }
     
-    var rateLimitResetTime: NSDate? {
-        guard let resetTime = allHeaderFields[NSHTTPURLResponse.rateLimitResetHeaderKey] as? String else {
+    var rateLimitResetTime: Date? {
+        guard let resetTime = allHeaderFields[HTTPURLResponse.rateLimitResetHeaderKey] as? String else {
             return nil
         }
         guard let resetTimeNumber = Double(resetTime) else {
             return nil
         }
-        return NSDate(timeIntervalSince1970: resetTimeNumber)
+        return Date(timeIntervalSince1970: resetTimeNumber)
     }
 
 }

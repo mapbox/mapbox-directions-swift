@@ -11,21 +11,21 @@ extension LaneIndication: CustomStringConvertible {
         for description in descriptions {
             switch description {
             case "sharp right":
-                scope.insert(.SharpRight)
+                scope.insert(.sharpRight)
             case "right":
-                scope.insert(.Right)
+                scope.insert(.right)
             case "slight right":
-                scope.insert(.SlightRight)
+                scope.insert(.slightRight)
             case "straight":
-                scope.insert(.StraightAhead)
+                scope.insert(.straightAhead)
             case "slight left":
-                scope.insert(.SlightLeft)
+                scope.insert(.slightLeft)
             case "left":
-                scope.insert(.Left)
+                scope.insert(.left)
             case "sharp left":
-                scope.insert(.SharpLeft)
+                scope.insert(.sharpLeft)
             case "uturn":
-                scope.insert(.UTurn)
+                scope.insert(.uTurn)
             case "none":
                 break
             default:
@@ -41,30 +41,30 @@ extension LaneIndication: CustomStringConvertible {
         }
         
         var descriptions: [String] = []
-        if contains(LaneIndication.SharpRight) {
+        if contains(.sharpRight) {
             descriptions.append("sharp right")
         }
-        if contains(LaneIndication.Right) {
+        if contains(.right) {
             descriptions.append("right")
         }
-        if contains(LaneIndication.SlightRight) {
+        if contains(.slightRight) {
             descriptions.append("slight right")
         }
-        if contains(LaneIndication.StraightAhead) {
+        if contains(.straightAhead) {
             descriptions.append("straight")
         }
-        if contains(LaneIndication.SlightLeft) {
+        if contains(.slightLeft) {
             descriptions.append("slight left")
         }
-        if contains(LaneIndication.Left) {
+        if contains(.left) {
             descriptions.append("left")
         }
-        if contains(LaneIndication.SharpLeft) {
+        if contains(.sharpLeft) {
             descriptions.append("sharp left")
         }
-        if contains(LaneIndication.UTurn) {
+        if contains(.uTurn) {
             descriptions.append("uturn")
         }
-        return descriptions.joinWithSeparator(",")
+        return descriptions.joined(separator: ",")
     }
 }

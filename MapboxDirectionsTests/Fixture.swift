@@ -3,12 +3,12 @@ import Foundation
 
 internal class Fixture {
     internal class func stringFromFileNamed(name: String) -> String {
-        guard let path = NSBundle(forClass: self).pathForResource(name, ofType: "json") else {
+        guard let path = Bundle(for: self).path(forResource: name, ofType: "json") else {
             XCTAssert(false, "Fixture \(name) not found.")
             return ""
         }
         do {
-            return try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+            return try String(contentsOfFile: path, encoding: .utf8)
         } catch {
             XCTAssert(false, "Unable to decode fixture at \(path): \(error).")
             return ""
@@ -16,16 +16,16 @@ internal class Fixture {
     }
     
     internal class func JSONFromFileNamed(name: String) -> [String: AnyObject] {
-        guard let path = NSBundle(forClass: self).pathForResource(name, ofType: "json") else {
+        guard let path = Bundle(for: self).path(forResource: name, ofType: "json") else {
             XCTAssert(false, "Fixture \(name) not found.")
             return [:]
         }
-        guard let data = NSData(contentsOfFile: path) else {
+        guard let data = NSData(contentsOfFile: path) as? Data else {
             XCTAssert(false, "No data found at \(path).")
             return [:]
         }
         do {
-            return try NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject]
+            return try JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject]
         } catch {
             XCTAssert(false, "Unable to decode JSON fixture at \(path): \(error).")
             return [:]

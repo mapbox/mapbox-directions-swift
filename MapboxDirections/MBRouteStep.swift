@@ -12,28 +12,28 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`.
      */
-    case Automobile // automobile
+    case automobile // automobile
     
     /**
      The route requires the user to board a ferry.
      
      The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that his or her vehicle is permitted onboard the ferry.
      */
-    case Ferry // automobile, walking, cycling
+    case ferry // automobile, walking, cycling
     
     /**
      The route requires the user to cross a movable bridge.
      
      The user may need to wait for the movable bridge to become passable before continuing.
      */
-    case MovableBridge // automobile, cycling
+    case movableBridge // automobile, cycling
     
     /**
      The route becomes impassable at this point.
      
      You should not encounter this transport type under normal circumstances.
      */
-    case Inaccessible // automobile, walking, cycling
+    case inaccessible // automobile, walking, cycling
     
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`
     
@@ -42,7 +42,7 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`. For cycling directions, this value indicates that the user is expected to dismount.
      */
-    case Walking // walking, cycling
+    case walking // walking, cycling
     
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`
     
@@ -51,32 +51,32 @@ public enum TransportType: Int, CustomStringConvertible {
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`.
      */
-    case Cycling // cycling
+    case cycling // cycling
     
     /**
      The route requires the user to board a train.
      
      The user should consult the train’s timetable. For cycling directions, the user should also verify that bicycles are permitted onboard the train.
      */
-    case Train // cycling
+    case train // cycling
     
     public init?(description: String) {
         let type: TransportType
         switch description {
         case "driving":
-            type = .Automobile
+            type = .automobile
         case "ferry":
-            type = .Ferry
+            type = .ferry
         case "moveable bridge":
-            type = .MovableBridge
+            type = .movableBridge
         case "unaccessible":
-            type = .Inaccessible
+            type = .inaccessible
         case "walking":
-            type = .Walking
+            type = .walking
         case "cycling":
-            type = .Cycling
+            type = .cycling
         case "train":
-            type = .Train
+            type = .train
         default:
             return nil
         }
@@ -85,19 +85,19 @@ public enum TransportType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .Automobile:
+        case .automobile:
             return "driving"
-        case .Ferry:
+        case .ferry:
             return "ferry"
-        case .MovableBridge:
+        case .movableBridge:
             return "moveable bridge"
-        case .Inaccessible:
+        case .inaccessible:
             return "unaccessible"
-        case .Walking:
+        case .walking:
             return "walking"
-        case .Cycling:
+        case .cycling:
             return "cycling"
-        case .Train:
+        case .train:
             return "train"
         }
     }
@@ -115,148 +115,148 @@ public enum ManeuverType: Int, CustomStringConvertible {
      
      If the waypoint is some distance away from the nearest road, the maneuver direction indicates the direction the user must turn upon reaching the road.
      */
-    case Depart
+    case depart
     
     /**
      The step requires the user to turn.
      
      The maneuver direction indicates the direction in which the user must turn relative to the current direction of travel. The exit index indicates the number of intersections, large or small, from the previous maneuver up to and including the intersection at which the user must turn.
      */
-    case Turn
+    case turn
     
     /**
      The step requires the user to continue after a turn.
      */
-    case Continue
+    case `continue`
     
     /**
      The step requires the user to continue on the current road as it changes names.
      
      The step’s name contains the road’s new name. To get the road’s old name, use the previous step’s name.
      */
-    case PassNameChange
+    case passNameChange
     
     /**
      The step requires the user to merge onto another road.
      
      The maneuver direction indicates the side from which the other road approaches the intersection relative to the user.
      */
-    case Merge
+    case merge
     
     /**
      The step requires the user to take a entrance ramp (slip road) onto a highway.
      */
-    case TakeOnRamp
+    case takeOnRamp
     
     /**
      The step requires the user to take an exit ramp (slip road) off a highway.
      
      The maneuver direction indicates the side of the highway from which the user must exit. The exit index indicates the number of highway exits from the previous maneuver up to and including the exit that the user must take.
      */
-    case TakeOffRamp
+    case takeOffRamp
     
     /**
      The step requires the user to choose a fork at a Y-shaped fork in the road.
      
      The maneuver direction indicates which fork to take.
      */
-    case ReachFork
+    case reachFork
     
     /**
      The step requires the user to turn at either a T-shaped three-way intersection or a sharp bend in the road where the road also changes names.
      
-     This maneuver type is called out separately so that the user may be able to proceed more confidently, without fear of having overshot the turn. If this distinction is unimportant to you, you may treat the maneuver as an ordinary `Turn`.
+     This maneuver type is called out separately so that the user may be able to proceed more confidently, without fear of having overshot the turn. If this distinction is unimportant to you, you may treat the maneuver as an ordinary `turn`.
      */
-    case ReachEnd
+    case reachEnd
     
     /**
      The step requires the user to get into a specific lane in order to continue along the current road.
      
-     The maneuver direction is set to `StraightAhead`. Each of the first intersection’s usable approach lanes also has an indication of `StraightAhead`. A maneuver in a different direction would instead have a maneuver type of `Turn`.
+     The maneuver direction is set to `straightAhead`. Each of the first intersection’s usable approach lanes also has an indication of `straightAhead`. A maneuver in a different direction would instead have a maneuver type of `turn`.
      
-     This maneuver type is called out separately so that the application can present the user with lane guidance based on the first element in the `intersections` property. If lane guidance is unimportant to you, you may treat the maneuver as an ordinary `Continue` or ignore it.
+     This maneuver type is called out separately so that the application can present the user with lane guidance based on the first element in the `intersections` property. If lane guidance is unimportant to you, you may treat the maneuver as an ordinary `continue` or ignore it.
      */
-    case UseLane
+    case useLane
      
     /**
      The step requires the user to enter, traverse, and exit a roundabout (traffic circle or rotary).
      
      The step has no name, but the exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
      */
-    case TakeRoundabout
+    case takeRoundabout
     
     /**
      The step requires the user to enter, traverse, and exit a large, named roundabout (traffic circle or rotary).
      
      The step’s name is the name of the roundabout. The exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
      */
-    case TakeRotary
+    case takeRotary
     
     /**
      The step requires the user to enter and exit a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
      
-     The step’s name is the name of the road to take after exiting the roundabout. This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `Turn` or as a `TakeRoundabout`.
+     The step’s name is the name of the road to take after exiting the roundabout. This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `turn` or as a `takeRoundabout`.
      */
-    case TurnAtRoundabout
+    case turnAtRoundabout
     
     /**
      The step requires the user to respond to a change in travel conditions.
      
      This maneuver type may occur for example when driving directions require the user to board a ferry, or when cycling directions require the user to dismount. The step’s transport type and instructions contains important contextual details that should be presented to the user at the maneuver location.
      
-     Similar changes can occur simultaneously with other maneuvers, such as when the road changes its name at the site of a movable bridge. In such cases, `HeedWarning` is suppressed in favor of another maneuver type.
+     Similar changes can occur simultaneously with other maneuvers, such as when the road changes its name at the site of a movable bridge. In such cases, `heedWarning` is suppressed in favor of another maneuver type.
      */
-    case HeedWarning
+    case heedWarning
     
     /**
      The step requires the user to arrive at a waypoint.
      
      The distance and expected travel time for this step are set to zero, indicating that the route or route leg is complete. The maneuver direction indicates the side of the road on which the waypoint can be found (or whether it is straight ahead).
      */
-    case Arrive
+    case arrive
     
     /**
      The step requires the user to arrive at an intermediate waypoint.
      
      This maneuver type is only used by version 4 of the Mapbox Directions API.
      */
-    case PassWaypoint // v4
+    case passWaypoint // v4
     
     public init?(description: String) {
         let type: ManeuverType
         switch description {
         case "depart":
-            type = .Depart
+            type = .depart
         case "turn":
-            type = .Turn
+            type = .turn
         case "continue":
-            type = .Continue
+            type = .continue
         case "new name":
-            type = .PassNameChange
+            type = .passNameChange
         case "merge":
-            type = .Merge
+            type = .merge
         case "on ramp":
-            type = .TakeOnRamp
+            type = .takeOnRamp
         case "off ramp":
-            type = .TakeOffRamp
+            type = .takeOffRamp
         case "fork":
-            type = .ReachFork
+            type = .reachFork
         case "end of road":
-            type = .ReachEnd
+            type = .reachEnd
         case "use lane":
-            type = .UseLane
+            type = .useLane
         case "rotary":
-            type = .TakeRotary
+            type = .takeRotary
         case "roundabout":
-            type = .TakeRoundabout
+            type = .takeRoundabout
         case "roundabout turn":
-            type = .TurnAtRoundabout
+            type = .turnAtRoundabout
         case "notification":
-            type = .HeedWarning
+            type = .heedWarning
         case "arrive":
-            type = .Arrive
+            type = .arrive
         case "waypoint": // v4
-            type = .PassWaypoint
+            type = .passWaypoint
         default:
             return nil
         }
@@ -265,37 +265,37 @@ public enum ManeuverType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .Depart:
+        case .depart:
             return "depart"
-        case .Turn:
+        case .turn:
             return "turn"
-        case .Continue:
+        case .continue:
             return "continue"
-        case .PassNameChange:
+        case .passNameChange:
             return "new name"
-        case .Merge:
+        case .merge:
             return "merge"
-        case .TakeOnRamp:
+        case .takeOnRamp:
             return "on ramp"
-        case .TakeOffRamp:
+        case .takeOffRamp:
             return "off ramp"
-        case .ReachFork:
+        case .reachFork:
             return "fork"
-        case .ReachEnd:
+        case .reachEnd:
             return "end of road"
-        case .UseLane:
+        case .useLane:
             return "use lane"
-        case .TakeRotary:
+        case .takeRotary:
             return "rotary"
-        case .TakeRoundabout:
+        case .takeRoundabout:
             return "roundabout"
-        case .TurnAtRoundabout:
+        case .turnAtRoundabout:
             return "roundabout turn"
-        case .HeedWarning:
+        case .heedWarning:
             return "notification"
-        case .Arrive:
+        case .arrive:
             return "arrive"
-        case .PassWaypoint: // v4
+        case .passWaypoint: // v4
             return "waypoint"
         }
     }
@@ -309,64 +309,64 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     /**
      The maneuver requires a sharp turn to the right.
      */
-    case SharpRight
+    case sharpRight
     
     /**
      The maneuver requires a turn to the right, a merge to the right, or an exit on the right, or the destination is on the right.
      */
-    case Right
+    case right
     
     /**
      The maneuver requires a slight turn to the right.
      */
-    case SlightRight
+    case slightRight
     
     /**
      The maneuver requires no notable change in direction, or the destination is straight ahead.
      */
-    case StraightAhead
+    case straightAhead
     
     /**
      The maneuver requires a slight turn to the left.
      */
-    case SlightLeft
+    case slightLeft
     
     /**
      The maneuver requires a turn to the left, a merge to the left, or an exit on the left, or the destination is on the right.
      */
-    case Left
+    case left
     
     /**
      The maneuver requires a sharp turn to the left.
      */
-    case SharpLeft
+    case sharpLeft
     
     /**
      The maneuver requires a U-turn when possible.
      
      Use the difference between the step’s initial and final headings to distinguish between a U-turn to the left (typical in countries that drive on the right) and a U-turn on the right (typical in countries that drive on the left). If the difference in headings is greater than 180 degrees, the maneuver requires a U-turn to the left. If the difference in headings is less than 180 degrees, the maneuver requires a U-turn to the right.
      */
-    case UTurn
+    case uTurn
     
     public init?(description: String) {
         let direction: ManeuverDirection
         switch description {
         case "sharp right":
-            direction = .SharpRight
+            direction = .sharpRight
         case "right":
-            direction = .Right
+            direction = .right
         case "slight right":
-            direction = .SlightRight
+            direction = .slightRight
         case "straight":
-            direction = .StraightAhead
+            direction = .straightAhead
         case "slight left":
-            direction = .SlightLeft
+            direction = .slightLeft
         case "left":
-            direction = .Left
+            direction = .left
         case "sharp left":
-            direction = .SharpLeft
+            direction = .sharpLeft
         case "uturn":
-            direction = .UTurn
+            direction = .uTurn
         default:
             return nil
         }
@@ -375,29 +375,29 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .SharpRight:
+        case .sharpRight:
             return "sharp right"
-        case .Right:
+        case .right:
             return "right"
-        case .SlightRight:
+        case .slightRight:
             return "slight right"
-        case .StraightAhead:
+        case .straightAhead:
             return "straight"
-        case .SlightLeft:
+        case .slightLeft:
             return "slight left"
-        case .Left:
+        case .left:
             return "left"
-        case .SharpLeft:
+        case .sharpLeft:
             return "sharp left"
-        case .UTurn:
+        case .uTurn:
             return "uturn"
         }
     }
 }
 
 extension String {
-    internal func tagValuesSeparatedByString(separator: String) -> [String] {
-        return componentsSeparatedByString(separator).map { $0.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()) }.filter { !$0.isEmpty }
+    internal func tagValues(separatedBy separator: String) -> [String] {
+        return components(separatedBy: separator).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
     }
 }
 
@@ -419,52 +419,52 @@ struct Road {
             if name == ref {
                 self.names = nil
             } else {
-                self.names = name.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
             }
-            codes = ref.tagValuesSeparatedByString(";")
-        } else if !name.isEmpty, let codesRange = name.rangeOfString("\\(.+?\\)$", options: .RegularExpressionSearch, range: name.startIndex..<name.endIndex) {
+            codes = ref.tagValues(separatedBy: ";")
+        } else if !name.isEmpty, let codesRange = name.range(of: "\\(.+?\\)$", options: .regularExpression, range: name.startIndex..<name.endIndex) {
             // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
-            let parenthetical = name.substringWithRange(codesRange)
+            let parenthetical = name.substring(with: codesRange)
             if name == ref {
                 self.names = nil
             } else {
-                self.names = name.stringByReplacingOccurrencesOfString(parenthetical, withString: "").tagValuesSeparatedByString(";")
+                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
             }
-            codes = parenthetical.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "()")).tagValuesSeparatedByString(";")
+            codes = parenthetical.trimmingCharacters(in: CharacterSet(charactersIn: "()")).tagValues(separatedBy: ";")
         } else {
-            self.names = name.isEmpty ? nil : name.tagValuesSeparatedByString(";")
-            codes = ref?.tagValuesSeparatedByString(";")
+            self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
+            codes = ref?.tagValues(separatedBy: ";")
         }
         
         // Mapbox Directions API v5 combines the destination’s ref and name.
-        if let destination = destination where destination.containsString(": ") {
-            let destinationComponents = destination.componentsSeparatedByString(": ")
-            self.destinationCodes = destinationComponents.first?.tagValuesSeparatedByString(",")
-            self.destinations = destinationComponents.dropFirst().joinWithSeparator(": ").tagValuesSeparatedByString(",")
+        if let destination = destination, destination.contains(": ") {
+            let destinationComponents = destination.components(separatedBy: ": ")
+            self.destinationCodes = destinationComponents.first?.tagValues(separatedBy: ",")
+            self.destinations = destinationComponents.dropFirst().joined(separator: ": ").tagValues(separatedBy: ",")
         } else {
             self.destinationCodes = nil
-            self.destinations = destination?.tagValuesSeparatedByString(",")
+            self.destinations = destination?.tagValues(separatedBy: ",")
         }
         
         self.codes = codes
-        self.rotaryNames = rotaryName?.tagValuesSeparatedByString(";")
+        self.rotaryNames = rotaryName?.tagValues(separatedBy: ";")
     }
 }
 
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
- You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
+ You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
 @objc(MBRouteStep)
-public class RouteStep: NSObject, NSSecureCoding {
+open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
         let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
-        if maneuverType == .TakeRotary || maneuverType == .TakeRoundabout {
+        if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
             names = road.rotaryNames
             exitNames = road.names
         } else {
@@ -476,24 +476,24 @@ public class RouteStep: NSObject, NSSecureCoding {
         destinations = road.destinations
         
         let maneuver = json["maneuver"] as! JSONDictionary
-
+        
         if let instructions = maneuver["instruction"] as? String {
             self.instructions = instructions
-        } else if let mt = maneuverType, md = maneuverDirection {
+        } else if let mt = maneuverType, let md = maneuverDirection {
             instructions = "\(mt) \(md)"
         } else if let mt = maneuverType {
-            instructions = String(mt)
+            instructions = String(describing: mt)
         } else if let md = maneuverDirection {
-            instructions = String(md)
+            instructions = String(describing: md)
         } else {
             instructions = ""
         }
-
+        
         distance = json["distance"] as? Double ?? 0
         expectedTravelTime = json["duration"] as? Double ?? 0
         
         let intersectionsJSON = json["intersections"] as? [JSONDictionary]
-        intersections = intersectionsJSON?.map { Intersection(json: $0) }
+        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -512,7 +512,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      - parameter json: A JSON dictionary representation of a route step object as returnd by the Mapbox Directions API.
      */
-    public convenience init(json: [String: AnyObject]) {
+    public convenience init(json: [String: Any]) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
         let maneuverType = ManeuverType(description: maneuver["type"] as! String)
@@ -535,7 +535,7 @@ public class RouteStep: NSObject, NSSecureCoding {
     }
     
     public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObjectOfClasses([NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
+        let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
 		
         coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
             if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
@@ -545,22 +545,22 @@ public class RouteStep: NSObject, NSSecureCoding {
             }
         })
         
-        guard let decodedInstructions = decoder.decodeObjectOfClass(NSString.self, forKey: "instructions") as String? else {
+        guard let decodedInstructions = decoder.decodeObject(of: NSString.self, forKey: "instructions") as String? else {
             return nil
         }
         instructions = decodedInstructions
 		
-        initialHeading = decoder.containsValueForKey("initialHeading") ? decoder.decodeDoubleForKey("initialHeading") : nil
-        finalHeading = decoder.containsValueForKey("finalHeading") ? decoder.decodeDoubleForKey("finalHeading") : nil
+        initialHeading = decoder.containsValue(forKey: "initialHeading") ? decoder.decodeDouble(forKey: "initialHeading") : nil
+        finalHeading = decoder.containsValue(forKey: "finalHeading") ? decoder.decodeDouble(forKey: "finalHeading") : nil
         
-        guard let maneuverTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverType") as String? else {
+        guard let maneuverTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String? else {
             return nil
         }
         maneuverType = ManeuverType(description: maneuverTypeDescription)
-        let maneuverDirectionDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "maneuverDirection") as! String
+        let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as! String
         maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         
-        if let maneuverLocationDictionary = decoder.decodeObjectOfClasses([NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
+        if let maneuverLocationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
             let latitude = maneuverLocationDictionary["latitude"],
             let longitude = maneuverLocationDictionary["longitude"] {
             maneuverLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -568,66 +568,64 @@ public class RouteStep: NSObject, NSSecureCoding {
             maneuverLocation = kCLLocationCoordinate2DInvalid
         }
         
-        exitIndex = decoder.containsValueForKey("exitIndex") ? decoder.decodeIntegerForKey("exitIndex") : nil
-        exitNames = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "exitNames") as? [String]
-        distance = decoder.decodeDoubleForKey("distance")
-        expectedTravelTime = decoder.decodeDoubleForKey("expectedTravelTime")
-        names = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "names") as? [String]
+        exitIndex = decoder.containsValue(forKey: "exitIndex") ? decoder.decodeInteger(forKey: "exitIndex") : nil
+        exitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitNames") as? [String]
+        distance = decoder.decodeDouble(forKey: "distance")
+        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
+        names = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "names") as? [String]
         
-        guard let transportTypeDescription = decoder.decodeObjectOfClass(NSString.self, forKey: "transportType") as? String else {
+        guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as? String else {
             return nil
         }
         transportType = TransportType(description: transportTypeDescription)
         
-        codes = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "codes") as? [String]
-        destinationCodes = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "destinationCodes") as? [String]
-        destinations = decoder.decodeObjectOfClasses([NSArray.self, NSString.self], forKey: "destinations") as? [String]
+        codes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "codes") as? [String]
+        destinationCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinationCodes") as? [String]
+        destinations = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinations") as? [String]
         
-        intersections = decoder.decodeObjectOfClasses([NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
+        intersections = decoder.decodeObject(of: [NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
     }
     
-    public static func supportsSecureCoding() -> Bool {
-        return true
-    }
+    open static var supportsSecureCoding = true
     
-    public func encodeWithCoder(coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         let coordinateDictionaries = coordinates?.map { [
             "latitude": $0.latitude,
             "longitude": $0.longitude,
             ] }
-        coder.encodeObject(coordinateDictionaries, forKey: "coordinates")
+        coder.encode(coordinateDictionaries, forKey: "coordinates")
         
-        coder.encodeObject(instructions, forKey: "instructions")
+        coder.encode(instructions, forKey: "instructions")
         
         if let initialHeading = initialHeading {
-            coder.encodeDouble(initialHeading, forKey: "initialHeading")
+            coder.encode(initialHeading, forKey: "initialHeading")
         }
         if let finalHeading = finalHeading {
-            coder.encodeDouble(finalHeading, forKey: "finalHeading")
+            coder.encode(finalHeading, forKey: "finalHeading")
         }
         
-        coder.encodeObject(maneuverType?.description, forKey: "maneuverType")
-        coder.encodeObject(maneuverDirection?.description, forKey: "maneuverDirection")
+        coder.encode(maneuverType?.description, forKey: "maneuverType")
+        coder.encode(maneuverDirection?.description, forKey: "maneuverDirection")
         
-        coder.encodeObject(intersections, forKey: "intersections")
+        coder.encode(intersections, forKey: "intersections")
         
-        coder.encodeObject([
+        coder.encode([
             "latitude": maneuverLocation.latitude,
             "longitude": maneuverLocation.longitude,
         ], forKey: "maneuverLocation")
         
         if let exitIndex = exitIndex {
-            coder.encodeInteger(exitIndex, forKey: "exitIndex")
+            coder.encode(exitIndex, forKey: "exitIndex")
         }
         
-        coder.encodeObject(exitNames, forKey: "exitNames")
-        coder.encodeDouble(distance, forKey: "distance")
-        coder.encodeDouble(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encodeObject(names, forKey: "names")
-        coder.encodeObject(transportType?.description, forKey: "transportType")
-        coder.encodeObject(codes, forKey: "codes")
-        coder.encodeObject(destinationCodes, forKey: "destinationCodes")
-        coder.encodeObject(destinations, forKey: "destinations")
+        coder.encode(exitNames, forKey: "exitNames")
+        coder.encode(distance, forKey: "distance")
+        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+        coder.encode(names, forKey: "names")
+        coder.encode(transportType?.description, forKey: "transportType")
+        coder.encode(codes, forKey: "codes")
+        coder.encode(destinationCodes, forKey: "destinationCodes")
+        coder.encode(destinations, forKey: "destinations")
     }
     
     // MARK: Getting the Step Geometry
@@ -635,27 +633,27 @@ public class RouteStep: NSObject, NSSecureCoding {
     /**
      An array of geographic coordinates defining the path of the route step from the location of the maneuver to the location of the next step’s maneuver.
      
-     The value of this property may be `nil`, for example when the maneuver type is `Arrive`.
+     The value of this property may be `nil`, for example when the maneuver type is `arrive`.
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      */
-    public let coordinates: [CLLocationCoordinate2D]?
+    open let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
      
-     The value of this property may be zero, for example when the maneuver type is `Arrive`.
+     The value of this property may be zero, for example when the maneuver type is `arrive`.
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
-    public var coordinateCount: UInt {
+    open var coordinateCount: UInt {
         return UInt(coordinates?.count ?? 0)
     }
     
     /**
      Retrieves the coordinates.
      
-     The array may be empty, for example when the maneuver type is `Arrive`.
+     The array may be empty, for example when the maneuver type is `arrive`.
      
      Using the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox macOS SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      
@@ -666,13 +664,13 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    public func getCoordinates(coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
+    open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
         guard let stepCoordinates = self.coordinates else {
             return false
         }
         
         for i in 0..<stepCoordinates.count {
-            coordinates.advancedBy(i).memory = stepCoordinates[i]
+            coordinates.advanced(by: i).pointee = stepCoordinates[i]
         }
         return true
     }
@@ -686,38 +684,38 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to construct a complete instruction string for display.
      */
-    public let instructions: String
+    open let instructions: String
     
-    public override var description: String {
+    open override var description: String {
         return instructions
     }
     
     /**
      The user’s heading immediately before performing the maneuver.
      */
-    public let initialHeading: CLLocationDirection?
+    open let initialHeading: CLLocationDirection?
     
     /**
      The user’s heading immediately after performing the maneuver.
      
      The value of this property may differ from the user’s heading after traveling along the road past the maneuver.
      */
-    public let finalHeading: CLLocationDirection?
+    open let finalHeading: CLLocationDirection?
     
     /**
      The type of maneuver required for beginning this step.
      */
-    public let maneuverType: ManeuverType?
+    open let maneuverType: ManeuverType?
     
     /**
      Additional directional information to clarify the maneuver type.
      */
-    public let maneuverDirection: ManeuverDirection?
+    open let maneuverDirection: ManeuverDirection?
     
     /**
      The location of the maneuver at the beginning of this step.
      */
-    public let maneuverLocation: CLLocationCoordinate2D
+    open let maneuverLocation: CLLocationCoordinate2D
     
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
@@ -726,7 +724,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    public let exitIndex: Int?
+    open let exitIndex: Int?
     
     /**
      The names of the roundabout exit.
@@ -744,14 +742,14 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      The value of this property accounts for the distance that the user must travel to go from this step’s maneuver location to the next step’s maneuver location. It is not the sum of the direct distances between the route’s waypoints, nor should you assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: CLLocationDistance
+    open let distance: CLLocationDistance
     
     /**
      The step’s expected travel time, measured in seconds.
      
      The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location under ideal conditions. You should not assume that the user would travel along the step at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      */
-    public let expectedTravelTime: NSTimeInterval
+    open let expectedTravelTime: TimeInterval
     
     /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -760,7 +758,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      If the maneuver is a roundabout maneuver, the outlet to take is named in the `exitNames` property; the `names` property is only set for large roundabouts that have their own names.
      */
-    public let names: [String]?
+    open let names: [String]?
     
     /**
      Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -769,7 +767,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      If a highway ramp is part of a numbered route, its reference code is contained in this property. On the other hand, guide signage for a highway ramp usually indicates route reference codes of the adjoining road; use the `destinationCodes` property for those route reference codes.
      */
-    public let codes: [String]?
+    open let codes: [String]?
     
     // MARK: Getting Additional Step Details
     
@@ -778,7 +776,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      This step may use a different mode of transportation than the overall route.
      */
-    public let transportType: TransportType?
+    open let transportType: TransportType?
     
     /**
      Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
@@ -794,7 +792,7 @@ public class RouteStep: NSObject, NSSecureCoding {
      
      This property is typically available in steps leading to or from a freeway or expressway.
      */
-    public let destinations: [String]?
+    open let destinations: [String]?
     
     /**
      An array of intersections along the step.
@@ -807,7 +805,7 @@ public class RouteStep: NSObject, NSSecureCoding {
 // MARK: Support for Directions API v4
 
 extension ManeuverType {
-    private init?(v4Description: String) {
+    internal init?(v4Description: String) {
         let description: String
         switch v4Description {
         case "bear right", "turn right", "sharp right", "sharp left", "turn left", "bear left", "u-turn":
@@ -822,13 +820,13 @@ extension ManeuverType {
 }
 
 extension ManeuverDirection {
-    private init?(v4TypeDescription: String) {
+    internal init?(v4TypeDescription: String) {
         let description: String
         switch v4TypeDescription {
         case "bear right", "bear left":
-            description = v4TypeDescription.stringByReplacingOccurrencesOfString("bear", withString: "slight")
+            description = v4TypeDescription.replacingOccurrences(of: "bear", with: "slight")
         case "turn right", "turn left":
-            description = v4TypeDescription.stringByReplacingOccurrencesOfString("turn ", withString: "")
+            description = v4TypeDescription.replacingOccurrences(of: "turn ", with: "")
         case "u-turn":
             description = "uturn"
         default:

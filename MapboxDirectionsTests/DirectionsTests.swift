@@ -7,7 +7,7 @@ let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
 class DirectionsTests: XCTestCase {
     override func setUp() {
         // Make sure tests run in all time zones
-        NSTimeZone.setDefaultTimeZone(NSTimeZone(forSecondsFromGMT: 0))
+        NSTimeZone.default = TimeZone(secondsFromGMT: 0)!
     }
     
     override func tearDown() {
@@ -24,9 +24,9 @@ class DirectionsTests: XCTestCase {
     func testRateLimitErrorParsing() {
         let json = ["message" : "Hit rate limit"]
         
-        let url = NSURL(string: "https://api.mapbox.com")!
+        let url = URL(string: "https://api.mapbox.com")!
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
-        let response = NSHTTPURLResponse(URL: url, statusCode: 429, HTTPVersion: nil, headerFields: headerFields)
+        let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
         
         let error: NSError? = nil
         

@@ -8,21 +8,21 @@ class V5Tests: XCTestCase {
         super.tearDown()
     }
     
-    func testWithFormat(shapeFormat: RouteShapeFormat) {
-        let expectation = expectationWithDescription("calculating directions should return results")
+    func test(shapeFormat: RouteShapeFormat) {
+        let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
             "alternatives": "true",
-            "geometries": String(shapeFormat),
+            "geometries": String(describing: shapeFormat),
             "overview": "full",
             "steps": "true",
             "continue_straight": "true",
             "access_token": BogusToken,
         ]
-        stub(isHost("api.mapbox.com")
+        stub(condition: isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = NSBundle(forClass: self.dynamicType).pathForResource("v5_driving_dc_\(shapeFormat)", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_dc_\(shapeFormat)", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -30,13 +30,13 @@ class V5Tests: XCTestCase {
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
-        XCTAssertEqual(options.shapeFormat, RouteShapeFormat.Polyline, "Route shape format should be Polyline by default.")
+        XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
         options.shapeFormat = shapeFormat
         options.includesSteps = true
         options.includesAlternativeRoutes = true
-        options.routeShapeResolution = .Full
+        options.routeShapeResolution = .full
         var route: Route?
-        let task = Directions(accessToken: BogusToken).calculateDirections(options: options) { (waypoints, routes, error) in
+        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error)")
             
             XCTAssertNotNil(routes)
@@ -47,9 +47,9 @@ class V5Tests: XCTestCase {
         }
         XCTAssertNotNil(task)
         
-        waitForExpectationsWithTimeout(2) { (error) in
+        waitForExpectations(timeout: 2) { (error) in
             XCTAssertNil(error, "Error: \(error)")
-            XCTAssertEqual(task.state, NSURLSessionTaskState.Completed)
+            XCTAssertEqual(task.state, .completed)
         }
         
         XCTAssertNotNil(route)
@@ -74,8 +74,8 @@ class V5Tests: XCTestCase {
         XCTAssertNil(step.names)
         XCTAssertNotNil(step.destinations)
         XCTAssertEqual(step.destinations ?? [], ["Washington"])
-        XCTAssertEqual(step.maneuverType, ManeuverType.TakeOffRamp)
-        XCTAssertEqual(step.maneuverDirection, ManeuverDirection.SlightRight)
+        XCTAssertEqual(step.maneuverType, .takeOffRamp)
+        XCTAssertEqual(step.maneuverDirection, .slightRight)
         XCTAssertEqual(step.initialHeading, 90)
         XCTAssertEqual(step.finalHeading, 96)
         
@@ -100,14 +100,14 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(intersections)
         XCTAssertEqual(intersections?.count, 7)
         let intersection = intersections?[2]
-        XCTAssertEqual(intersection?.outletIndexes.containsIndex(0), true)
-        XCTAssertEqual(intersection?.outletIndexes.containsIndexesInRange(NSRange(location: 2, length: 2)), true)
+        XCTAssertEqual(intersection?.outletIndexes.contains(0), true)
+        XCTAssertEqual(intersection?.outletIndexes.contains(integersIn: 2...3), true)
         XCTAssertEqual(intersection?.approachIndex, 1)
         XCTAssertEqual(intersection?.outletIndex, 3)
         XCTAssertEqual(intersection?.headings ?? [], [15, 90, 195, 270])
         XCTAssertNotNil(intersection?.location.latitude)
         XCTAssertNotNil(intersection?.location.longitude)
-        XCTAssertEqual(intersection?.usableApproachLanes ?? [], NSIndexSet(indexesInRange: NSRange(location: 1, length: 3)))
+        XCTAssertEqual(intersection?.usableApproachLanes, IndexSet(integersIn: 1...3))
         
         XCTAssertNil(leg.steps[57].names)
         XCTAssertEqual(leg.steps[57].exitNames ?? [], ["Logan Circle Northwest"])
@@ -118,16 +118,16 @@ class V5Tests: XCTestCase {
         let lane = intersection?.approachLanes?.first
         let indications = lane?.indications
         XCTAssertNotNil(indications)
-        XCTAssertTrue(indications!.contains(.Left))
+        XCTAssertTrue(indications!.contains(.left))
     }
     
     func testGeoJSON() {
-        XCTAssertEqual(String(RouteShapeFormat.GeoJSON), "geojson")
-        testWithFormat(.GeoJSON)
+        XCTAssertEqual(String(describing: RouteShapeFormat.geoJSON), "geojson")
+        test(shapeFormat: .geoJSON)
     }
     
     func testPolyline() {
-        XCTAssertEqual(String(RouteShapeFormat.Polyline), "polyline")
-        testWithFormat(.Polyline)
+        XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
+        test(shapeFormat: .polyline)
     }
 }

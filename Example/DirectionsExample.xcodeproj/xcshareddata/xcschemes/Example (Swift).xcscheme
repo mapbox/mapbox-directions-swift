@@ -15,15 +15,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD62544D1AE70C1700017857"
-               BuildableName = "Directions (Swift).app"
+               BuildableName = "DirectionsSwift.app"
                BlueprintName = "Example (Swift)"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
+               ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -32,20 +32,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DDF1E8631BD8580800C40C78"
-               BuildableName = "Unit Tests.xctest"
-               BlueprintName = "Unit Tests"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA6C9D901CAE442B00094FBC"
-               BuildableName = "MapboxDirectionsTests.xctest"
-               BlueprintName = "MapboxDirectionsTests"
-               ReferencedContainer = "container:MapboxDirections.xcodeproj">
+               BlueprintIdentifier = "F4BD346B1DF75B5F0000B708"
+               BuildableName = "DirectionsTestsSwift.xctest"
+               BlueprintName = "Example Tests (Swift)"
+               ReferencedContainer = "container:DirectionsExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD62544D1AE70C1700017857"
-            BuildableName = "Directions (Swift).app"
+            BuildableName = "DirectionsSwift.app"
             BlueprintName = "Example (Swift)"
-            ReferencedContainer = "container:MapboxDirections.xcodeproj">
+            ReferencedContainer = "container:DirectionsExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
