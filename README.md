@@ -28,7 +28,7 @@ github "Mapbox/MapboxDirections.swift" "swift3"
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
 
-This repository includes a example application written in Swift demonstrating how to use the framework. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
+The Examples directory in this repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [CocoaPods](http://cocoapods.org) 1.2 to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
 
 ## Usage
 
@@ -230,14 +230,6 @@ if (route.coordinateCount) {
     free(routeCoordinates);
 }
 ```
-
-## Example
-
-An example App is located in the `Example` folder. To run the project, you need to use [CocoaPods](http://cocoapods.org) to install the dependencies. 
-
-1. `cd Example`
-1. `pod install`
-1. `open DirectionsExample.xcworkspace`
 
 ## Tests
 
