@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		358D48811E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		358D48821E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		358D48831E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		358D48841E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		358D48861E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55071DB58C0200B94B74 /* MBLane.swift */; };
 		C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55071DB58C0200B94B74 /* MBLane.swift */; };
 		C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55071DB58C0200B94B74 /* MBLane.swift */; };
@@ -117,6 +125,8 @@
 		C57B2E951DB8171300E9123A /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLaneIndication.h; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
+		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
+		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10B81D00F8FF009F82FA /* MapboxDirectionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapboxDirectionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10D51D0101ED009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,6 +240,8 @@
 				DD6254731AE70CB700017857 /* MBDirections.swift */,
 				DAC05F171CFC075300FA0071 /* MBRoute.swift */,
 				DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */,
+				358D48801E2EAB2500F32A65 /* MBRouteOptions.h */,
+				358D48851E2EAB4500F32A65 /* MBRouteOptions.m */,
 				DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */,
 				DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */,
 				C57D55001DB5669600B94B74 /* MBIntersection.swift */,
@@ -345,6 +357,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358D48821E2EAB2500F32A65 /* MBRouteOptions.h in Headers */,
 				DA1A10C61D00F969009F82FA /* MapboxDirections.h in Headers */,
 				C57B2E971DB8171300E9123A /* MBLaneIndication.h in Headers */,
 			);
@@ -354,6 +367,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358D48831E2EAB2500F32A65 /* MBRouteOptions.h in Headers */,
 				DA1A10EC1D010247009F82FA /* MapboxDirections.h in Headers */,
 				C57B2E981DB8171300E9123A /* MBLaneIndication.h in Headers */,
 			);
@@ -363,6 +377,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358D48841E2EAB2500F32A65 /* MBRouteOptions.h in Headers */,
 				DA1A11031D0103A3009F82FA /* MapboxDirections.h in Headers */,
 				C57B2E991DB8171300E9123A /* MBLaneIndication.h in Headers */,
 			);
@@ -372,6 +387,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358D48811E2EAB2500F32A65 /* MBRouteOptions.h in Headers */,
 				DA6C9D8B1CAE442B00094FBC /* MapboxDirections.h in Headers */,
 				C57B2E961DB8171300E9123A /* MBLaneIndication.h in Headers */,
 			);
@@ -641,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
+				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
@@ -669,6 +686,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
+				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
@@ -697,6 +715,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
+				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
@@ -713,6 +732,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */,
+				358D48861E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,

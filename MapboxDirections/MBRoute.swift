@@ -9,7 +9,7 @@ import Polyline
 open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    internal init(profileIdentifier: String, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    internal init(profileIdentifier: MBDirectionsProfileIdentifier, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.profileIdentifier = profileIdentifier
         self.legs = legs
         self.distance = distance
@@ -26,7 +26,7 @@ open class Route: NSObject, NSSecureCoding {
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    public convenience init(json: [String: Any], waypoints: [Waypoint], profileIdentifier: String) {
+    public convenience init(json: [String: Any], waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
@@ -67,7 +67,7 @@ open class Route: NSObject, NSSecureCoding {
         guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
             return nil
         }
-        profileIdentifier = decodedProfileIdentifier
+        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
     }
     
     open static var supportsSecureCoding = true
@@ -160,13 +160,13 @@ open class Route: NSObject, NSSecureCoding {
      
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    open let profileIdentifier: String
+    open let profileIdentifier: MBDirectionsProfileIdentifier
 }
 
 // MARK: Support for Directions API v4
 
 internal class RouteV4: Route {
-    convenience init(json: JSONDictionary, waypoints: [Waypoint], profileIdentifier: String) {
+    convenience init(json: JSONDictionary, waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier) {
         let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: profileIdentifier)
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
