@@ -23,7 +23,7 @@ github "Mapbox/MapboxDirections.swift" ~> 0.8
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
-pod 'MapboxDirections.swift', :git => 'https://github.com/mapbox/MapboxDirections.swift.git', '~> 0.8'
+pod 'MapboxDirections.swift', '~> 0.8'
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
