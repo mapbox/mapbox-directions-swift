@@ -87,7 +87,7 @@ let waypoints = [
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
 ]
-let options = RouteOptions(waypoints: waypoints, profileIdentifier: MBDirectionsProfileIdentifierAutomobile)
+let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
 options.includesSteps = true
 
 let task = directions.calculate(options) { (waypoints, routes, error) in
@@ -125,7 +125,7 @@ NSArray<MBWaypoint *> *waypoints = @[
     [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.8977, -77.0365) coordinateAccuracy:-1 name:@"White House"],
 ];
 MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:waypoints
-                                                  profileIdentifier:MBDirectionsProfileIdentifierAutomobile];
+                                                  profileIdentifier:MBDirectionsProfileIdentifierAutomobileAvoidingTraffic];
 options.includesSteps = YES;
 
 NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
@@ -170,7 +170,7 @@ tell theWhiteHouse to initWithCoordinate:{38.8977, -77.0365} coordinateAccuracy:
 set theWaypoints to {mapbox, theWhiteHouse}
 
 set theOptions to alloc of MBRouteOptions of the current application
-tell theOptions to initWithWaypoints:theWaypoints profileIdentifier:"mapbox/driving"
+tell theOptions to initWithWaypoints:theWaypoints profileIdentifier:"mapbox/driving-traffic"
 set theOptions's includesSteps to true
 
 set theURL to theDirections's URLForCalculatingDirectionsWithOptions:theOptions
