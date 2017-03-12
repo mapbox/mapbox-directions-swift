@@ -1,1 +1,1 @@
-github "raphaelmor/Polyline" "f86f34dac9aae7e027fd9f62c2e01dd77f1ee312"
+github "raphaelmor/Polyline" ~> 4.1.1
