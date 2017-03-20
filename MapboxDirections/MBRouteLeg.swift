@@ -7,9 +7,11 @@ import Polyline
  */
 @objc(MBRouteLeg)
 open class RouteLeg: NSObject, NSSecureCoding {
+    
+    typealias Annotation = [AnnotationType:[Any]]
     // MARK: Creating a Leg
     
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, annotation: Annotation? = nil) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
@@ -17,6 +19,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
+        self.annotation = annotation
     }
     
     /**
@@ -31,7 +34,32 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+        
+        var annotation: Annotation = [:]
+        if json["annotation"] != nil {
+            let rawAnnoation = json["annotation"] as! [String: Any]
+            if rawAnnoation["congestion"] != nil {
+                annotation[.congestion] = (rawAnnoation["congestion"] as! [String]).map { CongestionLevel(description: $0) ?? .unknown}
+            }
+            
+            if rawAnnoation["distance"] != nil {
+                annotation[.distance] = rawAnnoation["distance"] as! [Int]
+            }
+            
+            if rawAnnoation["duration"] != nil {
+                annotation[.duration] = rawAnnoation["duration"] as! [Int]
+            }
+            
+            if rawAnnoation["nodes"] != nil {
+                annotation[.nodes] = rawAnnoation["nodes"] as! [Int]
+            }
+            
+            if rawAnnoation["speed"] != nil {
+                annotation[.speed] = rawAnnoation["speed"] as! [Int]
+            }
+        }
+        
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, annotation: annotation)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -39,6 +67,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
             return nil
         }
         source = decodedSource
+        
+
+        annotation = nil
         
         guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
             return nil
@@ -71,6 +102,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
+        coder.encode(annotation, forKey: "annotation")
     }
     
     // MARK: Getting the Leg Geometry
@@ -97,6 +129,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
      This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
      */
     open let steps: [RouteStep]
+    
+    
+    open let annotation: [AnnotationType:[Any]]?
     
     // MARK: Getting Additional Leg Details
     

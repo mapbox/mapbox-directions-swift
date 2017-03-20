@@ -211,6 +211,8 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
+    open var annotation: [AnnotationType] = []
+    
     // MARK: Constructing the Request URL
     
     /**
@@ -254,6 +256,15 @@ open class RouteOptions: NSObject {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
             }.joined(separator: ";")
             params.append(URLQueryItem(name: "radiuses", value: accuracies))
+        }
+        
+        
+        if annotation.count > 0 {
+            let annotationStrings = annotation.map {
+                $0.description
+            }.joined(separator: ",")
+            
+            params.append(URLQueryItem(name: "annotation", value: annotationStrings))
         }
         
         return params
