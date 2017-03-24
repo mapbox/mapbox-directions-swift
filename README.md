@@ -18,7 +18,7 @@ MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com
 Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "Mapbox/MapboxDirections.swift" ~> 0.8
+github "mapbox/MapboxDirections.swift" ~> 0.8
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
