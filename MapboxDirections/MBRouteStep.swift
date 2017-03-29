@@ -557,7 +557,7 @@ open class RouteStep: NSObject, NSSecureCoding {
             return nil
         }
         maneuverType = ManeuverType(description: maneuverTypeDescription)
-        let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as! String
+        let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection")! as String
         maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         
         if let maneuverLocationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
@@ -574,7 +574,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         names = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "names") as? [String]
         
-        guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as? String else {
+        guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as String? else {
             return nil
         }
         transportType = TransportType(description: transportTypeDescription)

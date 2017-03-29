@@ -101,7 +101,7 @@ public class Intersection: NSObject, NSSecureCoding {
         outletIndex = decoder.decodeInteger(forKey: "outletIndex")
         
         approachLanes = decoder.decodeObject(of: [NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
-        usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as? IndexSet
+        usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as IndexSet?
     }
     
     open static var supportsSecureCoding = true
