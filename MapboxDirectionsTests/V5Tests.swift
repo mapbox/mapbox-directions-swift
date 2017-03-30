@@ -37,7 +37,7 @@ class V5Tests: XCTestCase {
         options.routeShapeResolution = .full
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
-            XCTAssertNil(error, "Error: \(error)")
+            XCTAssertNil(error, "Error: \(error!)")
             
             XCTAssertNotNil(routes)
             XCTAssertEqual(routes!.count, 2)
@@ -48,7 +48,7 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(task)
         
         waitForExpectations(timeout: 2) { (error) in
-            XCTAssertNil(error, "Error: \(error)")
+            XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
         
