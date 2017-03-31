@@ -18,8 +18,9 @@ class AnnotationTests: XCTestCase {
             "steps": "true",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotation": "congestion,distance,duration,nodes,speed"
+            "annotations": "distance,duration,nodes,speed"
             ]
+    
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "annotation", ofType: "json")
@@ -34,10 +35,10 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = true
         options.includesAlternativeRoutes = true
         options.routeShapeResolution = .full
-        options.annotation = [.congestion, .distance, .duration, .nodes, .speed]
+        options.segmentAttributes = [.distance, .expectedTravelTime, .openStreetMapNodeIdentifier, .speed]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
-            XCTAssertNil(error, "Error: \(error)")
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             
             XCTAssertNotNil(routes)
             XCTAssertEqual(routes!.count, 1)
@@ -48,7 +49,7 @@ class AnnotationTests: XCTestCase {
         XCTAssertNotNil(task)
         
         waitForExpectations(timeout: 2) { (error) in
-            XCTAssertNil(error, "Error: \(error)")
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             XCTAssertEqual(task.state, .completed)
         }
         
@@ -57,19 +58,17 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(route!.coordinates!.count, 93)
         
         let leg = route!.legs.first!
-        let annotation = leg.annotation!
-        XCTAssertEqual(annotation.count, 5)
-        XCTAssertNotNil(annotation[.congestion])
+        let annotation = leg.segmentAttributes!
+        XCTAssertEqual(annotation.count, 4)
         XCTAssertNotNil(annotation[.distance])
-        XCTAssertNotNil(annotation[.duration])
-        XCTAssertNotNil(annotation[.nodes])
+        XCTAssertNotNil(annotation[.expectedTravelTime])
+        XCTAssertNotNil(annotation[.openStreetMapNodeIdentifier])
         XCTAssertNotNil(annotation[.speed])
         
-        let nodes = annotation[.nodes]!.count
+        let nodes = annotation[.openStreetMapNodeIdentifier]!.count
         
         XCTAssertEqual(annotation[.speed]!.count, nodes - 1)
-        XCTAssertEqual(annotation[.congestion]!.count, nodes - 1)
         XCTAssertEqual(annotation[.distance]!.count, nodes - 1)
-        XCTAssertEqual(annotation[.duration]!.count, nodes - 1)
+        XCTAssertEqual(annotation[.expectedTravelTime]!.count, nodes - 1)
     }
 }

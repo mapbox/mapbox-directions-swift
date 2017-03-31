@@ -211,7 +211,7 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
-    open var annotation: [AnnotationType] = []
+    open var segmentAttributes: [SegmentAttribute] = []
     
     // MARK: Constructing the Request URL
     
@@ -259,12 +259,13 @@ open class RouteOptions: NSObject {
         }
         
         
-        if annotation.count > 0 {
-            let annotationStrings = annotation.map {
+        if segmentAttributes.count > 0 {
+            let segmentAttributesStrings = segmentAttributes.map {
                 $0.description
             }.joined(separator: ",")
             
-            params.append(URLQueryItem(name: "annotation", value: annotationStrings))
+            
+            params.append(URLQueryItem(name: "annotations", value: segmentAttributesStrings))
         }
         
         return params

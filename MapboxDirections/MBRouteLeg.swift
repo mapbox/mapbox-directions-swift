@@ -8,10 +8,10 @@ import Polyline
 @objc(MBRouteLeg)
 open class RouteLeg: NSObject, NSSecureCoding {
     
-    typealias Annotation = [AnnotationType:[Any]]
+    typealias SegmentAttributes = [SegmentAttribute:[Any]]
     // MARK: Creating a Leg
     
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, annotation: Annotation? = nil) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, segmentAttributes: SegmentAttributes? = nil) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
@@ -19,7 +19,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
-        self.annotation = annotation
+        self.segmentAttributes = segmentAttributes
     }
     
     /**
@@ -35,30 +35,26 @@ open class RouteLeg: NSObject, NSSecureCoding {
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         
-        var annotation: Annotation = [:]
+        var segmentAttributes: SegmentAttributes = [:]
         if let rawAnnotation = json["annotation"] as? [String: Any] {
-            if rawAnnotation["congestion"] != nil {
-                annotation[.congestionLevel] = (rawAnnotation["congestion"] as! [String]).map { CongestionType(description: $0) ?? .unknown}
-            }
-            
             if rawAnnotation["distance"] != nil {
-                annotation[.distance] = rawAnnotation["distance"] as! [Int]
+                segmentAttributes[.distance] = rawAnnotation["distance"] as! [Int]
             }
             
             if rawAnnotation["duration"] != nil {
-                annotation[.expectedTravelTime] = rawAnnotation["duration"] as! [Int]
+                segmentAttributes[.expectedTravelTime] = rawAnnotation["duration"] as! [Int]
             }
             
             if rawAnnotation["nodes"] != nil {
-                annotation[.openStreetMapNodeIdentifier] = rawAnnotation["nodes"] as! [Int]
+                segmentAttributes[.openStreetMapNodeIdentifier] = rawAnnotation["nodes"] as! [Int]
             }
             
             if rawAnnotation["speed"] != nil {
-                annotation[.speed] = rawAnnotation["speed"] as! [Int]
+                segmentAttributes[.speed] = rawAnnotation["speed"] as! [Int]
             }
         }
         
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, annotation: annotation)
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, segmentAttributes: segmentAttributes)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -68,7 +64,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         source = decodedSource
         
 
-        annotation = nil
+        segmentAttributes = nil
         
         guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
             return nil
@@ -101,7 +97,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(annotation, forKey: "annotation")
+        coder.encode(segmentAttributes, forKey: "segmentAttributes")
     }
     
     // MARK: Getting the Leg Geometry
@@ -130,7 +126,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     open let steps: [RouteStep]
     
     
-    open let annotation: [AnnotationType:[Any]]?
+    open let segmentAttributes: [SegmentAttribute:[Any]]?
     
     // MARK: Getting Additional Leg Details
     
