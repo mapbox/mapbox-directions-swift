@@ -36,26 +36,25 @@ open class RouteLeg: NSObject, NSSecureCoding {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         
         var annotation: Annotation = [:]
-        if json["annotation"] != nil {
-            let rawAnnoation = json["annotation"] as! [String: Any]
-            if rawAnnoation["congestion"] != nil {
-                annotation[.congestion] = (rawAnnoation["congestion"] as! [String]).map { CongestionLevel(description: $0) ?? .unknown}
+        if let rawAnnotation = json["annotation"] as? [String: Any] {
+            if rawAnnotation["congestion"] != nil {
+                annotation[.congestionLevel] = (rawAnnotation["congestion"] as! [String]).map { CongestionType(description: $0) ?? .unknown}
             }
             
-            if rawAnnoation["distance"] != nil {
-                annotation[.distance] = rawAnnoation["distance"] as! [Int]
+            if rawAnnotation["distance"] != nil {
+                annotation[.distance] = rawAnnotation["distance"] as! [Int]
             }
             
-            if rawAnnoation["duration"] != nil {
-                annotation[.duration] = rawAnnoation["duration"] as! [Int]
+            if rawAnnotation["duration"] != nil {
+                annotation[.expectedTravelTime] = rawAnnotation["duration"] as! [Int]
             }
             
-            if rawAnnoation["nodes"] != nil {
-                annotation[.nodes] = rawAnnoation["nodes"] as! [Int]
+            if rawAnnotation["nodes"] != nil {
+                annotation[.openStreetMapNodeIdentifier] = rawAnnotation["nodes"] as! [Int]
             }
             
-            if rawAnnoation["speed"] != nil {
-                annotation[.speed] = rawAnnoation["speed"] as! [Int]
+            if rawAnnotation["speed"] != nil {
+                annotation[.speed] = rawAnnotation["speed"] as! [Int]
             }
         }
         

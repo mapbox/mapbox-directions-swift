@@ -1,23 +1,15 @@
-//
-//  MBAnnotationType.swift
-//  MapboxDirections
-//
-//  Created by Bobby Sudekum on 3/20/17.
-//  Copyright © 2017 Mapbox. All rights reserved.
-//
-
 import Foundation
 
 @objc(AnnotationType)
 public enum AnnotationType: Int, CustomStringConvertible {
 
-    case congestion
+    case congestionLevel
     
     case distance
     
-    case duration
+    case expectedTravelTime
     
-    case nodes
+    case openStreetMapNodeIdentifier
     
     case speed
     
@@ -25,14 +17,14 @@ public enum AnnotationType: Int, CustomStringConvertible {
     public init?(description: String) {
         let type: AnnotationType
         switch description {
-        case "congestion":
-            type = .congestion
+        case "congestionLevel":
+            type = .congestionLevel
         case "distance":
             type = .distance
-        case "duration":
-            type = .duration
-        case "nodes":
-            type = .nodes
+        case "expectedTravelTime":
+            type = .expectedTravelTime
+        case "openStreetMapNodeIdentifier":
+            type = .openStreetMapNodeIdentifier
         case "speed":
             type = .speed
         default:
@@ -43,14 +35,14 @@ public enum AnnotationType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
-        case .congestion:
-            return "congestion"
+        case .congestionLevel:
+            return "congestionLevel"
         case .distance:
-            return "distance"
-        case .duration:
+            return "expectedTravelTime"
+        case .expectedTravelTime:
             return "duration"
-        case .nodes:
-            return "nodes"
+        case .openStreetMapNodeIdentifier:
+            return "openStreetMapNodeIdentifier"
         case .speed:
             return "speed"
         }
@@ -59,7 +51,7 @@ public enum AnnotationType: Int, CustomStringConvertible {
 }
 
 @objc(MBCongestionLevel)
-public enum CongestionLevel: Int, CustomStringConvertible {
+public enum CongestionType: Int, CustomStringConvertible {
     
     case unknown
     
@@ -73,7 +65,7 @@ public enum CongestionLevel: Int, CustomStringConvertible {
     
     
     public init?(description: String) {
-        let type: CongestionLevel
+        let type: CongestionType
         switch description {
         case "unknown":
             type = .unknown
