@@ -1,7 +1,7 @@
 import Foundation
 
-@objc(AnnotationType)
-public enum SegmentAttribute: Int, CustomStringConvertible {
+@objc(Attribute)
+public enum Attribute: Int, CustomStringConvertible {
     
     case distance
     
@@ -11,9 +11,8 @@ public enum SegmentAttribute: Int, CustomStringConvertible {
     
     case speed
     
-    
     public init?(description: String) {
-        let type: SegmentAttribute
+        let type: Attribute
         switch description {
         case "distance":
             type = .distance
@@ -41,5 +40,4 @@ public enum SegmentAttribute: Int, CustomStringConvertible {
             return "speed"
         }
     }
-
 }

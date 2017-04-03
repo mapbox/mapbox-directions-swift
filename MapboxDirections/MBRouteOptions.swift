@@ -143,7 +143,7 @@ open class RouteOptions: NSObject {
     /**
      An array of `Waypoint` objects representing locations that the route should visit in chronological order.
      
-     A waypoint object indicates a location to visit, as well as an optional heading from which to approach the location. 
+     A waypoint object indicates a location to visit, as well as an optional heading from which to approach the location.
      
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
@@ -211,7 +211,9 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
-    open var segmentAttributes: [SegmentAttribute] = []
+    open var segmentAttributes: [Attribute] = []
+    
+    open var nodeAttributes: [Attribute] = []
     
     // MARK: Constructing the Request URL
     
@@ -254,16 +256,24 @@ open class RouteOptions: NSObject {
         if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
             let accuracies = waypoints.map {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-            }.joined(separator: ";")
+                }.joined(separator: ";")
             params.append(URLQueryItem(name: "radiuses", value: accuracies))
         }
         
         
-        if segmentAttributes.count > 0 {
+        if !segmentAttributes.isEmpty {
             let segmentAttributesStrings = segmentAttributes.map {
-                $0.description
+                String(describing: $0)
             }.joined(separator: ",")
             
+            
+            params.append(URLQueryItem(name: "annotations", value: segmentAttributesStrings))
+        }
+        
+        if !nodeAttributes.isEmpty && nodeAttributes.contains(.openStreetMapNodeIdentifier) {
+            let segmentAttributesStrings = segmentAttributes.map {
+                String(describing: $0)
+            }.joined(separator: ",")
             
             params.append(URLQueryItem(name: "annotations", value: segmentAttributesStrings))
         }

@@ -7,11 +7,10 @@ import Polyline
  */
 @objc(MBRouteLeg)
 open class RouteLeg: NSObject, NSSecureCoding {
-    
-    typealias SegmentAttributes = [SegmentAttribute:[Any]]
+
     // MARK: Creating a Leg
     
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, segmentAttributes: SegmentAttributes? = nil) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, segmentAttributes: [Attribute:[Any]]? = nil, nodeAttributes: [Attribute:[Any]]? = nil) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
@@ -20,6 +19,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
         self.segmentAttributes = segmentAttributes
+        self.nodeAttributes = nodeAttributes
     }
     
     /**
@@ -35,26 +35,28 @@ open class RouteLeg: NSObject, NSSecureCoding {
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         
-        var segmentAttributes: SegmentAttributes = [:]
-        if let rawAnnotation = json["annotation"] as? [String: Any] {
-            if rawAnnotation["distance"] != nil {
-                segmentAttributes[.distance] = rawAnnotation["distance"] as! [Int]
+        var segmentAttributes: [Attribute:[Any]] = [:]
+        var nodeAttributes: [Attribute:[Any]] = [:]
+        
+        if let jsonAttributes = json["annotation"] as? [String: Any] {
+            if let distance = jsonAttributes["distance"] {
+                segmentAttributes[.distance] = distance as! [Int]
             }
             
-            if rawAnnotation["duration"] != nil {
-                segmentAttributes[.expectedTravelTime] = rawAnnotation["duration"] as! [Int]
+            if let duration = jsonAttributes["duration"] {
+                segmentAttributes[.expectedTravelTime] = duration as! [Int]
             }
             
-            if rawAnnotation["nodes"] != nil {
-                segmentAttributes[.openStreetMapNodeIdentifier] = rawAnnotation["nodes"] as! [Int]
+            if let speed = jsonAttributes["speed"] {
+                segmentAttributes[.speed] = speed as! [Int]
             }
             
-            if rawAnnotation["speed"] != nil {
-                segmentAttributes[.speed] = rawAnnotation["speed"] as! [Int]
+            if let nodes = jsonAttributes["nodes"] {
+                nodeAttributes[.openStreetMapNodeIdentifier] = nodes as! [Int]
             }
         }
         
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, segmentAttributes: segmentAttributes)
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, segmentAttributes: segmentAttributes, nodeAttributes: nodeAttributes)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -62,9 +64,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
             return nil
         }
         source = decodedSource
-        
-
-        segmentAttributes = nil
         
         guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
             return nil
@@ -85,6 +84,10 @@ open class RouteLeg: NSObject, NSSecureCoding {
             return nil
         }
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
+        
+        segmentAttributes = decoder.decodeObject(of: [NSArray.self], forKey: "segmentAttributes") as? [Attribute: [Any]] ?? [:]
+        
+        nodeAttributes = decoder.decodeObject(of: [NSArray.self], forKey: "nodeAttributes") as? [Attribute: [Any]] ?? [:]
     }
     
     open static var supportsSecureCoding = true
@@ -98,6 +101,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
         coder.encode(segmentAttributes, forKey: "segmentAttributes")
+        coder.encode(nodeAttributes, forKey: "nodeAttributes")
     }
     
     // MARK: Getting the Leg Geometry
@@ -126,7 +130,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
     open let steps: [RouteStep]
     
     
-    open let segmentAttributes: [SegmentAttribute:[Any]]?
+    open let segmentAttributes: [Attribute:[Any]]?
+    
+    open let nodeAttributes: [Attribute:[Any]]?
     
     // MARK: Getting Additional Leg Details
     

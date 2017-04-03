@@ -58,17 +58,20 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(route!.coordinates!.count, 93)
         
         let leg = route!.legs.first!
-        let annotation = leg.segmentAttributes!
-        XCTAssertEqual(annotation.count, 4)
-        XCTAssertNotNil(annotation[.distance])
-        XCTAssertNotNil(annotation[.expectedTravelTime])
-        XCTAssertNotNil(annotation[.openStreetMapNodeIdentifier])
-        XCTAssertNotNil(annotation[.speed])
+        let segmentAttributes = leg.segmentAttributes!
+        XCTAssertEqual(segmentAttributes.count, 3)
+        XCTAssertNotNil(segmentAttributes[.distance])
+        XCTAssertNotNil(segmentAttributes[.expectedTravelTime])
+        XCTAssertNotNil(segmentAttributes[.speed])
         
-        let nodes = annotation[.openStreetMapNodeIdentifier]!.count
+        let nodeAttributes = leg.nodeAttributes!
+        XCTAssertNotNil(nodeAttributes[.openStreetMapNodeIdentifier])
         
-        XCTAssertEqual(annotation[.speed]!.count, nodes - 1)
-        XCTAssertEqual(annotation[.distance]!.count, nodes - 1)
-        XCTAssertEqual(annotation[.expectedTravelTime]!.count, nodes - 1)
+        let nodes = nodeAttributes[.openStreetMapNodeIdentifier]!.count
+        XCTAssertEqual(nodes, 93)
+        
+        XCTAssertEqual(segmentAttributes[.speed]!.count, nodes - 1)
+        XCTAssertEqual(segmentAttributes[.distance]!.count, nodes - 1)
+        XCTAssertEqual(segmentAttributes[.expectedTravelTime]!.count, nodes - 1)
     }
 }
