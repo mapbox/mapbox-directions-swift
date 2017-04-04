@@ -10,7 +10,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
     // MARK: Creating a Leg
     
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier, segmentAttributes: [Attribute:[Any]]? = nil, nodeAttributes: [Attribute:[Any]]? = nil) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = profileIdentifier
@@ -18,8 +18,24 @@ open class RouteLeg: NSObject, NSSecureCoding {
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
-        self.segmentAttributes = segmentAttributes
-        self.nodeAttributes = nodeAttributes
+        
+        if let jsonAttributes = json["annotation"] as? [String: Any] {
+            if let distance = jsonAttributes["distance"] {
+                self.segmentDistances = distance as? [CLLocationDistance]
+            }
+            
+            if let duration = jsonAttributes["duration"] {
+                self.segmentExpectedTravelTimes = duration as? [TimeInterval]
+            }
+            
+            if let speed = jsonAttributes["speed"] {
+                self.segmentSpeeds = speed as? [Int]
+            }
+            
+            if let nodes = jsonAttributes["nodes"] {
+                self.nodeOpenStreetMapNodeIdentifiers = nodes as? [Int]
+            }
+        }
     }
     
     /**
@@ -35,28 +51,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         
-        var segmentAttributes: [Attribute:[Any]] = [:]
-        var nodeAttributes: [Attribute:[Any]] = [:]
-        
-        if let jsonAttributes = json["annotation"] as? [String: Any] {
-            if let distance = jsonAttributes["distance"] {
-                segmentAttributes[.distance] = distance as! [Int]
-            }
-            
-            if let duration = jsonAttributes["duration"] {
-                segmentAttributes[.expectedTravelTime] = duration as! [Int]
-            }
-            
-            if let speed = jsonAttributes["speed"] {
-                segmentAttributes[.speed] = speed as! [Int]
-            }
-            
-            if let nodes = jsonAttributes["nodes"] {
-                nodeAttributes[.openStreetMapNodeIdentifier] = nodes as! [Int]
-            }
-        }
-        
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier, segmentAttributes: segmentAttributes, nodeAttributes: nodeAttributes)
+        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -85,9 +80,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         }
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
         
-        segmentAttributes = decoder.decodeObject(of: [NSArray.self], forKey: "segmentAttributes") as? [Attribute: [Any]] ?? [:]
-        
-        nodeAttributes = decoder.decodeObject(of: [NSArray.self], forKey: "nodeAttributes") as? [Attribute: [Any]] ?? [:]
+        segmentDistances = nil
     }
     
     open static var supportsSecureCoding = true
@@ -129,10 +122,13 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     open let steps: [RouteStep]
     
+    open let segmentDistances: [CLLocationDistance]?
     
-    open let segmentAttributes: [Attribute:[Any]]?
+    open let segmentExpectedTravelTimes: [TimeInterval]?
     
-    open let nodeAttributes: [Attribute:[Any]]?
+    open let segmentSpeeds: [Int]?
+    
+    open let nodeOpenStreetMapNodeIdentifiers: [Int]?
     
     // MARK: Getting Additional Leg Details
     

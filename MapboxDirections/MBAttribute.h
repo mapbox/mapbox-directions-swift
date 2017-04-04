@@ -4,7 +4,7 @@ typedef NS_OPTIONS(NSUInteger, MBAttribute) {
     
     MBAttributeExpectedTravelTime = (1 << 2),
     
-    MBAttributeOpenStreetMapNodeIdentifier = (1 << 3),
+    MBAttributeSpeed = (1 << 3),
     
-    MBAttributeSpeed = (1 << 4)
+    MBAttributeOpenStreetMapNodeIdentifier = (1 << 4)
 };
