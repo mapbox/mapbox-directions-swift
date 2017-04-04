@@ -6,7 +6,5 @@ typedef NS_OPTIONS(NSUInteger, MBAttribute) {
     
     MBAttributeOpenStreetMapNodeIdentifier = (1 << 3),
     
-    MBAttributeSpeed = (1 << 4),
-    
-    MBAttributeAll = 0x0ffffUL
+    MBAttributeSpeed = (1 << 4)
 };
