@@ -261,7 +261,7 @@ open class RouteOptions: NSObject {
         }
         
         
-        if !segmentAttributes.isEmpty {
+        if !segmentAttributes.isEmpty && segmentAttributes.contains(where: [.speed, .expectedTravelTime, .distance].contains) {
             let segmentAttributesStrings = segmentAttributes.map {
                 String(describing: $0)
             }.joined(separator: ",")
@@ -271,11 +271,7 @@ open class RouteOptions: NSObject {
         }
         
         if !nodeAttributes.isEmpty && nodeAttributes.contains(.openStreetMapNodeIdentifier) {
-            let segmentAttributesStrings = segmentAttributes.map {
-                String(describing: $0)
-            }.joined(separator: ",")
-            
-            params.append(URLQueryItem(name: "annotations", value: segmentAttributesStrings))
+            params.append(URLQueryItem(name: "annotations", value: String(describing: Attribute.openStreetMapNodeIdentifier)))
         }
         
         return params
