@@ -18,7 +18,7 @@ class AnnotationTests: XCTestCase {
             "steps": "true",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,nodes,speed"
+            "annotations": "distance,duration,speed,nodes"
             ]
     
         stub(condition: isHost("api.mapbox.com")
@@ -35,7 +35,8 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = true
         options.includesAlternativeRoutes = true
         options.routeShapeResolution = .full
-        options.segmentAttributes = [.distance, .expectedTravelTime, .openStreetMapNodeIdentifier, .speed]
+        options.nodeAttributes = [.openStreetMapNodeIdentifier]
+        options.segmentAttributes = [.distance, .expectedTravelTime, .speed]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
@@ -58,20 +59,10 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(route!.coordinates!.count, 93)
         
         let leg = route!.legs.first!
-        let segmentAttributes = leg.segmentAttributes!
-        XCTAssertEqual(segmentAttributes.count, 3)
-        XCTAssertNotNil(segmentAttributes[.distance])
-        XCTAssertNotNil(segmentAttributes[.expectedTravelTime])
-        XCTAssertNotNil(segmentAttributes[.speed])
+        XCTAssertEqual(leg.segmentDistances!.count, 92)
+        XCTAssertEqual(leg.segmentSpeeds!.count, 92)
+        XCTAssertEqual(leg.segmentExpectedTravelTimes!.count, 92)
+        XCTAssertEqual(leg.nodeOpenStreetMapNodeIdentifiers!.count, 93)
         
-        let nodeAttributes = leg.nodeAttributes!
-        XCTAssertNotNil(nodeAttributes[.openStreetMapNodeIdentifier])
-        
-        let nodes = nodeAttributes[.openStreetMapNodeIdentifier]!.count
-        XCTAssertEqual(nodes, 93)
-        
-        XCTAssertEqual(segmentAttributes[.speed]!.count, nodes - 1)
-        XCTAssertEqual(segmentAttributes[.distance]!.count, nodes - 1)
-        XCTAssertEqual(segmentAttributes[.expectedTravelTime]!.count, nodes - 1)
     }
 }

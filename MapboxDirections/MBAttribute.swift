@@ -27,10 +27,10 @@ extension Attribute: CustomStringConvertible {
             descriptions.append("distance")
         }
         if contains(.expectedTravelTime) {
-            descriptions.append("expectedTravelTime")
+            descriptions.append("duration")
         }
         if contains(.openStreetMapNodeIdentifier) {
-            descriptions.append("openStreetMapNodeIdentifier")
+            descriptions.append("nodes")
         }
         if contains(.speed) {
             descriptions.append("speed")

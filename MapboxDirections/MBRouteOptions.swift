@@ -260,18 +260,21 @@ open class RouteOptions: NSObject {
             params.append(URLQueryItem(name: "radiuses", value: accuracies))
         }
         
-        
+        var attributeOptions:[Attribute] = []
         if !segmentAttributes.isEmpty && segmentAttributes.contains(where: [.speed, .expectedTravelTime, .distance].contains) {
-            let segmentAttributesStrings = segmentAttributes.map {
-                String(describing: $0)
-            }.joined(separator: ",")
-            
-            
-            params.append(URLQueryItem(name: "annotations", value: segmentAttributesStrings))
+            attributeOptions = attributeOptions + segmentAttributes
         }
         
         if !nodeAttributes.isEmpty && nodeAttributes.contains(.openStreetMapNodeIdentifier) {
-            params.append(URLQueryItem(name: "annotations", value: String(describing: Attribute.openStreetMapNodeIdentifier)))
+            attributeOptions = attributeOptions + nodeAttributes
+        }
+        
+        if !attributeOptions.isEmpty {
+            let attributesStrings = attributeOptions.map {
+                String(describing: $0)
+                }.joined(separator: ",")
+            
+            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
         }
         
         return params

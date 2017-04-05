@@ -20,21 +20,35 @@ open class RouteLeg: NSObject, NSSecureCoding {
         self.name = json["summary"] as! String
         
         if let jsonAttributes = json["annotation"] as? [String: Any] {
+            
             if let distance = jsonAttributes["distance"] {
                 self.segmentDistances = distance as? [CLLocationDistance]
+            } else {
+                self.segmentDistances = []
             }
             
             if let duration = jsonAttributes["duration"] {
-                self.segmentExpectedTravelTimes = duration as? [TimeInterval]
+                self.segmentExpectedTravelTimes = duration as? [TimeInterval] ?? []
+            } else {
+                self.segmentExpectedTravelTimes = []
             }
             
             if let speed = jsonAttributes["speed"] {
-                self.segmentSpeeds = speed as? [Int]
+                self.segmentSpeeds = speed as? [Int] ?? []
+            } else {
+                self.segmentSpeeds = []
             }
             
             if let nodes = jsonAttributes["nodes"] {
-                self.nodeOpenStreetMapNodeIdentifiers = nodes as? [Int]
+                self.nodeOpenStreetMapNodeIdentifiers = nodes as? [Int] ?? []
+            } else {
+                self.nodeOpenStreetMapNodeIdentifiers = []
             }
+        } else {
+            self.segmentDistances = []
+            self.segmentExpectedTravelTimes = []
+            self.segmentSpeeds = []
+            self.nodeOpenStreetMapNodeIdentifiers = []
         }
     }
     
@@ -81,6 +95,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
         
         segmentDistances = nil
+        segmentExpectedTravelTimes = nil
+        segmentSpeeds = nil
+        nodeOpenStreetMapNodeIdentifiers = nil
     }
     
     open static var supportsSecureCoding = true
@@ -93,8 +110,10 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(segmentAttributes, forKey: "segmentAttributes")
-        coder.encode(nodeAttributes, forKey: "nodeAttributes")
+        coder.encode(segmentDistances, forKey: "segmentDistances")
+        coder.encode(segmentExpectedTravelTimes, forKey: "segmentExpectedTravelTimes")
+        coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
+        coder.encode(nodeOpenStreetMapNodeIdentifiers, forKey: "nodeOpenStreetMapNodeIdentifiers")
     }
     
     // MARK: Getting the Leg Geometry
