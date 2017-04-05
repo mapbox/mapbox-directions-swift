@@ -19,37 +19,30 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
         
+        var segmentDistances: [CLLocationDistance]? = nil
+        var segmentExpectedTravelTimes: [TimeInterval]? = nil
+        var segmentSpeeds: [CLLocationSpeed]? = nil
+        var nodeOpenStreetMapNodeIdentifiers: [Int]? = nil
+        
         if let jsonAttributes = json["annotation"] as? [String: Any] {
-            
             if let distance = jsonAttributes["distance"] {
-                self.segmentDistances = distance as? [CLLocationDistance]
-            } else {
-                self.segmentDistances = []
+                segmentDistances = distance as? [CLLocationDistance]
             }
-            
             if let duration = jsonAttributes["duration"] {
-                self.segmentExpectedTravelTimes = duration as? [TimeInterval] ?? []
-            } else {
-                self.segmentExpectedTravelTimes = []
+                segmentExpectedTravelTimes = duration as? [TimeInterval] ?? []
             }
-            
             if let speed = jsonAttributes["speed"] {
-                self.segmentSpeeds = speed as? [Int] ?? []
-            } else {
-                self.segmentSpeeds = []
+                segmentSpeeds = speed as? [CLLocationSpeed] ?? []
             }
-            
             if let nodes = jsonAttributes["nodes"] {
-                self.nodeOpenStreetMapNodeIdentifiers = nodes as? [Int] ?? []
-            } else {
-                self.nodeOpenStreetMapNodeIdentifiers = []
+                nodeOpenStreetMapNodeIdentifiers = nodes as? [Int] ?? []
             }
-        } else {
-            self.segmentDistances = []
-            self.segmentExpectedTravelTimes = []
-            self.segmentSpeeds = []
-            self.nodeOpenStreetMapNodeIdentifiers = []
         }
+        
+        self.segmentDistances = segmentDistances
+        self.segmentExpectedTravelTimes = segmentExpectedTravelTimes
+        self.segmentSpeeds = segmentSpeeds
+        self.nodeOpenStreetMapNodeIdentifiers = nodeOpenStreetMapNodeIdentifiers
     }
     
     /**
@@ -94,10 +87,10 @@ open class RouteLeg: NSObject, NSSecureCoding {
         }
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
         
-        segmentDistances = nil
-        segmentExpectedTravelTimes = nil
-        segmentSpeeds = nil
-        nodeOpenStreetMapNodeIdentifiers = nil
+        segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
+        segmentExpectedTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentExpectedTravelTimes") as? [TimeInterval]
+        segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
+        nodeOpenStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "nodeOpenStreetMapNodeIdentifiers") as? [Int]
     }
     
     open static var supportsSecureCoding = true
@@ -145,7 +138,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     
     open let segmentExpectedTravelTimes: [TimeInterval]?
     
-    open let segmentSpeeds: [Int]?
+    open let segmentSpeeds: [CLLocationSpeed]?
     
     open let nodeOpenStreetMapNodeIdentifiers: [Int]?
     
