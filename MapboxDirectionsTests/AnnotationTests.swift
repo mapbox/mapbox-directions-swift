@@ -18,7 +18,7 @@ class AnnotationTests: XCTestCase {
             "steps": "true",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,speed,nodes"
+            "annotations": "distance,duration,nodes,speed"
             ]
     
         stub(condition: isHost("api.mapbox.com")

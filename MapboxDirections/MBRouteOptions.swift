@@ -211,9 +211,9 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
-    open var segmentAttributes: [AttributeOptions] = []
+    open var segmentAttributes: AttributeOptions = []
     
-    open var nodeAttributes: [AttributeOptions] = []
+    open var nodeAttributes: AttributeOptions = []
     
     // MARK: Constructing the Request URL
     
@@ -260,19 +260,17 @@ open class RouteOptions: NSObject {
             params.append(URLQueryItem(name: "radiuses", value: accuracies))
         }
         
-        var attributeOptions:[AttributeOptions] = []
-        if !segmentAttributes.isEmpty && segmentAttributes.contains(where: [.speed, .expectedTravelTime, .distance].contains) {
-            attributeOptions = attributeOptions + segmentAttributes
+        var attributeOptions:AttributeOptions = []
+        if !segmentAttributes.isEmpty {
+            attributeOptions.insert(segmentAttributes)
         }
         
-        if !nodeAttributes.isEmpty && nodeAttributes.contains(.openStreetMapNodeIdentifier) {
-            attributeOptions = attributeOptions + nodeAttributes
+        if !nodeAttributes.isEmpty {
+            attributeOptions.insert(nodeAttributes)
         }
         
         if !attributeOptions.isEmpty {
-            let attributesStrings = attributeOptions.map {
-                String(describing: $0)
-                }.joined(separator: ",")
+            let attributesStrings = String(describing:attributeOptions)
             
             params.append(URLQueryItem(name: "annotations", value: attributesStrings))
         }
