@@ -1,11 +1,11 @@
 import Foundation
 
-public typealias Attribute = MBAttribute
+public typealias AttributeOptions = MBAttributeOptions
 
-extension Attribute: CustomStringConvertible {
+extension AttributeOptions: CustomStringConvertible {
     
     public init?(description: String) {
-         var scope: Attribute = []
+         var scope: AttributeOptions = []
         switch description {
         case "distance":
             scope.update(with: .distance)

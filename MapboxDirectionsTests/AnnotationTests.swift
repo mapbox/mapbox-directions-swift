@@ -61,8 +61,8 @@ class AnnotationTests: XCTestCase {
         let leg = route!.legs.first!
         XCTAssertEqual(leg.segmentDistances!.count, 92)
         XCTAssertEqual(leg.segmentSpeeds!.count, 92)
-        XCTAssertEqual(leg.segmentExpectedTravelTimes!.count, 92)
-        XCTAssertEqual(leg.nodeOpenStreetMapNodeIdentifiers!.count, 93)
+        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 92)
+        XCTAssertEqual(leg.openStreetMapNodeIdentifiers!.count, 93)
         
     }
 }

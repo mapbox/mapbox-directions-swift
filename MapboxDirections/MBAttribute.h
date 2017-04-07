@@ -1,4 +1,4 @@
-typedef NS_OPTIONS(NSUInteger, MBAttribute) {
+typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
 
     MBAttributeDistance = (1 << 1),
     

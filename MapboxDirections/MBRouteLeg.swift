@@ -19,30 +19,30 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
         
-        var segmentDistances: [CLLocationDistance]? = nil
-        var segmentExpectedTravelTimes: [TimeInterval]? = nil
-        var segmentSpeeds: [CLLocationSpeed]? = nil
-        var nodeOpenStreetMapNodeIdentifiers: [Int]? = nil
+        var segmentDistances: [CLLocationDistance]?
+        var expectedSegmentTravelTimes: [TimeInterval]?
+        var segmentSpeeds: [CLLocationSpeed]?
+        var openStreetMapNodeIdentifiers: [Int64]?
         
         if let jsonAttributes = json["annotation"] as? [String: Any] {
             if let distance = jsonAttributes["distance"] {
                 segmentDistances = distance as? [CLLocationDistance]
             }
             if let duration = jsonAttributes["duration"] {
-                segmentExpectedTravelTimes = duration as? [TimeInterval] ?? []
+                expectedSegmentTravelTimes = duration as? [TimeInterval] ?? []
             }
             if let speed = jsonAttributes["speed"] {
                 segmentSpeeds = speed as? [CLLocationSpeed] ?? []
             }
             if let nodes = jsonAttributes["nodes"] {
-                nodeOpenStreetMapNodeIdentifiers = nodes as? [Int] ?? []
+                openStreetMapNodeIdentifiers = nodes as? [Int64] ?? []
             }
         }
         
         self.segmentDistances = segmentDistances
-        self.segmentExpectedTravelTimes = segmentExpectedTravelTimes
+        self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
         self.segmentSpeeds = segmentSpeeds
-        self.nodeOpenStreetMapNodeIdentifiers = nodeOpenStreetMapNodeIdentifiers
+        self.openStreetMapNodeIdentifiers = openStreetMapNodeIdentifiers
     }
     
     /**
@@ -88,9 +88,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
         
         segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
-        segmentExpectedTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentExpectedTravelTimes") as? [TimeInterval]
+        expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
-        nodeOpenStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "nodeOpenStreetMapNodeIdentifiers") as? [Int]
+        openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
     }
     
     open static var supportsSecureCoding = true
@@ -104,9 +104,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
         coder.encode(segmentDistances, forKey: "segmentDistances")
-        coder.encode(segmentExpectedTravelTimes, forKey: "segmentExpectedTravelTimes")
+        coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
         coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
-        coder.encode(nodeOpenStreetMapNodeIdentifiers, forKey: "nodeOpenStreetMapNodeIdentifiers")
+        coder.encode(openStreetMapNodeIdentifiers, forKey: "openStreetMapNodeIdentifiers")
     }
     
     // MARK: Getting the Leg Geometry
@@ -136,11 +136,11 @@ open class RouteLeg: NSObject, NSSecureCoding {
     
     open let segmentDistances: [CLLocationDistance]?
     
-    open let segmentExpectedTravelTimes: [TimeInterval]?
+    open let expectedSegmentTravelTimes: [TimeInterval]?
     
     open let segmentSpeeds: [CLLocationSpeed]?
     
-    open let nodeOpenStreetMapNodeIdentifiers: [Int]?
+    open let openStreetMapNodeIdentifiers: [Int64]?
     
     // MARK: Getting Additional Leg Details
     
