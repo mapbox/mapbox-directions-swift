@@ -198,6 +198,8 @@ end repeat
 
 This library uses version 5 of the Mapbox Directions API by default. To use version 4 instead, replace RouteOptions with RouteOptionsV4 (or MBRouteOptions with MBRouteOptionsV4).
 
+## Usage with other Mapbox libraries
+
 ### Drawing the route on a map
 
 With the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), you can easily draw the route on a map in Swift or Objective-C:
@@ -234,7 +236,7 @@ if (route.coordinateCount) {
 }
 ```
 
-## Displaying a turn-by-turn navigation interface
+### Displaying a turn-by-turn navigation interface
 
 See the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/#usage) documentation for usage examples.
 
