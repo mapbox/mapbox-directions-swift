@@ -211,9 +211,7 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
-    open var segmentAttributes: AttributeOptions = []
-    
-    open var nodeAttributes: AttributeOptions = []
+    open var attributeOptions: AttributeOptions = []
     
     // MARK: Constructing the Request URL
     
@@ -258,15 +256,6 @@ open class RouteOptions: NSObject {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
                 }.joined(separator: ";")
             params.append(URLQueryItem(name: "radiuses", value: accuracies))
-        }
-        
-        var attributeOptions:AttributeOptions = []
-        if !segmentAttributes.isEmpty {
-            attributeOptions.insert(segmentAttributes)
-        }
-        
-        if !nodeAttributes.isEmpty {
-            attributeOptions.insert(nodeAttributes)
         }
         
         if !attributeOptions.isEmpty {

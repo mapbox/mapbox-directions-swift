@@ -35,8 +35,7 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = true
         options.includesAlternativeRoutes = true
         options.routeShapeResolution = .full
-        options.nodeAttributes = [.openStreetMapNodeIdentifier]
-        options.segmentAttributes = [.distance, .expectedTravelTime, .speed]
+        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .openStreetMapNodeIdentifier]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
