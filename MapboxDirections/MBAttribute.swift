@@ -3,7 +3,9 @@ import Foundation
 public typealias AttributeOptions = MBAttributeOptions
 
 extension AttributeOptions: CustomStringConvertible {
-    
+    /**
+     Creates an AttributeOptions from the given description strings.
+     */
     public init?(description: String) {
          var scope: AttributeOptions = []
         switch description {

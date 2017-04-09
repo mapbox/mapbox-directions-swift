@@ -211,6 +211,11 @@ open class RouteOptions: NSObject {
      */
     open var routeShapeResolution = RouteShapeResolution.low
     
+    /**
+     AttributeOptions for the route. Any combination of `.AttributeOptions` can be specified. 
+     
+     The default value of this property is `[]`.
+     */
     open var attributeOptions: AttributeOptions = []
     
     // MARK: Constructing the Request URL

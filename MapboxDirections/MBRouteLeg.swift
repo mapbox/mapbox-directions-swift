@@ -134,12 +134,24 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     open let steps: [RouteStep]
     
+    /**
+     An array of distances representing the distances between nodes.
+     */
     open let segmentDistances: [CLLocationDistance]?
     
+    /**
+     An array of expected travel times for the space between each geometry node. This value is dynamic and accounts for any and all conditions that may change along current segment.
+     */
     open let expectedSegmentTravelTimes: [TimeInterval]?
     
+    /**
+     An array of current speeds along segment. This value is dynamic and does not represent the speed limit but rather the average speed for a given segment
+     */
     open let segmentSpeeds: [CLLocationSpeed]?
     
+    /**
+     An array of OpenStreetMap nodes.
+     */
     open let openStreetMapNodeIdentifiers: [Int64]?
     
     // MARK: Getting Additional Leg Details
