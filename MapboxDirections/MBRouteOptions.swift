@@ -214,7 +214,7 @@ open class RouteOptions: NSObject {
     /**
      AttributeOptions for the route. Any combination of `AttributeOptions` can be specified.
      
-     By default, no attribute options are specified.
+     By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
     open var attributeOptions: AttributeOptions = []
     

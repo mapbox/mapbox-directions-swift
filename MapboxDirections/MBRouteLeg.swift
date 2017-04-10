@@ -160,7 +160,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     open let segmentSpeeds: [CLLocationSpeed]?
     
     /**
-     An array containing OpenStreetMap node identifiers (https://wiki.openstreetmap.org/wiki/Node), one for each coordinate along the route geometry.
+     An array containing [OpenStreetMap node identifiers](https://wiki.openstreetmap.org/wiki/Node), one for each coordinate along the route geometry.
      
      This property is set if the `RouteOptions.attributeOptions` property contains `.openStreetMapNodeIdentifier`.
      */
