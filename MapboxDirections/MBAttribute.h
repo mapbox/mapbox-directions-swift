@@ -1,17 +1,17 @@
 /**
- Attributes are metadata information for a given route. The number of attributes returned will be a direct 1-1 relationship with the route's full geometry. Each type will return an ordered list of requested attributes. For `.distance`, `.expectedTrabelTime`, and `.speed` there will be one less value when compared to the route geometry. This is because these values represent the data on segment between geometry points.
+ Attributes are metadata information for a given route. The number of attributes returned will be a direct 1-1 relationship with the route's full geometry. The .distance, .expectedTrabelTime, and .speed attributes have one fewer value than the .openStreetMapNodeIdentifier attribute.
 */
 typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
 
-    /// Segment distance.
+    /// Segment distance. Distances are measured in meters.
     MBAttributeDistance = (1 << 1),
     
     // Segment expected travel time in seconds.
     MBAttributeExpectedTravelTime = (1 << 2),
     
-    // Segment current speed.
+    // Segment current speed. Speeds are measured in meters per second.
     MBAttributeSpeed = (1 << 3),
     
-    // Unique OpenStreetMap node.
+    // Unique node identifiers (https://wiki.openstreetmap.org/wiki/Node)
     MBAttributeOpenStreetMapNodeIdentifier = (1 << 4)
 };

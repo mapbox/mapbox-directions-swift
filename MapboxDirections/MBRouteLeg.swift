@@ -135,22 +135,34 @@ open class RouteLeg: NSObject, NSSecureCoding {
     open let steps: [RouteStep]
     
     /**
-     An array of distances representing the distances between nodes.
+     An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `.distance`.
      */
     open let segmentDistances: [CLLocationDistance]?
     
     /**
-     An array of expected travel times for the space between each geometry node. This value is dynamic and accounts for any and all conditions that may change along current segment.
+     An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
+     
+     These values are dynamic, accounting for any conditions that may change along a segment, such as traffic congestion if the profile identifier is set to `.automobileAvoidingTraffic`.
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `.expectedTravelTime`.
      */
     open let expectedSegmentTravelTimes: [TimeInterval]?
     
     /**
-     An array of current speeds along segment. This value is dynamic and does not represent the speed limit but rather the average speed for a given segment
+     An array containing the expected average speed (measured in meters per second) between each coordinate in the route leg geometry.
+     
+     These values are dynamic; rather than speed limits, they account for the road’s classification and/or any traffic congestion (if the profile identifier is set to `.automobileAvoidingTraffic`).
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `.speed`.
      */
     open let segmentSpeeds: [CLLocationSpeed]?
     
     /**
-     An array of OpenStreetMap nodes.
+     An array containing OpenStreetMap node identifiers (https://wiki.openstreetmap.org/wiki/Node), one for each coordinate along the route geometry.
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `.openStreetMapNodeIdentifier`.
      */
     open let openStreetMapNodeIdentifiers: [Int64]?
     
