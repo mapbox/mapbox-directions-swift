@@ -23,6 +23,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         var expectedSegmentTravelTimes: [TimeInterval]?
         var segmentSpeeds: [CLLocationSpeed]?
         var openStreetMapNodeIdentifiers: [Int64]?
+        var congestionLevels: [Congestion]?
         
         if let jsonAttributes = json["annotation"] as? [String: Any] {
             if let distance = jsonAttributes["distance"] {
@@ -37,12 +38,18 @@ open class RouteLeg: NSObject, NSSecureCoding {
             if let nodes = jsonAttributes["nodes"] {
                 openStreetMapNodeIdentifiers = nodes as? [Int64] ?? []
             }
+            if let congestion = jsonAttributes["congestion"] as? [String] {
+                congestionLevels = congestion.map {
+                    Congestion(description: $0)!
+                }
+            }
         }
         
         self.segmentDistances = segmentDistances
         self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
         self.segmentSpeeds = segmentSpeeds
         self.openStreetMapNodeIdentifiers = openStreetMapNodeIdentifiers
+        self.congestionLevels = congestionLevels
     }
     
     /**
@@ -91,6 +98,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
         openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
+        congestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "congestionLevels") as? [Congestion]
     }
     
     open static var supportsSecureCoding = true
@@ -107,6 +115,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
         coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
         coder.encode(openStreetMapNodeIdentifiers, forKey: "openStreetMapNodeIdentifiers")
+        coder.encode(congestionLevels, forKey: "congestionLevels")
     }
     
     // MARK: Getting the Leg Geometry
@@ -165,6 +174,8 @@ open class RouteLeg: NSObject, NSSecureCoding {
      This property is set if the `RouteOptions.attributeOptions` property contains `.openStreetMapNodeIdentifier`.
      */
     open let openStreetMapNodeIdentifiers: [Int64]?
+    
+    open let congestionLevels: [Congestion]?
     
     // MARK: Getting Additional Leg Details
     

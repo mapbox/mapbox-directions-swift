@@ -18,6 +18,8 @@ extension AttributeOptions: CustomStringConvertible {
                 attributeOptions.update(with: .openStreetMapNodeIdentifier)
             case "speed":
                 attributeOptions.update(with: .speed)
+            case "congestionLevel":
+                attributeOptions.update(with: .congestionLevel)
             case "":
                 continue
             default:
@@ -40,6 +42,9 @@ extension AttributeOptions: CustomStringConvertible {
         }
         if contains(.speed) {
             descriptions.append("speed")
+        }
+        if contains(.congestionLevel) {
+            descriptions.append("congestion")
         }
         return descriptions.joined(separator: ",")
     }

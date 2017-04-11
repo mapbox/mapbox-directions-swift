@@ -13,5 +13,8 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
     MBAttributeSpeed = (1 << 3),
     
     // [OpenStreetMap node identifier](https://wiki.openstreetmap.org/wiki/Node).
-    MBAttributeOpenStreetMapNodeIdentifier = (1 << 4)
+    MBAttributeOpenStreetMapNodeIdentifier = (1 << 4),
+    
+    
+    MBAttributeCongestionLevel = (1 << 5)
 };
