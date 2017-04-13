@@ -285,7 +285,7 @@ open class RouteOptions: NSObject {
             return Waypoint(coordinate: coordinate, name: waypoint["name"] as? String)
         }
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: waypoints ?? self.waypoints, profileIdentifier: profileIdentifier)
+            Route(json: $0, waypoints: waypoints ?? self.waypoints, routeOptions: self)
         }
         return (waypoints, routes)
     }
@@ -380,7 +380,7 @@ open class RouteOptionsV4: RouteOptions {
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
         let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            RouteV4(json: $0, waypoints: waypoints, profileIdentifier: profileIdentifier)
+            RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
         }
         return (waypoints, routes)
     }

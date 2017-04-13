@@ -52,6 +52,13 @@ class V5Tests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
+        let opts = route!.routeOptions
+        
+        XCTAssertEqual(opts.profileIdentifier, .automobile)
+        XCTAssertTrue(opts.includesSteps)
+        XCTAssertTrue(opts.includesAlternativeRoutes)
+        XCTAssertEqual(opts.routeShapeResolution, .full)
+        
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
         XCTAssertEqual(route!.coordinates!.count, 28_442)
