@@ -52,13 +52,6 @@ class V5Tests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        let opts = route!.routeOptions
-        
-        XCTAssertEqual(opts.profileIdentifier, .automobile)
-        XCTAssertTrue(opts.includesSteps)
-        XCTAssertTrue(opts.includesAlternativeRoutes)
-        XCTAssertEqual(opts.routeShapeResolution, .full)
-        
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
         XCTAssertEqual(route!.coordinates!.count, 28_442)
@@ -68,6 +61,10 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(round(route!.coordinates!.first!.latitude), 38)
         XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
         XCTAssertEqual(route!.legs.count, 1)
+        
+        let opts = route!.routeOptions
+        
+        XCTAssertEqual(opts, options)
         
         let leg = route!.legs.first!
         XCTAssertEqual(leg.name, "I 80, I 80;US 30")

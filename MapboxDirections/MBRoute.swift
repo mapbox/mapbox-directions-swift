@@ -24,7 +24,7 @@ open class Route: NSObject, NSSecureCoding {
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
-     - parameter profileIdentifier: The profile identifier used to request the routes.
+     - parameter routeOptions: The `RouteOptions` used to create the request.
      */
     public convenience init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
@@ -157,6 +157,8 @@ open class Route: NSObject, NSSecureCoding {
     
     /**
      `RouteOptions` used to create the directions request.
+     
+     The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
     open let routeOptions: RouteOptions
 }
