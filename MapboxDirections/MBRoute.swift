@@ -156,9 +156,7 @@ open class Route: NSObject, NSSecureCoding {
     open let expectedTravelTime: TimeInterval
     
     /**
-     A string specifying the primary mode of transportation for the route.
-     
-     The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
+     `RouteOptions` used to create the directions request.
      */
     open let routeOptions: RouteOptions
 }
