@@ -9,8 +9,8 @@ import Polyline
 open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    internal init(profileIdentifier: MBDirectionsProfileIdentifier, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
-        self.profileIdentifier = profileIdentifier
+    internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+        self.routeOptions = routeOptions
         self.legs = legs
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
@@ -24,14 +24,14 @@ open class Route: NSObject, NSSecureCoding {
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
-     - parameter profileIdentifier: The profile identifier used to request the routes.
+     - parameter routeOptions: The `RouteOptions` used to create the request.
      */
-    public convenience init(json: [String: Any], waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier) {
+    public convenience init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: profileIdentifier)
+            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: routeOptions.profileIdentifier)
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
@@ -46,7 +46,7 @@ open class Route: NSObject, NSSecureCoding {
             coordinates = nil
         }
         
-        self.init(profileIdentifier: profileIdentifier, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -64,10 +64,10 @@ open class Route: NSObject, NSSecureCoding {
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         
-        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+        guard let options = decoder.decodeObject(of: [RouteOptions.self], forKey: "routeOptions") as? RouteOptions else {
             return nil
         }
-        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
+        routeOptions = options
     }
     
     open static var supportsSecureCoding = true
@@ -82,7 +82,7 @@ open class Route: NSObject, NSSecureCoding {
         coder.encode(legs, forKey: "legs")
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(profileIdentifier, forKey: "profileIdentifier")
+        coder.encode(routeOptions, forKey: "routeOptions")
     }
     
     // MARK: Getting the Route Geometry
@@ -156,18 +156,18 @@ open class Route: NSObject, NSSecureCoding {
     open let expectedTravelTime: TimeInterval
     
     /**
-     A string specifying the primary mode of transportation for the route.
+     `RouteOptions` used to create the directions request.
      
-     The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
+     The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    open let profileIdentifier: MBDirectionsProfileIdentifier
+    open let routeOptions: RouteOptions
 }
 
 // MARK: Support for Directions API v4
 
 internal class RouteV4: Route {
-    convenience init(json: JSONDictionary, waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier) {
-        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: profileIdentifier)
+    convenience init(json: JSONDictionary, waypoints: [Waypoint], routeOptions: RouteOptions) {
+        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: routeOptions.profileIdentifier)
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
         
@@ -181,6 +181,6 @@ internal class RouteV4: Route {
             coordinates = nil
         }
         
-        self.init(profileIdentifier: profileIdentifier, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
 }

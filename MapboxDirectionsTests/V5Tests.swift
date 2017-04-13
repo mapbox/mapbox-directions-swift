@@ -62,6 +62,10 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
         XCTAssertEqual(route!.legs.count, 1)
         
+        let opts = route!.routeOptions
+        
+        XCTAssertEqual(opts, options)
+        
         let leg = route!.legs.first!
         XCTAssertEqual(leg.name, "I 80, I 80;US 30")
         XCTAssertEqual(leg.steps.count, 59)
