@@ -278,27 +278,22 @@ open class Directions: NSObject {
 }
 
 extension HTTPURLResponse {
-    
-    @nonobjc static let rateLimitIntervalHeaderKey = "X-Rate-Limit-Interval"
-    @nonobjc static let rateLimitLimitHeaderKey = "X-Rate-Limit-Limit"
-    @nonobjc static let rateLimitResetHeaderKey = "X-Rate-Limit-Reset"
-    
     var rateLimit: UInt? {
-        guard let limit = allHeaderFields[HTTPURLResponse.rateLimitLimitHeaderKey] as? String else {
+        guard let limit = allHeaderFields["X-Rate-Limit-Limit"] as? String else {
             return nil
         }
         return UInt(limit)
     }
     
     var rateLimitInterval: TimeInterval? {
-        guard let interval = allHeaderFields[HTTPURLResponse.rateLimitIntervalHeaderKey] as? String else {
+        guard let interval = allHeaderFields["X-Rate-Limit-Interval"] as? String else {
             return nil
         }
         return TimeInterval(interval)
     }
     
     var rateLimitResetTime: Date? {
-        guard let resetTime = allHeaderFields[HTTPURLResponse.rateLimitResetHeaderKey] as? String else {
+        guard let resetTime = allHeaderFields["X-Rate-Limit-Reset"] as? String else {
             return nil
         }
         guard let resetTimeNumber = Double(resetTime) else {
