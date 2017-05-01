@@ -96,7 +96,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
-open class RouteOptions: NSObject {
+open class RouteOptions: NSObject, NSSecureCoding {
     // MARK: Creating a Route Options Object
     
     /**
@@ -136,6 +136,52 @@ open class RouteOptions: NSObject {
     public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        guard let waypoints = decoder.decodeObject(of: [NSArray.self, Waypoint.self], forKey: "waypoints") as? [Waypoint] else {
+            return nil
+        }
+        self.waypoints = waypoints
+        
+        allowsUTurnAtWaypoint = decoder.decodeBool(forKey: "allowsUTurnAtWaypoint")
+        
+        guard let profileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+            return nil
+        }
+        self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier)
+        
+        includesAlternativeRoutes = decoder.decodeBool(forKey: "includesAlternativeRoutes")
+        includesSteps = decoder.decodeBool(forKey: "includesSteps")
+        
+        guard let shapeFormat = RouteShapeFormat(description: decoder.decodeObject(of: NSString.self, forKey: "shapeFormat") as String? ?? "") else {
+            return nil
+        }
+        self.shapeFormat = shapeFormat
+        
+        guard let routeShapeResolution = RouteShapeResolution(description: decoder.decodeObject(of: NSString.self, forKey: "routeShapeResolution") as String? ?? "") else {
+            return nil
+        }
+        self.routeShapeResolution = routeShapeResolution
+        
+        guard let descriptions = decoder.decodeObject(of: NSString.self, forKey: "attributeOptions") as String?,
+            let attributeOptions = AttributeOptions(descriptions: descriptions.components(separatedBy: ",")) else {
+            return nil
+        }
+        self.attributeOptions = attributeOptions
+    }
+    
+    open static var supportsSecureCoding = true
+    
+    public func encode(with coder: NSCoder) {
+        coder.encode(waypoints, forKey: "waypoints")
+        coder.encode(allowsUTurnAtWaypoint, forKey: "allowsUTurnAtWaypoint")
+        coder.encode(profileIdentifier, forKey: "profileIdentifier")
+        coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
+        coder.encode(includesSteps, forKey: "includesSteps")
+        coder.encode(shapeFormat.description, forKey: "shapeFormat")
+        coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
+        coder.encode(attributeOptions.description, forKey: "attributeOptions")
     }
     
     // MARK: Specifying the Path of the Route
