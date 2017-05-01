@@ -6,21 +6,25 @@ extension AttributeOptions: CustomStringConvertible {
     /**
      Creates an AttributeOptions from the given description strings.
      */
-    public init?(description: String) {
-        var scope: AttributeOptions = []
-        switch description {
-        case "distance":
-            scope.update(with: .distance)
-        case "expectedTravelTime":
-            scope.update(with: .expectedTravelTime)
-        case "openStreetMapNodeIdentifier":
-            scope.update(with: .openStreetMapNodeIdentifier)
-        case "speed":
-            scope.update(with: .speed)
-        default:
-            return nil
+    public init?(descriptions: [String]) {
+        var attributeOptions: AttributeOptions = []
+        for description in descriptions {
+            switch description {
+            case "distance":
+                attributeOptions.update(with: .distance)
+            case "expectedTravelTime":
+                attributeOptions.update(with: .expectedTravelTime)
+            case "openStreetMapNodeIdentifier":
+                attributeOptions.update(with: .openStreetMapNodeIdentifier)
+            case "speed":
+                attributeOptions.update(with: .speed)
+            case "":
+                continue
+            default:
+                return nil
+            }
         }
-        self.init(rawValue: scope.rawValue)
+        self.init(rawValue: attributeOptions.rawValue)
     }
     
     public var description: String {
