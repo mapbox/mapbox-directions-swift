@@ -7,32 +7,32 @@ extension LaneIndication: CustomStringConvertible {
      Creates a lane indication from the given description strings.
      */
     public init?(descriptions: [String]) {
-        var scope: LaneIndication = []
+        var laneIndication: LaneIndication = []
         for description in descriptions {
             switch description {
             case "sharp right":
-                scope.insert(.sharpRight)
+                laneIndication.insert(.sharpRight)
             case "right":
-                scope.insert(.right)
+                laneIndication.insert(.right)
             case "slight right":
-                scope.insert(.slightRight)
+                laneIndication.insert(.slightRight)
             case "straight":
-                scope.insert(.straightAhead)
+                laneIndication.insert(.straightAhead)
             case "slight left":
-                scope.insert(.slightLeft)
+                laneIndication.insert(.slightLeft)
             case "left":
-                scope.insert(.left)
+                laneIndication.insert(.left)
             case "sharp left":
-                scope.insert(.sharpLeft)
+                laneIndication.insert(.sharpLeft)
             case "uturn":
-                scope.insert(.uTurn)
+                laneIndication.insert(.uTurn)
             case "none":
                 break
             default:
                 return nil
             }
         }
-        self.init(rawValue: scope.rawValue)
+        self.init(rawValue: laneIndication.rawValue)
     }
     
     public var description: String {
