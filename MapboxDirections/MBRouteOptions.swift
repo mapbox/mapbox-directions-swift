@@ -325,15 +325,23 @@ open class RouteOptions: NSObject, NSSecureCoding {
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
     internal func response(_ json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-        let waypoints = (json["waypoints"] as? [JSONDictionary])?.enumerated().map { (index, waypoint) -> Waypoint in
-            let location = waypoint["location"] as! [Double]
-            let coordinate = CLLocationCoordinate2D(geoJSON: location)
-            return Waypoint(coordinate: coordinate, name: self.waypoints[index].name ?? waypoint["name"] as? String)
+        if let waypoints = (json["waypoints"] as? [JSONDictionary]) {
+            let zippedWaypoints = zip(waypoints, self.waypoints).map { (json, waypoint) -> Waypoint in
+                let location = json["location"] as! [Double]
+                let coordinate = CLLocationCoordinate2D(geoJSON: location)
+                return Waypoint(coordinate: coordinate, name: waypoint.name ?? json["name"] as? String)
+            }
+            
+            let routes = (json["routes"] as? [JSONDictionary])?.map {
+                Route(json: $0, waypoints: zippedWaypoints, routeOptions: self)
+            }
+            return (zippedWaypoints, routes)
+        } else {
+            let routes = (json["routes"] as? [JSONDictionary])?.map {
+                Route(json: $0, waypoints: self.waypoints, routeOptions: self)
+            }
+            return (waypoints, routes)
         }
-        let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: waypoints ?? self.waypoints, routeOptions: self)
-        }
-        return (waypoints, routes)
     }
 }
 
