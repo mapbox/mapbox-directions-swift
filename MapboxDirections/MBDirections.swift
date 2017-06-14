@@ -165,9 +165,9 @@ open class Directions: NSObject {
      */
     @objc(calculateDirectionsWithOptions:completionHandler:)
     open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
-        let url = urlForCalculating(options)
-        let task = dataTaskWithURL(url, completionHandler: { (json) in
-            let response = options.response(json)
+        let url = self.url(forCalculating: options)
+        let task = dataTask(with: url, completionHandler: { (json) in
+            let response = options.response(from: json)
             completionHandler(response.0, response.1, nil)
         }) { (error) in
             completionHandler(nil, nil, error)
@@ -185,7 +185,7 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTaskWithURL(_ url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         let request = NSMutableURLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -202,7 +202,7 @@ open class Directions: NSObject {
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
             guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
-                let apiError = Directions.descriptiveError(json, response: response, underlyingError: error as NSError?)
+                let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
                 DispatchQueue.main.async {
                     errorHandler(apiError)
                 }
@@ -221,7 +221,7 @@ open class Directions: NSObject {
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
-    open func urlForCalculating(_ options: RouteOptions) -> URL {
+    open func url(forCalculating options: RouteOptions) -> URL {
         let params = options.params + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
@@ -235,7 +235,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func descriptiveError(_ json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
+    static func informativeError(describing json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         let apiStatusCode = json["code"] as? String
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {

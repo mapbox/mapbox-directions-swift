@@ -324,7 +324,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(_ json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let waypoints = (json["waypoints"] as? [JSONDictionary])?.map { waypoint -> Waypoint in
             let location = waypoint["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
@@ -420,7 +420,7 @@ open class RouteOptionsV4: RouteOptions {
         ]
     }
     
-    override func response(_ json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
