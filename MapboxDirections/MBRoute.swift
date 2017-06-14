@@ -3,7 +3,7 @@ import Polyline
 /**
  A `Route` object defines a single route that the user can follow to visit a series of waypoints in order. The route object includes information about the route, such as its distance and expected travel time. Depending on the criteria used to calculate the route, the route object may also include detailed turn-by-turn instructions.
  
- Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.urlForCalculating(_:)` method instead, you can pass the results of the HTTP request into this class’s initializer. 
+ Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
 @objc(MBRoute)
 open class Route: NSObject, NSSecureCoding {
@@ -20,7 +20,7 @@ open class Route: NSObject, NSSecureCoding {
     /**
      Initializes a new route object with the given JSON dictionary representation and waypoints.
      
-     This initializer is intended for use in conjunction with the `Directions.urlForCalculating(_:)` method.
+     This initializer is intended for use in conjunction with the `Directions.url(forCalculating:)` method.
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
