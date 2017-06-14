@@ -557,10 +557,11 @@ open class RouteStep: NSObject, NSSecureCoding {
             return nil
         }
         maneuverType = ManeuverType(description: maneuverTypeDescription)
-        guard let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String? else {
-            return nil
+        if let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String? {
+            maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        } else {
+            maneuverDirection = nil
         }
-        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         
         if let maneuverLocationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
             let latitude = maneuverLocationDictionary["latitude"],
