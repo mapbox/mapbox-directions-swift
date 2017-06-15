@@ -139,7 +139,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The name of the waypoint.
      
-     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another. When you get an array of waypoints back in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
+     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
     open var name: String?
     
