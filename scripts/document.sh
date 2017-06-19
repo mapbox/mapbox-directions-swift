@@ -40,4 +40,4 @@ jazzy \
     --output ${OUTPUT}
 
 find ${OUTPUT} -name *.html -exec \
-    perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Mapbox Directions for iOS $1/, s/MapboxDirections.swift\s+(Docs|Reference)/Mapbox Directions for iOS $1/' {} \;
+    perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions for iOS $1/, s/MapboxDirections.swift\s+(Docs|Reference)/Mapbox Directions for iOS $1/' {} \;
