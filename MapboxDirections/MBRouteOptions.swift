@@ -103,14 +103,14 @@ open class RouteOptions: NSObject, NSSecureCoding {
      Initializes a route options object for routes between the given waypoints and an optional profile identifier.
      
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` is used by default.
      */
     public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         assert(waypoints.count >= 2, "A route requires at least a source and destination.")
         assert(waypoints.count <= 25, "A route may not have more than 25 waypoints.")
         
         self.waypoints = waypoints
-        self.profileIdentifier = profileIdentifier ?? .automobile
+        self.profileIdentifier = profileIdentifier ?? .automobileAvoidingTraffic
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
     
