@@ -49,7 +49,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
         self.segmentSpeeds = segmentSpeeds
         self.openStreetMapNodeIdentifiers = openStreetMapNodeIdentifiers
-        self.congestionLevels = congestionLevels
+        self.segmentCongestionLevels = congestionLevels
     }
     
     /**
@@ -98,7 +98,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
         openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
-        congestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "congestionLevels") as? [CongestionLevel]
+        segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
     }
     
     open static var supportsSecureCoding = true
@@ -115,7 +115,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
         coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
         coder.encode(openStreetMapNodeIdentifiers, forKey: "openStreetMapNodeIdentifiers")
-        coder.encode(congestionLevels, forKey: "congestionLevels")
+        coder.encode(segmentCongestionLevels, forKey: "segmentCongestionLevels")
     }
     
     // MARK: Getting the Leg Geometry
@@ -184,7 +184,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
      
      This property is set if the `RouteOptions.attributeOptions` property contains `.congestionLevel`.
      */
-    open let congestionLevels: [CongestionLevel]?
+    open let segmentCongestionLevels: [CongestionLevel]?
     
     // MARK: Getting Additional Leg Details
     
