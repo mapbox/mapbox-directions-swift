@@ -187,7 +187,7 @@ open class Directions: NSObject {
      */
     fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
