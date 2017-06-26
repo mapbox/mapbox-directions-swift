@@ -1,45 +1,44 @@
 import Foundation
 
-public typealias CongestionLevel = MBCongestionLevel
-
-extension CongestionLevel: CustomStringConvertible {
+@objc(MBCongestionLevel)
+public enum CongestionLevel: Int, CustomStringConvertible {
+    case unknown
+    case low
+    case moderate
+    case heavy
+    case severe
     
     public init?(description: String) {
-        var scope: CongestionLevel = []
+        let level: CongestionLevel
         switch description {
         case "unknown":
-            scope.update(with: .unknown)
+            level = .unknown
         case "low":
-            scope.update(with: .low)
+            level = .low
         case "moderate":
-            scope.update(with: .moderate)
+            level = .moderate
         case "heavy":
-            scope.update(with: .heavy)
+            level = .heavy
         case "severe":
-            scope.update(with: .severe)
+            level = .severe
         default:
             return nil
         }
-        self.init(rawValue: scope.rawValue)
+        self.init(rawValue: level.rawValue)
     }
     
     public var description: String {
-        var descriptions: [String] = []
-        if contains(.unknown ) {
-            descriptions.append("unknown")
+        switch self {
+        case .unknown:
+            return "unknown"
+        case .low:
+            return "low"
+        case .moderate:
+            return "moderate"
+        case .heavy:
+            return "heavy"
+        case .severe:
+            return "severe"
         }
-        if contains(.low) {
-            descriptions.append("low")
-        }
-        if contains(.moderate) {
-            descriptions.append("moderate")
-        }
-        if contains(.heavy) {
-            descriptions.append("heavy")
-        }
-        if contains(.severe) {
-            descriptions.append("severe")
-        }
-        return descriptions.joined(separator: ",")
     }
 }

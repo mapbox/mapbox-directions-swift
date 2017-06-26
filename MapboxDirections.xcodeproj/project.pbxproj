@@ -40,10 +40,6 @@
 		C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55071DB58C0200B94B74 /* MBLane.swift */; };
-		C58EA7A51E9D7E6E008F98CE /* MBCongestion.h in Headers */ = {isa = PBXBuildFile; fileRef = C58EA7A41E9D7E66008F98CE /* MBCongestion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C58EA7A61E9D7E6F008F98CE /* MBCongestion.h in Headers */ = {isa = PBXBuildFile; fileRef = C58EA7A41E9D7E66008F98CE /* MBCongestion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C58EA7A71E9D7E70008F98CE /* MBCongestion.h in Headers */ = {isa = PBXBuildFile; fileRef = C58EA7A41E9D7E66008F98CE /* MBCongestion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C58EA7A81E9D7E70008F98CE /* MBCongestion.h in Headers */ = {isa = PBXBuildFile; fileRef = C58EA7A41E9D7E66008F98CE /* MBCongestion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C58EA7AA1E9D7EAD008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C58EA7AB1E9D7F73008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C58EA7AC1E9D7F74008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
@@ -173,7 +169,6 @@
 		C57B2E951DB8171300E9123A /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLaneIndication.h; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
-		C58EA7A41E9D7E66008F98CE /* MBCongestion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBCongestion.h; sourceTree = "<group>"; };
 		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBCongestion.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
 		DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -339,10 +334,9 @@
 				C57B2E951DB8171300E9123A /* MBLaneIndication.h */,
 				DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */,
 				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
-				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
 				C558C58B1E94181A00617B37 /* MBAttribute.h */,
+				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
 				C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */,
-				C58EA7A41E9D7E66008F98CE /* MBCongestion.h */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 			);
 			path = MapboxDirections;
@@ -502,7 +496,6 @@
 				DA1A10C61D00F969009F82FA /* MapboxDirections.h in Headers */,
 				C558C58D1E94196200617B37 /* MBAttribute.h in Headers */,
 				C57B2E971DB8171300E9123A /* MBLaneIndication.h in Headers */,
-				C58EA7A61E9D7E6F008F98CE /* MBCongestion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +507,6 @@
 				DA1A10EC1D010247009F82FA /* MapboxDirections.h in Headers */,
 				C558C58E1E94196200617B37 /* MBAttribute.h in Headers */,
 				C57B2E981DB8171300E9123A /* MBLaneIndication.h in Headers */,
-				C58EA7A71E9D7E70008F98CE /* MBCongestion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +518,6 @@
 				DA1A11031D0103A3009F82FA /* MapboxDirections.h in Headers */,
 				C558C58F1E94196300617B37 /* MBAttribute.h in Headers */,
 				C57B2E991DB8171300E9123A /* MBLaneIndication.h in Headers */,
-				C58EA7A81E9D7E70008F98CE /* MBCongestion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +529,6 @@
 				DA6C9D8B1CAE442B00094FBC /* MapboxDirections.h in Headers */,
 				C558C58C1E94196100617B37 /* MBAttribute.h in Headers */,
 				C57B2E961DB8171300E9123A /* MBLaneIndication.h in Headers */,
-				C58EA7A51E9D7E6E008F98CE /* MBCongestion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
