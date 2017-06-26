@@ -175,6 +175,15 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     open let openStreetMapNodeIdentifiers: [Int64]?
     
+    /**
+     An array containing the traffic congestion level along each road segment in the route leg geometry.
+     
+     Traffic data is available in [a number of countries and territories worldwide](https://www.mapbox.com/api-documentation/pages/traffic-countries.html).
+     
+     You can color-code a route line according to the congestion level along each segment of the route.
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `.congestionLevel`.
+     */
     open let congestionLevels: [CongestionLevel]?
     
     // MARK: Getting Additional Leg Details
