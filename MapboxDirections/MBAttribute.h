@@ -5,32 +5,32 @@
  */
 typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
     /**
+     [OpenStreetMap node identifier](https://wiki.openstreetmap.org/wiki/Node).
+     
+     When this attribute is specified, the `RouteLeg.openStreetMapNodeIdentifiers` property contains one value for each coordinate in the leg’s full geometry.
+     */
+    MBAttributeOpenStreetMapNodeIdentifier = (1 << 1),
+    
+    /**
      Distance (in meters) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentDistances` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeDistance = (1 << 1),
+    MBAttributeDistance = (1 << 2),
     
     /**
      Expected travel time (in seconds) along the segment.
      
      When this attribute is specified, the `RouteLeg.expectedSegmentTravelTimes` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeExpectedTravelTime = (1 << 2),
+    MBAttributeExpectedTravelTime = (1 << 3),
     
     /**
      Current average speed (in meters per second) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeSpeed = (1 << 3),
-    
-    /**
-     [OpenStreetMap node identifier](https://wiki.openstreetmap.org/wiki/Node).
-     
-     When this attribute is specified, the `RouteLeg.openStreetMapNodeIdentifiers` property contains one value for each coordinate in the leg’s full geometry.
-     */
-    MBAttributeOpenStreetMapNodeIdentifier = (1 << 4),
+    MBAttributeSpeed = (1 << 4),
     
     /**
      Traffic congestion level along the segment.
