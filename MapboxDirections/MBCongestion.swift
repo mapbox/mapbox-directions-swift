@@ -1,11 +1,11 @@
 import Foundation
 
-public typealias Congestion = MBCongestion
+public typealias CongestionLevel = MBCongestionLevel
 
-extension Congestion: CustomStringConvertible {
+extension CongestionLevel: CustomStringConvertible {
     
     public init?(description: String) {
-        var scope: Congestion = []
+        var scope: CongestionLevel = []
         switch description {
         case "unknown":
             scope.update(with: .unknown)

@@ -23,7 +23,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         var expectedSegmentTravelTimes: [TimeInterval]?
         var segmentSpeeds: [CLLocationSpeed]?
         var openStreetMapNodeIdentifiers: [Int64]?
-        var congestionLevels: [Congestion]?
+        var congestionLevels: [CongestionLevel]?
         
         if let jsonAttributes = json["annotation"] as? [String: Any] {
             if let distance = jsonAttributes["distance"] {
@@ -40,7 +40,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
             }
             if let congestion = jsonAttributes["congestion"] as? [String] {
                 congestionLevels = congestion.map {
-                    Congestion(description: $0)!
+                    CongestionLevel(description: $0)!
                 }
             }
         }
@@ -98,7 +98,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
         openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
-        congestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "congestionLevels") as? [Congestion]
+        congestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "congestionLevels") as? [CongestionLevel]
     }
     
     open static var supportsSecureCoding = true
@@ -175,7 +175,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     open let openStreetMapNodeIdentifiers: [Int64]?
     
-    open let congestionLevels: [Congestion]?
+    open let congestionLevels: [CongestionLevel]?
     
     // MARK: Getting Additional Leg Details
     

@@ -1,12 +1,12 @@
-typedef NS_OPTIONS(NSUInteger, MBCongestion) {
+typedef NS_OPTIONS(NSUInteger, MBCongestionLevel) {
     
-    MBCongestionUnknown = (1 << 1),
+    MBCongestionLevelUnknown = (1 << 1),
     
-    MBCongestionLow = (1 << 2),
+    MBCongestionLevelLow = (1 << 2),
     
-    MBCongestionModerate = (1 << 3),
+    MBCongestionLevelModerate = (1 << 3),
     
-    MBCongestionHeavy = (1 << 4),
+    MBCongestionLevelHeavy = (1 << 4),
     
-    MBCongestionSevere = (1 << 5)
+    MBCongestionLevelSevere = (1 << 5)
 };
