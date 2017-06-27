@@ -36,6 +36,8 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
      Traffic congestion level along the segment.
      
      When this attribute is specified, the `RouteLeg.congestionLevels` property contains one value for each segment in the leg’s full geometry.
+     
+     This attribute requires `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
     MBAttributeCongestionLevel = (1 << 5),
 };
