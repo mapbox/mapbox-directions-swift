@@ -10,14 +10,16 @@ extension AttributeOptions: CustomStringConvertible {
         var attributeOptions: AttributeOptions = []
         for description in descriptions {
             switch description {
+            case "nodes":
+                attributeOptions.update(with: .openStreetMapNodeIdentifier)
             case "distance":
                 attributeOptions.update(with: .distance)
-            case "expectedTravelTime":
+            case "duration":
                 attributeOptions.update(with: .expectedTravelTime)
-            case "openStreetMapNodeIdentifier":
-                attributeOptions.update(with: .openStreetMapNodeIdentifier)
             case "speed":
                 attributeOptions.update(with: .speed)
+            case "congestion":
+                attributeOptions.update(with: .congestionLevel)
             case "":
                 continue
             default:
@@ -29,17 +31,20 @@ extension AttributeOptions: CustomStringConvertible {
     
     public var description: String {
         var descriptions: [String] = []
+        if contains(.openStreetMapNodeIdentifier) {
+            descriptions.append("nodes")
+        }
         if contains(.distance) {
             descriptions.append("distance")
         }
         if contains(.expectedTravelTime) {
             descriptions.append("duration")
         }
-        if contains(.openStreetMapNodeIdentifier) {
-            descriptions.append("nodes")
-        }
         if contains(.speed) {
             descriptions.append("speed")
+        }
+        if contains(.congestionLevel) {
+            descriptions.append("congestion")
         }
         return descriptions.joined(separator: ",")
     }

@@ -12,15 +12,15 @@ class AnnotationTests: XCTestCase {
         let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
-            "alternatives": "true",
+            "alternatives": "false",
             "geometries": "polyline",
             "overview": "full",
-            "steps": "true",
+            "steps": "false",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,nodes,speed"
+            "annotations": "nodes,distance,duration,speed,congestion"
             ]
-    
+        
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "annotation", ofType: "json")
@@ -30,12 +30,12 @@ class AnnotationTests: XCTestCase {
         let options = RouteOptions(coordinates: [
             CLLocationCoordinate2D(latitude: 37.780602, longitude: -122.431373),
             CLLocationCoordinate2D(latitude: 37.758859, longitude: -122.404058),
-            ])
+            ], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline
-        options.includesSteps = true
-        options.includesAlternativeRoutes = true
+        options.includesSteps = false
+        options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .openStreetMapNodeIdentifier]
+        options.attributeOptions = [.openStreetMapNodeIdentifier, .distance, .expectedTravelTime, .speed, .congestionLevel]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
@@ -55,13 +55,15 @@ class AnnotationTests: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 93)
+        XCTAssertEqual(route!.coordinates!.count, 99)
         
         let leg = route!.legs.first!
-        XCTAssertEqual(leg.segmentDistances!.count, 92)
-        XCTAssertEqual(leg.segmentSpeeds!.count, 92)
-        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 92)
-        XCTAssertEqual(leg.openStreetMapNodeIdentifiers!.count, 93)
-        
+        XCTAssertEqual(leg.openStreetMapNodeIdentifiers!.count, 99)
+        XCTAssertEqual(leg.segmentDistances!.count, 98)
+        XCTAssertEqual(leg.segmentSpeeds!.count, 98)
+        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 98)
+        XCTAssertEqual(leg.segmentCongestionLevels!.count, 98)
+        XCTAssertEqual(leg.segmentCongestionLevels!.first!, .moderate)
+        XCTAssertEqual(leg.segmentCongestionLevels!.last!, .low)
     }
 }
