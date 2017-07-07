@@ -407,11 +407,12 @@ extension String {
 struct Road {
     let names: [String]?
     let codes: [String]?
+    let exitCodes: [String]?
     let destinations: [String]?
     let destinationCodes: [String]?
     let rotaryNames: [String]?
     
-    init(name: String, ref: String?, destination: String?, rotaryName: String?) {
+    init(name: String, ref: String?, exits: String?, destination: String?, rotaryName: String?) {
         var codes: [String]?
         if !name.isEmpty, let ref = ref {
             // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
@@ -446,6 +447,7 @@ struct Road {
             self.destinations = destination?.tagValues(separatedBy: ",")
         }
         
+        self.exitCodes = exits?.tagValues(separatedBy: ",")
         self.codes = codes
         self.rotaryNames = rotaryName?.tagValues(separatedBy: ";")
     }
@@ -463,7 +465,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
-        let road = Road(name: name, ref: json["ref"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
+        let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
         if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
             names = road.rotaryNames
             exitNames = road.names
@@ -471,6 +473,7 @@ open class RouteStep: NSObject, NSSecureCoding {
             names = road.names
             exitNames = nil
         }
+        exitCodes = road.exitCodes
         codes = road.codes
         destinationCodes = road.destinationCodes
         destinations = road.destinations
@@ -572,6 +575,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         }
         
         exitIndex = decoder.containsValue(forKey: "exitIndex") ? decoder.decodeInteger(forKey: "exitIndex") : nil
+        exitCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitCodes") as? [String]
         exitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitNames") as? [String]
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
@@ -621,6 +625,7 @@ open class RouteStep: NSObject, NSSecureCoding {
             coder.encode(exitIndex, forKey: "exitIndex")
         }
         
+        coder.encode(exitCodes, forKey: "exitCodes")
         coder.encode(exitNames, forKey: "exitNames")
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
@@ -723,16 +728,25 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
      
-     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances. If the maneuver is a roundabout maneuver, the exit index is the number of exits from the approach to the recommended outlet.
+     If the maneuver takes place on a surface street, this property counts intersections. The number of intersections does not necessarily correspond to the number of blocks. If the maneuver takes place on a grade-separated highway (freeway or motorway), this property counts highway exits but not highway entrances. If the maneuver is a roundabout maneuver, the exit index is the number of exits from the approach to the recommended outlet. For the signposted exit numbers associated with a highway exit, use the `exitCodes` property.
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
     open let exitIndex: Int?
     
     /**
+     Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
+     
+     This property is only set when the `maneuverType` is `ManeuverType.takeOffRamp`. For the number of exits from the previous maneuver, regardless of the highway’s exit numbering scheme, use the `exitIndex` property. For the route reference codes associated with the connecting road, use the `destinationCodes` property. For the names associated with a roundabout exit, use the `exitNames` property.
+     
+     An exit number is an alphanumeric identifier posted at or ahead of a highway off-ramp. Exit numbers may increase or decrease sequentially along a road, or they may correspond to distances from either end of the road. An alphabetic suffix may appear when multiple exits are located in the same interchange. If multiple exits are [combined into a single exit](https://en.wikipedia.org/wiki/Local-express_lanes#Example_of_cloverleaf_interchanges), the step may have multiple exit codes.
+     */
+    open let exitCodes: [String]?
+    
+    /**
      The names of the roundabout exit.
      
-     This property is only set for roundabout (traffic circle or rotary) maneuvers. For the signposted names associated with a highway exit, use the `destinations` property.
+     This property is only set for roundabout (traffic circle or rotary) maneuvers. For the signposted names associated with a highway exit, use the `destinations` property. For the signposted exit numbers, use the `exitCodes` property.
      
      If you display a name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
      */
@@ -784,7 +798,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
      
-     This property is typically available in steps leading to or from a freeway or expressway. This property contains route reference codes associated with a road later in the route. If a highway ramp is itself part of a numbered route, its reference code is contained in the `codes` property.
+     This property is typically available in steps leading to or from a freeway or expressway. This property contains route reference codes associated with a road later in the route. If a highway ramp is itself part of a numbered route, its reference code is contained in the `codes` property. For the signposted exit numbers associated with a highway exit, use the `exitCodes` property.
      
      A route reference code commonly consists of an alphabetic network code, a space or hyphen, and a route number. You should not assume that the network code is globally unique: for example, a network code of “NH” may indicate a “National Highway” or “New Hampshire”. Moreover, a route number may not even uniquely identify a route within a given network. A destination code for a divided road is often suffixed with the cardinal direction of travel, for example “I 80 East”.
      */
