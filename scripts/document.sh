@@ -23,7 +23,7 @@ RELEASE_VERSION=$( echo ${SHORT_VERSION} | sed -e 's/^v//' -e 's/-.*//' )
 rm -rf ${OUTPUT}
 mkdir -p ${OUTPUT}
 
-cp -r docs/img "${OUTPUT}"
+#cp -r docs/img "${OUTPUT}"
 
 DEFAULT_THEME="docs/theme"
 THEME=${JAZZY_THEME:-$DEFAULT_THEME}
@@ -40,4 +40,4 @@ jazzy \
     --output ${OUTPUT}
 
 find ${OUTPUT} -name *.html -exec \
-    perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions for iOS $1/, s/MapboxDirections.swift\s+(Docs|Reference)/Mapbox Directions for iOS $1/' {} \;
+    perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, s/MapboxDirections.swift\s+(Docs|Reference)/MapboxDirections.swift $1/' {} \;
