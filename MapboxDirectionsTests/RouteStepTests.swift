@@ -78,7 +78,7 @@ class RoadTests: XCTestCase {
 
         r = Road(name: "", ref: nil, exits: "123 A", destination: nil, rotaryName: nil)
         XCTAssertEqual(r.exitCodes ?? [], [ "123 A" ])
-        r = Road(name: "", ref: nil, exits: "123A,123B", destination: nil, rotaryName: nil)
+        r = Road(name: "", ref: nil, exits: "123A;123B", destination: nil, rotaryName: nil)
         XCTAssertEqual(r.exitCodes ?? [], [ "123A", "123B" ])
     }
 
