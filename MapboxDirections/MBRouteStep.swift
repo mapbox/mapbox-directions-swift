@@ -447,7 +447,7 @@ struct Road {
             self.destinations = destination?.tagValues(separatedBy: ",")
         }
         
-        self.exitCodes = exits?.tagValues(separatedBy: ",")
+        self.exitCodes = exits?.tagValues(separatedBy: ";")
         self.codes = codes
         self.rotaryNames = rotaryName?.tagValues(separatedBy: ";")
     }
