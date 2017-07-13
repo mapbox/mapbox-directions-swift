@@ -146,6 +146,10 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
+    
+    func debugQuickLookObject() -> Any {
+        return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: coordinateAccuracy, verticalAccuracy: -1, course: heading, speed: -1, timestamp: Date())
+    }
 }
 
 // MARK: Support for Directions API v4

@@ -817,6 +817,13 @@ open class RouteStep: NSObject, NSSecureCoding {
      Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
     */
     public let intersections: [Intersection]?
+    
+    func debugQuickLookObject() -> Any? {
+        if let coordinates = coordinates {
+            return debugQuickLookURL(illustrating: coordinates)
+        }
+        return nil
+    }
 }
 
 // MARK: Support for Directions API v4
@@ -865,4 +872,40 @@ internal class RouteStepV4: RouteStep {
         
         self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
     }
+}
+
+func debugQuickLookURL(illustrating coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier = .automobile) -> URL? {
+    guard let accessToken = defaultAccessToken else {
+        return nil
+    }
+    
+    let styleIdentifier: String
+    let identifierOfLayerAboveOverlays: String
+    switch profileIdentifier {
+    case MBDirectionsProfileIdentifier.automobileAvoidingTraffic:
+        styleIdentifier = "mapbox/traffic-day-v2"
+        identifierOfLayerAboveOverlays = "poi-driving-scalerank4"
+    case MBDirectionsProfileIdentifier.cycling, MBDirectionsProfileIdentifier.walking:
+        styleIdentifier = "mapbox/outdoors-v10"
+        identifierOfLayerAboveOverlays = "housenum-label"
+    default:
+        styleIdentifier = "mapbox/streets-v10"
+        identifierOfLayerAboveOverlays = "housenum-label"
+    }
+    let styleIdentifierComponent = "/\(styleIdentifier)/static"
+    
+    var allowedCharacterSet = CharacterSet.urlPathAllowed
+    allowedCharacterSet.remove(charactersIn: "/)")
+    let encodedPolyline = encodeCoordinates(coordinates, precision: 1e5).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)!
+    let overlaysComponent = "/path-10+3802DA-0.6(\(encodedPolyline))"
+    
+    let path = "/styles/v1\(styleIdentifierComponent)\(overlaysComponent)/auto/680x360@2x"
+    
+    var components = URLComponents()
+    components.queryItems = [
+        URLQueryItem(name: "before_layer", value: identifierOfLayerAboveOverlays),
+        URLQueryItem(name: "access_token", value: accessToken),
+    ]
+    
+    return URL(string: "https://api.mapbox.com\(path)?\(components.percentEncodedQuery!)")
 }

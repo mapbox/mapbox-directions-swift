@@ -221,6 +221,14 @@ open class RouteLeg: NSObject, NSSecureCoding {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     open let profileIdentifier: MBDirectionsProfileIdentifier
+    
+    func debugQuickLookObject() -> Any? {
+        let coordinates = steps.reduce([], { $0 + ($1.coordinates ?? []) })
+        guard !coordinates.isEmpty else {
+            return nil
+        }
+        return debugQuickLookURL(illustrating: coordinates)
+    }
 }
 
 // MARK: Support for Directions API v4

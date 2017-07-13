@@ -161,6 +161,13 @@ open class Route: NSObject, NSSecureCoding {
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
     open let routeOptions: RouteOptions
+    
+    func debugQuickLookObject() -> Any? {
+        if let coordinates = coordinates {
+            return debugQuickLookURL(illustrating: coordinates, profileIdentifier: routeOptions.profileIdentifier)
+        }
+        return nil
+    }
 }
 
 // MARK: Support for Directions API v4
