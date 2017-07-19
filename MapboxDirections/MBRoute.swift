@@ -162,6 +162,11 @@ open class Route: NSObject, NSSecureCoding {
      */
     open let routeOptions: RouteOptions
     
+    /**
+     The access token used to make the directions request.
+     */
+    open var accessToken: String! = nil
+    
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {
             return debugQuickLookURL(illustrating: coordinates, profileIdentifier: routeOptions.profileIdentifier)

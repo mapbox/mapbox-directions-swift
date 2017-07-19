@@ -53,6 +53,7 @@ class V4Tests: XCTestCase {
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
         XCTAssertEqual(route!.coordinates!.count, 28375)
+        XCTAssertEqual(route!.accessToken, BogusToken)
         
         XCTAssertEqual(round(route!.coordinates!.first!.latitude), 38)
         XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
