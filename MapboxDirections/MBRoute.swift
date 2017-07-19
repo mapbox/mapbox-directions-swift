@@ -165,9 +165,16 @@ open class Route: NSObject, NSSecureCoding {
     /**
      The access token used to make the directions request.
      
-     Only set after a request is made via `Directions.calculate(_:completionHandler:)`.
+     Only set if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
     open var accessToken: String?
+    
+    /**
+     The endpoint used to make the directions request.
+     
+     Only set if a request is made via `Directions.calculate(_:completionHandler:)`.
+     */
+    open var apiEndpoint: String?
     
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {
