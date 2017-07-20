@@ -80,7 +80,11 @@ public class Intersection: NSObject, NSSecureCoding {
             usableApproachLanes = nil
         }
         
-        roadClasses = json["classes"] as? RoadClasses
+        if let classStrings = json["classes"] as? [String] {
+            roadClasses = RoadClasses(descriptions: classStrings)
+        } else {
+            roadClasses = nil
+        }
     }
     
     public required init?(coder decoder: NSCoder) {

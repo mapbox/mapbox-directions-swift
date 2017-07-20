@@ -3,28 +3,26 @@ import Foundation
 public typealias RoadClasses = MBRoadClasses
 
 extension RoadClasses: CustomStringConvertible {
-    /**
-     Creates a lane indication from the given description strings.
-     */
+    
     public init?(descriptions: [String]) {
-        var laneIndication: RoadClasses = []
+        var roadClasses: RoadClasses = []
         for description in descriptions {
             switch description {
             case "toll":
-                laneIndication.insert(.toll)
+                roadClasses.insert(.toll)
             case "restricted":
-                laneIndication.insert(.restricted)
-            case "highway":
-                laneIndication.insert(.highway)
+                roadClasses.insert(.restricted)
+            case "motorway":
+                roadClasses.insert(.motorway)
             case "ferry":
-                laneIndication.insert(.ferry)
+                roadClasses.insert(.ferry)
             case "none":
                 break
             default:
                 return nil
             }
         }
-        self.init(rawValue: laneIndication.rawValue)
+        self.init(rawValue: roadClasses.rawValue)
     }
     
     public var description: String {
@@ -39,8 +37,8 @@ extension RoadClasses: CustomStringConvertible {
         if contains(.restricted) {
             descriptions.append("restricted")
         }
-        if contains(.highway) {
-            descriptions.append("highway")
+        if contains(.motorway) {
+            descriptions.append("motorway")
         }
         if contains(.ferry) {
             descriptions.append("ferry")

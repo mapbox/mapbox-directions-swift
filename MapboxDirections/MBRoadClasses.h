@@ -4,7 +4,7 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     
     MBRoadClassesRestricted = (1 << 2),
     
-    MBRoadClassesHighway = (1 << 3),
+    MBRoadClassesMotorway = (1 << 3),
     
     MBRoadClassesFerry = (1 << 4),
 };
