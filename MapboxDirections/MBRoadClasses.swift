@@ -4,6 +4,9 @@ public typealias RoadClasses = MBRoadClasses
 
 extension RoadClasses: CustomStringConvertible {
     
+    /**
+     Creates a `RoadClasses` given and arrray of `Strings`.
+     */
     public init?(descriptions: [String]) {
         var roadClasses: RoadClasses = []
         for description in descriptions {
@@ -27,7 +30,7 @@ extension RoadClasses: CustomStringConvertible {
     
     public var description: String {
         if isEmpty {
-            return "none"
+            return ""
         }
         
         var descriptions: [String] = []

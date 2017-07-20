@@ -50,6 +50,11 @@ public class Intersection: NSObject, NSSecureCoding {
      */
     public let usableApproachLanes: IndexSet?
     
+    /**
+     Option set representing the classes of road.
+     
+     If no road class information is available, this property's value is `nil`.
+     */
     public let roadClasses: MBRoadClasses?
     
     internal init(json: JSONDictionary) {
