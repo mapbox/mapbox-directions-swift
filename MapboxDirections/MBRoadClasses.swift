@@ -5,7 +5,7 @@ public typealias RoadClasses = MBRoadClasses
 extension RoadClasses: CustomStringConvertible {
     
     /**
-     Creates a `RoadClasses` given and arrray of `Strings`.
+     Creates a `RoadClasses` given an arrray of `String`.
      */
     public init?(descriptions: [String]) {
         var roadClasses: RoadClasses = []
