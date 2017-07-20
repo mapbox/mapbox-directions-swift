@@ -79,7 +79,7 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(firstStepIntersections)
         let firstIntersection = firstStepIntersections?.first
         XCTAssertNotNil(firstIntersection)
-        let roadClasses = firstIntersection?.roadClasses
+        let roadClasses = firstIntersection?.outletRoadClasses
         XCTAssertNotNil(roadClasses)
         XCTAssertTrue(roadClasses?.contains([.toll, .restricted]) ?? false)
         
