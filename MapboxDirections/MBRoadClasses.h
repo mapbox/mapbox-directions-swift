@@ -6,24 +6,30 @@
 typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     
     /**
-     Indidcates a road has a segments which has [paid tolls](https://wiki.openstreetmap.org/wiki/Key:toll).
+     The road segment is [tolled](https://wiki.openstreetmap.org/wiki/Key:toll).
      */
     MBRoadClassesToll = (1 << 1),
     
     /**
-     Indicates a road has a segments which is [restricted](https://wiki.openstreetmap.org/wiki/Key:access).
+     The road segment has access restrictions.
+     
+     A road segment may have this class if there are [general access restrictions](https://wiki.openstreetmap.org/wiki/Key:access) or a [high-occupancy vehicle](https://wiki.openstreetmap.org/wiki/Key:hov) restriction.
      */
     MBRoadClassesRestricted = (1 << 2),
     
     /**
-     Indicates a road segment is a [freeway](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway) or [freeway ramp](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway_link).
+     The road segment is a [freeway](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway) or [freeway ramp](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway_link).
+     
+     It may be desirable to suppress the name of the freeway when giving instructions and give instructions at fixed distances before an exit (such as 1 mile or 1 kilometer ahead).
      */
     MBRoadClassesMotorway = (1 << 3),
     
     /**
-     Indicates a road segment requires the use of a ferry.
+     The user must travel this segment of the route by ferry.
      
-     @see TransportType.ferry
+     The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that his or her vehicle is permitted onboard the ferry.
+     
+     In general, the transport type of the step containing the road segment is also `TransportType.ferry`.
      */
     MBRoadClassesFerry = (1 << 4),
 };
