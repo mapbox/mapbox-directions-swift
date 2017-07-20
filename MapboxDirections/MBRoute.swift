@@ -163,16 +163,16 @@ open class Route: NSObject, NSSecureCoding {
     open let routeOptions: RouteOptions
     
     /**
-     The access token used to make the directions request.
+     The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.
      
-     Only set if a request is made via `Directions.calculate(_:completionHandler:)`.
+     This property is set automatically if a request is made via Directions.calculate(_:completionHandler:).
      */
     open var accessToken: String?
     
     /**
      The endpoint used to make the directions request.
      
-     Only set if a request is made via `Directions.calculate(_:completionHandler:)`.
+     This property is set automatically if a request is made via Directions.calculate(_:completionHandler:).
      */
     open var apiEndpoint: URL?
     
