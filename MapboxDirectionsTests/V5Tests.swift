@@ -55,6 +55,9 @@ class V5Tests: XCTestCase {
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
         XCTAssertEqual(route!.coordinates!.count, 28_442)
+        XCTAssertEqual(route!.accessToken, BogusToken)
+        XCTAssertEqual(route!.apiEndpoint, URL(string: "https://api.mapbox.com"))
+        
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding

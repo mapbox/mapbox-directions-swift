@@ -168,6 +168,12 @@ open class Directions: NSObject {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
+            if let routes = response.1 {
+                for route in routes {
+                    route.accessToken = self.accessToken
+                    route.apiEndpoint = self.apiEndpoint
+                }
+            }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
             completionHandler(nil, nil, error)
