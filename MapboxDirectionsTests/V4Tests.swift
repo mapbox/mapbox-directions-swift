@@ -54,6 +54,7 @@ class V4Tests: XCTestCase {
         XCTAssertNotNil(route!.coordinates)
         XCTAssertEqual(route!.coordinates!.count, 28375)
         XCTAssertEqual(route!.accessToken, BogusToken)
+        XCTAssertEqual(route!.apiEndpoint, URL(string: "https://api.mapbox.com"))
         
         XCTAssertEqual(round(route!.coordinates!.first!.latitude), 38)
         XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
