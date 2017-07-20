@@ -70,7 +70,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(leg.name, "I 80, I 80;US 30")
         XCTAssertEqual(leg.steps.count, 59)
         let roadClasses = leg.steps.first!.intersections!.first!.roadClasses!
-        XCTAssertTrue(roadClasses.contains(.motorway))
+        XCTAssertTrue(roadClasses.contains([.toll, .restricted]))
         
         let step = leg.steps[43]
         XCTAssertEqual(round(step.distance), 688)
