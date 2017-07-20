@@ -174,7 +174,7 @@ open class Route: NSObject, NSSecureCoding {
      
      Only set if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
-    open var apiEndpoint: String?
+    open var apiEndpoint: URL?
     
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {

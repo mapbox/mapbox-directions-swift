@@ -171,7 +171,7 @@ open class Directions: NSObject {
             if let routes = response.1 {
                 for route in routes {
                     route.accessToken = self.accessToken
-                    route.host = self.apiEndpoint
+                    route.apiEndpoint = self.apiEndpoint
                 }
             }
             completionHandler(response.0, response.1, nil)
