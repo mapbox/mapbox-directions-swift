@@ -6,12 +6,12 @@
 typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     
     /**
-     Indidcates the way has a road segments which are [paid tolls](https://wiki.openstreetmap.org/wiki/Key:toll).
+     Indidcates a road has a segments which has [paid tolls](https://wiki.openstreetmap.org/wiki/Key:toll).
      */
     MBRoadClassesToll = (1 << 1),
     
     /**
-     Indicates th way has segments which are [restricted](https://wiki.openstreetmap.org/wiki/Key:access).
+     Indicates a road has a segments which is [restricted](https://wiki.openstreetmap.org/wiki/Key:access).
      */
     MBRoadClassesRestricted = (1 << 2),
     
@@ -21,7 +21,7 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     MBRoadClassesMotorway = (1 << 3),
     
     /**
-     Indicates a road segment requires the use of a ferry. See
+     Indicates a road segment requires the use of a ferry.
      
      @see TransportType.ferry
      */
