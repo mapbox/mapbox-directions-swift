@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 /**
  Each of these options specifies a maneuver direction for which a given lane can
  be used.

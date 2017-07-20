@@ -50,6 +50,13 @@ public class Intersection: NSObject, NSSecureCoding {
      */
     public let usableApproachLanes: IndexSet?
     
+    /**
+     Option set representing the classes of road.
+     
+     If no road class information is available, this property's value is `nil`.
+     */
+    public let roadClasses: MBRoadClasses?
+    
     internal init(json: JSONDictionary) {
         location = CLLocationCoordinate2D(geoJSON: json["location"] as! [Double])
         headings = json["bearings"] as! [CLLocationDirection]
@@ -77,6 +84,12 @@ public class Intersection: NSObject, NSSecureCoding {
             approachLanes = nil
             usableApproachLanes = nil
         }
+        
+        if let classStrings = json["classes"] as? [String] {
+            roadClasses = RoadClasses(descriptions: classStrings)
+        } else {
+            roadClasses = nil
+        }
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -102,6 +115,8 @@ public class Intersection: NSObject, NSSecureCoding {
         
         approachLanes = decoder.decodeObject(of: [NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
         usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as IndexSet?
+        
+        roadClasses = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "roadClasses") as? RoadClasses
     }
     
     open static var supportsSecureCoding = true
@@ -120,5 +135,7 @@ public class Intersection: NSObject, NSSecureCoding {
         
         coder.encode(approachLanes, forKey: "approachLanes")
         coder.encode(usableApproachLanes, forKey: "usableApproachLanes")
+        
+        coder.encode(roadClasses, forKey: "roadClass")
     }
 }

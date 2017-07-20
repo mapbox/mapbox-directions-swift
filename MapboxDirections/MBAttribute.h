@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 /**
  Attributes are metadata information for a route leg.
  
