@@ -325,12 +325,13 @@ open class RouteOptions: NSObject, NSSecureCoding {
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
     internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-        var namedWaypoints: [Waypoint]
+        var namedWaypoints = [Waypoint]()
         if let waypoints = (json["waypoints"] as? [JSONDictionary]) {
-            namedWaypoints = zip(waypoints, self.waypoints).map { (json, waypoint) -> Waypoint in
-                let location = json["location"] as! [Double]
+            for (index, element) in waypoints.enumerated() {
+                let location = element["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                return Waypoint(coordinate: coordinate, name: waypoint.name ?? json["name"] as? String)
+                let waypoint = self.waypoints[index]
+                namedWaypoints.append(Waypoint(coordinate: coordinate, name: waypoint.name ?? json["name"] as? String))
             }
         } else {
             namedWaypoints = self.waypoints

@@ -62,7 +62,10 @@ public class Intersection: NSObject, NSSecureCoding {
         headings = json["bearings"] as! [CLLocationDirection]
         
         let outletsArray = json["entry"] as! [Bool]
-        let outletIndexes = outletsArray.enumerated().filter{ $1 }.map { $0.offset }
+        let outletIndexes = outletsArray.enumerated().filter { (arg) -> Bool in
+            let (_, element) = arg
+            return element
+        }.map { $0.offset }
         self.outletIndexes = IndexSet(outletIndexes)
         
         approachIndex = json["in"] as? Int ?? -1
