@@ -183,6 +183,11 @@ open class Route: NSObject, NSSecureCoding {
         return nil
     }
     
+    /**
+     A unique identifier for a directions request.
+     
+     Note, each `Route` in a request will have the same `routeIdentifier`.
+     */
     open var routeIdentifier: String?
 }
 
