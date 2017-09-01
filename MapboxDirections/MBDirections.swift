@@ -121,7 +121,8 @@ open class Directions: NSObject {
     /// The Mapbox access token to associate the request with.
     internal let accessToken: String
     
-    open var routeIdentifier: String?
+    /// The routeIdentifier for the request.
+    internal var routeIdentifier: String?
     
     /**
      Initializes a newly created directions object with an optional access token and host.
