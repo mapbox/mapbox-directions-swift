@@ -121,6 +121,8 @@ open class Directions: NSObject {
     /// The Mapbox access token to associate the request with.
     internal let accessToken: String
     
+    open var routeIdentifier: String?
+    
     /**
      Initializes a newly created directions object with an optional access token and host.
      
@@ -172,6 +174,7 @@ open class Directions: NSObject {
                 for route in routes {
                     route.accessToken = self.accessToken
                     route.apiEndpoint = self.apiEndpoint
+                    route.routeIdentifier = self.routeIdentifier
                 }
             }
             completionHandler(response.0, response.1, nil)
@@ -207,6 +210,7 @@ open class Directions: NSObject {
             
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
+            self.routeIdentifier = json["uuid"] as? String
             guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
                 let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
                 DispatchQueue.main.async {

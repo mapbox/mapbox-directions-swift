@@ -182,6 +182,8 @@ open class Route: NSObject, NSSecureCoding {
         }
         return nil
     }
+    
+    open var routeIdentifier: String?
 }
 
 // MARK: Support for Directions API v4
