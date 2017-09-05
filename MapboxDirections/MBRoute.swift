@@ -186,7 +186,7 @@ open class Route: NSObject, NSSecureCoding {
     /**
      A unique identifier for a directions request.
      
-     Note, each `Route` in a request will have the same `routeIdentifier`.
+     Each route produced by a single call to `calculate(_:completionHandler:)` has the same route identifier.
      */
     open var routeIdentifier: String?
 }
