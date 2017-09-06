@@ -68,6 +68,11 @@ open class Route: NSObject, NSSecureCoding {
             return nil
         }
         routeOptions = options
+        
+        guard let decodedRouteIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String? else {
+            return nil
+        }
+        routeIdentifier = decodedRouteIdentifier
     }
     
     open static var supportsSecureCoding = true
@@ -83,6 +88,7 @@ open class Route: NSObject, NSSecureCoding {
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(routeOptions, forKey: "routeOptions")
+        coder.encode(routeIdentifier, forKey: "routeIdentifier")
     }
     
     // MARK: Getting the Route Geometry
@@ -186,7 +192,7 @@ open class Route: NSObject, NSSecureCoding {
     /**
      A unique identifier for a directions request.
      
-     Each route produced by a single call to `calculate(_:completionHandler:)` has the same route identifier.
+     Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
      */
     open var routeIdentifier: String?
 }
