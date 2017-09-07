@@ -69,10 +69,7 @@ open class Route: NSObject, NSSecureCoding {
         }
         routeOptions = options
         
-        guard let decodedRouteIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String? else {
-            return nil
-        }
-        routeIdentifier = decodedRouteIdentifier
+        routeIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String?
     }
     
     open static var supportsSecureCoding = true
