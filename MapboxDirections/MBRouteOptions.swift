@@ -10,11 +10,17 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
      */
     case geoJSON
     /**
-     The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format.
+     The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format with 1×10<sup>−5</sup> precision.
      
-     This machine-readable format is considerably more compact than `geoJSON`.
+     This machine-readable format is considerably more compact than `geoJSON` but less precise than `polyline6`.
      */
     case polyline
+    /**
+     The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format with 1×10<sup>−6</sup> precision.
+     
+     This format is an order of magnitude more precise than `polyline`.
+     */
+    case polyline6
     
     public init?(description: String) {
         let format: RouteShapeFormat
@@ -23,6 +29,8 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
             format = .geoJSON
         case "polyline":
             format = .polyline
+        case "polyline6":
+            format = .polyline6
         default:
             return nil
         }
@@ -35,6 +43,8 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
             return "geojson"
         case .polyline:
             return "polyline"
+        case .polyline6:
+            return "polyline6"
         }
     }
 }
