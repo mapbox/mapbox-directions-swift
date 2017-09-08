@@ -286,7 +286,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
     /**
      `Bool` whether the the `ManeuverType` `.exitRoundabout` is included.
      */
-    open var includeExitRoundabouts = false
+    open var includeExitRoundaboutManeuver = false
     
     /**
      An array of URL parameters to include in the request URL.
@@ -298,7 +298,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-            URLQueryItem(name: "roundabout_exit", value: String(!includeExitRoundabouts)),
+            URLQueryItem(name: "roundabout_exit", value: String(!includeExitRoundaboutManeuver)),
         ]
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
