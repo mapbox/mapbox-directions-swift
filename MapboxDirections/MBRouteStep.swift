@@ -222,6 +222,11 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case passWaypoint // v4
     
+    /**
+     The step requires the user to exit a roundabout.
+     */
+    case exitRoundabout
+    
     public init?(description: String) {
         let type: ManeuverType
         switch description {
@@ -257,6 +262,8 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .arrive
         case "waypoint": // v4
             type = .passWaypoint
+        case "exit roundabout":
+            type = .exitRoundabout
         default:
             return nil
         }
@@ -297,6 +304,8 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "arrive"
         case .passWaypoint: // v4
             return "waypoint"
+        case .exitRoundabout:
+            return "exit roundabout"
         }
     }
 }
