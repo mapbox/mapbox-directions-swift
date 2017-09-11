@@ -169,6 +169,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
             return nil
         }
         self.attributeOptions = attributeOptions
+        
+        includeExitRoundaboutManeuver = decoder.decodeBool(forKey: "includeExitRoundaboutManeuver")
     }
     
     open static var supportsSecureCoding = true
@@ -182,6 +184,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         coder.encode(shapeFormat.description, forKey: "shapeFormat")
         coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
         coder.encode(attributeOptions.description, forKey: "attributeOptions")
+        coder.encode(includeExitRoundaboutManeuver, forKey: "includeExitRoundaboutManeuver")
     }
     
     // MARK: Specifying the Path of the Route
@@ -284,7 +287,9 @@ open class RouteOptions: NSObject, NSSecureCoding {
     }
     
     /**
-     `Bool` whether the the `ManeuverType` `.exitRoundabout` is included.
+     A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
+     
+     If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
      */
     open var includeExitRoundaboutManeuver = false
     
@@ -298,7 +303,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-            URLQueryItem(name: "roundabout_exit", value: String(!includeExitRoundaboutManeuver)),
+            URLQueryItem(name: "roundabout_exit", value: String(includeExitRoundaboutManeuver)),
         ]
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.

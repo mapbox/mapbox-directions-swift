@@ -200,6 +200,13 @@ public enum ManeuverType: Int, CustomStringConvertible {
     case turnAtRoundabout
     
     /**
+     This step requires the user to exit a large, named roundabout (traffic circle or rotary).
+     
+     This maneuver type follows a `.takeRotary` maneuver. It is only used when `RouteOptions.includeExitRoundaboutManeuver` is set to true.
+     */
+    case exitRoundabout
+    
+    /**
      The step requires the user to respond to a change in travel conditions.
      
      This maneuver type may occur for example when driving directions require the user to board a ferry, or when cycling directions require the user to dismount. The step’s transport type and instructions contains important contextual details that should be presented to the user at the maneuver location.
@@ -221,11 +228,6 @@ public enum ManeuverType: Int, CustomStringConvertible {
      This maneuver type is only used by version 4 of the Mapbox Directions API.
      */
     case passWaypoint // v4
-    
-    /**
-     The step requires the user to exit a roundabout.
-     */
-    case exitRoundabout
     
     public init?(description: String) {
         let type: ManeuverType
@@ -256,14 +258,14 @@ public enum ManeuverType: Int, CustomStringConvertible {
             type = .takeRoundabout
         case "roundabout turn":
             type = .turnAtRoundabout
+        case "exit roundabout":
+            type = .exitRoundabout
         case "notification":
             type = .heedWarning
         case "arrive":
             type = .arrive
         case "waypoint": // v4
             type = .passWaypoint
-        case "exit roundabout":
-            type = .exitRoundabout
         default:
             return nil
         }
@@ -298,14 +300,14 @@ public enum ManeuverType: Int, CustomStringConvertible {
             return "roundabout"
         case .turnAtRoundabout:
             return "roundabout turn"
+        case .exitRoundabout:
+            return "exit roundabout"
         case .heedWarning:
             return "notification"
         case .arrive:
             return "arrive"
         case .passWaypoint: // v4
             return "waypoint"
-        case .exitRoundabout:
-            return "exit roundabout"
         }
     }
 }
