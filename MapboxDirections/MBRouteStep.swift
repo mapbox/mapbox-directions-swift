@@ -182,6 +182,8 @@ public enum ManeuverType: Int, CustomStringConvertible {
      The step requires the user to enter and traverse a roundabout (traffic circle or rotary).
      
      The step has no name, but the exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of roundabout exits up to and including the exit to take.
+     
+     If `RouteOptions.includeExitRoundaboutManeuver` is set to `true`, this step is followed by an `.exitRoundabout` maneuver. Otherwise, this step represents the entire roundabout maneuver, from the entrance to the exit.
      */
     case takeRoundabout
     
@@ -189,18 +191,20 @@ public enum ManeuverType: Int, CustomStringConvertible {
      The step requires the user to enter and traverse a large, named roundabout (traffic circle or rotary).
      
      The step’s name is the name of the roundabout. The exit name is the name of the road to take to exit the roundabout. The exit index indicates the number of rotary exits up to and including the exit that the user must take.
+     
+      If `RouteOptions.includeExitRoundaboutManeuver` is set to `true`, this step is followed by an `.exitRotary` maneuver. Otherwise, this step represents the entire roundabout maneuver, from the entrance to the exit.
      */
     case takeRotary
     
     /**
-     The step requires the user to enter and  a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
+     The step requires the user to enter and exit a roundabout (traffic circle or rotary) that is compact enough to constitute a single intersection.
      
      The step’s name is the name of the road to take after exiting the roundabout. This maneuver type is called out separately because the user may perceive the roundabout as an ordinary intersection with an island in the middle. If this distinction is unimportant to you, you may treat the maneuver as either an ordinary `turn` or as a `takeRoundabout`.
      */
     case turnAtRoundabout
     
     /**
-     This step requires the user to exit a large, named roundabout (traffic circle or rotary).
+     The step requires the user to exit a named roundabout (traffic circle or rotary).
      
      This maneuver type follows a `.takeRoundabout` maneuver. It is only used when `RouteOptions.includeExitRoundaboutManeuver` is set to true.
      */
