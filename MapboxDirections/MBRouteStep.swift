@@ -204,14 +204,14 @@ public enum ManeuverType: Int, CustomStringConvertible {
     case turnAtRoundabout
     
     /**
-     The step requires the user to exit a named roundabout (traffic circle or rotary).
+     The step requires the user to exit a roundabout (traffic circle or rotary).
      
      This maneuver type follows a `.takeRoundabout` maneuver. It is only used when `RouteOptions.includeExitRoundaboutManeuver` is set to true.
      */
     case exitRoundabout
     
     /**
-     The step requires the user to exit a named roundabout (traffic circle or rotary).
+     The step requires the user to exit a large, named roundabout (traffic circle or rotary).
      
      This maneuver type follows a `.takeRotary` maneuver. It is only used when `RouteOptions.includeExitRoundaboutManeuver` is set to true.
      */
