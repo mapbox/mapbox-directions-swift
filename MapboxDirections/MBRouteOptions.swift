@@ -287,7 +287,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
     }
     
     /**
-     An array of geocoding query strings to include in the request URL.
+     An array of directions query strings to include in the request URL.
      */
     internal var queries: [String] {
         return waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }
