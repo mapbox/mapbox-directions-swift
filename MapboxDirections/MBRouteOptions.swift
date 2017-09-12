@@ -316,7 +316,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         ]
         
         if includesExitRoundaboutManeuver {
-            URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver))
+            params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
