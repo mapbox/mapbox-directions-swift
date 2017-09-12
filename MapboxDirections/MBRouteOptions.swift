@@ -313,7 +313,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-            URLQueryItem(name: "roundabout_exit", value: String(includesExitRoundaboutManeuver)),
+            URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)),
         ]
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
