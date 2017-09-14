@@ -528,6 +528,9 @@ open class RouteStep: NSObject, NSSecureCoding {
         let intersectionsJSON = json["intersections"] as? [JSONDictionary]
         self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
         
+        let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
+        self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
+        
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
         self.maneuverType = maneuverType
@@ -623,6 +626,8 @@ open class RouteStep: NSObject, NSSecureCoding {
         destinations = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinations") as? [String]
         
         intersections = decoder.decodeObject(of: [NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
+        
+        instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "voiceInstructions") as? [SpokenInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -668,6 +673,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(codes, forKey: "codes")
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
+        coder.encode(instructionsSpokenAlongStep, forKey: "voiceInstructions")
     }
     
     // MARK: Getting the Step Geometry
@@ -876,6 +882,12 @@ open class RouteStep: NSObject, NSSecureCoding {
         }
         return nil
     }
+    /**
+     Instructions about the next step’s maneuver, optimized for speech synthesis.
+    
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
+     */
+    open let instructionsSpokenAlongStep: [SpokenInstruction]?
 }
 
 // MARK: Support for Directions API v4

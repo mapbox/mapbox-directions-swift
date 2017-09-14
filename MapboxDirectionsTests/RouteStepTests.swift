@@ -156,5 +156,6 @@ class RouteStepTests: XCTestCase {
         XCTAssertEqual(unarchivedStep.phoneticNames ?? [], step.phoneticNames ?? [])
         XCTAssertEqual(unarchivedStep.transportType, step.transportType)
         XCTAssertEqual(unarchivedStep.destinations ?? [], step.destinations ?? [])
+        XCTAssertEqual(unarchivedStep.instructionsSpokenAlongStep ?? [], step.instructionsSpokenAlongStep ?? [])
     }
 }
