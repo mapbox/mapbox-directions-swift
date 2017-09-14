@@ -494,10 +494,14 @@ open class RouteStep: NSObject, NSSecureCoding {
         let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
         if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
             names = road.rotaryNames
+            phoneticNames = (json["rotary_pronunciation"] as? String)?.tagValues(separatedBy: ";")
             exitNames = road.names
+            phoneticExitNames = (json["pronunciation"] as? String)?.tagValues(separatedBy: ";")
         } else {
             names = road.names
+            phoneticNames = (json["pronunciation"] as? String)?.tagValues(separatedBy: ";")
             exitNames = nil
+            phoneticExitNames = nil
         }
         exitCodes = road.exitCodes
         codes = road.codes
@@ -603,9 +607,11 @@ open class RouteStep: NSObject, NSSecureCoding {
         exitIndex = decoder.containsValue(forKey: "exitIndex") ? decoder.decodeInteger(forKey: "exitIndex") : nil
         exitCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitCodes") as? [String]
         exitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitNames") as? [String]
+        phoneticExitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "phoneticExitNames") as? [String]
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         names = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "names") as? [String]
+        phoneticNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "phoneticNames") as? [String]
         
         guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as String? else {
             return nil
@@ -653,9 +659,11 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         coder.encode(exitCodes, forKey: "exitCodes")
         coder.encode(exitNames, forKey: "exitNames")
+        coder.encode(phoneticExitNames, forKey: "phoneticExitNames")
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(names, forKey: "names")
+        coder.encode(phoneticNames, forKey: "phoneticNames")
         coder.encode(transportType?.description, forKey: "transportType")
         coder.encode(codes, forKey: "codes")
         coder.encode(destinationCodes, forKey: "destinationCodes")
@@ -778,6 +786,15 @@ open class RouteStep: NSObject, NSSecureCoding {
      */
     public let exitNames: [String]?
     
+    /**
+     A phonetic or phonemic transcription indicating how to pronounce the names in the `exitNames` property.
+     
+     This property is only set for roundabout (traffic circle or rotary) maneuvers.
+     
+     The transcription is written in the [International Phonetic Alphabet](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet).
+     */
+    open let phoneticExitNames: [String]?
+    
     // MARK: Getting Details About the Approach to the Next Maneuver
     
     /**
@@ -802,6 +819,15 @@ open class RouteStep: NSObject, NSSecureCoding {
      If the maneuver is a roundabout maneuver, the outlet to take is named in the `exitNames` property; the `names` property is only set for large roundabouts that have their own names.
      */
     open let names: [String]?
+    
+    /**
+     A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
+     
+     The transcription is written in the [International Phonetic Alphabet](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet).
+     
+     If the maneuver traverses a large, named roundabout, the `exitPronunciationHints` property contains a hint about how to pronounce the names of the outlet to take.
+     */
+    open let phoneticNames: [String]?
     
     /**
      Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
