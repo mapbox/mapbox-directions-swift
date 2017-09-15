@@ -181,6 +181,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
         self.attributeOptions = attributeOptions
         
         includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
+        
+        locale = Locale(identifier: decoder.decodeObject(of: NSString.self, forKey: "locale") as String? ?? "")
     }
     
     open static var supportsSecureCoding = true
@@ -195,6 +197,9 @@ open class RouteOptions: NSObject, NSSecureCoding {
         coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
         coder.encode(attributeOptions.description, forKey: "attributeOptions")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
+        if let locale = locale, let languageCode = (locale as NSLocale?)?.object(forKey: .languageCode) as? String {
+            coder.encode(languageCode, forKey: "locale")
+        }
     }
     
     // MARK: Specifying the Path of the Route
@@ -304,6 +309,13 @@ open class RouteOptions: NSObject, NSSecureCoding {
     open var includesExitRoundaboutManeuver = false
     
     /**
+     If set, this `Locale` will be used to translate instructions.
+     
+     See supported languages [here](https://www.mapbox.com/api-documentation/#instructions-languages).
+     */
+    open var locale: Locale?
+    
+    /**
      An array of URL parameters to include in the request URL.
      */
     internal var params: [URLQueryItem] {
@@ -317,6 +329,10 @@ open class RouteOptions: NSObject, NSSecureCoding {
         
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+        }
+        
+        if let locale = locale, let languageCode = (locale as NSLocale?)?.object(forKey: .languageCode) as? String {
+            params.append(URLQueryItem(name: "language", value: languageCode))
         }
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.

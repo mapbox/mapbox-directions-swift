@@ -10,6 +10,7 @@ class RouteOptionsTests: XCTestCase {
         ]
         
         let options = RouteOptions(coordinates: coordinates, profileIdentifier: .automobileAvoidingTraffic)
+        options.locale = Locale(identifier: "en")
         
         let encodedData = NSMutableData()
         let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
@@ -34,5 +35,6 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedWaypoints[2].coordinate.longitude, coordinates[2].longitude)
         
         XCTAssertEqual(unarchivedOptions.profileIdentifier, options.profileIdentifier)
+        XCTAssertEqual(unarchivedOptions.locale, options.locale)
     }
 }
