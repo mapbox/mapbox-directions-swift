@@ -182,7 +182,10 @@ open class RouteOptions: NSObject, NSSecureCoding {
         
         includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
         
-        locale = Locale(identifier: decoder.decodeObject(of: NSString.self, forKey: "locale") as String? ?? "")
+        guard let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? else {
+            return nil
+        }
+        self.locale = locale
     }
     
     open static var supportsSecureCoding = true
@@ -197,9 +200,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
         coder.encode(attributeOptions.description, forKey: "attributeOptions")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
-        if let locale = locale, let languageCode = (locale as NSLocale?)?.object(forKey: .languageCode) as? String {
-            coder.encode(languageCode, forKey: "locale")
-        }
+        coder.encode(locale, forKey: "locale")
     }
     
     // MARK: Specifying the Path of the Route
@@ -315,6 +316,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
      */
     open var locale: Locale?
     
+    private let supportedLocales: [String] = ["de", "en", "es", "fr", "id", "nl", "ru", "sv", "vi", "zh-hans"]
+    
     /**
      An array of URL parameters to include in the request URL.
      */
@@ -332,7 +335,11 @@ open class RouteOptions: NSObject, NSSecureCoding {
         }
         
         if let locale = locale, let languageCode = (locale as NSLocale?)?.object(forKey: .languageCode) as? String {
-            params.append(URLQueryItem(name: "language", value: languageCode))
+            if supportedLocales.contains(languageCode) {
+                params.append(URLQueryItem(name: "language", value: languageCode))
+            } else {
+                params.append(URLQueryItem(name: "language", value: "en"))
+            }
         }
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
