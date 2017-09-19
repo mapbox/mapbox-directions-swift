@@ -234,6 +234,12 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         if let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") {
             self.distanceMeasurementSystem = distanceMeasurementSystem
         }
+        
+        guard let excludeClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludeRoadClasses") as String?,
+            let excludeRoadClasses = RoadClasses(descriptions: excludeClassesDescriptions.components(separatedBy: ",")) else {
+                return nil
+        }
+        self.excludeRoadClasses = excludeRoadClasses
     }
 
     open static var supportsSecureCoding = true
@@ -251,6 +257,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         coder.encode(locale, forKey: "locale")
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
         coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
+        coder.encode(excludeRoadClasses, forKey: "excludeRoadClasses")
     }
 
     // MARK: Specifying the Path of the Route
@@ -391,6 +398,13 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
 
     /**
+     An Array of `RoadClass` that the routing engine will attempt to avoid.
+     
+     The order of this Array does not impact the results.
+     */
+    open var excludeRoadClasses: RoadClasses? = []
+    
+    /**
      An array of URL parameters to include in the request URL.
      */
     internal var params: [URLQueryItem] {
@@ -410,6 +424,10 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         if includesSpokenInstructions {
             params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
+        }
+        
+        if let excludeRoadClasses = excludeRoadClasses, !excludeRoadClasses.isEmpty {
+            params.append(URLQueryItem(name: "exclude", value: excludeRoadClasses.description))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
