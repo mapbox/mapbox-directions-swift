@@ -32,7 +32,4 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
      In general, the transport type of the step containing the road segment is also `TransportType.ferry`.
      */
     MBRoadClassesFerry = (1 << 4),
-    
-    
-    MBRoadClassesNone = (1 << 0),
 };
