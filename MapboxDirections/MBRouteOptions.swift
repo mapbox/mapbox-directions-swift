@@ -425,10 +425,11 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
+            let firstRoadClass = String(describing: allRoadClasses.first)
             if allRoadClasses.count > 1 {
-                print("`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(String(describing: allRoadClasses.first)) will be used.")
+                print("`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(firstRoadClass) will be used.")
             }
-            params.append(URLQueryItem(name: "exclude", value: roadClassesToAvoid.description))
+            params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
