@@ -46,9 +46,6 @@ extension RoadClasses: CustomStringConvertible {
         if contains(.ferry) {
             descriptions.append("ferry")
         }
-        if contains(.none) {
-            descriptions.append("none")
-        }
         return descriptions.joined(separator: ",")
     }
 }

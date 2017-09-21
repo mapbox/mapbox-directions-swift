@@ -34,5 +34,5 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     MBRoadClassesFerry = (1 << 4),
     
     
-    MBRoadClassesNone = (1 << 5),
+    MBRoadClassesNone = (1 << 0),
 };

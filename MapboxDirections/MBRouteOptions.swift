@@ -235,10 +235,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             self.distanceMeasurementSystem = distanceMeasurementSystem
         }
         
-        guard let excludedRoadClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludedRoadClasses") as String?, let excludedRoadClasses = RoadClasses(descriptions: excludedRoadClassesDescriptions.components(separatedBy: ",")) else {
-                return nil
-        }
-        self.excludedRoadClasses = excludedRoadClasses
+        let excludedRoadClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludedRoadClasses") as String?
+        excludedRoadClasses = RoadClasses(descriptions: excludedRoadClassesDescriptions?.components(separatedBy: ",") ?? [""]) ?? []
     }
 
     open static var supportsSecureCoding = true
@@ -425,7 +423,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
         
-        if excludedRoadClasses != .none {
+        if !excludedRoadClasses.isEmpty && excludedRoadClasses != .none {
             params.append(URLQueryItem(name: "exclude", value: excludedRoadClasses.description))
         }
 
