@@ -235,11 +235,10 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             self.distanceMeasurementSystem = distanceMeasurementSystem
         }
         
-        guard let excludeClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludeRoadClasses") as String?,
-            let excludeRoadClasses = RoadClasses(descriptions: excludeClassesDescriptions.components(separatedBy: ",")) else {
+        guard let excludedRoadClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludedRoadClasses") as String?, let excludedRoadClasses = RoadClasses(descriptions: excludedRoadClassesDescriptions.components(separatedBy: ",")) else {
                 return nil
         }
-        self.excludeRoadClasses = excludeRoadClasses
+        self.excludedRoadClasses = excludedRoadClasses
     }
 
     open static var supportsSecureCoding = true
@@ -402,7 +401,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      
      The order of this Array does not impact the results.
      */
-    open var excludeRoadClasses: RoadClasses? = []
+    open var excludedRoadClasses: RoadClasses = .none
     
     /**
      An array of URL parameters to include in the request URL.
@@ -426,8 +425,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
         
-        if let excludeRoadClasses = excludeRoadClasses, !excludeRoadClasses.isEmpty {
-            params.append(URLQueryItem(name: "exclude", value: excludeRoadClasses.description))
+        if excludedRoadClasses != .none {
+            params.append(URLQueryItem(name: "exclude", value: excludedRoadClasses.description))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
