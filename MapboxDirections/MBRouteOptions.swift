@@ -235,8 +235,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             self.distanceMeasurementSystem = distanceMeasurementSystem
         }
         
-        let excludedRoadClassesDescriptions = decoder.decodeObject(of: NSString.self, forKey: "excludedRoadClasses") as String?
-        excludedRoadClasses = RoadClasses(descriptions: excludedRoadClassesDescriptions?.components(separatedBy: ",") ?? [""]) ?? []
+        let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
+        roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
     }
 
     open static var supportsSecureCoding = true
@@ -254,7 +254,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         coder.encode(locale, forKey: "locale")
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
         coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
-        coder.encode(excludeRoadClasses, forKey: "excludeRoadClasses")
+        coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
     }
 
     // MARK: Specifying the Path of the Route
@@ -397,9 +397,9 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     /**
      An Array of `RoadClass` that the routing engine will attempt to avoid.
      
-     The order of this Array does not impact the results.
+     For example, you can set this property to `.toll` to avoid toll roads. No road classes are avoided by default. Currently, it is only possible to avoid one road class at a time.
      */
-    open var excludedRoadClasses: RoadClasses = []
+    open var roadClassesToAvoid: RoadClasses = []
     
     /**
      An array of URL parameters to include in the request URL.
@@ -423,8 +423,12 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
         
-        if !excludedRoadClasses.isEmpty {
-            params.append(URLQueryItem(name: "exclude", value: excludedRoadClasses.description))
+        if !roadClassesToAvoid.isEmpty {
+            let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
+            if allRoadClasses.count > 1 {
+                print("`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(String(describing: allRoadClasses.first)) will be used.")
+            }
+            params.append(URLQueryItem(name: "exclude", value: roadClassesToAvoid.description))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
