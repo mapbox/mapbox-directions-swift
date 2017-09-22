@@ -30,8 +30,9 @@ open class Route: NSObject, NSSecureCoding {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
-        let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: routeOptions.profileIdentifier)
+        let legs = legInfo.map { (arg) -> RouteLeg in
+            let (endpoints, json) = arg
+            return RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: routeOptions.profileIdentifier)
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
