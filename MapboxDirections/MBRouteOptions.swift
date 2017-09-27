@@ -397,7 +397,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     /**
      An Array of `RoadClass` that the routing engine will attempt to avoid.
      
-     For example, you can set this property to `.toll` to avoid toll roads. No road classes are avoided by default. Currently, it is only possible to avoid one road class at a time.
+     Only a single `RoadClasses` can be provided.
      */
     open var roadClassesToAvoid: RoadClasses = []
     
@@ -427,7 +427,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
             let firstRoadClass = String(describing: allRoadClasses.first)
             if allRoadClasses.count > 1 {
-                print("`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(firstRoadClass) will be used.")
+                assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(firstRoadClass) will be used.")
             }
             params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
         }
