@@ -44,6 +44,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.module_name = "MapboxDirections"
 
-  s.dependency "Polyline", "~> 4.1.1"
+  s.dependency "Polyline", "4.1.1"
 
 end
