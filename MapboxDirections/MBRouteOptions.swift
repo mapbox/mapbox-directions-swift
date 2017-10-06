@@ -380,7 +380,15 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = .metric
+    open var distanceMeasurementSystem: MeasurementSystem = usesMetric ? .metric : .imperial
+    
+    internal static var usesMetric: Bool {
+        let locale = Locale.current as NSLocale
+        guard let measurementSystem = locale.object(forKey: .measurementSystem) as? String else {
+            return false
+        }
+        return measurementSystem == "Metric"
+    }
 
     /**
      An array of URL parameters to include in the request URL.
