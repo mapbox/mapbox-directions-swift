@@ -316,8 +316,6 @@ open class RouteOptions: NSObject, NSSecureCoding {
      */
     open var locale: Locale?
     
-    private let supportedLocales: [String] = ["de", "en", "es", "fr", "id", "nl", "ru", "sv", "vi", "zh"]
-    
     /**
      An array of URL parameters to include in the request URL.
      */
