@@ -334,11 +334,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
         
-        if let locale = locale, var languageCode = (locale as NSLocale?)?.object(forKey: .languageCode) as? String, supportedLocales.contains(languageCode) {
-            if languageCode == "zh" {
-                languageCode = "zh-Hans"
-            }
-            params.append(URLQueryItem(name: "language", value: languageCode))
+        if let locale = locale {
+            params.append(URLQueryItem(name: "language", value: locale.identifier))
         }
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
