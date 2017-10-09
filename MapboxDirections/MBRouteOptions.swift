@@ -181,6 +181,11 @@ open class RouteOptions: NSObject, NSSecureCoding {
         self.attributeOptions = attributeOptions
         
         includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
+        
+        guard let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? else {
+            return nil
+        }
+        self.locale = locale
     }
     
     open static var supportsSecureCoding = true
@@ -195,6 +200,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
         coder.encode(attributeOptions.description, forKey: "attributeOptions")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
+        coder.encode(locale, forKey: "locale")
     }
     
     // MARK: Specifying the Path of the Route
@@ -304,6 +310,17 @@ open class RouteOptions: NSObject, NSSecureCoding {
     open var includesExitRoundaboutManeuver = false
     
     /**
+     The locale in which the routes’ instructions are written.
+     
+     If you use MapboxDirections.swift with the Mapbox Directions API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
+     
+     The Directions API can provide instructions in [a number of languages](https://www.mapbox.com/api-documentation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
+     
+     By default, this property is set to `nil`, causing instructions to be written in the default language, English.
+     */
+    open var locale: Locale?
+    
+    /**
      An array of URL parameters to include in the request URL.
      */
     internal var params: [URLQueryItem] {
@@ -317,6 +334,10 @@ open class RouteOptions: NSObject, NSSecureCoding {
         
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+        }
+        
+        if let locale = locale {
+            params.append(URLQueryItem(name: "language", value: locale.identifier))
         }
         
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
