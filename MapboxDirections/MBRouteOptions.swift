@@ -310,9 +310,13 @@ open class RouteOptions: NSObject, NSSecureCoding {
     open var includesExitRoundaboutManeuver = false
     
     /**
-     If set, this `Locale` will be used to translate instructions.
+     The locale in which the routes’ instructions are written.
      
-     See supported languages [here](https://www.mapbox.com/api-documentation/#instructions-languages).
+     If you use MapboxDirections.swift with the Mapbox Directions API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
+     
+     The Directions API can provide instructions in [a number of languages](https://www.mapbox.com/api-documentation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
+     
+     By default, this property is set to `nil`, causing instructions to be written in the default language, English.
      */
     open var locale: Locale?
     
