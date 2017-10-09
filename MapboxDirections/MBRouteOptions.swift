@@ -356,7 +356,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
     open var includesExitRoundaboutManeuver = false
 
     /**
-     The locale in which the routes’ instructions are written.
+     The locale in which the route’s instructions are written.
 
      If you use MapboxDirections.swift with the Mapbox Directions API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
 
@@ -364,7 +364,15 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      By default, this property is set to `nil`, causing instructions to be written in the default language, English.
      */
-    open var locale: Locale?
+    open var locale: Locale? {
+        didSet {
+            guard let locale = locale else {
+                self.distanceMeasurementSystem = Locale.current.usesMetric ? .metric : .imperial
+                return
+            }
+            self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
+        }
+    }
     
     /**
      A Boolean value indicating whether each route step includes an array of `SpokenInstructions`.
@@ -380,15 +388,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = usesMetric ? .metric : .imperial
+    open var distanceMeasurementSystem: MeasurementSystem = Locale.current.usesMetric ? .metric : .imperial
     
-    internal static var usesMetric: Bool {
-        let locale = Locale.current as NSLocale
-        guard let measurementSystem = locale.object(forKey: .measurementSystem) as? String else {
-            return false
-        }
-        return measurementSystem == "Metric"
-    }
 
     /**
      An array of URL parameters to include in the request URL.
@@ -554,5 +555,14 @@ open class RouteOptionsV4: RouteOptions {
             RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
         }
         return (waypoints, routes)
+    }
+}
+
+extension Locale {
+    fileprivate var usesMetric: Bool {
+        guard let measurementSystem = (self as NSLocale).object(forKey: .measurementSystem) as? String else {
+            return false
+        }
+        return measurementSystem == "Metric"
     }
 }
