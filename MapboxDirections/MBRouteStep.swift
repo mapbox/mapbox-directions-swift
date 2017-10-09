@@ -728,11 +728,20 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      A string with instructions explaining how to perform the step’s maneuver.
      
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need localized or customized instructions, you can construct them yourself from the step’s other properties or use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions).
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. For instructions optimized for real-time delivery during turn-by-turn navigation, set the `RouteOptions.includesVoiceInstructions` option and use the `instructionsSpokenAlongStep` property. If you need customized instructions, you can construct them yourself from the step’s other properties or use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/).
      
-     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to construct a complete instruction string for display.
+     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
     open let instructions: String
+    
+    /**
+     Instructions about the next step’s maneuver, optimized for speech synthesis.
+    
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
+     
+     This property is non-`nil` if the `RouteOptions.includesVoiceInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
+     */
+    open let instructionsSpokenAlongStep: [SpokenInstruction]?
     
     open override var description: String {
         return instructions
@@ -882,12 +891,6 @@ open class RouteStep: NSObject, NSSecureCoding {
         }
         return nil
     }
-    /**
-     Instructions about the next step’s maneuver, optimized for speech synthesis.
-    
-     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
-     */
-    open let instructionsSpokenAlongStep: [SpokenInstruction]?
 }
 
 // MARK: Support for Directions API v4
