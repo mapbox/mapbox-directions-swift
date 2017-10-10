@@ -36,5 +36,7 @@ class RouteOptionsTests: XCTestCase {
         
         XCTAssertEqual(unarchivedOptions.profileIdentifier, options.profileIdentifier)
         XCTAssertEqual(unarchivedOptions.locale, options.locale)
+        XCTAssertEqual(unarchivedOptions.includesVoiceInstructions, options.includesVoiceInstructions)
+        XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, options.distanceMeasurementSystem)
     }
 }

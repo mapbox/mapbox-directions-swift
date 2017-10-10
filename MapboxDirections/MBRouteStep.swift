@@ -528,6 +528,9 @@ open class RouteStep: NSObject, NSSecureCoding {
         let intersectionsJSON = json["intersections"] as? [JSONDictionary]
         self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
         
+        let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
+        self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
+        
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
         self.maneuverType = maneuverType
@@ -623,6 +626,8 @@ open class RouteStep: NSObject, NSSecureCoding {
         destinations = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinations") as? [String]
         
         intersections = decoder.decodeObject(of: [NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
+        
+        instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "voiceInstructions") as? [SpokenInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -668,6 +673,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(codes, forKey: "codes")
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
+        coder.encode(instructionsSpokenAlongStep, forKey: "voiceInstructions")
     }
     
     // MARK: Getting the Step Geometry
@@ -722,11 +728,20 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      A string with instructions explaining how to perform the step’s maneuver.
      
-     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. If you need localized or customized instructions, you can construct them yourself from the step’s other properties or use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions).
+     You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. For instructions optimized for real-time delivery during turn-by-turn navigation, set the `RouteOptions.includesVoiceInstructions` option and use the `instructionsSpokenAlongStep` property. If you need customized instructions, you can construct them yourself from the step’s other properties or use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/).
      
-     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [osrm-text-instructions](https://github.com/Project-OSRM/osrm-text-instructions) to construct a complete instruction string for display.
+     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
     open let instructions: String
+    
+    /**
+     Instructions about the next step’s maneuver, optimized for speech synthesis.
+    
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
+     
+     This property is non-`nil` if the `RouteOptions.includesVoiceInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
+     */
+    open let instructionsSpokenAlongStep: [SpokenInstruction]?
     
     open override var description: String {
         return instructions
