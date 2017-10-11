@@ -225,10 +225,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
         includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
         
-        guard let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? else {
-            return nil
-        }
-        self.locale = locale
+        locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale?
 
         includesVoiceInstructions = decoder.decodeBool(forKey: "includeVoiceInstructions")
     }
