@@ -227,7 +227,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         
         locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale?
 
-        includesVoiceInstructions = decoder.decodeBool(forKey: "includeVoiceInstructions")
+        includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
     }
 
     open static var supportsSecureCoding = true
@@ -243,7 +243,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
         coder.encode(attributeOptions.description, forKey: "attributeOptions")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(locale, forKey: "locale")
-        coder.encode(includesVoiceInstructions, forKey: "includeVoiceInstructions")
+        coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
     }
 
     // MARK: Specifying the Path of the Route
@@ -376,7 +376,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      If this option is set to true, the `RouteStep.instructionsSpokenAlongStep` property is set to an array of `SpokenInstructions`.
      */
-    open var includesVoiceInstructions = false
+    open var includesSpokenInstructions = false
 
     /**
      The measurement system used in spoken instructions included in route steps.
@@ -408,8 +408,8 @@ open class RouteOptions: NSObject, NSSecureCoding {
             params.append(URLQueryItem(name: "language", value: locale.identifier))
         }
 
-        if includesVoiceInstructions {
-            params.append(URLQueryItem(name: "voice_instructions", value: String(includesVoiceInstructions)))
+        if includesSpokenInstructions {
+            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
 
