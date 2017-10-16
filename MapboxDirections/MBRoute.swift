@@ -154,7 +154,9 @@ open class Route: NSObject, NSSecureCoding {
     /**
      The route’s expected travel time, measured in seconds.
      
-     The value of this property reflects the time it takes to traverse the entire route under ideal conditions. It is the sum of the `expectedTravelTime` properties of the route’s legs. You should not assume that the user would travel along the route at a fixed speed. The actual travel time may vary based on the weather, traffic conditions, road construction, and other variables. If the route makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
+     The value of this property reflects the time it takes to traverse the entire route. It is the sum of the `expectedTravelTime` properties of the route’s legs. If the route was calculated using the `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` profile, this property reflects current traffic conditions at the time of the request, not necessarily the traffic conditions at the time the user would begin the route. For other profiles, this property reflects travel time under ideal conditions and does not account for traffic congestion. If the route makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
     open let expectedTravelTime: TimeInterval
     
