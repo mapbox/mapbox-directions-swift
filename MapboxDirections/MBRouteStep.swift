@@ -451,7 +451,7 @@ struct Road {
             codes = ref.tagValues(separatedBy: ";")
         } else if !name.isEmpty, let codesRange = name.range(of: "\\(.+?\\)$", options: .regularExpression, range: name.startIndex..<name.endIndex) {
             // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
-            let parenthetical = name.substring(with: codesRange)
+            let parenthetical = name[codesRange]
             if name == ref {
                 self.names = nil
             } else {
