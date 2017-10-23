@@ -15,7 +15,7 @@ public class SpokenInstruction: NSObject, NSSecureCoding {
      
      The distance is measured in meters from the beginning of the associated step.
      */
-    public let distanceAlongStep: CLLocationDistance
+    @objc public let distanceAlongStep: CLLocationDistance
 
     
     /**
@@ -23,7 +23,7 @@ public class SpokenInstruction: NSObject, NSSecureCoding {
      
      This representation is appropriate for speech synthesizers that lack support for the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML), such as `AVSpeechSynthesizer`. For speech synthesizers that support SSML, use the `ssmlText` property instead.
      */
-    public let text: String
+    @objc public let text: String
     
     
     /**
@@ -31,7 +31,7 @@ public class SpokenInstruction: NSObject, NSSecureCoding {
      
      This representation is appropriate for speech synthesizers that support the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML), such as [Amazon Polly](https://aws.amazon.com/polly/). Numbers and names are marked up to ensure correct pronunciation. For speech synthesizers that lack SSML support, use the `text` property instead.
      */
-    public let ssmlText: String
+    @objc public let ssmlText: String
     
     internal init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance

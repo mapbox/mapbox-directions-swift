@@ -16,7 +16,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         It is recommended that the value of this parameter be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
+    @objc public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
@@ -32,7 +32,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      - parameter heading: A `CLLocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
+    @objc public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading , heading >= 0 {
@@ -50,7 +50,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      - parameter heading: A `CLHeading` object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the `CLHeading` class’s `trueHeading` property or `magneticHeading` property, converting it into the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
+    @objc public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading {
@@ -91,7 +91,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The geographic coordinate of the waypoint.
      */
-    open let coordinate: CLLocationCoordinate2D
+    @objc open let coordinate: CLLocationCoordinate2D
     
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -100,7 +100,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number.
      */
-    open var coordinateAccuracy: CLLocationAccuracy = -1
+    @objc open var coordinateAccuracy: CLLocationAccuracy = -1
     
     // MARK: Getting the Direction of Approach
     
@@ -117,7 +117,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
      */
-    open var heading: CLLocationDirection = -1
+    @objc open var heading: CLLocationDirection = -1
     
     /**
      The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from `heading` in either direction in order to be considered viable.
@@ -128,7 +128,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
      */
-    open var headingAccuracy: CLLocationDirection = -1
+    @objc open var headingAccuracy: CLLocationDirection = -1
     
     internal var headingDescription: String {
         return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
@@ -141,9 +141,9 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
-    open var name: String?
+    @objc open var name: String?
     
-    open override var description: String {
+    @objc open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
     
