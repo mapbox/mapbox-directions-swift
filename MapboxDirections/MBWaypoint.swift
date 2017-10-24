@@ -32,7 +32,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      - parameter heading: A `CLLocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    @objc public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
+    public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading , heading >= 0 {
