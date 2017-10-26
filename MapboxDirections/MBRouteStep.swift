@@ -531,6 +531,9 @@ open class RouteStep: NSObject, NSSecureCoding {
         let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
+        let bannerInstructionsAlongStep = json["bannerInstruction"] as? [JSONDictionary]
+        self.bannerInstructionsAlongStep = bannerInstructionsAlongStep?.map { BannerInstruction(json: $0) }
+        
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
         self.maneuverType = maneuverType
@@ -628,6 +631,8 @@ open class RouteStep: NSObject, NSSecureCoding {
         intersections = decoder.decodeObject(of: [NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
         
         instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
+        
+        bannerInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, BannerInstruction.self], forKey: "bannerInstructionsAlongStep") as? [BannerInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -674,6 +679,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
         coder.encode(instructionsSpokenAlongStep, forKey: "instructionsSpokenAlongStep")
+        coder.encode(bannerInstructionsAlongStep, forKey: "bannerInstructionsAlongStep")
     }
     
     // MARK: Getting the Step Geometry
@@ -742,6 +748,8 @@ open class RouteStep: NSObject, NSSecureCoding {
      This property is non-`nil` if the `RouteOptions.includesSpokenInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
      */
     @objc open let instructionsSpokenAlongStep: [SpokenInstruction]?
+    
+    @objc open let bannerInstructionsAlongStep: [BannerInstruction]?
     
     @objc open override var description: String {
         return instructions

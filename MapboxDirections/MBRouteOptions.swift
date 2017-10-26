@@ -389,6 +389,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
+    
+    @objc open var inclueBannerInstructions = false
 
     /**
      An array of URL parameters to include in the request URL.
@@ -410,6 +412,10 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         if includesSpokenInstructions {
             params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
+        }
+        
+        if inclueBannerInstructions {
+            params.append(URLQueryItem(name: "banner_instructions", value: String(inclueBannerInstructions)))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
