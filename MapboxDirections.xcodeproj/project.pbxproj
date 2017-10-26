@@ -200,7 +200,7 @@
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructions.swift; sourceTree = "<group>"; };
 		C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructionComponent.swift; sourceTree = "<group>"; };
-		C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MBBannerInstructionDetailComponent.swift; path = ../MBBannerInstructionDetailComponent.swift; sourceTree = "<group>"; };
+		C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructionDetailComponent.swift; sourceTree = "<group>"; };
 		C52CE3921F6AF6E70069963D /* SpokenInstructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpokenInstructionsTests.swift; sourceTree = "<group>"; };
 		C558C58B1E94181A00617B37 /* MBAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBAttribute.h; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
