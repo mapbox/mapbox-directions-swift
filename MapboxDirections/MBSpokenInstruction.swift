@@ -1,5 +1,12 @@
 import Foundation
 
+/**
+ An instruction about an upcoming `RouteStep`’s maneuver, optimized for speech synthesis.
+ 
+ The instruction is provided in two formats: plain text and text marked up according to the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML). Use a speech synthesizer such as `AVSpeechSynthesizer` or Amazon Polly to read aloud the instruction.
+ 
+ The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
+ */
 @objc(MBSpokenInstruction)
 public class SpokenInstruction: NSObject, NSSecureCoding {
     
