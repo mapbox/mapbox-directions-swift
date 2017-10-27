@@ -131,16 +131,27 @@ open class Directions: NSObject {
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint is used by default.
      */
     public init(accessToken: String?, host: String?) {
+		var baseURLComponents: URLComponents
         if host == nil {
             let accessToken = accessToken ?? defaultAccessToken
             assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
 
             self.accessToken = accessToken
+			baseURLComponents = URLComponents()
+			baseURLComponents.scheme = "https"
+			baseURLComponents.host = mapboxHost
         }
-        
-        var baseURLComponents = URLComponents()
-        baseURLComponents.scheme = "https"
-        baseURLComponents.host = host ?? mapboxHost
+		else
+		{
+			var urlString = host!
+			if urlString.hasPrefix("http") == false {
+				urlString = "http://\(urlString)"
+			}
+			let url = URL(string: urlString)
+			assert(url != nil, "A valid custom host must be provided (ex: my_host.com or full http://my_host.com:8080")
+			baseURLComponents = URLComponents(url: url!, resolvingAgainstBaseURL: false)!
+		}
+
         self.apiEndpoint = baseURLComponents.url!
     }
     
