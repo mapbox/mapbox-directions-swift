@@ -2,13 +2,13 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-class VoiceInstructionsTest: XCTestCase {
+class SpokenInstructionsTests: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
-    func testVoiceInstructions() {
+    func testSpokenInstructions() {
         let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
@@ -24,7 +24,7 @@ class VoiceInstructionsTest: XCTestCase {
         
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "voiceInstructions", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: "spokenInstructions", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -36,7 +36,7 @@ class VoiceInstructionsTest: XCTestCase {
         options.includesSteps = true
         options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.includesVoiceInstructions = true
+        options.includesSpokenInstructions = true
         options.distanceMeasurementSystem = .imperial
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
@@ -65,18 +65,18 @@ class VoiceInstructionsTest: XCTestCase {
         
         XCTAssertEqual(step.instructionsSpokenAlongStep!.count, 3)
         
-        let voiceInstructions = step.instructionsSpokenAlongStep!
+        let spokenInstructions = step.instructionsSpokenAlongStep!
         
-        XCTAssertEqual(voiceInstructions[0].distanceAlongStep, 793.8)
-        XCTAssertEqual(voiceInstructions[1].distanceAlongStep, 304.0)
-        XCTAssertEqual(voiceInstructions[2].distanceAlongStep, 65.1)
+        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 793.8)
+        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 304.0)
+        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 65.1)
         
-        XCTAssertEqual(voiceInstructions[0].ssmlText, "<speak>Head south on 8th Avenue</speak>")
-        XCTAssertEqual(voiceInstructions[1].ssmlText, "<speak>In 1000 feet, turn left onto John F Kennedy Drive</speak>")
-        XCTAssertEqual(voiceInstructions[2].ssmlText, "<speak>Turn left onto John F Kennedy Drive</speak>")
+        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak>Head south on 8th Avenue</speak>")
+        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak>In 1000 feet, turn left onto John F Kennedy Drive</speak>")
+        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak>Turn left onto John F Kennedy Drive</speak>")
         
-        XCTAssertEqual(voiceInstructions[0].text, "Head south on 8th Avenue")
-        XCTAssertEqual(voiceInstructions[1].text, "In 1000 feet, turn left onto John F Kennedy Drive")
-        XCTAssertEqual(voiceInstructions[2].text, "Turn left onto John F Kennedy Drive")
+        XCTAssertEqual(spokenInstructions[0].text, "Head south on 8th Avenue")
+        XCTAssertEqual(spokenInstructions[1].text, "In 1000 feet, turn left onto John F Kennedy Drive")
+        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto John F Kennedy Drive")
     }
 }
