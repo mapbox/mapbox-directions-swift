@@ -7,7 +7,7 @@ public class VisualInstruction: NSObject, NSSecureCoding {
 
     public let primaryContent: VisualInstructionComponent?
     
-    public let secondaryContent: [VisualInstructionComponent]?
+    public let secondaryContent: VisualInstructionComponent?
     
     internal init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
@@ -18,15 +18,17 @@ public class VisualInstruction: NSObject, NSSecureCoding {
             self.primaryContent = nil
         }
         
-        secondaryContent = (json["secondary"] as? [JSONDictionary])?.map {
-            VisualInstructionComponent(json: $0)
+        if let secondaryTextDict = json["secondary"] as? JSONDictionary {
+            self.secondaryContent = VisualInstructionComponent(json: secondaryTextDict)
+        } else {
+            self.secondaryContent = nil
         }
     }
     
     public required init?(coder decoder: NSCoder) {
         distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
         primaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryContent") as? VisualInstructionComponent
-        secondaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "secondaryContent") as? [VisualInstructionComponent]
+        secondaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "secondaryContent") as? VisualInstructionComponent
     }
     
     open static var supportsSecureCoding = true
