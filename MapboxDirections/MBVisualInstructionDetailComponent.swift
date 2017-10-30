@@ -4,10 +4,10 @@ import Foundation
 @objc(MBVisualInstructionDetailComponent)
 public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
     
-    public let text: String
+    public let text: String?
     
     internal init(json: JSONDictionary) {
-        text = json["text"] as! String
+        text = json["text"] as? String
     }
     
     public required init?(coder decoder: NSCoder) {

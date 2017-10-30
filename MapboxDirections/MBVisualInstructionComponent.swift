@@ -4,12 +4,12 @@ import Foundation
 @objc(MBVisualInstructionComponent)
 public class VisualInstructionComponent: NSObject, NSSecureCoding {
     
-    public let text: String
+    public let text: String?
     
     public let components: [VisualInstructionDetailComponent]
     
     internal init(json: JSONDictionary) {
-        text = json["text"] as! String
+        text = json["text"] as? String
         
         components = (json["components"] as! [JSONDictionary]).map {
             VisualInstructionDetailComponent(json: $0)
