@@ -532,7 +532,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
         let bannerInstructionsAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.bannerInstructionsAlongStep = bannerInstructionsAlongStep?.map { BannerInstruction(json: $0) }
+        self.bannerInstructionsAlongStep = bannerInstructionsAlongStep?.map { VisualInstruction(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -632,7 +632,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
         
-        bannerInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, BannerInstruction.self], forKey: "bannerInstructionsAlongStep") as? [BannerInstruction]
+        bannerInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "bannerInstructionsAlongStep") as? [VisualInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -749,7 +749,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      */
     @objc open let instructionsSpokenAlongStep: [SpokenInstruction]?
     
-    @objc open let bannerInstructionsAlongStep: [BannerInstruction]?
+    @objc open let bannerInstructionsAlongStep: [VisualInstruction]?
     
     @objc open override var description: String {
         return instructions

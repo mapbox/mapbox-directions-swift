@@ -17,18 +17,18 @@
 		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* MBAttribute.swift */; };
 		C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5247D701E818A24004B6154 /* AnnotationTests.swift */; };
-		C52552B91FA15D5900B1545C /* MBBannerInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */; };
-		C52552BA1FA15D5E00B1545C /* MBBannerInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */; };
-		C52552BB1FA15D5F00B1545C /* MBBannerInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */; };
-		C52552BC1FA15D6000B1545C /* MBBannerInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */; };
-		C52552BE1FA15DA500B1545C /* MBBannerInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */; };
-		C52552C01FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */; };
-		C52552C61FA162F900B1545C /* MBBannerInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */; };
-		C52552C71FA162FA00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */; };
-		C52552C81FA162FB00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */; };
-		C52552C91FA162FD00B1545C /* MBBannerInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */; };
-		C52552CA1FA162FE00B1545C /* MBBannerInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */; };
-		C52552CB1FA162FE00B1545C /* MBBannerInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */; };
+		C52552B91FA15D5900B1545C /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */; };
+		C52552BA1FA15D5E00B1545C /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */; };
+		C52552BB1FA15D5F00B1545C /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */; };
+		C52552BC1FA15D6000B1545C /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */; };
+		C52552BE1FA15DA500B1545C /* MBVisualInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */; };
+		C52552C01FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */; };
+		C52552C61FA162F900B1545C /* MBVisualInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */; };
+		C52552C71FA162FA00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */; };
+		C52552C81FA162FB00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */; };
+		C52552C91FA162FD00B1545C /* MBVisualInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */; };
+		C52552CA1FA162FE00B1545C /* MBVisualInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */; };
+		C52552CB1FA162FE00B1545C /* MBVisualInstructionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */; };
 		C52CE38F1F6AF63C0069963D /* MBSpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */; };
 		C52CE3901F6AF63D0069963D /* MBSpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */; };
 		C52CE3911F6AF63E0069963D /* MBSpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */; };
@@ -198,9 +198,9 @@
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		C51538CB1E807FF00093FF3E /* MBAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBAttribute.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
-		C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructions.swift; sourceTree = "<group>"; };
-		C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructionComponent.swift; sourceTree = "<group>"; };
-		C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBBannerInstructionDetailComponent.swift; sourceTree = "<group>"; };
+		C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstruction.swift; sourceTree = "<group>"; };
+		C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionComponent.swift; sourceTree = "<group>"; };
+		C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionDetailComponent.swift; sourceTree = "<group>"; };
 		C52CE3921F6AF6E70069963D /* SpokenInstructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpokenInstructionsTests.swift; sourceTree = "<group>"; };
 		C558C58B1E94181A00617B37 /* MBAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBAttribute.h; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
@@ -391,9 +391,9 @@
 				C584E3FA1F2027EE00BBC9BB /* MBRoadClasses.h */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 				C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */,
-				C52552B81FA15D5900B1545C /* MBBannerInstructions.swift */,
-				C52552BD1FA15DA500B1545C /* MBBannerInstructionComponent.swift */,
-				C52552BF1FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift */,
+				C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */,
+				C52552BD1FA15DA500B1545C /* MBVisualInstructionComponent.swift */,
+				C52552BF1FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift */,
 			);
 			path = MapboxDirections;
 			sourceTree = "<group>";
@@ -962,12 +962,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C52552C61FA162F900B1545C /* MBBannerInstructionDetailComponent.swift in Sources */,
+				C52552C61FA162F900B1545C /* MBVisualInstructionDetailComponent.swift in Sources */,
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
-				C52552BA1FA15D5E00B1545C /* MBBannerInstructions.swift in Sources */,
+				C52552BA1FA15D5E00B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
-				C52552C91FA162FD00B1545C /* MBBannerInstructionComponent.swift in Sources */,
+				C52552C91FA162FD00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1002,12 +1002,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C52552C71FA162FA00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */,
+				C52552C71FA162FA00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */,
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
-				C52552BB1FA15D5F00B1545C /* MBBannerInstructions.swift in Sources */,
+				C52552BB1FA15D5F00B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
-				C52552CA1FA162FE00B1545C /* MBBannerInstructionComponent.swift in Sources */,
+				C52552CA1FA162FE00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1042,12 +1042,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C52552C81FA162FB00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */,
+				C52552C81FA162FB00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */,
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
-				C52552BC1FA15D6000B1545C /* MBBannerInstructions.swift in Sources */,
+				C52552BC1FA15D6000B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
-				C52552CB1FA162FE00B1545C /* MBBannerInstructionComponent.swift in Sources */,
+				C52552CB1FA162FE00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1068,9 +1068,9 @@
 			files = (
 				C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */,
-				C52552B91FA15D5900B1545C /* MBBannerInstructions.swift in Sources */,
-				C52552C01FA1628A00B1545C /* MBBannerInstructionDetailComponent.swift in Sources */,
-				C52552BE1FA15DA500B1545C /* MBBannerInstructionComponent.swift in Sources */,
+				C52552B91FA15D5900B1545C /* MBVisualInstruction.swift in Sources */,
+				C52552C01FA1628A00B1545C /* MBVisualInstructionDetailComponent.swift in Sources */,
+				C52552BE1FA15DA500B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */,
 				358D48861E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,

@@ -1,18 +1,18 @@
 import Foundation
 
 
-@objc(MBBannerInstructionComponent)
-public class BannerInstructionComponent: NSObject, NSSecureCoding {
+@objc(MBVisualInstructionComponent)
+public class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     public let text: String
     
-    public let components: [BannerInstructionDetailComponent]
+    public let components: [VisualInstructionDetailComponent]
     
     internal init(json: JSONDictionary) {
         text = json["text"] as! String
         
         components = (json["components"] as! [JSONDictionary]).map {
-            BannerInstructionDetailComponent(json: $0)
+            VisualInstructionDetailComponent(json: $0)
         }
     }
     
@@ -22,7 +22,7 @@ public class BannerInstructionComponent: NSObject, NSSecureCoding {
         }
         self.text = text
         
-        components = decoder.decodeObject(of: [NSArray.self, BannerInstructionDetailComponent.self], forKey: "components") as? [BannerInstructionDetailComponent] ?? []
+        components = decoder.decodeObject(of: [NSArray.self, VisualInstructionDetailComponent.self], forKey: "components") as? [VisualInstructionDetailComponent] ?? []
     }
     
     open static var supportsSecureCoding = true

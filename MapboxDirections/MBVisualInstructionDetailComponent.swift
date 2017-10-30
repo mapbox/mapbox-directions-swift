@@ -1,8 +1,8 @@
 import Foundation
 
 
-@objc(MBBannerInstructionDetailComponent)
-public class BannerInstructionDetailComponent: NSObject, NSSecureCoding {
+@objc(MBVisualInstructionDetailComponent)
+public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
     
     public let text: String
     
