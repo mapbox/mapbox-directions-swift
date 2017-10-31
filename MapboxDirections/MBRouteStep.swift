@@ -531,8 +531,8 @@ open class RouteStep: NSObject, NSSecureCoding {
         let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
-        let bannerInstructionsAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.bannerInstructionsAlongStep = bannerInstructionsAlongStep?.map { VisualInstruction(json: $0) }
+        let visualInstructionsAlongStep = json["bannerInstructions"] as? [JSONDictionary]
+        self.visualInstructionsAlongStep = visualInstructionsAlongStep?.map { VisualInstruction(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -632,7 +632,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
         
-        bannerInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "bannerInstructionsAlongStep") as? [VisualInstruction]
+        visualInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "visualInstructionsAlongStep") as? [VisualInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -679,7 +679,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
         coder.encode(instructionsSpokenAlongStep, forKey: "instructionsSpokenAlongStep")
-        coder.encode(bannerInstructionsAlongStep, forKey: "bannerInstructionsAlongStep")
+        coder.encode(visualInstructionsAlongStep, forKey: "visualInstructionsAlongStep")
     }
     
     // MARK: Getting the Step Geometry
@@ -749,7 +749,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      */
     @objc open let instructionsSpokenAlongStep: [SpokenInstruction]?
     
-    @objc open let bannerInstructionsAlongStep: [VisualInstruction]?
+    @objc open let visualInstructionsAlongStep: [VisualInstruction]?
     
     @objc open override var description: String {
         return instructions
