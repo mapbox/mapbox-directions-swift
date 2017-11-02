@@ -2,18 +2,21 @@ import Foundation
 
 
 /**
+ :nodoc:
  Encompasses a single visual component for a `RouteStep`.
  */
 @objc(MBVisualInstructionComponent)
 public class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
+     :nodoc:
      Basical text representation of visual component of a `RouteStep`.
      */
     public let text: String
     
     
     /**
+     :nodoc:
      A more detailed representation of the a `RouteStep`. With components, it's possible to show an image representation of highway shields.
      */
     public let components: [VisualInstructionDetailComponent]

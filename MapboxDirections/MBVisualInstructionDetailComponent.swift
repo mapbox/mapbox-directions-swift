@@ -2,36 +2,42 @@ import Foundation
 
 
 /**
+ :nodoc:
  Contains necessary features to build a more rich visual experience for a `RouteStep`.
  */
 @objc(MBVisualInstructionDetailComponent)
 public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
     
     /**
+     :nodoc:
      Single part of a visual instruction.
      */
     public let text: String?
     
     
     /**
+     :nodoc:
      @1x PNG to inline in visual instruction.
      */
     public var imageURL1x: URL? = nil
     
     
     /**
+     :nodoc:
      @2x PNG to inline in visual instruction.
      */
     public var imageURL2x: URL? = nil
     
     
     /**
+     :nodoc:
      @3x PNG to inline in visual instruction.
      */
     public var imageURL3x: URL? = nil
     
     
     /**
+     :nodoc:
      SVG to inline in visual instruction.
      */
     public var imageURLSVG: URL? = nil

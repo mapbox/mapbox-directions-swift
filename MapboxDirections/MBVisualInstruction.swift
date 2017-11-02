@@ -1,24 +1,28 @@
 import Foundation
 
 /**
+ :nodoc:
  Encompasses all information necessary for creating a visual queue about a given `RouteStep`.
  */
 @objc(MBVisualInstruction)
 public class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
+     :nodoc:
      Distance in meters from the beginning of the step at which the visual instruction should be visible.
      */
     public let distanceAlongStep: CLLocationDistance
     
 
     /**
+     :nodoc:
      Most important visual content to convey to the user about the `RouteStep`.
      */
     public let primaryContent: VisualInstructionComponent
     
     
     /**
+     :nodoc:
      Ancillary visual information about the `RouteStep`.
      */
     public let secondaryContent: VisualInstructionComponent?
