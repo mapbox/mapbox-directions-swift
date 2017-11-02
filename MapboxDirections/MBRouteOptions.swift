@@ -390,6 +390,11 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      */
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
     
+    /**
+     If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
+     
+     `visualInstructionsAlongStep` contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
+     */
     @objc open var includesVisualInstructions = false
     
     @objc open var includeBannerInstructions = false

@@ -1,12 +1,23 @@
 import Foundation
 
 
+/**
+ Encompasses a single visual component for a `RouteStep`.
+ */
 @objc(MBVisualInstructionComponent)
 public class VisualInstructionComponent: NSObject, NSSecureCoding {
     
+    /**
+     Basical text representation of visual component of a `RouteStep`.
+     */
     public let text: String
     
+    
+    /**
+     A more detailed representation of the a `RouteStep`. With components, it's possible to show an image representation of highway shields.
+     */
     public let components: [VisualInstructionDetailComponent]
+    
     
     internal init(json: JSONDictionary) {
         text = json["text"] as! String

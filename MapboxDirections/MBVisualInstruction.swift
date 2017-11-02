@@ -1,22 +1,33 @@
 import Foundation
 
+/**
+ Encompasses all information necessary for creating a visual queue about a given `RouteStep`.
+ */
 @objc(MBVisualInstruction)
 public class VisualInstruction: NSObject, NSSecureCoding {
     
+    /**
+     Distance in meters from the beginning of the step at which the visual instruction should be visible.
+     */
     public let distanceAlongStep: CLLocationDistance
-
-    public let primaryContent: VisualInstructionComponent?
     
+
+    /**
+     Most important visual content to convey to the user about the `RouteStep`.
+     */
+    public let primaryContent: VisualInstructionComponent
+    
+    
+    /**
+     Ancillary visual information about the `RouteStep`.
+     */
     public let secondaryContent: VisualInstructionComponent?
+    
     
     internal init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
-        if let primaryTextDict = json["primary"] as? JSONDictionary {
-            self.primaryContent = VisualInstructionComponent(json: primaryTextDict)
-        } else {
-            self.primaryContent = nil
-        }
+        self.primaryContent = VisualInstructionComponent(json: json["primary"] as! JSONDictionary)
         
         if let secondaryTextDict = json["secondary"] as? JSONDictionary {
             self.secondaryContent = VisualInstructionComponent(json: secondaryTextDict)
@@ -27,7 +38,7 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     
     public required init?(coder decoder: NSCoder) {
         distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
-        primaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryContent") as? VisualInstructionComponent
+        primaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryContent") as! VisualInstructionComponent
         secondaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "secondaryContent") as? VisualInstructionComponent
     }
     
