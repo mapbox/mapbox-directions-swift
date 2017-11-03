@@ -531,7 +531,7 @@ open class RouteOptionsV4: RouteOptions {
 
         let profileIdentifier = self.profileIdentifier.rawValue.replacingOccurrences(of: "/", with: ".")
         let queryComponent = queries.joined(separator: ";")
-        return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
+        return "v4/directions/mapbox.\(profileIdentifier)/\(queryComponent).json"
     }
 
     override var params: [URLQueryItem] {
