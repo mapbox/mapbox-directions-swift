@@ -149,7 +149,7 @@ public enum MeasurementSystem: UInt, CustomStringConvertible {
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
-open class RouteOptions: NSObject, NSSecureCoding {
+open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     // MARK: Creating a Route Options Object
 
     /**
@@ -457,6 +457,26 @@ open class RouteOptions: NSObject, NSSecureCoding {
             Route(json: $0, waypoints: namedWaypoints, routeOptions: self)
         }
         return (waypoints, routes)
+    }
+    
+    // MARK: NSCopying
+    /**
+     Returns a copy of the object.
+     - parameter zone: an NSZone to use in the copy operation.
+     - returns: A copy of the object.
+     */
+    open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
+        copy.includesAlternativeRoutes = includesAlternativeRoutes
+        copy.includesSteps = includesSteps
+        copy.shapeFormat = shapeFormat
+        copy.routeShapeResolution = routeShapeResolution
+        copy.attributeOptions = attributeOptions
+        copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
+        copy.locale = locale
+        copy.includesSpokenInstructions = includesSpokenInstructions
+        return copy
     }
 }
 
