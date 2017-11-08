@@ -60,6 +60,7 @@ private extension RouteOptions {
         opts.attributeOptions = [.congestionLevel]
         opts.includesExitRoundaboutManeuver = true
         opts.includesSpokenInstructions = true
+        opts.distanceMeasurementSystem = .metric
         
         return opts
     }

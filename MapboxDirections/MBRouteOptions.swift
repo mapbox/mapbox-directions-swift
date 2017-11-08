@@ -228,6 +228,11 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale?
 
         includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
+        
+        guard let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") else {
+            return nil
+        }
+        self.distanceMeasurementSystem = distanceMeasurementSystem
     }
 
     open static var supportsSecureCoding = true
@@ -244,6 +249,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(locale, forKey: "locale")
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
+        coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
     }
 
     // MARK: Specifying the Path of the Route
@@ -471,6 +477,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.locale = locale
         copy.includesSpokenInstructions = includesSpokenInstructions
+        copy.distanceMeasurementSystem = distanceMeasurementSystem
         return copy
     }
     
@@ -492,7 +499,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             attributeOptions == other.attributeOptions,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
             locale == other.locale,
-            includesSpokenInstructions == other.includesSpokenInstructions else { return false }
+            includesSpokenInstructions == other.includesSpokenInstructions,
+            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
         return true
     }
 }
