@@ -460,11 +460,6 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     }
     
     // MARK: NSCopying
-    /**
-     Returns a copy of the object.
-     - parameter zone: an NSZone to use in the copy operation.
-     - returns: A copy of the object.
-     */
     open func copy(with zone: NSZone? = nil) -> Any {
         let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
         copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
@@ -477,6 +472,28 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         copy.locale = locale
         copy.includesSpokenInstructions = includesSpokenInstructions
         return copy
+    }
+    
+    //MARK: - OBJ-C Equality
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let opts = object as? RouteOptions else { return false }
+        return isEqual(to: opts)
+    }
+    
+    @objc(isEqualToRouteOptions:)
+    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
+        guard let other = routeOptions else { return false }
+        guard waypoints == other.waypoints,
+            profileIdentifier == other.profileIdentifier,
+            allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
+            includesSteps == other.includesSteps,
+            shapeFormat == other.shapeFormat,
+            routeShapeResolution == other.routeShapeResolution,
+            attributeOptions == other.attributeOptions,
+            includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
+            locale == other.locale,
+            includesSpokenInstructions == other.includesSpokenInstructions else { return false }
+        return true
     }
 }
 
