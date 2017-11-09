@@ -231,10 +231,9 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
         includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
         
-        guard let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") else {
-            return nil
+        if let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") {
+            self.distanceMeasurementSystem = distanceMeasurementSystem
         }
-        self.distanceMeasurementSystem = distanceMeasurementSystem
     }
 
     open static var supportsSecureCoding = true
