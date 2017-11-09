@@ -3,15 +3,8 @@ import XCTest
 
 class RouteOptionsTests: XCTestCase {
     func testCoding() {
-        let coordinates = [
-            CLLocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
-            CLLocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
-            CLLocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
-        ]
-        
-        let options = RouteOptions(coordinates: coordinates, profileIdentifier: .automobileAvoidingTraffic)
-        options.locale = Locale(identifier: "en")
-        
+ 
+        let options = RouteOptions.testInstance
         let encodedData = NSMutableData()
         let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
         keyedArchiver.requiresSecureCoding = true
@@ -25,6 +18,7 @@ class RouteOptionsTests: XCTestCase {
         
         XCTAssertNotNil(unarchivedOptions)
         
+        let coordinates = RouteOptions.testCoordinates
         let unarchivedWaypoints = unarchivedOptions.waypoints
         XCTAssertEqual(unarchivedWaypoints.count, coordinates.count)
         XCTAssertEqual(unarchivedWaypoints[0].coordinate.latitude, coordinates[0].latitude)
@@ -38,5 +32,36 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.locale, options.locale)
         XCTAssertEqual(unarchivedOptions.includesSpokenInstructions, options.includesSpokenInstructions)
         XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, options.distanceMeasurementSystem)
+    }
+    func testCopying() {
+        let testInstance = RouteOptions.testInstance
+        guard let copy = testInstance.copy() as? RouteOptions else { return XCTFail("RouteOptions copy method should an object of same type") }
+        XCTAssertNotNil(copy, "Copy should not be nil.")
+        XCTAssertTrue(testInstance == copy, "Test Instance and copy should be semantically equivalent.")
+        XCTAssertFalse(testInstance === copy, "Test Instance and copy should not be identical.")
+        
+    }
+}
+
+private extension RouteOptions {
+    static var testCoordinates: [CLLocationCoordinate2D] {
+        return [
+            CLLocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
+            CLLocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
+            CLLocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
+        ]
+    }
+    static var testInstance: RouteOptions {
+        let opts = RouteOptions(coordinates: self.testCoordinates, profileIdentifier: .automobileAvoidingTraffic)
+        opts.locale = Locale(identifier: "en_US")
+        opts.allowsUTurnAtWaypoint = true
+        opts.shapeFormat = .polyline
+        opts.routeShapeResolution = .full
+        opts.attributeOptions = [.congestionLevel]
+        opts.includesExitRoundaboutManeuver = true
+        opts.includesSpokenInstructions = true
+        opts.distanceMeasurementSystem = .metric
+        
+        return opts
     }
 }
