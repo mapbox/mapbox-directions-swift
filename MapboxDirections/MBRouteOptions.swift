@@ -225,7 +225,9 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
         includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
         
-        locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale?
+        if let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? {
+            self.locale = locale
+        }
 
         includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
     }
@@ -359,14 +361,10 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      The Directions API can provide instructions in [a number of languages](https://www.mapbox.com/api-documentation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
 
-     By default, this property is set to `nil`, causing instructions to be written in the default language, English.
+     By default, this property is set to the current system locale.
      */
-    open var locale: Locale? {
+    open var locale = Locale.autoupdatingCurrent {
         didSet {
-            guard let locale = locale else {
-                self.distanceMeasurementSystem = Locale.current.usesMetric ? .metric : .imperial
-                return
-            }
             self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
         }
     }
@@ -385,7 +383,7 @@ open class RouteOptions: NSObject, NSSecureCoding {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = Locale.current.usesMetric ? .metric : .imperial
+    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
     
 
     /**
@@ -397,15 +395,12 @@ open class RouteOptions: NSObject, NSSecureCoding {
             URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
-            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
+            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
+            URLQueryItem(name: "language", value: locale.identifier)
         ]
 
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
-        }
-
-        if let locale = locale {
-            params.append(URLQueryItem(name: "language", value: locale.identifier))
         }
 
         if includesSpokenInstructions {
