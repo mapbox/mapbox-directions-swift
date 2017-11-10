@@ -141,7 +141,7 @@ open class Directions: NSObject {
 			baseURLComponents.scheme = "https"
 			baseURLComponents.host = mapboxHost
         }
-		else {
+        else {
 			var urlString = host!
 			if urlString.hasPrefix("http") == false {
 				urlString = "http://\(urlString)"
