@@ -1,5 +1,12 @@
 import Foundation
-import UIKit
+
+#if os(OSX)
+    import Cocoa
+#elseif os(watchOS)
+    import WatchKit
+#else
+    import UIKit
+#endif
 
 
 /**
