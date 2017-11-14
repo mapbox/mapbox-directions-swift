@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 
 /**
@@ -14,43 +15,19 @@ public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
      */
     public let text: String?
     
-    
     /**
      :nodoc:
-     @1x PNG to inline in visual instruction.
+     Dictionary containing `UITraitCollection` for scales 1.0, 2.0 and 3.0. Each key's value is a `URL`.
      */
-    public var imageURL1x: URL? = nil
-    
-    
-    /**
-     :nodoc:
-     @2x PNG to inline in visual instruction.
-     */
-    public var imageURL2x: URL? = nil
-    
-    
-    /**
-     :nodoc:
-     @3x PNG to inline in visual instruction.
-     */
-    public var imageURL3x: URL? = nil
-    
-    
-    /**
-     :nodoc:
-     SVG to inline in visual instruction.
-     */
-    public var imageURLSVG: URL? = nil
-    
+    public var imageURLS: [UITraitCollection: URL] = [:]
     
     internal init(json: JSONDictionary) {
         text = json["text"] as? String
         
         if let baseURL = json["imageBaseURL"] as? String {
-            imageURL1x = URL(string: "\(baseURL)@1x.png")
-            imageURL2x = URL(string: "\(baseURL)@2x.png")
-            imageURL3x = URL(string: "\(baseURL)@3x.png")
-            imageURLSVG = URL(string: "\(baseURL).svg")
+            imageURLS[UITraitCollection(displayScale: 1.0)] = URL(string: "\(baseURL)@1x.png")
+            imageURLS[UITraitCollection(displayScale: 2.0)] = URL(string: "\(baseURL)@2x.png")
+            imageURLS[UITraitCollection(displayScale: 3.0)] = URL(string: "\(baseURL)@3x.png")
         }
     }
     
@@ -60,34 +37,16 @@ public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
         }
         self.text = text
         
-        guard let imageURL1x = decoder.decodeObject(of: NSURL.self, forKey: "imageURL1x") as URL? else {
-            return nil
+        guard let imageURLS = decoder.decodeObject(of: [NSDictionary.self, UITraitCollection.self, NSURL.self], forKey: "imageURLS") as? [UITraitCollection: URL] else {
+                return nil
         }
-        self.imageURL1x = imageURL1x
-        
-        guard let imageURL2x = decoder.decodeObject(of: NSURL.self, forKey: "imageURL2x") as URL? else {
-            return nil
-        }
-        self.imageURL2x = imageURL2x
-        
-        guard let imageURL3x = decoder.decodeObject(of: NSURL.self, forKey: "imageURL3x") as URL? else {
-            return nil
-        }
-        self.imageURL3x = imageURL3x
-        
-        guard let imageURLSVG = decoder.decodeObject(of: NSURL.self, forKey: "imageURLSVG") as URL? else {
-            return nil
-        }
-        self.imageURLSVG = imageURLSVG
+        self.imageURLS = imageURLS
     }
     
     open static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
-        coder.encode(imageURL1x, forKey: "imageURL1x")
-        coder.encode(imageURL2x, forKey: "imageURL2x")
-        coder.encode(imageURL3x, forKey: "imageURL3x")
-        coder.encode(imageURLSVG, forKey: "imageURLSVG")
+        coder.encode(imageURLS, forKey: "imageURLS")
     }
 }
