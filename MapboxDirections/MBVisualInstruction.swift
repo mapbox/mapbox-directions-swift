@@ -35,13 +35,13 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     internal init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
-        let primaryTextComponent = json["primaryText"] as! JSONDictionary
+        let primaryTextComponent = json["primary"] as! JSONDictionary
         primaryText = primaryTextComponent["text"] as! String
         primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
             VisualInstructionComponent(json: $0)
         }
         
-        if let secondaryTextComponent = json["primaryText"] as? JSONDictionary {
+        if let secondaryTextComponent = json["secondary"] as? JSONDictionary {
             secondaryText = secondaryTextComponent["text"] as? String
             secondaryTextComponents = (secondaryTextComponent["components"] as! [JSONDictionary]).map {
                 VisualInstructionComponent(json: $0)
