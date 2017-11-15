@@ -1,6 +1,6 @@
 import Foundation
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -22,10 +22,10 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      Dictionary containing `UITraitCollection` for scales 1.0, 2.0 and 3.0. Each key's value is a `URL`.
      */
-    #if os(OSX)
-        public var imageURLS: [NSNumber: URL] = [:]
-    #else
+    #if os(iOS) || os(tvOS)
         public var imageURLS: [UITraitCollection: URL] = [:]
+    #else
+        public var imageURLS: [NSNumber: URL] = [:]
     #endif
     
     internal init(json: JSONDictionary) {
@@ -36,7 +36,7 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
             let twoXURL = URL(string: "\(baseURL)@2x.png")
             let threeXURL = URL(string: "\(baseURL)@3x.png")
             
-            #if os(iOS)
+            #if os(iOS) || os(tvOS)
                 imageURLS[UITraitCollection(displayScale: 1.0)] = oneXURL
                 imageURLS[UITraitCollection(displayScale: 2.0)] = twoXURL
                 imageURLS[UITraitCollection(displayScale: 3.0)] = threeXURL
@@ -54,7 +54,7 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         self.text = text
         
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
             guard let imageURLS = decoder.decodeObject(of: [NSDictionary.self, UITraitCollection.self, NSURL.self], forKey: "imageURLS") as? [UITraitCollection: URL] else {
                 return nil
             }
