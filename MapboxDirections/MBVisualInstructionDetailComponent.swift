@@ -9,8 +9,8 @@ import Foundation
  :nodoc:
  Contains necessary features to build a more rich visual experience for a `RouteStep`.
  */
-@objc(MBVisualInstructionDetailComponent)
-public class VisualInstructionDetailComponent: NSObject, NSSecureCoding {
+@objc(MBVisualInstructionComponent)
+public class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
      :nodoc:

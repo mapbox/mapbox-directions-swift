@@ -13,44 +13,70 @@ public class VisualInstruction: NSObject, NSSecureCoding {
      */
     public let distanceAlongStep: CLLocationDistance
     
+    
+    public let primaryText: String
 
     /**
      :nodoc:
      Most important visual content to convey to the user about the `RouteStep`.
      */
-    public let primaryContent: VisualInstructionComponent
+    public let primaryTextComponents: [VisualInstructionComponent]
     
+    
+    public let secondaryText: String?
     
     /**
      :nodoc:
      Ancillary visual information about the `RouteStep`.
      */
-    public let secondaryContent: VisualInstructionComponent?
+    public let secondaryTextComponents: [VisualInstructionComponent]?
     
     
     internal init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
-        self.primaryContent = VisualInstructionComponent(json: json["primary"] as! JSONDictionary)
+        let primaryTextComponent = json["primaryText"] as! JSONDictionary
+        primaryText = primaryTextComponent["text"] as! String
+        primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
+            VisualInstructionComponent(json: $0)
+        }
         
-        if let secondaryTextDict = json["secondary"] as? JSONDictionary {
-            self.secondaryContent = VisualInstructionComponent(json: secondaryTextDict)
+        if let secondaryTextComponent = json["primaryText"] as? JSONDictionary {
+            secondaryText = secondaryTextComponent["text"] as? String
+            secondaryTextComponents = (secondaryTextComponent["components"] as! [JSONDictionary]).map {
+                VisualInstructionComponent(json: $0)
+            }
         } else {
-            self.secondaryContent = nil
+            secondaryText = nil
+            secondaryTextComponents = nil
         }
     }
     
     public required init?(coder decoder: NSCoder) {
         distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
-        primaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryContent") as! VisualInstructionComponent
-        secondaryContent = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "secondaryContent") as? VisualInstructionComponent
+        
+        guard let primaryText = decoder.decodeObject(of: NSString.self, forKey: "primaryText") as String? else {
+            return nil
+        }
+        self.primaryText = primaryText
+        
+        primaryTextComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryTextComponents") as? [VisualInstructionComponent] ?? []
+        
+        guard let secondaryText = decoder.decodeObject(of: NSString.self, forKey: "primarysecondaryTextText") as String? else {
+            return nil
+        }
+        self.secondaryText = secondaryText
+        
+        secondaryTextComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryTextComponents") as? [VisualInstructionComponent]
     }
     
     open static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
         coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
-        coder.encode(primaryContent, forKey: "primaryContent")
-        coder.encode(secondaryContent, forKey: "secondaryContent")
+        coder.encode(primaryText, forKey: "primaryText")
+        coder.encode(primaryTextComponents, forKey: "primaryTextComponents")
+        coder.encode(secondaryText, forKey: "secondaryText")
+        coder.encode(secondaryTextComponents, forKey: "secondaryTextComponents")
     }
 }
