@@ -20,43 +20,47 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
      */
     public let text: String?
     
+    #if os(OSX)
     /**
-     :nodoc:
-     Dictionary containing `UITraitCollection` for scales 1.0, 2.0 and 3.0. Each key's value is a `URL`.
+     The scale factor of the image.
+     
+     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
+     
+     The default value of this property matches the natural scale factor associated with the main screen. However, only images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
      */
-    #if os(iOS) || os(tvOS)
-        /**
-        A dictionary containing the URLs to image representations of this component.
+    open var scale: CGFloat = NSScreen.main()?.backingScaleFactor ?? 1
+    #elseif os(watchOS)
+    /**
+     The scale factor of the image.
      
-        The keys of this dictionary are trait collections specifying different display scales. The values of this dictionary are URLs to remote images that you should prefer over the `text` property once they are available. Use the URL that is best suited to the system’s current traits.
-        */
-        public var imageURLs: [UITraitCollection: URL] = [:]
+     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
+     
+     The default value of this property matches the natural scale factor associated with the screen. Images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
+     */
+    open var scale: CGFloat = WKInterfaceDevice.current().screenScale
     #else
-        /**
-        A dictionary containing the URLs to image representations of this component.
+    /**
+     The scale factor of the image.
      
-        The keys of this dictionary are screen scale factors. The values of this dictionary are URLs to remote images that you should prefer over the `text` property once they are available. Use the URL that is best suited to the current screen’s scale factor.
-        */
-        public var imageURLs: [NSNumber: URL] = [:]
+     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
+     
+     The default value of this property matches the natural scale factor associated with the main screen. However, only images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
+     */
+    open var scale: CGFloat = UIScreen.main.scale
     #endif
+    
+    /**
+    URL to image representations of this component.
+ 
+    By default, an image based on the devices scale will be used. If you'd like a different scale, mutate the `scale` property.
+    */
+    public var imageURL: URL?
     
     internal init(json: JSONDictionary) {
         text = json["text"] as? String
         
         if let baseURL = json["imageBaseURL"] as? String {
-            let oneXURL = URL(string: "\(baseURL)@1x.png")
-            let twoXURL = URL(string: "\(baseURL)@2x.png")
-            let threeXURL = URL(string: "\(baseURL)@3x.png")
-            
-            #if os(iOS) || os(tvOS)
-                imageURLs[UITraitCollection(displayScale: 1.0)] = oneXURL
-                imageURLs[UITraitCollection(displayScale: 2.0)] = twoXURL
-                imageURLs[UITraitCollection(displayScale: 3.0)] = threeXURL
-            #else
-                imageURLs[1] = oneXURL
-                imageURLs[2] = twoXURL
-                imageURLs[3] = threeXURL
-            #endif
+            self.imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
     }
     
@@ -66,23 +70,16 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         self.text = text
         
-        #if os(iOS) || os(tvOS)
-            guard let imageURLs = decoder.decodeObject(of: [NSDictionary.self, UITraitCollection.self, NSURL.self], forKey: "imageURLs") as? [UITraitCollection: URL] else {
-                return nil
-            }
-        #else
-            guard let imageURLs = decoder.decodeObject(of: [NSDictionary.self, NSNumber.self, NSURL.self], forKey: "imageURLs") as? [NSNumber: URL] else {
-                return nil
-            }
-        #endif
-        
-        self.imageURLs = imageURLs
+        guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
+            return nil
+        }
+        self.imageURL = imageURL
     }
     
     open static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
-        coder.encode(imageURLs, forKey: "imageURLs")
+        coder.encode(imageURL, forKey: "imageURL")
     }
 }
