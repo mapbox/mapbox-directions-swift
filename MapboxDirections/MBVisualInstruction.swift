@@ -21,6 +21,8 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     /**
      :nodoc:
      Most important visual content to convey to the user about the `RouteStep`.
+     
+     This is the structured representation of `primaryText`.
      */
     public let primaryTextComponents: [VisualInstructionComponent]
     
@@ -33,6 +35,8 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     /**
      :nodoc:
      Ancillary visual information about the `RouteStep`.
+     
+     This is the structured representation of `secondaryText`.
      */
     public let secondaryTextComponents: [VisualInstructionComponent]?
     
