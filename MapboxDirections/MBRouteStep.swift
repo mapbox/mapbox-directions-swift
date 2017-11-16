@@ -531,8 +531,8 @@ open class RouteStep: NSObject, NSSecureCoding {
         let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
-        let visualInstructionsAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.visualInstructionsAlongStep = visualInstructionsAlongStep?.map { VisualInstruction(json: $0) }
+        let instructionsDisplayedAlongStep = json["bannerInstructions"] as? [JSONDictionary]
+        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstruction(json: $0) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -632,7 +632,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
         
-        visualInstructionsAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "visualInstructionsAlongStep") as? [VisualInstruction]
+        instructionsDisplayedAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "instructionsDisplayedAlongStep") as? [VisualInstruction]
     }
     
     open static var supportsSecureCoding = true
@@ -679,7 +679,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
         coder.encode(instructionsSpokenAlongStep, forKey: "instructionsSpokenAlongStep")
-        coder.encode(visualInstructionsAlongStep, forKey: "visualInstructionsAlongStep")
+        coder.encode(instructionsDisplayedAlongStep, forKey: "instructionsDisplayedAlongStep")
     }
     
     // MARK: Getting the Step Geometry
@@ -751,9 +751,13 @@ open class RouteStep: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-     Contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
+     Instructions about the next step’s maneuver, optimized for display in real time.
+     
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by displaying each item in this array in order as the user reaches the specified distances along this step. The text and images of the visual instructions refer to the details in the next step, but the distances are measured from the beginning of this step.
+     
+     This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
-    @objc open let visualInstructionsAlongStep: [VisualInstruction]?
+    @objc open let instructionsDisplayedAlongStep: [VisualInstruction]?
     
     @objc open override var description: String {
         return instructions

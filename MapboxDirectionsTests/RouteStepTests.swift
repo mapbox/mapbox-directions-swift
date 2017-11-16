@@ -157,5 +157,6 @@ class RouteStepTests: XCTestCase {
         XCTAssertEqual(unarchivedStep.transportType, step.transportType)
         XCTAssertEqual(unarchivedStep.destinations ?? [], step.destinations ?? [])
         XCTAssertEqual(unarchivedStep.instructionsSpokenAlongStep ?? [], step.instructionsSpokenAlongStep ?? [])
+        XCTAssertEqual(unarchivedStep.instructionsDisplayedAlongStep ?? [], step.instructionsDisplayedAlongStep ?? [])
     }
 }

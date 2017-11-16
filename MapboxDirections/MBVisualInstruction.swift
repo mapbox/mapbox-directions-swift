@@ -2,7 +2,7 @@ import Foundation
 
 /**
  :nodoc:
- Encompasses all information necessary for creating a visual queue about a given `RouteStep`.
+ Encompasses all information necessary for creating a visual cue about a given `RouteStep`.
  */
 @objc(MBVisualInstruction)
 public class VisualInstruction: NSObject, NSSecureCoding {
@@ -13,7 +13,9 @@ public class VisualInstruction: NSObject, NSSecureCoding {
      */
     public let distanceAlongStep: CLLocationDistance
     
-    
+    /**
+     A plain text representation of `primaryTextComponents`.
+     */
     public let primaryText: String
 
     /**
@@ -23,6 +25,9 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     public let primaryTextComponents: [VisualInstructionComponent]
     
     
+    /**
+     A plain text representation of `secondaryTextComponents`.
+     */
     public let secondaryText: String?
     
     /**
