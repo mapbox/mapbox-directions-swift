@@ -1,9 +1,12 @@
 import Foundation
 
-#if os(iOS) || os(tvOS)
+#if os(OSX)
+    import Cocoa
+#elseif os(watchOS)
+    import WatchKit
+#else
     import UIKit
 #endif
-
 
 /**
  :nodoc:
