@@ -24,38 +24,17 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
     public let text: String?
     
     #if os(OSX)
-    /**
-     The scale factor of the image.
-     
-     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
-     
-     The default value of this property matches the natural scale factor associated with the main screen. However, only images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
-     */
-    open var scale: CGFloat = NSScreen.main()?.backingScaleFactor ?? 1
+    var scale: CGFloat = NSScreen.main()?.backingScaleFactor ?? 1
     #elseif os(watchOS)
-    /**
-     The scale factor of the image.
-     
-     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
-     
-     The default value of this property matches the natural scale factor associated with the screen. Images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
-     */
-    open var scale: CGFloat = WKInterfaceDevice.current().screenScale
+    var scale: CGFloat = WKInterfaceDevice.current().screenScale
     #else
-    /**
-     The scale factor of the image.
-     
-     If you multiply the logical size of the image (stored in the `size` property) by the value in this property, you get the dimensions of the image in pixels.
-     
-     The default value of this property matches the natural scale factor associated with the main screen. However, only images with a scale factor of 1.0, 2.0, or 3.0 are ever returned by the API, so a scale factor of 1.0 of less results in a 1× (standard-resolution) image, while a scale factor greater than 1.0 results in a 2× (high-resolution or Retina) image.
-     */
-    open var scale: CGFloat = UIScreen.main.scale
+    var scale: CGFloat = UIScreen.main.scale
     #endif
     
     /**
     URL to image representations of this component.
  
-    By default, an image based on the devices scale will be used. If you'd like a different scale, mutate the `scale` property.
+    By default, an image based on the device's scale will be used.
     */
     public var imageURL: URL?
     

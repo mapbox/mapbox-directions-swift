@@ -77,11 +77,12 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(spokenInstructions[1].text, "In a quarter mile, turn left onto John F Kennedy Drive")
         XCTAssertEqual(spokenInstructions[2].text, "Turn left onto John F Kennedy Drive")
         
-        let visualInstructions = step.instructionsDisplayedAlongStep!
+        let visualInstructions = step.instructionsDisplayedAlongStep
         
-        XCTAssertEqual(visualInstructions.first!.primaryText, "John F Kennedy Drive")
-        XCTAssertEqual(visualInstructions.first!.primaryTextComponents.first!.text, "John F Kennedy Drive")
-        XCTAssertEqual(visualInstructions.first!.distanceAlongStep, 793.8)
-        XCTAssertNil(visualInstructions.first!.secondaryText)
+        XCTAssertNotNil(visualInstructions)
+        XCTAssertEqual(visualInstructions?.first?.primaryText, "John F Kennedy Drive")
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "John F Kennedy Drive")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 793.8)
+        XCTAssertNil(visualInstructions?.first?.secondaryText)
     }
 }
