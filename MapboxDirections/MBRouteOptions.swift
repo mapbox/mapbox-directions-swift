@@ -158,7 +158,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    @objc public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         assert(waypoints.count >= 2, "A route requires at least a source and destination.")
         assert(waypoints.count <= 25, "A route may not have more than 25 waypoints.")
 
@@ -175,7 +175,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    @objc public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -186,7 +186,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    @objc public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -262,7 +262,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
-    open var waypoints: [Waypoint]
+    @objc open var waypoints: [Waypoint]
 
     /**
      A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.
@@ -273,7 +273,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` and `true` otherwise.
      */
-    open var allowsUTurnAtWaypoint: Bool
+    @objc open var allowsUTurnAtWaypoint: Bool
 
     // MARK: Specifying Transportation Options
 
@@ -282,7 +282,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
-    open var profileIdentifier: MBDirectionsProfileIdentifier
+    @objc open var profileIdentifier: MBDirectionsProfileIdentifier
 
     // MARK: Specifying the Response Format
 
@@ -295,7 +295,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The default value of this property is `false`.
      */
-    open var includesAlternativeRoutes = false
+    @objc open var includesAlternativeRoutes = false
 
     /**
      A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
@@ -306,7 +306,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The default value of this property is `false`.
      */
-    open var includesSteps = false
+    @objc open var includesSteps = false
 
     /**
      Format of the data from which the shapes of the returned route and its steps are derived.
@@ -315,7 +315,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The default value of this property is `polyline`.
      */
-    open var shapeFormat = RouteShapeFormat.polyline
+    @objc open var shapeFormat = RouteShapeFormat.polyline
 
     /**
      Resolution of the shape of the returned route.
@@ -324,14 +324,14 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      The default value of this property is `low`, specifying a low-resolution route shape.
      */
-    open var routeShapeResolution = RouteShapeResolution.low
+    @objc open var routeShapeResolution = RouteShapeResolution.low
 
     /**
      AttributeOptions for the route. Any combination of `AttributeOptions` can be specified.
 
      By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
-    open var attributeOptions: AttributeOptions = []
+    @objc open var attributeOptions: AttributeOptions = []
 
     // MARK: Constructing the Request URL
 
@@ -357,7 +357,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
      */
-    open var includesExitRoundaboutManeuver = false
+    @objc open var includesExitRoundaboutManeuver = false
 
     /**
      The locale in which the route’s instructions are written.
@@ -368,7 +368,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      By default, this property is set to the current system locale.
      */
-    open var locale = Locale.autoupdatingCurrent {
+    @objc open var locale = Locale.autoupdatingCurrent {
         didSet {
             self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
         }
@@ -379,7 +379,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      If this option is set to true, the `RouteStep.instructionsSpokenAlongStep` property is set to an array of `SpokenInstructions`.
      */
-    open var includesSpokenInstructions = false
+    @objc open var includesSpokenInstructions = false
 
     /**
      The measurement system used in spoken instructions included in route steps.
@@ -388,8 +388,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
-    
+    @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
 
     /**
      An array of URL parameters to include in the request URL.
@@ -554,7 +553,7 @@ open class RouteOptionsV4: RouteOptions {
 
      By default, the value of this property is `text`, specifying plain text instructions.
      */
-    open var instructionFormat: InstructionFormat = .text
+    @objc open var instructionFormat: InstructionFormat = .text
 
     /**
      A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
@@ -563,7 +562,7 @@ open class RouteOptionsV4: RouteOptions {
 
      The default value of this property is `true`.
      */
-    open var includesShapes: Bool = true
+    @objc open var includesShapes: Bool = true
 
     override var path: String {
         assert(!queries.isEmpty, "No query")

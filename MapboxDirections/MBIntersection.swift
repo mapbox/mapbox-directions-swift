@@ -8,7 +8,7 @@ public class Intersection: NSObject, NSSecureCoding {
     /**
      The geographic coordinates at the center of the intersection.
      */
-    public let location: CLLocationCoordinate2D
+    @objc public let location: CLLocationCoordinate2D
     
     /**
      An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
@@ -17,38 +17,38 @@ public class Intersection: NSObject, NSSecureCoding {
      
      A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
      */
-    public let headings: [CLLocationDirection]
+    @objc public let headings: [CLLocationDirection]
     
     /**
      The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
      
      This index set effectively excludes any one-way road that leads toward the intersection.
      */
-    public let outletIndexes: IndexSet
+    @objc public let outletIndexes: IndexSet
     
     /**
      The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
      */
-    public let approachIndex: Int
+    @objc public let approachIndex: Int
     
     /**
      The index of the item in the `headings` array that corresponds to the road that the containing route step uses to leave the intersection.
      */
-    public let outletIndex: Int
+    @objc public let outletIndex: Int
     
     /**
      An array of `Lane` objects representing all the lanes of the road that the containing route step uses to approach the intersection.
      
      If no lane information is available for an intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
      */
-    public let approachLanes: [Lane]?
+    @objc public let approachLanes: [Lane]?
     
     /**
      The indices of the items in the `approachLanes` array that correspond to the roads that may be used to execute the maneuver.
      
      If no lane information is available for an intersection, this property’s value is `nil`.
      */
-    public let usableApproachLanes: IndexSet?
+    @objc public let usableApproachLanes: IndexSet?
     
     /**
      The road classes of the road that the containing step uses to leave the intersection.
@@ -125,7 +125,7 @@ public class Intersection: NSObject, NSSecureCoding {
     
     open static var supportsSecureCoding = true
     
-    public func encode(with coder: NSCoder) {
+    @objc public func encode(with coder: NSCoder) {
         coder.encode([
             "latitude": location.latitude,
             "longitude": location.longitude,

@@ -8,7 +8,7 @@ public class Lane: NSObject, NSSecureCoding {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.
      */
-    public let indications: LaneIndication
+    @objc public let indications: LaneIndication
     
     internal init(indications: LaneIndication) {
         self.indications = indications
