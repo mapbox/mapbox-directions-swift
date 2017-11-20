@@ -29,7 +29,7 @@ pod 'MapboxDirections.swift', '~> 0.12'
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
 
-v0.7.0 is the last release of MapboxDirections.swift written in Swift 2.3. The `swift2.3` branch corresponds to this release, plus any critical bug fixes that have been applied since. All subsequent releases will be based on the `master` branch, which is written in Swift 3. The Swift examples below are written in Swift 3; see the `swift2.3` branch’s readme for Swift 2.3 examples.
+v0.12.1 is the last release of MapboxDirections.swift written in Swift 3. All subsequent releases will be based on the `master` branch, which is written in Swift 4. The Swift examples below are written in Swift 4.
 
 This repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
 
