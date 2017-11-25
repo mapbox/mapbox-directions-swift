@@ -24,7 +24,7 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
     public let text: String?
     
     #if os(OSX)
-    var scale: CGFloat = NSScreen.main()?.backingScaleFactor ?? 1
+    var scale: CGFloat = NSScreen.main?.backingScaleFactor ?? 1
     #elseif os(watchOS)
     var scale: CGFloat = WKInterfaceDevice.current().screenScale
     #else
