@@ -395,9 +395,9 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
 
     /**
-     An Array of `RoadClass` that the routing engine will attempt to avoid.
+     The route classes that the calculated routes will avoid.
      
-     Only a single `RoadClasses` can be provided.
+     Currently, you can only specify a single road class to avoid.
      */
     open var roadClassesToAvoid: RoadClasses = []
     
@@ -427,7 +427,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
             let firstRoadClass = String(describing: allRoadClasses.first)
             if allRoadClasses.count > 1 {
-                assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`. Although \(roadClassesToAvoid.description) was specified, only \(firstRoadClass) will be used.")
+                assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
             }
             params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
         }

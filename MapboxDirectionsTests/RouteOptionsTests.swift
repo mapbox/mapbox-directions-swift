@@ -62,6 +62,7 @@ private extension RouteOptions {
         opts.includesExitRoundaboutManeuver = true
         opts.includesSpokenInstructions = true
         opts.distanceMeasurementSystem = .metric
+        opts.roadClassesToAvoid = .toll
         
         return opts
     }
