@@ -399,7 +399,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      
      Currently, you can only specify a single road class to avoid.
      */
-    open var roadClassesToAvoid: RoadClasses = []
+    @objc open var roadClassesToAvoid: RoadClasses = []
     
     /**
      An array of URL parameters to include in the request URL.
