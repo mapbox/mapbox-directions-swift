@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         ])
         options.includesSteps = true
         
-        _ = Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
+        Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
             guard error == nil else {
                 print("Error calculating directions: \(error!)")
                 return
