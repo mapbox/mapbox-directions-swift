@@ -491,6 +491,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         copy.locale = locale
         copy.includesSpokenInstructions = includesSpokenInstructions
         copy.distanceMeasurementSystem = distanceMeasurementSystem
+        copy.roadClassesToAvoid = roadClassesToAvoid
         return copy
     }
     
@@ -513,6 +514,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
             locale == other.locale,
             includesSpokenInstructions == other.includesSpokenInstructions,
+            roadClassesToAvoid == other.roadClassesToAvoid,
             distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
         return true
     }
