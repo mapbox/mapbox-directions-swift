@@ -442,10 +442,10 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
-            let firstRoadClass = String(describing: allRoadClasses.first)
             if allRoadClasses.count > 1 {
                 assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
             }
+            let firstRoadClass = String(describing: allRoadClasses.first!)
             params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
 
         }
