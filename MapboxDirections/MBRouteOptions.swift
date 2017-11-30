@@ -236,6 +236,9 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         }
         
         includesVisualInstructions = decoder.decodeBool(forKey: "includesVisualInstructions")
+
+        let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
+        roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
     }
 
     open static var supportsSecureCoding = true
@@ -254,6 +257,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
         coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
         coder.encode(includesVisualInstructions, forKey: "includesVisualInstructions")
+        coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
     }
 
     // MARK: Specifying the Path of the Route
@@ -404,6 +408,13 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     @objc open var includeBannerInstructions = false
 
     /**
+     The route classes that the calculated routes will avoid.
+     
+     Currently, you can only specify a single road class to avoid.
+     */
+    @objc open var roadClassesToAvoid: RoadClasses = []
+    
+    /**
      An array of URL parameters to include in the request URL.
      */
     internal var params: [URLQueryItem] {
@@ -427,6 +438,16 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         
         if includesVisualInstructions {
             params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
+        }
+        
+        if !roadClassesToAvoid.isEmpty {
+            let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
+            let firstRoadClass = String(describing: allRoadClasses.first)
+            if allRoadClasses.count > 1 {
+                assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
+            }
+            params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
@@ -489,6 +510,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         copy.includesSpokenInstructions = includesSpokenInstructions
         copy.distanceMeasurementSystem = distanceMeasurementSystem
         copy.includesVisualInstructions = includesVisualInstructions
+        copy.roadClassesToAvoid = roadClassesToAvoid
         return copy
     }
     
@@ -512,6 +534,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             locale == other.locale,
             includesSpokenInstructions == other.includesSpokenInstructions,
             includesVisualInstructions == other.includesVisualInstructions,
+            roadClassesToAvoid == other.roadClassesToAvoid,
             distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
         return true
     }
