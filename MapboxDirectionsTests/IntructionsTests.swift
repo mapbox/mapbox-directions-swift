@@ -8,7 +8,7 @@ class SpokenInstructionsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSpokenInstructions() {
+    func testInstructions() {
         let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
@@ -24,7 +24,7 @@ class SpokenInstructionsTests: XCTestCase {
         
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "spokenInstructions", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: "instructions", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -56,9 +56,7 @@ class SpokenInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 177)
-        XCTAssertEqual(route!.routeIdentifier, "cj7krdz9e039sy8mej9uiw252")
+        XCTAssertEqual(route!.routeIdentifier, "cja36hpse006a90nxslafkt4u")
         
         let leg = route!.legs.first!
         let step = leg.steps.first!
@@ -68,15 +66,23 @@ class SpokenInstructionsTests: XCTestCase {
         let spokenInstructions = step.instructionsSpokenAlongStep!
         
         XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 793.8)
-        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 304.0)
-        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 65.1)
+        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 348.2)
+        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 74.6)
         
-        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak>Head south on 8th Avenue</speak>")
-        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak>In 1000 feet, turn left onto John F Kennedy Drive</speak>")
-        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak>Turn left onto John F Kennedy Drive</speak>")
+        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Head south on <say-as interpret-as=\"address\">8th</say-as> Avenue for a half mile</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In a quarter mile, turn left onto John F Kennedy Drive</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto John F Kennedy Drive</prosody></amazon:effect></speak>")
         
-        XCTAssertEqual(spokenInstructions[0].text, "Head south on 8th Avenue")
-        XCTAssertEqual(spokenInstructions[1].text, "In 1000 feet, turn left onto John F Kennedy Drive")
+        XCTAssertEqual(spokenInstructions[0].text, "Head south on 8th Avenue for a half mile")
+        XCTAssertEqual(spokenInstructions[1].text, "In a quarter mile, turn left onto John F Kennedy Drive")
         XCTAssertEqual(spokenInstructions[2].text, "Turn left onto John F Kennedy Drive")
+        
+        let visualInstructions = step.instructionsDisplayedAlongStep
+        
+        XCTAssertNotNil(visualInstructions)
+        XCTAssertEqual(visualInstructions?.first?.primaryText, "John F Kennedy Drive")
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "John F Kennedy Drive")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 793.8)
+        XCTAssertNil(visualInstructions?.first?.secondaryText)
     }
 }

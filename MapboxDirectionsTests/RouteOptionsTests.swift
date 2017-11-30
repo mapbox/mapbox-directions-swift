@@ -32,6 +32,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.locale, options.locale)
         XCTAssertEqual(unarchivedOptions.includesSpokenInstructions, options.includesSpokenInstructions)
         XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, options.distanceMeasurementSystem)
+        XCTAssertEqual(unarchivedOptions.includesVisualInstructions, options.includesVisualInstructions)
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
     }
     func testCopying() {
@@ -62,6 +63,7 @@ private extension RouteOptions {
         opts.includesExitRoundaboutManeuver = true
         opts.includesSpokenInstructions = true
         opts.distanceMeasurementSystem = .metric
+        opts.includesVisualInstructions = true
         opts.roadClassesToAvoid = .toll
         
         return opts

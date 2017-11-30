@@ -235,6 +235,8 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             self.distanceMeasurementSystem = distanceMeasurementSystem
         }
         
+        includesVisualInstructions = decoder.decodeBool(forKey: "includesVisualInstructions")
+
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
     }
@@ -254,6 +256,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         coder.encode(locale, forKey: "locale")
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
         coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
+        coder.encode(includesVisualInstructions, forKey: "includesVisualInstructions")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
     }
 
@@ -393,6 +396,16 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
+    
+    /**
+     :nodoc:
+     If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
+     
+     `visualInstructionsAlongStep` contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
+     */
+    @objc open var includesVisualInstructions = false
+    
+    @objc open var includeBannerInstructions = false
 
     /**
      The route classes that the calculated routes will avoid.
@@ -423,6 +436,10 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
         
+        if includesVisualInstructions {
+            params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
+        }
+        
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
             let firstRoadClass = String(describing: allRoadClasses.first)
@@ -430,6 +447,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
                 assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
             }
             params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
@@ -491,6 +509,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         copy.locale = locale
         copy.includesSpokenInstructions = includesSpokenInstructions
         copy.distanceMeasurementSystem = distanceMeasurementSystem
+        copy.includesVisualInstructions = includesVisualInstructions
         copy.roadClassesToAvoid = roadClassesToAvoid
         return copy
     }
@@ -514,6 +533,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
             locale == other.locale,
             includesSpokenInstructions == other.includesSpokenInstructions,
+            includesVisualInstructions == other.includesVisualInstructions,
             roadClassesToAvoid == other.roadClassesToAvoid,
             distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
         return true
