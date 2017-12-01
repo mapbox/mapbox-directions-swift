@@ -440,14 +440,14 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
             params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
         }
         
-        if !roadClassesToAvoid.isEmpty {
+        if roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
             if allRoadClasses.count > 1 {
                 assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
             }
-            let firstRoadClass = String(describing: allRoadClasses.first!)
-            params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
-
+            if let firstRoadClass = allRoadClasses.first {
+                params.append(URLQueryItem(name: "exclude", value: String(describing: firstRoadClass)))
+            }
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
