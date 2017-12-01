@@ -5,7 +5,7 @@ import Foundation
  Encompasses all information necessary for creating a visual cue about a given `RouteStep`.
  */
 @objc(MBVisualInstruction)
-public class VisualInstruction: NSObject, NSSecureCoding {
+open class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
@@ -41,7 +41,7 @@ public class VisualInstruction: NSObject, NSSecureCoding {
     public let secondaryTextComponents: [VisualInstructionComponent]?
     
     
-    internal init(json: JSONDictionary) {
+    init(json: JSONDictionary) {
         distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
         let primaryTextComponent = json["primary"] as! JSONDictionary
