@@ -23,18 +23,11 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
      */
     public let text: String?
     
-    #if os(OSX)
-    var scale: CGFloat = NSScreen.main?.backingScaleFactor ?? 1
-    #elseif os(watchOS)
-    var scale: CGFloat = WKInterfaceDevice.current().screenScale
-    #else
-    var scale: CGFloat = UIScreen.main.scale
-    #endif
-    
     /**
-    URL to image representations of this component.
+     :nodoc:
+    The URL to an image representation of this component.
  
-    By default, an image based on the device's scale will be used.
+    The URL refers to an image that uses the device’s native screen scale.
     */
     public var imageURL: URL?
     
@@ -42,6 +35,14 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
         text = json["text"] as? String
         
         if let baseURL = json["imageBaseURL"] as? String {
+            let scale: CGFloat
+            #if os(OSX)
+                scale = NSScreen.main?.backingScaleFactor ?? 1
+            #elseif os(watchOS)
+                scale = WKInterfaceDevice.current().screenScale
+            #else
+                scale = UIScreen.main.scale
+            #endif
             self.imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
     }
