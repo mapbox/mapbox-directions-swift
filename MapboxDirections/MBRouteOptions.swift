@@ -404,8 +404,6 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      `visualInstructionsAlongStep` contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
      */
     @objc open var includesVisualInstructions = false
-    
-    @objc open var includeBannerInstructions = false
 
     /**
      The route classes that the calculated routes will avoid.
