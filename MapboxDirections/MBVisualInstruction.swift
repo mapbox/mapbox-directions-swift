@@ -11,12 +11,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      :nodoc:
      Distance in meters from the beginning of the step at which the visual instruction should be visible.
      */
-    public let distanceAlongStep: CLLocationDistance
+    @objc public let distanceAlongStep: CLLocationDistance
     
     /**
+     :nodoc:
      A plain text representation of `primaryTextComponents`.
      */
-    public let primaryText: String
+    @objc public let primaryText: String
 
     /**
      :nodoc:
@@ -24,13 +25,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      
      This is the structured representation of `primaryText`.
      */
-    public let primaryTextComponents: [VisualInstructionComponent]
-    
+    @objc public let primaryTextComponents: [VisualInstructionComponent]
     
     /**
+     :nodoc:
      A plain text representation of `secondaryTextComponents`.
      */
-    public let secondaryText: String?
+    @objc public let secondaryText: String?
     
     /**
      :nodoc:
@@ -38,27 +39,43 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      
      This is the structured representation of `secondaryText`.
      */
-    public let secondaryTextComponents: [VisualInstructionComponent]?
+    @objc public let secondaryTextComponents: [VisualInstructionComponent]?
     
-    
-    init(json: JSONDictionary) {
-        distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
+    /**
+     :nodoc:
+     Initialize a `VisualInstruction` from a dictionary.
+     */
+    @objc public convenience init(json: [String: Any]) {
+        let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
         let primaryTextComponent = json["primary"] as! JSONDictionary
-        primaryText = primaryTextComponent["text"] as! String
-        primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
+        let primaryText = primaryTextComponent["text"] as! String
+        let primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
             VisualInstructionComponent(json: $0)
         }
         
+        var secondaryText: String?
+        var secondaryTextComponents: [VisualInstructionComponent]?
         if let secondaryTextComponent = json["secondary"] as? JSONDictionary {
             secondaryText = secondaryTextComponent["text"] as? String
             secondaryTextComponents = (secondaryTextComponent["components"] as! [JSONDictionary]).map {
                 VisualInstructionComponent(json: $0)
             }
-        } else {
-            secondaryText = nil
-            secondaryTextComponents = nil
         }
+        
+        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents)
+    }
+    
+    /**
+     :nodoc:
+     Initialize a `VisualInstruction`.
+     */
+    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?) {
+        self.distanceAlongStep = distanceAlongStep
+        self.primaryText = primaryText
+        self.primaryTextComponents = primaryTextComponents
+        self.secondaryText = secondaryText
+        self.secondaryTextComponents = secondaryTextComponents
     }
     
     public required init?(coder decoder: NSCoder) {

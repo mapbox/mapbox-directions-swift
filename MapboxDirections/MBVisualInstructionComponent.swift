@@ -13,7 +13,7 @@ import Foundation
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 @objc(MBVisualInstructionComponent)
-public class VisualInstructionComponent: NSObject, NSSecureCoding {
+open class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
@@ -21,7 +21,7 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
      
      Use this property if `imageURLs` is an empty dictionary or if the URLs contained in that property are not yet available.
      */
-    public let text: String?
+    @objc public let text: String?
     
     /**
      :nodoc:
@@ -29,10 +29,16 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
  
     The URL refers to an image that uses the device’s native screen scale.
     */
-    public var imageURL: URL?
+    @objc public var imageURL: URL?
     
-    internal init(json: JSONDictionary) {
-        text = json["text"] as? String
+    /**
+     :nodoc:
+     Initialize A `VisualInstructionComponent`.
+     */
+    @objc public convenience init(json: [String: Any]) {
+        let text = json["text"] as? String
+        
+        var imageURL: URL?
         
         if let baseURL = json["imageBaseURL"] as? String {
             let scale: CGFloat
@@ -43,11 +49,22 @@ public class VisualInstructionComponent: NSObject, NSSecureCoding {
             #else
                 scale = UIScreen.main.scale
             #endif
-            self.imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
+            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
+        
+        self.init(text: text, imageURL: imageURL)
     }
     
-    public required init?(coder decoder: NSCoder) {
+    /**
+     :nodoc:
+     Initialize A `VisualInstructionComponent`.
+     */
+    @objc public init(text: String?, imageURL: URL?) {
+        self.text = text
+        self.imageURL = imageURL
+    }
+
+    @objc public required init?(coder decoder: NSCoder) {
         guard let text = decoder.decodeObject(of: NSString.self, forKey: "text") as String? else {
             return nil
         }
