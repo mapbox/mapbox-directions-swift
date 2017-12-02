@@ -485,13 +485,15 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
                 return Waypoint(coordinate: coordinate, name: waypoint.name ?? json["name"] as? String)
             }
+            self.waypoints = namedWaypoints
         } else {
             namedWaypoints = self.waypoints
         }
+        
         let routes = (json["routes"] as? [JSONDictionary])?.map {
             Route(json: $0, waypoints: namedWaypoints, routeOptions: self)
         }
-        return (waypoints, routes)
+        return (namedWaypoints, routes)
     }
     
     // MARK: NSCopying
