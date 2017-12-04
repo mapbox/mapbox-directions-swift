@@ -478,22 +478,21 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
     internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-        var namedWaypoints: [Waypoint]
-        if let waypoints = (json["waypoints"] as? [JSONDictionary]) {
-            namedWaypoints = zip(waypoints, self.waypoints).map { (json, waypoint) -> Waypoint in
-                let location = json["location"] as! [Double]
+        var namedWaypoints: [Waypoint]?
+        if let jsonWaypoints = (json["waypoints"] as? [JSONDictionary]) {
+            namedWaypoints = zip(jsonWaypoints, waypoints).map { (api, local) -> Waypoint in
+                let location = api["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                return Waypoint(coordinate: coordinate, name: waypoint.name ?? json["name"] as? String)
+                return Waypoint(coordinate: coordinate, name: local.name ?? api["name"] as? String)
             }
-            self.waypoints = namedWaypoints
-        } else {
-            namedWaypoints = self.waypoints
         }
         
+        let wpts = namedWaypoints ?? waypoints
+        
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: namedWaypoints, routeOptions: self)
+            Route(json: $0, waypoints: wpts, routeOptions: self)
         }
-        return (namedWaypoints, routes)
+        return (wpts, routes)
     }
     
     // MARK: NSCopying
