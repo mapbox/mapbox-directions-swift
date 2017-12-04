@@ -34,7 +34,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     @objc public let ssmlText: String
     
     /**
-     Initialize a `SpokenInStruction` from a dictionary.
+     Initialize a `SpokenInstruction` from a dictionary.
      */
     @objc public convenience init(json: [String: Any]) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
@@ -45,7 +45,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     }
 
     /**
-     Initialize a `SpokenInStruction`.
+     Initialize a `SpokenInstruction`.
      
      - parameter distanceAlongStep: A distance along the associated `RouteStep` at which to read the instruction aloud.
      - parameter text: A plain-text representation of the speech-optimized instruction.
