@@ -8,7 +8,7 @@ import Foundation
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
 @objc(MBSpokenInstruction)
-public class SpokenInstruction: NSObject, NSSecureCoding {
+open class SpokenInstruction: NSObject, NSSecureCoding {
     
     /**
      A distance along the associated `RouteStep` at which to read the instruction aloud.
@@ -33,10 +33,28 @@ public class SpokenInstruction: NSObject, NSSecureCoding {
      */
     @objc public let ssmlText: String
     
-    internal init(json: JSONDictionary) {
-        distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
-        text = json["announcement"] as! String
-        ssmlText = json["ssmlAnnouncement"] as! String
+    /**
+     Initialize a `SpokenInstruction` from a dictionary.
+     */
+    @objc public convenience init(json: [String: Any]) {
+        let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
+        let text = json["announcement"] as! String
+        let ssmlText = json["ssmlAnnouncement"] as! String
+
+        self.init(distanceAlongStep: distanceAlongStep, text: text, ssmlText: ssmlText)
+    }
+
+    /**
+     Initialize a `SpokenInstruction`.
+     
+     - parameter distanceAlongStep: A distance along the associated `RouteStep` at which to read the instruction aloud.
+     - parameter text: A plain-text representation of the speech-optimized instruction.
+     - parameter ssmlText: A formatted representation of the speech-optimized instruction.
+     */
+    @objc public init(distanceAlongStep: CLLocationDistance, text: String, ssmlText: String) {
+        self.distanceAlongStep = distanceAlongStep
+        self.text = text
+        self.ssmlText = ssmlText
     }
     
     public required init?(coder decoder: NSCoder) {
