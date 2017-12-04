@@ -421,6 +421,45 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     }
 }
 
+/**
+ A `DrivingSide` indicates which side of the road cars and traffic flow.
+ */
+@objc(MBDrivingSide)
+public enum DrivingSide: Int, CustomStringConvertible {
+    /**
+     Indicates driving occurs on the `left` side.
+     */
+    case left
+    
+    /**
+     Indicates driving occurs on the `right` side.
+     */
+    case right
+    
+    public init?(description: String) {
+        var side: DrivingSide
+        switch description {
+        case "left":
+            side = .left
+        case "right":
+            side = .right
+        default:
+            return nil
+        }
+        
+        self.init(rawValue: side.rawValue)
+    }
+    
+    public var description: String {
+        switch self {
+        case .left:
+            return "left"
+        case .right:
+            return "right"
+        }
+    }
+}
+
 extension String {
     internal func tagValues(separatedBy separator: String) -> [String] {
         return components(separatedBy: separator).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
@@ -488,7 +527,7 @@ struct Road {
 open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
-    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
+    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
         let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
@@ -542,6 +581,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         self.maneuverLocation = maneuverLocation
         self.coordinates = coordinates
+        self.drivingSide = drivingSide
     }
     
     /**
@@ -557,6 +597,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         let maneuverType = ManeuverType(description: maneuver["type"] as! String)
         let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
+        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
         
         let name = json["name"] as! String
         
@@ -570,7 +611,7 @@ open class RouteStep: NSObject, NSSecureCoding {
             coordinates = nil
         }
         
-        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
+        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -600,6 +641,12 @@ open class RouteStep: NSObject, NSSecureCoding {
             maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
         } else {
             maneuverDirection = nil
+        }
+        
+        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(description: drivingSideDescription) {
+            self.drivingSide = drivingSide
+        } else {
+            self.drivingSide = .right
         }
         
         if let maneuverLocationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
@@ -655,6 +702,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         coder.encode(maneuverType?.description, forKey: "maneuverType")
         coder.encode(maneuverDirection?.description, forKey: "maneuverDirection")
+        coder.encode(drivingSide.description, forKey: "drivingSide")
         
         coder.encode(intersections, forKey: "intersections")
         
@@ -784,6 +832,11 @@ open class RouteStep: NSObject, NSSecureCoding {
      Additional directional information to clarify the maneuver type.
      */
     open let maneuverDirection: ManeuverDirection?
+    
+    /**
+     Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
+     */
+    open let drivingSide: DrivingSide
     
     /**
      The location of the maneuver at the beginning of this step.
@@ -952,10 +1005,10 @@ internal class RouteStepV4: RouteStep {
         let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
         let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
-        
+        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
         let name = json["way_name"] as! String
         
-        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
+        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
     }
 }
 
