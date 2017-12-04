@@ -421,9 +421,19 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
     }
 }
 
+/**
+ A `RoadSide` indicates which side of the road cars and traffic flow.
+ */
 @objc(MBRoadSide)
 public enum RoadSide: Int, CustomStringConvertible {
+    /**
+     Indicates driving occurs on the `left` side.
+     */
     case left
+    
+    /**
+     Indicates driving occurs on the `right` side.
+     */
     case right
     
     public init?(description: String) {
