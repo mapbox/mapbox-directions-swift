@@ -6,7 +6,7 @@ import Polyline
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteLeg)
-open class RouteLeg: NSObject, NSSecureCoding {
+open class RouteLeg: NSObject, Codable {
 
     // MARK: Creating a Leg
     
@@ -68,54 +68,51 @@ open class RouteLeg: NSObject, NSSecureCoding {
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
     }
     
-    public required init?(coder decoder: NSCoder) {
-        guard let decodedSource = decoder.decodeObject(of: Waypoint.self, forKey: "source") else {
-            return nil
-        }
-        source = decodedSource
-        
-        guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
-            return nil
-        }
-        destination = decodedDestination
-        
-        steps = decoder.decodeObject(of: [NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
-        
-        guard let decodedName = decoder.decodeObject(of: NSString.self, forKey: "name") as String? else {
-            return nil
-        }
-        name = decodedName
-        
-        distance = decoder.decodeDouble(forKey: "distance")
-        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
-        
-        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
-            return nil
-        }
-        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
-        
-        openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
-        segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
-        expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
-        segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
-        segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
+    private enum CodingKeys: String, CodingKey {
+        case source
+        case destination
+        case steps
+        case name
+        case distance
+        case expectedTravelTime
+        case profileIdentifier
+        case openStreetMapNodeIdentifiers
+        case segmentDistances
+        case expectedSegmentTravelTimes
+        case segmentSpeeds
+        case segmentCongestionLevels
     }
     
-    @objc open static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
-        coder.encode(source, forKey: "source")
-        coder.encode(destination, forKey: "destination")
-        coder.encode(steps, forKey: "steps")
-        coder.encode(name, forKey: "name")
-        coder.encode(distance, forKey: "distance")
-        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(openStreetMapNodeIdentifiers, forKey: "openStreetMapNodeIdentifiers")
-        coder.encode(segmentDistances, forKey: "segmentDistances")
-        coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
-        coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
-        coder.encode(segmentCongestionLevels, forKey: "segmentCongestionLevels")
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(source, forKey: .source)
+        try container.encode(destination, forKey: .destination)
+        try container.encode(steps, forKey: .steps)
+        try container.encode(name, forKey: .name)
+        try container.encode(distance, forKey: .distance)
+        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
+        try container.encode(openStreetMapNodeIdentifiers, forKey: .openStreetMapNodeIdentifiers)
+        try container.encode(segmentDistances, forKey: .segmentDistances)
+        try container.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+        try container.encode(segmentSpeeds, forKey: .segmentSpeeds)
+        try container.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        source = try container.decode(Waypoint.self, forKey: .source)
+        destination = try container.decode(Waypoint.self, forKey: .destination)
+        steps = try container.decode([RouteStep].self, forKey: .steps)
+        name = try container.decode(String.self, forKey: .name)
+        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: try container.decode(String.self, forKey: .profileIdentifier))
+        openStreetMapNodeIdentifiers = try container.decode([Int64]?.self, forKey: .openStreetMapNodeIdentifiers)
+        segmentDistances = try container.decode([CLLocationDistance]?.self, forKey: .segmentDistances)
+        expectedSegmentTravelTimes = try container.decode([TimeInterval]?.self, forKey: .expectedSegmentTravelTimes)
+        segmentSpeeds = try container.decode([CLLocationSpeed]?.self, forKey: .segmentSpeeds)
+        segmentCongestionLevels = try container.decode([CongestionLevel]?.self, forKey: .segmentCongestionLevels)
     }
     
     // MARK: Getting the Leg Geometry

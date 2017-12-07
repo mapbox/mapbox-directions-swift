@@ -2,10 +2,14 @@
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBWaypoint)
-open class Waypoint: NSObject, NSCopying, NSSecureCoding {
+open class Waypoint: NSObject, Codable {
     // MARK: Creating a Waypoint Object
     
-    open static var supportsSecureCoding = true
+    private enum CodingKeys: String, CodingKey {
+        case coordinate
+        case coordinateAccuracy
+        case name
+    }
     
     /**
      Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.
@@ -59,25 +63,6 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         self.name = name
     }
     #endif
-    
-    public required init?(coder decoder: NSCoder) {
-        let latitude = decoder.decodeDouble(forKey: "latitude")
-        let longitude = decoder.decodeDouble(forKey: "longitude")
-        coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        coordinateAccuracy = decoder.decodeDouble(forKey: "coordinateAccuracy")
-        heading = decoder.decodeDouble(forKey: "heading")
-        headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
-        name = decoder.decodeObject(of: NSString.self, forKey: "name") as String?
-    }
-    
-    open func encode(with coder: NSCoder) {
-        coder.encode(coordinate.latitude, forKey: "latitude")
-        coder.encode(coordinate.longitude, forKey: "longitude")
-        coder.encode(coordinateAccuracy, forKey: "coordinateAccuracy")
-        coder.encode(heading, forKey: "heading")
-        coder.encode(headingAccuracy, forKey: "headingAccuracy")
-        coder.encode(name, forKey: "name")
-    }
     
     open func copy(with zone: NSZone?) -> Any {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
@@ -149,6 +134,11 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     
     func debugQuickLookObject() -> Any {
         return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: coordinateAccuracy, verticalAccuracy: -1, course: heading, speed: -1, timestamp: Date())
+    }
+    
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let other = object as? Waypoint else { return false}
+        return self.coordinate == other.coordinate && self.name == other.name && self.coordinateAccuracy == other.coordinateAccuracy
     }
 }
 
