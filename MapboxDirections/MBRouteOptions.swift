@@ -149,7 +149,7 @@ public enum MeasurementSystem: UInt, CustomStringConvertible {
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
-open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
+open class RouteOptions: NSObject, Codable, NSCopying {
     // MARK: Creating a Route Options Object
 
     /**
@@ -191,75 +191,59 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
-    public required init?(coder decoder: NSCoder) {
-        guard let waypoints = decoder.decodeObject(of: [NSArray.self, Waypoint.self], forKey: "waypoints") as? [Waypoint] else {
-            return nil
-        }
-        self.waypoints = waypoints
-
-        allowsUTurnAtWaypoint = decoder.decodeBool(forKey: "allowsUTurnAtWaypoint")
-
-        guard let profileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
-            return nil
-        }
-        self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier)
-
-        includesAlternativeRoutes = decoder.decodeBool(forKey: "includesAlternativeRoutes")
-        includesSteps = decoder.decodeBool(forKey: "includesSteps")
-
-        guard let shapeFormat = RouteShapeFormat(description: decoder.decodeObject(of: NSString.self, forKey: "shapeFormat") as String? ?? "") else {
-            return nil
-        }
-        self.shapeFormat = shapeFormat
-
-        guard let routeShapeResolution = RouteShapeResolution(description: decoder.decodeObject(of: NSString.self, forKey: "routeShapeResolution") as String? ?? "") else {
-            return nil
-        }
-        self.routeShapeResolution = routeShapeResolution
-
-        guard let descriptions = decoder.decodeObject(of: NSString.self, forKey: "attributeOptions") as String?,
-            let attributeOptions = AttributeOptions(descriptions: descriptions.components(separatedBy: ",")) else {
-            return nil
-        }
-        self.attributeOptions = attributeOptions
-
-        includesExitRoundaboutManeuver = decoder.decodeBool(forKey: "includesExitRoundaboutManeuver")
-        
-        if let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? {
-            self.locale = locale
-        }
-
-        includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
-        
-        if let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") {
-            self.distanceMeasurementSystem = distanceMeasurementSystem
-        }
-        
-        includesVisualInstructions = decoder.decodeBool(forKey: "includesVisualInstructions")
-
-        let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
-        roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
+    private enum CodingKeys: String, CodingKey {
+        case waypoints
+        case allowsUTurnAtWaypoint
+        case profileIdentifier
+        case includesAlternativeRoutes
+        case includesSteps
+        case shapeFormat
+        case routeShapeResolution
+        case attributeOptions
+        case includesExitRoundaboutManeuver
+        case locale
+        case includesSpokenInstructions
+        case distanceMeasurementSystem
+        case includesVisualInstructions
+        case roadClassesToAvoid
     }
-
-    open static var supportsSecureCoding = true
-
-    public func encode(with coder: NSCoder) {
-        coder.encode(waypoints, forKey: "waypoints")
-        coder.encode(allowsUTurnAtWaypoint, forKey: "allowsUTurnAtWaypoint")
-        coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
-        coder.encode(includesSteps, forKey: "includesSteps")
-        coder.encode(shapeFormat.description, forKey: "shapeFormat")
-        coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
-        coder.encode(attributeOptions.description, forKey: "attributeOptions")
-        coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
-        coder.encode(locale, forKey: "locale")
-        coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
-        coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
-        coder.encode(includesVisualInstructions, forKey: "includesVisualInstructions")
-        coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(waypoints, forKey: .waypoints)
+        try container.encode(allowsUTurnAtWaypoint, forKey: .allowsUTurnAtWaypoint)
+        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
+        try container.encode(includesAlternativeRoutes, forKey: .includesAlternativeRoutes)
+        try container.encode(includesSteps, forKey: .includesSteps)
+        try container.encode(shapeFormat.rawValue, forKey: .shapeFormat)
+        try container.encode(routeShapeResolution.rawValue, forKey: .routeShapeResolution)
+        try container.encode(attributeOptions.rawValue, forKey: .attributeOptions)
+        try container.encode(includesExitRoundaboutManeuver, forKey: .includesExitRoundaboutManeuver)
+        try container.encode(locale, forKey: .locale)
+        try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
+        try container.encode(distanceMeasurementSystem.rawValue, forKey: .distanceMeasurementSystem)
+        try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
+        try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
     }
-
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        waypoints = try container.decode([Waypoint].self, forKey: .waypoints)
+        allowsUTurnAtWaypoint = try container.decode(Bool.self, forKey: .allowsUTurnAtWaypoint)
+        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: try container.decode(String.self, forKey: .profileIdentifier))
+        includesAlternativeRoutes = try container.decode(Bool.self, forKey: .includesAlternativeRoutes)
+        includesSteps = try container.decode(Bool.self, forKey: .includesSteps)
+        shapeFormat = RouteShapeFormat(rawValue: try container.decode(UInt.self, forKey: .shapeFormat))!
+        routeShapeResolution = RouteShapeResolution(rawValue: try container.decode(UInt.self, forKey: .routeShapeResolution))!
+        attributeOptions = AttributeOptions(rawValue: try container.decode(UInt.self, forKey: .attributeOptions))
+        includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
+        locale = try container.decode(Locale.self, forKey: .locale)
+        includesSpokenInstructions = try container.decode(Bool.self, forKey: .includesSpokenInstructions)
+        distanceMeasurementSystem = MeasurementSystem(rawValue: try container.decode(UInt.self, forKey: .distanceMeasurementSystem))!
+        includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
+        roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
+    }
+    
     // MARK: Specifying the Path of the Route
 
     /**
@@ -498,21 +482,9 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
     }
     
     // MARK: NSCopying
-    open func copy(with zone: NSZone? = nil) -> Any {
-        let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
-        copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
-        copy.includesAlternativeRoutes = includesAlternativeRoutes
-        copy.includesSteps = includesSteps
-        copy.shapeFormat = shapeFormat
-        copy.routeShapeResolution = routeShapeResolution
-        copy.attributeOptions = attributeOptions
-        copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
-        copy.locale = locale
-        copy.includesSpokenInstructions = includesSpokenInstructions
-        copy.distanceMeasurementSystem = distanceMeasurementSystem
-        copy.includesVisualInstructions = includesVisualInstructions
-        copy.roadClassesToAvoid = roadClassesToAvoid
-        return copy
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let data = try! JSONEncoder().encode(self)
+        return try! JSONDecoder().decode(RouteOptions.self, from: data)
     }
     
     //MARK: - OBJ-C Equality

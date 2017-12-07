@@ -2,19 +2,16 @@ import XCTest
 @testable import MapboxDirections
 
 class RouteOptionsTests: XCTestCase {
+    
+    
     func testCoding() {
- 
         let options = RouteOptions.testInstance
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(options, forKey: "options")
-        keyedArchiver.finishEncoding()
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(options)
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedOptions = keyedUnarchiver.decodeObject(of: RouteOptions.self, forKey: "options")!
-        keyedUnarchiver.finishDecoding()
+        NSKeyedArchiver.archiveRootObject(data, toFile: "options")
+        let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: "options") as! Data
+        let unarchivedOptions = try! JSONDecoder().decode(RouteOptions.self, from: unarchivedData)
         
         XCTAssertNotNil(unarchivedOptions)
         

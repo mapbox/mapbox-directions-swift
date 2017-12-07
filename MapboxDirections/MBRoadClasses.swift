@@ -2,7 +2,7 @@ import Foundation
 
 public typealias RoadClasses = MBRoadClasses
 
-extension RoadClasses: CustomStringConvertible {
+extension RoadClasses: CustomStringConvertible, Codable {
     
     /**
      Creates a `RoadClasses` given an array of strings.
