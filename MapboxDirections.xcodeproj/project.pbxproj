@@ -22,6 +22,9 @@
 		8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B6A1FDB101F008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
+		8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
+		8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
+		8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* MBAttribute.swift */; };
 		C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5247D701E818A24004B6154 /* AnnotationTests.swift */; };
 		C52552B91FA15D5900B1545C /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */; };
@@ -1005,6 +1008,7 @@
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				C52CE38F1F6AF63C0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AB1E9D7F73008F98CE /* MBCongestion.swift in Sources */,
+				8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */,
 			);
@@ -1044,6 +1048,7 @@
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3901F6AF63D0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AC1E9D7F74008F98CE /* MBCongestion.swift in Sources */,
+				8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* MBDirections.swift in Sources */,
 			);
@@ -1083,6 +1088,7 @@
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3911F6AF63E0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */,
+				8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* MBDirections.swift in Sources */,
 			);
