@@ -111,31 +111,38 @@ class RouteStepTests: XCTestCase {
             CLLocationCoordinate2D(latitude: -122.220168, longitude: 37.854149),
         ]
         let json = [
+            "name": "",
             "mode": "driving",
+            "driving_side": "left",
             "maneuver": [
                 "instruction": "Keep left at the fork onto CA 24",
                 "bearing_before": 55,
+                "location": [
+                    -122.220694,
+                    37.853913
+                ],
+                "name": "8th Avenue"
+            ],
+            "geometry": [
+                "coordinates": coordinates.map { [$0.longitude, $0.latitude] },
+                "type": "LineString"
             ],
             "distance": 1669.7,
             "duration": 75.6,
             "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
         ] as [String: Any]
         
-        let step = RouteStep(finalHeading: 59, maneuverType: .reachFork, maneuverDirection: .left, drivingSide: .left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
+        let jsonData = try! JSONSerialization.data(withJSONObject: json, options: [])
+        let step: RouteStep = RouteStep.from(data: jsonData)!
         
         // Encode and decode the route step securely
         // This may raise an Obj-C exception if an error is encountered which will fail the tests
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(step, forKey: "step")
-        keyedArchiver.finishEncoding()
+        let data = try! JSONEncoder().encode(step)
+        NSKeyedArchiver.archiveRootObject(data, toFile: "step")
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedStep = keyedUnarchiver.decodeObject(of: RouteStep.self, forKey: "step")!
-        keyedUnarchiver.finishDecoding()
+        let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: "step") as! Data
+        let unarchivedStep = try! JSONDecoder().decode(RouteStep.self, from: unarchivedData)
         
         XCTAssertNotNil(unarchivedStep)
         

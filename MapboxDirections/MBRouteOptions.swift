@@ -454,32 +454,6 @@ open class RouteOptions: NSObject, Codable, NSCopying {
 
         return params
     }
-
-    /**
-     Returns response objects that represent the given JSON dictionary data.
-
-     - parameter json: The API response in JSON dictionary format.
-     - returns: A tuple containing an array of waypoints and an array of routes.
-     */
-    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-        var namedWaypoints: [Waypoint]?
-        if let jsonWaypoints = (json["waypoints"] as? [JSONDictionary]) {
-            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
-                let location = api["location"] as! [Double]
-                let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                let possibleAPIName = api["name"] as? String
-                let apiName = possibleAPIName?.nonEmptyString
-                return Waypoint(coordinate: coordinate, name: local.name ?? apiName)
-            }
-        }
-        
-        let waypoints = namedWaypoints ?? self.waypoints
-        
-        let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: waypoints, routeOptions: self)
-        }
-        return (waypoints, routes)
-    }
     
     // MARK: NSCopying
     public func copy(with zone: NSZone? = nil) -> Any {
@@ -596,16 +570,16 @@ open class RouteOptionsV4: RouteOptions {
         ]
     }
 
-    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-        let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
-        let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
-        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
-        let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
-        let routes = (json["routes"] as? [JSONDictionary])?.map {
-            RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
-        }
-        return (waypoints, routes)
-    }
+//    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+//        let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
+//        let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
+//        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
+//        let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
+//        let routes = (json["routes"] as? [JSONDictionary])?.map {
+//            RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
+//        }
+//        return (waypoints, routes)
+//    }
 }
 
 extension Locale {

@@ -4,7 +4,7 @@ import Polyline
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
 @objc(MBTransportType)
-public enum TransportType: Int, CustomStringConvertible {
+public enum TransportType: Int, CustomStringConvertible, Codable {
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
     
     /**
@@ -109,7 +109,7 @@ public enum TransportType: Int, CustomStringConvertible {
  In Swift, you can use pattern matching with a single switch statement on a tuple containing the maneuver type and maneuver direction to avoid a complex series of if-else-if statements or switch statements.
  */
 @objc(MBManeuverType)
-public enum ManeuverType: Int, CustomStringConvertible {
+public enum ManeuverType: Int, CustomStringConvertible, Codable {
     /**
      The step requires the user to depart from a waypoint.
      
@@ -331,7 +331,7 @@ public enum ManeuverType: Int, CustomStringConvertible {
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
 @objc(MBManeuverDirection)
-public enum ManeuverDirection: Int, CustomStringConvertible {
+public enum ManeuverDirection: Int, CustomStringConvertible, Codable {
     /**
      The maneuver requires a sharp turn to the right.
      */
@@ -425,7 +425,7 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
  A `DrivingSide` indicates which side of the road cars and traffic flow.
  */
 @objc(MBDrivingSide)
-public enum DrivingSide: Int, CustomStringConvertible {
+public enum DrivingSide: Int, CustomStringConvertible, Codable {
     /**
      Indicates driving occurs on the `left` side.
      */
@@ -518,39 +518,136 @@ struct Road {
     }
 }
 
+struct GeoJSONGeometry: Codable {
+    let coordinates: [CLLocationCoordinate2D]?
+    let type: String?
+}
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
 @objc(MBRouteStep)
-open class RouteStep: NSObject, NSSecureCoding {
-    // MARK: Creating a Step
+open class RouteStep: NSObject, Codable {
     
-    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
-        transportType = TransportType(description: json["mode"] as! String)
+    private enum CodingKeys: String, CodingKey {
+        case codes
+        case geometry
+        case destinationCodes
+        case destinations
+        case distance
+        case drivingSide = "driving_side"
+        case exitCodes
+        case exitIndex
+        case exitNames
+        case expectedTravelTime = "duration"
+        case instructions
+        case instructionsDisplayedAlongStep = "bannerInstructions"
+        case instructionsSpokenAlongStep = "voiceInstructions"
+        case intersections
+        case maneuver
+        case name
+        case ref
+        case exits
+        case phoneticExitNames = "pronunciation"
+        case phoneticNames = "rotary_pronunciation"
+        case transportType
+        case rotaryName = "rotary_name"
+    }
+    
+    private enum GeometryCodingKeys: String, CodingKey {
+        case coordinates
+        case type
+    }
+    
+    private enum ManeuverCodingKeys: String, CodingKey {
+        case instruction
+        case location
+        case type
+        case direction = "modifier"
+        case initialHeading = "bearing_before"
+        case finalHeading = "bearing_after"
+    }
+    
+    private enum RoadCodingKeys: String, CodingKey {
+        case names
+        case phoneticNames
+        case exitNames
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
+        try container.encode(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
+        try container.encode(exitIndex, forKey: .exitIndex)
+        try container.encode(exitCodes, forKey: .exitCodes)
+        try container.encode(exitNames, forKey: .exitNames)
+        try container.encode(phoneticExitNames, forKey: .phoneticExitNames)
+        try container.encode(phoneticNames, forKey: .phoneticNames)
+        try container.encode(distance, forKey: .distance)
+        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encode(codes, forKey: .codes)
+        try container.encode(transportType, forKey: .transportType)
+        try container.encode(destinationCodes, forKey: .destinationCodes)
+        try container.encode(destinations, forKey: .destinations)
+        try container.encode(intersections, forKey: .intersections)
+        try container.encode(drivingSide.description, forKey: .drivingSide)
+        try container.encode(name, forKey: .name)
+
+        var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
+        try maneuver.encode(instructions, forKey: .instruction)
+        try maneuver.encodeIfPresent(maneuverType?.description, forKey: .type)
+        try maneuver.encodeIfPresent(maneuverDirection?.description, forKey: .direction)
+        try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
+        try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
+        try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
         
-        let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
-        if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
-            names = road.rotaryNames
-            phoneticNames = (json["rotary_pronunciation"] as? String)?.tagValues(separatedBy: ";")
-            exitNames = road.names
-            phoneticExitNames = (json["pronunciation"] as? String)?.tagValues(separatedBy: ";")
+        var geometry = container.nestedContainer(keyedBy: GeometryCodingKeys.self, forKey: .geometry)
+        try geometry.encodeIfPresent(coordinates, forKey: .coordinates)
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
+        maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
+        
+        // TODO: Move encoding/decoding into ManeuverType
+        if let type = try maneuver.decodeIfPresent(String.self, forKey: .type) {
+            maneuverType = ManeuverType(description: type)
         } else {
-            names = road.names
-            phoneticNames = (json["pronunciation"] as? String)?.tagValues(separatedBy: ";")
-            exitNames = nil
-            phoneticExitNames = nil
+            maneuverType = nil
         }
-        exitCodes = road.exitCodes
-        codes = road.codes
-        destinationCodes = road.destinationCodes
-        destinations = road.destinations
         
-        let maneuver = json["maneuver"] as! JSONDictionary
+        // TODO: Move encoding/decoding into ManeuverDirection
+        if let direction = try maneuver.decodeIfPresent(String.self, forKey: .direction) {
+            maneuverDirection = ManeuverDirection(description: direction)
+        } else {
+            maneuverDirection = nil
+        }
         
-        if let instructions = maneuver["instruction"] as? String {
-            self.instructions = instructions
+        initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
+        finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
+        
+        let geometry = try container.decodeIfPresent(GenericDecodable<GeoJSONGeometry, String>.self, forKey: .geometry)
+        if let geo = geometry?.value as? String {
+            coordinates = decodePolyline(geo, precision: 1e5)
+        } else if let geo = geometry?.value as? GeoJSONGeometry {
+            coordinates = geo.coordinates
+        } else {
+            coordinates = nil
+        }
+        
+        name = try container.decode(String.self, forKey: .name)
+        
+        let road = Road(name: name,
+                        ref: try container.decodeIfPresent(String.self, forKey: .ref),
+                        exits: try container.decodeIfPresent(String.self, forKey: .exits),
+                        destination: try container.decodeIfPresent(String.self, forKey: .destinations),
+                        rotaryName: try container.decodeIfPresent(String.self, forKey: .rotaryName))
+        
+        if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
+            instructions = instruction
         } else if let mt = maneuverType, let md = maneuverDirection {
             instructions = "\(mt) \(md)"
         } else if let mt = maneuverType {
@@ -561,173 +658,35 @@ open class RouteStep: NSObject, NSSecureCoding {
             instructions = ""
         }
         
-        distance = json["distance"] as? Double ?? 0
-        expectedTravelTime = json["duration"] as? Double ?? 0
+        instructionsSpokenAlongStep = try container.decodeIfPresent([SpokenInstruction].self, forKey: .instructionsSpokenAlongStep)
+        instructionsDisplayedAlongStep = try container.decodeIfPresent([VisualInstruction].self, forKey: .instructionsDisplayedAlongStep)
         
-        let intersectionsJSON = json["intersections"] as? [JSONDictionary]
-        self.intersections = intersectionsJSON?.map { Intersection(json: $0) }
+        drivingSide = DrivingSide(description: try container.decode(String.self, forKey: .drivingSide))!
+        exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
+        exitCodes = try container.decodeIfPresent([String].self, forKey: .exitCodes)
+        distance = try container.decode(CLLocationDirection.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        let voiceInstructionsJSON = json["voiceInstructions"] as? [JSONDictionary]
-        self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
+        codes = road.codes
+        transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType)
+        destinationCodes = road.destinationCodes
         
-        let instructionsDisplayedAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstruction(json: $0) }
+        intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
         
-        initialHeading = maneuver["bearing_before"] as? Double
-        self.finalHeading = finalHeading
-        self.maneuverType = maneuverType
-        self.maneuverDirection = maneuverDirection
-        exitIndex = maneuver["exit"] as? Int
+        destinations = road.destinations
         
-        self.maneuverLocation = maneuverLocation
-        self.coordinates = coordinates
-        self.drivingSide = drivingSide
-    }
-    
-    /**
-     Initializes a new route step object with the given JSON dictionary representation.
-     
-     Normally, you do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
-     
-     - parameter json: A JSON dictionary representation of a route step object as returnd by the Mapbox Directions API.
-     */
-    @objc public convenience init(json: [String: Any]) {
-        let maneuver = json["maneuver"] as! JSONDictionary
-        let finalHeading = maneuver["bearing_after"] as? Double
-        let maneuverType = ManeuverType(description: maneuver["type"] as! String)
-        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "")
-        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
-        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
-        
-        let name = json["name"] as! String
-        
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
-        
-        self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
-    }
-    
-    public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
-		
-        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
-            if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
-                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            } else {
-                return nil
-            }
-        })
-        
-        guard let decodedInstructions = decoder.decodeObject(of: NSString.self, forKey: "instructions") as String? else {
-            return nil
-        }
-        instructions = decodedInstructions
-		
-        initialHeading = decoder.containsValue(forKey: "initialHeading") ? decoder.decodeDouble(forKey: "initialHeading") : nil
-        finalHeading = decoder.containsValue(forKey: "finalHeading") ? decoder.decodeDouble(forKey: "finalHeading") : nil
-        
-        guard let maneuverTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String? else {
-            return nil
-        }
-        maneuverType = ManeuverType(description: maneuverTypeDescription)
-        if let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String? {
-            maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        if let type = maneuverType,
+            type == .takeRotary || type == .takeRoundabout {
+            names = road.rotaryNames
+            phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
+            exitNames = road.names
+            phoneticExitNames = try container.decodeIfPresent(String.self, forKey: .phoneticExitNames)?.tagValues(separatedBy: ";")
         } else {
-            maneuverDirection = nil
+            names = road.names
+            phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
+            exitNames = nil
+            phoneticExitNames = nil
         }
-        
-        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(description: drivingSideDescription) {
-            self.drivingSide = drivingSide
-        } else {
-            self.drivingSide = .right
-        }
-        
-        if let maneuverLocationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "maneuverLocation") as? [String: CLLocationDegrees],
-            let latitude = maneuverLocationDictionary["latitude"],
-            let longitude = maneuverLocationDictionary["longitude"] {
-            maneuverLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        } else {
-            maneuverLocation = kCLLocationCoordinate2DInvalid
-        }
-        
-        exitIndex = decoder.containsValue(forKey: "exitIndex") ? decoder.decodeInteger(forKey: "exitIndex") : nil
-        exitCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitCodes") as? [String]
-        exitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "exitNames") as? [String]
-        phoneticExitNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "phoneticExitNames") as? [String]
-        distance = decoder.decodeDouble(forKey: "distance")
-        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
-        names = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "names") as? [String]
-        phoneticNames = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "phoneticNames") as? [String]
-        
-        guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as String? else {
-            return nil
-        }
-        transportType = TransportType(description: transportTypeDescription)
-        
-        codes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "codes") as? [String]
-        destinationCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinationCodes") as? [String]
-        destinations = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinations") as? [String]
-        
-        intersections = decoder.decodeObject(of: [NSArray.self, Intersection.self], forKey: "intersections") as? [Intersection]
-        
-        instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
-        
-        instructionsDisplayedAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "instructionsDisplayedAlongStep") as? [VisualInstruction]
-    }
-    
-    open static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
-        let coordinateDictionaries = coordinates?.map { [
-            "latitude": $0.latitude,
-            "longitude": $0.longitude,
-            ] }
-        coder.encode(coordinateDictionaries, forKey: "coordinates")
-        
-        coder.encode(instructions, forKey: "instructions")
-        
-        if let initialHeading = initialHeading {
-            coder.encode(initialHeading, forKey: "initialHeading")
-        }
-        if let finalHeading = finalHeading {
-            coder.encode(finalHeading, forKey: "finalHeading")
-        }
-        
-        coder.encode(maneuverType?.description, forKey: "maneuverType")
-        coder.encode(maneuverDirection?.description, forKey: "maneuverDirection")
-        coder.encode(drivingSide.description, forKey: "drivingSide")
-        
-        coder.encode(intersections, forKey: "intersections")
-        
-        coder.encode([
-            "latitude": maneuverLocation.latitude,
-            "longitude": maneuverLocation.longitude,
-        ], forKey: "maneuverLocation")
-        
-        if let exitIndex = exitIndex {
-            coder.encode(exitIndex, forKey: "exitIndex")
-        }
-        
-        coder.encode(exitCodes, forKey: "exitCodes")
-        coder.encode(exitNames, forKey: "exitNames")
-        coder.encode(phoneticExitNames, forKey: "phoneticExitNames")
-        coder.encode(distance, forKey: "distance")
-        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(names, forKey: "names")
-        coder.encode(phoneticNames, forKey: "phoneticNames")
-        coder.encode(transportType?.description, forKey: "transportType")
-        coder.encode(codes, forKey: "codes")
-        coder.encode(destinationCodes, forKey: "destinationCodes")
-        coder.encode(destinations, forKey: "destinations")
-        coder.encode(instructionsSpokenAlongStep, forKey: "instructionsSpokenAlongStep")
-        coder.encode(instructionsDisplayedAlongStep, forKey: "instructionsDisplayedAlongStep")
     }
     
     // MARK: Getting the Step Geometry
@@ -787,6 +746,8 @@ open class RouteStep: NSObject, NSSecureCoding {
      - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
     @objc open let instructions: String
+    
+    fileprivate let name: String
     
     /**
      Instructions about the next step’s maneuver, optimized for speech synthesis.
@@ -999,17 +960,18 @@ extension ManeuverDirection {
 }
 
 internal class RouteStepV4: RouteStep {
-    internal convenience init(json: JSONDictionary) {
-        let maneuver = json["maneuver"] as! JSONDictionary
-        let heading = maneuver["heading"] as? Double
-        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
-        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
-        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
-        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
-        let name = json["way_name"] as! String
-        
-        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
-    }
+    // TODO: Fix
+//    internal convenience init(json: JSONDictionary) {
+//        let maneuver = json["maneuver"] as! JSONDictionary
+//        let heading = maneuver["heading"] as? Double
+//        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
+//        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
+//        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
+//        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
+//        let name = json["way_name"] as! String
+//
+//        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
+//    }
 }
 
 func debugQuickLookURL(illustrating coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier = .automobile) -> URL? {

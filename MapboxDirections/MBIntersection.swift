@@ -4,7 +4,7 @@ import Foundation
  A single cross street along a step.
  */
 @objc(MBIntersection)
-public class Intersection: NSObject, NSSecureCoding {
+public class Intersection: NSObject, Codable {
     /**
      The geographic coordinates at the center of the intersection.
      */
@@ -57,89 +57,93 @@ public class Intersection: NSObject, NSSecureCoding {
      */
     public let outletRoadClasses: RoadClasses?
     
-    internal init(json: JSONDictionary) {
-        location = CLLocationCoordinate2D(geoJSON: json["location"] as! [Double])
-        headings = json["bearings"] as! [CLLocationDirection]
-        
-        let outletsArray = json["entry"] as! [Bool]
-        let outletIndexes = outletsArray.enumerated().filter{ $1 }.map { $0.offset }
-        self.outletIndexes = IndexSet(outletIndexes)
-        
-        approachIndex = json["in"] as? Int ?? -1
-        outletIndex = json["out"] as? Int ?? -1
-        
-        if let lanesJSON = json["lanes"] as? [JSONDictionary] {
-            var lanes: [Lane] = []
-            var usableApproachLanes = IndexSet()
-            
-            for (i, laneJSON) in lanesJSON.enumerated() {
-                lanes.append(Lane(json: laneJSON))
-                if laneJSON["valid"] as! Bool {
-                    usableApproachLanes.update(with: i)
-                }
-            }
-            self.approachLanes = lanes
-            self.usableApproachLanes = usableApproachLanes
-        } else {
-            approachLanes = nil
-            usableApproachLanes = nil
-        }
-        
-        if let classStrings = json["classes"] as? [String] {
-            outletRoadClasses = RoadClasses(descriptions: classStrings)
-        } else {
-            outletRoadClasses = nil
-        }
+    /*
+     let json: JSONDictionary = [
+     "classes": ["toll", "restricted"],
+     "out": 0,
+     "entry": [true],
+     "bearings": [80.0],
+     "location": [-122.420018, 37.78009],
+     ]
+     */
+    private enum CodingKeys: String, CodingKey {
+        case outletIndexes = "entry"
+        case headings = "bearings"
+        case location
+        case approachIndex = "in"
+        case outletIndex = "out"
+        case lanes
+        case approachLanes
+        case usableApproachLanes
+        case outletRoadClasses = "classes"
     }
     
-    public required init?(coder decoder: NSCoder) {
-        guard let locationDictionary = decoder.decodeObject(of: [NSDictionary.self, NSString.self, NSNumber.self], forKey: "location") as? [String: CLLocationDegrees],
-            let latitude = locationDictionary["latitude"],
-            let longitude = locationDictionary["longitude"] else {
-            return nil
-        }
-        location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
-        guard let headings = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "headings") as? [CLLocationDirection] else {
-            return nil
-        }
+    public init(location: CLLocationCoordinate2D,
+                headings: [CLLocationDirection],
+                approachIndex: Int,
+                outletIndex: Int,
+                outletIndexes: IndexSet,
+                approachLanes: [Lane]?,
+                usableApproachLanes: IndexSet?,
+                outletRoadClasses: RoadClasses?) {
+        self.location = location
         self.headings = headings
-        
-        guard let outletIndexes = decoder.decodeObject(of: NSIndexSet.self, forKey: "outletIndexes") else {
-            return nil
-        }
-        self.outletIndexes = outletIndexes as IndexSet
-        
-        approachIndex = decoder.decodeInteger(forKey: "approachIndex")
-        outletIndex = decoder.decodeInteger(forKey: "outletIndex")
-        
-        approachLanes = decoder.decodeObject(of: [NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
-        usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as IndexSet?
-        
-        guard let descriptions = decoder.decodeObject(of: NSString.self, forKey: "outletRoadClasses") as String?,
-            let outletRoadClasses = RoadClasses(descriptions: descriptions.components(separatedBy: ",")) else {
-                return nil
-        }
+        self.approachIndex = approachIndex
+        self.approachLanes = approachLanes
+        self.outletIndex = outletIndex
+        self.outletIndexes = outletIndexes
+        self.usableApproachLanes = usableApproachLanes
         self.outletRoadClasses = outletRoadClasses
     }
     
-    open static var supportsSecureCoding = true
-    
-    @objc public func encode(with coder: NSCoder) {
-        coder.encode([
-            "latitude": location.latitude,
-            "longitude": location.longitude,
-        ], forKey: "location")
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(location, forKey: .location)
+        try container.encode(headings, forKey: .headings)
         
-        coder.encode(headings, forKey: "headings")
-        coder.encode(outletIndexes, forKey: "outletIndexes")
+        try container.encode(approachIndex, forKey: .approachIndex)
+        try container.encode(outletIndex, forKey: .outletIndex)
+        //        let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
+        //        outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
+        // TODO: Transform outletIndexes
+        try container.encode([true], forKey: .outletIndexes)
+        try container.encode(approachLanes, forKey: .approachLanes)
+        try container.encode(usableApproachLanes, forKey: .usableApproachLanes)
         
-        coder.encode(approachIndex, forKey: "approachIndex")
-        coder.encode(outletIndex, forKey: "outletIndex")
-        
-        coder.encode(approachLanes, forKey: "approachLanes")
-        coder.encode(usableApproachLanes, forKey: "usableApproachLanes")
-        
-        coder.encode(outletRoadClasses?.description, forKey: "outletRoadClasses")
+        if let classes = outletRoadClasses?.description.components(separatedBy: ",") {
+            try container.encode(classes, forKey: .outletRoadClasses)
+        }
     }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        location = try container.decode(CLLocationCoordinate2D.self, forKey: .location)
+        headings = try container.decode([CLLocationDirection].self, forKey: .headings)
+        
+        let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes)
+
+        approachLanes = lanes
+        var usableApproachLanes = IndexSet()
+        if let lanes = lanes {
+            for (i, lane) in lanes.enumerated() {
+                if lane.isValid {
+                    usableApproachLanes.update(with: i)
+                }
+            }
+        }
+        
+        self.usableApproachLanes = usableApproachLanes.isEmpty ? nil : usableApproachLanes
+        
+        if let classes = try container.decodeIfPresent([String].self, forKey: .outletRoadClasses) {
+            outletRoadClasses = RoadClasses(descriptions: classes)
+        } else {
+            outletRoadClasses = nil
+        }
+        
+        let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
+        outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
+        
+        outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
+        approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1
+    }    
 }

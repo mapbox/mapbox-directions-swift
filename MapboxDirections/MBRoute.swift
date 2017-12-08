@@ -6,7 +6,62 @@ import Polyline
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
 @objc(MBRoute)
-open class Route: NSObject, NSSecureCoding {
+open class Route: NSObject, Codable {
+    
+    private enum CodingKeys: String, CodingKey {
+        case distance
+        case routeIdentifier
+        case legs
+        case expectedTravelTime = "duration"
+        case routeOptions
+        case geometry
+    }
+    
+    private enum GeometryCodingKeys: String, CodingKey {
+        case coordinates
+        case type
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(legs, forKey: .legs)
+        try container.encode(distance, forKey: .distance)
+        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encode(routeOptions, forKey: .routeOptions)
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let geometry = try container.decodeIfPresent(GenericDecodable<GeoJSONGeometry, String>.self, forKey: .geometry)
+        if let geo = geometry?.value as? String {
+            coordinates = decodePolyline(geo, precision: 1e5)
+        } else if let geo = geometry?.value as? GeoJSONGeometry {
+            coordinates = geo.coordinates
+        } else {
+            coordinates = nil
+        }
+        
+        legs = try container.decode([RouteLeg].self, forKey: .legs)
+        
+        if let routeOptions = try container.decodeIfPresent(RouteOptions.self, forKey: .routeOptions) {
+            self.routeOptions = routeOptions
+        } else {
+            self.routeOptions = decoder.userInfo[CodingUserInfoKey.routeOptions!] as! RouteOptions
+        }
+        
+        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
+        let waypoints = routeOptions.waypoints
+        let legInfos = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
+        for legInfo in legInfos {
+            legInfo.1.source = legInfo.0.0
+            legInfo.1.destination = legInfo.0.1
+        }
+        
+        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+    }
+    
     // MARK: Creating a Route
     
     @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
@@ -15,77 +70,6 @@ open class Route: NSObject, NSSecureCoding {
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
         self.coordinates = coordinates
-    }
-    
-    /**
-     Initializes a new route object with the given JSON dictionary representation and waypoints.
-     
-     This initializer is intended for use in conjunction with the `Directions.url(forCalculating:)` method.
-     
-     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
-     - parameter waypoints: An array of waypoints that the route visits in chronological order.
-     - parameter routeOptions: The `RouteOptions` used to create the request.
-     */
-    @objc public convenience init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
-        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
-                          json["legs"] as? [JSONDictionary] ?? [])
-        let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: routeOptions.profileIdentifier)
-        }
-        let distance = json["distance"] as! Double
-        let expectedTravelTime = json["duration"] as! Double
-        
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
-        
-        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
-    }
-    
-    @objc public required init?(coder decoder: NSCoder) {
-        let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
-        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
-            if let latitude = coordinateDictionary["latitude"],
-                let longitude = coordinateDictionary["longitude"] {
-                return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            } else {
-                return nil
-            }
-        })
-        
-        legs = decoder.decodeObject(of: [NSArray.self, RouteLeg.self], forKey: "legs") as? [RouteLeg] ?? []
-        distance = decoder.decodeDouble(forKey: "distance")
-        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
-        
-        guard let options = decoder.decodeObject(of: [RouteOptions.self], forKey: "routeOptions") as? RouteOptions else {
-            return nil
-        }
-        routeOptions = options
-        
-        routeIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String?
-    }
-    
-    open static var supportsSecureCoding = true
-    
-    @objc public func encode(with coder: NSCoder) {
-        let coordinateDictionaries = coordinates?.map { [
-            "latitude": $0.latitude,
-            "longitude": $0.longitude,
-        ] }
-        coder.encode(coordinateDictionaries, forKey: "coordinates")
-        
-        coder.encode(legs, forKey: "legs")
-        coder.encode(distance, forKey: "distance")
-        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(routeOptions, forKey: "routeOptions")
-        coder.encode(routeIdentifier, forKey: "routeIdentifier")
     }
     
     // MARK: Getting the Route Geometry
@@ -199,21 +183,22 @@ open class Route: NSObject, NSSecureCoding {
 // MARK: Support for Directions API v4
 
 internal class RouteV4: Route {
-    convenience init(json: JSONDictionary, waypoints: [Waypoint], routeOptions: RouteOptions) {
-        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: routeOptions.profileIdentifier)
-        let distance = json["distance"] as! Double
-        let expectedTravelTime = json["duration"] as! Double
-        
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e6)!
-        default:
-            coordinates = nil
-        }
-        
-        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
-    }
+    // TODO: Fix
+//    convenience init(json: JSONDictionary, waypoints: [Waypoint], routeOptions: RouteOptions) {
+//        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: routeOptions.profileIdentifier)
+//        let distance = json["distance"] as! Double
+//        let expectedTravelTime = json["duration"] as! Double
+//
+//        var coordinates: [CLLocationCoordinate2D]?
+//        switch json["geometry"] {
+//        case let geometry as JSONDictionary:
+//            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+//        case let geometry as String:
+//            coordinates = decodePolyline(geometry, precision: 1e6)!
+//        default:
+//            coordinates = nil
+//        }
+//
+//        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+//    }
 }

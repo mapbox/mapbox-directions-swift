@@ -7,80 +7,24 @@ import Polyline
  */
 @objc(MBRouteLeg)
 open class RouteLeg: NSObject, Codable {
-
-    // MARK: Creating a Leg
-    
-    @objc internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
-        self.source = source
-        self.destination = destination
-        self.profileIdentifier = profileIdentifier
-        self.steps = steps
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        self.name = json["summary"] as! String
-        
-        var openStreetMapNodeIdentifiers: [Int64]?
-        var segmentDistances: [CLLocationDistance]?
-        var expectedSegmentTravelTimes: [TimeInterval]?
-        var segmentSpeeds: [CLLocationSpeed]?
-        var congestionLevels: [CongestionLevel]?
-        
-        if let jsonAttributes = json["annotation"] as? [String: Any] {
-            if let nodes = jsonAttributes["nodes"] {
-                openStreetMapNodeIdentifiers = nodes as? [Int64] ?? []
-            }
-            if let distance = jsonAttributes["distance"] {
-                segmentDistances = distance as? [CLLocationDistance]
-            }
-            if let duration = jsonAttributes["duration"] {
-                expectedSegmentTravelTimes = duration as? [TimeInterval] ?? []
-            }
-            if let speed = jsonAttributes["speed"] {
-                segmentSpeeds = speed as? [CLLocationSpeed] ?? []
-            }
-            if let congestion = jsonAttributes["congestion"] as? [String] {
-                congestionLevels = congestion.map {
-                    CongestionLevel(description: $0)!
-                }
-            }
-        }
-        
-        self.openStreetMapNodeIdentifiers = openStreetMapNodeIdentifiers
-        self.segmentDistances = segmentDistances
-        self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
-        self.segmentSpeeds = segmentSpeeds
-        self.segmentCongestionLevels = congestionLevels
-    }
-    
-    /**
-     Initializes a new route leg object with the given JSON dictionary representation and waypoints.
-     
-     Normally, you do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
-     
-     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
-     - parameter source: The waypoint at the beginning of the leg.
-     - parameter destination: The waypoint at the end of the leg.
-     - parameter profileIdentifier: The profile identifier used to request the routes.
-     */
-    @objc public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
-        
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
-    }
     
     private enum CodingKeys: String, CodingKey {
         case source
         case destination
         case steps
-        case name
-        case distance
-        case expectedTravelTime
+        case name = "summary"
+        case distance = "distance"
+        case expectedTravelTime = "duration"
         case profileIdentifier
-        case openStreetMapNodeIdentifiers
-        case segmentDistances
-        case expectedSegmentTravelTimes
-        case segmentSpeeds
-        case segmentCongestionLevels
+        case annotation
+    }
+    
+    private enum AnnotationCodingKeys: String, CodingKey {
+        case openStreetMapNodeIdentifiers = "nodes"
+        case segmentDistances = "distance"
+        case expectedSegmentTravelTimes = "duration"
+        case segmentSpeeds = "speed"
+        case segmentCongestionLevels = "congestion"
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -92,27 +36,42 @@ open class RouteLeg: NSObject, Codable {
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
-        try container.encode(openStreetMapNodeIdentifiers, forKey: .openStreetMapNodeIdentifiers)
-        try container.encode(segmentDistances, forKey: .segmentDistances)
-        try container.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-        try container.encode(segmentSpeeds, forKey: .segmentSpeeds)
-        try container.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        
+        var annotation = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+        try annotation.encode(openStreetMapNodeIdentifiers, forKey: .openStreetMapNodeIdentifiers)
+        try annotation.encode(segmentDistances, forKey: .segmentDistances)
+        try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+        try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
+        try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
     }
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        source = try container.decode(Waypoint.self, forKey: .source)
-        destination = try container.decode(Waypoint.self, forKey: .destination)
+        let options = decoder.userInfo[CodingUserInfoKey.routeOptions!] as? RouteOptions
+        
+        source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
+        destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
         steps = try container.decode([RouteStep].self, forKey: .steps)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: try container.decode(String.self, forKey: .profileIdentifier))
-        openStreetMapNodeIdentifiers = try container.decode([Int64]?.self, forKey: .openStreetMapNodeIdentifiers)
-        segmentDistances = try container.decode([CLLocationDistance]?.self, forKey: .segmentDistances)
-        expectedSegmentTravelTimes = try container.decode([TimeInterval]?.self, forKey: .expectedSegmentTravelTimes)
-        segmentSpeeds = try container.decode([CLLocationSpeed]?.self, forKey: .segmentSpeeds)
-        segmentCongestionLevels = try container.decode([CongestionLevel]?.self, forKey: .segmentCongestionLevels)
+        
+        if let profileIdentifier = options?.profileIdentifier {
+            self.profileIdentifier = profileIdentifier
+        } else {
+            profileIdentifier = MBDirectionsProfileIdentifier(rawValue: try container.decode(String.self, forKey: .profileIdentifier))
+        }
+        
+        let annotation = try? container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+        openStreetMapNodeIdentifiers = try annotation?.decodeIfPresent([Int64].self, forKey: .openStreetMapNodeIdentifiers)
+        segmentDistances = try annotation?.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
+        expectedSegmentTravelTimes = try annotation?.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
+        segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
+        if let congestionLevels = try annotation?.decodeIfPresent([String].self, forKey: .segmentCongestionLevels) {
+            segmentCongestionLevels = congestionLevels.map { CongestionLevel(description: $0)! }
+        } else {
+            segmentCongestionLevels = nil
+        }
     }
     
     // MARK: Getting the Leg Geometry
@@ -122,14 +81,14 @@ open class RouteLeg: NSObject, Codable {
      
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
      */
-    @objc open let source: Waypoint
+    @objc open var source: Waypoint!
     
     /**
      The endpoint of the route leg.
      
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
-    @objc open let destination: Waypoint
+    @objc open var destination: Waypoint!
     
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.
@@ -233,8 +192,9 @@ open class RouteLeg: NSObject, Codable {
 // MARK: Support for Directions API v4
 
 internal class RouteLegV4: RouteLeg {
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStepV4(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
-    }
+    // TODO: Fix
+//    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
+//        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStepV4(json: $0) }
+//        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+//    }
 }

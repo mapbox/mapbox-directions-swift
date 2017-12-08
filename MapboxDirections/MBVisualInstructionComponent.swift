@@ -13,7 +13,12 @@ import Foundation
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 @objc(MBVisualInstructionComponent)
-open class VisualInstructionComponent: NSObject, NSSecureCoding {
+open class VisualInstructionComponent: NSObject, Codable {
+    
+    private enum CodingKeys: String, CodingKey {
+        case text
+        case imageURL
+    }
     
     /**
      :nodoc:
@@ -35,25 +40,26 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public convenience init(json: [String: Any]) {
-        let text = json["text"] as? String
-        
-        var imageURL: URL?
-        
-        if let baseURL = json["imageBaseURL"] as? String {
-            let scale: CGFloat
-            #if os(OSX)
-                scale = NSScreen.main?.backingScaleFactor ?? 1
-            #elseif os(watchOS)
-                scale = WKInterfaceDevice.current().screenScale
-            #else
-                scale = UIScreen.main.scale
-            #endif
-            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
-        }
-        
-        self.init(text: text, imageURL: imageURL)
-    }
+    // TODO: Fix
+//    @objc public convenience init(json: [String: Any]) {
+//        let text = json["text"] as? String
+//
+//        var imageURL: URL?
+//
+//        if let baseURL = json["imageBaseURL"] as? String {
+//            let scale: CGFloat
+//            #if os(OSX)
+//                scale = NSScreen.main?.backingScaleFactor ?? 1
+//            #elseif os(watchOS)
+//                scale = WKInterfaceDevice.current().screenScale
+//            #else
+//                scale = UIScreen.main.scale
+//            #endif
+//            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
+//        }
+//
+//        self.init(text: text, imageURL: imageURL)
+//    }
     
     /**
      :nodoc:
@@ -62,24 +68,5 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public init(text: String?, imageURL: URL?) {
         self.text = text
         self.imageURL = imageURL
-    }
-
-    @objc public required init?(coder decoder: NSCoder) {
-        guard let text = decoder.decodeObject(of: NSString.self, forKey: "text") as String? else {
-            return nil
-        }
-        self.text = text
-        
-        guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
-            return nil
-        }
-        self.imageURL = imageURL
-    }
-    
-    open static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
-        coder.encode(text, forKey: "text")
-        coder.encode(imageURL, forKey: "imageURL")
     }
 }

@@ -6,9 +6,16 @@ open class Waypoint: NSObject, Codable {
     // MARK: Creating a Waypoint Object
     
     private enum CodingKeys: String, CodingKey {
-        case coordinate
+        case coordinate = "location"
         case coordinateAccuracy
         case name
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        coordinate = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinate)
+        coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy) ?? -1
+        name = try container.decodeIfPresent(String.self, forKey: .name)
     }
     
     /**
@@ -150,14 +157,15 @@ extension Waypoint {
      
      - parameter json: A point feature in GeoJSON format.
      */
-    internal convenience init?(geoJSON json: JSONDictionary) {
-        assert(json["type"] as? String == "Feature")
-        
-        let coordinate = CLLocationCoordinate2D(geoJSON: json["geometry"] as! JSONDictionary)
-        
-        let propertiesJSON = json["properties"] as? JSONDictionary
-        let name = propertiesJSON?["name"] as? String
-        
-        self.init(coordinate: coordinate, name: name)
-    }
+    // TODO: Fix backwards compatibility
+//    internal convenience init?(geoJSON json: JSONDictionary) {
+//        assert(json["type"] as? String == "Feature")
+//
+//        let coordinate = CLLocationCoordinate2D(geoJSON: json["geometry"] as! JSONDictionary)
+//
+//        let propertiesJSON = json["properties"] as? JSONDictionary
+//        let name = propertiesJSON?["name"] as? String
+//
+//        self.init(coordinate: coordinate, name: name)
+//    }
 }

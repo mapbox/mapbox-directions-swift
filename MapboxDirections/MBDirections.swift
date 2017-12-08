@@ -166,20 +166,25 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json) in
-            let response = options.response(from: json)
-            if let routes = response.1 {
-                for route in routes {
-                    route.accessToken = self.accessToken
-                    route.apiEndpoint = self.apiEndpoint
-                    route.routeIdentifier = json["uuid"] as? String
+        let task = dataTask(with: url, handler: { (data) in
+            do {
+                let decoder = DirectionsDecoder(userInfo: [CodingUserInfoKey.routeOptions!: options])
+                let result = try decoder.decode(DirectionsResponse.self, from: data)
+                result.routes?.forEach {
+                    $0.accessToken = self.accessToken
+                    $0.apiEndpoint = self.apiEndpoint
+                    $0.routeIdentifier = result.uuid
                 }
+                completionHandler(result.waypoints, result.routes, nil)
+            } catch {
+                completionHandler(nil, nil, error as NSError)
             }
-            completionHandler(response.0, response.1, nil)
         }) { (error) in
             completionHandler(nil, nil, error)
         }
+        
         task.resume()
+        
         return task
     }
     
@@ -192,32 +197,18 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, handler: @escaping (_ data: Data) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            var json: JSONDictionary = [:]
-            if let data = data, response?.mimeType == "application/json" {
-                do {
-                    json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
-                } catch {
-                    assert(false, "Invalid data")
-                }
-            }
-            
-            let apiStatusCode = json["code"] as? String
-            let apiMessage = json["message"] as? String
-            guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
-                let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
-                DispatchQueue.main.async {
-                    errorHandler(apiError)
-                }
+            guard let data = data, response?.mimeType == "application/json" else {
+                errorHandler(Directions.informativeError(describing: [:], response: response, underlyingError: error as NSError?))
                 return
             }
             
             DispatchQueue.main.async {
-                completionHandler(json)
+                handler(data)
             }
         }
     }
@@ -309,4 +300,15 @@ extension HTTPURLResponse {
         return Date(timeIntervalSince1970: resetTimeNumber)
     }
 
+}
+
+extension CodingUserInfoKey {
+    static let routeOptions = CodingUserInfoKey(rawValue: "options")
+}
+
+class DirectionsDecoder: JSONDecoder {
+    init(userInfo: [CodingUserInfoKey: Any]) {
+        super.init()
+        self.userInfo = userInfo
+    }
 }
