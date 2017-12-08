@@ -10,21 +10,16 @@ class IntersectionTests: XCTestCase {
             "bearings": [80.0],
             "location": [-122.420018, 37.78009],
         ]
-        let intersection = Intersection(json: json)
+        let jsonData = try! JSONSerialization.data(withJSONObject: json, options: [])
+        let intersection: Intersection = Intersection.from(data: jsonData)!
         
         // Encode and decode the intersection securely.
         // This may raise an Objective-C exception if an error is encountered which will fail the tests.
+        let data = try! JSONEncoder().encode(intersection)
+        NSKeyedArchiver.archiveRootObject(data, toFile: "intersection")
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(intersection, forKey: "intersection")
-        keyedArchiver.finishEncoding()
-        
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedIntersection = keyedUnarchiver.decodeObject(of: Intersection.self, forKey: "intersection")!
-        keyedUnarchiver.finishDecoding()
+        let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: "intersection") as! Data
+        let unarchivedIntersection = try! JSONDecoder().decode(Intersection.self, from: unarchivedData)
         
         XCTAssertNotNil(unarchivedIntersection)
         

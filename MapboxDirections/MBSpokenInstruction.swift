@@ -8,7 +8,13 @@ import Foundation
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
 @objc(MBSpokenInstruction)
-open class SpokenInstruction: NSObject, NSSecureCoding {
+open class SpokenInstruction: NSObject, Codable {
+    
+    private enum CodingKeys: String, CodingKey {
+        case distanceAlongStep = "distanceAlongGeometry"
+        case text = "announcement"
+        case ssmlText = "ssmlAnnouncement"
+    }
     
     /**
      A distance along the associated `RouteStep` at which to read the instruction aloud.
@@ -32,17 +38,6 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
      This representation is appropriate for speech synthesizers that support the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML), such as [Amazon Polly](https://aws.amazon.com/polly/). Numbers and names are marked up to ensure correct pronunciation. For speech synthesizers that lack SSML support, use the `text` property instead.
      */
     @objc public let ssmlText: String
-    
-    /**
-     Initialize a `SpokenInstruction` from a dictionary.
-     */
-    @objc public convenience init(json: [String: Any]) {
-        let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
-        let text = json["announcement"] as! String
-        let ssmlText = json["ssmlAnnouncement"] as! String
-
-        self.init(distanceAlongStep: distanceAlongStep, text: text, ssmlText: ssmlText)
-    }
 
     /**
      Initialize a `SpokenInstruction`.
@@ -55,20 +50,6 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
         self.distanceAlongStep = distanceAlongStep
         self.text = text
         self.ssmlText = ssmlText
-    }
-    
-    public required init?(coder decoder: NSCoder) {
-        distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
-        text = decoder.decodeObject(of: NSString.self, forKey: "text") as String!
-        ssmlText = decoder.decodeObject(of: NSString.self, forKey: "ssmlText") as String!
-    }
-    
-    open static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
-        coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
-        coder.encode(text, forKey: "text")
-        coder.encode(ssmlText, forKey: "ssmlText")
     }
 }
 

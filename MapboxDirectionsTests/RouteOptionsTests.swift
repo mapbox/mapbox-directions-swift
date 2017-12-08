@@ -8,8 +8,8 @@ class RouteOptionsTests: XCTestCase {
         let options = RouteOptions.testInstance
         let encoder = JSONEncoder()
         let data = try! encoder.encode(options)
-        
         NSKeyedArchiver.archiveRootObject(data, toFile: "options")
+        
         let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: "options") as! Data
         let unarchivedOptions = try! JSONDecoder().decode(RouteOptions.self, from: unarchivedData)
         
