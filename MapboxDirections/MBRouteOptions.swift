@@ -484,7 +484,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
                 let location = api["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
                 let possibleAPIName = api["name"] as? String
-                let apiName = (possibleAPIName?.isEmpty ?? true) ? nil : possibleAPIName!
+                let apiName = possibleAPIName?.nonEmptyString
                 return Waypoint(coordinate: coordinate, name: local.name ?? apiName)
             }
         }
