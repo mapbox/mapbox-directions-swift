@@ -31,12 +31,20 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     */
     @objc public var imageURL: URL?
     
+    
+    /**
+     :nodoc:
+     `Bool` whether the `VisualInstructionComponent` should be visualized as a delimiter between two text components.
+     */
+    @objc public var isDelimiter: Bool
+    
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
     @objc public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
+        let isDelimiter = json["delimiter"] as? Bool ?? false
         
         var imageURL: URL?
         
@@ -52,16 +60,17 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(text: text, imageURL: imageURL)
+        self.init(text: text, imageURL: imageURL, isDelimiter: isDelimiter)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(text: String?, imageURL: URL?) {
+    @objc public init(text: String?, imageURL: URL?, isDelimiter: Bool) {
         self.text = text
         self.imageURL = imageURL
+        self.isDelimiter = isDelimiter
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -74,6 +83,8 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             return nil
         }
         self.imageURL = imageURL
+        
+        self.isDelimiter = decoder.decodeBool(forKey: "isDelimiter")
     }
     
     open static var supportsSecureCoding = true
@@ -81,5 +92,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
         coder.encode(imageURL, forKey: "imageURL")
+        coder.encode(isDelimiter, forKey: "isDelimiter")
     }
 }
