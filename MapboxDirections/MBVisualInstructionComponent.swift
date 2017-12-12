@@ -36,7 +36,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      `Bool` whether the `VisualInstructionComponent` should be visualized as a delimiter between two text components.
      */
-    @objc public var isDelimiter: Bool
+    @objc public var type: VisualCompomentType
     
     /**
      :nodoc:
@@ -44,10 +44,14 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      */
     @objc public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
-        let isDelimiter = json["delimiter"] as? Bool ?? false
+        var type: VisualCompomentType?
+        if let delimiter = json["delimiter"] as? String, VisualCompomentType(description: delimiter) == .delimiter {
+            type = .delimiter
+        } else {
+            type = .destination
+        }
         
         var imageURL: URL?
-        
         if let baseURL = json["imageBaseURL"] as? String {
             let scale: CGFloat
             #if os(OSX)
@@ -60,17 +64,17 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(text: text, imageURL: imageURL, isDelimiter: isDelimiter)
+        self.init(text: text, imageURL: imageURL, type: type!)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(text: String?, imageURL: URL?, isDelimiter: Bool) {
+    @objc public init(text: String?, imageURL: URL?, type: VisualCompomentType) {
         self.text = text
         self.imageURL = imageURL
-        self.isDelimiter = isDelimiter
+        self.type = type
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -84,7 +88,10 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         self.imageURL = imageURL
         
-        self.isDelimiter = decoder.decodeBool(forKey: "isDelimiter")
+        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualCompomentType(description: typeString) else {
+                return nil
+        }
+        self.type = type
     }
     
     open static var supportsSecureCoding = true
@@ -92,6 +99,46 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
         coder.encode(imageURL, forKey: "imageURL")
-        coder.encode(isDelimiter, forKey: "isDelimiter")
+        coder.encode(type, forKey: "type")
+    }
+}
+
+
+/**
+ `VisualCompomentType` describes the `text` type.
+ */
+@objc(MBVisualComponentType)
+public enum VisualCompomentType: Int, CustomStringConvertible {
+
+    /**
+     Text is a delimiter.
+     */
+    case delimiter
+    
+    /**
+     Text is a way name.
+     */
+    case destination
+    
+    public init?(description: String) {
+        let level: VisualCompomentType
+        switch description {
+        case "delimiter":
+            level = .delimiter
+        case "destination":
+            level = .destination
+        default:
+            return nil
+        }
+        self.init(rawValue: level.rawValue)
+    }
+    
+    public var description: String {
+        switch self {
+        case .delimiter:
+            return "delimiter"
+        case .destination:
+            return "destination"
+        }
     }
 }
