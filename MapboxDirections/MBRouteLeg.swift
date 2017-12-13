@@ -203,13 +203,3 @@ open class RouteLeg: NSObject, Codable {
         return debugQuickLookURL(illustrating: coordinates)
     }
 }
-
-// MARK: Support for Directions API v4
-
-internal class RouteLegV4: RouteLeg {
-    // TODO: Fix
-//    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
-//        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStepV4(json: $0) }
-//        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
-//    }
-}

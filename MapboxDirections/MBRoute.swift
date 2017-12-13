@@ -195,25 +195,3 @@ open class Route: NSObject, Codable {
     @objc open var routeIdentifier: String?
 }
 
-// MARK: Support for Directions API v4
-
-internal class RouteV4: Route {
-    // TODO: Fix
-//    convenience init(json: JSONDictionary, waypoints: [Waypoint], routeOptions: RouteOptions) {
-//        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: routeOptions.profileIdentifier)
-//        let distance = json["distance"] as! Double
-//        let expectedTravelTime = json["duration"] as! Double
-//
-//        var coordinates: [CLLocationCoordinate2D]?
-//        switch json["geometry"] {
-//        case let geometry as JSONDictionary:
-//            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-//        case let geometry as String:
-//            coordinates = decodePolyline(geometry, precision: 1e6)!
-//        default:
-//            coordinates = nil
-//        }
-//
-//        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
-//    }
-}

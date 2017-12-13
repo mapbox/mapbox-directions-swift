@@ -149,23 +149,3 @@ open class Waypoint: NSObject, Codable {
     }
 }
 
-// MARK: Support for Directions API v4
-
-extension Waypoint {
-    /**
-     Initializes a new waypoint object with the given GeoJSON point feature data.
-     
-     - parameter json: A point feature in GeoJSON format.
-     */
-    // TODO: Fix backwards compatibility
-//    internal convenience init?(geoJSON json: JSONDictionary) {
-//        assert(json["type"] as? String == "Feature")
-//
-//        let coordinate = CLLocationCoordinate2D(geoJSON: json["geometry"] as! JSONDictionary)
-//
-//        let propertiesJSON = json["properties"] as? JSONDictionary
-//        let name = propertiesJSON?["name"] as? String
-//
-//        self.init(coordinate: coordinate, name: name)
-//    }
-}
