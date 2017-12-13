@@ -54,6 +54,7 @@
 		C558C58E1E94196200617B37 /* MBAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = C558C58B1E94181A00617B37 /* MBAttribute.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C558C58F1E94196300617B37 /* MBAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = C558C58B1E94181A00617B37 /* MBAttribute.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */; };
+		C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
 		C57B2E961DB8171300E9123A /* MBLaneIndication.h in Headers */ = {isa = PBXBuildFile; fileRef = C57B2E951DB8171300E9123A /* MBLaneIndication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C57B2E971DB8171300E9123A /* MBLaneIndication.h in Headers */ = {isa = PBXBuildFile; fileRef = C57B2E951DB8171300E9123A /* MBLaneIndication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C57B2E981DB8171300E9123A /* MBLaneIndication.h in Headers */ = {isa = PBXBuildFile; fileRef = C57B2E951DB8171300E9123A /* MBLaneIndication.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -212,6 +213,7 @@
 		C52CE3921F6AF6E70069963D /* IntructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntructionsTests.swift; sourceTree = "<group>"; };
 		C558C58B1E94181A00617B37 /* MBAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBAttribute.h; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
+		C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionType.swift; sourceTree = "<group>"; };
 		C57B2E951DB8171300E9123A /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLaneIndication.h; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */,
 				C52552B81FA15D5900B1545C /* MBVisualInstruction.swift */,
 				C52552BF1FA1628A00B1545C /* MBVisualInstructionComponent.swift */,
+				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 			);
 			path = MapboxDirections;
 			sourceTree = "<group>";
@@ -1113,6 +1116,7 @@
 				C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AA1E9D7EAD008F98CE /* MBCongestion.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
+				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */,
 			);
