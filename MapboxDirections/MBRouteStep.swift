@@ -609,8 +609,8 @@ open class RouteStep: NSObject, Codable {
         if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first,
             let maneuverCoordinate = coordinate {
             maneuverLocation = maneuverCoordinate
-        } else if let coordinates = try? maneuver.decode([CLLocationDegrees].self, forKey: .location) {
-            maneuverLocation = CLLocationCoordinate2D(latitude: coordinates.last!, longitude: coordinates.first!)
+        } else if let coordinate = try? maneuver.decode(CLLocationCoordinate2D.self, forKey: .location) {
+            maneuverLocation = coordinate
         } else {
             maneuverLocation = CLLocationCoordinate2D()
         }
