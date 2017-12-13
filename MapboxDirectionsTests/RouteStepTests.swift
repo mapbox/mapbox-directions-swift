@@ -110,6 +110,7 @@ class RouteStepTests: XCTestCase {
             CLLocationCoordinate2D(latitude: -122.22044, longitude: 37.854032),
             CLLocationCoordinate2D(latitude: -122.220168, longitude: 37.854149),
         ]
+        //let test = coordinates.map { [$0.longitude, $0.latitude] }
         let json = [
             "name": "",
             "mode": "driving",
@@ -134,7 +135,9 @@ class RouteStepTests: XCTestCase {
         
         let jsonData = try! JSONSerialization.data(withJSONObject: json, options: [])
         let step: RouteStep = RouteStep.from(data: jsonData)!
-        
+        XCTAssertEqual(step.coordinates?.count, 3)
+        XCTAssertEqual(step.coordinates?.first?.latitude, -122.220694)
+        XCTAssertEqual(step.coordinates?.first?.longitude, 37.853913)
         // Encode and decode the route step securely
         // This may raise an Obj-C exception if an error is encountered which will fail the tests
         

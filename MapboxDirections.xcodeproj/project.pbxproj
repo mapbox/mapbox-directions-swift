@@ -15,6 +15,10 @@
 		357EA9A81FDFCDA000320FB5 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9A61FDFCD9F00320FB5 /* Codable.swift */; };
 		357EA9A91FDFCDA000320FB5 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9A61FDFCD9F00320FB5 /* Codable.swift */; };
 		357EA9AA1FDFCDA000320FB5 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9A61FDFCD9F00320FB5 /* Codable.swift */; };
+		357EA9AC1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */; };
+		357EA9AD1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */; };
+		357EA9AE1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */; };
+		357EA9AF1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */; };
 		358D48811E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		358D48821E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		358D48831E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -218,6 +222,7 @@
 /* Begin PBXFileReference section */
 		3533E73C1FDAF4DC00B62812 /* MBDirectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDirectionsResponse.swift; sourceTree = "<group>"; };
 		357EA9A61FDFCD9F00320FB5 /* Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codable.swift; sourceTree = "<group>"; };
+		357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSON.swift; sourceTree = "<group>"; };
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
@@ -442,6 +447,7 @@
 				35A328531FD9984C00D65492 /* CoreLocation.swift */,
 				3533E73C1FDAF4DC00B62812 /* MBDirectionsResponse.swift */,
 				357EA9A61FDFCD9F00320FB5 /* Codable.swift */,
+				357EA9AB1FE0CCEB00320FB5 /* GeoJSON.swift */,
 				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 			);
 			path = MapboxDirections;
@@ -1023,6 +1029,7 @@
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
+				357EA9AD1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */,
 				3533E73E1FDAF4DC00B62812 /* MBDirectionsResponse.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
@@ -1067,6 +1074,7 @@
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
+				357EA9AE1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */,
 				3533E73F1FDAF4DC00B62812 /* MBDirectionsResponse.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
@@ -1111,6 +1119,7 @@
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* MBVisualInstruction.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
+				357EA9AF1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */,
 				3533E7401FDAF4DC00B62812 /* MBDirectionsResponse.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
@@ -1139,6 +1148,7 @@
 				C52552B91FA15D5900B1545C /* MBVisualInstruction.swift in Sources */,
 				C52552C01FA1628A00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */,
+				357EA9AC1FE0CCEB00320FB5 /* GeoJSON.swift in Sources */,
 				3533E73D1FDAF4DC00B62812 /* MBDirectionsResponse.swift in Sources */,
 				358D48861E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,

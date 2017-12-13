@@ -74,6 +74,21 @@ open class RouteLeg: NSObject, Codable {
         }
     }
     
+    internal init(steps: [RouteStep], source: Waypoint, destination: Waypoint, name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, profileIdentifier: MBDirectionsProfileIdentifier) {
+        self.steps = steps
+        self.source = source
+        self.destination = destination
+        self.name = name
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.profileIdentifier = profileIdentifier
+        self.openStreetMapNodeIdentifiers = nil
+        self.segmentDistances = nil
+        self.expectedSegmentTravelTimes = nil
+        self.segmentSpeeds = nil
+        self.segmentCongestionLevels = nil
+    }
+    
     // MARK: Getting the Leg Geometry
     
     /**
