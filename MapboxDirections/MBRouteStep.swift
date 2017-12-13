@@ -518,10 +518,6 @@ struct Road {
     }
 }
 
-struct GeoJSONGeometry: Codable {
-    let coordinates: [CLLocationCoordinate2D]?
-    let type: String?
-}
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
@@ -547,6 +543,7 @@ open class RouteStep: NSObject, Codable {
         case intersections
         case maneuver
         case name
+        case v4wayName = "way_name"
         case ref
         case exits
         case phoneticExitNames = "pronunciation"
@@ -593,7 +590,8 @@ open class RouteStep: NSObject, Codable {
         try container.encode(intersections, forKey: .intersections)
         try container.encode(drivingSide.description, forKey: .drivingSide)
         try container.encode(name, forKey: .name)
-
+        try container.encode(geometry, forKey: .geometry)
+        
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
         try maneuver.encodeIfPresent(maneuverType?.description, forKey: .type)
@@ -601,16 +599,21 @@ open class RouteStep: NSObject, Codable {
         try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
-        
-        var geometry = container.nestedContainer(keyedBy: GeometryCodingKeys.self, forKey: .geometry)
-        try geometry.encodeIfPresent(coordinates, forKey: .coordinates)
     }
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
-        maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
+        
+        if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first,
+            let maneuverCoordinate = coordinate {
+            maneuverLocation = maneuverCoordinate
+        } else if let coordinates = try? maneuver.decode([CLLocationDegrees].self, forKey: .location) {
+            maneuverLocation = CLLocationCoordinate2D(latitude: coordinates.last!, longitude: coordinates.first!)
+        } else {
+            maneuverLocation = CLLocationCoordinate2D()
+        }
         
         // TODO: Move encoding/decoding into ManeuverType
         if let type = try maneuver.decodeIfPresent(String.self, forKey: .type) {
@@ -629,16 +632,10 @@ open class RouteStep: NSObject, Codable {
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
-        let geometry = try container.decodeIfPresent(GenericDecodable<GeoJSONGeometry, String>.self, forKey: .geometry)
-        if let geo = geometry?.value as? String {
-            coordinates = decodePolyline(geo, precision: 1e5)
-        } else if let geo = geometry?.value as? GeoJSONGeometry {
-            coordinates = geo.coordinates
-        } else {
-            coordinates = nil
-        }
-        
-        name = try container.decode(String.self, forKey: .name)
+        geometry = try container.decodeIfPresent(UncertainCodable<Geometry, String>.self, forKey: .geometry)
+        coordinates = geometry?.coordinates
+
+        name = try container.decodeIfPresent(String.self, forKey: .name) ?? container.decode(String.self, forKey: .v4wayName)
         
         let road = Road(name: name,
                         ref: try container.decodeIfPresent(String.self, forKey: .ref),
@@ -748,6 +745,8 @@ open class RouteStep: NSObject, Codable {
     @objc open let instructions: String
     
     fileprivate let name: String
+    
+    fileprivate var geometry: UncertainCodable<Geometry, String>?
     
     /**
      Instructions about the next step’s maneuver, optimized for speech synthesis.
@@ -957,21 +956,6 @@ extension ManeuverDirection {
         }
         self.init(description: description)
     }
-}
-
-internal class RouteStepV4: RouteStep {
-    // TODO: Fix
-//    internal convenience init(json: JSONDictionary) {
-//        let maneuver = json["maneuver"] as! JSONDictionary
-//        let heading = maneuver["heading"] as? Double
-//        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
-//        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
-//        let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
-//        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
-//        let name = json["way_name"] as! String
-//
-//        self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
-//    }
 }
 
 func debugQuickLookURL(illustrating coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier = .automobile) -> URL? {

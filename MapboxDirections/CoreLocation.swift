@@ -18,3 +18,12 @@ extension CLLocationCoordinate2D: Codable {
         return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
 }
+
+extension CLLocation {
+    /**
+     Initializes a CLLocation object with the given coordinate pair.
+     */
+    internal convenience init(coordinate: CLLocationCoordinate2D) {
+        self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+}

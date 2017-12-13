@@ -57,15 +57,6 @@ public class Intersection: NSObject, Codable {
      */
     public let outletRoadClasses: RoadClasses?
     
-    /*
-     let json: JSONDictionary = [
-     "classes": ["toll", "restricted"],
-     "out": 0,
-     "entry": [true],
-     "bearings": [80.0],
-     "location": [-122.420018, 37.78009],
-     ]
-     */
     private enum CodingKeys: String, CodingKey {
         case outletIndexes = "entry"
         case headings = "bearings"

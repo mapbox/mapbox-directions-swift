@@ -51,40 +51,6 @@ let userAgent: String = {
     return components.joined(separator: " ")
 }()
 
-extension CLLocationCoordinate2D {
-    /**
-     Initializes a coordinate pair based on the given GeoJSON coordinates array.
-     */
-    internal init(geoJSON array: [Double]) {
-        assert(array.count == 2)
-        self.init(latitude: array[1], longitude: array[0])
-    }
-    
-    /**
-     Initializes a coordinate pair based on the given GeoJSON point object.
-     */
-    internal init(geoJSON point: JSONDictionary) {
-        assert(point["type"] as? String == "Point")
-        self.init(geoJSON: point["coordinates"] as! [Double])
-    }
-    
-    internal static func coordinates(geoJSON lineString: JSONDictionary) -> [CLLocationCoordinate2D] {
-        let type = lineString["type"] as? String
-        assert(type == "LineString" || type == "Point")
-        let coordinates = lineString["coordinates"] as! [[Double]]
-        return coordinates.map { self.init(geoJSON: $0) }
-    }
-}
-
-extension CLLocation {
-    /**
-     Initializes a CLLocation object with the given coordinate pair.
-     */
-    internal convenience init(coordinate: CLLocationCoordinate2D) {
-        self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
-    }
-}
-
 /**
  A `Directions` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.
  

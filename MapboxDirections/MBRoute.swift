@@ -12,6 +12,8 @@ open class Route: NSObject, Codable {
         case distance
         case routeIdentifier
         case legs
+        case v4steps = "steps"
+        case v4summary = "summary"
         case expectedTravelTime = "duration"
         case routeOptions
         case geometry
@@ -33,21 +35,37 @@ open class Route: NSObject, Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        let geometry = try container.decodeIfPresent(GenericDecodable<GeoJSONGeometry, String>.self, forKey: .geometry)
+        if let routeOptions = try container.decodeIfPresent(RouteOptions.self, forKey: .routeOptions) {
+            self.routeOptions = routeOptions
+        } else {
+            self.routeOptions = decoder.userInfo[CodingUserInfoKey.routeOptions!] as! RouteOptions
+        }
+        
+        let geometry = try container.decodeIfPresent(UncertainCodable<Geometry, String>.self, forKey: .geometry)
         if let geo = geometry?.value as? String {
-            coordinates = decodePolyline(geo, precision: 1e5)
-        } else if let geo = geometry?.value as? GeoJSONGeometry {
+            if routeOptions is RouteOptionsV4 {
+                coordinates = decodePolyline(geo, precision: 1e6)
+            } else {
+                coordinates = decodePolyline(geo, precision: 1e5)
+            }
+        } else if let geo = geometry?.value as? Geometry {
             coordinates = geo.coordinates
         } else {
             coordinates = nil
         }
         
-        legs = try container.decode([RouteLeg].self, forKey: .legs)
+        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        if let routeOptions = try container.decodeIfPresent(RouteOptions.self, forKey: .routeOptions) {
-            self.routeOptions = routeOptions
+        if let legs = try container.decodeIfPresent([RouteLeg].self, forKey: .legs) {
+            self.legs = legs
         } else {
-            self.routeOptions = decoder.userInfo[CodingUserInfoKey.routeOptions!] as! RouteOptions
+            // V4
+            let legName = try container.decodeIfPresent(String.self, forKey: .v4summary) ?? ""
+            let steps = try container.decodeIfPresent([RouteStep].self, forKey: .v4steps)
+            self.legs = [RouteLeg(steps: steps!, source: routeOptions.waypoints.first!,
+                                  destination: routeOptions.waypoints.last!, name: legName, distance: distance,
+                                  expectedTravelTime: expectedTravelTime, profileIdentifier: routeOptions.profileIdentifier)]
         }
         
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
@@ -57,9 +75,6 @@ open class Route: NSObject, Codable {
             legInfo.1.source = legInfo.0.0
             legInfo.1.destination = legInfo.0.1
         }
-        
-        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
-        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
     }
     
     // MARK: Creating a Route
