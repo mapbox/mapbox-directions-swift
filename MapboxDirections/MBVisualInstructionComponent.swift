@@ -45,7 +45,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         var type: VisualInstructionComponentType?
-        if delimiter = json["delimiter"] as? Bool {
+        if let _ = json["delimiter"] as? Bool {
             type = .delimiter
         } else {
             type = .destination
