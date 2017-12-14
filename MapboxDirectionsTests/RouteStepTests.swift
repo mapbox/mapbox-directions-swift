@@ -110,7 +110,6 @@ class RouteStepTests: XCTestCase {
             CLLocationCoordinate2D(latitude: -122.22044, longitude: 37.854032),
             CLLocationCoordinate2D(latitude: -122.220168, longitude: 37.854149),
         ]
-        //let test = coordinates.map { [$0.longitude, $0.latitude] }
         let json = [
             "name": "",
             "mode": "driving",

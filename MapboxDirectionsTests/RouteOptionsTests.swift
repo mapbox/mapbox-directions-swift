@@ -45,27 +45,18 @@ class RouteOptionsTests: XCTestCase {
     private static var testWaypoints: [Waypoint] { return [Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
                                                         Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226))]}
 
-
-    // TODO: Fix
-//    private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
-//        let testBundle = Bundle(for: type(of: self))
-//        guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else { XCTFail(); return nil }
-//        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {XCTFail(); return nil }
-//        guard let fixtureOpaque = try? JSONSerialization.jsonObject(with: fixtureData), let fixture = fixtureOpaque as? JSONDictionary  else { XCTFail(); return nil }
-//
-//        let subject = RouteOptions(waypoints: waypoints)
-//        let response = subject.response(from: fixture)
-//
-//        guard let waypoints = response.0, let routes = response.1 else { XCTFail("Expected responses not returned from service"); return nil}
-//        guard let primary = routes.first else {XCTFail("Expected a route in response"); return nil}
-//        return (waypoints:waypoints, route:primary)
-//    }
-
-    // TODO: Fix
-//    func testResponseWithoutDestinationName() {
-//        let response = self.response(for: "noDestinationName")!
-//        XCTAssert(response.route.legs.last!.destination.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
-//    }
+    func directionsResponse(for fixtureName: String, options: RouteOptions) -> DirectionsResponse {
+        let bundle = Bundle(for: RouteOptionsTests.self)
+        let url = bundle.url(forResource: fixtureName, withExtension: "json")!
+        let data = try! Data(contentsOf: url)
+        let decoder = DirectionsDecoder(options: options)
+        return try! decoder.decode(DirectionsResponse.self, from: data)
+    }
+    
+    func testResponseWithoutDestinationName() {
+        let response = directionsResponse(for: "noDestinationName", options: RouteOptions.testInstance)
+        XCTAssert(response.routes!.first!.legs.last!.destination.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
+    }
 
     // TODO: Fix
 //    func testResponseWithDestinationName() {
