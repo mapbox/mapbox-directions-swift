@@ -53,4 +53,15 @@ extension RoadClasses: CustomStringConvertible, Codable {
         }
         return descriptions.joined(separator: ",")
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(description.components(separatedBy: ","))
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let descriptions = try container.decode([String].self)
+        self = RoadClasses(descriptions: descriptions)!
+    }
 }

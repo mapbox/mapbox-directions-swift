@@ -34,7 +34,9 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
     MBRoadClassesFerry = (1 << 4),
     
     /**
-     The user must travel this segment of the route through a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
+     The road segment is a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
+     
+     It may be desirable to use this flag to toggle dead reckoning since the GPS signal will be flaky at best.
      */
     MBRoadClassesTunnel = (1 << 5),
 };
