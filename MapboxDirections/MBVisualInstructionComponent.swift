@@ -17,7 +17,7 @@ open class VisualInstructionComponent: NSObject, Codable {
     
     private enum CodingKeys: String, CodingKey {
         case text
-        case imageURL
+        case imageBaseURL
     }
     
     /**
@@ -36,36 +36,34 @@ open class VisualInstructionComponent: NSObject, Codable {
     */
     @objc public var imageURL: URL?
     
-    
-    /**
-     :nodoc:
-     The type of visual instruction component. You can display the component differently depending on its type.
-     */
-    @objc public var type: VisualInstructionComponentType
-    
-    /**
-     :nodoc:
-     Initialize A `VisualInstructionComponent`.
-     */
-    // TODO: Fix
-//    @objc public convenience init(json: [String: Any]) {
-//        let text = json["text"] as? String
-//
-        if let _ = json["delimiter"] as? Bool {
-            type = .delimiter
-        } else {
-            type = .destination
+    var imageBaseURL: String? {
+        didSet {
+            guard let baseURL = imageBaseURL else {
+                imageURL = nil
+                return
+            }
+            let scale: CGFloat
+            #if os(OSX)
+                scale = NSScreen.main?.backingScaleFactor ?? 1
+            #elseif os(watchOS)
+                scale = WKInterfaceDevice.current().screenScale
+            #else
+                scale = UIScreen.main.scale
+            #endif
+            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
-        
-//        var imageURL: URL?
-//
-//        if let baseURL = json["imageBaseURL"] as? String {
-//            let scale: CGFloat
-//            #if os(OSX)
-//                scale = NSScreen.main?.backingScaleFactor ?? 1
-//            #elseif os(watchOS)
-//                scale = WKInterfaceDevice.current().screenScale
-//            #else
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(text, forKey: .text)
+        try container.encodeIfPresent(imageBaseURL, forKey: .imageBaseURL)
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        text = try container.decodeIfPresent(String.self, forKey: .text)
+        imageBaseURL = try container.decodeIfPresent(String.self, forKey: .imageBaseURL)
 //                scale = UIScreen.main.scale
 //            #endif
 //            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
