@@ -19,6 +19,8 @@ extension RoadClasses: CustomStringConvertible, Codable {
                 roadClasses.insert(.motorway)
             case "ferry":
                 roadClasses.insert(.ferry)
+            case "tunnel":
+                roadClasses.insert(.tunnel)
             case "none":
                 break
             default:
@@ -46,6 +48,20 @@ extension RoadClasses: CustomStringConvertible, Codable {
         if contains(.ferry) {
             descriptions.append("ferry")
         }
+        if contains(.tunnel) {
+            descriptions.append("tunnel")
+        }
         return descriptions.joined(separator: ",")
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(description.components(separatedBy: ","))
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let descriptions = try container.decode([String].self)
+        self = RoadClasses(descriptions: descriptions)!
     }
 }

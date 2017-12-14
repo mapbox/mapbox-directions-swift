@@ -23,11 +23,11 @@ class IntersectionTests: XCTestCase {
         
         XCTAssertNotNil(unarchivedIntersection)
         
-        XCTAssertEqual(unarchivedIntersection.location.latitude, unarchivedIntersection.location.latitude)
-        XCTAssertEqual(unarchivedIntersection.location.longitude, unarchivedIntersection.location.longitude)
-        XCTAssertEqual(unarchivedIntersection.headings, unarchivedIntersection.headings)
-        XCTAssertEqual(unarchivedIntersection.outletIndex, unarchivedIntersection.outletIndex)
-        XCTAssertEqual(unarchivedIntersection.outletIndexes, unarchivedIntersection.outletIndexes)
-        XCTAssertEqual(unarchivedIntersection.outletRoadClasses, unarchivedIntersection.outletRoadClasses)
+        XCTAssertEqual(unarchivedIntersection.location.latitude, intersection.location.latitude)
+        XCTAssertEqual(unarchivedIntersection.location.longitude, intersection.location.longitude)
+        XCTAssertEqual(unarchivedIntersection.headings, intersection.headings)
+        XCTAssertEqual(unarchivedIntersection.outletIndex, intersection.outletIndex)
+        XCTAssertEqual(unarchivedIntersection.outletIndexes, intersection.outletIndexes)
+        XCTAssertEqual(unarchivedIntersection.outletRoadClasses, intersection.outletRoadClasses)
     }
 }

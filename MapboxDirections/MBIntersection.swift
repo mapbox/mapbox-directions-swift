@@ -125,11 +125,7 @@ public class Intersection: NSObject, Codable {
         
         self.usableApproachLanes = usableApproachLanes.isEmpty ? nil : usableApproachLanes
         
-        if let classes = try container.decodeIfPresent([String].self, forKey: .outletRoadClasses) {
-            outletRoadClasses = RoadClasses(descriptions: classes)
-        } else {
-            outletRoadClasses = nil
-        }
+        outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
         outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
