@@ -134,7 +134,7 @@ open class Directions: NSObject {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, handler: { (data) in
             do {
-                let decoder = DirectionsDecoder(userInfo: [CodingUserInfoKey.routeOptions!: options])
+                let decoder = DirectionsDecoder(options: options)
                 let result = try decoder.decode(DirectionsResponse.self, from: data)
                 result.routes?.forEach {
                     $0.accessToken = self.accessToken
@@ -273,6 +273,11 @@ extension CodingUserInfoKey {
 }
 
 class DirectionsDecoder: JSONDecoder {
+    
+    convenience init(options: RouteOptions) {
+        self.init(userInfo: [CodingUserInfoKey.routeOptions!: options])
+    }
+    
     init(userInfo: [CodingUserInfoKey: Any]) {
         super.init()
         self.userInfo = userInfo
