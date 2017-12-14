@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- `VisualCompomentType` describes the `text` type.
+ `VisualInstructionComponentType` describes the type of `VisualInstructionComponent`.
  */
 @objc(MBVisualInstructionComponentType)
 public enum VisualInstructionComponentType: Int, CustomStringConvertible {

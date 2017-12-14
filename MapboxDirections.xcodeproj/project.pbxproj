@@ -216,7 +216,7 @@
 		C52CE3921F6AF6E70069963D /* IntructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntructionsTests.swift; sourceTree = "<group>"; };
 		C558C58B1E94181A00617B37 /* MBAttribute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBAttribute.h; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
-		C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionType.swift; sourceTree = "<group>"; };
+		C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionType.swift; sourceTree = "<group>"; };
 		C57B2E951DB8171300E9123A /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLaneIndication.h; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
