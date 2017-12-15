@@ -132,7 +132,7 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, handler: { (data) in
+        let task = dataTask(with: url, completionHandler: { (data) in
             do {
                 let decoder = DirectionsDecoder(options: options)
                 let result = try decoder.decode(DirectionsResponse.self, from: data)
@@ -163,7 +163,7 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, handler: @escaping (_ data: Data) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ data: Data) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -174,7 +174,7 @@ open class Directions: NSObject {
             }
             
             DispatchQueue.main.async {
-                handler(data)
+                completionHandler(data)
             }
         }
     }
