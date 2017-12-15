@@ -41,9 +41,23 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      */
     @objc public let secondaryTextComponents: [VisualInstructionComponent]?
     
+    
+    /**
+     The type of maneuver.
+     */
+    public var maneuverType: ManeuverType?
+    
+    
     /**
      :nodoc:
-     Initialize a `VisualInstruction` from a dictionary.
+     The type of maneuver.
+     */
+    public var maneuverDirection: ManeuverDirection?
+    
+    
+    /**
+     :nodoc:
+     The direction in which the maneuver moves.
      */
     @objc public convenience init(json: [String: Any]) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
@@ -63,19 +77,31 @@ open class VisualInstruction: NSObject, NSSecureCoding {
             }
         }
         
-        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents)
+        var maneuverType: ManeuverType?
+        if let maneuverString = json["type"] as? String, let type = ManeuverType(description: maneuverString) {
+            maneuverType = type
+        }
+        
+        var maneuverDirection: ManeuverDirection?
+        if let maneuverDirectionString = json["modifier"] as? String, let directions = ManeuverDirection(description: maneuverDirectionString) {
+            maneuverDirection = directions
+        }
+        
+        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
     }
     
     /**
      :nodoc:
      Initialize a `VisualInstruction`.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?) {
+    public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryText = primaryText
         self.primaryTextComponents = primaryTextComponents
         self.secondaryText = secondaryText
         self.secondaryTextComponents = secondaryTextComponents
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -94,6 +120,18 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.secondaryText = secondaryText
         
         secondaryTextComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryTextComponents") as? [VisualInstructionComponent]
+        
+        if let maneuverTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String? {
+            maneuverType = ManeuverType(description: maneuverTypeDescription)
+        } else {
+            maneuverType = nil
+        }
+        
+        if let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String? {
+            maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)
+        } else {
+            maneuverDirection = nil
+        }
     }
     
     open static var supportsSecureCoding = true
@@ -104,5 +142,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         coder.encode(primaryTextComponents, forKey: "primaryTextComponents")
         coder.encode(secondaryText, forKey: "secondaryText")
         coder.encode(secondaryTextComponents, forKey: "secondaryTextComponents")
+        coder.encode(maneuverType, forKey: "maneuverType")
+        coder.encode(maneuverDirection, forKey: "maneuverDirection")
     }
 }
