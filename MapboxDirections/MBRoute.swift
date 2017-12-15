@@ -19,11 +19,6 @@ open class Route: NSObject, Codable {
         case geometry
     }
     
-    private enum GeometryCodingKeys: String, CodingKey {
-        case coordinates
-        case type
-    }
-    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
