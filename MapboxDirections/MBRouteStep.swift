@@ -44,12 +44,6 @@ open class RouteStep: NSObject, Codable {
         case finalHeading = "bearing_after"
     }
     
-    private enum RoadCodingKeys: String, CodingKey {
-        case names
-        case phoneticNames
-        case exitNames
-    }
-    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
@@ -81,7 +75,6 @@ open class RouteStep: NSObject, Codable {
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
         if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first,
