@@ -139,7 +139,6 @@ open class Directions: NSObject {
                 result.routes?.forEach {
                     $0.accessToken = self.accessToken
                     $0.apiEndpoint = self.apiEndpoint
-                    $0.routeIdentifier = result.uuid
                 }
                 completionHandler(result.waypoints, result.routes, nil)
             } catch {
