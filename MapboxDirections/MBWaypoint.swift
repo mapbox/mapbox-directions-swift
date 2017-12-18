@@ -15,7 +15,13 @@ open class Waypoint: NSObject, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         coordinate = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinate)
         coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy) ?? -1
-        name = try container.decodeIfPresent(String.self, forKey: .name)
+        
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+            !name.isEmpty {
+            self.name = name
+        } else {
+            name = nil
+        }
     }
     
     /**
