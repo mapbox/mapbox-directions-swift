@@ -27,7 +27,6 @@ struct DirectionsResponse: Codable {
         let uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.uuid = uuid
         
-        //It's important that waypoints are decoded before routes
         let waypoints = try container.decodeIfPresent([Waypoint].self, forKey: .waypoints)
         self.waypoints = waypoints
         
