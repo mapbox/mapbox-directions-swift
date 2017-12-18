@@ -7,26 +7,28 @@ import Foundation
 public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**
-     Text is a delimiter.
+     The component separates two other destination components.
+     
+     If the two adjacent components are both displayed as images, you can hide this delimiter component.
      */
     case delimiter
     
     /**
-     Text is a way name.
+     The component bears an exit number or the name of a place or street.
      */
     case destination
     
     public init?(description: String) {
-        let level: VisualInstructionComponentType
+        let type: VisualInstructionComponentType
         switch description {
         case "delimiter":
-            level = .delimiter
+            type = .delimiter
         case "destination":
-            level = .destination
+            type = .destination
         default:
             return nil
         }
-        self.init(rawValue: level.rawValue)
+        self.init(rawValue: type.rawValue)
     }
     
     public var description: String {

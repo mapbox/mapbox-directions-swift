@@ -34,7 +34,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-     The type of the `VisualInstructionComponent`. Used for influencing how the compomenent is rendered.
+     The type of visual instruction component. You can display the component differently depending on its type.
      */
     @objc public var type: VisualInstructionComponentType
     
@@ -64,14 +64,14 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(text: text, imageURL: imageURL, type: type!)
+        self.init(type: type!, text: text, imageURL: imageURL)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(text: String?, imageURL: URL?, type: VisualInstructionComponentType) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
