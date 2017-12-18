@@ -58,11 +58,10 @@ class RouteOptionsTests: XCTestCase {
         XCTAssert(response.routes!.first!.legs.last!.destination.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
     }
 
-    // TODO: Fix
-//    func testResponseWithDestinationName() {
-//        let response = self.response(for: "apiDestinationName")!
-//        XCTAssert(response.route.legs.last!.destination.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
-//    }
+    func testResponseWithDestinationName() {
+        let response = directionsResponse(for: "apiDestinationName", options: RouteOptions.testInstance)
+        XCTAssert(response.routes!.first!.legs.last!.destination.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
+    }
     
     func testResponseWithManuallySetDestinationName() {
         let manuallySet = RouteOptionsTests.testWaypoints
