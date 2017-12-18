@@ -63,15 +63,16 @@ class RouteOptionsTests: XCTestCase {
 //        let response = self.response(for: "apiDestinationName")!
 //        XCTAssert(response.route.legs.last!.destination.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
 //    }
-
-    // TODO: Fix
-//    func testResponseWithManuallySetDestinationName() {
-//        let manuallySet = RouteOptionsTests.testWaypoints
-//        manuallySet.last!.name = "manuallyset"
-//
-//        let response = self.response(for: "apiDestinationName", waypoints: manuallySet)!
-//        XCTAssert(response.route.legs.last!.destination.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
-//    }
+    
+    func testResponseWithManuallySetDestinationName() {
+        let manuallySet = RouteOptionsTests.testWaypoints
+        manuallySet.last!.name = "manuallyset"
+        let routeOptions = RouteOptions.testInstance
+        routeOptions.waypoints = manuallySet
+        
+        let response = directionsResponse(for: "apiDestinationName", options: routeOptions)
+        XCTAssert(response.routes!.first!.legs.last!.destination.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
+    }
 }
 
 private extension RouteOptions {
