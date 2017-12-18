@@ -94,10 +94,9 @@ public class Intersection: NSObject, Codable {
         
         try container.encode(approachIndex, forKey: .approachIndex)
         try container.encode(outletIndex, forKey: .outletIndex)
-        //        let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
-        //        outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
-        // TODO: Transform outletIndexes
-        try container.encode([true], forKey: .outletIndexes)
+        
+        try container.encode(outletIndexes, forKey: .outletIndexes)
+        
         try container.encode(approachLanes, forKey: .approachLanes)
         try container.encode(usableApproachLanes, forKey: .usableApproachLanes)
         
@@ -127,8 +126,12 @@ public class Intersection: NSObject, Codable {
         
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
-        let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
-        outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
+        if let outletIndexes = try? container.decode(IndexSet.self, forKey: .outletIndexes) {
+            self.outletIndexes = outletIndexes
+        } else {
+            let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
+            outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
+        }
         
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1

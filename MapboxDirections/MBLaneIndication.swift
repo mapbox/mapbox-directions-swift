@@ -3,7 +3,6 @@ import Foundation
 public typealias LaneIndication = MBLaneIndication
 
 extension LaneIndication: CustomStringConvertible, Codable {
-    
     /**
      Creates a lane indication from the given description strings.
      */
