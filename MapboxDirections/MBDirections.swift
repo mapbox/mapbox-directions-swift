@@ -271,9 +271,15 @@ extension CodingUserInfoKey {
     static let routeOptions = CodingUserInfoKey(rawValue: "options")
 }
 
-class DirectionsDecoder: JSONDecoder {
+/**
+ A JSONDecoder with an associated `RouteOptions` to use when decoding a directions response.
+ */
+public class DirectionsDecoder: JSONDecoder {
     
-    convenience init(options: RouteOptions) {
+    /**
+     Initializes a `DirectionsDecoder` with a given `RouteOption`.
+     */
+    convenience public init(options: RouteOptions) {
         self.init(userInfo: [CodingUserInfoKey.routeOptions!: options])
     }
     
