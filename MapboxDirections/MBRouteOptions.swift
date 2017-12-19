@@ -569,17 +569,6 @@ open class RouteOptionsV4: RouteOptions {
             URLQueryItem(name: "steps", value: String(includesSteps)),
         ]
     }
-
-//    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-//        let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
-//        let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
-//        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
-//        let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
-//        let routes = (json["routes"] as? [JSONDictionary])?.map {
-//            RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
-//        }
-//        return (waypoints, routes)
-//    }
 }
 
 extension Locale {

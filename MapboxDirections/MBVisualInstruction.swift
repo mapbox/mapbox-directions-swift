@@ -4,7 +4,6 @@ import Foundation
  :nodoc:
  Encompasses all information necessary for creating a visual cue about a given `RouteStep`.
  */
-
 @objc(MBVisualInstruction)
 open class VisualInstruction: NSObject, Codable {
     
