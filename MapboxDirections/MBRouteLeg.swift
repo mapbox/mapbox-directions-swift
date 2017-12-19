@@ -96,14 +96,14 @@ open class RouteLeg: NSObject, Codable {
      
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
      */
-    @objc open var source: Waypoint!
+    @objc open var source: Waypoint?
     
     /**
      The endpoint of the route leg.
      
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
-    @objc open var destination: Waypoint!
+    @objc open var destination: Waypoint?
     
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.
