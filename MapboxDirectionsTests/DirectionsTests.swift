@@ -22,7 +22,7 @@ class DirectionsTests: XCTestCase {
     }
     
     func testRateLimitErrorParsing() {
-        let json = ["message" : "Hit rate limit"]
+        let apiResponse = ApiResponse(code: nil, message: "Hit rate limit", error: nil)
         
         let url = URL(string: "https://api.mapbox.com")!
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
@@ -30,7 +30,7 @@ class DirectionsTests: XCTestCase {
         
         let error: NSError? = nil
         
-        let resultError = Directions.informativeError(describing: json, response: response, underlyingError: error)
+        let resultError = Directions.informativeError(describing: apiResponse, response: response, underlyingError: error)
         
         XCTAssertEqual(resultError.localizedFailureReason, "More than 600 requests have been made with this access token within a period of 1 minute.")
         XCTAssertEqual(resultError.localizedRecoverySuggestion, "Wait until November 18, 2016 at 9:16:24 AM GMT before retrying.")

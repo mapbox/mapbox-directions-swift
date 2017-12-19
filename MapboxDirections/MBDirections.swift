@@ -168,7 +168,21 @@ open class Directions: NSObject {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let data = data, response?.mimeType == "application/json" else {
-                errorHandler(Directions.informativeError(describing: [:], response: response, underlyingError: error as NSError?))
+                assert(false, "Invalid data")
+                return
+            }
+            
+            do {
+                let apiResponse = try JSONDecoder().decode(ApiResponse.self, from: data)
+                guard error == nil && ((apiResponse.code == nil && apiResponse.message == nil) || apiResponse.code == "Ok") else {
+                    let apiError = Directions.informativeError(describing: apiResponse, response: response, underlyingError: error as NSError?)
+                    DispatchQueue.main.async {
+                        errorHandler(apiError)
+                    }
+                    return
+                }
+            } catch {
+                errorHandler(error as NSError)
                 return
             }
             
@@ -198,13 +212,12 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func informativeError(describing json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
-        let apiStatusCode = json["code"] as? String
+    static func informativeError(describing api: ApiResponse?, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {
             var failureReason: String? = nil
             var recoverySuggestion: String? = nil
-            switch (response.statusCode, apiStatusCode ?? "") {
+            switch (response.statusCode, api?.code ?? "") {
             case (200, "NoRoute"):
                 failureReason = "No route could be found between the specified locations."
                 recoverySuggestion = "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
@@ -228,7 +241,7 @@ open class Directions: NSObject {
                 }
             default:
                 // `message` is v4 or v5; `error` is v4
-                failureReason = json["message"] as? String ?? json["error"] as? String
+                failureReason = api?.message ?? api?.error
             }
             userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? HTTPURLResponse.localizedString(forStatusCode: error?.code ?? -1)
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
