@@ -55,12 +55,12 @@ class RouteOptionsTests: XCTestCase {
     
     func testResponseWithoutDestinationName() {
         let response = directionsResponse(for: "noDestinationName", options: RouteOptions.testInstance)
-        XCTAssert(response.routes!.first!.legs.last!.destination.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
+        XCTAssert(response.routes!.first!.legs.last!.destination!.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
     }
 
     func testResponseWithDestinationName() {
         let response = directionsResponse(for: "apiDestinationName", options: RouteOptions.testInstance)
-        XCTAssert(response.routes!.first!.legs.last!.destination.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
+        XCTAssert(response.routes!.first!.legs.last!.destination!.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
     }
     
     func testResponseWithManuallySetDestinationName() {
@@ -70,7 +70,7 @@ class RouteOptionsTests: XCTestCase {
         routeOptions.waypoints = manuallySet
         
         let response = directionsResponse(for: "apiDestinationName", options: routeOptions)
-        XCTAssert(response.routes!.first!.legs.last!.destination.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
+        XCTAssert(response.routes!.first!.legs.last!.destination!.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
     }
 }
 

@@ -34,24 +34,29 @@ open class VisualInstructionComponent: NSObject, Codable {
  
     The URL refers to an image that uses the device’s native screen scale.
     */
-    @objc public var imageURL: URL?
-    
-    var imageBaseURL: String? {
-        didSet {
-            guard let baseURL = imageBaseURL else {
-                imageURL = nil
-                return
-            }
-            let scale: CGFloat
-            #if os(OSX)
-                scale = NSScreen.main?.backingScaleFactor ?? 1
-            #elseif os(watchOS)
-                scale = WKInterfaceDevice.current().screenScale
-            #else
-                scale = UIScreen.main.scale
-            #endif
-            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
+    @objc public var imageURL: URL? {
+        guard let baseURL = imageBaseURL else {
+            return nil
         }
+        let scale: CGFloat
+        #if os(OSX)
+            scale = NSScreen.main?.backingScaleFactor ?? 1
+        #elseif os(watchOS)
+            scale = WKInterfaceDevice.current().screenScale
+        #else
+            scale = UIScreen.main.scale
+        #endif
+        return URL(string: "\(baseURL)@\(Int(scale))x.png")
+    }
+    
+    var imageBaseURL: String?
+    
+    /**
+     Initializes a `VisualInstructionComponent`.
+     */
+    public init(text: String? = nil, imageBaseURL: String? = nil) {
+        self.text = text
+        self.imageBaseURL = imageBaseURL
     }
     
     public func encode(to encoder: Encoder) throws {
