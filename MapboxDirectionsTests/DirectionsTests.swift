@@ -22,7 +22,7 @@ class DirectionsTests: XCTestCase {
     }
     
     func testRateLimitErrorParsing() {
-        let apiResponse = ApiResponse(code: nil, message: "Hit rate limit", error: nil)
+        let apiResponse = DirectionsResponse(code: nil, message: "Hit rate limit", error: nil)
         
         let url = URL(string: "https://api.mapbox.com")!
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]

@@ -1,29 +1,32 @@
 import Foundation
 
-struct ApiResponse: Codable {
+struct DirectionsResponse: Codable {
+    
     enum CodingKeys: String, CodingKey {
         case code
         case message
         case error
-    }
-    
-    var code: String?
-    var message: String?
-    var error: String?
-}
-
-struct DirectionsResponse: Codable {
-    
-    enum CodingKeys: String, CodingKey {
         case uuid
         case routes
         case waypoints
     }
     
+    var code: String?
+    var message: String?
+    var error: String?
     let uuid: String?
     let routes: [Route]?
     let waypoints: [Waypoint]?
  
+    init(code: String?, message: String?, error: String?) {
+        self.code = code
+        self.message = message
+        self.error = error
+        self.uuid = nil
+        self.routes = nil
+        self.waypoints = nil
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

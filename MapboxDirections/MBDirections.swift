@@ -132,64 +132,46 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (data) in
-            do {
-                let decoder = DirectionsDecoder(options: options)
-                let result = try decoder.decode(DirectionsResponse.self, from: data)
-                result.routes?.forEach {
-                    $0.accessToken = self.accessToken
-                    $0.apiEndpoint = self.apiEndpoint
-                }
-                completionHandler(result.waypoints, result.routes, nil)
-            } catch {
-                completionHandler(nil, nil, error as NSError)
-            }
-        }) { (error) in
-            completionHandler(nil, nil, error)
-        }
-        
-        task.resume()
-        
-        return task
-    }
-    
-    /**
-     Returns a URL session task for the given URL that will run the given closures on completion or error.
-     
-     - parameter url: The URL to request.
-     - parameter completionHandler: The closure to call with the parsed JSON response dictionary.
-     - parameter errorHandler: The closure to call when there is an error.
-     - returns: The data task for the URL.
-     - postcondition: The caller must resume the returned task.
-     */
-    fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ data: Data) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
-        
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let data = data, response?.mimeType == "application/json" else {
                 assert(false, "Invalid data")
                 return
             }
             
-            do {
-                let apiResponse = try JSONDecoder().decode(ApiResponse.self, from: data)
-                guard error == nil && ((apiResponse.code == nil && apiResponse.message == nil) || apiResponse.code == "Ok") else {
-                    let apiError = Directions.informativeError(describing: apiResponse, response: response, underlyingError: error as NSError?)
-                    DispatchQueue.main.async {
-                        errorHandler(apiError)
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    let decoder = DirectionsDecoder(options: options)
+                    let result = try decoder.decode(DirectionsResponse.self, from: data)
+                    guard error == nil && ((result.code == nil && result.message == nil) || result.code == "Ok") else {
+                        let apiError = Directions.informativeError(describing: result, response: response, underlyingError: error as NSError?)
+                        DispatchQueue.main.async {
+                            completionHandler(nil, nil, apiError)
+                        }
+                        return
                     }
-                    return
+                    
+                    result.routes?.forEach {
+                        $0.accessToken = self.accessToken
+                        $0.apiEndpoint = self.apiEndpoint
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completionHandler(result.waypoints, result.routes, nil)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completionHandler(nil, nil, error as NSError)
+                    }
                 }
-            } catch {
-                errorHandler(error as NSError)
-                return
-            }
-            
-            DispatchQueue.main.async {
-                completionHandler(data)
             }
         }
+        
+        task.priority = 1
+        task.resume()
+        
+        return task
     }
     
     /**
@@ -212,7 +194,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func informativeError(describing api: ApiResponse?, response: URLResponse?, underlyingError error: NSError?) -> NSError {
+    static func informativeError(describing api: DirectionsResponse?, response: URLResponse?, underlyingError error: NSError?) -> NSError {
         var userInfo = error?.userInfo ?? [:]
         if let response = response as? HTTPURLResponse {
             var failureReason: String? = nil
