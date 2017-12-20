@@ -34,7 +34,9 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         t = try? container.decode(T.self)
-        u = try? container.decode(U.self)
+        if t == nil {
+            u = try? container.decode(U.self)
+        }
     }
     
     func encode(to encoder: Encoder) throws {
