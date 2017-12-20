@@ -22,10 +22,10 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
     }
     
     var coordinates: [CLLocationCoordinate2D] {
-        if let geo = value as? String {
-            return decodePolyline(geo, precision: 1e5)!
-        } else if let geo = value as? Geometry {
+        if let geo = value as? Geometry {
             return geo.coordinates
+        } else if let geo = value as? String {
+            return decodePolyline(geo, precision: 1e5)!
         } else {
             return []
         }
