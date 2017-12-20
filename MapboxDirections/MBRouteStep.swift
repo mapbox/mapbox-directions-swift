@@ -77,8 +77,16 @@ open class RouteStep: NSObject, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
-        maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
-        
+        if let coordinate = try? maneuver.decode(CLLocationCoordinate2D.self, forKey: .location) {
+            maneuverLocation = coordinate
+        } else if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first,
+            let maneuverCoordinate = coordinate {
+            // V4
+            maneuverLocation = maneuverCoordinate
+        } else {
+            maneuverLocation = CLLocationCoordinate2D()
+        }
+
         maneuverType = try maneuver.decodeIfPresent(ManeuverType.self, forKey: .type)
         maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
         
