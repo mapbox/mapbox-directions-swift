@@ -71,7 +71,7 @@ class V4Tests: XCTestCase {
         XCTAssertNotNil(step.names)
         XCTAssertEqual(step.names ?? [], ["I 80", "US 93 Alternate"])
         XCTAssertEqual(step.maneuverType, .continue)
-        XCTAssertNil(step.maneuverDirection)
+        XCTAssert(step.maneuverDirection == .none)
         XCTAssertNil(step.initialHeading)
         XCTAssertNil(step.finalHeading)
         

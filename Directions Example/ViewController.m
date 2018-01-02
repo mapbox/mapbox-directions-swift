@@ -59,7 +59,7 @@ NSString * const MapboxAccessToken = @"<# your Mapbox access token #>";
             for (MBRouteStep *step in leg.steps) {
                 NSLog(@"%@", step.instructions);
                 NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
-                NSLog(@"— %@ — %ld -", formattedDistance, (long)step.maneuverType);
+                NSLog(@"— %@ — %ld - %ld -", formattedDistance, (long)step.maneuverType, step.maneuverDirection);
             }
             
             if (route.coordinateCount) {
