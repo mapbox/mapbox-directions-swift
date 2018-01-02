@@ -8,6 +8,13 @@ public enum TransportType: Int, CustomStringConvertible {
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
     
     /**
+     The step does not have a particular transport type associated with it.
+     
+     This transport type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The route requires the user to drive or ride a car, truck, or motorcycle.
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`.
@@ -63,6 +70,8 @@ public enum TransportType: Int, CustomStringConvertible {
     public init?(description: String) {
         let type: TransportType
         switch description {
+        case "none":
+            type = .none
         case "driving":
             type = .automobile
         case "ferry":
@@ -85,6 +94,8 @@ public enum TransportType: Int, CustomStringConvertible {
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .automobile:
             return "driving"
         case .ferry:
@@ -546,7 +557,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
-        transportType = TransportType(description: json["mode"] as! String)
+        transportType = TransportType(description: json["mode"] as! String)!
         
         let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
         if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
@@ -685,7 +696,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         guard let transportTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "transportType") as String? else {
             return nil
         }
-        transportType = TransportType(description: transportTypeDescription)
+        transportType = TransportType(description: transportTypeDescription) ?? .none
         
         codes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "codes") as? [String]
         destinationCodes = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "destinationCodes") as? [String]
@@ -738,7 +749,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(names, forKey: "names")
         coder.encode(phoneticNames, forKey: "phoneticNames")
-        coder.encode(transportType?.description, forKey: "transportType")
+        coder.encode(transportType.description, forKey: "transportType")
         coder.encode(codes, forKey: "codes")
         coder.encode(destinationCodes, forKey: "destinationCodes")
         coder.encode(destinations, forKey: "destinations")
@@ -947,7 +958,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      This step may use a different mode of transportation than the overall route.
      */
-    open let transportType: TransportType?
+    @objc open let transportType: TransportType
     
     /**
      Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
