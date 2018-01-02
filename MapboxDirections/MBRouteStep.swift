@@ -111,6 +111,13 @@ public enum TransportType: Int, CustomStringConvertible {
 @objc(MBManeuverType)
 public enum ManeuverType: Int, CustomStringConvertible {
     /**
+     The step does not have a particular maneuver type associated with it.
+     
+     This maneuver type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The step requires the user to depart from a waypoint.
      
      If the waypoint is some distance away from the nearest road, the maneuver direction indicates the direction the user must turn upon reaching the road.
@@ -240,7 +247,7 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case passWaypoint // v4
     
-    public init?(description: String) {
+    public init(description: String) {
         let type: ManeuverType
         switch description {
         case "depart":
@@ -280,13 +287,15 @@ public enum ManeuverType: Int, CustomStringConvertible {
         case "waypoint": // v4
             type = .passWaypoint
         default:
-            return nil
+            type = .none
         }
-        self.init(rawValue: type.rawValue)
+        self.init(rawValue: type.rawValue)!
     }
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .depart:
             return "depart"
         case .turn:
@@ -527,7 +536,7 @@ struct Road {
 open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
-    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
+    internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection?, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
         transportType = TransportType(description: json["mode"] as! String)
         
         let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
@@ -551,10 +560,10 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         if let instructions = maneuver["instruction"] as? String {
             self.instructions = instructions
-        } else if let mt = maneuverType, let md = maneuverDirection {
-            instructions = "\(mt) \(md)"
-        } else if let mt = maneuverType {
-            instructions = String(describing: mt)
+        } else if maneuverType != .none, let md = maneuverDirection {
+            instructions = "\(maneuverType) \(md)"
+        } else if maneuverType != .none {
+            instructions = String(describing: maneuverType)
         } else if let md = maneuverDirection {
             instructions = String(describing: md)
         } else {
@@ -700,7 +709,7 @@ open class RouteStep: NSObject, NSSecureCoding {
             coder.encode(finalHeading, forKey: "finalHeading")
         }
         
-        coder.encode(maneuverType?.description, forKey: "maneuverType")
+        coder.encode(maneuverType.description, forKey: "maneuverType")
         coder.encode(maneuverDirection?.description, forKey: "maneuverDirection")
         coder.encode(drivingSide.description, forKey: "drivingSide")
         
@@ -826,7 +835,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      The type of maneuver required for beginning this step.
      */
-    open let maneuverType: ManeuverType?
+    @objc open let maneuverType: ManeuverType
     
     /**
      Additional directional information to clarify the maneuver type.
@@ -1002,7 +1011,7 @@ internal class RouteStepV4: RouteStep {
     internal convenience init(json: JSONDictionary) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let heading = maneuver["heading"] as? Double
-        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)
+        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)!
         let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
         let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
