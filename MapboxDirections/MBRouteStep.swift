@@ -258,7 +258,7 @@ public enum ManeuverType: Int, CustomStringConvertible {
      */
     case passWaypoint // v4
     
-    public init(description: String) {
+    public init?(description: String) {
         let type: ManeuverType
         switch description {
         case "depart":
@@ -300,7 +300,7 @@ public enum ManeuverType: Int, CustomStringConvertible {
         default:
             type = .none
         }
-        self.init(rawValue: type.rawValue)!
+        self.init(rawValue: type.rawValue)
     }
     
     public var description: String {
@@ -557,7 +557,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
     
     internal init(finalHeading: CLLocationDirection?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, drivingSide: DrivingSide, maneuverLocation: CLLocationCoordinate2D, name: String, coordinates: [CLLocationCoordinate2D]?, json: JSONDictionary) {
-        transportType = TransportType(description: json["mode"] as! String)!
+        transportType = TransportType(description: json["mode"] as! String) ?? .none
         
         let road = Road(name: name, ref: json["ref"] as? String, exits: json["exits"] as? String, destination: json["destinations"] as? String, rotaryName: json["rotary_name"] as? String)
         if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
@@ -623,10 +623,10 @@ open class RouteStep: NSObject, NSSecureCoding {
     @objc public convenience init(json: [String: Any]) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
-        let maneuverType = ManeuverType(description: maneuver["type"] as! String)
-        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? ManeuverDirection.none.description)!
+        let maneuverType = ManeuverType(description: maneuver["type"] as? String ?? "") ?? .none
+        let maneuverDirection = ManeuverDirection(description: maneuver["modifier"] as? String ?? "") ?? .none
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! [Double])
-        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
+        let drivingSide = DrivingSide(description: json["driving_side"] as? String ?? "") ?? .right
         
         let name = json["name"] as! String
         
@@ -665,10 +665,10 @@ open class RouteStep: NSObject, NSSecureCoding {
         guard let maneuverTypeDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String? else {
             return nil
         }
-        maneuverType = ManeuverType(description: maneuverTypeDescription)
+        maneuverType = ManeuverType(description: maneuverTypeDescription) ?? .none
         
         let maneuverDirectionDescription = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection")! as String
-        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription)!
+        maneuverDirection = ManeuverDirection(description: maneuverDirectionDescription) ?? .none
         
         if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(description: drivingSideDescription) {
             self.drivingSide = drivingSide
@@ -1029,8 +1029,8 @@ internal class RouteStepV4: RouteStep {
     internal convenience init(json: JSONDictionary) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let heading = maneuver["heading"] as? Double
-        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String)!
-        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String)!
+        let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String) ?? .none
+        let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String) ?? .none
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
         let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
         let name = json["way_name"] as! String
