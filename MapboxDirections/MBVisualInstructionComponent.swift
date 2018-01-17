@@ -31,15 +31,27 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     */
     @objc public var imageURL: URL?
     
+    
+    /**
+     :nodoc:
+     The type of visual instruction component. You can display the component differently depending on its type.
+     */
+    @objc public var type: VisualInstructionComponentType
+    
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
     @objc public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
+        var type: VisualInstructionComponentType?
+        if let _ = json["delimiter"] as? Bool {
+            type = .delimiter
+        } else {
+            type = .destination
+        }
         
         var imageURL: URL?
-        
         if let baseURL = json["imageBaseURL"] as? String {
             let scale: CGFloat
             #if os(OSX)
@@ -52,16 +64,17 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(text: text, imageURL: imageURL)
+        self.init(type: type!, text: text, imageURL: imageURL)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(text: String?, imageURL: URL?) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?) {
         self.text = text
         self.imageURL = imageURL
+        self.type = type
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -74,6 +87,11 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             return nil
         }
         self.imageURL = imageURL
+        
+        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
+                return nil
+        }
+        self.type = type
     }
     
     open static var supportsSecureCoding = true
@@ -81,5 +99,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
         coder.encode(imageURL, forKey: "imageURL")
+        coder.encode(type, forKey: "type")
     }
 }
