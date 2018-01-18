@@ -1032,7 +1032,7 @@ internal class RouteStepV4: RouteStep {
         let maneuverType = ManeuverType(v4Description: maneuver["type"] as! String) ?? .none
         let maneuverDirection = ManeuverDirection(v4TypeDescription: maneuver["type"] as! String) ?? .none
         let maneuverLocation = CLLocationCoordinate2D(geoJSON: maneuver["location"] as! JSONDictionary)
-        let drivingSide = DrivingSide(description: json["driving_side"] as! String) ?? .right
+        let drivingSide = DrivingSide(description: json["driving_side"] as? String ?? "") ?? .right
         let name = json["way_name"] as! String
         
         self.init(finalHeading: heading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: nil, json: json)
