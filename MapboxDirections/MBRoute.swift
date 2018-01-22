@@ -70,6 +70,8 @@ open class Route: NSObject, NSSecureCoding {
         routeOptions = options
         
         routeIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String?
+        
+        spokenLocale = decoder.decodeObject(of: NSLocale.self, forKey: "spokenLocale") as Locale?
     }
     
     open static var supportsSecureCoding = true
@@ -86,6 +88,7 @@ open class Route: NSObject, NSSecureCoding {
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(routeOptions, forKey: "routeOptions")
         coder.encode(routeIdentifier, forKey: "routeIdentifier")
+        coder.encode(spokenLocale, forKey: "spokenLocale")
     }
     
     // MARK: Getting the Route Geometry
@@ -194,6 +197,11 @@ open class Route: NSObject, NSSecureCoding {
      Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
      */
     @objc open var routeIdentifier: String?
+    
+    /**
+     The locale to use for spoken instructions.
+     */
+    @objc open var spokenLocale: Locale?
 }
 
 // MARK: Support for Directions API v4
