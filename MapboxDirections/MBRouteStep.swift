@@ -66,8 +66,8 @@ open class RouteStep: NSObject, Codable {
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
-        try maneuver.encodeIfPresent(maneuverType?.description, forKey: .type)
-        try maneuver.encodeIfPresent(maneuverDirection?.description, forKey: .direction)
+        try maneuver.encodeIfPresent(maneuverType, forKey: .type)
+        try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
         try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
@@ -87,18 +87,14 @@ open class RouteStep: NSObject, Codable {
             maneuverLocation = CLLocationCoordinate2D()
         }
 
-        maneuverType = try maneuver.decodeIfPresent(ManeuverType.self, forKey: .type)
-        maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
+        maneuverType = try maneuver.decodeIfPresent(ManeuverType.self, forKey: .type) ?? .none
+        maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction) ?? .none
         
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
         geometry = try container.decodeIfPresent(UncertainCodable<Geometry, String>.self, forKey: .geometry)
         coordinates = geometry?.coordinates
-
-            coordinates = nil
-        }
-        transportType = TransportType(description: transportTypeDescription) ?? .none
         
         name = try container.decodeIfPresent(String.self, forKey: .name) ?? container.decode(String.self, forKey: .v4wayName)
         
@@ -110,12 +106,12 @@ open class RouteStep: NSObject, Codable {
         
         if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
             instructions = instruction
-        } else if let mt = maneuverType, let md = maneuverDirection {
-            instructions = "\(mt) \(md)"
-        } else if let mt = maneuverType {
-            instructions = String(describing: mt)
-        } else if let md = maneuverDirection {
-            instructions = String(describing: md)
+        } else if maneuverType != .none, maneuverDirection != .none {
+            instructions = "\(maneuverType) \(maneuverDirection)"
+        } else if maneuverType != .none {
+            instructions = String(describing: maneuverType)
+        } else if maneuverDirection != .none {
+            instructions = String(describing: maneuverDirection)
         } else {
             instructions = ""
         }
@@ -130,16 +126,16 @@ open class RouteStep: NSObject, Codable {
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
         codes = road.codes
-        transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType)
+        transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType) ?? .none
         destinationCodes = road.destinationCodes
         
-        coder.encode(maneuverType.description, forKey: "maneuverType")
         intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
         
         destinations = road.destinations
         
-        if let type = maneuverType,
-            type == .takeRotary || type == .takeRoundabout {
+        let mType = maneuverType
+        if mType != .none,
+            mType == .takeRotary || mType == .takeRoundabout {
             names = road.rotaryNames
             phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
             exitNames = road.names

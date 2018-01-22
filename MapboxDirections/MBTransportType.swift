@@ -8,6 +8,13 @@ public enum TransportType: Int, CustomStringConvertible, Codable {
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
     
     /**
+     The step does not have a particular transport type associated with it.
+     
+     This transport type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The route requires the user to drive or ride a car, truck, or motorcycle.
      
      This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`.
@@ -63,6 +70,8 @@ public enum TransportType: Int, CustomStringConvertible, Codable {
     public init?(description: String) {
         let type: TransportType
         switch description {
+        case "none":
+            type = .none
         case "driving":
             type = .automobile
         case "ferry":
@@ -78,13 +87,15 @@ public enum TransportType: Int, CustomStringConvertible, Codable {
         case "train":
             type = .train
         default:
-            return nil
+            type = .none
         }
         self.init(rawValue: type.rawValue)
     }
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .automobile:
             return "driving"
         case .ferry:

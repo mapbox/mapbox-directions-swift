@@ -6,6 +6,13 @@ import Foundation
 @objc(MBManeuverDirection)
 public enum ManeuverDirection: Int, CustomStringConvertible, Codable {
     /**
+     The step does not have a particular maneuver direction associated with it.
+     
+     This maneuver direction is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The maneuver requires a sharp turn to the right.
      */
     case sharpRight
@@ -50,6 +57,8 @@ public enum ManeuverDirection: Int, CustomStringConvertible, Codable {
     public init?(description: String) {
         let direction: ManeuverDirection
         switch description {
+        case "none":
+            direction = .none
         case "sharp right":
             direction = .sharpRight
         case "right":
@@ -67,13 +76,15 @@ public enum ManeuverDirection: Int, CustomStringConvertible, Codable {
         case "uturn":
             direction = .uTurn
         default:
-            return nil
+            direction = .none
         }
         self.init(rawValue: direction.rawValue)
     }
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .sharpRight:
             return "sharp right"
         case .right:

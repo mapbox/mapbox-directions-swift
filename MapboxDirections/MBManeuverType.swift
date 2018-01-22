@@ -8,6 +8,13 @@ import Foundation
 @objc(MBManeuverType)
 public enum ManeuverType: Int, CustomStringConvertible, Codable {
     /**
+     The step does not have a particular maneuver type associated with it.
+     
+     This maneuver type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The step requires the user to depart from a waypoint.
      
      If the waypoint is some distance away from the nearest road, the maneuver direction indicates the direction the user must turn upon reaching the road.
@@ -140,6 +147,8 @@ public enum ManeuverType: Int, CustomStringConvertible, Codable {
     public init?(description: String) {
         let type: ManeuverType
         switch description {
+        case "none":
+            type = .none
         case "depart":
             type = .depart
         case "turn":
@@ -177,13 +186,15 @@ public enum ManeuverType: Int, CustomStringConvertible, Codable {
         case "waypoint": // v4
             type = .passWaypoint
         default:
-            return nil
+            type = .none
         }
         self.init(rawValue: type.rawValue)
     }
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .depart:
             return "depart"
         case .turn:

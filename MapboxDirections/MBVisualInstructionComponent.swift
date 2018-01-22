@@ -30,10 +30,10 @@ open class VisualInstructionComponent: NSObject, Codable {
     
     /**
      :nodoc:
-    The URL to an image representation of this component.
- 
-    The URL refers to an image that uses the device’s native screen scale.
-    */
+     The URL to an image representation of this component.
+     
+     The URL refers to an image that uses the device’s native screen scale.
+     */
     @objc public var imageURL: URL? {
         guard let baseURL = imageBaseURL else {
             return nil
@@ -69,20 +69,5 @@ open class VisualInstructionComponent: NSObject, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         text = try container.decodeIfPresent(String.self, forKey: .text)
         imageBaseURL = try container.decodeIfPresent(String.self, forKey: .imageBaseURL)
-//                scale = UIScreen.main.scale
-//            #endif
-//            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
-//        }
-//
-//        self.init(text: text, imageURL: imageURL)
-//    }
-    
-    /**
-     :nodoc:
-     Initialize A `VisualInstructionComponent`.
-     */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?) {
-        self.text = text
-        self.imageURL = imageURL
     }
 }
