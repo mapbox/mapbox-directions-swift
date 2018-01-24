@@ -55,4 +55,28 @@ open class MatchOptions: RouteOptions {
         let queryComponent = queries.joined(separator: ";")
         return "matching/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
     }
+    
+    internal func responseMatchOptions(from json: JSONDictionary) -> ([TracePoint]?, [Match]?) {
+        var namedWaypoints: [TracePoint]?
+        if let jsonWaypoints = (json["tracePoints"] as? [JSONDictionary]) {
+            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> TracePoint in
+                let location = api["location"] as! [Double]
+                let coordinate = CLLocationCoordinate2D(geoJSON: location)
+                let alternateCount = api["alternatives_count"] as! Int
+                let waypointIndex = api["waypoint_index"] as! Int
+                let matchingIndex = api["matchings_index"] as! Int
+                let name = api["name"] as? String
+                // TODO: add name
+                // let possibleAPIName = api["name"] as? String
+                return TracePoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
+            }
+        }
+        
+        let tracePoints = namedWaypoints!
+        
+        let matchings = (json["matchings"] as? [JSONDictionary])?.map {_ in 
+            Match(json: json, tracePoints: tracePoints, matchOptions: self)
+        }
+        return (tracePoints, matchings)
+    }
 }
