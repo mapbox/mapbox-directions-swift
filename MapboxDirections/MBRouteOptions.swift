@@ -637,7 +637,7 @@ open class RouteOptionsV4: RouteOptions {
 }
 
 extension Locale {
-    var usesMetric: Bool {
+    fileprivate var usesMetric: Bool {
         guard let measurementSystem = (self as NSLocale).object(forKey: .measurementSystem) as? String else {
             return false
         }
