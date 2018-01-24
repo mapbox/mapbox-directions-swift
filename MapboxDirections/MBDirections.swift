@@ -183,6 +183,26 @@ open class Directions: NSObject {
         return task
     }
     
+    @objc(calculateMatchingWithOptions:completionHandler:)
+    @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+        let url = self.url(forCalculating: options)
+        let task = dataTask(with: url, completionHandler: { (json) in
+            let response = options.responseMatchOptions(from: json)
+            if let routes = response.1 {
+                for route in routes {
+                    route.accessToken = self.accessToken
+                    route.apiEndpoint = self.apiEndpoint
+                    route.routeIdentifier = json["uuid"] as? String
+                }
+            }
+            completionHandler(response.0, response.1, nil)
+        }) { (error) in
+            completionHandler(nil, nil, error)
+        }
+        task.resume()
+        return task
+    }
+    
     /**
      Returns a URL session task for the given URL that will run the given closures on completion or error.
      

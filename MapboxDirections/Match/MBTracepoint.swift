@@ -10,7 +10,7 @@ public class TracePoint: Waypoint {
     @objc open var matchingIndex: Int
     
     
-    init(coordinate: CLLocationCoordinate2D, alternateCount: Int, waypointIndex: Int, matchingIndex: Int) {
+    init(coordinate: CLLocationCoordinate2D, alternateCount: Int, waypointIndex: Int, matchingIndex: Int, name: String?) {
         self.alternateCount = alternateCount
         self.waypointIndex = waypointIndex
         self.matchingIndex = matchingIndex

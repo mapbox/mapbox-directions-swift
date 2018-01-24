@@ -497,6 +497,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         return (waypoints, routes)
     }
     
+    
     // MARK: NSCopying
     open func copy(with zone: NSZone? = nil) -> Any {
         let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
