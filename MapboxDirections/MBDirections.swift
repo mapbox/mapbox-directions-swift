@@ -174,7 +174,7 @@ open class Directions: NSObject {
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
                     if let vLocale = json["voiceLocale"] as? String {
-                        route.spokenLocale = Locale(identifier: vLocale)
+                        route.speechLocale = Locale(identifier: vLocale)
                     }
                 }
             }

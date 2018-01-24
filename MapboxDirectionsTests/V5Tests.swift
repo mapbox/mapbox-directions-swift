@@ -58,7 +58,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(route!.accessToken, BogusToken)
         XCTAssertEqual(route!.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
-        XCTAssertEqual(route!.spokenLocale!.identifier, "en-US")
+        XCTAssertEqual(route!.speechLocale!.identifier, "en-US")
         
         
         // confirming actual decoded values is important because the Directions API
