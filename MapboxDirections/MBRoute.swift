@@ -200,6 +200,8 @@ open class Route: NSObject, NSSecureCoding {
     
     /**
      The locale to use for spoken instructions.
+     
+     This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
      */
     @objc open var spokenLocale: Locale?
 }
