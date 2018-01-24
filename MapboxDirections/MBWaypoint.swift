@@ -3,7 +3,6 @@
  */
 @objc(MBWaypoint)
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
-    
     // MARK: Creating a Waypoint Object
     
     open static var supportsSecureCoding = true
