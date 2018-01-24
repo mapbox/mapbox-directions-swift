@@ -87,6 +87,10 @@
 		C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F31F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* IntructionsTests.swift */; };
 		C5D1D7F41F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* IntructionsTests.swift */; };
+		C5DAAC9A20191675001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
+		C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
+		C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
+		C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
 		DA1A10C61D00F969009F82FA /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
@@ -229,6 +233,7 @@
 		C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoadClasses.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
+		C5DAAC9920191675001F9261 /* MBMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatch.swift; sourceTree = "<group>"; };
 		DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10B81D00F8FF009F82FA /* MapboxDirectionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapboxDirectionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10D51D0101ED009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -402,10 +407,21 @@
 			name = Instructions;
 			sourceTree = "<group>";
 		};
+		C5DAAC9E20191683001F9261 /* Match */ = {
+			isa = PBXGroup;
+			children = (
+				C5434B89200693D00069E887 /* MBTracepoint.swift */,
+				C5434B8B200695A50069E887 /* MBMatchOptions.swift */,
+				C5DAAC9920191675001F9261 /* MBMatch.swift */,
+			);
+			path = Match;
+			sourceTree = "<group>";
+		};
 		DA6C9D891CAE442B00094FBC /* MapboxDirections */ = {
 			isa = PBXGroup;
 			children = (
 				8D381B681FDB1009008D5A58 /* Extensions */,
+				C5DAAC9E20191683001F9261 /* Match */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				DD6254731AE70CB700017857 /* MBDirections.swift */,
 				DAC05F171CFC075300FA0071 /* MBRoute.swift */,
@@ -419,8 +435,6 @@
 				C57B2E951DB8171300E9123A /* MBLaneIndication.h */,
 				DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */,
 				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
-				C5434B89200693D00069E887 /* MBTracepoint.swift */,
-				C5434B8B200695A50069E887 /* MBMatchOptions.swift */,
 				C558C58B1E94181A00617B37 /* MBAttribute.h */,
 				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
 				C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */,
@@ -1006,6 +1020,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */,
 				C52552C61FA162F900B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1047,6 +1062,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */,
 				C52552C71FA162FA00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1088,6 +1104,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */,
 				C52552C81FA162FB00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1128,6 +1145,7 @@
 				C5434B8A200693D00069E887 /* MBTracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */,
+				C5DAAC9A20191675001F9261 /* MBMatch.swift in Sources */,
 				C58EA7AA1E9D7EAD008F98CE /* MBCongestion.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
