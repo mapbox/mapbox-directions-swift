@@ -91,6 +91,12 @@
 		C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
 		C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
 		C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* MBMatch.swift */; };
+		C5DAAC9F20195AAE001F9261 /* MBTracepoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B89200693D00069E887 /* MBTracepoint.swift */; };
+		C5DAACA020195AAF001F9261 /* MBTracepoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B89200693D00069E887 /* MBTracepoint.swift */; };
+		C5DAACA120195AAF001F9261 /* MBTracepoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B89200693D00069E887 /* MBTracepoint.swift */; };
+		C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
+		C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
+		C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
 		DA1A10C61D00F969009F82FA /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
@@ -1025,7 +1031,9 @@
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* MBVisualInstruction.swift in Sources */,
+				C5DAAC9F20195AAE001F9261 /* MBTracepoint.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
+				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1067,7 +1075,9 @@
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* MBVisualInstruction.swift in Sources */,
+				C5DAACA020195AAF001F9261 /* MBTracepoint.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
+				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1109,7 +1119,9 @@
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* MBVisualInstruction.swift in Sources */,
+				C5DAACA120195AAF001F9261 /* MBTracepoint.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
+				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
