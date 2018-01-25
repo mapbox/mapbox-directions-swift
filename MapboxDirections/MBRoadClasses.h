@@ -32,4 +32,9 @@ typedef NS_OPTIONS(NSUInteger, MBRoadClasses) {
      In general, the transport type of the step containing the road segment is also `TransportType.ferry`.
      */
     MBRoadClassesFerry = (1 << 4),
+    
+    /**
+     The user must travel this segment of the route through a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
+     */
+    MBRoadClassesTunnel = (1 << 5),
 };

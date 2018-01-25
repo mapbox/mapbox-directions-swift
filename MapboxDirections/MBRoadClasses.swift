@@ -19,6 +19,8 @@ extension RoadClasses: CustomStringConvertible {
                 roadClasses.insert(.motorway)
             case "ferry":
                 roadClasses.insert(.ferry)
+            case "tunnel":
+                roadClasses.insert(.tunnel)
             case "none":
                 break
             default:
@@ -45,6 +47,9 @@ extension RoadClasses: CustomStringConvertible {
         }
         if contains(.ferry) {
             descriptions.append("ferry")
+        }
+        if contains(.tunnel) {
+            descriptions.append("tunnel")
         }
         return descriptions.joined(separator: ",")
     }
