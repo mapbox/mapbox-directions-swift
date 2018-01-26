@@ -41,7 +41,7 @@ class MatchTest: XCTestCase {
         }
         
         var match: Match?
-        let matchOptions = MatchOptions(locations: locations)
+        let matchOptions = MatchingOptions(locations: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         

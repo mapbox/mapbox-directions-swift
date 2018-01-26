@@ -1,7 +1,8 @@
 import Foundation
 
-@objc(MBMatchOptions)
-open class MatchOptions: RouteOptions {
+@objc(MBMatchingOptions)
+open class MatchingOptions: RouteOptions {
+    
     public init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
@@ -12,35 +13,16 @@ open class MatchOptions: RouteOptions {
     
     @objc open var resample: Bool = false
     
-    @objc open var timestamps: [Date]?
+    @objc private var timestamps: [Date]?
     
     public required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override internal var params: [URLQueryItem] {
-        var params: [URLQueryItem] = [
-            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
-            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
-            URLQueryItem(name: "steps", value: String(includesSteps)),
-            URLQueryItem(name: "language", value: locale.identifier),
-            URLQueryItem(name: "tidy", value: String(describing: resample))
-        ]
+        var params = super.params
         
-        if includesSpokenInstructions {
-            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
-            params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
-        }
-        
-        if includesVisualInstructions {
-            params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
-        }
-        
-        if !attributeOptions.isEmpty {
-            let attributesStrings = String(describing:attributeOptions)
-            
-            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
-        }
+        params.append(URLQueryItem(name: "tidy", value: String(describing: resample)))
         
         if let timestamps = timestamps, !timestamps.isEmpty {
             let timeStrings = timestamps.map {
@@ -60,10 +42,10 @@ open class MatchOptions: RouteOptions {
         return "matching/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
     }
     
-    internal func responseMatchOptions(from json: JSONDictionary) -> ([TracePoint]?, [Match]?) {
-        var namedWaypoints: [TracePoint]?
+    internal func responseMatchOptions(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
+        var namedWaypoints: [Tracepoint]?
         if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
-            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> TracePoint in
+            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Tracepoint in
                 let location = api["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
                 let alternateCount = api["alternatives_count"] as! Int
@@ -72,7 +54,7 @@ open class MatchOptions: RouteOptions {
                 let name = api["name"] as? String
                 // TODO: add name
                 // let possibleAPIName = api["name"] as? String
-                return TracePoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
+                return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
             }
         }
         

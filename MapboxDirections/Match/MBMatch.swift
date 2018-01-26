@@ -3,11 +3,11 @@ import Polyline
 @objc(MBMatch)
 open class Match: Route {
     
-    init(matchOptions: MatchOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         super.init(routeOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
     
-    convenience init(json: [String: Any], tracePoints: [TracePoint], matchOptions: MatchOptions) {
+    convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
         let legInfo = zip(zip(tracePoints.prefix(upTo: tracePoints.endIndex - 1), tracePoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
