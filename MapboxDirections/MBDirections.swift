@@ -105,6 +105,8 @@ open class Directions: NSObject {
      */
     public typealias CompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
+    public typealias MatchCompletionHandler = (_ waypoints: [TracePoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
+    
     // MARK: Creating a Directions Object
     
     /**
@@ -184,7 +186,7 @@ open class Directions: NSObject {
     }
     
     @objc(calculateMatchingWithOptions:completionHandler:)
-    @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+    @discardableResult open func match(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.responseMatchOptions(from: json)
