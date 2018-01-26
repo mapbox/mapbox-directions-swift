@@ -103,9 +103,9 @@ open class Directions: NSObject {
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias CompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
+    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
-    public typealias MatchCompletionHandler = (_ waypoints: [TracePoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
+    public typealias MatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -166,7 +166,7 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
     @objc(calculateDirectionsWithOptions:completionHandler:)
-    @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping CompletionHandler) -> URLSessionDataTask {
+    @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
@@ -186,7 +186,7 @@ open class Directions: NSObject {
     }
     
     @objc(calculateMatchingWithOptions:completionHandler:)
-    @discardableResult open func match(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
+    @discardableResult open func match(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.responseMatchOptions(from: json)

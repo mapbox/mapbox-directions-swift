@@ -1,7 +1,7 @@
 import Foundation
 
-@objc(MBTracePoint)
-public class TracePoint: Waypoint {
+@objc(MBTracepoint)
+public class Tracepoint: Waypoint {
     
     @objc open var alternateCount: Int
     
