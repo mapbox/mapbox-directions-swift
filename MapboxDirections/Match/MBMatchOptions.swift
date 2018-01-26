@@ -2,8 +2,12 @@ import Foundation
 
 @objc(MBMatchOptions)
 open class MatchOptions: RouteOptions {
-    public init(tracePoints: [TracePoint], profileIdentifier: MBDirectionsProfileIdentifier?, resample: Bool?, timestamps: [Date]?) {
-        super.init(waypoints: tracePoints, profileIdentifier: profileIdentifier)
+    public init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+        let waypoints = locations.map {
+            Waypoint(location: $0)
+        }
+        self.timestamps = locations.map { $0.timestamp }
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
     @objc open var resample: Bool = false
@@ -41,7 +45,7 @@ open class MatchOptions: RouteOptions {
         if let timestamps = timestamps, !timestamps.isEmpty {
             let timeStrings = timestamps.map {
                 String(describing: $0.timeIntervalSince1970)
-            }.joined(separator: ",")
+                }.joined(separator: ";")
             
             params.append(URLQueryItem(name: "timestamps", value: timeStrings))
         }
@@ -58,7 +62,7 @@ open class MatchOptions: RouteOptions {
     
     internal func responseMatchOptions(from json: JSONDictionary) -> ([TracePoint]?, [Match]?) {
         var namedWaypoints: [TracePoint]?
-        if let jsonWaypoints = (json["tracePoints"] as? [JSONDictionary]) {
+        if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
             namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> TracePoint in
                 let location = api["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
@@ -74,8 +78,8 @@ open class MatchOptions: RouteOptions {
         
         let tracePoints = namedWaypoints!
         
-        let matchings = (json["matchings"] as? [JSONDictionary])?.map {_ in 
-            Match(json: json, tracePoints: tracePoints, matchOptions: self)
+        let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
+            Match(json: $0, tracePoints: tracePoints, matchOptions: self)
         }
         return (tracePoints, matchings)
     }

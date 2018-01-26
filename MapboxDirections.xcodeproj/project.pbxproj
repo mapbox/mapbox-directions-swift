@@ -97,6 +97,12 @@
 		C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
 		C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
 		C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5434B8B200695A50069E887 /* MBMatchOptions.swift */; };
+		C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAACAE201AA92B001F9261 /* MatchTests.swift */; };
+		C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAACAE201AA92B001F9261 /* MatchTests.swift */; };
+		C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAACAE201AA92B001F9261 /* MatchTests.swift */; };
+		C5DAACB4201AA9A7001F9261 /* match.json in Resources */ = {isa = PBXBuildFile; fileRef = C5DAACB3201AA9A7001F9261 /* match.json */; };
+		C5DAACB5201AA9A7001F9261 /* match.json in Resources */ = {isa = PBXBuildFile; fileRef = C5DAACB3201AA9A7001F9261 /* match.json */; };
+		C5DAACB6201AA9A7001F9261 /* match.json in Resources */ = {isa = PBXBuildFile; fileRef = C5DAACB3201AA9A7001F9261 /* match.json */; };
 		DA1A10C61D00F969009F82FA /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
@@ -240,6 +246,8 @@
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
 		C5DAAC9920191675001F9261 /* MBMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatch.swift; sourceTree = "<group>"; };
+		C5DAACAE201AA92B001F9261 /* MatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTests.swift; sourceTree = "<group>"; };
+		C5DAACB3201AA9A7001F9261 /* match.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = match.json; sourceTree = "<group>"; };
 		DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10B81D00F8FF009F82FA /* MapboxDirectionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapboxDirectionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A10D51D0101ED009F82FA /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -423,6 +431,14 @@
 			path = Match;
 			sourceTree = "<group>";
 		};
+		C5DAACB2201AA97D001F9261 /* Match */ = {
+			isa = PBXGroup;
+			children = (
+				C5DAACB3201AA9A7001F9261 /* match.json */,
+			);
+			path = Match;
+			sourceTree = "<group>";
+		};
 		DA6C9D891CAE442B00094FBC /* MapboxDirections */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +483,7 @@
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
 				DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */,
 				C52CE3921F6AF6E70069963D /* IntructionsTests.swift */,
+				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 			);
@@ -476,6 +493,7 @@
 		DA6C9DAD1CAEC93800094FBC /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				C5DAACB2201AA97D001F9261 /* Match */,
 				8D381B5F1FD9F592008D5A58 /* Responses */,
 				C5D1D7EE1F6AF8FA00A1C4F1 /* Instructions */,
 				C5247D721E818A8D004B6154 /* annotation */,
@@ -912,6 +930,7 @@
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
+				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
 				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022B1E92C281009837BD /* annotation.json in Resources */,
 			);
@@ -934,6 +953,7 @@
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
+				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
 				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022C1E92C281009837BD /* annotation.json in Resources */,
 			);
@@ -963,6 +983,7 @@
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
+				C5DAACB4201AA9A7001F9261 /* match.json in Resources */,
 				C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */,
 				8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */,
 			);
@@ -1059,6 +1080,7 @@
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DA737EE91D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
 				DA1A110C1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F31F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
@@ -1103,6 +1125,7 @@
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DA737EEA1D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
 				DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F41F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
@@ -1175,6 +1198,7 @@
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
 				DA737EE81D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C52CE3931F6AF6E70069963D /* IntructionsTests.swift in Sources */,
