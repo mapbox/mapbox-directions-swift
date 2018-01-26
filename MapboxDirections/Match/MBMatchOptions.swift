@@ -11,7 +11,7 @@ open class MatchingOptions: RouteOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
-    @objc open var resample: Bool = false
+    @objc open var resampleTraces: Bool = false
     
     @objc private var timestamps: [Date]?
     
@@ -22,7 +22,7 @@ open class MatchingOptions: RouteOptions {
     override internal var params: [URLQueryItem] {
         var params = super.params
         
-        params.append(URLQueryItem(name: "tidy", value: String(describing: resample)))
+        params.append(URLQueryItem(name: "tidy", value: String(describing: resampleTraces)))
         
         if let timestamps = timestamps, !timestamps.isEmpty {
             let timeStrings = timestamps.map {
