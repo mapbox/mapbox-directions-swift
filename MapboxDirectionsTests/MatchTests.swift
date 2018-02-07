@@ -27,15 +27,17 @@ class MatchTest: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var match: Match?
+        var match: Match!
+        var tracePoints: [Tracepoint]!
         let matchOptions = MatchingOptions(locations: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(accessToken: BogusToken).match(matchOptions) { (tracePoints, matches, error) in
+        let task = Directions(accessToken: BogusToken).match(matchOptions) { (tPoints, matches, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
             match = matches!.first!
+            tracePoints = tPoints
             
             expectation.fulfill()
         }
@@ -47,11 +49,19 @@ class MatchTest: XCTestCase {
         }
         
         XCTAssertNotNil(match)
-        XCTAssertNotNil(match!.coordinates)
-        XCTAssertEqual(match!.coordinates!.count, 8)
-        XCTAssertEqual(match!.accessToken, BogusToken)
-        XCTAssertEqual(match!.apiEndpoint, URL(string: "https://api.mapbox.com"))
-        XCTAssertEqual(match!.routeIdentifier, nil)
+        XCTAssertNotNil(match.coordinates)
+        XCTAssertEqual(match.coordinates!.count, 8)
+        XCTAssertEqual(match.accessToken, BogusToken)
+        XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
+        XCTAssertEqual(match.routeIdentifier, nil)
+        
+        XCTAssertNotNil(tracePoints)
+        XCTAssertEqual(tracePoints.first!.alternateCount, 0)
+        XCTAssertEqual(tracePoints.first!.matchingIndex, 0)
+        XCTAssertEqual(tracePoints.first!.waypointIndex, 0)
+        
+        XCTAssertEqual(tracePoints.last!.name, "West G Street")
+        XCTAssertEqual(tracePoints.last!.waypointIndex, 6)
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding

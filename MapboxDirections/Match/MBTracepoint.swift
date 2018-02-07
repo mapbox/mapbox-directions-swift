@@ -23,6 +23,7 @@ public class Tracepoint: Waypoint {
         self.waypointIndex = waypointIndex
         self.matchingIndex = matchingIndex
         super.init(coordinate: coordinate)
+        self.name = name
     }
     
     @objc public required init?(coder decoder: NSCoder) {
