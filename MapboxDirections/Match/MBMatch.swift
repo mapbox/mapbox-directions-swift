@@ -38,7 +38,12 @@ open class Match: Route {
         self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence)
     }
     
-    @objc public required init?(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc public required convenience init?(coder decoder: NSCoder) {
+        self.init(coder: decoder)
+        confidence = decoder.decodeDouble(forKey: "confidence")
+    }
+    
+    @objc public override func encode(with coder: NSCoder) {
+        coder.encode(confidence, forKey: "confidence")
     }
 }

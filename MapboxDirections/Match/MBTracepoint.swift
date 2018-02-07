@@ -25,14 +25,14 @@ public class Tracepoint: Waypoint {
         super.init(coordinate: coordinate)
     }
     
-    public required init?(coder decoder: NSCoder) {
+    @objc public required init?(coder decoder: NSCoder) {
         alternateCount = decoder.decodeInteger(forKey: "alternateCount")
         waypointIndex = decoder.decodeInteger(forKey: "waypointIndex")
         matchingIndex = decoder.decodeInteger(forKey: "matchingIndex")
         super.init(coder: decoder)
     }
     
-    public override func encode(with coder: NSCoder) {
+    @objc public override func encode(with coder: NSCoder) {
         coder.encode(alternateCount, forKey: "alternateCount")
         coder.encode(waypointIndex, forKey: "waypointIndex")
         coder.encode(matchingIndex, forKey: "matchingIndex")
