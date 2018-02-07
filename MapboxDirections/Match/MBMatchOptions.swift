@@ -37,8 +37,17 @@ open class MatchingOptions: RouteOptions {
      */
     @objc open var waypointIndices: IndexSet?
     
-    public required init?(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required convenience init?(coder decoder: NSCoder) {
+        self.init(coder: decoder)
+        resampleTraces = decoder.decodeBool(forKey: "resampleTraces")
+        timestamps = decoder.decodeObject(of: [NSArray.self, NSDate.self], forKey: "timestamps") as? [Date]
+        waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
+    }
+    
+    public override func encode(with coder: NSCoder) {
+        coder.encode(resampleTraces, forKey: "resampleTraces")
+        coder.encode(timestamps, forKey: "timestamps")
+        coder.encode(waypointIndices, forKey: "waypointIndices")
     }
     
     override internal var params: [URLQueryItem] {
