@@ -3,6 +3,12 @@ import Foundation
 @objc(MBMatchingOptions)
 open class MatchingOptions: RouteOptions {
     
+    /**
+     Initializes a match options object for matching locations against the road network.
+     
+     - parameter location: An array of `CLLocation` objects representing locations the route should try to match the road network against. The array should contain at least two locations (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     */
     public init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
@@ -11,10 +17,24 @@ open class MatchingOptions: RouteOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
+    
+    /**
+     If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
+     */
     @objc open var resampleTraces: Bool = false
     
+    
+    /**
+     Timestamps corresponding to each coordinate provided in the request.
+     
+     There must be as many `timestamps` as there are coordinates in the request.
+     */
     @objc private var timestamps: [Date]?
     
+    
+    /**
+     An IndexSet of unique integers representing which coordinates should be treated as `Wapoints`.
+     */
     @objc open var waypointIndices: IndexSet?
     
     public required init?(coder decoder: NSCoder) {

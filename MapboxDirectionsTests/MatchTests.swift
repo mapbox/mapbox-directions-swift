@@ -71,6 +71,7 @@ class MatchTest: XCTestCase {
         XCTAssertEqual(round(match!.coordinates!.first!.latitude), 33)
         XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
         XCTAssertEqual(match!.legs.count, 6)
+        XCTAssertEqual(match!.confidence, 0.95)
 
         let opts = match!.routeOptions
 
