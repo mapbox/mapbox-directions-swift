@@ -15,6 +15,8 @@ open class MatchingOptions: RouteOptions {
     
     @objc private var timestamps: [Date]?
     
+    @objc open var waypointIndices: IndexSet?
+    
     public required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -32,6 +34,12 @@ open class MatchingOptions: RouteOptions {
             params.append(URLQueryItem(name: "timestamps", value: timeStrings))
         }
         
+        if let waypointIndices = waypointIndices {
+            params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
+                String(describing: $0)
+                }.joined(separator: ",")))
+        }
+        
         return params
     }
     
@@ -44,8 +52,8 @@ open class MatchingOptions: RouteOptions {
     
     internal func responseMatchOptions(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
         var namedTracepoints: [Tracepoint]?
-        if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
-            namedTracepoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Tracepoint in
+        if let jsonTracePoints = (json["tracepoints"] as? [JSONDictionary]) {
+            namedTracepoints = zip(jsonTracePoints, self.waypoints).map { (api, local) -> Tracepoint in
                 let location = api["location"] as! [Double]
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
                 let alternateCount = api["alternatives_count"] as! Int
