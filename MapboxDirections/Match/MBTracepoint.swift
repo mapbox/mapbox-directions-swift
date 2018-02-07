@@ -9,7 +9,7 @@ public class Tracepoint: Waypoint {
     @objc open var alternateCount: Int
     
     /**
-     Index representing 
+     Index of the waypoint inside the matched route.
      */
     @objc open var waypointIndex: Int
     
@@ -26,6 +26,15 @@ public class Tracepoint: Waypoint {
     }
     
     public required init?(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        alternateCount = decoder.decodeInteger(forKey: "alternateCount")
+        waypointIndex = decoder.decodeInteger(forKey: "waypointIndex")
+        matchingIndex = decoder.decodeInteger(forKey: "matchingIndex")
+        super.init(coder: decoder)
+    }
+    
+    public override func encode(with coder: NSCoder) {
+        coder.encode(alternateCount, forKey: "alternateCount")
+        coder.encode(waypointIndex, forKey: "waypointIndex")
+        coder.encode(matchingIndex, forKey: "matchingIndex")
     }
 }

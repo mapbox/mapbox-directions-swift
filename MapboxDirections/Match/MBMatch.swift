@@ -9,7 +9,7 @@ open class Match: Route {
     }
     
     /**
-     A `Double` between 0 (low) and 1 (high) indicating level of confidence in `Match`.
+     A `Double` between 0 and 1 indicating level of confidence in `Match`. A higher value indicates a higher confidence.
      */
     @objc open var confidence: Double
     
