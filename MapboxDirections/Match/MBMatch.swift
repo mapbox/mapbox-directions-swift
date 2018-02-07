@@ -3,9 +3,15 @@ import Polyline
 @objc(MBMatch)
 open class Match: Route {
     
-    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double) {
+        self.confidence = confidence
         super.init(routeOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
     }
+    
+    /**
+     A `Double` between 0 (low) and 1 (high) indicating level of confidence in `Match`.
+     */
+    @objc open var confidence: Double
     
     convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
         let legInfo = zip(zip(tracePoints.prefix(upTo: tracePoints.endIndex - 1), tracePoints.suffix(from: 1)),
@@ -27,7 +33,9 @@ open class Match: Route {
             coordinates = nil
         }
         
-        self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        let confidence = json["confidence"] as! Double
+        
+        self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence)
     }
     
     @objc public required init?(coder decoder: NSCoder) {
