@@ -52,8 +52,6 @@ open class MatchingOptions: RouteOptions {
                 let waypointIndex = api["waypoint_index"] as! Int
                 let matchingIndex = api["matchings_index"] as! Int
                 let name = api["name"] as? String
-                // TODO: add name
-                // let possibleAPIName = api["name"] as? String
                 return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
             }
         }
