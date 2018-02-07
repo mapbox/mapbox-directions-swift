@@ -13,19 +13,6 @@ class MatchTest: XCTestCase {
         let locations = [CLLocation(coordinate: CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42)),
                          CLLocation(coordinate: CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03))]
         
-        let timestamps = locations.map {
-            String(describing: $0.timestamp.timeIntervalSince1970)
-            }.joined(separator: ";")
-        
-        /**
-         geometries=polyline
-         overview=full
-         steps=true
-         language=en_US
-         tidy=false
-         timestamps=1516928313.42391;1516928313.42395
-         */
-        
         let queryParams: [String: String?] = [
             "geometries": "polyline",
             "overview": "full",
