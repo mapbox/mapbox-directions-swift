@@ -51,24 +51,21 @@ open class MatchingOptions: RouteOptions {
     }
     
     internal func responseMatchOptions(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
-        var namedTracepoints: [Tracepoint]?
-        if let jsonTracePoints = (json["tracepoints"] as? [JSONDictionary]) {
-            namedTracepoints = zip(jsonTracePoints, self.waypoints).map { (api, local) -> Tracepoint in
-                let location = api["location"] as! [Double]
-                let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                let alternateCount = api["alternatives_count"] as! Int
-                let waypointIndex = api["waypoint_index"] as! Int
-                let matchingIndex = api["matchings_index"] as! Int
-                let name = api["name"] as? String
-                return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
-            }
+        let jsonTracePoints = (json["tracepoints"] as! [JSONDictionary])
+        let tracePoints = jsonTracePoints.map { api -> Tracepoint in
+            let location = api["location"] as! [Double]
+            let coordinate = CLLocationCoordinate2D(geoJSON: location)
+            let alternateCount = api["alternatives_count"] as! Int
+            let waypointIndex = api["waypoint_index"] as! Int
+            let matchingIndex = api["matchings_index"] as! Int
+            let name = api["name"] as? String
+            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
         }
-        
-        let tracePoints = namedTracepoints!
         
         let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
             Match(json: $0, tracePoints: tracePoints, matchOptions: self)
         }
+        
         return (tracePoints, matchings)
     }
 }

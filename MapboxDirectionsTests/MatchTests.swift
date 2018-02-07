@@ -70,7 +70,7 @@ class MatchTest: XCTestCase {
         // uses an atypical precision level for polyline encoding
         XCTAssertEqual(round(match!.coordinates!.first!.latitude), 33)
         XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
-        XCTAssertEqual(match!.legs.count, 1)
+        XCTAssertEqual(match!.legs.count, 6)
 
         let opts = match!.routeOptions
 
