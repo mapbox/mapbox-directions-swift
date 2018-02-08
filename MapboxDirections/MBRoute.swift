@@ -9,12 +9,13 @@ import Polyline
 open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
         self.routeOptions = routeOptions
         self.legs = legs
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
         self.coordinates = coordinates
+        self.speechLocale = speechLocale
     }
     
     /**
@@ -46,7 +47,12 @@ open class Route: NSObject, NSSecureCoding {
             coordinates = nil
         }
         
-        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        var speechLocale: Locale?
+        if let locale = json["voiceLocale"] as? String {
+            speechLocale = Locale(identifier: locale)
+        }
+        
+        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     @objc public required init?(coder decoder: NSCoder) {
@@ -224,6 +230,6 @@ internal class RouteV4: Route {
             coordinates = nil
         }
         
-        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: nil)
     }
 }
