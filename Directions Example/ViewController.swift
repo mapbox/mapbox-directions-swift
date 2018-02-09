@@ -20,8 +20,10 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.setCenter(CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), animated: false)
+        mapView.setCenter(CLLocationCoordinate2D(latitude: 37.3300, longitude: -122.0312), animated: false)
         mapView.setZoomLevel(15, animated: false)
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
         view.addSubview(mapView)
         
         setupSegmentedControll()
@@ -125,7 +127,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     }
     
     func drawingView(drawingView: MBDrawingView, didDrawWithPoints points: [CGPoint]) {
-        let coordinates = points.map {
+        
+        let coordinates = points.reversed().map {
             mapView.convert($0, toCoordinateFrom: mapView)
         }
         makeMatchRequest(locations: coordinates)
@@ -140,6 +143,15 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         // Setting the waypointIndices to the first and last coordinate in the request,
         // ensures the response will have a single leg.
         matchOptions.waypointIndices = indices
+        matchOptions.includesAlternativeRoutes = true
+        matchOptions.includesSteps = true
+        matchOptions.routeShapeResolution = .full
+        matchOptions.attributeOptions = [.congestionLevel, .expectedTravelTime]
+        matchOptions.includesSpokenInstructions = true
+        matchOptions.locale = Locale.nationalizedCurrent
+        matchOptions.distanceMeasurementSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+        matchOptions.includesVisualInstructions = true
+        matchOptions.includesExitRoundaboutManeuver = true
         
         Directions(accessToken: MapboxAccessToken).match(matchOptions) { (tracepoints, matches, error) in
             if let error = error {
@@ -157,6 +169,9 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
             let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: match.coordinateCount)
             self.mapView.addAnnotation(routeLine)
             self.drawingView?.reset()
+            
+            let viewController = NavigationViewController(for: match)
+            self.present(viewController, animated: true, completion: nil)
         }
     }
 }
