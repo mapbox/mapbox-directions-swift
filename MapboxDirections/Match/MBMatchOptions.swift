@@ -57,7 +57,7 @@ open class MatchingOptions: RouteOptions {
         coder.encode(waypointIndices, forKey: "waypointIndices")
     }
     
-    @objc private var paramsThatOverlap: [String] = ["geometries", "radiuses", "steps", "overview", "timestamps", "annotations"]
+    @objc private var paramsThatOverlap: [String] = ["geometries", "radiuses", "steps", "overview", "timestamps", "annotations", "banner_instructions", "voice_instructions", "voice_units", "language"]
     
     override internal var params: [URLQueryItem] {
         var params = super.params.filter {
