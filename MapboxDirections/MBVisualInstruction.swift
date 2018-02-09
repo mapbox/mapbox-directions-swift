@@ -43,6 +43,18 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
+     The maneuver type for the `VisualInstruction`.
+     */
+    @objc public var maneuverType: ManeuverType
+    
+    /**
+     :nodoc:
+     The modifier type for the `VisualInstruction`.
+     */
+    @objc public var maneuverDirection: ManeuverDirection
+    
+    /**
+     :nodoc:
      Initialize a `VisualInstruction` from a dictionary.
      */
     @objc public convenience init(json: [String: Any]) {
@@ -63,19 +75,24 @@ open class VisualInstruction: NSObject, NSSecureCoding {
             }
         }
         
-        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents)
+        let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
+        let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
+        
+        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
     }
     
     /**
      :nodoc:
      Initialize a `VisualInstruction`.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?) {
+    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryText = primaryText
         self.primaryTextComponents = primaryTextComponents
         self.secondaryText = secondaryText
         self.secondaryTextComponents = secondaryTextComponents
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -94,6 +111,16 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.secondaryText = secondaryText
         
         secondaryTextComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryTextComponents") as? [VisualInstructionComponent]
+        
+        guard let type = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: type) else {
+            return nil
+        }
+        self.maneuverType = maneuverType
+        
+        guard let direction = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String?, let maneuverDirection = ManeuverDirection(description: direction) else {
+            return nil
+        }
+        self.maneuverDirection = maneuverDirection
     }
     
     open static var supportsSecureCoding = true
@@ -104,5 +131,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         coder.encode(primaryTextComponents, forKey: "primaryTextComponents")
         coder.encode(secondaryText, forKey: "secondaryText")
         coder.encode(secondaryTextComponents, forKey: "secondaryTextComponents")
+        coder.encode(maneuverType, forKey: "maneuverType")
+        coder.encode(maneuverDirection, forKey: "maneuverDirection")
     }
 }
