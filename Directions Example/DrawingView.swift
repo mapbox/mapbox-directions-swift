@@ -80,7 +80,8 @@ public class MBDrawingView: UIView {
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        context.move(to: points.last!)
+        guard let lastPoint = points.last else { return }
+        context.move(to: lastPoint)
         
         let point = touches.first!.location(in: self)
         
