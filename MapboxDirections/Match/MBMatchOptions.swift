@@ -17,6 +17,13 @@ open class MatchingOptions: RouteOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
+    public init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+        let waypoints = coordinates.map {
+            Waypoint(coordinate: $0)
+        }
+        super.init(waypoints: waypoints)
+    }
+    
     
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
@@ -50,8 +57,12 @@ open class MatchingOptions: RouteOptions {
         coder.encode(waypointIndices, forKey: "waypointIndices")
     }
     
+    @objc private var paramsThatOverlap: [String] = ["geometries", "radiuses", "steps", "overview", "timestamps", "annotations"]
+    
     override internal var params: [URLQueryItem] {
-        var params = super.params
+        var params = super.params.filter {
+            paramsThatOverlap.contains($0.name)
+        }
         
         params.append(URLQueryItem(name: "tidy", value: String(describing: resampleTraces)))
         
@@ -80,7 +91,9 @@ open class MatchingOptions: RouteOptions {
     }
     
     internal func responseMatchOptions(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
-        let jsonTracePoints = (json["tracepoints"] as! [JSONDictionary])
+        let jsonTracePoints = (json["tracepoints"] as! [Any]).flatMap {
+            $0 as? JSONDictionary
+        }
         let tracePoints = jsonTracePoints.map { api -> Tracepoint in
             let location = api["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
