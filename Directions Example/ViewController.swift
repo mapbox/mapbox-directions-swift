@@ -134,6 +134,13 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchingOptions(coordinates: locations)
         
+        var indices = IndexSet()
+        indices.insert(0)
+        indices.insert(locations.count - 1)
+        // Setting the waypointIndices to the first and last coordinate in the request,
+        // ensures the response will have a single leg.
+        matchOptions.waypointIndices = indices
+        
         Directions(accessToken: MapboxAccessToken).match(matchOptions) { (tracepoints, matches, error) in
             if let error = error {
                 print(error.localizedDescription)
