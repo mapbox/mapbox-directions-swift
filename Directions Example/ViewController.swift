@@ -10,6 +10,7 @@ let MapboxAccessToken = "<# your Mapbox access token #>"
 class ViewController: UIViewController, MBDrawingViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     var drawingView: MBDrawingView?
+    var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +23,46 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         mapView.setCenter(CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), animated: false)
         mapView.setZoomLevel(15, animated: false)
         view.addSubview(mapView)
+        
+        setupSegmentedControll()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    func setupSegmentedControll() {
+        let items = ["Move", "Draw", "Directions"]
+        segmentedControl = UISegmentedControl(items: items)
+        let frame = UIScreen.main.bounds
+        segmentedControl.frame = CGRect(x: frame.minX + 10, y: frame.minY + 50, width: frame.width - 20, height: 30)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.backgroundColor = .white
+        segmentedControl.addTarget(self, action: #selector(segmentedValueChanged(_:)), for: .valueChanged)
+        self.view.addSubview(segmentedControl)
+    }
+    
+    @objc func segmentedValueChanged(_ sender:UISegmentedControl!) {
+        resetDrawingView()
         
-        setupDrawingView()
-        
-        // setupDirections()
+        switch sender.selectedSegmentIndex {
+        case 1:
+            setupDrawingView()
+        case 2:
+            setupDirections()
+        default:
+            return
+        }
+    }
+    
+    func resetDrawingView() {
+        if let annotations = mapView.annotations {
+            mapView.removeAnnotations(annotations)
+        }
+        drawingView?.reset()
+        drawingView?.removeFromSuperview()
+        drawingView = nil
+        mapView.isUserInteractionEnabled = true
     }
     
     func setupDirections() {
@@ -82,7 +115,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         drawingView = MBDrawingView(frame: view.bounds, strokeColor: .red, lineWidth: 1)
         drawingView!.autoresizingMask = mapView.autoresizingMask
         drawingView!.delegate = self
-        view.addSubview(drawingView!)
+        view.insertSubview(drawingView!, belowSubview: segmentedControl)
         
         mapView.isUserInteractionEnabled = false
         
@@ -92,12 +125,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     }
     
     func drawingView(drawingView: MBDrawingView, didDrawWithPoints points: [CGPoint]) {
-        self.drawingView = drawingView
-        drawingView.reset()
-        
-        var coordinates = [CLLocationCoordinate2D]()
-        for point in points {
-            coordinates.append(mapView.convert(point, toCoordinateFrom: mapView))
+        let coordinates = points.map {
+            mapView.convert($0, toCoordinateFrom: mapView)
         }
         makeMatchRequest(locations: coordinates)
     }
@@ -111,16 +140,14 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 return
             }
             
+            guard let matches = matches, let match = matches.first else { return }
+            
             if let annotations = self.mapView.annotations {
                 self.mapView.removeAnnotations(annotations)
             }
             
-            guard let matches = matches, let match = matches.first else { return }
-            
             var routeCoordinates = match.coordinates!
             let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: match.coordinateCount)
-            
-            // Add the polyline to the map and fit the viewport to the polyline.
             self.mapView.addAnnotation(routeLine)
             self.drawingView?.reset()
         }
