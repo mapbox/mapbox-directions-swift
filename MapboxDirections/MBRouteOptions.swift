@@ -160,7 +160,6 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      */
     @objc public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         assert(waypoints.count >= 2, "A route requires at least a source and destination.")
-        assert(waypoints.count <= 25, "A route may not have more than 25 waypoints.")
 
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
