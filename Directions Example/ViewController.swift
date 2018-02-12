@@ -128,7 +128,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     
     func drawingView(drawingView: MBDrawingView, didDrawWithPoints points: [CGPoint]) {
         
-        let coordinates = points.reversed().map {
+        let coordinates = points.map {
             mapView.convert($0, toCoordinateFrom: mapView)
         }
         makeMatchRequest(locations: coordinates)
@@ -136,23 +136,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchingOptions(coordinates: locations)
-        
-        var indices = IndexSet()
-        indices.insert(0)
-        indices.insert(locations.count - 1)
-        // Setting the waypointIndices to the first and last coordinate in the request,
-        // ensures the response will have a single leg.
-        matchOptions.waypointIndices = indices
-        matchOptions.includesAlternativeRoutes = true
-        matchOptions.includesSteps = true
-        matchOptions.routeShapeResolution = .full
-        matchOptions.attributeOptions = [.congestionLevel, .expectedTravelTime]
-        matchOptions.includesSpokenInstructions = true
-        matchOptions.locale = Locale.nationalizedCurrent
-        matchOptions.distanceMeasurementSystem = Locale.current.usesMetricSystem ? .metric : .imperial
-        matchOptions.includesVisualInstructions = true
-        matchOptions.includesExitRoundaboutManeuver = true
-        
+
         Directions(accessToken: MapboxAccessToken).match(matchOptions) { (tracepoints, matches, error) in
             if let error = error {
                 print(error.localizedDescription)
@@ -169,9 +153,6 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
             let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: match.coordinateCount)
             self.mapView.addAnnotation(routeLine)
             self.drawingView?.reset()
-            
-            let viewController = NavigationViewController(for: match)
-            self.present(viewController, animated: true, completion: nil)
         }
     }
 }
