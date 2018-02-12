@@ -1,3 +1,2 @@
 binary "https://www.mapbox.com/ios-sdk/Mapbox-iOS-SDK.json" ~> 3.4
 github "AliSoftware/OHHTTPStubs" ~> 6.0
-github "mapbox/mapbox-navigation-ios" ~> 0.13

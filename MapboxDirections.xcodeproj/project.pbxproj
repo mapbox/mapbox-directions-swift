@@ -82,29 +82,6 @@
 		C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
-		C5AD8660202E24F500BF47D5 /* AWSPolly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8658202E24F500BF47D5 /* AWSPolly.framework */; };
-		C5AD8661202E24F500BF47D5 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8659202E24F500BF47D5 /* AWSCore.framework */; };
-		C5AD8662202E24F500BF47D5 /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD865A202E24F500BF47D5 /* Turf.framework */; };
-		C5AD8663202E24F500BF47D5 /* MapboxNavigation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD865B202E24F500BF47D5 /* MapboxNavigation.framework */; };
-		C5AD8664202E24F500BF47D5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD865C202E24F500BF47D5 /* SDWebImage.framework */; };
-		C5AD8665202E24F500BF47D5 /* MapboxCoreNavigation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD865D202E24F500BF47D5 /* MapboxCoreNavigation.framework */; };
-		C5AD8666202E24F500BF47D5 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD865E202E24F500BF47D5 /* MapboxMobileEvents.framework */; };
-		C5AD866F202E251E00BF47D5 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8668202E251D00BF47D5 /* AWSCore.framework */; };
-		C5AD8670202E251E00BF47D5 /* AWSCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8668202E251D00BF47D5 /* AWSCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD8671202E251E00BF47D5 /* MapboxCoreNavigation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8669202E251E00BF47D5 /* MapboxCoreNavigation.framework */; };
-		C5AD8672202E251E00BF47D5 /* MapboxCoreNavigation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD8669202E251E00BF47D5 /* MapboxCoreNavigation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD8673202E251E00BF47D5 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866A202E251E00BF47D5 /* SDWebImage.framework */; };
-		C5AD8674202E251E00BF47D5 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866A202E251E00BF47D5 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD8675202E251E00BF47D5 /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866B202E251E00BF47D5 /* MapboxMobileEvents.framework */; };
-		C5AD8676202E251E00BF47D5 /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866B202E251E00BF47D5 /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD8677202E251E00BF47D5 /* AWSPolly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866C202E251E00BF47D5 /* AWSPolly.framework */; };
-		C5AD8678202E251E00BF47D5 /* AWSPolly.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866C202E251E00BF47D5 /* AWSPolly.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD8679202E251E00BF47D5 /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866D202E251E00BF47D5 /* Turf.framework */; };
-		C5AD867A202E251E00BF47D5 /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866D202E251E00BF47D5 /* Turf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD867B202E251E00BF47D5 /* MapboxNavigation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866E202E251E00BF47D5 /* MapboxNavigation.framework */; };
-		C5AD867C202E251E00BF47D5 /* MapboxNavigation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD866E202E251E00BF47D5 /* MapboxNavigation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5AD867F202E254600BF47D5 /* Solar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD867E202E254600BF47D5 /* Solar.framework */; };
-		C5AD8680202E254600BF47D5 /* Solar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5AD867E202E254600BF47D5 /* Solar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5B97271202D0FBA007B1B5C /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B97270202D0FBA007B1B5C /* DrawingView.swift */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -252,14 +229,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C5AD8676202E251E00BF47D5 /* MapboxMobileEvents.framework in Embed Frameworks */,
-				C5AD8672202E251E00BF47D5 /* MapboxCoreNavigation.framework in Embed Frameworks */,
-				C5AD8674202E251E00BF47D5 /* SDWebImage.framework in Embed Frameworks */,
-				C5AD867C202E251E00BF47D5 /* MapboxNavigation.framework in Embed Frameworks */,
-				C5AD8680202E254600BF47D5 /* Solar.framework in Embed Frameworks */,
-				C5AD867A202E251E00BF47D5 /* Turf.framework in Embed Frameworks */,
-				C5AD8678202E251E00BF47D5 /* AWSPolly.framework in Embed Frameworks */,
-				C5AD8670202E251E00BF47D5 /* AWSCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,14 +266,6 @@
 		C5AD865C202E24F500BF47D5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		C5AD865D202E24F500BF47D5 /* MapboxCoreNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxCoreNavigation.framework; path = Carthage/Build/iOS/MapboxCoreNavigation.framework; sourceTree = "<group>"; };
 		C5AD865E202E24F500BF47D5 /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
-		C5AD8668202E251D00BF47D5 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSCore.framework; path = Carthage/Build/iOS/AWSCore.framework; sourceTree = "<group>"; };
-		C5AD8669202E251E00BF47D5 /* MapboxCoreNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxCoreNavigation.framework; path = Carthage/Build/iOS/MapboxCoreNavigation.framework; sourceTree = "<group>"; };
-		C5AD866A202E251E00BF47D5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
-		C5AD866B202E251E00BF47D5 /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
-		C5AD866C202E251E00BF47D5 /* AWSPolly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSPolly.framework; path = Carthage/Build/iOS/AWSPolly.framework; sourceTree = "<group>"; };
-		C5AD866D202E251E00BF47D5 /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/iOS/Turf.framework; sourceTree = "<group>"; };
-		C5AD866E202E251E00BF47D5 /* MapboxNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxNavigation.framework; path = Carthage/Build/iOS/MapboxNavigation.framework; sourceTree = "<group>"; };
-		C5AD867E202E254600BF47D5 /* Solar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Solar.framework; path = Carthage/Build/iOS/Solar.framework; sourceTree = "<group>"; };
 		C5B97270202D0FBA007B1B5C /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
 		C5DAAC9920191675001F9261 /* MBMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatch.swift; sourceTree = "<group>"; };
@@ -415,23 +376,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5AD8671202E251E00BF47D5 /* MapboxCoreNavigation.framework in Frameworks */,
 				DADD27F71E5AC8E900D31FAD /* MapboxDirections.framework in Frameworks */,
-				C5AD866F202E251E00BF47D5 /* AWSCore.framework in Frameworks */,
 				DADD27F31E5ABD4300D31FAD /* Mapbox.framework in Frameworks */,
-				C5AD8673202E251E00BF47D5 /* SDWebImage.framework in Frameworks */,
-				C5AD8660202E24F500BF47D5 /* AWSPolly.framework in Frameworks */,
-				C5AD8661202E24F500BF47D5 /* AWSCore.framework in Frameworks */,
-				C5AD867F202E254600BF47D5 /* Solar.framework in Frameworks */,
-				C5AD8677202E251E00BF47D5 /* AWSPolly.framework in Frameworks */,
-				C5AD8675202E251E00BF47D5 /* MapboxMobileEvents.framework in Frameworks */,
-				C5AD8679202E251E00BF47D5 /* Turf.framework in Frameworks */,
-				C5AD8662202E24F500BF47D5 /* Turf.framework in Frameworks */,
-				C5AD8663202E24F500BF47D5 /* MapboxNavigation.framework in Frameworks */,
-				C5AD8664202E24F500BF47D5 /* SDWebImage.framework in Frameworks */,
-				C5AD867B202E251E00BF47D5 /* MapboxNavigation.framework in Frameworks */,
-				C5AD8665202E24F500BF47D5 /* MapboxCoreNavigation.framework in Frameworks */,
-				C5AD8666202E24F500BF47D5 /* MapboxMobileEvents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,14 +614,6 @@
 		DD6254451AE70C1700017857 = {
 			isa = PBXGroup;
 			children = (
-				C5AD867E202E254600BF47D5 /* Solar.framework */,
-				C5AD8668202E251D00BF47D5 /* AWSCore.framework */,
-				C5AD866C202E251E00BF47D5 /* AWSPolly.framework */,
-				C5AD8669202E251E00BF47D5 /* MapboxCoreNavigation.framework */,
-				C5AD866B202E251E00BF47D5 /* MapboxMobileEvents.framework */,
-				C5AD866E202E251E00BF47D5 /* MapboxNavigation.framework */,
-				C5AD866A202E251E00BF47D5 /* SDWebImage.framework */,
-				C5AD866D202E251E00BF47D5 /* Turf.framework */,
 				DADD27B61E5AAAD800D31FAD /* Directions Example */,
 				DA6C9D891CAE442B00094FBC /* MapboxDirections */,
 				DA6C9D971CAE442B00094FBC /* MapboxDirectionsTests */,
