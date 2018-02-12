@@ -87,6 +87,7 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1750.2)
         XCTAssertEqual(visualInstructions?.first?.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.maneuverDirection, .straightAhead)
+        XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryText)
     }
 }
