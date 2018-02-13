@@ -9,12 +9,13 @@ import Polyline
 open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
         self.routeOptions = routeOptions
         self.legs = legs
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
         self.coordinates = coordinates
+        self.speechLocale = speechLocale
     }
     
     /**
@@ -46,7 +47,12 @@ open class Route: NSObject, NSSecureCoding {
             coordinates = nil
         }
         
-        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        var speechLocale: Locale?
+        if let locale = json["voiceLocale"] as? String {
+            speechLocale = Locale(identifier: locale)
+        }
+        
+        self.init(routeOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     @objc public required init?(coder decoder: NSCoder) {
@@ -70,6 +76,8 @@ open class Route: NSObject, NSSecureCoding {
         routeOptions = options
         
         routeIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String?
+        
+        speechLocale = decoder.decodeObject(of: NSLocale.self, forKey: "speechLocale") as Locale?
     }
     
     open static var supportsSecureCoding = true
@@ -86,6 +94,7 @@ open class Route: NSObject, NSSecureCoding {
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(routeOptions, forKey: "routeOptions")
         coder.encode(routeIdentifier, forKey: "routeIdentifier")
+        coder.encode(speechLocale, forKey: "speechLocale")
     }
     
     // MARK: Getting the Route Geometry
@@ -194,6 +203,13 @@ open class Route: NSObject, NSSecureCoding {
      Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
      */
     @objc open var routeIdentifier: String?
+    
+    /**
+     The locale to use for spoken instructions.
+     
+     This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
+     */
+    @objc open var speechLocale: Locale?
 }
 
 // MARK: Support for Directions API v4
@@ -214,6 +230,6 @@ internal class RouteV4: Route {
             coordinates = nil
         }
         
-        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: nil)
     }
 }
