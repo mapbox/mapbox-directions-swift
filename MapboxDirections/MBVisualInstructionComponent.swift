@@ -31,7 +31,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     */
     @objc public var imageURL: URL?
     
-    
     /**
      :nodoc:
      The type of visual instruction component. You can display the component differently depending on its type.
@@ -40,11 +39,23 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
+     The maneuver type for the `VisualInstruction`.
+     */
+    @objc public var maneuverType: ManeuverType
+    
+    /**
+     :nodoc:
+     The modifier type for the `VisualInstruction`.
+     */
+    @objc public var maneuverDirection: ManeuverDirection
+    
+    /**
+     :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc public convenience init(json: [String: Any], maneuverType: ManeuverType, maneuverDirection: ManeuverDirection) {
         let text = json["text"] as? String
-        var type: VisualInstructionComponentType?
+        let type: VisualInstructionComponentType
         if let _ = json["delimiter"] as? Bool {
             type = .delimiter
         } else {
@@ -64,17 +75,19 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(type: type!, text: text, imageURL: imageURL)
+        self.init(type: type, text: text, imageURL: imageURL, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -92,6 +105,16 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
                 return nil
         }
         self.type = type
+        
+        guard let maneuverTypeString = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: maneuverTypeString) else {
+            return nil
+        }
+        self.maneuverType = maneuverType
+        
+        guard let direction = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String?, let maneuverDirection = ManeuverDirection(description: direction) else {
+            return nil
+        }
+        self.maneuverDirection = maneuverDirection
     }
     
     open static var supportsSecureCoding = true
@@ -100,5 +123,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         coder.encode(text, forKey: "text")
         coder.encode(imageURL, forKey: "imageURL")
         coder.encode(type, forKey: "type")
+        coder.encode(maneuverType, forKey: "maneuverType")
+        coder.encode(maneuverDirection, forKey: "maneuverDirection")
     }
 }
