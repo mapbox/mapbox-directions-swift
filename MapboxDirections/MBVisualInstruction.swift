@@ -55,22 +55,22 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     @objc public convenience init(json: [String: Any], drivingSide: DrivingSide) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
-        
-        let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
-        let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
-        
         let primaryTextComponent = json["primary"] as! JSONDictionary
         let primaryText = primaryTextComponent["text"] as! String
+        let primaryManeuverType = ManeuverType(description: primaryTextComponent["type"] as! String) ?? .none
+        let primaryManeuverDirection = ManeuverDirection(description: primaryTextComponent["modifier"] as! String)  ?? .none
         let primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
-            VisualInstructionComponent(json: $0, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
+            VisualInstructionComponent(maneuverType: primaryManeuverType, maneuverDirection: primaryManeuverDirection, json: $0)
         }
         
         var secondaryText: String?
         var secondaryTextComponents: [VisualInstructionComponent]?
         if let secondaryTextComponent = json["secondary"] as? JSONDictionary {
             secondaryText = secondaryTextComponent["text"] as? String
+            let secondaryManeuverType = ManeuverType(description: secondaryTextComponent["type"] as! String) ?? .none
+            let secondaryManeuverDirection = ManeuverDirection(description: secondaryTextComponent["modifier"] as! String)  ?? .none
             secondaryTextComponents = (secondaryTextComponent["components"] as! [JSONDictionary]).map {
-                VisualInstructionComponent(json: $0, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
+                VisualInstructionComponent(maneuverType: secondaryManeuverType, maneuverDirection: secondaryManeuverDirection, json: $0)
             }
         }
         

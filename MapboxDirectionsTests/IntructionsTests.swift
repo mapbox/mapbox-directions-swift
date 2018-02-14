@@ -58,35 +58,35 @@ class SpokenInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cjdgjry6g08cq6zkwuv7h25d3")
+        XCTAssertEqual(route!.routeIdentifier, "cjdnkkc8u00047bobygk1p7bi")
         
         let leg = route!.legs.first!
-        let step = leg.steps[3]
+        let step = leg.steps[1]
         
         XCTAssertEqual(step.instructionsSpokenAlongStep!.count, 3)
         
         let spokenInstructions = step.instructionsSpokenAlongStep!
         
-        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 1750.2)
-        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 401.8)
-        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 86.1)
+        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 944.9)
+        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 258.0)
+        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 55.3)
         
-        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Polk Street for 1 mile</prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In a quarter mile, go straight onto Potrero Avenue</prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Go straight onto Potrero Avenue, then turn left onto Alameda Street</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Fillmore Street for a half mile</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In 900 feet, turn left onto <phoneme ph=\"ˈheɪt ˌstɹiːt\">Haight Street</phoneme></prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto <phoneme ph=\"ˈheɪt ˌstɹiːt\">Haight Street</phoneme></prosody></amazon:effect></speak>")
         
-        XCTAssertEqual(spokenInstructions[0].text, "Continue on Polk Street for 1 mile")
-        XCTAssertEqual(spokenInstructions[1].text, "In a quarter mile, go straight onto Potrero Avenue")
-        XCTAssertEqual(spokenInstructions[2].text, "Go straight onto Potrero Avenue, then turn left onto Alameda Street")
+        XCTAssertEqual(spokenInstructions[0].text, "Continue on Fillmore Street for a half mile")
+        XCTAssertEqual(spokenInstructions[1].text, "In 900 feet, turn left onto Haight Street")
+        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto Haight Street")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         XCTAssertNotNil(visualInstructions)
-        XCTAssertEqual(visualInstructions?.first?.primaryText, "Potrero Avenue")
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "Potrero Avenue")
-        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1750.2)
+        XCTAssertEqual(visualInstructions?.first?.primaryText, "Haight Street")
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "Haight Street")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 944.89999999999998)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverType, .turn)
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverDirection, .straightAhead)
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverDirection, .left)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryText)
     }

@@ -53,7 +53,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public convenience init(json: [String: Any], maneuverType: ManeuverType, maneuverDirection: ManeuverDirection) {
+    @objc public convenience init(maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, json: [String: Any]) {
         let text = json["text"] as? String
         let type: VisualInstructionComponentType
         if let _ = json["delimiter"] as? Bool {
