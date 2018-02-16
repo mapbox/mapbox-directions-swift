@@ -600,7 +600,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
         let instructionsDisplayedAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstruction(json: $0) }
+        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstruction(json: $0, drivingSide: drivingSide) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading

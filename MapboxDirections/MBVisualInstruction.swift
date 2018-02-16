@@ -41,41 +41,53 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      */
     @objc public let secondaryTextComponents: [VisualInstructionComponent]?
     
+    
     /**
      :nodoc:
-     Initialize a `VisualInstruction` from a dictionary.
+     Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc public var drivingSide: DrivingSide
+    
+    /**
+     :nodoc:
+     Initialize a `VisualInstruction` from a dictionary given a `DrivingSide`.
+     */
+    @objc public convenience init(json: [String: Any], drivingSide: DrivingSide) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
         let primaryTextComponent = json["primary"] as! JSONDictionary
         let primaryText = primaryTextComponent["text"] as! String
+        let primaryManeuverType = ManeuverType(description: primaryTextComponent["type"] as! String) ?? .none
+        let primaryManeuverDirection = ManeuverDirection(description: primaryTextComponent["modifier"] as! String)  ?? .none
         let primaryTextComponents = (primaryTextComponent["components"] as! [JSONDictionary]).map {
-            VisualInstructionComponent(json: $0)
+            VisualInstructionComponent(maneuverType: primaryManeuverType, maneuverDirection: primaryManeuverDirection, json: $0)
         }
         
         var secondaryText: String?
         var secondaryTextComponents: [VisualInstructionComponent]?
         if let secondaryTextComponent = json["secondary"] as? JSONDictionary {
             secondaryText = secondaryTextComponent["text"] as? String
+            let secondaryManeuverType = ManeuverType(description: secondaryTextComponent["type"] as! String) ?? .none
+            let secondaryManeuverDirection = ManeuverDirection(description: secondaryTextComponent["modifier"] as! String)  ?? .none
             secondaryTextComponents = (secondaryTextComponent["components"] as! [JSONDictionary]).map {
-                VisualInstructionComponent(json: $0)
+                VisualInstructionComponent(maneuverType: secondaryManeuverType, maneuverDirection: secondaryManeuverDirection, json: $0)
             }
         }
         
-        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents)
+        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents, drivingSide: drivingSide)
     }
     
     /**
      :nodoc:
      Initialize a `VisualInstruction`.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?) {
+    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryText = primaryText
         self.primaryTextComponents = primaryTextComponents
         self.secondaryText = secondaryText
         self.secondaryTextComponents = secondaryTextComponents
+        self.drivingSide = drivingSide
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -94,6 +106,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.secondaryText = secondaryText
         
         secondaryTextComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "primaryTextComponents") as? [VisualInstructionComponent]
+        
+        
+        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(description: drivingSideDescription) {
+            self.drivingSide = drivingSide
+        } else {
+            self.drivingSide = .right
+        }
     }
     
     open static var supportsSecureCoding = true
@@ -104,5 +123,6 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         coder.encode(primaryTextComponents, forKey: "primaryTextComponents")
         coder.encode(secondaryText, forKey: "secondaryText")
         coder.encode(secondaryTextComponents, forKey: "secondaryTextComponents")
+        coder.encode(drivingSide, forKey: "drivingSide")
     }
 }
