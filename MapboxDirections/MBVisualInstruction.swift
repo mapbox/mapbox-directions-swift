@@ -50,7 +50,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-     Initialize a `VisualInstruction` from a dictionary.
+     Initialize a `VisualInstruction` from a dictionary given a `DrivingSide`.
      */
     @objc public convenience init(json: [String: Any], drivingSide: DrivingSide) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
