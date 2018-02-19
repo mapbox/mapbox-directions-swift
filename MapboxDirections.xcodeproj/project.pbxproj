@@ -82,7 +82,6 @@
 		C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
-		C5B97271202D0FBA007B1B5C /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B97270202D0FBA007B1B5C /* DrawingView.swift */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -266,7 +265,6 @@
 		C5AD865C202E24F500BF47D5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		C5AD865D202E24F500BF47D5 /* MapboxCoreNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxCoreNavigation.framework; path = Carthage/Build/iOS/MapboxCoreNavigation.framework; sourceTree = "<group>"; };
 		C5AD865E202E24F500BF47D5 /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
-		C5B97270202D0FBA007B1B5C /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
 		C5DAAC9920191675001F9261 /* MBMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatch.swift; sourceTree = "<group>"; };
 		C5DAACAE201AA92B001F9261 /* MatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTests.swift; sourceTree = "<group>"; };
@@ -584,7 +582,6 @@
 			children = (
 				DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */,
 				DADD27B91E5AAAD800D31FAD /* ViewController.swift */,
-				C5B97270202D0FBA007B1B5C /* DrawingView.swift */,
 			);
 			name = Swift;
 			sourceTree = "<group>";
@@ -1251,7 +1248,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5B97271202D0FBA007B1B5C /* DrawingView.swift in Sources */,
 				DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */,
 				DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */,
 			);
