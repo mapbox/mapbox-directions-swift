@@ -80,6 +80,7 @@
 		C58EA7AB1E9D7F73008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C58EA7AC1E9D7F74008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
+		C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -255,6 +256,7 @@
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
 		C584E3FA1F2027EE00BBC9BB /* MBRoadClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBRoadClasses.h; sourceTree = "<group>"; };
 		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBCongestion.swift; sourceTree = "<group>"; };
+		C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDrawingView.swift; sourceTree = "<group>"; };
 		C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoadClasses.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
 		C5AD8657202E24F500BF47D5 /* 0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; name = "0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap"; path = "Carthage/Build/iOS/0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap"; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 			children = (
 				DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */,
 				DADD27B91E5AAAD800D31FAD /* ViewController.swift */,
+				C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */,
 			);
 			name = Swift;
 			sourceTree = "<group>";
@@ -1249,6 +1252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */,
+				C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */,
 				DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
