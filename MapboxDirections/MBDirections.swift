@@ -250,7 +250,7 @@ open class Directions: NSObject {
      After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
-    open func url(forCalculating options: RouteOptions) -> URL {
+    open func url(forCalculating options: DirectionOptions) -> URL {
         let params = options.params + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]

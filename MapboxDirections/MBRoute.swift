@@ -9,7 +9,7 @@ import Polyline
 open class Route: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
+    @objc internal init(routeOptions: DirectionOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
         self.routeOptions = routeOptions
         self.legs = legs
         self.distance = distance
@@ -174,7 +174,7 @@ open class Route: NSObject, NSSecureCoding {
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    @objc open let routeOptions: RouteOptions
+    @objc open let routeOptions: DirectionOptions
     
     /**
      The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.
