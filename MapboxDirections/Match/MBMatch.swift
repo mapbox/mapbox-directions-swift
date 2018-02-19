@@ -3,9 +3,9 @@ import Polyline
 @objc(MBMatch)
 open class Match: Route {
     
-    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double) {
+    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double, speechLocale: Locale?) {
         self.confidence = confidence
-        super.init(routeOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates)
+        super.init(routeOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     /**
@@ -35,7 +35,12 @@ open class Match: Route {
         
         let confidence = json["confidence"] as! Double
         
-        self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence)
+        var speechLocale: Locale?
+        if let locale = json["voiceLocale"] as? String {
+            speechLocale = Locale(identifier: locale)
+        }
+        
+        self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale)
     }
     
     @objc public required convenience init?(coder decoder: NSCoder) {
