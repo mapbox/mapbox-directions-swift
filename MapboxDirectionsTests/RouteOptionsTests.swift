@@ -54,7 +54,7 @@ class RouteOptionsTests: XCTestCase {
         guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else { XCTFail(); return nil }
         guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {XCTFail(); return nil }
         guard let fixtureOpaque = try? JSONSerialization.jsonObject(with: fixtureData), let fixture = fixtureOpaque as? JSONDictionary  else { XCTFail(); return nil }
-        
+
         let subject = RouteOptions(waypoints: waypoints)
         let response = subject.response(from: fixture)
         

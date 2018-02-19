@@ -1,7 +1,7 @@
 import Foundation
 
 @objc(MBMatchingOptions)
-open class MatchingOptions: RouteOptions {
+open class MatchingOptions: DirectionOptions {
     
     /**
      Initializes a match options object for matching locations against the road network.
@@ -83,7 +83,7 @@ open class MatchingOptions: RouteOptions {
         return params
     }
     
-    override internal var path: String {
+    internal override var path: String {
         assert(!queries.isEmpty, "No query")
         
         let queryComponent = queries.joined(separator: ";")
