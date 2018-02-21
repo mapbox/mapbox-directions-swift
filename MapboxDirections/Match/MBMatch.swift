@@ -1,17 +1,12 @@
 import Polyline
 
 @objc(MBMatch)
-open class Match: Route {
+open class Match: DirectionRoute {
     
     init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double, speechLocale: Locale?) {
         self.confidence = confidence
-        super.init(routeOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(directionOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
-    
-    /**
-     A `Double` between 0 and 1 indicating level of confidence in `Match`. A higher value indicates a higher confidence.
-     */
-    @objc open var confidence: Double
     
     convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
         let legInfo = zip(zip(tracePoints.prefix(upTo: tracePoints.endIndex - 1), tracePoints.suffix(from: 1)),
@@ -42,6 +37,11 @@ open class Match: Route {
         
         self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale)
     }
+    
+    /**
+     A `Double` between 0 and 1 indicating level of confidence in `Match`. A higher value indicates a higher confidence.
+     */
+    @objc open var confidence: Double
     
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)

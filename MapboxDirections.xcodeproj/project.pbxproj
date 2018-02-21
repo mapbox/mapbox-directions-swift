@@ -82,6 +82,7 @@
 		C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */; };
 		C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */; };
 		C59094BF203B800300EB2417 /* MBDirectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionOptions.swift */; };
+		C59094C1203DE6BC00EB2417 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -259,6 +260,7 @@
 		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBCongestion.swift; sourceTree = "<group>"; };
 		C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDrawingView.swift; sourceTree = "<group>"; };
 		C59094BE203B800300EB2417 /* MBDirectionOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDirectionOptions.swift; sourceTree = "<group>"; };
+		C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDirectionRoute.swift; sourceTree = "<group>"; };
 		C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoadClasses.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
 		C5AD8657202E24F500BF47D5 /* 0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap */ = {isa = PBXFileReference; lastKnownFileType = text; name = "0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap"; path = "Carthage/Build/iOS/0E4ACB76-F60D-38A4-A651-CCFD819876A1.bcsymbolmap"; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				C5DAAC9E20191683001F9261 /* Match */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				DD6254731AE70CB700017857 /* MBDirections.swift */,
+				C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */,
 				DAC05F171CFC075300FA0071 /* MBRoute.swift */,
 				DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */,
 				358D48801E2EAB2500F32A65 /* MBRouteOptions.h */,
@@ -1221,6 +1224,7 @@
 				C59094BF203B800300EB2417 /* MBDirectionOptions.swift in Sources */,
 				C5434B8C200695A50069E887 /* MBMatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				C59094C1203DE6BC00EB2417 /* MBDirectionRoute.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */,
 				C5434B8A200693D00069E887 /* MBTracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
