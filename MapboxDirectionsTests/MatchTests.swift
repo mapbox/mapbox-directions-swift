@@ -70,7 +70,7 @@ class MatchTest: XCTestCase {
         XCTAssertEqual(match!.legs.count, 6)
         XCTAssertEqual(match!.confidence, 0.95)
 
-        let opts = match!.routeOptions
+        let opts = match!.directionOptions
 
         XCTAssertEqual(opts, matchOptions)
 
