@@ -163,11 +163,11 @@ open class RouteOptions: DirectionOptions {
     
     
     // MARK: NSCopying
-    open override func copy(with zone: NSZone? = nil) -> Any {
-        let copy = RouteOptions(coordinates: waypoints.map { $0.coordinate }, profileIdentifier: profileIdentifier)
+    override open func copy(with zone: NSZone? = nil) -> Any {
+//        let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        let copy = super.copy() as! RouteOptions
         copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
         copy.includesAlternativeRoutes = includesAlternativeRoutes
-        copy.attributeOptions = attributeOptions
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.roadClassesToAvoid = roadClassesToAvoid
         return copy
@@ -180,21 +180,13 @@ open class RouteOptions: DirectionOptions {
     }
     
     @objc(isEqualToRouteOptions:)
-    open override func isEqual(to routeOptions: RouteOptions?) -> Bool {
+    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
         guard let other = routeOptions else { return false }
-        guard waypoints == other.waypoints,
-            profileIdentifier == other.profileIdentifier,
-            allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
-            includesSteps == other.includesSteps,
-            shapeFormat == other.shapeFormat,
-            routeShapeResolution == other.routeShapeResolution,
-            attributeOptions == other.attributeOptions,
+        guard super.isEqual(to: routeOptions) else { return false }
+        guard allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
+            includesAlternativeRoutes == other.includesAlternativeRoutes,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-            locale == other.locale,
-            includesSpokenInstructions == other.includesSpokenInstructions,
-            includesVisualInstructions == other.includesVisualInstructions,
-            roadClassesToAvoid == other.roadClassesToAvoid,
-            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
+            roadClassesToAvoid == other.roadClassesToAvoid else { return false }
         return true
     }
 }
