@@ -50,6 +50,16 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public var maneuverDirection: ManeuverDirection
     
     /**
+     An abbreviated version of the text for a given component.
+     */
+    @objc public var abbreviation: String?
+    
+    /**
+     The priority in which the component should be abbreviated. Lower numbers should be abbreviated first.
+     */
+    @objc public var abbreviationPriority: Int
+    
+    /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
@@ -61,6 +71,9 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         } else {
             type = .destination
         }
+        
+        let abbreviation = json["abbr"] as? String
+        let abbreviationPriority = json["abbr_priority"] as? Int ?? 0
         
         var imageURL: URL?
         if let baseURL = json["imageBaseURL"] as? String {
@@ -75,19 +88,21 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(type: type, text: text, imageURL: imageURL, maneuverType: maneuverType, maneuverDirection: maneuverDirection)
+        self.init(type: type, text: text, imageURL: imageURL, maneuverType: maneuverType, maneuverDirection: maneuverDirection, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, abbreviation: String?, abbreviationPriority: Int) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
+        self.abbreviation = abbreviation
+        self.abbreviationPriority = abbreviationPriority
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -115,6 +130,13 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             return nil
         }
         self.maneuverDirection = maneuverDirection
+        
+        guard let abbreviation = decoder.decodeObject(of: NSString.self, forKey: "abbreviation") as String? else {
+            return nil
+        }
+        self.abbreviation = abbreviation
+        
+        abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
     }
     
     open static var supportsSecureCoding = true
@@ -125,5 +147,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         coder.encode(type, forKey: "type")
         coder.encode(maneuverType, forKey: "maneuverType")
         coder.encode(maneuverDirection, forKey: "maneuverDirection")
+        coder.encode(abbreviation, forKey: "abbreviation")
+        coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
     }
 }
