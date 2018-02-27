@@ -58,7 +58,8 @@ class SpokenInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cjdnkkc8u00047bobygk1p7bi")
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route!.routeIdentifier, "cje68ha21000775o7je87k5em")
         
         let leg = route!.legs.first!
         let step = leg.steps[1]
@@ -67,24 +68,16 @@ class SpokenInstructionsTests: XCTestCase {
         
         let spokenInstructions = step.instructionsSpokenAlongStep!
         
-        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 944.9)
-        XCTAssertEqual(spokenInstructions[1].distanceAlongStep, 258.0)
-        XCTAssertEqual(spokenInstructions[2].distanceAlongStep, 55.3)
-        
-        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Fillmore Street for a half mile</prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In 900 feet, turn left onto <phoneme ph=\"ˈheɪt ˌstɹiːt\">Haight Street</phoneme></prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto <phoneme ph=\"ˈheɪt ˌstɹiːt\">Haight Street</phoneme></prosody></amazon:effect></speak>")
-        
-        XCTAssertEqual(spokenInstructions[0].text, "Continue on Fillmore Street for a half mile")
-        XCTAssertEqual(spokenInstructions[1].text, "In 900 feet, turn left onto Haight Street")
-        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto Haight Street")
+        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 1001.4)
+        XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Baker Street for a half mile</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[0].text, "Continue on Baker Street for a half mile")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         XCTAssertNotNil(visualInstructions)
-        XCTAssertEqual(visualInstructions?.first?.primaryText, "Haight Street")
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "Haight Street")
-        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 944.89999999999998)
+        XCTAssertEqual(visualInstructions?.first?.primaryText, "Oak Street")
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "Oak Street")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1001.4)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverDirection, .left)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.type, .text)
