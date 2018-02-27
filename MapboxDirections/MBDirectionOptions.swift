@@ -223,13 +223,13 @@ open class DirectionOptions: NSObject, NSSecureCoding, NSCopying {
     
     //MARK: - OBJ-C Equality
     open override func isEqual(_ object: Any?) -> Bool {
-        guard let opts = object as? RouteOptions else { return false }
+        guard let opts = object as? DirectionOptions else { return false }
         return isEqual(to: opts)
     }
     
-    @objc(isEqualToRouteOptions:)
-    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
-        guard let other = routeOptions else { return false }
+    @objc(isEqualToDirectionOptions:)
+    open func isEqual(to directionOptions: DirectionOptions?) -> Bool {
+        guard let other = directionOptions else { return false }
         guard waypoints == other.waypoints,
             profileIdentifier == other.profileIdentifier,
             includesSteps == other.includesSteps,
