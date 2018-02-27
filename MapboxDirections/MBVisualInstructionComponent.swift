@@ -55,12 +55,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      */
     @objc public convenience init(maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, json: [String: Any]) {
         let text = json["text"] as? String
-        let type: VisualInstructionComponentType
-        if let _ = json["delimiter"] as? Bool {
-            type = .delimiter
-        } else {
-            type = .destination
-        }
+        let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
         
         var imageURL: URL?
         if let baseURL = json["imageBaseURL"] as? String {

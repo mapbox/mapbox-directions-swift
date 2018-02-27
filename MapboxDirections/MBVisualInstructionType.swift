@@ -16,15 +16,22 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     /**
      The component bears an exit number or the name of a place or street.
      */
-    case destination
+    case text
+    
+    /**
+     Component contains an icon that should be rendered.
+     */
+    case icon
     
     public init?(description: String) {
         let type: VisualInstructionComponentType
         switch description {
         case "delimiter":
             type = .delimiter
-        case "destination":
-            type = .destination
+        case "icon":
+            type = .icon
+        case "text":
+            type = .text
         default:
             return nil
         }
@@ -35,8 +42,10 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         switch self {
         case .delimiter:
             return "delimiter"
-        case .destination:
-            return "destination"
+        case .icon:
+            return "icon"
+        case .text:
+            return "text"
         }
     }
 }
