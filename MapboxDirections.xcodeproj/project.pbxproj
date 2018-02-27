@@ -84,6 +84,12 @@
 		C59094BF203B800300EB2417 /* MBDirectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionOptions.swift */; };
 		C59094C1203DE6BC00EB2417 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
+		C5990B4A2045E72800D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
+		C5990B4B2045E72900D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
+		C5990B4C2045E72A00D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
+		C5990B4D2045E74800D7DFD4 /* MBDirectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionOptions.swift */; };
+		C5990B4E2045E74900D7DFD4 /* MBDirectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionOptions.swift */; };
+		C5990B4F2045E74A00D7DFD4 /* MBDirectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionOptions.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -1100,12 +1106,14 @@
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* MBVisualInstruction.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* MBTracepoint.swift in Sources */,
+				C5990B4A2045E72800D7DFD4 /* MBDirectionRoute.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
+				C5990B4D2045E74800D7DFD4 /* MBDirectionOptions.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
@@ -1145,12 +1153,14 @@
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* MBVisualInstruction.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* MBTracepoint.swift in Sources */,
+				C5990B4B2045E72900D7DFD4 /* MBDirectionRoute.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
+				C5990B4E2045E74900D7DFD4 /* MBDirectionOptions.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A10F11D010247009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
@@ -1190,12 +1200,14 @@
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* MBVisualInstruction.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* MBTracepoint.swift in Sources */,
+				C5990B4C2045E72A00D7DFD4 /* MBDirectionRoute.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
+				C5990B4F2045E74A00D7DFD4 /* MBDirectionOptions.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
