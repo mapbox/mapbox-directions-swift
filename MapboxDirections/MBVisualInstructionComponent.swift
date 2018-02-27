@@ -57,7 +57,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     /**
      The priority in which the component should be abbreviated. Lower numbers should be abbreviated first.
      */
-    @objc public var abbreviationPriority: Int
+    @objc public var abbreviationPriority: Int = Int.max
     
     /**
      :nodoc:
@@ -73,7 +73,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         
         let abbreviation = json["abbr"] as? String
-        let abbreviationPriority = json["abbr_priority"] as? Int ?? 0
+        let abbreviationPriority = json["abbr_priority"] as? Int ?? Int.max
         
         var imageURL: URL?
         if let baseURL = json["imageBaseURL"] as? String {
