@@ -80,6 +80,7 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverDirection, .left)
         XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.abbreviation, "Oak St")
+        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.abbreviationPriority, 0)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryText)
     }
