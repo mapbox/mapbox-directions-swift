@@ -50,6 +50,10 @@ open class Route: DirectionRoute {
         super.init(directionOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
+    public var routeOptions: RouteOptions {
+        return super.directionOptions as! RouteOptions
+    }
+    
     @objc public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
