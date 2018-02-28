@@ -114,4 +114,48 @@ open class MatchingOptions: DirectionOptions {
         
         return (tracePoints, matchings)
     }
+    
+    /**
+     Returns response objects that represent the given JSON dictionary data.
+     
+     - parameter json: The API response in JSON dictionary format.
+     - returns: A tuple containing an array of tracepoints and an array of routes.
+     */
+    internal func responseRouteableMatch(from json: JSONDictionary) -> ([Tracepoint]?, [Route]?) {
+        let jsonTracePoints = (json["tracepoints"] as! [Any]).flatMap {
+            $0 as? JSONDictionary
+        }
+        let tracePoints = jsonTracePoints.map { api -> Tracepoint in
+            let location = api["location"] as! [Double]
+            let coordinate = CLLocationCoordinate2D(geoJSON: location)
+            let alternateCount = api["alternatives_count"] as! Int
+            let waypointIndex = api["waypoint_index"] as? Int
+            let matchingIndex = api["matchings_index"] as! Int
+            let name = api["name"] as? String
+            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
+        }
+        
+        // This is a real bummer and is another place we need to maintain options.
+        let opts = RouteOptions(waypoints: tracePoints, profileIdentifier: self.profileIdentifier)
+        opts.includesSteps = self.includesSteps
+        opts.includesVisualInstructions = self.includesVisualInstructions
+        opts.includesSpokenInstructions = self.includesSpokenInstructions
+        opts.attributeOptions = self.attributeOptions
+        
+        var filteredTracepoints: [Tracepoint]?
+        if let indices = self.waypointIndices {
+            filteredTracepoints = []
+            for (i, tracepoint) in tracePoints.enumerated() {
+                if indices.contains(i) {
+                    filteredTracepoints?.append(tracepoint)
+                }
+            }
+        }
+        
+        let routes = (json["matchings"] as? [JSONDictionary])?.map {
+            Route(json: $0, waypoints: filteredTracepoints ?? tracePoints, routeOptions: opts)
+        }
+        
+        return (tracePoints, routes)
+    }
 }
