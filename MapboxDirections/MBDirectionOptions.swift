@@ -201,20 +201,23 @@ open class DirectionOptions: NSObject, NSSecureCoding, NSCopying {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    @objc required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
     
-    open static var supportsSecureCoding = true
+    public class var supportsSecureCoding: Bool {
+        return true
+    }
     
     // MARK: NSCopying
-    open func copy(with zone: NSZone? = nil) -> Any {
-        let copy = DirectionOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    @objc open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = type(of: self).init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         copy.includesSteps = includesSteps
         copy.shapeFormat = shapeFormat
         copy.routeShapeResolution = routeShapeResolution
         copy.locale = locale
+        copy.attributeOptions = attributeOptions
         copy.includesSpokenInstructions = includesSpokenInstructions
         copy.distanceMeasurementSystem = distanceMeasurementSystem
         copy.includesVisualInstructions = includesVisualInstructions

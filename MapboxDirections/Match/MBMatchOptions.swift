@@ -9,19 +9,23 @@ open class MatchingOptions: DirectionOptions {
      - parameter location: An array of `CLLocation` objects representing locations the route should try to match the road network against. The array should contain at least two locations (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
         }
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.timestamps = locations.map { $0.timestamp }
-        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
-    public init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map {
             Waypoint(coordinate: $0)
         }
-        super.init(waypoints: waypoints)
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    }
+    
+    @objc required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
     

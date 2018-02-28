@@ -35,7 +35,7 @@ open class RouteOptions: DirectionOptions {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public override init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
@@ -161,11 +161,15 @@ open class RouteOptions: DirectionOptions {
         return (waypoints, routes)
     }
     
+    override public class var supportsSecureCoding: Bool {
+        return true
+    }
+    
     
     // MARK: NSCopying
     override open func copy(with zone: NSZone? = nil) -> Any {
 //        let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
-        let copy = super.copy() as! RouteOptions
+        let copy = super.copy(with: zone) as! RouteOptions
         copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
         copy.includesAlternativeRoutes = includesAlternativeRoutes
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
