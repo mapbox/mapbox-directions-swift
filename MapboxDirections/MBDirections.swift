@@ -107,6 +107,8 @@ open class Directions: NSObject {
     
     public typealias MatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
     
+    public typealias RouteableMatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
+    
     // MARK: Creating a Directions Object
     
     /**
@@ -190,6 +192,26 @@ open class Directions: NSObject {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.responseMatchOptions(from: json)
+            if let matches = response.1 {
+                for match in matches {
+                    match.accessToken = self.accessToken
+                    match.apiEndpoint = self.apiEndpoint
+                    match.routeIdentifier = json["uuid"] as? String
+                }
+            }
+            completionHandler(response.0, response.1, nil)
+        }) { (error) in
+            completionHandler(nil, nil, error)
+        }
+        task.resume()
+        return task
+    }
+    
+    @objc(calculateRoutableMatchWithOptions:completionHandler:)
+    @discardableResult open func routableMatch(_ options: MatchingOptions, completionHandler: @escaping RouteableMatchCompletionHandler) -> URLSessionDataTask {
+        let url = self.url(forCalculating: options)
+        let task = dataTask(with: url, completionHandler: { (json) in
+            let response = options.responseRouteableMatch(from: json)
             if let routes = response.1 {
                 for route in routes {
                     route.accessToken = self.accessToken
