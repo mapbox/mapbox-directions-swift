@@ -71,6 +71,10 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 1001.4)
         XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Baker Street for a half mile</prosody></amazon:effect></speak>")
         XCTAssertEqual(spokenInstructions[0].text, "Continue on Baker Street for a half mile")
+        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In a quarter mile, turn left onto Oak Street</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[1].text, "In a quarter mile, turn left onto Oak Street")
+        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto Oak Street</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto Oak Street")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
         
