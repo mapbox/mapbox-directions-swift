@@ -43,6 +43,10 @@ open class Match: DirectionRoute {
      */
     @objc open var confidence: Double
     
+    public var matchOptions: MatchingOptions {
+        return super.directionOptions as! MatchingOptions
+    }
+    
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)
         confidence = decoder.decodeDouble(forKey: "confidence")
