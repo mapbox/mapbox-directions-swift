@@ -84,8 +84,8 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryText)
         
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[0].type, .icon)
+        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[0].type, .image)
         XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[1].type, .delimiter)
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[2].type, .icon)
+        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[2].type, .image)
     }
 }

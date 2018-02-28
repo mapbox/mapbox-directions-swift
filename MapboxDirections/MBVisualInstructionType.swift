@@ -19,9 +19,9 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     case text
     
     /**
-     Component contains an icon that should be rendered.
+     Component contains an image that should be rendered.
      */
-    case icon
+    case image
     
     public init?(description: String) {
         let type: VisualInstructionComponentType
@@ -29,7 +29,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         case "delimiter":
             type = .delimiter
         case "icon":
-            type = .icon
+            type = .image
         case "text":
             type = .text
         default:
@@ -42,7 +42,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         switch self {
         case .delimiter:
             return "delimiter"
-        case .icon:
+        case .image:
             return "icon"
         case .text:
             return "text"
