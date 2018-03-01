@@ -168,7 +168,6 @@ open class RouteOptions: DirectionOptions {
     
     // MARK: NSCopying
     override open func copy(with zone: NSZone? = nil) -> Any {
-//        let copy = RouteOptions(waypoints: waypoints, profileIdentifier: profileIdentifier)
         let copy = super.copy(with: zone) as! RouteOptions
         copy.allowsUTurnAtWaypoint = allowsUTurnAtWaypoint
         copy.includesAlternativeRoutes = includesAlternativeRoutes
