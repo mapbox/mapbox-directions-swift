@@ -2,7 +2,7 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-class MatchTest: XCTestCase {
+class RoutableMatchTest: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
@@ -36,17 +36,20 @@ class MatchTest: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var match: Match!
-        var tracePoints: [Tracepoint]!
+        var route: Route!
+        var waypoints: [Waypoint]!
+        
         let matchOptions = MatchingOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
+        let indices: IndexSet = [0, locations.count - 1]
+        matchOptions.waypointIndices = indices
         
-        let task = Directions(accessToken: BogusToken).match(matchOptions) { (tPoints, matches, error) in
+        let task = Directions(accessToken: BogusToken).routableMatch(matchOptions) { (wpoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
-            match = matches!.first!
-            tracePoints = tPoints
+            route = routes!.first!
+            waypoints = wpoints
             
             expectation.fulfill()
         }
@@ -57,53 +60,45 @@ class MatchTest: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        XCTAssertNotNil(match)
-        XCTAssertNotNil(match.coordinates)
-        XCTAssertEqual(match.coordinates!.count, 8)
-        XCTAssertEqual(match.accessToken, BogusToken)
-        XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
-        XCTAssertEqual(match.routeIdentifier, nil)
+        XCTAssertNotNil(route)
+        XCTAssertNotNil(route.coordinates)
+        XCTAssertEqual(route.coordinates!.count, 8)
+        XCTAssertEqual(route.accessToken, BogusToken)
+        XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
+        XCTAssertEqual(route.routeIdentifier, nil)
         
-        XCTAssertNotNil(tracePoints)
-        XCTAssertEqual(tracePoints.first!.alternateCount, 0)
-        XCTAssertEqual(tracePoints.first!.matchingIndex, 0)
-        XCTAssertEqual(tracePoints.first!.waypointIndex, 0)
+        XCTAssertNotNil(waypoints)
+        XCTAssertEqual(waypoints.first!.name, "North Harbor Drive")
+        XCTAssertEqual(waypoints.last!.name, "West G Street")
+        XCTAssertNotNil(waypoints.last!.coordinate)
         
-        XCTAssertEqual(tracePoints.last!.name, "West G Street")
-        XCTAssertEqual(tracePoints.last!.waypointIndex, 6)
-
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(match!.coordinates!.first!.latitude), 33)
-        XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
-        XCTAssertEqual(match!.legs.count, 6)
-        XCTAssertEqual(match!.confidence, 0.95)
-
-        let opts = match!.directionOptions
-
-        XCTAssertEqual(opts, matchOptions)
-
-        let leg = match!.legs.first!
+        XCTAssertEqual(round(route!.coordinates!.first!.latitude), 33)
+        XCTAssertEqual(round(route!.coordinates!.first!.longitude), -117)
+        XCTAssertEqual(route!.legs.count, 1)
+        
+        let leg = route!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
         XCTAssertEqual(leg.steps.count, 2)
-
+        
         let firstStep = leg.steps.first
         XCTAssertNotNil(firstStep)
         let firstStepIntersections = firstStep?.intersections
         XCTAssertNotNil(firstStepIntersections)
         let firstIntersection = firstStepIntersections?.first
         XCTAssertNotNil(firstIntersection)
-
+        
         let step = leg.steps[0]
         XCTAssertEqual(round(step.distance), 25)
         XCTAssertEqual(round(step.expectedTravelTime), 3)
         XCTAssertEqual(step.instructions, "Head north on North Harbor Drive")
-
+        
         XCTAssertEqual(step.maneuverType, .depart)
         XCTAssertEqual(step.maneuverDirection, .none)
         XCTAssertEqual(step.initialHeading, 0)
         XCTAssertEqual(step.finalHeading, 340)
-
+        
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 4)
         XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
@@ -112,4 +107,5 @@ class MatchTest: XCTestCase {
         XCTAssertEqual(round(coordinate.longitude), -117)
     }
 }
+
 
