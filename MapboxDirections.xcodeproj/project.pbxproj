@@ -85,6 +85,8 @@
 		C59094C1203DE6BC00EB2417 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
 		C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C59666392048A20E00C45CE5 /* RoutableMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59666382048A20E00C45CE5 /* RoutableMatch.swift */; };
+		C596663A2048AECD00C45CE5 /* RoutableMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59666382048A20E00C45CE5 /* RoutableMatch.swift */; };
+		C596663B2048AECE00C45CE5 /* RoutableMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59666382048A20E00C45CE5 /* RoutableMatch.swift */; };
 		C5990B4A2045E72800D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
 		C5990B4B2045E72900D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
 		C5990B4C2045E72A00D7DFD4 /* MBDirectionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* MBDirectionRoute.swift */; };
@@ -1135,6 +1137,7 @@
 			files = (
 				DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
+				C596663A2048AECD00C45CE5 /* RoutableMatch.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DA737EE91D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
@@ -1182,6 +1185,7 @@
 			files = (
 				DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
+				C596663B2048AECE00C45CE5 /* RoutableMatch.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DA737EEA1D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
