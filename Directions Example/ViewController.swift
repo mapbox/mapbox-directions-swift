@@ -26,14 +26,14 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         mapView.userTrackingMode = .follow
         view.addSubview(mapView)
         
-        setupSegmentedControll()
+        setUpSegmentedControll()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    func setupSegmentedControll() {
+    func setUpSegmentedControll() {
         let items = ["Move", "Draw", "Directions"]
         segmentedControl = UISegmentedControl(items: items)
         let frame = UIScreen.main.bounds
@@ -44,7 +44,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         self.view.addSubview(segmentedControl)
     }
     
-    @objc func segmentedValueChanged(_ sender:UISegmentedControl!) {
+    @objc func segmentedValueChanged(_ sender: UISegmentedControl) {
         resetDrawingView()
         
         switch sender.selectedSegmentIndex {
