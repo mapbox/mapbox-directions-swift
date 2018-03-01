@@ -107,7 +107,7 @@ open class Directions: NSObject {
     
     public typealias MatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
     
-    public typealias RouteableMatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
+    public typealias RouteableMatchCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
     

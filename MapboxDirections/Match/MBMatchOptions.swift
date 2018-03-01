@@ -121,41 +121,46 @@ open class MatchingOptions: DirectionOptions {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of tracepoints and an array of routes.
      */
-    internal func responseRouteableMatch(from json: JSONDictionary) -> ([Tracepoint]?, [Route]?) {
-        let jsonTracePoints = (json["tracepoints"] as! [Any]).flatMap {
-            $0 as? JSONDictionary
-        }
-        let tracePoints = jsonTracePoints.map { api -> Tracepoint in
-            let location = api["location"] as! [Double]
-            let coordinate = CLLocationCoordinate2D(geoJSON: location)
-            let alternateCount = api["alternatives_count"] as! Int
-            let waypointIndex = api["waypoint_index"] as? Int
-            let matchingIndex = api["matchings_index"] as! Int
-            let name = api["name"] as? String
-            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
+    internal func responseRouteableMatch(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+
+        var namedWaypoints: [Waypoint]?
+        if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
+            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
+                let location = api["location"] as! [Double]
+                let coordinate = CLLocationCoordinate2D(geoJSON: location)
+                let possibleAPIName = api["name"] as? String
+                let apiName = possibleAPIName?.nonEmptyString
+                return Waypoint(coordinate: coordinate, name: local.name ?? apiName)
+            }
         }
         
+        let waypoints = namedWaypoints ?? self.waypoints
+        
         // This is a real bummer and is another place we need to maintain options.
-        let opts = RouteOptions(waypoints: tracePoints, profileIdentifier: self.profileIdentifier)
+        let opts = RouteOptions(waypoints: waypoints, profileIdentifier: self.profileIdentifier)
         opts.includesSteps = self.includesSteps
         opts.includesVisualInstructions = self.includesVisualInstructions
         opts.includesSpokenInstructions = self.includesSpokenInstructions
         opts.attributeOptions = self.attributeOptions
+        opts.routeShapeResolution = self.routeShapeResolution
+        opts.distanceMeasurementSystem = self.distanceMeasurementSystem
+        opts.shapeFormat = self.shapeFormat
+        opts.locale = self.locale
         
-        var filteredTracepoints: [Tracepoint]?
+        var filteredTracepoints: [Waypoint]?
         if let indices = self.waypointIndices {
             filteredTracepoints = []
-            for (i, tracepoint) in tracePoints.enumerated() {
+            for (i, waypoint) in waypoints.enumerated() {
                 if indices.contains(i) {
-                    filteredTracepoints?.append(tracepoint)
+                    filteredTracepoints?.append(waypoint)
                 }
             }
         }
         
         let routes = (json["matchings"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: filteredTracepoints ?? tracePoints, routeOptions: opts)
+            Route(json: $0, waypoints: filteredTracepoints ?? waypoints, routeOptions: opts)
         }
         
-        return (tracePoints, routes)
+        return (waypoints, routes)
     }
 }
