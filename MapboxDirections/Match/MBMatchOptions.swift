@@ -143,18 +143,18 @@ open class MatchingOptions: DirectionOptions {
         opts.shapeFormat = self.shapeFormat
         opts.locale = self.locale
         
-        var filteredTracepoints: [Waypoint]?
+        var filteredWaypoints: [Waypoint]?
         if let indices = self.waypointIndices {
-            filteredTracepoints = []
+            filteredWaypoints = []
             for (i, waypoint) in waypoints.enumerated() {
                 if indices.contains(i) {
-                    filteredTracepoints?.append(waypoint)
+                    filteredWaypoints?.append(waypoint)
                 }
             }
         }
         
         let routes = (json["matchings"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: filteredTracepoints ?? waypoints, routeOptions: opts)
+            Route(json: $0, waypoints: filteredWaypoints ?? waypoints, routeOptions: opts)
         }
         
         return (waypoints, routes)
