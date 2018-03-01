@@ -24,7 +24,7 @@ open class MatchingOptions: DirectionOptions {
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
-    @objc required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+    @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
@@ -61,12 +61,8 @@ open class MatchingOptions: DirectionOptions {
         coder.encode(waypointIndices, forKey: "waypointIndices")
     }
     
-    @objc private var paramsThatOverlap: [String] = ["geometries", "radiuses", "steps", "overview", "timestamps", "annotations", "banner_instructions", "voice_instructions", "voice_units", "language"]
-    
     override internal var params: [URLQueryItem] {
-        var params = super.params.filter {
-            paramsThatOverlap.contains($0.name)
-        }
+        var params = super.params
         
         params.append(URLQueryItem(name: "tidy", value: String(describing: resampleTraces)))
         
