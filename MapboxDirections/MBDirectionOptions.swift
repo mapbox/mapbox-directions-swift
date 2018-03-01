@@ -1,11 +1,3 @@
-//
-//  MBDirectionOptions.swift
-//  MapboxDirections
-//
-//  Created by Bobby Sudekum on 2/19/18.
-//  Copyright © 2018 Mapbox. All rights reserved.
-//
-
 import Foundation
 
 /**
