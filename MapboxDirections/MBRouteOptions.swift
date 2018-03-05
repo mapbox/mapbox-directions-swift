@@ -477,7 +477,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    public func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         var namedWaypoints: [Waypoint]?
         if let jsonWaypoints = (json["waypoints"] as? [JSONDictionary]) {
             namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
