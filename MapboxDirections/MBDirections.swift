@@ -107,8 +107,6 @@ open class Directions: NSObject {
     
     public typealias MatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
     
-    public typealias RouteableMatchCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
-    
     // MARK: Creating a Directions Object
     
     /**
@@ -187,11 +185,11 @@ open class Directions: NSObject {
         return task
     }
     
-    @objc(calculateMatchingWithOptions:completionHandler:)
+    @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func match(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
-            let response = options.responseMatchOptions(from: json)
+            let response = options.response(from: json)
             if let matches = response.1 {
                 for match in matches {
                     match.accessToken = self.accessToken
@@ -207,11 +205,11 @@ open class Directions: NSObject {
         return task
     }
     
-    @objc(calculateRoutableMatchWithOptions:completionHandler:)
-    @discardableResult open func routableMatch(_ options: MatchingOptions, completionHandler: @escaping RouteableMatchCompletionHandler) -> URLSessionDataTask {
+    @objc(calculateRoutesMatchingOptions:completionHandler:)
+    @discardableResult open func calculateRoutes(_ options: MatchingOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
-            let response = options.responseRouteableMatch(from: json)
+            let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 for route in routes {
                     route.accessToken = self.accessToken

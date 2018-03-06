@@ -1,60 +1,21 @@
 import Polyline
 
 /**
- A `Route` object defines a single route that the user can follow to visit a series of waypoints in order. The route object includes information about the route, such as its distance and expected travel time. Depending on the criteria used to calculate the route, the route object may also include detailed turn-by-turn instructions.
- 
- Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
+ A `DirectionRoute` represents a result returned from either the Directions API or the Map Matching API.
  */
-@objc(MBDirectionRoute)
-open class DirectionRoute: NSObject, NSSecureCoding {
+@objc(MBDirectionsResult)
+open class DirectionsResult: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    @objc internal init(directionsOptions: DirectionsOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
-        self.directionsOptions = directionsOptions
+    @objc internal init(options: DirectionsOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
+        self.directionsOptions = options
         self.legs = legs
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
         self.coordinates = coordinates
         self.speechLocale = speechLocale
     }
-    
-    /**
-     Initializes a new route object with the given JSON dictionary representation and waypoints.
-     
-     This initializer is intended for use in conjunction with the `Directions.url(forCalculating:)` method.
-     
-     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
-     - parameter waypoints: An array of waypoints that the route visits in chronological order.
-     - parameter routeOptions: The `RouteOptions` used to create the request.
-     */
-    @objc public convenience init(json: [String: Any], waypoints: [Waypoint], directionsOptions: DirectionsOptions) {
-        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
-                          json["legs"] as? [JSONDictionary] ?? [])
-        let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: directionsOptions.profileIdentifier)
-        }
-        let distance = json["distance"] as! Double
-        let expectedTravelTime = json["duration"] as! Double
         
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
-        
-        var speechLocale: Locale?
-        if let locale = json["voiceLocale"] as? String {
-            speechLocale = Locale(identifier: locale)
-        }
-        
-        self.init(directionsOptions: directionsOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
-    }
-    
     @objc public required init?(coder decoder: NSCoder) {
         let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
         coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
@@ -70,7 +31,7 @@ open class DirectionRoute: NSObject, NSSecureCoding {
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         
-        guard let options = decoder.decodeObject(of: [DirectionRoute.self], forKey: "directionsOptions") as? DirectionsOptions else {
+        guard let options = decoder.decodeObject(of: [DirectionsResult.self], forKey: "directionsOptions") as? DirectionsOptions else {
             return nil
         }
         directionsOptions = options
@@ -96,8 +57,6 @@ open class DirectionRoute: NSObject, NSSecureCoding {
         coder.encode(routeIdentifier, forKey: "routeIdentifier")
         coder.encode(speechLocale, forKey: "speechLocale")
     }
-    
-    // MARK: Getting the Route Geometry
     
     /**
      An array of geographic coordinates defining the path of the route from start to finish.

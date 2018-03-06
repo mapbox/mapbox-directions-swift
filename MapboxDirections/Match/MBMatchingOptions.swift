@@ -32,7 +32,7 @@ open class MatchingOptions: DirectionsOptions {
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
      */
-    @objc open var resampleTraces: Bool = false
+    @objc open var resamplesTraces: Bool = false
     
     
     /**
@@ -50,13 +50,13 @@ open class MatchingOptions: DirectionsOptions {
     
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)
-        resampleTraces = decoder.decodeBool(forKey: "resampleTraces")
+        resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
         timestamps = decoder.decodeObject(of: [NSArray.self, NSDate.self], forKey: "timestamps") as? [Date]
         waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
     }
     
     @objc public override func encode(with coder: NSCoder) {
-        coder.encode(resampleTraces, forKey: "resampleTraces")
+        coder.encode(resamplesTraces, forKey: "resampleTraces")
         coder.encode(timestamps, forKey: "timestamps")
         coder.encode(waypointIndices, forKey: "waypointIndices")
     }
@@ -64,7 +64,7 @@ open class MatchingOptions: DirectionsOptions {
     override internal var params: [URLQueryItem] {
         var params = super.params
         
-        params.append(URLQueryItem(name: "tidy", value: String(describing: resampleTraces)))
+        params.append(URLQueryItem(name: "tidy", value: String(describing: resamplesTraces)))
         
         if let timestamps = timestamps, !timestamps.isEmpty {
             let timeStrings = timestamps.map {
@@ -90,7 +90,7 @@ open class MatchingOptions: DirectionsOptions {
         return "matching/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
     }
     
-    internal func responseMatchOptions(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
+    internal func response(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
         let jsonTracePoints = (json["tracepoints"] as! [Any]).flatMap {
             $0 as? JSONDictionary
         }
@@ -115,9 +115,9 @@ open class MatchingOptions: DirectionsOptions {
      Returns response objects that represent the given JSON dictionary data.
      
      - parameter json: The API response in JSON dictionary format.
-     - returns: A tuple containing an array of tracepoints and an array of routes.
+     - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func responseRouteableMatch(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(containingRoutesFrom json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
 
         var namedWaypoints: [Waypoint]?
         if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {

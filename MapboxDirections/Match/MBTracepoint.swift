@@ -11,7 +11,7 @@ public class Tracepoint: Waypoint {
     /**
      Index of the waypoint inside the matched route.
      */
-    open var waypointIndex: Int?
+    @objc open var waypointIndex: Int = NSNotFound
     
     /**
       Index to the match object in matchings the sub-trace was matched to.
@@ -20,10 +20,11 @@ public class Tracepoint: Waypoint {
     
     init(coordinate: CLLocationCoordinate2D, alternateCount: Int, waypointIndex: Int?, matchingIndex: Int, name: String?) {
         self.alternateCount = alternateCount
-        self.waypointIndex = waypointIndex
+        self.waypointIndex = waypointIndex ?? NSNotFound
         self.matchingIndex = matchingIndex
         super.init(coordinate: coordinate)
         self.name = name
+        s
     }
     
     @objc public required init?(coder decoder: NSCoder) {

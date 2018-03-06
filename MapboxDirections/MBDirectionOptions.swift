@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
+ A `RouteShapeFormat` indicates the format of a route or matches shape in the raw HTTP response.
  */
 @objc(MBRouteShapeFormat)
 public enum RouteShapeFormat: UInt, CustomStringConvertible {
@@ -361,7 +361,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     /**
      The locale in which the route’s instructions are written.
      
-     If you use MapboxDirections.swift with the Mapbox Directions API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
+     If you use MapboxDirections.swift with the Mapbox Directions API or Map Matching API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
      
      The Directions API can provide instructions in [a number of languages](https://www.mapbox.com/api-documentation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
      

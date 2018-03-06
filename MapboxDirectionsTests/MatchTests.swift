@@ -2,7 +2,7 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-class MatchTest: XCTestCase {
+class MatchTests: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()

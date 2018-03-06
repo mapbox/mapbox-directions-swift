@@ -1,11 +1,11 @@
 import Polyline
 
 @objc(MBMatch)
-open class Match: DirectionRoute {
+open class Match: DirectionsResult {
     
     init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double, speechLocale: Locale?) {
         self.confidence = confidence
-        super.init(directionsOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
@@ -39,9 +39,9 @@ open class Match: DirectionRoute {
     }
     
     /**
-     A `Double` between 0 and 1 indicating level of confidence in `Match`. A higher value indicates a higher confidence.
+     A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
-    @objc open var confidence: Double
+    @objc open var confidence: Float
     
     public var matchOptions: MatchingOptions {
         return super.directionsOptions as! MatchingOptions
@@ -49,7 +49,7 @@ open class Match: DirectionRoute {
     
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)
-        confidence = decoder.decodeDouble(forKey: "confidence")
+        confidence = decoder.decodeFloat(forKey: "confidence")
     }
     
     @objc public override func encode(with coder: NSCoder) {
