@@ -3,7 +3,7 @@ import Polyline
 @objc(MBMatch)
 open class Match: DirectionsResult {
     
-    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double, speechLocale: Locale?) {
+    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
         self.confidence = confidence
         super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
@@ -28,7 +28,7 @@ open class Match: DirectionsResult {
             coordinates = nil
         }
         
-        let confidence = json["confidence"] as! Double
+        let confidence = json["confidence"] as! Float
         
         var speechLocale: Locale?
         if let locale = json["voiceLocale"] as? String {
