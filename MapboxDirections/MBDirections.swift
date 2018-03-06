@@ -185,6 +185,14 @@ open class Directions: NSObject {
         return task
     }
     
+    /**
+     Begins asynchronously calculating a match using the given options and delivers the results to a closuer.
+     
+     
+     - parameter options: A `MatchingOptions` object specifying the requirements for the resulting match.
+     - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
+     */
     @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func match(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)

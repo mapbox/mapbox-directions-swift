@@ -5,7 +5,6 @@ import Polyline
  */
 @objc(MBDirectionsResult)
 open class DirectionsResult: NSObject, NSSecureCoding {
-    // MARK: Creating a Route
     
     @objc internal init(options: DirectionsOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
         self.directionsOptions = options
