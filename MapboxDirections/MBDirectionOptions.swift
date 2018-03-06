@@ -184,6 +184,9 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
     }
 }
 
+/**
+ A base class that contains shared resources between `MatchOptions` and `RouteOptions`.
+ */
 @objc(MBDirectionsOptions)
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     

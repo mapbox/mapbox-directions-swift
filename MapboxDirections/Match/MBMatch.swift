@@ -1,5 +1,10 @@
 import Polyline
 
+/**
+ A `Match` object defines a single route that was created from a series of points that were matched against a road network.
+ 
+ Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.match(_:completionHandler:)` method.
+ */
 @objc(MBMatch)
 open class Match: DirectionsResult {
     
@@ -8,7 +13,14 @@ open class Match: DirectionsResult {
         super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
-    convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
+    /**
+     Initializes a new match object with the given JSON dictionary representation and tracepoints.
+     
+     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
+     - parameter tracePoints: An array of `Tracepoint` that the match found in order.
+     - parameter matchOptions: The `MatchingOptions` used to create the request.
+    */
+    @objc public convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
         let legInfo = zip(zip(tracePoints.prefix(upTo: tracePoints.endIndex - 1), tracePoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
