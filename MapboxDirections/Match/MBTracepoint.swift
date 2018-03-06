@@ -24,7 +24,6 @@ public class Tracepoint: Waypoint {
         self.matchingIndex = matchingIndex
         super.init(coordinate: coordinate)
         self.name = name
-        s
     }
     
     @objc public required init?(coder decoder: NSCoder) {
