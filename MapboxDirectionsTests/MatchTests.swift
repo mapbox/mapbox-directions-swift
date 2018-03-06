@@ -57,6 +57,9 @@ class MatchTest: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
+        let opts = match.matchOptions
+        XCTAssertEqual(opts, matchOptions)
+        
         XCTAssertNotNil(match)
         XCTAssertNotNil(match.coordinates)
         XCTAssertEqual(match.coordinates!.count, 8)
@@ -78,10 +81,6 @@ class MatchTest: XCTestCase {
         XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
         XCTAssertEqual(match!.legs.count, 6)
         XCTAssertEqual(match!.confidence, 0.95)
-
-        let opts = match!.directionOptions
-
-        XCTAssertEqual(opts, matchOptions)
 
         let leg = match!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")

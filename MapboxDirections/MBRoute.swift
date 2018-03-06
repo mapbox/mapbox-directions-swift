@@ -10,7 +10,7 @@ open class Route: DirectionRoute {
     // MARK: Creating a Route
     
     @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
-        super.init(directionOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(directionsOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     /**
@@ -47,11 +47,11 @@ open class Route: DirectionRoute {
             speechLocale = Locale(identifier: locale)
         }
         
-        super.init(directionOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(directionsOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     public var routeOptions: RouteOptions {
-        return super.directionOptions as! RouteOptions
+        return super.directionsOptions as! RouteOptions
     }
     
     @objc public required init?(coder decoder: NSCoder) {

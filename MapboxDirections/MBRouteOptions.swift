@@ -4,7 +4,7 @@
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objc(MBRouteOptions)
-open class RouteOptions: DirectionOptions {
+open class RouteOptions: DirectionsOptions {
     /**
      Initializes a route options object for routes between the given locations and an optional profile identifier.
 

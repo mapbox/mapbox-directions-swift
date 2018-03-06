@@ -9,8 +9,8 @@ import Polyline
 open class DirectionRoute: NSObject, NSSecureCoding {
     // MARK: Creating a Route
     
-    @objc internal init(directionOptions: DirectionOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
-        self.directionOptions = directionOptions
+    @objc internal init(directionsOptions: DirectionsOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
+        self.directionsOptions = directionsOptions
         self.legs = legs
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
@@ -27,12 +27,12 @@ open class DirectionRoute: NSObject, NSSecureCoding {
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter routeOptions: The `RouteOptions` used to create the request.
      */
-    @objc public convenience init(json: [String: Any], waypoints: [Waypoint], directionOptions: DirectionOptions) {
+    @objc public convenience init(json: [String: Any], waypoints: [Waypoint], directionsOptions: DirectionsOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: directionOptions.profileIdentifier)
+            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: directionsOptions.profileIdentifier)
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
@@ -52,7 +52,7 @@ open class DirectionRoute: NSObject, NSSecureCoding {
             speechLocale = Locale(identifier: locale)
         }
         
-        self.init(directionOptions: directionOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        self.init(directionsOptions: directionsOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     @objc public required init?(coder decoder: NSCoder) {
@@ -70,10 +70,10 @@ open class DirectionRoute: NSObject, NSSecureCoding {
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         
-        guard let options = decoder.decodeObject(of: [DirectionRoute.self], forKey: "directionOptions") as? DirectionOptions else {
+        guard let options = decoder.decodeObject(of: [DirectionRoute.self], forKey: "directionsOptions") as? DirectionsOptions else {
             return nil
         }
-        directionOptions = options
+        directionsOptions = options
         
         routeIdentifier = decoder.decodeObject(of: NSString.self, forKey: "routeIdentifier") as String?
         
@@ -92,7 +92,7 @@ open class DirectionRoute: NSObject, NSSecureCoding {
         coder.encode(legs, forKey: "legs")
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(directionOptions, forKey: "directionOptions")
+        coder.encode(directionsOptions, forKey: "directionsOptions")
         coder.encode(routeIdentifier, forKey: "routeIdentifier")
         coder.encode(speechLocale, forKey: "speechLocale")
     }
@@ -174,7 +174,7 @@ open class DirectionRoute: NSObject, NSSecureCoding {
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    @objc open let directionOptions: DirectionOptions
+    @objc open let directionsOptions: DirectionsOptions
     
     /**
      The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.
@@ -192,7 +192,7 @@ open class DirectionRoute: NSObject, NSSecureCoding {
     
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {
-            return debugQuickLookURL(illustrating: coordinates, profileIdentifier: directionOptions.profileIdentifier)
+            return debugQuickLookURL(illustrating: coordinates, profileIdentifier: directionsOptions.profileIdentifier)
         }
         return nil
     }
