@@ -5,7 +5,7 @@ open class Match: DirectionRoute {
     
     init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Double, speechLocale: Locale?) {
         self.confidence = confidence
-        super.init(directionOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(directionsOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
@@ -44,7 +44,7 @@ open class Match: DirectionRoute {
     @objc open var confidence: Double
     
     public var matchOptions: MatchingOptions {
-        return super.directionOptions as! MatchingOptions
+        return super.directionsOptions as! MatchingOptions
     }
     
     @objc public required convenience init?(coder decoder: NSCoder) {

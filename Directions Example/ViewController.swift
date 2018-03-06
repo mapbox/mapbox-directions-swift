@@ -11,6 +11,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     var drawingView: MBDrawingView?
     var segmentedControl: UISegmentedControl!
+    static let initialMapCenter = CLLocationCoordinate2D(latitude: 37.3300, longitude: -122.0312)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,20 +21,20 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.setCenter(CLLocationCoordinate2D(latitude: 37.3300, longitude: -122.0312), animated: false)
+        mapView.setCenter(ViewController.initialMapCenter, animated: false)
         mapView.setZoomLevel(15, animated: false)
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         view.addSubview(mapView)
         
-        setUpSegmentedControll()
+        setUpSegmentedControls()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    func setUpSegmentedControll() {
+    func setUpSegmentedControls() {
         let items = ["Move", "Draw", "Directions"]
         segmentedControl = UISegmentedControl(items: items)
         let frame = UIScreen.main.bounds

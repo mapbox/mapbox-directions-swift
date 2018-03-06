@@ -42,6 +42,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>location</string>
+	<string>Use the user location to fetch a route from their current position.</string>
 </dict>
 </plist>

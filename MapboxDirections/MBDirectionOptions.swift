@@ -184,8 +184,8 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
     }
 }
 
-@objc(MBDirecitonOptions)
-open class DirectionOptions: NSObject, NSSecureCoding, NSCopying {
+@objc(MBDirectionsOptions)
+open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     
     /**
      Initializes a route options object for routes between the given waypoints and an optional profile identifier.
@@ -218,13 +218,13 @@ open class DirectionOptions: NSObject, NSSecureCoding, NSCopying {
     
     //MARK: - OBJ-C Equality
     open override func isEqual(_ object: Any?) -> Bool {
-        guard let opts = object as? DirectionOptions else { return false }
+        guard let opts = object as? DirectionsOptions else { return false }
         return isEqual(to: opts)
     }
     
-    @objc(isEqualToDirectionOptions:)
-    open func isEqual(to directionOptions: DirectionOptions?) -> Bool {
-        guard let other = directionOptions else { return false }
+    @objc(isEqualToDirectionsOptions:)
+    open func isEqual(to directionsOptions: DirectionsOptions?) -> Bool {
+        guard let other = directionsOptions else { return false }
         guard waypoints == other.waypoints,
             profileIdentifier == other.profileIdentifier,
             includesSteps == other.includesSteps,
@@ -301,7 +301,10 @@ open class DirectionOptions: NSObject, NSSecureCoding, NSCopying {
         return waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }
     }
     
-    internal var path: String { return "" }
+    internal var path: String {
+        assert(self.path.isEmpty, "path should be overriden by subclass")
+        return ""
+    }
     
     /**
      An array of `Waypoint` objects representing locations that the route should visit in chronological order.

@@ -1,7 +1,7 @@
 import Foundation
 
 @objc(MBMatchingOptions)
-open class MatchingOptions: DirectionOptions {
+open class MatchingOptions: DirectionsOptions {
     
     /**
      Initializes a match options object for matching locations against the road network.
