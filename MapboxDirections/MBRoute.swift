@@ -6,11 +6,11 @@ import Polyline
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
 @objc(MBRoute)
-open class Route: DirectionRoute {
+open class Route: DirectionsResult {
     // MARK: Creating a Route
     
     @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
-        super.init(directionsOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(options: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     /**
@@ -47,7 +47,7 @@ open class Route: DirectionRoute {
             speechLocale = Locale(identifier: locale)
         }
         
-        super.init(directionsOptions: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(options: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     public var routeOptions: RouteOptions {
