@@ -39,6 +39,10 @@ open class RouteOptions: DirectionsOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
+    
+    @objc internal convenience init(matchOptions: MatchingOptions) {
+        self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
+    }
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
