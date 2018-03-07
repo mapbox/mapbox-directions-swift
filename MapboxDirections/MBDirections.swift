@@ -196,7 +196,8 @@ open class Directions: NSObject {
     @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func match(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json) in
+        let data = options.encodedParam.data(using: .utf8)
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response.1 {
                 for match in matches {
@@ -216,7 +217,8 @@ open class Directions: NSObject {
     @objc(calculateRoutesMatchingOptions:completionHandler:)
     @discardableResult open func calculateRoutes(_ options: MatchingOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json) in
+        let data = options.encodedParam.data(using: .utf8)
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 for route in routes {
@@ -242,10 +244,17 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        
+        if let data = data {
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.httpMethod = "POST"
+            request.httpBody = data
+        }
+        
         return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data, response?.mimeType == "application/json" {

@@ -84,10 +84,18 @@ open class MatchingOptions: DirectionsOptions {
     }
     
     internal override var path: String {
-        assert(!queries.isEmpty, "No query")
+        return "matching/v5/\(profileIdentifier.rawValue).json"
+    }
+    
+    internal var encodedParam: String {
+        let joinedParams = params.flatMap({ (param) -> String? in
+            guard let value = param.value else { return nil }
+            return "\(param.name)=\(value)"
+        }).joined(separator: "&")
         
-        let queryComponent = queries.joined(separator: ";")
-        return "matching/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
+        let locations = waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }.joined(separator: ";")
+        
+        return "\(joinedParams)&locations=\(locations)"
     }
     
     internal func response(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {

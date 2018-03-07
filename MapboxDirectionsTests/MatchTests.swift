@@ -18,20 +18,9 @@ class MatchTests: XCTestCase {
                          CLLocationCoordinate2D(latitude: 32.712597, longitude: -117.173143),
                          CLLocationCoordinate2D(latitude: 32.712546, longitude: -117.173345)]
         
-        let stringLocations = locations.map {
-            "\($0.longitude),\($0.latitude)"
-            }.joined(separator: ";")
-        
-        let queryParams: [String: String?] = [
-            "geometries": "polyline",
-            "overview": "full",
-            "steps": "true",
-            "tidy": "false",
-            "access_token": BogusToken,
-            ]
         stub(condition: isHost("api.mapbox.com")
-            && isPath("/matching/v5/mapbox/driving/\(stringLocations).json")
-            && containsQueryParams(queryParams)) { _ in
+            && isMethodPOST()
+            && isPath("/matching/v5/mapbox/driving.json")) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "match", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
