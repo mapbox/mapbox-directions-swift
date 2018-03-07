@@ -139,17 +139,7 @@ open class MatchingOptions: DirectionsOptions {
         }
         
         let waypoints = namedWaypoints ?? self.waypoints
-        
-        // This is a real bummer and is another place we need to maintain options.
-        let opts = RouteOptions(waypoints: waypoints, profileIdentifier: self.profileIdentifier)
-        opts.includesSteps = self.includesSteps
-        opts.includesVisualInstructions = self.includesVisualInstructions
-        opts.includesSpokenInstructions = self.includesSpokenInstructions
-        opts.attributeOptions = self.attributeOptions
-        opts.routeShapeResolution = self.routeShapeResolution
-        opts.distanceMeasurementSystem = self.distanceMeasurementSystem
-        opts.shapeFormat = self.shapeFormat
-        opts.locale = self.locale
+        let opts = RouteOptions(matchOptions: self)
         
         var filteredWaypoints: [Waypoint]?
         if let indices = self.waypointIndices {

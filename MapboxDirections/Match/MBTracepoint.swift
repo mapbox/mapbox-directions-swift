@@ -14,7 +14,7 @@ public class Tracepoint: Waypoint {
     @objc open var waypointIndex: Int = NSNotFound
     
     /**
-      Index to the match object in matchings the sub-trace was matched to.
+      If more than one `Match` are returned, this index represents which `Match` this tracepoint was used on.
      */
     @objc open var matchingIndex: Int
     
