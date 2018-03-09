@@ -288,9 +288,16 @@ open class Directions: NSObject {
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
     open func url(forCalculating options: DirectionsOptions) -> URL {
-        let params = options.params + [
-            URLQueryItem(name: "access_token", value: accessToken),
-        ]
+        let params: [URLQueryItem]
+        if options is MatchingOptions {
+            params = [
+                URLQueryItem(name: "access_token", value: accessToken),
+            ]
+        } else {
+            params = options.params + [
+                URLQueryItem(name: "access_token", value: accessToken),
+            ]
+        }
         
         let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
