@@ -84,7 +84,7 @@ open class MatchingOptions: DirectionsOptions {
     }
     
     internal override var path: String {
-        return "matching/v5/\(profileIdentifier.rawValue).json"
+        return "matching/v5/\(profileIdentifier.rawValue)"
     }
     
     internal var encodedParam: String {
@@ -95,7 +95,7 @@ open class MatchingOptions: DirectionsOptions {
         
         let locations = waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }.joined(separator: ";")
         
-        return "\(joinedParams)&locations=\(locations)"
+        return "\(joinedParams)&coordinates=\(locations)"
     }
     
     internal func response(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
