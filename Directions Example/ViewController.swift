@@ -139,7 +139,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchingOptions(coordinates: locations)
 
-        Directions(accessToken: MapboxAccessToken).match(matchOptions) { (tracepoints, matches, error) in
+        Directions(accessToken: MapboxAccessToken).calculate(matchOptions) { (matches, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
