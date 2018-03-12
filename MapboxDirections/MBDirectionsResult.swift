@@ -1,7 +1,7 @@
 import Polyline
 
 /**
- A `DirectionRoute` represents a result returned from either the Directions API or the Map Matching API.
+ A `DirectionsResult` represents a result returned from either the Directions API or the Map Matching API.
  */
 @objc(MBDirectionsResult)
 open class DirectionsResult: NSObject, NSSecureCoding {

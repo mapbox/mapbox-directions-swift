@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- A `RouteShapeFormat` indicates the format of a route or matches shape in the raw HTTP response.
+ A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
 @objc(MBRouteShapeFormat)
 public enum RouteShapeFormat: UInt, CustomStringConvertible {
@@ -185,7 +185,9 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
 }
 
 /**
- A base class that contains shared resources between `MatchOptions` and `RouteOptions`.
+ Options for calculating results from the Mapbox Directions service.
+ 
+ You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
 @objc(MBDirectionsOptions)
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
@@ -305,7 +307,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     }
     
     internal var path: String {
-        assert(self.path.isEmpty, "path should be overriden by subclass")
+        assert(false, "path should be overriden by subclass")
         return ""
     }
     

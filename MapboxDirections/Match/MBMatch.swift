@@ -3,25 +3,26 @@ import Polyline
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
  
- Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.match(_:completionHandler:)` method.
+ Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchingOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
 @objc(MBMatch)
 open class Match: DirectionsResult {
     
-    init(matchOptions: MatchingOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
+    init(matchOptions: MatchingOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
         self.confidence = confidence
+        self.tracepoints = tracepoints
         super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
     /**
      Initializes a new match object with the given JSON dictionary representation and tracepoints.
      
-     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
-     - parameter tracePoints: An array of `Tracepoint` that the match found in order.
+     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Mapbox Map Matching API.
+     - parameter tracepoints: An array of `Tracepoint` that the match found in order.
      - parameter matchOptions: The `MatchingOptions` used to create the request.
     */
-    @objc public convenience init(json: [String: Any], tracePoints: [Tracepoint], matchOptions: MatchingOptions) {
-        let legInfo = zip(zip(tracePoints.prefix(upTo: tracePoints.endIndex - 1), tracePoints.suffix(from: 1)),
+    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], matchOptions: MatchingOptions) {
+        let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
             RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: matchOptions.profileIdentifier)
@@ -47,13 +48,16 @@ open class Match: DirectionsResult {
             speechLocale = Locale(identifier: locale)
         }
         
-        self.init(matchOptions: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale)
+        self.init(matchOptions: matchOptions, legs: legs, tracepoints: tracepoints, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale)
     }
     
     /**
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
     @objc open var confidence: Float
+    
+    
+    @objc let tracepoints: [Tracepoint]?
     
     public var matchOptions: MatchingOptions {
         return super.directionsOptions as! MatchingOptions

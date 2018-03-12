@@ -105,7 +105,15 @@ open class Directions: NSObject {
      */
     public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
-    public typealias MatchCompletionHandler = (_ waypoints: [Tracepoint]?, _ routes: [Match]?, _ error: NSError?) -> Void
+    /**
+     A closure (block) to be called when a map matching request is complete.
+     
+     - parameter tracepoint: An array of `Tracepoint` objects.
+     
+     If the request was canceled or there was an error obtaining the matches, this parameter is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
+     - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
+     */
+    public typealias MatchCompletionHandler = (_ matches: [Match]?, _ error: NSError?) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -186,7 +194,7 @@ open class Directions: NSObject {
     }
     
     /**
-     Begins asynchronously calculating a match using the given options and delivers the results to a closuer.
+     Begins asynchronously calculating a match using the given options and delivers the results to a closure.
      
      
      - parameter options: A `MatchingOptions` object specifying the requirements for the resulting match.
@@ -194,28 +202,28 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
     @objc(calculateMatchesWithOptions:completionHandler:)
-    @discardableResult open func match(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
+    @discardableResult open func calculate(_ options: MatchingOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
-            if let matches = response.1 {
+            if let matches = response {
                 for match in matches {
                     match.accessToken = self.accessToken
                     match.apiEndpoint = self.apiEndpoint
                     match.routeIdentifier = json["uuid"] as? String
                 }
             }
-            completionHandler(response.0, response.1, nil)
+            completionHandler(response, nil)
         }) { (error) in
-            completionHandler(nil, nil, error)
+            completionHandler(nil, error)
         }
         task.resume()
         return task
     }
     
     @objc(calculateRoutesMatchingOptions:completionHandler:)
-    @discardableResult open func calculateRoutes(_ options: MatchingOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
+    @discardableResult open func calculateRoutes(matching options: MatchingOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
@@ -288,16 +296,9 @@ open class Directions: NSObject {
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
     open func url(forCalculating options: DirectionsOptions) -> URL {
-        let params: [URLQueryItem]
-        if options is MatchingOptions {
-            params = [
-                URLQueryItem(name: "access_token", value: accessToken),
-            ]
-        } else {
-            params = options.params + [
-                URLQueryItem(name: "access_token", value: accessToken),
-            ]
-        }
+        let params = options.params + [
+            URLQueryItem(name: "access_token", value: accessToken),
+        ]
         
         let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
