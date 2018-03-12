@@ -58,7 +58,7 @@ open class Match: DirectionsResult {
     
     
     /**
-     Represents a the location an input location was matched with.
+     Tracepoints on the road network that match the tracepoints in the matching options.
      */
     @objc open var tracepoints: [Tracepoint]?
     
@@ -81,5 +81,6 @@ open class Match: DirectionsResult {
     
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
+        coder.encode(tracepoints, forKey: "tracepoints")
     }
 }
