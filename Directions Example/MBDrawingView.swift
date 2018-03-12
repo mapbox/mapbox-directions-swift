@@ -8,8 +8,16 @@ public class MBDrawingView: UIView {
     
     private var points: [CGPoint]!
     private var context: CGContext!
-    private var strokeColor = UIColor.blue.withAlphaComponent(0.75)
-    private var lineWidth: CGFloat = 3
+    private var strokeColor = UIColor.blue.withAlphaComponent(0.75) {
+        didSet {
+            context.setStrokeColor(strokeColor.cgColor)
+        }
+    }
+    private var lineWidth: CGFloat = 3 {
+        didSet {
+            context.setLineWidth(lineWidth)
+        }
+    }
     
     public weak var delegate: MBDrawingViewDelegate?
     
@@ -34,16 +42,6 @@ public class MBDrawingView: UIView {
         UIGraphicsEndImageContext()
     }
     
-    public func setStrokeColor(strokeColor: UIColor) {
-        self.strokeColor = strokeColor
-        context.setStrokeColor(strokeColor.cgColor)
-    }
-    
-    public func setLineWidth(lineWidth: CGFloat) {
-        self.lineWidth = lineWidth
-        context.setLineWidth(lineWidth)
-    }
-    
     private func setup() {
         backgroundColor = UIColor.clear
         
@@ -63,8 +61,6 @@ public class MBDrawingView: UIView {
     private func createContext() {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
         context = UIGraphicsGetCurrentContext()!
-        setStrokeColor(strokeColor: self.strokeColor)
-        setLineWidth(lineWidth: self.lineWidth)
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
