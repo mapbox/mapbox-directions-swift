@@ -108,8 +108,6 @@ open class Directions: NSObject {
     /**
      A closure (block) to be called when a map matching request is complete.
      
-     - parameter tracepoint: An array of `Tracepoint` objects.
-     
      If the request was canceled or there was an error obtaining the matches, this parameter is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */

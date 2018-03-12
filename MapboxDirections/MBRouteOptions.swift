@@ -42,6 +42,13 @@ open class RouteOptions: DirectionsOptions {
     
     @objc internal convenience init(matchOptions: MatchingOptions) {
         self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
+        self.includesSteps = matchOptions.includesSteps
+        self.shapeFormat = matchOptions.shapeFormat
+        self.attributeOptions = matchOptions.attributeOptions
+        self.routeShapeResolution = matchOptions.routeShapeResolution
+        self.locale = matchOptions.locale
+        self.includesSpokenInstructions = matchOptions.includesSpokenInstructions
+        self.includesVisualInstructions = matchOptions.includesVisualInstructions
     }
 
     public required init?(coder decoder: NSCoder) {

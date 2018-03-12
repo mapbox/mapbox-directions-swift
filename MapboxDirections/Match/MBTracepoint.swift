@@ -13,11 +13,10 @@ public class Tracepoint: Waypoint {
      */
     @objc open var waypointIndex: Int = NSNotFound
     
-    init(coordinate: CLLocationCoordinate2D, alternateCount: Int, waypointIndex: Int?, matchingIndex: Int, name: String?) {
+    init(coordinate: CLLocationCoordinate2D, alternateCount: Int, waypointIndex: Int?, name: String?) {
         self.alternateCount = alternateCount
         self.waypointIndex = waypointIndex ?? NSNotFound
-        super.init(coordinate: coordinate)
-        self.name = name
+        super.init(coordinate: coordinate, name: name)
     }
     
     @objc public required init?(coder decoder: NSCoder) {

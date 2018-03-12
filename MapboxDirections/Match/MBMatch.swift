@@ -57,15 +57,26 @@ open class Match: DirectionsResult {
     @objc open var confidence: Float
     
     
-    @objc let tracepoints: [Tracepoint]?
+    /**
+     Represents a the location an input location was matched with.
+     */
+    @objc open var tracepoints: [Tracepoint]?
     
-    public var matchOptions: MatchingOptions {
+    /**
+     `MatchingOptions` used to create the match request.
+     */
+    public var matchingOptions: MatchingOptions {
         return super.directionsOptions as! MatchingOptions
     }
     
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)
         confidence = decoder.decodeFloat(forKey: "confidence")
+        
+        guard let tracepoints = decoder.decodeObject(of: [NSArray.self, Tracepoint.self], forKey: "tracepoints") as? [Tracepoint] else {
+            return nil
+        }
+        self.tracepoints = tracepoints
     }
     
     @objc public override func encode(with coder: NSCoder) {

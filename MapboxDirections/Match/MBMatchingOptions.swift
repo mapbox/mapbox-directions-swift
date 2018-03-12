@@ -44,7 +44,7 @@ open class MatchingOptions: DirectionsOptions {
     
     
     /**
-     An IndexSet of unique integers representing which coordinates should be treated as `Wapoints`.
+     An IndexSet of unique integers representing which coordinates should be treated as `Waypoint`.
      */
     @objc open var waypointIndices: IndexSet?
     
@@ -107,9 +107,8 @@ open class MatchingOptions: DirectionsOptions {
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
             let alternateCount = api["alternatives_count"] as! Int
             let waypointIndex = api["waypoint_index"] as? Int
-            let matchingIndex = api["matchings_index"] as! Int
             let name = api["name"] as? String
-            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, matchingIndex: matchingIndex, name: name)
+            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, name: name)
         }
         
         let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
