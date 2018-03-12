@@ -44,7 +44,7 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        let opts = match.matchOptions
+        let opts = match.matchingOptions
         XCTAssertEqual(opts, matchOptions)
         
         XCTAssertNotNil(match)
