@@ -98,11 +98,11 @@ open class MatchingOptions: DirectionsOptions {
         return "\(joinedParams)&coordinates=\(locations)"
     }
     
-    internal func response(from json: JSONDictionary) -> ([Tracepoint]?, [Match]?) {
-        let jsonTracePoints = (json["tracepoints"] as! [Any]).flatMap {
+    internal func response(from json: JSONDictionary) -> [Match]? {
+        let jsonTracepoints = (json["tracepoints"] as! [Any]).flatMap {
             $0 as? JSONDictionary
         }
-        let tracePoints = jsonTracePoints.map { api -> Tracepoint in
+        let tracepoints = jsonTracepoints.map { api -> Tracepoint in
             let location = api["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
             let alternateCount = api["alternatives_count"] as! Int
@@ -113,10 +113,10 @@ open class MatchingOptions: DirectionsOptions {
         }
         
         let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
-            Match(json: $0, tracePoints: tracePoints, matchOptions: self)
+            Match(json: $0, tracepoints: tracepoints, matchOptions: self)
         }
         
-        return (tracePoints, matchings)
+        return matchings
     }
     
     /**

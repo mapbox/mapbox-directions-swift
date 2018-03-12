@@ -26,16 +26,14 @@ class MatchTests: XCTestCase {
         }
         
         var match: Match!
-        var tracePoints: [Tracepoint]!
         let matchOptions = MatchingOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(accessToken: BogusToken).match(matchOptions) { (tPoints, matches, error) in
+        let task = Directions(accessToken: BogusToken).calculate(matchOptions) { (matches, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
             match = matches!.first!
-            tracePoints = tPoints
             
             expectation.fulfill()
         }
@@ -56,9 +54,9 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(match.routeIdentifier, nil)
         
+        let tracePoints = match.tracepoints!
         XCTAssertNotNil(tracePoints)
         XCTAssertEqual(tracePoints.first!.alternateCount, 0)
-        XCTAssertEqual(tracePoints.first!.matchingIndex, 0)
         XCTAssertEqual(tracePoints.first!.waypointIndex, 0)
         
         XCTAssertEqual(tracePoints.last!.name, "West G Street")
