@@ -32,7 +32,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
         distance = decoder.decodeDouble(forKey: "distance")
         expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
         
-        guard let options = decoder.decodeObject(of: [DirectionsResult.self], forKey: "directionsOptions") as? DirectionsOptions else {
+        guard let options = decoder.decodeObject(of: [DirectionsOptions.self], forKey: "directionsOptions") as? DirectionsOptions else {
             return nil
         }
         directionsOptions = options
