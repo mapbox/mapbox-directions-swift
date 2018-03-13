@@ -86,6 +86,8 @@ open class Match: DirectionsResult {
         }
         self.tracepoints = tracepoints
         
+        waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
+        
         super.init(coder: decoder)
     }
     
@@ -96,6 +98,8 @@ open class Match: DirectionsResult {
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
         coder.encode(tracepoints, forKey: "tracepoints")
+        coder.encode(waypointIndices, forKey: "waypointIndices")
+        super.encode(with: coder)
     }
     
     //MARK: - OBJ-C Equality

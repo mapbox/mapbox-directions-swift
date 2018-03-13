@@ -58,6 +58,11 @@ open class MatchOptions: DirectionsOptions {
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(resamplesTraces, forKey: "resampleTraces")
         coder.encode(waypointIndices, forKey: "waypointIndices")
+        super.encode(with: coder)
+    }
+    
+    public override class var supportsSecureCoding: Bool {
+        return true
     }
     
     override internal var params: [URLQueryItem] {
