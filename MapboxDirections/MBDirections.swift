@@ -220,7 +220,7 @@ open class Directions: NSObject {
         return task
     }
     
-    @objc(calculateRoutesMatchOptions:completionHandler:)
+    @objc(calculateRoutesMatchingOptions:completionHandler:)
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)

@@ -95,6 +95,8 @@
 		C5990B4F2045E74A00D7DFD4 /* MBDirectionsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* MBDirectionsOptions.swift */; };
 		C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A3D3971E8188FE00D494A0 /* annotation.json */; };
 		C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */ = {isa = PBXBuildFile; fileRef = C5C0D6332058523E003A3B1D /* null-tracepoint.json */; };
+		C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */ = {isa = PBXBuildFile; fileRef = C5C0D6332058523E003A3B1D /* null-tracepoint.json */; };
+		C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */ = {isa = PBXBuildFile; fileRef = C5C0D6332058523E003A3B1D /* null-tracepoint.json */; };
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
@@ -988,6 +990,7 @@
 				DA737EF31D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */,
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
+				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
@@ -1011,6 +1014,7 @@
 				DA737EF41D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */,
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
+				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,

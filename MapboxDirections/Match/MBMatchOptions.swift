@@ -90,6 +90,9 @@ open class MatchOptions: DirectionsOptions {
     }
     
     internal func response(from json: JSONDictionary) -> [Match]? {
+        
+        var waypointIndices = IndexSet()
+        
         let tracepoints = (json["tracepoints"] as! [Any]).map { api -> Tracepoint in
             guard let api = api as? JSONDictionary else {
                 return Tracepoint(coordinate: kCLLocationCoordinate2DInvalid, alternateCount: nil, name: nil)
@@ -98,11 +101,14 @@ open class MatchOptions: DirectionsOptions {
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
             let alternateCount = api["alternatives_count"] as! Int
             let name = api["name"] as? String
+            if let waypointIndex = api["waypoint_index"] as? Int {
+                waypointIndices.insert(waypointIndex)
+            }
             return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, name: name)
         }
         
         let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
-            Match(json: $0, tracepoints: tracepoints, matchOptions: self)
+            Match(json: $0, tracepoints: tracepoints, waypointIndices: waypointIndices, matchOptions: self)
         }
         
         return matchings
