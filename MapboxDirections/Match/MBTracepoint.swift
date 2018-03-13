@@ -23,4 +23,8 @@ public class Tracepoint: Waypoint {
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(alternateCount, forKey: "alternateCount")
     }
+    
+    override public class var supportsSecureCoding: Bool {
+        return true
+    }
 }

@@ -42,7 +42,9 @@ open class DirectionsResult: NSObject, NSSecureCoding {
         speechLocale = decoder.decodeObject(of: NSLocale.self, forKey: "speechLocale") as Locale?
     }
     
-    @objc open static var supportsSecureCoding = true
+    public class var supportsSecureCoding: Bool {
+        return true
+    }
     
     @objc public func encode(with coder: NSCoder) {
         let coordinateDictionaries = coordinates?.map { [

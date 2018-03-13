@@ -5,7 +5,9 @@
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
     
-    open static var supportsSecureCoding = true
+    public class var supportsSecureCoding: Bool {
+        return true
+    }
     
     /**
      Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.
