@@ -230,6 +230,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     @objc(isEqualToDirectionsOptions:)
     open func isEqual(to directionsOptions: DirectionsOptions?) -> Bool {
         guard let other = directionsOptions else { return false }
+        guard type(of: self) == type(of: other) else { return false }
         guard waypoints == other.waypoints,
             profileIdentifier == other.profileIdentifier,
             includesSteps == other.includesSteps,

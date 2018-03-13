@@ -8,7 +8,7 @@ class RoutableMatchTest: XCTestCase {
         super.tearDown()
     }
     
-    func TestRoutableMatch() {
+    func testRoutableMatch() {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
                          CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
@@ -28,7 +28,7 @@ class RoutableMatchTest: XCTestCase {
         var route: Route!
         var waypoints: [Waypoint]!
         
-        let matchOptions = MatchingOptions(coordinates: locations)
+        let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         let indices: IndexSet = [0, locations.count - 1]

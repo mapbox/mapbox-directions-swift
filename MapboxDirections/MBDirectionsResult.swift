@@ -1,7 +1,9 @@
 import Polyline
 
 /**
- A `DirectionsResult` represents a result returned from either the Directions API or the Map Matching API.
+ A `DirectionsResult` represents a result returned from either the Mapbox Directions service.
+ 
+ You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
 @objc(MBDirectionsResult)
 open class DirectionsResult: NSObject, NSSecureCoding {

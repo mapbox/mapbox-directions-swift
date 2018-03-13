@@ -3,12 +3,12 @@ import Polyline
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
  
- Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchingOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
+ Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
 @objc(MBMatch)
 open class Match: DirectionsResult {
     
-    init(matchOptions: MatchingOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
+    init(matchOptions: MatchOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
         self.confidence = confidence
         self.tracepoints = tracepoints
         super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
@@ -17,11 +17,11 @@ open class Match: DirectionsResult {
     /**
      Initializes a new match object with the given JSON dictionary representation and tracepoints.
      
-     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Mapbox Map Matching API.
+     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Map Matching API.
      - parameter tracepoints: An array of `Tracepoint` that the match found in order.
-     - parameter matchOptions: The `MatchingOptions` used to create the request.
+     - parameter matchOptions: The `MatchOptions` used to create the request.
     */
-    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], matchOptions: MatchingOptions) {
+    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], matchOptions: MatchOptions) {
         let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
@@ -59,14 +59,16 @@ open class Match: DirectionsResult {
     
     /**
      Tracepoints on the road network that match the tracepoints in the matching options.
+     
+     Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint is a `Tracepoint` object whose `Tracepoint.coordinate` property is `kCLLocationCoordinate2DInvalid`.
      */
-    @objc open var tracepoints: [Tracepoint]?
+    @objc open var tracepoints: [Tracepoint]
     
     /**
-     `MatchingOptions` used to create the match request.
+     `MatchOptions` used to create the match request.
      */
-    public var matchingOptions: MatchingOptions {
-        return super.directionsOptions as! MatchingOptions
+    public var matchOptions: MatchOptions {
+        return super.directionsOptions as! MatchOptions
     }
     
     @objc public required convenience init?(coder decoder: NSCoder) {
@@ -82,5 +84,20 @@ open class Match: DirectionsResult {
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
         coder.encode(tracepoints, forKey: "tracepoints")
+    }
+    
+    //MARK: - OBJ-C Equality
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let opts = object as? Match else { return false }
+        return isEqual(to: opts)
+    }
+    
+    @objc(isEqualToMatch:)
+    open func isEqual(to match: Match?) -> Bool {
+        guard let other = match else { return false }
+        guard tracepoints == other.tracepoints,
+            matchOptions == other.matchOptions,
+            confidence == other.confidence else { return false }
+        return true
     }
 }

@@ -40,7 +40,7 @@ open class RouteOptions: DirectionsOptions {
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
     
-    @objc internal convenience init(matchOptions: MatchingOptions) {
+    @objc internal convenience init(matchOptions: MatchOptions) {
         self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
         self.includesSteps = matchOptions.includesSteps
         self.shapeFormat = matchOptions.shapeFormat
