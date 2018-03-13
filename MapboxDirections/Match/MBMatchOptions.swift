@@ -49,10 +49,10 @@ open class MatchOptions: DirectionsOptions {
      */
     @objc open var waypointIndices: IndexSet?
     
-    @objc public required convenience init?(coder decoder: NSCoder) {
-        self.init(coder: decoder)
+    @objc public required init?(coder decoder: NSCoder) {
         resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
         waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
+        super.init(coder: decoder)
     }
     
     @objc public override func encode(with coder: NSCoder) {

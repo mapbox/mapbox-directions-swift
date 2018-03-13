@@ -78,17 +78,20 @@ open class Match: DirectionsResult {
         return super.directionsOptions as! MatchOptions
     }
     
-    @objc public required convenience init?(coder decoder: NSCoder) {
-        self.init(coder: decoder)
+    @objc public required init?(coder decoder: NSCoder) {
         confidence = decoder.decodeFloat(forKey: "confidence")
         
         guard let tracepoints = decoder.decodeObject(of: [NSArray.self, Tracepoint.self], forKey: "tracepoints") as? [Tracepoint] else {
             return nil
         }
         self.tracepoints = tracepoints
+        
+        super.init(coder: decoder)
     }
     
-    open var supportsSecureCoding = true
+    override public class var supportsSecureCoding: Bool {
+        return true
+    }
     
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
