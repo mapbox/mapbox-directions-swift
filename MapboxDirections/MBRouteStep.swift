@@ -813,7 +813,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
-    @objc open let instructions: String
+    @objc open var instructions: String
     
     /**
      Instructions about the next step’s maneuver, optimized for speech synthesis.
