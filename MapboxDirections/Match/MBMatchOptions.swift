@@ -1,7 +1,13 @@
 import Foundation
 
-@objc(MBMatchingOptions)
-open class MatchingOptions: DirectionsOptions {
+/**
+ A `MatchOptions` object is a structure that specifies the criteria for results returned by the Mapbox Map Matching API.
+ 
+ Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
+ */
+
+@objc(MBMatchOptions)
+open class MatchOptions: DirectionsOptions {
     
     /**
      Initializes a match options object for matching locations against the road network.
@@ -14,7 +20,6 @@ open class MatchingOptions: DirectionsOptions {
             Waypoint(location: $0)
         }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
-        self.timestamps = locations.map { $0.timestamp }
     }
     
     public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
@@ -36,28 +41,22 @@ open class MatchingOptions: DirectionsOptions {
     
     
     /**
-     Timestamps corresponding to each coordinate provided in the request.
+     An index set containing indices of two or more items in `coordinates`. These will be represented by `Waypoint`s in the resulting `Match` objects.
      
-     There must be as many `timestamps` as there are coordinates in the request.
-     */
-    @objc private var timestamps: [Date]?
-    
-    
-    /**
-     An IndexSet of unique integers representing which coordinates should be treated as `Waypoint`.
+     Use this property when the `includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate. If this property is `nil`, the resulting `Match` objects contain a waypoint for each coordinate in the match options.
+     
+     If specified, each index must correspond to a valid index in `coordinates`, and the index set must contain 0 and the last index (one less than `endIndex`) of `coordinates`.
      */
     @objc open var waypointIndices: IndexSet?
     
     @objc public required convenience init?(coder decoder: NSCoder) {
         self.init(coder: decoder)
         resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
-        timestamps = decoder.decodeObject(of: [NSArray.self, NSDate.self], forKey: "timestamps") as? [Date]
         waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
     }
     
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(resamplesTraces, forKey: "resampleTraces")
-        coder.encode(timestamps, forKey: "timestamps")
         coder.encode(waypointIndices, forKey: "waypointIndices")
     }
     
@@ -65,14 +64,6 @@ open class MatchingOptions: DirectionsOptions {
         var params = super.params
         
         params.append(URLQueryItem(name: "tidy", value: String(describing: resamplesTraces)))
-        
-        if let timestamps = timestamps, !timestamps.isEmpty {
-            let timeStrings = timestamps.map {
-                String(describing: $0.timeIntervalSince1970)
-                }.joined(separator: ";")
-            
-            params.append(URLQueryItem(name: "timestamps", value: timeStrings))
-        }
         
         if let waypointIndices = waypointIndices {
             params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
@@ -99,16 +90,15 @@ open class MatchingOptions: DirectionsOptions {
     }
     
     internal func response(from json: JSONDictionary) -> [Match]? {
-        let jsonTracepoints = (json["tracepoints"] as! [Any]).flatMap {
-            $0 as? JSONDictionary
-        }
-        let tracepoints = jsonTracepoints.map { api -> Tracepoint in
+        let tracepoints = (json["tracepoints"] as! [Any]).map { api -> Tracepoint in
+            guard let api = api as? JSONDictionary else {
+                return Tracepoint(coordinate: kCLLocationCoordinate2DInvalid, alternateCount: nil, name: nil)
+            }
             let location = api["location"] as! [Double]
             let coordinate = CLLocationCoordinate2D(geoJSON: location)
             let alternateCount = api["alternatives_count"] as! Int
-            let waypointIndex = api["waypoint_index"] as? Int
             let name = api["name"] as? String
-            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, waypointIndex: waypointIndex, name: name)
+            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, name: name)
         }
         
         let matchings = (json["matchings"] as? [JSONDictionary])?.map { 
