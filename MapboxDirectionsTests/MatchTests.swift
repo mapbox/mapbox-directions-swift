@@ -65,6 +65,7 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
         XCTAssertEqual(match!.legs.count, 6)
         XCTAssertEqual(match!.confidence, 0.95)
+        XCTAssertEqual(match!.waypointIndices, IndexSet([0, 1, 2, 3, 4, 5, 6]))
 
         let leg = match!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
@@ -134,6 +135,27 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(tracepoints.count, 7)
         XCTAssertEqual(tracepoints[0].coordinate.latitude, kCLLocationCoordinate2DInvalid.latitude)
         XCTAssertEqual(tracepoints[0].coordinate.longitude, kCLLocationCoordinate2DInvalid.longitude)
+        
+        
+        // Encode and decode the intersection securely.
+        // This may raise an Objective-C exception if an error is encountered which will fail the tests.
+        
+        let encodedData = NSMutableData()
+        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
+        keyedArchiver.requiresSecureCoding = true
+        keyedArchiver.encode(match, forKey: "match")
+        keyedArchiver.finishEncoding()
+        
+        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
+        keyedUnarchiver.requiresSecureCoding = true
+        let unarchivedMatch = keyedUnarchiver.decodeObject(of: Match.self, forKey: "match")!
+        keyedUnarchiver.finishDecoding()
+        
+        XCTAssertNotNil(unarchivedMatch)
+        
+        XCTAssertEqual(unarchivedMatch.confidence, unarchivedMatch.confidence)
+        XCTAssertEqual(unarchivedMatch.matchOptions, unarchivedMatch.matchOptions)
+        XCTAssertEqual(unarchivedMatch.tracepoints, unarchivedMatch.tracepoints)
+        XCTAssertEqual(unarchivedMatch.waypointIndices, unarchivedMatch.waypointIndices)
     }
 }
-

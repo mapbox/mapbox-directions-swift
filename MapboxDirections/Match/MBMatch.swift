@@ -8,9 +8,10 @@ import Polyline
 @objc(MBMatch)
 open class Match: DirectionsResult {
     
-    init(matchOptions: MatchOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?) {
+    init(matchOptions: MatchOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?, waypointIndices: IndexSet) {
         self.confidence = confidence
         self.tracepoints = tracepoints
+        self.waypointIndices = waypointIndices
         super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
     }
     
@@ -21,7 +22,7 @@ open class Match: DirectionsResult {
      - parameter tracepoints: An array of `Tracepoint` that the match found in order.
      - parameter matchOptions: The `MatchOptions` used to create the request.
     */
-    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], matchOptions: MatchOptions) {
+    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], waypointIndices: IndexSet, matchOptions: MatchOptions) {
         let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
@@ -48,7 +49,7 @@ open class Match: DirectionsResult {
             speechLocale = Locale(identifier: locale)
         }
         
-        self.init(matchOptions: matchOptions, legs: legs, tracepoints: tracepoints, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale)
+        self.init(matchOptions: matchOptions, legs: legs, tracepoints: tracepoints, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale, waypointIndices: waypointIndices)
     }
     
     /**
@@ -58,11 +59,17 @@ open class Match: DirectionsResult {
     
     
     /**
-     Tracepoints on the road network that match the tracepoints in the matching options.
+     Tracepoints on the road network that match the tracepoints in the match options.
      
      Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint is a `Tracepoint` object whose `Tracepoint.coordinate` property is `kCLLocationCoordinate2DInvalid`.
      */
     @objc open var tracepoints: [Tracepoint]
+    
+    
+    /**
+     Index of the waypoint inside the matched route.
+     */
+    @objc open var waypointIndices: IndexSet?
     
     /**
      `MatchOptions` used to create the match request.
@@ -80,6 +87,8 @@ open class Match: DirectionsResult {
         }
         self.tracepoints = tracepoints
     }
+    
+    open var supportsSecureCoding = true
     
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
