@@ -137,7 +137,7 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(tracepoints[0].coordinate.longitude, kCLLocationCoordinate2DInvalid.longitude)
         
         
-        // Encode and decode the intersection securely.
+        // Encode and decode the match securely.
         // This may raise an Objective-C exception if an error is encountered which will fail the tests.
         
         let encodedData = NSMutableData()
