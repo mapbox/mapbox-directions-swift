@@ -8,6 +8,8 @@ public class SpeedLimit: NSObject, NSSecureCoding {
     
     /**
      A unitless measure of speed which is dependent on the `MaximumSpeedLimit.speedUnits`.
+     
+     If a speed is not known, it will default to `Int.NSNotFound`.
      */
     @objc public var speed: Int = NSNotFound
     
