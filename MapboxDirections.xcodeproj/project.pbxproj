@@ -128,6 +128,10 @@
 		C56516851FE1AB8F00A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
 		C56516861FE1AB9000A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
 		C56516871FE1AB9100A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
+		C56A2F6420602C400036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
+		C56A2F6520602C460036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
+		C56A2F6620602C470036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
+		C56A2F6720602C480036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
 		C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
@@ -345,7 +349,7 @@
 		AEAB391020D94699008F4E54 /* subVisualInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = subVisualInstructions.json; sourceTree = "<group>"; };
 		AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBLaneIndicationComponent.swift; sourceTree = "<group>"; };
 		AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBComponentRepresentable.swift; sourceTree = "<group>"; };
-		C51538CB1E807FF00093FF3E /* MBAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBAttribute.swift; sourceTree = "<group>"; };
+		C51538CB1E807FF00093FF3E /* MBAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MBAttribute.swift; path = ../MBAttribute.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionBanner.swift; sourceTree = "<group>"; };
 		C52552BF1FA1628A00B1545C /* MBVisualInstructionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionComponent.swift; sourceTree = "<group>"; };
@@ -354,10 +358,11 @@
 		C5434B8B200695A50069E887 /* MBMatchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatchOptions.swift; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
 		C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionType.swift; sourceTree = "<group>"; };
+		C56A2F6320602C400036846D /* MBSpeedLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpeedLimit.swift; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
 		C582BA2D2073ED6300647DAA /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
-		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBCongestion.swift; sourceTree = "<group>"; };
+		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MBCongestion.swift; path = ../MBCongestion.swift; sourceTree = "<group>"; };
 		C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDrawingView.swift; sourceTree = "<group>"; };
 		C59094BE203B800300EB2417 /* MBDirectionsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDirectionsOptions.swift; sourceTree = "<group>"; };
 		C59094C0203DE6BC00EB2417 /* MBDirectionsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDirectionsResult.swift; sourceTree = "<group>"; };
@@ -572,6 +577,16 @@
 			name = annotation;
 			sourceTree = "<group>";
 		};
+		C56A2F6220602BFF0036846D /* Attributes */ = {
+			isa = PBXGroup;
+			children = (
+				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
+				C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */,
+				C56A2F6320602C400036846D /* MBSpeedLimit.swift */,
+			);
+			path = Attributes;
+			sourceTree = "<group>";
+		};
 		C5AD8656202E24F400BF47D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +635,7 @@
 			isa = PBXGroup;
 			children = (
 				35C0D78922563B1C005E05A5 /* CMapboxDirections */,
+				C56A2F6220602BFF0036846D /* Attributes */,
 				8D381B681FDB1009008D5A58 /* Extensions */,
 				C5DAAC9E20191683001F9261 /* Match */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
@@ -634,8 +650,6 @@
 				C57D55071DB58C0200B94B74 /* MBLane.swift */,
 				DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */,
 				DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */,
-				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
-				C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */,
 				C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 				C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */,
@@ -1276,6 +1290,7 @@
 				35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
+				C56A2F6520602C460036846D /* MBSpeedLimit.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF006217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1338,6 +1353,7 @@
 				35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
+				C56A2F6620602C470036846D /* MBSpeedLimit.swift in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF007217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1400,6 +1416,7 @@
 				35EFD00E207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
+				C56A2F6720602C480036846D /* MBSpeedLimit.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF008217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1439,6 +1456,7 @@
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
+				C56A2F6420602C400036846D /* MBSpeedLimit.swift in Sources */,
 				C59094BF203B800300EB2417 /* MBDirectionsOptions.swift in Sources */,
 				35DBF005217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				C5434B8C200695A50069E887 /* MBMatchOptions.swift in Sources */,

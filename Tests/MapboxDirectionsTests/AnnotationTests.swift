@@ -56,8 +56,8 @@ class AnnotationTests: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 99)
-        XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
+        XCTAssertEqual(route!.coordinates!.count, 128)
+        XCTAssertEqual(route!.routeIdentifier, "cjeyp52zv00097iulwb4m8wiw")
         
         let leg = route!.legs.first!
         XCTAssertEqual(leg.segmentDistances!.count, 98)
@@ -65,7 +65,17 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 98)
         XCTAssertEqual(leg.segmentCongestionLevels!.count, 98)
         XCTAssertEqual(leg.segmentCongestionLevels!.first!, .moderate)
-        XCTAssertEqual(leg.segmentCongestionLevels!.last!, .low)
+        XCTAssertEqual(leg.segmentMaximumSpeedLimits!.count, 127)
+        
+        let maxSpeeds = leg.segmentMaximumSpeedLimits!
+        
+        XCTAssertEqual(maxSpeeds[0].speed, 30)
+        XCTAssertEqual(maxSpeeds[0].speedUnits, .milesPerHour)
+        XCTAssertEqual(maxSpeeds[0].speedIsUnknown, false)
+        
+        XCTAssertEqual(maxSpeeds[3].speedIsUnknown, true)
+        XCTAssertEqual(maxSpeeds[3].speed, NSNotFound)
+        XCTAssertEqual(maxSpeeds[3].speedUnits, .none)
     }
 }
 #endif
