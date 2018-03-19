@@ -35,4 +35,9 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
      This attribute requires `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
     MBAttributeCongestionLevel = (1 << 4),
+    
+    /**
+     Doc me.
+     */
+    MBMaximumSpeedLimit = (1 << 5),
 };

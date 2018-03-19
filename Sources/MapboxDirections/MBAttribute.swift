@@ -22,6 +22,8 @@ extension AttributeOptions: CustomStringConvertible {
                 attributeOptions.update(with: .speed)
             case "congestion":
                 attributeOptions.update(with: .congestionLevel)
+            case "maxspeed":
+                attributeOptions.update(with: .maximumSpeedLimit)
             case "":
                 continue
             default:
@@ -44,6 +46,9 @@ extension AttributeOptions: CustomStringConvertible {
         }
         if contains(.congestionLevel) {
             descriptions.append("congestion")
+        }
+        if contains(.maximumSpeedLimit) {
+            descriptions.append("maxspeed")
         }
         return descriptions.joined(separator: ",")
     }
