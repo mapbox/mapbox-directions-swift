@@ -18,13 +18,13 @@ MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com
 Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "mapbox/MapboxDirections.swift" ~> 0.18
+github "mapbox/MapboxDirections.swift" ~> 0.19
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
-pod 'MapboxDirections.swift', '~> 0.18'
+pod 'MapboxDirections.swift', '~> 0.19'
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
@@ -99,19 +99,19 @@ let task = directions.calculate(options) { (waypoints, routes, error) in
         print("Error calculating directions: \(error!)")
         return
     }
-    
+
     if let route = routes?.first, let leg = route.legs.first {
         print("Route via \(leg):")
-        
+
         let distanceFormatter = LengthFormatter()
         let formattedDistance = distanceFormatter.string(fromMeters: route.distance)
-        
+
         let travelTimeFormatter = DateComponentsFormatter()
         travelTimeFormatter.unitsStyle = .short
         let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
-        
+
         print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
-        
+
         for step in leg.steps {
             print("\(step.instructions)")
             let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
@@ -140,21 +140,21 @@ NSURLSessionDataTask *task = [directions calculateDirectionsWithOptions:options
         NSLog(@"Error calculating directions: %@", error);
         return;
     }
-    
+
     MBRoute *route = routes.firstObject;
     MBRouteLeg *leg = route.legs.firstObject;
     if (leg) {
         NSLog(@"Route via %@:", leg);
-        
+
         NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
         NSString *formattedDistance = [distanceFormatter stringFromMeters:leg.distance];
-        
+
         NSDateComponentsFormatter *travelTimeFormatter = [[NSDateComponentsFormatter alloc] init];
         travelTimeFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
         NSString *formattedTravelTime = [travelTimeFormatter stringFromTimeInterval:route.expectedTravelTime];
-        
+
         NSLog(@"Distance: %@; ETA: %@", formattedDistance, formattedTravelTime);
-        
+
         for (MBRouteStep *step in leg.steps) {
             NSLog(@"%@", step.instructions);
             NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
@@ -215,7 +215,7 @@ if route.coordinateCount > 0 {
     // Convert the route’s coordinates into a polyline.
     var routeCoordinates = route.coordinates!
     let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
-    
+
     // Add the polyline to the map and fit the viewport to the polyline.
     mapView.addAnnotation(routeLine)
     mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
@@ -230,11 +230,11 @@ if (route.coordinateCount) {
     CLLocationCoordinate2D *routeCoordinates = malloc(route.coordinateCount * sizeof(CLLocationCoordinate2D));
     [route getCoordinates:routeCoordinates];
     MGLPolyline *routeLine = [MGLPolyline polylineWithCoordinates:routeCoordinates count:route.coordinateCount];
-    
+
     // Add the polyline to the map and fit the viewport to the polyline.
     [mapView addAnnotation:routeLine];
     [mapView setVisibleCoordinates:routeCoordinates count:route.coordinateCount edgePadding:UIEdgeInsetsZero animated:YES];
-    
+
     // Make sure to free this array to avoid leaking memory.
     free(routeCoordinates);
 }
@@ -246,7 +246,7 @@ See the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigat
 
 ## Tests
 
-To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. 
+To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies.
 
 1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcodeproj`
