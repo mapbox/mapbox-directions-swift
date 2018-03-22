@@ -7,22 +7,27 @@ import Foundation
 @objc(MBSpeedLimit)
 public class SpeedLimit: NSObject, NSSecureCoding {
     
+    /**
+     Represents an unknown speed limit for a segment.
+     */
     @objc public static let invalid = SpeedLimit(value: -1, speedUnits: .kilometersPerHour)
+    
     
     /**
      A unitless measure of speed which is dependent on the `MaximumSpeedLimit.speedUnits`.
      
-     By default, the speed will be unknown and equal to `MBSpeedIsInvalid` which is -1.
+     By default, the speed will be unknown and equal to `SpeedLimit.invalid` which is -1.
      
      If the speed is none, the value will be equal to `Double.greatestFiniteMagnitude`.
      */
-    @objc public var value: Double = invalid.value
+    @objc public var value: Double = -1
     
     
     /**
      Units for `MaximumSpeedLimit.speed`.
      */
     @objc public var unit: SpeedUnit = .kilometersPerHour
+    
     
     /**
      Initialize a new `SpeedLimit` object.
@@ -31,12 +36,13 @@ public class SpeedLimit: NSObject, NSSecureCoding {
         self.value = value
         self.unit = speedUnits
     }
+
     
     /**
      Initialize a new `SpeedLimit` object from a JSON dictionary.
      */
     @objc public convenience init(json: [String: Any]) {
-        var speed = json["speed"] as? Double ?? SpeedLimit.invalid.value
+        var speed = json["speed"] as? Double ?? -1
         if let speedNone = json["none"] as? Bool, speedNone {
             speed = .greatestFiniteMagnitude
         }
