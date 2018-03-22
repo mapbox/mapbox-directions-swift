@@ -69,13 +69,14 @@ class AnnotationTests: XCTestCase {
         
         let maxSpeeds = leg.segmentMaximumSpeedLimits!
         
-        XCTAssertEqual(maxSpeeds[0].speed, 30)
-        XCTAssertEqual(maxSpeeds[0].speedUnits, .milesPerHour)
-        XCTAssertEqual(maxSpeeds[0].speedIsUnknown, false)
+        XCTAssertEqual(maxSpeeds[0].value, 30)
+        XCTAssertEqual(maxSpeeds[0].unit, .milesPerHour)
         
-        XCTAssertEqual(maxSpeeds[3].speedIsUnknown, true)
-        XCTAssertEqual(maxSpeeds[3].speed, NSNotFound)
-        XCTAssertEqual(maxSpeeds[3].speedUnits, .none)
+        XCTAssertEqual(maxSpeeds[3].value, MBSpeedIsInvalid)
+        XCTAssertEqual(maxSpeeds[3].unit, .kilometersPerHour)
+        
+        XCTAssertEqual(maxSpeeds.last!.value, .greatestFiniteMagnitude)
+        XCTAssertEqual(maxSpeeds.last!.unit, .kilometersPerHour)
     }
 }
 #endif

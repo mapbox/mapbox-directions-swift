@@ -191,7 +191,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     public let segmentCongestionLevels: [CongestionLevel]?
 
     /**
-     An array containing the maximum speed limits for along each road segment in the route leg geometry.
+     An array containing the maximum speed limit along each road segment along the route leg’s shape.
      */
     @objc public let segmentMaximumSpeedLimits: [SpeedLimit]?
     

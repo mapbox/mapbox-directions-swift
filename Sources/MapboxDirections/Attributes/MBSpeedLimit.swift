@@ -1,6 +1,11 @@
 import Foundation
 
 /**
+ Speed value for a segment which is unknown.
+ */
+public let MBSpeedIsInvalid: Double = -1.0
+
+/**
  A localized limit for measuring speed limits.
  */
 @objc(MBSpeedLimit)
@@ -9,63 +14,59 @@ public class SpeedLimit: NSObject, NSSecureCoding {
     /**
      A unitless measure of speed which is dependent on the `MaximumSpeedLimit.speedUnits`.
      
-     If a speed is not known, it will default to `Int.NSNotFound`.
+     By default, the speed will be unknown and equal to `MBSpeedIsInvalid` which is -1.
+     
+     If the speed is none, the value will be equal to `Double.greatestFiniteMagnitude`.
      */
-    @objc public var speed: Int = NSNotFound
+    @objc public var value: Double = MBSpeedIsInvalid
     
     
     /**
      Units for `MaximumSpeedLimit.speed`.
      */
-    @objc public var speedUnits: SpeedUnit = .none
-    
-    
-    /**
-     `Bool` whether the maximum speed for a segment is known.
-     */
-    @objc public var speedIsUnknown: Bool = true
+    @objc public var unit: SpeedUnit = .kilometersPerHour
     
     /**
      Initialize a new `SpeedLimit` object.
      */
-    public init(speed: Int, speedUnits: SpeedUnit, speedIsUnknown: Bool) {
-        self.speed = speed
-        self.speedUnits = speedUnits
-        self.speedIsUnknown = speedIsUnknown
+    public init(speed: Double, speedUnits: SpeedUnit) {
+        self.value = speed
+        self.unit = speedUnits
     }
     
     /**
      Initialize a new `SpeedLimit` object from a JSON dictionary.
      */
     @objc public convenience init(json: [String: Any]) {
-        let speed = json["speed"] as? Int ?? NSNotFound
-        let unknown = speed == NSNotFound
-        
-        var speedUnits: SpeedUnit = .none
-        if let speedString = json["unit"] as? String {
-            speedUnits = SpeedUnit(description: speedString) ?? .none
+        var speed = json["speed"] as? Double ?? MBSpeedIsInvalid
+        if let speedNone = json["none"] as? Bool, speedNone {
+            speed = .greatestFiniteMagnitude
         }
         
-        self.init(speed: speed, speedUnits: speedUnits, speedIsUnknown: unknown)
+        let speedUnits: SpeedUnit
+        if let speedString = json["unit"] as? String {
+            speedUnits = SpeedUnit(description: speedString) ?? .kilometersPerHour
+        } else {
+            speedUnits = .kilometersPerHour
+        }
+        
+        self.init(speed: speed, speedUnits: speedUnits)
     }
     
     open static var supportsSecureCoding = true
     
     public required init?(coder decoder: NSCoder) {
-        speed = decoder.decodeInteger(forKey: "speed")
+        value = decoder.decodeDouble(forKey: "value")
         
-        guard let speedUnitString = decoder.decodeObject(of: NSString.self, forKey: "speedUnits") as String?, let speedUnits = SpeedUnit(description: speedUnitString) else {
+        guard let speedUnitString = decoder.decodeObject(of: NSString.self, forKey: "unit") as String?, let speedUnits = SpeedUnit(description: speedUnitString) else {
                 return nil
         }
-        self.speedUnits = speedUnits
-        
-        speedIsUnknown = decoder.decodeBool(forKey: "speedIsUnknown")
+        self.unit = speedUnits
     }
     
     public func encode(with coder: NSCoder) {
-        coder.encode(speed, forKey: "speed")
-        coder.encode(speedUnits, forKey: "speedUnits")
-        coder.encode(speedIsUnknown, forKey: "speedIsUnknown")
+        coder.encode(value, forKey: "value")
+        coder.encode(unit, forKey: "unit")
     }
 }
 
@@ -86,22 +87,17 @@ public enum SpeedUnit: Int, CustomStringConvertible {
      */
     case kilometersPerHour
     
-    /**
-     Indicates the segment does not have a speed limit.
-    */
-    case none
-    
     public init?(description: String) {
-        let level: SpeedUnit
+        let unit: SpeedUnit
         switch description {
         case "mph":
-            level = .milesPerHour
+            unit = .milesPerHour
         case "kph":
-            level = .kilometersPerHour
+            unit = .kilometersPerHour
         default:
-            level = .none
+            unit = .kilometersPerHour
         }
-        self.init(rawValue: level.rawValue)
+        self.init(rawValue: unit.rawValue)
     }
     
     public var description: String {
@@ -110,8 +106,6 @@ public enum SpeedUnit: Int, CustomStringConvertible {
             return "mph"
         case .kilometersPerHour:
             return "kph"
-        case .none:
-            return "none"
         }
     }
 }
