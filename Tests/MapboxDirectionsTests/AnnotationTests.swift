@@ -72,7 +72,7 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(maxSpeeds[0].value, 30)
         XCTAssertEqual(maxSpeeds[0].unit, .milesPerHour)
         
-        XCTAssertEqual(maxSpeeds[3].value, MBSpeedIsInvalid)
+        XCTAssertEqual(maxSpeeds[3].value, SpeedLimit.invalid.value)
         XCTAssertEqual(maxSpeeds[3].unit, .kilometersPerHour)
         
         XCTAssertEqual(maxSpeeds.last!.value, .greatestFiniteMagnitude)
