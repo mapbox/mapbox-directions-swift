@@ -96,7 +96,7 @@ public enum SpeedUnit: Int, CustomStringConvertible {
         switch description {
         case "mph":
             unit = .milesPerHour
-        case "kph":
+        case "km/h":
             unit = .kilometersPerHour
         default:
             unit = .kilometersPerHour
@@ -109,7 +109,7 @@ public enum SpeedUnit: Int, CustomStringConvertible {
         case .milesPerHour:
             return "mph"
         case .kilometersPerHour:
-            return "kph"
+            return "km/h"
         }
     }
 }
