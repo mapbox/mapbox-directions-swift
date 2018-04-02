@@ -10,7 +10,11 @@ public class Lane: NSObject, NSSecureCoding {
      */
     @objc public let indications: LaneIndication
     
-    internal init(indications: LaneIndication) {
+    
+    /**
+     Initalize a new `Lane` from an array of  `LaneIndication`.
+     */
+    public init(indications: LaneIndication) {
         self.indications = indications
     }
     
