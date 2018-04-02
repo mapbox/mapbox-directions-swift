@@ -12,7 +12,7 @@ public class Lane: NSObject, NSSecureCoding {
     
     
     /**
-     Initialize a new `Lane` from an array of  `LaneIndication`.
+     Initializes a new `Lane` using the given lane indications.
      */
     public init(indications: LaneIndication) {
         self.indications = indications
