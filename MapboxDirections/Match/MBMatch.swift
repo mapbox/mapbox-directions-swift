@@ -42,7 +42,7 @@ open class Match: DirectionsResult {
             coordinates = nil
         }
         
-        let confidence = json["confidence"] as! Float
+        let confidence = (json["confidence"] as! NSNumber).floatValue
         
         var speechLocale: Locale?
         if let locale = json["voiceLocale"] as? String {
