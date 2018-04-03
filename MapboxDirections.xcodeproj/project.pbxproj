@@ -69,6 +69,7 @@
 		C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55071DB58C0200B94B74 /* MBLane.swift */; };
+		C582BA2E2073ED6300647DAA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582BA2D2073ED6300647DAA /* Array.swift */; };
 		C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
 		C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* MBRoadClasses.swift */; };
@@ -268,6 +269,7 @@
 		C57B2E951DB8171300E9123A /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBLaneIndication.h; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
+		C582BA2D2073ED6300647DAA /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		C584E3FA1F2027EE00BBC9BB /* MBRoadClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MBRoadClasses.h; sourceTree = "<group>"; };
 		C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBCongestion.swift; sourceTree = "<group>"; };
 		C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDrawingView.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 			isa = PBXGroup;
 			children = (
 				8D381B691FDB101F008D5A58 /* String.swift */,
+				C582BA2D2073ED6300647DAA /* Array.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1241,6 +1244,7 @@
 			files = (
 				C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */,
+				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* MBVisualInstruction.swift in Sources */,
 				C52552C01FA1628A00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */,

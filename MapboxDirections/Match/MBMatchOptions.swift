@@ -84,7 +84,7 @@ open class MatchOptions: DirectionsOptions {
     }
     
     internal var encodedParam: String {
-        let joinedParams = params.flatMap({ (param) -> String? in
+        let joinedParams = params.compactMap({ (param) -> String? in
             guard let value = param.value else { return nil }
             return "\(param.name)=\(value)"
         }).joined(separator: "&")

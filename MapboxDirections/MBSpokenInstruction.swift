@@ -59,8 +59,8 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     
     public required init?(coder decoder: NSCoder) {
         distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
-        text = decoder.decodeObject(of: NSString.self, forKey: "text") as String!
-        ssmlText = decoder.decodeObject(of: NSString.self, forKey: "ssmlText") as String!
+        text = decoder.decodeObject(of: NSString.self, forKey: "text")! as String
+        ssmlText = decoder.decodeObject(of: NSString.self, forKey: "ssmlText")! as String
     }
     
     open static var supportsSecureCoding = true
