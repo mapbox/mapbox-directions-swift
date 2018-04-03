@@ -25,13 +25,15 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**
      The compoment contains the localized word for "exit".
+     
+     This component may appear before or after an `.exitNumber` component, depending on the language.
      */
     case exit
     
     /**
      A component contains an exit number.
      */
-    case exitNumber
+    case exitCode
     
     public init?(description: String) {
         let type: VisualInstructionComponentType
@@ -45,7 +47,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         case "exit":
             type = .exit
         case "exit-number":
-            type = .exitNumber
+            type = .exitCode
         default:
             return nil
         }
@@ -62,7 +64,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
             return "text"
         case .exit:
             return "exit"
-        case .exitNumber:
+        case .exitCode:
             return "exit-number"
         }
     }
