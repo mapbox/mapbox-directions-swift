@@ -250,7 +250,7 @@ open class RouteOptionsV4: RouteOptions {
     override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
-        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).flatMap { Waypoint(geoJSON: $0) }
+        let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).compactMap { Waypoint(geoJSON: $0) }
         let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
         let routes = (json["routes"] as? [JSONDictionary])?.map {
             RouteV4(json: $0, waypoints: waypoints, routeOptions: self)

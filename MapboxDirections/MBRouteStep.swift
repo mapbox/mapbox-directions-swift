@@ -646,7 +646,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     public required init?(coder decoder: NSCoder) {
         let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
 		
-        coordinates = coordinateDictionaries?.flatMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
+        coordinates = coordinateDictionaries?.compactMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
             if let latitude = coordinateDictionary["latitude"], let longitude = coordinateDictionary["longitude"] {
                 return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             } else {
