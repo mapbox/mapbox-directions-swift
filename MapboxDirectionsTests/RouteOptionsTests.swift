@@ -34,6 +34,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, options.distanceMeasurementSystem)
         XCTAssertEqual(unarchivedOptions.includesVisualInstructions, options.includesVisualInstructions)
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
+        XCTAssertEqual(unarchivedOptions.approachType, options.approachType)
     }
     func testCopying() {
         let testInstance = RouteOptions.testInstance
