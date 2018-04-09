@@ -51,7 +51,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      :nodoc:
      Ancillary visual information about the upcoming `RouteStep`.
      
-     This is the structured representation of `secondaryText`.
+     This is the structured representation of `thenText`.
      */
     @objc public let thenTextComponents: [VisualInstructionComponent]?
     
