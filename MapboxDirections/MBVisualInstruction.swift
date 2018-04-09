@@ -43,13 +43,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-     A plain text representation of `secondaryTextComponents`.
+     A plain text representation of `thenTextComponents`.
      */
     @objc public let thenText: String?
     
     /**
      :nodoc:
-     Ancillary visual information about the `RouteStep`.
+     Ancillary visual information about the upcoming `RouteStep`.
      
      This is the structured representation of `secondaryText`.
      */
