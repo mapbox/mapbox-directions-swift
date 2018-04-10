@@ -41,12 +41,16 @@ open class VisualInstruction: NSObject, NSSecureCoding {
      */
     @objc public let secondaryTextComponents: [VisualInstructionComponent]?
     
-    
     /**
      :nodoc:
      Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
      */
     @objc public var drivingSide: DrivingSide
+    
+    /**
+     The degrees at which you will be exiting a roundabout, assuming 180 indicates going straight through the roundabout.
+     */
+    @objc public var degrees: CLLocationDegrees = 180
     
     /**
      :nodoc:
@@ -56,6 +60,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         
         let primaryTextComponent = json["primary"] as! JSONDictionary
+        let degrees = primaryTextComponent["degrees"] as? CLLocationDegrees ?? 0
         let primaryText = primaryTextComponent["text"] as! String
         let primaryManeuverType = ManeuverType(description: primaryTextComponent["type"] as! String) ?? .none
         let primaryManeuverDirection = ManeuverDirection(description: primaryTextComponent["modifier"] as! String)  ?? .none
@@ -74,20 +79,23 @@ open class VisualInstruction: NSObject, NSSecureCoding {
             }
         }
         
-        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents, drivingSide: drivingSide)
+        
+        
+        self.init(distanceAlongStep: distanceAlongStep, primaryText: primaryText, primaryTextComponents: primaryTextComponents, secondaryText: secondaryText, secondaryTextComponents: secondaryTextComponents, drivingSide: drivingSide, degrees: degrees)
     }
     
     /**
      :nodoc:
      Initialize a `VisualInstruction`.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?, drivingSide: DrivingSide) {
+    @objc public init(distanceAlongStep: CLLocationDistance, primaryText: String, primaryTextComponents: [VisualInstructionComponent], secondaryText: String?, secondaryTextComponents: [VisualInstructionComponent]?, drivingSide: DrivingSide, degrees: CLLocationDegrees = 180) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryText = primaryText
         self.primaryTextComponents = primaryTextComponents
         self.secondaryText = secondaryText
         self.secondaryTextComponents = secondaryTextComponents
         self.drivingSide = drivingSide
+        self.degrees = degrees
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -113,6 +121,8 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         } else {
             self.drivingSide = .right
         }
+        
+        degrees = decoder.decodeDouble(forKey: "degrees")
     }
     
     open static var supportsSecureCoding = true
@@ -124,5 +134,6 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         coder.encode(secondaryText, forKey: "secondaryText")
         coder.encode(secondaryTextComponents, forKey: "secondaryTextComponents")
         coder.encode(drivingSide, forKey: "drivingSide")
+        coder.encode(degrees, forKey: "degrees")
     }
 }
