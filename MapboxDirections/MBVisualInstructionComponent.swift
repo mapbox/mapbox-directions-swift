@@ -25,29 +25,17 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-    The URL to an image representation of this component.
- 
-    The URL refers to an image that uses the device’s native screen scale.
-    */
-    @objc public var imageURL: URL?
-    
-    /**
-     :nodoc:
      The type of visual instruction component. You can display the component differently depending on its type.
      */
     @objc public var type: VisualInstructionComponentType
     
     /**
      :nodoc:
-     The maneuver type for the `VisualInstruction`.
-     */
-    @objc public var maneuverType: ManeuverType
-    
-    /**
-     :nodoc:
-     The modifier type for the `VisualInstruction`.
-     */
-    @objc public var maneuverDirection: ManeuverDirection
+    The URL to an image representation of this component.
+ 
+    The URL refers to an image that uses the device’s native screen scale.
+    */
+    @objc public var imageURL: URL?
     
     /**
      An abbreviated version of the text for a given component.
@@ -63,7 +51,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public convenience init(maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, json: [String: Any]) {
+    @objc public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
         
@@ -83,28 +71,24 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(type: type, text: text, imageURL: imageURL, maneuverType: maneuverType, maneuverDirection: maneuverDirection, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
+        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
     }
     
     /**
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, abbreviation: String?, abbreviationPriority: Int) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
-        self.maneuverType = maneuverType
-        self.maneuverDirection = maneuverDirection
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
     }
 
     @objc public required init?(coder decoder: NSCoder) {
-        guard let text = decoder.decodeObject(of: NSString.self, forKey: "text") as String? else {
-            return nil
-        }
-        self.text = text
+        
+        self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
         
         guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
             return nil
@@ -115,16 +99,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
                 return nil
         }
         self.type = type
-        
-        guard let maneuverTypeString = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: maneuverTypeString) else {
-            return nil
-        }
-        self.maneuverType = maneuverType
-        
-        guard let direction = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String?, let maneuverDirection = ManeuverDirection(description: direction) else {
-            return nil
-        }
-        self.maneuverDirection = maneuverDirection
         
         guard let abbreviation = decoder.decodeObject(of: NSString.self, forKey: "abbreviation") as String? else {
             return nil
@@ -137,12 +111,10 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     open static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
-        coder.encode(text, forKey: "text")
         coder.encode(imageURL, forKey: "imageURL")
         coder.encode(type, forKey: "type")
-        coder.encode(maneuverType, forKey: "maneuverType")
-        coder.encode(maneuverDirection, forKey: "maneuverDirection")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
     }
 }
+
