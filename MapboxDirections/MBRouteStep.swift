@@ -600,7 +600,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         self.instructionsSpokenAlongStep = voiceInstructionsJSON?.map { SpokenInstruction(json: $0) }
         
         let instructionsDisplayedAlongStep = json["bannerInstructions"] as? [JSONDictionary]
-        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstruction(json: $0, drivingSide: drivingSide) }
+        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep?.map { VisualInstructionBanner(json: $0, drivingSide: drivingSide) }
         
         initialHeading = maneuver["bearing_before"] as? Double
         self.finalHeading = finalHeading
@@ -706,7 +706,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         instructionsSpokenAlongStep = decoder.decodeObject(of: [NSArray.self, SpokenInstruction.self], forKey: "instructionsSpokenAlongStep") as? [SpokenInstruction]
         
-        instructionsDisplayedAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstruction.self], forKey: "instructionsDisplayedAlongStep") as? [VisualInstruction]
+        instructionsDisplayedAlongStep = decoder.decodeObject(of: [NSArray.self, VisualInstructionBanner.self], forKey: "instructionsDisplayedAlongStep") as? [VisualInstructionBanner]
     }
     
     open static var supportsSecureCoding = true
@@ -832,7 +832,7 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
-    @objc open let instructionsDisplayedAlongStep: [VisualInstruction]?
+    @objc open let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
     
     @objc open override var description: String {
         return instructions

@@ -78,19 +78,20 @@ class SpokenInstructionsTests: XCTestCase {
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         XCTAssertNotNil(visualInstructions)
-        XCTAssertEqual(visualInstructions?.first?.primaryText, "Oak Street")
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first!.text, "Oak Street")
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Oak Street")
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first!.text, "Oak Street")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1001.4)
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverType, .turn)
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.maneuverDirection, .left)
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.type, .text)
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.abbreviation, "Oak St")
-        XCTAssertEqual(visualInstructions?.first?.primaryTextComponents.first?.abbreviationPriority, 0)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.degrees, 135)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverType, .turn)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverDirection, .left)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.type, .text)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviation, "Oak St")
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviationPriority, 0)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
-        XCTAssertNil(visualInstructions?.first?.secondaryText)
+        XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[0].type, .image)
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[1].type, .delimiter)
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryTextComponents[2].type, .image)
+        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[0].type, .image)
+        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[1].type, .delimiter)
+        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[2].type, .image)
     }
 }
