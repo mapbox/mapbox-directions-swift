@@ -16,16 +16,12 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     /**
      :nodoc:
      Most important visual content to convey to the user about the `RouteStep`.
-
-     This is the structured representation of `primaryText`.
      */
     @objc public let primaryInstruction: VisualInstruction
     
     /**
      :nodoc:
      Ancillary visual information about the `RouteStep`.
-     
-     This is the structured representation of `secondaryText`.
      */
     @objc public let secondaryInstruction: VisualInstruction?
     
