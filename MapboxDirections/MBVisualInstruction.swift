@@ -32,11 +32,15 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      :nodoc:
      Most important visual content to convey to the user about the `RouteStep`.
+     
+     This is the structured representation of `text`.
      */
     @objc public let textComponents: [VisualInstructionComponent]
     
     /**
+     :nodoc:
      The degrees at which you will be exiting a roundabout, assuming 180 indicates going straight through the roundabout.
+     Note that this property is irrelevant unless the `maneuverType` is
      */
     @objc public var degrees: CLLocationDegrees = 180
     
