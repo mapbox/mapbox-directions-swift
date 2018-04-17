@@ -41,3 +41,7 @@ jazzy \
 
 find ${OUTPUT} -name *.html -exec \
     perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, s/MapboxDirections.swift\s+(Docs|Reference)/MapboxDirections.swift $1/' {} \;
+
+# Replace version numbers
+sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${RELEASE_VERSION}'|g' ${OUTPUT}/../index.html
+sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${RELEASE_VERSION}'|g' ${OUTPUT}/../docsets/MapboxDirections.xml
