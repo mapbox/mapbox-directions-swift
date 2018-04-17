@@ -39,10 +39,12 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     
     /**
      :nodoc:
-     The degrees at which you will be exiting a roundabout, assuming 180 indicates going straight through the roundabout.
-     Note that this property is irrelevant unless the `maneuverType` is
+     The heading at which you will be exiting a roundabout, assuming 180 indicates going straight through the roundabout.
+     
+     Note that this property is only relevant if the `maneuverType` is any of
+     [`ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, `ManeuverType.exitRotary`]
      */
-    @objc public var degrees: CLLocationDegrees = 180
+    @objc public var finalHeading: CLLocationDegrees = 180
     
     /**
      :nodoc:
@@ -53,7 +55,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
         self.textComponents = textComponents
-        self.degrees = degrees
+        self.finalHeading = degrees
     }
     
     @objc public convenience init(json: [String: Any]) {
@@ -91,14 +93,14 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         
         self.textComponents = textComponents
         
-        self.degrees = decoder.decodeDouble(forKey: "degrees")
+        self.finalHeading = decoder.decodeDouble(forKey: "degrees")
     }
     
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
         coder.encode(maneuverType, forKey: "maneuverType")
         coder.encode(maneuverDirection, forKey: "maneuverDirection")
-        coder.encode(degrees, forKey: "degrees")
+        coder.encode(finalHeading, forKey: "degrees")
     }
 }
 
