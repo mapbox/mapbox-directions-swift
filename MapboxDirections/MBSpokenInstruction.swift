@@ -34,7 +34,9 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     @objc public let ssmlText: String
     
     /**
-     Initialize a `SpokenInstruction` from a dictionary.
+     Initializes a new spoken instruction object based on the given JSON dictionary representation.
+     
+     - parameter json: A JSON object that conforms to the [voice instruction](https://www.mapbox.com/api-documentation/#voice-instruction-object) format described in the Directions API documentation.
      */
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {
