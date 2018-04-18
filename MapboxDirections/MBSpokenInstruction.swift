@@ -36,7 +36,8 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     /**
      Initialize a `SpokenInstruction` from a dictionary.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         let text = json["announcement"] as! String
         let ssmlText = json["ssmlAnnouncement"] as! String

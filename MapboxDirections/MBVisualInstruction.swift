@@ -58,7 +58,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.finalHeading = degrees
     }
     
-    @objc public convenience init(json: [String: Any]) {
+    /**
+     Initializes a new visual instruction object based on the given JSON dictionary representation.
+     
+     - parameter json: A JSON object that conforms to the [banner instruction](https://www.mapbox.com/api-documentation/#banner-instruction-object) format described in the Directions API documentation.
+     */
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
         let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none

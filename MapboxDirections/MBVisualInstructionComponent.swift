@@ -51,7 +51,8 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      :nodoc:
      Initialize A `VisualInstructionComponent`.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
         

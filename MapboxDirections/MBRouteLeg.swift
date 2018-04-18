@@ -62,7 +62,8 @@ open class RouteLeg: NSObject, NSSecureCoding {
      - parameter destination: The waypoint at the end of the leg.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    @objc public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
+    @objc(initWithJSON:source:destination:profileIdentifier:)
+    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
         
         self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)

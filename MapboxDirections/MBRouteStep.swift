@@ -620,7 +620,8 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      - parameter json: A JSON dictionary representation of a route step object as returnd by the Mapbox Directions API.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
         let maneuverType = ManeuverType(description: maneuver["type"] as? String ?? "") ?? .none
