@@ -1,7 +1,6 @@
 import Foundation
 
 /**
- :nodoc:
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
 @objc(MBVisualInstruction)
@@ -10,45 +9,36 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     open static var supportsSecureCoding = true
     
     /**
-     :nodoc:
-     The plain text representation of this component.
-     
-     Use this property if `imageURLs` is an empty dictionary or if the URLs contained in that property are not yet available.
+     A plain text representation of the instruction.
      */
     @objc public let text: String?
     
     /**
-     :nodoc:
-     The maneuver type for the `VisualInstruction`.
+     The type of maneuver required for beginning the step described by the visual instruction.
      */
     @objc public var maneuverType: ManeuverType
     
     /**
-     :nodoc:
-     The modifier type for the `VisualInstruction`.
+     Additional directional information to clarify the maneuver type.
      */
     @objc public var maneuverDirection: ManeuverDirection
     
     /**
-     :nodoc:
-     Most important visual content to convey to the user about the `RouteStep`.
-     
-     This is the structured representation of `text`.
+     A structured representation of the instruction.
      */
     @objc public let textComponents: [VisualInstructionComponent]
     
     /**
-     :nodoc:
-     The heading at which you will be exiting a roundabout, assuming 180 indicates going straight through the roundabout.
+     The heading at which the user exits a roundabout (traffic circle or rotary).
      
-     Note that this property is only relevant if the `maneuverType` is any of
-     [`ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, `ManeuverType.exitRotary`]
+     This property is measured in degrees clockwise relative to the user’s initial heading. A value of 180° means continuing through the roundabout without changing course, whereas a value of 0° means traversing the entire roundabout back to the entry point.
+     
+     This property is only relevant if the `maneuverType` is any of the following values: `ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, or `ManeuverType.exitRotary`.
      */
     @objc public var finalHeading: CLLocationDegrees = 180
     
     /**
-     :nodoc:
-     Initialize A `VisualInstructionBanner`.
+     Initializes a new visual instruction banner object that displays the given information.
      */
     @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, textComponents: [VisualInstructionComponent], degrees: CLLocationDegrees = 180) {
         self.text = text
@@ -58,7 +48,13 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.finalHeading = degrees
     }
     
-    @objc public convenience init(json: [String: Any]) {
+    /**
+     Initializes a new visual instruction object based on the given JSON dictionary representation.
+     
+     - parameter json: A JSON object that conforms to the [banner instruction](https://www.mapbox.com/api-documentation/#banner-instruction-object) format described in the Directions API documentation.
+     */
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
         let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none

@@ -9,28 +9,24 @@ import Foundation
 #endif
 
 /**
- :nodoc:
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 @objc(MBVisualInstructionComponent)
 open class VisualInstructionComponent: NSObject, NSSecureCoding {
     
     /**
-     :nodoc:
      The plain text representation of this component.
      
-     Use this property if `imageURLs` is an empty dictionary or if the URLs contained in that property are not yet available.
+     Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
      */
     @objc public let text: String?
     
     /**
-     :nodoc:
      The type of visual instruction component. You can display the component differently depending on its type.
      */
     @objc public var type: VisualInstructionComponentType
     
     /**
-     :nodoc:
     The URL to an image representation of this component.
  
     The URL refers to an image that uses the device’s native screen scale.
@@ -38,20 +34,24 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public var imageURL: URL?
     
     /**
-     An abbreviated version of the text for a given component.
+     An abbreviated representation of the `text` property.
      */
     @objc public var abbreviation: String?
     
     /**
-     The priority in which the component should be abbreviated. Lower numbers should be abbreviated first.
+     The priority for which the component should be abbreviated.
+     
+     A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
     @objc public var abbreviationPriority: Int = NSNotFound
     
     /**
-     :nodoc:
-     Initialize A `VisualInstructionComponent`.
+     Initializes a new visual instruction component object based on the given JSON dictionary representation.
+     
+     - parameter json: A JSON object that conforms to the [banner component](https://www.mapbox.com/api-documentation/#banner-instruction-object) format described in the Directions API documentation.
      */
-    @objc public convenience init(json: [String: Any]) {
+    @objc(initWithJSON:)
+    public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
         
@@ -75,8 +75,13 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     }
     
     /**
-     :nodoc:
-     Initialize A `VisualInstructionComponent`.
+     Initializes a new visual instruction component object that displays the given information.
+     
+     - parameter type: The type of visual instruction component.
+     - parameter text: The plain text representation of this component.
+     - parameter imageURL: The URL to an image representation of this component.
+     - parameter abbreviation: An abbreviated representation of `text`.
+     - parameter abbreviationPriority: The priority for which the component should be abbreviated.
      */
     @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
         self.text = text
