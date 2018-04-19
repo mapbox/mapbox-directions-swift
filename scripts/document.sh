@@ -14,14 +14,14 @@ if [ -z `which jazzy` ]; then
 fi
 
 
-OUTPUT=${OUTPUT:-documentation}
-
 BRANCH=$( git describe --tags --match=v*.*.* --abbrev=0 )
 SHORT_VERSION=$( echo ${BRANCH} | sed 's/^v//' )
-RELEASE_VERSION=$( echo ${SHORT_VERSION} | sed -e 's/^v//' -e 's/-.*//' )
+OUTPUT=${OUTPUT:-documentation}
+DEFAULT_VERSION=$( echo ${SHORT_VERSION} | sed -e 's/^v//' -e 's/-.*//' )
+VERSION=${VERSION:-$DEFAULT_VERSION}
 
-rm -rf ${OUTPUT}
-mkdir -p ${OUTPUT}
+rm -rf "${OUTPUT}/${VERSION}"
+mkdir -p "${OUTPUT}/${VERSION}"
 
 #cp -r docs/img "${OUTPUT}"
 
@@ -32,16 +32,15 @@ jazzy \
     --podspec MapboxDirections.swift.podspec \
     --config docs/jazzy.yml \
     --sdk iphonesimulator \
-    --module-version ${SHORT_VERSION} \
-    --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/${BRANCH}" \
+    --module-version ${VERSION} \
+    --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/v${VERSION}" \
     --documentation=docs/guides/*.md \
-    --root-url "https://mapbox.github.io/mapbox-navigation-ios/directions/${RELEASE_VERSION}/" \
+    --root-url "https://mapbox.github.io/mapbox-navigation-ios/directions/${VERSION}/" \
     --theme ${THEME} \
-    --output ${OUTPUT}
+    --output "${OUTPUT}/${VERSION}"
 
-find ${OUTPUT} -name *.html -exec \
+find "${OUTPUT}/${VERSION}" -name *.html -exec \
     perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, s/MapboxDirections.swift\s+(Docs|Reference)/MapboxDirections.swift $1/' {} \;
-
 
 function parseSemver() {
     local RE='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
@@ -51,11 +50,14 @@ function parseSemver() {
     eval $5=`echo $1 | sed -e "s#$RE#\4#"` # prerelease
 }
 
-parseSemver $RELEASE_VERSION MAJOR MINOR PATCH PRERELEASE
+parseSemver $VERSION MAJOR MINOR PATCH PRERELEASE
 # Replace version numbers unless this is a pre-release
 if [[ -z ${PRERELEASE} ]]; then
-     # Replace version numbers
-     sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${RELEASE_VERSION}'|g' ${OUTPUT}/../index.html
-     sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${RELEASE_VERSION}'|g' ${OUTPUT}/../docsets/MapboxDirections.xml
+    # Replace version numbers
+    echo "✅ Updating redirects for ${VERSION}"
+    sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${VERSION}'|g' ${OUTPUT}/index.html
+    sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${VERSION}'|g' ${OUTPUT}/docsets/MapboxDirections.xml
+else
+    echo "🛑 Skip updating redirects because ${VERSION} is a pre-release"  
 fi
 
