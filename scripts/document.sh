@@ -42,6 +42,20 @@ jazzy \
 find ${OUTPUT} -name *.html -exec \
     perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, s/MapboxDirections.swift\s+(Docs|Reference)/MapboxDirections.swift $1/' {} \;
 
-# Replace version numbers
-sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${RELEASE_VERSION}'|g' ${OUTPUT}/../index.html
-sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${RELEASE_VERSION}'|g' ${OUTPUT}/../docsets/MapboxDirections.xml
+
+function parseSemver() {
+    local RE='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
+    eval $2=`echo $1 | sed -e "s#$RE#\1#"` # major
+    eval $3=`echo $1 | sed -e "s#$RE#\2#"` # minor
+    eval $4=`echo $1 | sed -e "s#$RE#\3#"` # patch
+    eval $5=`echo $1 | sed -e "s#$RE#\4#"` # prerelease
+}
+
+parseSemver $RELEASE_VERSION MAJOR MINOR PATCH PRERELEASE
+# Replace version numbers unless this is a pre-release
+if [[ -z ${PRERELEASE} ]]; then
+     # Replace version numbers
+     sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${RELEASE_VERSION}'|g' ${OUTPUT}/../index.html
+     sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${RELEASE_VERSION}'|g' ${OUTPUT}/../docsets/MapboxDirections.xml
+fi
+
