@@ -7,7 +7,7 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) &nbsp;&nbsp;&nbsp;
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
 
-MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. The Mapbox Directions API is powered by the [OSRM](http://project-osrm.org/) routing engine and open data from the [OpenStreetMap](https://www.openstreetmap.org/) project.
+MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/) and [Mapbox Map Matching API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine.
 
 Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift 4.
 
@@ -41,7 +41,7 @@ You’ll need a [Mapbox access token](https://www.mapbox.com/developers/api/#acc
 
 The examples below are each provided in Swift (denoted with `main.swift`), Objective-C (`main.m`), and AppleScript (`AppDelegate.applescript`). For further details, see the [MapboxDirections.swift API reference](https://www.mapbox.com/mapbox-navigation-ios/directions/).
 
-### Basics
+### Calculating directions between locations
 
 The main directions class is Directions (in Swift) or MBDirections (in Objective-C or AppleScript). Create a directions object using your access token:
 
@@ -201,6 +201,97 @@ end repeat
 ```
 
 This library uses version 5 of the Mapbox Directions API by default. To use version 4 instead, replace RouteOptions with RouteOptionsV4 (or MBRouteOptions with MBRouteOptionsV4).
+
+### Matching a trace to the road network
+
+If you have a GPX trace or other GPS-derived location data, you can clean up the data and fit it to the road network using the Map Matching API:
+
+```swift
+// main.swift
+
+let coordinates = [
+    CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
+    CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
+    CLLocationCoordinate2D(latitude: 32.712444, longitude: -117.17292),
+    CLLocationCoordinate2D(latitude: 32.71257,  longitude: -117.172922),
+    CLLocationCoordinate2D(latitude: 32.7126,   longitude: -117.172985),
+    CLLocationCoordinate2D(latitude: 32.712597, longitude: -117.173143),
+    CLLocationCoordinate2D(latitude: 32.712546, longitude: -117.173345)
+]
+
+let options = MatchOptions(coordinates: coordinates)
+options.includesSteps = true
+
+let task = directions.calculate(options) { (matches, error) in
+    guard error == nil else {
+        print("Error matching coordinates: \(error!)")
+        return
+    }
+
+    if let match = matches?.first, let leg = match.legs.first {
+        print("Match via \(leg):")
+
+        let distanceFormatter = LengthFormatter()
+        let formattedDistance = distanceFormatter.string(fromMeters: match.distance)
+
+        let travelTimeFormatter = DateComponentsFormatter()
+        travelTimeFormatter.unitsStyle = .short
+        let formattedTravelTime = travelTimeFormatter.string(from: match.expectedTravelTime)
+
+        print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+
+        for step in leg.steps {
+            print("\(step.instructions)")
+            let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
+            print("— \(formattedDistance) —")
+        }
+    }
+}
+```
+
+```objc
+// main.m
+NSArray<MBWaypoint *> *waypoints = @[
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.712041, -117.172836) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.712256, -117.17291) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.712444, -117.17292) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.71257, -117.172922) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.7126, -117.172985) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.712597, -117.173143) coordinateAccuracy:-1 name:nil],
+    [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(32.712546, -117.173345) coordinateAccuracy:-1 name:nil],
+];
+
+MBMatchOptions *matchOptions = [[MBMatchOptions alloc] initWithWaypoints:waypoints profileIdentifier:MBDirectionsProfileIdentifierAutomobile];
+NSURLSessionDataTask *task = [[[MBDirections alloc] initWithAccessToken:MapboxAccessToken] calculateMatchesWithOptions:matchOptions completionHandler:^(NSArray<MBMatch *> * _Nullable matches, NSError * _Nullable error) {
+    if (error) {
+        NSLog(@"Error matching waypoints: %@", error);
+        return;
+    }
+    
+    MBMatch *match = matches.firstObject;
+    MBRouteLeg *leg = match.legs.firstObject;
+    if (leg) {
+        NSLog(@"Match via %@:", leg);
+        
+        NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
+        NSString *formattedDistance = [distanceFormatter stringFromMeters:leg.distance];
+        
+        NSDateComponentsFormatter *travelTimeFormatter = [[NSDateComponentsFormatter alloc] init];
+        travelTimeFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
+        NSString *formattedTravelTime = [travelTimeFormatter stringFromTimeInterval:match.expectedTravelTime];
+        
+        NSLog(@"Distance: %@; ETA: %@", formattedDistance, formattedTravelTime);
+        
+        for (MBRouteStep *step in leg.steps) {
+            NSLog(@"%@", step.instructions);
+            NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
+            NSLog(@"— %@ —", formattedDistance);
+        }
+    }
+}];
+```
+
+You can also use the `Directions.calculateRoutes(matching:completionHandler:)` method in Swift or the `-[MBDirections calculateRoutesMatchingOptions:completionHandler:]` method in Objective-C to get Route objects suitable for use anywhere a standard Directions API response would be used.
 
 ## Usage with other Mapbox libraries
 
