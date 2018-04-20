@@ -209,7 +209,7 @@ If you have a GPX trace or other GPS-derived location data, you can clean up the
 ```swift
 // main.swift
 
-let locations = [
+let coordinates = [
     CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
     CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
     CLLocationCoordinate2D(latitude: 32.712444, longitude: -117.17292),
@@ -219,12 +219,12 @@ let locations = [
     CLLocationCoordinate2D(latitude: 32.712546, longitude: -117.173345)
 ]
 
-let options = MatchOptions(coordinates: locations)
+let options = MatchOptions(coordinates: coordinates)
 options.includesSteps = true
 
 let task = directions.calculate(options) { (matches, error) in
     guard error == nil else {
-        print("Error matching locations: \(error!)")
+        print("Error matching coordinates: \(error!)")
         return
     }
 
@@ -264,7 +264,7 @@ NSArray<MBWaypoint *> *waypoints = @[
 MBMatchOptions *matchOptions = [[MBMatchOptions alloc] initWithWaypoints:waypoints profileIdentifier:MBDirectionsProfileIdentifierAutomobile];
 NSURLSessionDataTask *task = [[[MBDirections alloc] initWithAccessToken:MapboxAccessToken] calculateMatchesWithOptions:matchOptions completionHandler:^(NSArray<MBMatch *> * _Nullable matches, NSError * _Nullable error) {
     if (error) {
-        NSLog(@"Error matching locations: %@", error);
+        NSLog(@"Error matching waypoints: %@", error);
         return;
     }
     
