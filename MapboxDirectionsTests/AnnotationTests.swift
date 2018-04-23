@@ -18,7 +18,7 @@ class AnnotationTests: XCTestCase {
             "steps": "false",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "nodes,distance,duration,speed,congestion"
+            "annotations": "distance,duration,speed,congestion"
             ]
         
         stub(condition: isHost("api.mapbox.com")
@@ -35,7 +35,7 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = false
         options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.attributeOptions = [.openStreetMapNodeIdentifier, .distance, .expectedTravelTime, .speed, .congestionLevel]
+        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
@@ -59,7 +59,6 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
         
         let leg = route!.legs.first!
-        XCTAssertEqual(leg.openStreetMapNodeIdentifiers!.count, 99)
         XCTAssertEqual(leg.segmentDistances!.count, 98)
         XCTAssertEqual(leg.segmentSpeeds!.count, 98)
         XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 98)
