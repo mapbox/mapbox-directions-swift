@@ -11,21 +11,21 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
      
      When this attribute is specified, the `RouteLeg.segmentDistances` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeDistance = (1 << 2),
+    MBAttributeDistance = (1 << 1),
     
     /**
      Expected travel time (in seconds) along the segment.
      
      When this attribute is specified, the `RouteLeg.expectedSegmentTravelTimes` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeExpectedTravelTime = (1 << 3),
+    MBAttributeExpectedTravelTime = (1 << 2),
     
     /**
      Current average speed (in meters per second) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeSpeed = (1 << 4),
+    MBAttributeSpeed = (1 << 3),
     
     /**
      Traffic congestion level along the segment.
@@ -34,5 +34,5 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
      
      This attribute requires `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
-    MBAttributeCongestionLevel = (1 << 5),
+    MBAttributeCongestionLevel = (1 << 4),
 };
