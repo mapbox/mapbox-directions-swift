@@ -3,16 +3,9 @@
 /**
  Attributes are metadata information for a route leg.
  
- When most of the attributes are specified, the resulting route leg contains one attribute value for each segment in leg, where a segment is the straight line between two coordinates in the route leg’s full geometry. When the `MBAttributeOpenStreetMapNodeIdentifier` attribute is specified, the corresponding `RouteLeg` property contains one more value than each of the other attributes.
+ When most of the attributes are specified, the resulting route leg contains one attribute value for each segment in leg, where a segment is the straight line between two coordinates in the route leg’s full geometry.
  */
 typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
-    /**
-     [OpenStreetMap node identifier](https://wiki.openstreetmap.org/wiki/Node).
-     
-     When this attribute is specified, the `RouteLeg.openStreetMapNodeIdentifiers` property contains one value for each coordinate in the leg’s full geometry.
-     */
-    MBAttributeOpenStreetMapNodeIdentifier = (1 << 1),
-    
     /**
      Distance (in meters) along the segment.
      
