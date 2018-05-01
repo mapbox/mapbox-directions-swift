@@ -19,16 +19,12 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedTravelTime = json["duration"] as! Double
         self.name = json["summary"] as! String
         
-        var openStreetMapNodeIdentifiers: [Int64]?
         var segmentDistances: [CLLocationDistance]?
         var expectedSegmentTravelTimes: [TimeInterval]?
         var segmentSpeeds: [CLLocationSpeed]?
         var congestionLevels: [CongestionLevel]?
         
         if let jsonAttributes = json["annotation"] as? [String: Any] {
-            if let nodes = jsonAttributes["nodes"] {
-                openStreetMapNodeIdentifiers = nodes as? [Int64] ?? []
-            }
             if let distance = jsonAttributes["distance"] {
                 segmentDistances = distance as? [CLLocationDistance]
             }
@@ -45,7 +41,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
             }
         }
         
-        self.openStreetMapNodeIdentifiers = openStreetMapNodeIdentifiers
         self.segmentDistances = segmentDistances
         self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
         self.segmentSpeeds = segmentSpeeds
@@ -95,7 +90,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
         }
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
         
-        openStreetMapNodeIdentifiers = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "openStreetMapNodeIdentifiers") as? [Int64]
         segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
@@ -112,7 +106,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
         coder.encode(distance, forKey: "distance")
         coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
         coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(openStreetMapNodeIdentifiers, forKey: "openStreetMapNodeIdentifiers")
         coder.encode(segmentDistances, forKey: "segmentDistances")
         coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
         coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
@@ -144,12 +137,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
      */
     @objc open let steps: [RouteStep]
     
-    /**
-     An array containing [OpenStreetMap node identifiers](https://wiki.openstreetmap.org/wiki/Node), one for each coordinate along the route geometry.
-     
-     This property is set if the `RouteOptions.attributeOptions` property contains `.openStreetMapNodeIdentifier`.
-     */
-    @objc open let openStreetMapNodeIdentifiers: [Int64]?
     
     /**
      An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
