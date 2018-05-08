@@ -444,6 +444,11 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             params.append(URLQueryItem(name: "annotations", value: attributesStrings))
         }
         
+        if !waypoints.compactMap({ $0.name }).isEmpty {
+            let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")
+            params.append(URLQueryItem(name: "waypoint_names", value: names))
+        }
+        
         return params
     }
 }

@@ -20,7 +20,8 @@ class SpokenInstructionsTests: XCTestCase {
             "access_token": BogusToken,
             "voice_instructions": "true",
             "voice_units": "imperial",
-            "banner_instructions": "true"
+            "banner_instructions": "true",
+            "waypoint_names": "the hotel;the gym"
         ]
         
         stub(condition: isHost("api.mapbox.com")
@@ -29,10 +30,10 @@ class SpokenInstructionsTests: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 37.780602, longitude: -122.431373),
-            CLLocationCoordinate2D(latitude: 37.758859, longitude: -122.404058),
-            ], profileIdentifier: .automobileAvoidingTraffic)
+        let startWaypoint = Waypoint(location:  CLLocation(latitude: 37.780602, longitude: -122.431373), heading: nil, name: "the hotel")
+        let endWaypoint = Waypoint(location: CLLocation(latitude: 37.758859, longitude: -122.404058), heading: nil, name: "the gym")
+        
+        let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline
         options.includesSteps = true
         options.includesAlternativeRoutes = false
@@ -58,7 +59,7 @@ class SpokenInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cje68ha21000775o7je87k5em")
+        XCTAssertEqual(route!.routeIdentifier, "cjgy4xps418g17mo7l2pdm734")
         
         let leg = route!.legs.first!
         let step = leg.steps[1]
@@ -67,31 +68,37 @@ class SpokenInstructionsTests: XCTestCase {
         
         let spokenInstructions = step.instructionsSpokenAlongStep!
         
-        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 1001.4)
+        XCTAssertEqual(spokenInstructions[0].distanceAlongStep, 1107.1)
         XCTAssertEqual(spokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Continue on Baker Street for a half mile</prosody></amazon:effect></speak>")
         XCTAssertEqual(spokenInstructions[0].text, "Continue on Baker Street for a half mile")
-        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In a quarter mile, turn left onto Oak Street</prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[1].text, "In a quarter mile, turn left onto Oak Street")
-        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto Oak Street</prosody></amazon:effect></speak>")
-        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto Oak Street")
+        XCTAssertEqual(spokenInstructions[1].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">In 900 feet, turn left onto Page Street</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[1].text, "In 900 feet, turn left onto Page Street")
+        XCTAssertEqual(spokenInstructions[2].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Turn left onto Page Street</prosody></amazon:effect></speak>")
+        XCTAssertEqual(spokenInstructions[2].text, "Turn left onto Page Street")
+        
+        let arrivalStep = leg.steps[leg.steps.endIndex - 2]
+        XCTAssertEqual(arrivalStep.instructionsSpokenAlongStep!.count, 1)
+        
+        let arrivalSpokenInstructions = arrivalStep.instructionsSpokenAlongStep!
+        XCTAssertEqual(arrivalSpokenInstructions[0].text, "You have arrived at the gym")
+        XCTAssertEqual(arrivalSpokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">You have arrived at the gym</prosody></amazon:effect></speak>")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         XCTAssertNotNil(visualInstructions)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Oak Street")
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first!.text, "Oak Street")
-        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1001.4)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.finalHeading, 135)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Page Street")
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first!.text, "Page Street")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1107.1)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.finalHeading, 180.0)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverDirection, .left)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.type, .text)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviation, "Oak St")
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviation, "Page St")
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviationPriority, 0)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[0].type, .image)
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[1].type, .delimiter)
-        XCTAssertEqual(leg.steps[3].instructionsDisplayedAlongStep?.first?.primaryInstruction.textComponents[2].type, .image)
+        let arrivalVisualInstructions = arrivalStep.instructionsDisplayedAlongStep!
+        XCTAssertEqual(arrivalVisualInstructions.first?.secondaryInstruction?.text, "the gym")
     }
 }
