@@ -19,9 +19,9 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     case text
     
     /**
-     Component contains an image that should be rendered.
+     Component either contains an image that should be rendered, or text that should be rendered as a generic icon.
      */
-    case image
+    case icon
     
     /**
      The compoment contains the localized word for "exit".
@@ -41,7 +41,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         case "delimiter":
             type = .delimiter
         case "icon":
-            type = .image
+            type = .icon
         case "text":
             type = .text
         case "exit":
@@ -58,7 +58,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         switch self {
         case .delimiter:
             return "delimiter"
-        case .image:
+        case .icon:
             return "icon"
         case .text:
             return "text"
