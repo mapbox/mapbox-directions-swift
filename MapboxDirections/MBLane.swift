@@ -10,11 +10,10 @@ public class Lane: NSObject, NSSecureCoding {
      */
     @objc public let indications: LaneIndication
     
-    
     /**
      Initializes a new `Lane` using the given lane indications.
      */
-    public init(indications: LaneIndication) {
+    @objc public init(indications: LaneIndication) {
         self.indications = indications
     }
     

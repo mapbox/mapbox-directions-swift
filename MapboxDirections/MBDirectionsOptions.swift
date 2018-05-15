@@ -193,7 +193,9 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     
     /**
-     Initializes a route options object for routes between the given waypoints and an optional profile identifier.
+     Initializes an options object for routes between the given waypoints and an optional profile identifier.
+     
+     Do not call `DirectionsOptions(waypoints:profileIdentifier:)` directly; instead call the corresponding initializer of `RouteOptions` or `MatchOptions`.
      
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
@@ -221,7 +223,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         return copy
     }
     
-    //MARK: - OBJ-C Equality
+    // MARK: Objective-C equality
     open override func isEqual(_ object: Any?) -> Bool {
         guard let opts = object as? DirectionsOptions else { return false }
         return isEqual(to: opts)
@@ -396,10 +398,9 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
     
     /**
-     :nodoc:
      If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
      
-     `visualInstructionsAlongStep` contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
+     `visualInstructionsAlongStep` contains an array of `VisualInstruction` objects used for visually conveying information about a given `RouteStep`.
      */
     @objc open var includesVisualInstructions = false
     
@@ -441,6 +442,11 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             let attributesStrings = String(describing:attributeOptions)
             
             params.append(URLQueryItem(name: "annotations", value: attributesStrings))
+        }
+        
+        if !waypoints.compactMap({ $0.name }).isEmpty {
+            let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")
+            params.append(URLQueryItem(name: "waypoint_names", value: names))
         }
         
         return params

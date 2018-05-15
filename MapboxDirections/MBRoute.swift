@@ -22,7 +22,8 @@ open class Route: DirectionsResult {
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter routeOptions: The `RouteOptions` used to create the request.
      */
-    @objc public init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
+    @objc(initWithJSON:waypoints:routeOptions:)
+    public init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
