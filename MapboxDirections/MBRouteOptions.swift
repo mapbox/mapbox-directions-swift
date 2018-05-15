@@ -49,6 +49,7 @@ open class RouteOptions: DirectionsOptions {
         self.locale = matchOptions.locale
         self.includesSpokenInstructions = matchOptions.includesSpokenInstructions
         self.includesVisualInstructions = matchOptions.includesVisualInstructions
+        self.allowsArrivingOnOppositeSide = matchOptions.allowsArrivingOnOppositeSide
     }
 
     public required init?(coder decoder: NSCoder) {
@@ -62,11 +63,6 @@ open class RouteOptions: DirectionsOptions {
 
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
-        
-        guard let approachType = ApproachType(description: decoder.decodeObject(of: NSString.self, forKey: "approachType") as String? ?? "") else {
-            return nil
-        }
-        self.approachType = approachType
     }
 
     public override func encode(with coder: NSCoder) {
@@ -75,7 +71,6 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
-        coder.encode(approachType.description, forKey: "approachType")
     }
     
     /**
@@ -125,13 +120,6 @@ open class RouteOptions: DirectionsOptions {
     @objc open var roadClassesToAvoid: RoadClasses = []
     
     /**
-     Indicate how a route considers from which side of the road to approach a waypoint.
-     
-     By default, `ApproachType.unrestricted` is used meaning the route can approach a waypoint from either side of the road. If set to `ApproachType.curb`, the route will be returned so that on arrival, the waypoint will be found on the side that corresponds with the `DrivingSide` of the region in which the returned route is located.
-     */
-    @objc open var approachType: ApproachType = .unrestricted
-    
-    /**
      An array of URL parameters to include in the request URL.
      */
     internal override var params: [URLQueryItem] {
@@ -139,8 +127,7 @@ open class RouteOptions: DirectionsOptions {
         
         params.append(contentsOf: [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-            URLQueryItem(name: "approaches", value: approachType.description)
+            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
         ])
 
         if includesExitRoundaboutManeuver {
@@ -198,7 +185,6 @@ open class RouteOptions: DirectionsOptions {
         copy.includesAlternativeRoutes = includesAlternativeRoutes
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.roadClassesToAvoid = roadClassesToAvoid
-        copy.approachType = approachType
         return copy
     }
     
@@ -215,8 +201,7 @@ open class RouteOptions: DirectionsOptions {
         guard allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
             includesAlternativeRoutes == other.includesAlternativeRoutes,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-            roadClassesToAvoid == other.roadClassesToAvoid,
-            approachType == other.approachType else { return false }
+            roadClassesToAvoid == other.roadClassesToAvoid else { return false }
         return true
     }
 }
