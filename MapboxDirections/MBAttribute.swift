@@ -10,8 +10,6 @@ extension AttributeOptions: CustomStringConvertible {
         var attributeOptions: AttributeOptions = []
         for description in descriptions {
             switch description {
-            case "nodes":
-                attributeOptions.update(with: .openStreetMapNodeIdentifier)
             case "distance":
                 attributeOptions.update(with: .distance)
             case "duration":
@@ -31,9 +29,6 @@ extension AttributeOptions: CustomStringConvertible {
     
     public var description: String {
         var descriptions: [String] = []
-        if contains(.openStreetMapNodeIdentifier) {
-            descriptions.append("nodes")
-        }
         if contains(.distance) {
             descriptions.append("distance")
         }

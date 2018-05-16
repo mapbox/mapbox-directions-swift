@@ -7,6 +7,13 @@ import Foundation
 public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**
+     The step does not have a particular visual instruction component type associated with it.
+     
+     This visual instruction component type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
+     */
+    case none
+    
+    /**
      The component separates two other destination components.
      
      If the two adjacent components are both displayed as images, you can hide this delimiter component.
@@ -49,13 +56,15 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         case "exit-number":
             type = .exitCode
         default:
-            return nil
+            type = .none
         }
         self.init(rawValue: type.rawValue)
     }
     
     public var description: String {
         switch self {
+        case .none:
+            return "none"
         case .delimiter:
             return "delimiter"
         case .image:

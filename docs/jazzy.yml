@@ -19,7 +19,12 @@ custom_categories:
       - Directions
       - RouteOptions
       - Waypoint
-  - name: Route Response
+  - name: Map Matching
+    children:
+      - MatchOptions
+      - Tracepoint
+      - Match
+  - name: Results
     children:
       - Route
       - RouteLeg

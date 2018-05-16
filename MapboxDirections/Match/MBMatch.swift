@@ -22,7 +22,8 @@ open class Match: DirectionsResult {
      - parameter tracepoints: An array of `Tracepoint` that the match found in order.
      - parameter matchOptions: The `MatchOptions` used to create the request.
     */
-    @objc public convenience init(json: [String: Any], tracepoints: [Tracepoint], waypointIndices: IndexSet, matchOptions: MatchOptions) {
+    @objc(initWithJSON:tracepoints:waypointIndices:matchOptions:)
+    public convenience init(json: [String: Any], tracepoints: [Tracepoint], waypointIndices: IndexSet, matchOptions: MatchOptions) {
         let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
