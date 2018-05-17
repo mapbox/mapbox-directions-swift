@@ -66,7 +66,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
                                           imageURL: URL(string: (record["imageBaseURL"] as? String) ?? ""),
                                       abbreviation: record["abbr"] as? String,
                               abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound,
-                                            active: type == .lane)
+                                            active: record["active"] as? Bool ?? false)
         }
         
         let degrees = json["degrees"] as? CLLocationDegrees ?? 180
