@@ -46,6 +46,20 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public var abbreviationPriority: Int = NSNotFound
     
     /**
+     An array indicating which directions you can go from a lane (left, right, or straight).
+     
+     If the value is `[.left", .straight]`, the driver can go straight or left from that lane. This is only set when the `component` is a lane.
+     */
+    @objc public var directions: [Any]?
+    
+    /**
+     The boolean that indicates whether the component is a lane and can be used to complete the upcoming maneuver.
+     
+     If multiple lanes are active, then it used to complete the upcoming maneuver. This value is set to `false` by default.
+     */
+    @objc public var active: Bool = false
+    
+    /**
      Initializes a new visual instruction component object based on the given JSON dictionary representation.
      
      - parameter json: A JSON object that conforms to the [banner component](https://www.mapbox.com/api-documentation/#banner-instruction-object) format described in the Directions API documentation.
@@ -71,7 +85,12 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
         
-        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
+        var active = false
+        if let status = json["active"] as? Bool {
+            active = status
+        }
+        
+        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority, active: active)
     }
     
     /**
@@ -82,13 +101,19 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      - parameter imageURL: The URL to an image representation of this component.
      - parameter abbreviation: An abbreviated representation of `text`.
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
+     - parameter directions: The possibile directions to go from a lane component.
+     - parameter active: An active flag to indicate that the upcoming maneuver can be completed with a lane component.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int, directions: [String]? = nil, active: Bool = false) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
+        if let directions = directions {
+            self.directions = directions.map { ManeuverDirection(description: $0) ?? .none }
+        }
+        self.active = active
     }
 
     @objc public required init?(coder decoder: NSCoder) {
@@ -111,6 +136,14 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         self.abbreviation = abbreviation
         
         abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
+        
+        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "directions") as? [String] else {
+            return nil
+        }
+        
+        self.directions = directions.map { ManeuverDirection(description: $0) ?? .none }
+        
+        self.active = decoder.decodeObject(forKey: "active") as? Bool ?? false
     }
     
     open static var supportsSecureCoding = true
@@ -120,6 +153,8 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         coder.encode(type, forKey: "type")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
+        coder.encode(directions, forKey: "directions")
+        coder.encode(active, forKey: "active")
     }
 }
 

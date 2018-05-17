@@ -58,12 +58,15 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         let text = json["text"] as? String
         let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
         let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
-        let textComponents = (json["components"] as! [JSONDictionary]).map {
-            VisualInstructionComponent(type: VisualInstructionComponentType(description: $0["type"] as! String) ?? .none,
-                                       text: $0["text"] as? String,
-                                       imageURL: URL(string: ($0["imageBaseURL"] as? String) ?? ""),
-                                       abbreviation: $0["abbr"] as? String,
-                                       abbreviationPriority: $0["abbr_priority"] as? Int ?? NSNotFound)
+        let textComponents: [VisualInstructionComponent] = (json["components"] as! [JSONDictionary]).map { record in
+            
+            let type = VisualInstructionComponentType(description: record["type"] as! String) ?? .none
+            return VisualInstructionComponent(type: type,
+                                              text: record["text"] as? String,
+                                          imageURL: URL(string: (record["imageBaseURL"] as? String) ?? ""),
+                                      abbreviation: record["abbr"] as? String,
+                              abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound,
+                                            active: type == .lane)
         }
         
         let degrees = json["degrees"] as? CLLocationDegrees ?? 180
