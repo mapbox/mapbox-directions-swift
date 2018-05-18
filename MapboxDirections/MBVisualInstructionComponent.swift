@@ -50,7 +50,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      
      If the value is `[.left", .straight]`, the driver can go straight or left from that lane. This is only set when the `component` is a lane.
      */
-    @objc public var directions: LaneIndication
+    @objc public var indications: LaneIndication
     
     /**
      The boolean that indicates whether the component is a lane and can be used to complete the upcoming maneuver.
@@ -90,13 +90,13 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             isLaneActive = active
         }
         
-        var directions = LaneIndication()
-        if let laneDirections = json["directions"] as? [String],
-            let laneIndication = LaneIndication(descriptions: laneDirections) {
-            directions = laneIndication
+        var indications = LaneIndication()
+        if let directions = json["directions"] as? [String],
+            let laneIndications = LaneIndication(descriptions: directions) {
+            indications = laneIndications
         }
         
-        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority, directions: directions, isLaneActive: isLaneActive)
+        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority, indications: indications, isLaneActive: isLaneActive)
     }
     
     /**
@@ -107,16 +107,16 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      - parameter imageURL: The URL to an image representation of this component.
      - parameter abbreviation: An abbreviated representation of `text`.
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
-     - parameter directions: The possibile directions to go from a lane component.
+     - parameter indications: The possibile directions to go from a lane component.
      - parameter isLaneActive: The flag to indicate that the upcoming maneuver can be completed with a lane component.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int, directions: LaneIndication = LaneIndication(), isLaneActive: Bool = false) {
+    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int, indications: LaneIndication = LaneIndication(), isLaneActive: Bool = false) {
         self.text = text
         self.imageURL = imageURL
         self.type = type
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
-        self.directions = directions
+        self.indications = indications
         self.isLaneActive = isLaneActive
     }
 
@@ -145,7 +145,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
             return nil
         }
         
-        self.directions = LaneIndication(descriptions: directions) ?? LaneIndication()
+        self.indications = LaneIndication(descriptions: directions) ?? LaneIndication()
         
         self.isLaneActive = decoder.decodeObject(forKey: "active") as? Bool ?? false
     }
@@ -157,7 +157,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         coder.encode(type, forKey: "type")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
-        coder.encode(directions, forKey: "directions")
+        coder.encode(indications, forKey: "directions")
         coder.encode(isLaneActive, forKey: "active")
     }
 }

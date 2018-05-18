@@ -60,17 +60,17 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
         let textComponents: [VisualInstructionComponent] = (json["components"] as! [JSONDictionary]).map { record in
             let type = VisualInstructionComponentType(description: record["type"] as! String) ?? .none
-            var directions = LaneIndication()
-            if let laneDirections = record["directions"] as? [String],
-                let laneIndication = LaneIndication(descriptions: laneDirections) {
-                directions = laneIndication
+            var indications = LaneIndication()
+            if let directions = record["directions"] as? [String],
+                let laneIndications = LaneIndication(descriptions: directions) {
+                indications = laneIndications
             }
             return VisualInstructionComponent(type: type,
                                               text: record["text"] as? String,
                                           imageURL: URL(string: (record["imageBaseURL"] as? String) ?? ""),
                                       abbreviation: record["abbr"] as? String,
                               abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound,
-                                        directions: directions,
+                                       indications: indications,
                                       isLaneActive: record["active"] as? Bool ?? false)
         }
         
