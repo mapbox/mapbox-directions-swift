@@ -48,7 +48,7 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     /**
      An array indicating which directions you can go from a lane (left, right, or straight).
      
-     If the value is `[.left", .straight]`, the driver can go straight or left from that lane. This is only set when the `component` is a lane.
+     If the value is `[.left", .straight]`, the driver can go left or straight from that lane. This is only set when the `component` is a `lane`.
      */
     @objc public var indications: LaneIndication
     
