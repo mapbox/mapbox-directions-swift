@@ -8,8 +8,6 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**
      The step does not have a particular visual instruction component type associated with it.
-     
-     This visual instruction component type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
      */
     case none
     
