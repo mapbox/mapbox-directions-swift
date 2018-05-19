@@ -56,8 +56,15 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
-        let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
-        let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
+        var maneuverType: ManeuverType = .none
+        if let type = json["type"] as? String, let derivedType = ManeuverType(description: type) {
+            maneuverType = derivedType
+        }
+        var maneuverDirection: ManeuverDirection = .none
+        if let modifier = json["modifier"] as? String,
+            let derivedDirection = ManeuverDirection(description: modifier) {
+            maneuverDirection = derivedDirection
+        }
         let textComponents: [VisualInstructionComponent] = (json["components"] as! [JSONDictionary]).map { record in
             let type = VisualInstructionComponentType(description: record["type"] as! String) ?? .none
             var indications = LaneIndication()
