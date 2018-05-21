@@ -22,7 +22,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     @objc public let secondaryInstruction: VisualInstruction?
     
     /**
-     The information about the next maneuver (the one after the upcoming maneuver). This detail gives the driver heads up when the current step is short.
+     A visual instruction that is presented simultaneously to provide information about an additional maneuver that occurs in rapid succession.
      */
     @objc public let subInstruction: VisualInstruction?
     
