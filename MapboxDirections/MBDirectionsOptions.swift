@@ -410,7 +410,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     @objc open var includesVisualInstructions = false
     
     /**
-     Indicate how a route considers from which side of the road to approach a waypoint.
+     A Boolean value that indicates whether each of the resulting routes must approach a waypoint from the same side of the road.
      
      By default, the route can approach a waypoint from either side of the road. If set to false, the route will be returned so that on arrival, the waypoint will be found on the side that corresponds with the `DrivingSide` of the region in which the returned route is located.
      */
