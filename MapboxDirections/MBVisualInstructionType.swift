@@ -7,11 +7,6 @@ import Foundation
 public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**
-     The step does not have a particular visual instruction component type associated with it.
-     */
-    case none
-    
-    /**
      The component separates two other destination components.
      
      If the two adjacent components are both displayed as images, you can hide this delimiter component.
@@ -61,15 +56,13 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
         case "lane":
             type = .lane
         default:
-            type = .none
+            return nil
         }
         self.init(rawValue: type.rawValue)
     }
     
     public var description: String {
         switch self {
-        case .none:
-            return "none"
         case .delimiter:
             return "delimiter"
         case .image:
