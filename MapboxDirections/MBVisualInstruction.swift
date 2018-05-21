@@ -56,29 +56,37 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
+        
         var maneuverType: ManeuverType = .none
         if let type = json["type"] as? String, let derivedType = ManeuverType(description: type) {
             maneuverType = derivedType
         }
+        
         var maneuverDirection: ManeuverDirection = .none
         if let modifier = json["modifier"] as? String,
             let derivedDirection = ManeuverDirection(description: modifier) {
             maneuverDirection = derivedDirection
         }
+        
         let textComponents: [VisualInstructionComponent] = (json["components"] as! [JSONDictionary]).map { record in
-            let type = VisualInstructionComponentType(description: record["type"] as! String) ?? .none
-            var indications = LaneIndication()
-            if let directions = record["directions"] as? [String],
-                let laneIndications = LaneIndication(descriptions: directions) {
-                indications = laneIndications
+            let type = VisualInstructionComponentType(description: record["type"] as? String ?? "") ?? .text
+            let imageURL = URL(string: (record["imageBaseURL"] as? String) ?? "")
+       
+            let instructionComponent = VisualInstructionComponent(type: type,
+                                                                  text: record["text"] as? String,
+                                                              imageURL: imageURL,
+                                                          abbreviation: record["abbr"] as? String,
+                                                  abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound)
+            
+            if let directions = record["directions"] as? [String], let laneIndication = LaneIndication(descriptions: directions) {
+                instructionComponent.indications = laneIndication
             }
-            return VisualInstructionComponent(type: type,
-                                              text: record["text"] as? String,
-                                          imageURL: URL(string: (record["imageBaseURL"] as? String) ?? ""),
-                                      abbreviation: record["abbr"] as? String,
-                              abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound,
-                                       indications: indications,
-                                      isLaneActive: record["active"] as? Bool ?? false)
+
+            if let active = record["active"] as? Bool  {
+                instructionComponent.isActiveLane = active
+            }
+            
+            return instructionComponent
         }
         
         let degrees = json["degrees"] as? CLLocationDegrees ?? 180
