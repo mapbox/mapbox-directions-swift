@@ -83,7 +83,7 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(arrivalSpokenInstructions[0].text, "You have arrived at the gym")
         XCTAssertEqual(arrivalSpokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">You have arrived at the gym</prosody></amazon:effect></speak>")
         
-        let visualInstructions = step.instructionsDisplayedAlongStep
+        var visualInstructions = step.instructionsDisplayedAlongStep
         
         XCTAssertNotNil(visualInstructions)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Page Street")
@@ -100,5 +100,20 @@ class SpokenInstructionsTests: XCTestCase {
         
         let arrivalVisualInstructions = arrivalStep.instructionsDisplayedAlongStep!
         XCTAssertEqual(arrivalVisualInstructions.first?.secondaryInstruction?.text, "the gym")
+        
+        // Tertiary Visual Instructions
+        visualInstructions = leg.steps[5].instructionsDisplayedAlongStep
+        XCTAssertNotNil(visualInstructions)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.text, "Bayshore Boulevard")
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.text, "Bayshore Boulevard")
+        XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 120.7)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.finalHeading, 180.0)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverType, .reachFork)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverDirection, .right)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviation, "Bayshore Blvd")
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviationPriority, 0)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.isActiveLane, false)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.indications, LaneIndication())
+        XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
     }
 }
