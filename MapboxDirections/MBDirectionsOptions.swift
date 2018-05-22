@@ -220,6 +220,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         copy.includesSpokenInstructions = includesSpokenInstructions
         copy.distanceMeasurementSystem = distanceMeasurementSystem
         copy.includesVisualInstructions = includesVisualInstructions
+        copy.allowsArrivingOnOppositeSide = allowsArrivingOnOppositeSide
         return copy
     }
     
@@ -242,7 +243,8 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             locale == other.locale,
             includesSpokenInstructions == other.includesSpokenInstructions,
             includesVisualInstructions == other.includesVisualInstructions,
-            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
+            distanceMeasurementSystem == other.distanceMeasurementSystem,
+            allowsArrivingOnOppositeSide == other.allowsArrivingOnOppositeSide else { return false }
         return true
     }
     
@@ -257,6 +259,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
         coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
         coder.encode(includesVisualInstructions, forKey: "includesVisualInstructions")
+        coder.encode(allowsArrivingOnOppositeSide, forKey: "allowsArrivingOnOppositeSide")
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -300,6 +303,8 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         }
         
         includesVisualInstructions = decoder.decodeBool(forKey: "includesVisualInstructions")
+        
+        allowsArrivingOnOppositeSide = decoder.decodeBool(forKey: "allowsArrivingOnOppositeSide")
     }
     
     /**
@@ -405,6 +410,13 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     @objc open var includesVisualInstructions = false
     
     /**
+     A Boolean value that indicates whether each of the resulting routes must approach a waypoint from the same side of the road.
+     
+     By default, the route can approach a waypoint from either side of the road. If set to false, the route will be returned so that on arrival, the waypoint will be found on the side that corresponds with the `DrivingSide` of the region in which the returned route is located.
+     */
+    @objc open var allowsArrivingOnOppositeSide: Bool = true
+    
+    /**
      An array of URL parameters to include in the request URL.
      */
     internal var params: [URLQueryItem] {
@@ -448,6 +460,8 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: "waypoint_names", value: names))
         }
+        
+        params.append(URLQueryItem(name: "approaches", value: allowsArrivingOnOppositeSide ? "unrestricted" : "curb"))
         
         return params
     }
