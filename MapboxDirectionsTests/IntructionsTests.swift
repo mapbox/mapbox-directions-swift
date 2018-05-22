@@ -95,6 +95,8 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.type, .text)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviation, "Page St")
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviationPriority, 0)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.isActiveLane, false)
+        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.indications, LaneIndication())
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
@@ -104,14 +106,15 @@ class SpokenInstructionsTests: XCTestCase {
         // Tertiary Visual Instructions
         visualInstructions = leg.steps[5].instructionsDisplayedAlongStep
         XCTAssertNotNil(visualInstructions)
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.text, "Bayshore Boulevard")
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.text, "Bayshore Boulevard")
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.text, "")
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.text, "")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 120.7)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.finalHeading, 180.0)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverType, .reachFork)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverDirection, .right)
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviation, "Bayshore Blvd")
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviation, "")
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviationPriority, 0)
+        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.type, .lane)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.isActiveLane, true)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.indications, [.left, .straightAhead])
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
