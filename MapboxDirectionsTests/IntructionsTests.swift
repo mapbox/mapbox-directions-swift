@@ -112,8 +112,6 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverDirection, .right)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviation, "Bayshore Blvd")
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.abbreviationPriority, 0)
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.isActiveLane, false)
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.textComponents.first?.indications, LaneIndication())
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
     }
 }
