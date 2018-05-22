@@ -46,6 +46,20 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
     @objc public var abbreviationPriority: Int = NSNotFound
     
     /**
+     An array indicating which directions you can go from a lane (left, right, or straight).
+     
+     If the value is `[LaneIndication.left", LaneIndication.straightAhead]`, the driver can go left or straight ahead from that lane. This is only set when the `component` is a `lane`.
+     */
+    @objc public var indications: LaneIndication = LaneIndication()
+    
+    /**
+     The boolean that indicates whether the component is a lane and can be used to complete the upcoming maneuver.
+     
+     If multiple lanes are active, then they can all be used to complete the upcoming maneuver. This value is set to `false` by default.
+     */
+    @objc public var isActiveLane: Bool = false
+    
+    /**
      Initializes a new visual instruction component object based on the given JSON dictionary representation.
      
      - parameter json: A JSON object that conforms to the [banner component](https://www.mapbox.com/api-documentation/#banner-instruction-object) format described in the Directions API documentation.
@@ -72,6 +86,15 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         
         self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
+        
+        if let active = json["active"] as? Bool {
+            self.isActiveLane = active
+        }
+        
+        if let directions = json["directions"] as? [String],
+            let laneIndications = LaneIndication(descriptions: directions) {
+            self.indications = laneIndications
+        }
     }
     
     /**
@@ -111,6 +134,16 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         self.abbreviation = abbreviation
         
         abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
+        
+        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "directions") as? [String], let indications = LaneIndication(descriptions: directions) else {
+            return nil
+        }
+        self.indications = indications
+        
+        guard let active = decoder.decodeObject(forKey: "active") as? Bool else {
+            return nil
+        }
+        self.isActiveLane = active
     }
     
     open static var supportsSecureCoding = true
@@ -120,6 +153,8 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         coder.encode(type, forKey: "type")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
+        coder.encode(indications, forKey: "directions")
+        coder.encode(isActiveLane, forKey: "active")
     }
 }
 
