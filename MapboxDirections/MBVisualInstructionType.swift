@@ -31,11 +31,6 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     case exit
     
     /**
-     The component contains information about which lanes can be used to complete the maneuver.
-     */
-    case lane
-    
-    /**
      A component contains an exit number.
      */
     case exitCode
@@ -53,8 +48,6 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
             type = .exit
         case "exit-number":
             type = .exitCode
-        case "lane":
-            type = .lane
         default:
             return nil
         }
@@ -73,8 +66,6 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
             return "exit"
         case .exitCode:
             return "exit-number"
-        case .lane:
-            return "lane"
         }
     }
 }
