@@ -31,6 +31,12 @@
 		8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		AEDC211920B5DBDE0052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
 		AEDC211D20B6104B0052DED8 /* MBComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponent.swift */; };
+		AEDC211E20B612530052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC211F20B612540052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC212020B612560052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC212120B6125C0052DED8 /* MBComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponent.swift */; };
+		AEDC212220B6125D0052DED8 /* MBComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponent.swift */; };
+		AEDC212320B6125E0052DED8 /* MBComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponent.swift */; };
 		C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* MBAttribute.swift */; };
 		C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5247D701E818A24004B6154 /* AnnotationTests.swift */; };
 		C52552B91FA15D5900B1545C /* MBVisualInstructionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */; };
@@ -1147,6 +1153,7 @@
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC211E20B612530052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				C52CE38F1F6AF63C0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1155,6 +1162,7 @@
 				C56516851FE1AB8F00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */,
+				AEDC212120B6125C0052DED8 /* MBComponent.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1197,6 +1205,7 @@
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC211F20B612540052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A10F11D010247009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3901F6AF63D0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1205,6 +1214,7 @@
 				C56516861FE1AB9000A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */,
+				AEDC212220B6125D0052DED8 /* MBComponent.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1247,6 +1257,7 @@
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC212020B612560052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3911F6AF63E0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1255,6 +1266,7 @@
 				C56516871FE1AB9100A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */,
+				AEDC212320B6125E0052DED8 /* MBComponent.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
