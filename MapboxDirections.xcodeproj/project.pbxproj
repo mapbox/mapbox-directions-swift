@@ -29,6 +29,8 @@
 		8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
+		AEDC211920B5DBDE0052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC211B20B5F1920052DED8 /* MBComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211A20B5F1920052DED8 /* MBComponent.swift */; };
 		C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* MBAttribute.swift */; };
 		C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5247D701E818A24004B6154 /* AnnotationTests.swift */; };
 		C52552B91FA15D5900B1545C /* MBVisualInstructionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */; };
@@ -264,6 +266,8 @@
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBLaneIndicationComponent.swift; sourceTree = "<group>"; };
+		AEDC211A20B5F1920052DED8 /* MBComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBComponent.swift; sourceTree = "<group>"; };
 		C51538CB1E807FF00093FF3E /* MBAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBAttribute.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionBanner.swift; sourceTree = "<group>"; };
@@ -536,6 +540,8 @@
 				C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */,
 				C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */,
 				C52552BF1FA1628A00B1545C /* MBVisualInstructionComponent.swift */,
+				AEDC211A20B5F1920052DED8 /* MBComponent.swift */,
+				AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */,
 				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 				35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */,
 			);
@@ -1273,6 +1279,7 @@
 				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* MBDirectionsResult.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */,
+				AEDC211920B5DBDE0052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				C5434B8A200693D00069E887 /* MBTracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */,
@@ -1281,6 +1288,7 @@
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
+				AEDC211B20B5F1920052DED8 /* MBComponent.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,3 @@
-import Foundation
-
 #if os(OSX)
     import Cocoa
 #elseif os(watchOS)
@@ -12,20 +10,7 @@ import Foundation
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 @objc(MBVisualInstructionComponent)
-open class VisualInstructionComponent: NSObject, NSSecureCoding {
-    
-    /**
-     The plain text representation of this component.
-     
-     Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
-     */
-    @objc public let text: String?
-    
-    /**
-     The type of visual instruction component. You can display the component differently depending on its type.
-     */
-    @objc public var type: VisualInstructionComponentType
-    
+open class VisualInstructionComponent: Component {
     /**
     The URL to an image representation of this component.
  
@@ -44,20 +29,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
     @objc public var abbreviationPriority: Int = NSNotFound
-    
-    /**
-     An array indicating which directions you can go from a lane (left, right, or straight).
-     
-     If the value is `[LaneIndication.left", LaneIndication.straightAhead]`, the driver can go left or straight ahead from that lane. This is only set when the `component` is a `lane`.
-     */
-    @objc public var indications: LaneIndication = LaneIndication()
-    
-    /**
-     The boolean that indicates whether the component is a lane and can be used to complete the upcoming maneuver.
-     
-     If multiple lanes are active, then they can all be used to complete the upcoming maneuver. This value is set to `false` by default.
-     */
-    @objc public var isActiveLane: Bool = false
     
     /**
      Initializes a new visual instruction component object based on the given JSON dictionary representation.
@@ -86,15 +57,6 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         }
         
         self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-        
-        if let active = json["active"] as? Bool {
-            self.isActiveLane = active
-        }
-        
-        if let directions = json["directions"] as? [String],
-            let laneIndications = LaneIndication(descriptions: directions) {
-            self.indications = laneIndications
-        }
     }
     
     /**
@@ -107,26 +69,19 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
      */
     @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
-        self.text = text
         self.imageURL = imageURL
-        self.type = type
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
+        super.init(text: text, type: type)
     }
 
     @objc public required init?(coder decoder: NSCoder) {
-        
-        self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
+        super.init(coder: decoder)
         
         guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
             return nil
         }
         self.imageURL = imageURL
-        
-        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
-                return nil
-        }
-        self.type = type
         
         guard let abbreviation = decoder.decodeObject(of: NSString.self, forKey: "abbreviation") as String? else {
             return nil
@@ -134,27 +89,13 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         self.abbreviation = abbreviation
         
         abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
-        
-        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "directions") as? [String], let indications = LaneIndication(descriptions: directions) else {
-            return nil
-        }
-        self.indications = indications
-        
-        guard let active = decoder.decodeObject(forKey: "active") as? Bool else {
-            return nil
-        }
-        self.isActiveLane = active
     }
     
-    open static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
+    public override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
         coder.encode(imageURL, forKey: "imageURL")
-        coder.encode(type, forKey: "type")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
-        coder.encode(indications, forKey: "directions")
-        coder.encode(isActiveLane, forKey: "active")
     }
 }
 
