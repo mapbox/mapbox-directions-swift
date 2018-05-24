@@ -91,11 +91,11 @@ open class VisualInstruction: NSObject, NSSecureCoding {
                         let laneIndications = LaneIndication(descriptions: directions) {
                         indications = laneIndications
                     }
-                    var isActiveLane = false
+                    var isUsable = false
                     if let active = record["active"] as? Bool {
-                        isActiveLane = active
+                        isUsable = active
                     }
-                    return LaneIndicationComponent(text: record["text"] as? String, type: type, indications: indications, isActiveLane: isActiveLane)
+                    return LaneIndicationComponent(text: record["text"] as? String, type: type, indications: indications, isUsable: isUsable)
                 }
             } else {
                 components = dictionary.map { record in
@@ -103,9 +103,9 @@ open class VisualInstruction: NSObject, NSSecureCoding {
                     let imageURL = URL(string: (record["imageBaseURL"] as? String) ?? "")
                     return VisualInstructionComponent(type: type,
                                                       text: record["text"] as? String,
-                                                      imageURL: imageURL,
-                                                      abbreviation: record["abbr"] as? String,
-                                                      abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound)
+                                                  imageURL: imageURL,
+                                              abbreviation: record["abbr"] as? String,
+                                      abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound)
                 }
             }
         }

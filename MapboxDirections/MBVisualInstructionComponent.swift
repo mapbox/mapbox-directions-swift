@@ -9,8 +9,8 @@
 /**
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
-@objc(MBVisualInstructionComponent)
 open class VisualInstructionComponent: Component {
+    
     /**
     The URL to an image representation of this component.
  
@@ -29,6 +29,13 @@ open class VisualInstructionComponent: Component {
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
     @objc public var abbreviationPriority: Int = NSNotFound
+    
+    // MARK: Component/NSSecureCoding Protocols Variables
+    @objc public var text: String?
+    
+    @objc public var type: VisualInstructionComponentType
+    
+    public static var supportsSecureCoding: Bool = true
     
     /**
      Initializes a new visual instruction component object based on the given JSON dictionary representation.
@@ -69,14 +76,21 @@ open class VisualInstructionComponent: Component {
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
      */
     @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
+        self.text = text
+        self.type = type
         self.imageURL = imageURL
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
-        super.init(text: text, type: type)
     }
 
     @objc public required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+        self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
+        
+        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
+            return nil
+        }
+        self.type = type
+
         
         guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
             return nil
@@ -91,8 +105,9 @@ open class VisualInstructionComponent: Component {
         abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
     }
     
-    public override func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    public func encode(with coder: NSCoder) {
+        coder.encode(text, forKey: "text")
+        coder.encode(type, forKey: "type")
         coder.encode(imageURL, forKey: "imageURL")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")

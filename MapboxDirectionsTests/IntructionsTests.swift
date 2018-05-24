@@ -114,7 +114,7 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverType, .reachFork)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverDirection, .right)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.components.first?.type, .lane)
-        XCTAssertEqual(tertiaryInstructionComponents.isActiveLane, true)
+        XCTAssertEqual(tertiaryInstructionComponents.isUsable, true)
         XCTAssertEqual(tertiaryInstructionComponents.indications, [.left, .straightAhead])
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
     }
