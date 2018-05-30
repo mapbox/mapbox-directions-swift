@@ -84,19 +84,19 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(arrivalSpokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">You have arrived at the gym</prosody></amazon:effect></speak>")
         
         var visualInstructions = step.instructionsDisplayedAlongStep
-        let primaryInstructionComponents = (visualInstructions?.first?.primaryInstruction.components.first as! VisualInstructionComponent)
+        let primaryInstructionComponent = (visualInstructions?.first?.primaryInstruction.components.first as! VisualInstructionComponent)
         
         XCTAssertNotNil(visualInstructions)
-        XCTAssertNotNil(primaryInstructionComponents)
+        XCTAssertNotNil(primaryInstructionComponent)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Page Street")
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.components.first!.text, "Page Street")
+        XCTAssertEqual(primaryInstructionComponent.text, "Page Street")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1107.1)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.finalHeading, 180.0)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverDirection, .left)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.components.first?.type, .text)
-        XCTAssertEqual(primaryInstructionComponents.abbreviation, "Page St")
-        XCTAssertEqual(primaryInstructionComponents.abbreviationPriority, 0)
+        XCTAssertEqual(primaryInstructionComponent.type, .text)
+        XCTAssertEqual(primaryInstructionComponent.abbreviation, "Page St")
+        XCTAssertEqual(primaryInstructionComponent.abbreviationPriority, 0)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
@@ -105,17 +105,15 @@ class SpokenInstructionsTests: XCTestCase {
         
         // Tertiary Visual Instructions
         visualInstructions = leg.steps[5].instructionsDisplayedAlongStep
-        let tertiaryInstructionComponents = (visualInstructions?.first?.tertiaryInstruction?.components.first as! LaneIndicationComponent)
+        let tertiaryInstructionComponent = (visualInstructions?.first?.tertiaryInstruction?.components.first as! LaneIndicationComponent)
         XCTAssertNotNil(visualInstructions)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.text, "")
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.components.first?.text, "")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 120.7)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.finalHeading, 180.0)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverType, .reachFork)
         XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.maneuverDirection, .right)
-        XCTAssertEqual(visualInstructions?.first?.tertiaryInstruction?.components.first?.type, .lane)
-        XCTAssertEqual(tertiaryInstructionComponents.isUsable, true)
-        XCTAssertEqual(tertiaryInstructionComponents.indications, [.left, .straightAhead])
+        XCTAssertEqual(tertiaryInstructionComponent.isUsable, true)
+        XCTAssertEqual(tertiaryInstructionComponent.indications, [.left, .straightAhead])
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
     }
 }
