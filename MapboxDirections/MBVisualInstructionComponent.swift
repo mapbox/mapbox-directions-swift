@@ -9,7 +9,8 @@
 /**
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
-open class VisualInstructionComponent: Component {
+@objc(MBVisualInstructionComponent)
+open class VisualInstructionComponent: NSObject, MBComponentRepresentable {
     
     /**
     The URL to an image representation of this component.
