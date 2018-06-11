@@ -31,9 +31,16 @@ open class VisualInstructionComponent: NSObject, MBComponentRepresentable {
      */
     @objc public var abbreviationPriority: Int = NSNotFound
     
-    // MARK: Component/NSSecureCoding Protocols Variables
+    /**
+     The plain text representation of this component.
+
+     Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
+     */
     @objc public var text: String?
     
+    /**
+     The type of visual instruction component. You can display the component differently depending on its type.
+     */
     @objc public var type: VisualInstructionComponentType
     
     public static var supportsSecureCoding: Bool = true
