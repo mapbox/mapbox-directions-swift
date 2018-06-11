@@ -2,7 +2,7 @@
 A component that represents a lane  representation of an instruction.
  */
 @objc(MBLaneIndicationComponent)
-open class LaneIndicationComponent: NSObject, MBComponentRepresentable {
+open class LaneIndicationComponent: NSObject, ComponentRepresentable {
 
     /**
      An array indicating which directions you can go from a lane (left, right, or straight).

@@ -26,7 +26,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      A structured representation of the instruction.
      */
-    @objc public let components: [MBComponentRepresentable]
+    @objc public let components: [ComponentRepresentable]
     
     /**
      The heading at which the user exits a roundabout (traffic circle or rotary).
@@ -40,7 +40,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [MBComponentRepresentable], degrees: CLLocationDegrees = 180) {
+    @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [ComponentRepresentable], degrees: CLLocationDegrees = 180) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
@@ -57,7 +57,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let componentsDictionary = json["components"] as? [JSONDictionary]
-        var components = [MBComponentRepresentable]()
+        var components = [ComponentRepresentable]()
         
         var maneuverType: ManeuverType = .none
         if let type = json["type"] as? String, let derivedType = ManeuverType(description: type) {
