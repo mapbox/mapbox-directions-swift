@@ -89,7 +89,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         }
         self.primaryInstruction = primaryInstruction
         self.secondaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "secondary")
-        self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "sub")
+        self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "tertiaryInstruction")
     }
     
     open static var supportsSecureCoding = true
@@ -98,7 +98,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
         coder.encode(primaryInstruction, forKey: "primary")
         coder.encode(secondaryInstruction, forKey: "secondary")
-        coder.encode(tertiaryInstruction, forKey: "sub")
+        coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
         coder.encode(drivingSide, forKey: "drivingSide")
     }
 }

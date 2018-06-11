@@ -37,14 +37,14 @@ open class LaneIndicationComponent: NSObject, MBComponentRepresentable {
         }
         self.indications = indications
         
-        guard let active = decoder.decodeObject(forKey: "active") as? Bool else {
+        guard let isUsable = decoder.decodeObject(forKey: "isUsable") as? Bool else {
             return nil
         }
-        self.isUsable = active
+        self.isUsable = isUsable
     }
     
     public func encode(with coder: NSCoder) {
         coder.encode(indications, forKey: "directions")
-        coder.encode(isUsable, forKey: "active")
+        coder.encode(isUsable, forKey: "isUsable")
     }
 }
