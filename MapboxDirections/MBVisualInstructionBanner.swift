@@ -23,6 +23,8 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     
     /**
      A visual instruction that is presented simultaneously to provide information about an additional maneuver that occurs in rapid succession.
+     
+     This instruction could either contain the visual layout information or the lane information about the next maneuver (the one after the upcoming maneuver).
      */
     @objc public let tertiaryInstruction: VisualInstruction?
     
