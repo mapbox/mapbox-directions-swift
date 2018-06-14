@@ -12,7 +12,7 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
     @objc public var indications: LaneIndication
     
     /**
-     The boolean that indicates whether the component is a lane and can be used to complete the upcoming maneuver.
+     The boolean that indicates whether the lane can be used to complete the maneuver.
      
      If multiple lanes are active, then they can all be used to complete the upcoming maneuver. This value is set to `false` by default.
      */
@@ -32,7 +32,7 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
     }
     
     @objc public required init?(coder decoder: NSCoder) {
-        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "directions") as? [String], let indications = LaneIndication(descriptions: directions) else {
+        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "indications") as? [String], let indications = LaneIndication(descriptions: directions) else {
             return nil
         }
         self.indications = indications
@@ -44,7 +44,7 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
     }
     
     public func encode(with coder: NSCoder) {
-        coder.encode(indications, forKey: "directions")
+        coder.encode(indications, forKey: "indications")
         coder.encode(isUsable, forKey: "isUsable")
     }
 }

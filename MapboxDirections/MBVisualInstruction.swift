@@ -56,7 +56,6 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
-        let componentsDictionary = json["components"] as? [JSONDictionary]
         var components = [ComponentRepresentable]()
         
         var maneuverType: ManeuverType = .none
@@ -70,7 +69,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
             maneuverDirection = derivedDirection
         }
         
-        if let dictionary = componentsDictionary {
+        if let dictionary = json["components"] as? [JSONDictionary] {
             if let firstComponent = dictionary.first, let type = firstComponent["type"] as? String, type.lowercased() == "lane" {
                 components = dictionary.map { record in
                     let indications = LaneIndication(descriptions: record["directions"] as? [String] ?? []) ?? LaneIndication()
