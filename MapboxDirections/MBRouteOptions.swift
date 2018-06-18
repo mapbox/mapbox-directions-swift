@@ -49,7 +49,6 @@ open class RouteOptions: DirectionsOptions {
         self.locale = matchOptions.locale
         self.includesSpokenInstructions = matchOptions.includesSpokenInstructions
         self.includesVisualInstructions = matchOptions.includesVisualInstructions
-        self.allowsArrivingOnOppositeSide = matchOptions.allowsArrivingOnOppositeSide
     }
 
     public required init?(coder decoder: NSCoder) {
