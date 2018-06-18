@@ -76,7 +76,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
             ])
         options.includesSteps = true
         
-        Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
+        Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, JSONRoutes, error) in
             guard error == nil else {
                 print("Error calculating directions: \(error!)")
                 return

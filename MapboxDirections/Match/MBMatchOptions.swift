@@ -131,7 +131,7 @@ open class MatchOptions: DirectionsOptions {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(containingRoutesFrom json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(containingRoutesFrom json: JSONDictionary) -> ([Waypoint]?, [Route]?, [[String: Any]]?) {
 
         var namedWaypoints: [Waypoint]?
         if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
@@ -157,10 +157,12 @@ open class MatchOptions: DirectionsOptions {
             }
         }
         
-        let routes = (json["matchings"] as? [JSONDictionary])?.map {
+        let JSONRoutes = (json["matchings"] as? [JSONDictionary])
+        
+        let routes = JSONRoutes?.map {
             Route(json: $0, waypoints: filteredWaypoints ?? waypoints, routeOptions: opts)
         }
         
-        return (waypoints, routes)
+        return (waypoints, routes, JSONRoutes)
     }
 }

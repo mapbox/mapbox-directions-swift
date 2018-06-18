@@ -152,7 +152,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?, [[String: Any]]?) {
         var namedWaypoints: [Waypoint]?
         if let jsonWaypoints = (json["waypoints"] as? [JSONDictionary]) {
             namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
@@ -166,10 +166,12 @@ open class RouteOptions: DirectionsOptions {
         
         let waypoints = namedWaypoints ?? self.waypoints
         
-        let routes = (json["routes"] as? [JSONDictionary])?.map {
+        let JSONRoutes = (json["routes"] as? [JSONDictionary])
+        
+        let routes = JSONRoutes?.map {
             Route(json: $0, waypoints: waypoints, routeOptions: self)
         }
-        return (waypoints, routes)
+        return (waypoints, routes, JSONRoutes)
     }
     
     override public class var supportsSecureCoding: Bool {
@@ -247,15 +249,16 @@ open class RouteOptionsV4: RouteOptions {
         ]
     }
 
-    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?, [[String: Any]]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).compactMap { Waypoint(geoJSON: $0) }
         let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
-        let routes = (json["routes"] as? [JSONDictionary])?.map {
+        let JSONRoutes = (json["routes"] as? [[String: Any]])
+        let routes = JSONRoutes?.map {
             RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
         }
-        return (waypoints, routes)
+        return (waypoints, routes, JSONRoutes)
     }
 }
 
