@@ -101,6 +101,9 @@ open class Directions: NSObject {
      - parameter routes: An array of `Route` objects. The preferred route is first; any alternative routes come next if the `RouteOptions` object’s `includesAlternativeRoutes` property was set to `true`. The preferred route depends on the route options object’s `profileIdentifier` property.
         
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
+     - parameter JSONRoutes: An array of [String: Any] dictionaries. This exposes a collection of routes in a JSON format within the RouteCompletionHandler tuple.
+     
+        If the request was canceled or there was an error obtaining the routes, this parameter may be `nil`.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
     public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ JSONRoutes: [[String: Any]]?, _ error: NSError?) -> Void
