@@ -125,9 +125,6 @@ class SpokenInstructionsTests: XCTestCase {
         options.shapeFormat = .polyline
         options.includesSteps = true
         options.includesAlternativeRoutes = false
-        options.routeShapeResolution = .full
-        options.includesSpokenInstructions = true
-        options.distanceMeasurementSystem = .imperial
         options.includesVisualInstructions = true
         
         var route: Route?
