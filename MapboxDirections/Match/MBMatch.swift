@@ -12,7 +12,7 @@ open class Match: DirectionsResult {
         self.confidence = confidence
         self.tracepoints = tracepoints
         self.waypointIndices = waypointIndices
-        super.init(options: matchOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: matchOptions)
     }
     
     /**
@@ -27,7 +27,7 @@ open class Match: DirectionsResult {
         let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: matchOptions.profileIdentifier)
+            return RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, options: RouteOptions(matchOptions: matchOptions))
         }
         
         let distance = json["distance"] as! Double

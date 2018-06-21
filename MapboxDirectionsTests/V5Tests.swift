@@ -148,4 +148,9 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
         test(shapeFormat: .polyline)
     }
+    
+    func testPolyline6() {
+        XCTAssertEqual(String(describing: RouteShapeFormat.polyline6), "polyline6")
+        test(shapeFormat: .polyline6)
+    }
 }

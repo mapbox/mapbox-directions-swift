@@ -9,8 +9,8 @@ import Polyline
 open class Route: DirectionsResult {
     // MARK: Creating a Route
     
-    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
-        super.init(options: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+    @objc internal override init(legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
     }
     
     /**
@@ -23,24 +23,31 @@ open class Route: DirectionsResult {
      - parameter routeOptions: The `RouteOptions` used to create the request.
      */
     @objc(initWithJSON:waypoints:routeOptions:)
-    public init(json: [String: Any], waypoints: [Waypoint], routeOptions: RouteOptions) {
+    public init(json: [String: Any], waypoints: [Waypoint], options: RouteOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
         let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, profileIdentifier: routeOptions.profileIdentifier)
+            RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, options: options)
         }
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
         
         var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
+        
+        switch options.shapeFormat {
+        case .geoJSON:
+            if let geometry = json["geometry"] as? JSONDictionary {
+                coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+            }
+        case .polyline:
+            if let geometry = json["geometry"] as? String {
+                coordinates = decodePolyline(geometry, precision: 1e5)!
+            }
+        case .polyline6:
+            if let geometry = json["geometry"] as? String {
+                coordinates = decodePolyline(geometry, precision: 1e6)!
+            }
         }
         
         var speechLocale: Locale?
@@ -48,7 +55,7 @@ open class Route: DirectionsResult {
             speechLocale = Locale(identifier: locale)
         }
         
-        super.init(options: routeOptions, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale)
+        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
     }
     
     public var routeOptions: RouteOptions {
@@ -63,8 +70,8 @@ open class Route: DirectionsResult {
 // MARK: Support for Directions API v4
 
 internal class RouteV4: Route {
-    convenience override init(json: JSONDictionary, waypoints: [Waypoint], routeOptions: RouteOptions) {
-        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, profileIdentifier: routeOptions.profileIdentifier)
+    convenience override init(json: JSONDictionary, waypoints: [Waypoint], options: RouteOptions) {
+        let leg = RouteLegV4(json: json, source: waypoints.first!, destination: waypoints.last!, options: options)
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
         
@@ -78,6 +85,6 @@ internal class RouteV4: Route {
             coordinates = nil
         }
         
-        self.init(routeOptions: routeOptions, legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: nil)
+        self.init(legs: [leg], distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: nil, options: options)
     }
 }

@@ -15,6 +15,9 @@
 		358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		35CEAF7020DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = 35CEAF6F20DC466E000308F8 /* v5_driving_dc_polyline6.json */; };
+		35CEAF7120DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = 35CEAF6F20DC466E000308F8 /* v5_driving_dc_polyline6.json */; };
+		35CEAF7220DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = 35CEAF6F20DC466E000308F8 /* v5_driving_dc_polyline6.json */; };
 		35EFD00B207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
@@ -260,6 +263,7 @@
 /* Begin PBXFileReference section */
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
+		35CEAF6F20DC466E000308F8 /* v5_driving_dc_polyline6.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = v5_driving_dc_polyline6.json; sourceTree = "<group>"; };
 		35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBVisualInstruction.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
@@ -580,6 +584,7 @@
 			children = (
 				DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */,
 				DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */,
+				35CEAF6F20DC466E000308F8 /* v5_driving_dc_polyline6.json */,
 			);
 			name = V5;
 			path = v5;
@@ -1007,6 +1012,7 @@
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
 				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
+				35CEAF7120DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */,
 				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022B1E92C281009837BD /* annotation.json in Resources */,
 			);
@@ -1031,6 +1037,7 @@
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
 				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
+				35CEAF7220DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */,
 				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022C1E92C281009837BD /* annotation.json in Resources */,
 			);
@@ -1062,6 +1069,7 @@
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C5DAACB4201AA9A7001F9261 /* match.json in Resources */,
+				35CEAF7020DC466E000308F8 /* v5_driving_dc_polyline6.json in Resources */,
 				C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */,
 				8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */,
 			);
