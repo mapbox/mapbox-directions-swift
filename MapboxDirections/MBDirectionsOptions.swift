@@ -1,4 +1,5 @@
 import Foundation
+import Polyline
 
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
@@ -48,6 +49,27 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
         case .polyline6:
             return "polyline6"
         }
+    }
+}
+
+extension RouteShapeFormat {
+    
+    func coordinates(from geometry: Any?) -> [CLLocationCoordinate2D]? {
+        switch self {
+        case .geoJSON:
+            if let geometry = geometry as? JSONDictionary {
+                return CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+            }
+        case .polyline:
+            if let geometry = geometry as? String {
+                return decodePolyline(geometry, precision: 1e5)!
+            }
+        case .polyline6:
+            if let geometry = geometry as? String {
+                return decodePolyline(geometry, precision: 1e6)!
+            }
+        }
+        return nil
     }
 }
 

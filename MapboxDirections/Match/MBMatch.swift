@@ -33,15 +33,7 @@ open class Match: DirectionsResult {
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
         
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
+        let coordinates = matchOptions.shapeFormat.coordinates(from: json["geometry"])
         
         let confidence = (json["confidence"] as! NSNumber).floatValue
         

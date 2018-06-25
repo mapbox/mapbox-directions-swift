@@ -631,22 +631,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         let name = json["name"] as! String
         
-        var coordinates: [CLLocationCoordinate2D]?
-        
-        switch options.shapeFormat {
-        case .geoJSON:
-            if let geometry = json["geometry"] as? JSONDictionary {
-                coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-            }
-        case .polyline:
-            if let geometry = json["geometry"] as? String {
-                coordinates = decodePolyline(geometry, precision: 1e5)!
-            }
-        case .polyline6:
-            if let geometry = json["geometry"] as? String {
-                coordinates = decodePolyline(geometry, precision: 1e6)!
-            }
-        }
+        let coordinates = options.shapeFormat.coordinates(from: json["geometry"])
         
         self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
     }

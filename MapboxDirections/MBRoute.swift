@@ -33,22 +33,7 @@ open class Route: DirectionsResult {
         let distance = json["distance"] as! Double
         let expectedTravelTime = json["duration"] as! Double
         
-        var coordinates: [CLLocationCoordinate2D]?
-        
-        switch options.shapeFormat {
-        case .geoJSON:
-            if let geometry = json["geometry"] as? JSONDictionary {
-                coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-            }
-        case .polyline:
-            if let geometry = json["geometry"] as? String {
-                coordinates = decodePolyline(geometry, precision: 1e5)!
-            }
-        case .polyline6:
-            if let geometry = json["geometry"] as? String {
-                coordinates = decodePolyline(geometry, precision: 1e6)!
-            }
-        }
+        let coordinates = options.shapeFormat.coordinates(from: json["geometry"])
         
         var speechLocale: Locale?
         if let locale = json["voiceLocale"] as? String {
