@@ -620,8 +620,8 @@ open class RouteStep: NSObject, NSSecureCoding {
      
      - parameter json: A JSON object that conforms to the [route step](https://www.mapbox.com/api-documentation/#routestep-object) format described in the Directions API documentation.
      */
-    @objc(initWithJSON:)
-    public convenience init(json: [String: Any]) {
+    @objc(initWithJSON:options:)
+    public convenience init(json: [String: Any], options: RouteOptions) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
         let maneuverType = ManeuverType(description: maneuver["type"] as? String ?? "") ?? .none
@@ -631,15 +631,7 @@ open class RouteStep: NSObject, NSSecureCoding {
         
         let name = json["name"] as! String
         
-        var coordinates: [CLLocationCoordinate2D]?
-        switch json["geometry"] {
-        case let geometry as JSONDictionary:
-            coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-        case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e5)!
-        default:
-            coordinates = nil
-        }
+        let coordinates = options.shapeFormat.coordinates(from: json["geometry"])
         
         self.init(finalHeading: finalHeading, maneuverType: maneuverType, maneuverDirection: maneuverDirection, drivingSide: drivingSide, maneuverLocation: maneuverLocation, name: name, coordinates: coordinates, json: json)
     }
