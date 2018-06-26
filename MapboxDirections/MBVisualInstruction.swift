@@ -77,11 +77,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
                     return LaneIndicationComponent(indications: indications, isUsable: isUsable)
                 }
             } else {
-                components = dictionary.map { record in
-                    let type = VisualInstructionComponentType(description: record["type"] as? String ?? "") ?? .text
-                    let imageURL = URL(string: (record["imageBaseURL"] as? String) ?? "")
-                    return VisualInstructionComponent(type: type, text: record["text"] as? String, imageURL: imageURL, abbreviation: record["abbr"] as? String, abbreviationPriority: record["abbr_priority"] as? Int ?? NSNotFound)
-                }
+                components = dictionary.map(VisualInstructionComponent.init(json:))
             }
         }
         
