@@ -167,7 +167,7 @@ open class RouteOptions: DirectionsOptions {
         let waypoints = namedWaypoints ?? self.waypoints
         
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: waypoints, routeOptions: self)
+            Route(json: $0, waypoints: waypoints, options: self)
         }
         return (waypoints, routes)
     }
@@ -253,7 +253,7 @@ open class RouteOptionsV4: RouteOptions {
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).compactMap { Waypoint(geoJSON: $0) }
         let waypoints = [sourceWaypoint] + intermediateWaypoints + [destinationWaypoint]
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            RouteV4(json: $0, waypoints: waypoints, routeOptions: self)
+            RouteV4(json: $0, waypoints: waypoints, options: self)
         }
         return (waypoints, routes)
     }

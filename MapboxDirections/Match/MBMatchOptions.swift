@@ -158,7 +158,7 @@ open class MatchOptions: DirectionsOptions {
         }
         
         let routes = (json["matchings"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: filteredWaypoints ?? waypoints, routeOptions: opts)
+            Route(json: $0, waypoints: filteredWaypoints ?? waypoints, options: opts)
         }
         
         return (waypoints, routes)

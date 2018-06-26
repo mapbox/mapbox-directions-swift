@@ -8,7 +8,7 @@ import Polyline
 @objc(MBDirectionsResult)
 open class DirectionsResult: NSObject, NSSecureCoding {
     
-    @objc internal init(options: DirectionsOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?) {
+    @objc internal init(legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
         self.directionsOptions = options
         self.legs = legs
         self.distance = distance

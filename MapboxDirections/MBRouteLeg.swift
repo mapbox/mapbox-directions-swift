@@ -10,10 +10,10 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
     // MARK: Creating a Leg
     
-    @objc internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
+    @objc internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
         self.source = source
         self.destination = destination
-        self.profileIdentifier = profileIdentifier
+        self.profileIdentifier = options.profileIdentifier
         self.steps = steps
         distance = json["distance"] as! Double
         expectedTravelTime = json["duration"] as! Double
@@ -57,11 +57,10 @@ open class RouteLeg: NSObject, NSSecureCoding {
      - parameter destination: The waypoint at the end of the leg.
      - parameter profileIdentifier: The profile identifier used to request the routes.
      */
-    @objc(initWithJSON:source:destination:profileIdentifier:)
-    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0) }
-        
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+    @objc(initWithJSON:source:destination:options:)
+    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
+        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0, options: options) }
+        self.init(steps: steps, json: json, source: source, destination: destination, options: options)
     }
     
     public required init?(coder decoder: NSCoder) {
@@ -224,8 +223,8 @@ open class RouteLeg: NSObject, NSSecureCoding {
 // MARK: Support for Directions API v4
 
 internal class RouteLegV4: RouteLeg {
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, profileIdentifier: MBDirectionsProfileIdentifier) {
+    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStepV4(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, profileIdentifier: profileIdentifier)
+        self.init(steps: steps, json: json, source: source, destination: destination, options: options)
     }
 }

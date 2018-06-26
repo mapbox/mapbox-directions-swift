@@ -1,5 +1,6 @@
 import XCTest
 import OHHTTPStubs
+import Polyline
 @testable import MapboxDirections
 
 class V5Tests: XCTestCase {
@@ -8,7 +9,9 @@ class V5Tests: XCTestCase {
         super.tearDown()
     }
     
-    func test(shapeFormat: RouteShapeFormat) {
+    typealias JSONTransformer = ((JSONDictionary) -> JSONDictionary)
+    
+    func test(shapeFormat: RouteShapeFormat, transformer: JSONTransformer? = nil, filePath: String? = nil) {
         let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
@@ -22,8 +25,12 @@ class V5Tests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_dc_\(shapeFormat)", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                let path = Bundle(for: type(of: self)).path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat)", ofType: "json")
+                let filePath = URL(fileURLWithPath: path!)
+                let data = try! Data(contentsOf: filePath, options: [])
+                let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
+                let transformedData = transformer?(jsonObject as! JSONDictionary) ?? jsonObject
+                return OHHTTPStubsResponse(jsonObject: transformedData, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let options = RouteOptions(coordinates: [
@@ -147,5 +154,45 @@ class V5Tests: XCTestCase {
     func testPolyline() {
         XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
         test(shapeFormat: .polyline)
+    }
+    
+    func testPolyline6() {
+        XCTAssertEqual(String(describing: RouteShapeFormat.polyline6), "polyline6")
+        
+        // Transform polyline5 to polyline6
+        let transformer: JSONTransformer = { json in
+            var transformed = json
+            var route = (transformed["routes"] as! [JSONDictionary])[0]
+            let polyline = route["geometry"] as! String
+            
+            let decodedCoordinates: [CLLocationCoordinate2D] = decodePolyline(polyline, precision: 1e5)!
+            route["geometry"] = Polyline(coordinates: decodedCoordinates, levels: nil, precision: 1e6).encodedPolyline
+            
+            let legs = route["legs"] as! [JSONDictionary]
+            var newLegs = [JSONDictionary]()
+            for var leg in legs {
+                let steps = leg["steps"] as! [JSONDictionary]
+                
+                var newSteps = [JSONDictionary]()
+                for var step in steps {
+                    let geometry = step["geometry"] as! String
+                    let coords: [CLLocationCoordinate2D] = decodePolyline(geometry, precision: 1e5)!
+                    step["geometry"] = Polyline(coordinates: coords, precision: 1e6).encodedPolyline
+                    newSteps.append(step)
+                }
+                
+                leg["steps"] = newSteps
+                newLegs.append(leg)
+            }
+            
+            route["legs"] = newLegs
+            
+            let secondRoute = (json["routes"] as! [JSONDictionary])[1]
+            transformed["routes"] = [route, secondRoute]
+            
+            return transformed
+        }
+        
+        test(shapeFormat: .polyline6, transformer: transformer, filePath: "v5_driving_dc_polyline")
     }
 }
