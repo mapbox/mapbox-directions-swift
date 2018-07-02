@@ -1,9 +1,9 @@
 # MapboxDirections
 
-[📱&nbsp;![iOS Build Status](https://www.bitrise.io/app/2f82077d3f083479/status.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479) &nbsp;&nbsp;&nbsp;
-[🖥💻&nbsp;![macOS Build Status](https://www.bitrise.io/app/3e18d5c284ee7fe4/status.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
-[📺&nbsp;![tvOS Build Status](https://www.bitrise.io/app/0dd69f13a42252d6/status.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
-[⌚️&nbsp;![watchOS Build Status](https://www.bitrise.io/app/6db52b89a8fbfb40/status.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40) &nbsp;&nbsp;&nbsp;
+[📱&nbsp;![iOS Build Status](https://app.bitrise.io/app/2f82077d3f083479/status.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479) &nbsp;&nbsp;&nbsp;
+[🖥💻&nbsp;![macOS Build Status](https://app.bitrise.io/app/3e18d5c284ee7fe4/status.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
+[📺&nbsp;![tvOS Build Status](https://app.bitrise.io/app/0dd69f13a42252d6/status.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
+[⌚️&nbsp;![watchOS Build Status](https://app.bitrise.io/app/6db52b89a8fbfb40/status.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40) &nbsp;&nbsp;&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) &nbsp;&nbsp;&nbsp;
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
 
