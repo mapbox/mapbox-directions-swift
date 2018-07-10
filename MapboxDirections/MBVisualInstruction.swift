@@ -26,7 +26,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      A structured representation of the instruction.
      */
-    @objc public let textComponents: [VisualInstructionComponent]
+    @objc public let components: [ComponentRepresentable]
     
     /**
      The heading at which the user exits a roundabout (traffic circle or rotary).
@@ -40,11 +40,11 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, textComponents: [VisualInstructionComponent], degrees: CLLocationDegrees = 180) {
+    @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [ComponentRepresentable], degrees: CLLocationDegrees = 180) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
-        self.textComponents = textComponents
+        self.components = components
         self.finalHeading = degrees
     }
     
@@ -56,15 +56,34 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
-        let maneuverType = ManeuverType(description: json["type"] as! String) ?? .none
-        let maneuverDirection = ManeuverDirection(description: json["modifier"] as! String)  ?? .none
-        let textComponents = (json["components"] as! [JSONDictionary]).map {
-            VisualInstructionComponent(json: $0)
+        var components = [ComponentRepresentable]()
+        
+        var maneuverType: ManeuverType = .none
+        if let type = json["type"] as? String, let derivedType = ManeuverType(description: type) {
+            maneuverType = derivedType
+        }
+        
+        var maneuverDirection: ManeuverDirection = .none
+        if let modifier = json["modifier"] as? String,
+            let derivedDirection = ManeuverDirection(description: modifier) {
+            maneuverDirection = derivedDirection
+        }
+        
+        if let dictionary = json["components"] as? [JSONDictionary] {
+            if let firstComponent = dictionary.first, let type = firstComponent["type"] as? String, type.lowercased() == "lane" {
+                components = dictionary.map { record in
+                    let indications = LaneIndication(descriptions: record["directions"] as? [String] ?? []) ?? LaneIndication()
+                    let isUsable = record["active"] as? Bool ?? false
+                    return LaneIndicationComponent(indications: indications, isUsable: isUsable)
+                }
+            } else {
+                components = dictionary.map(VisualInstructionComponent.init(json:))
+            }
         }
         
         let degrees = json["degrees"] as? CLLocationDegrees ?? 180
         
-        self.init(text: text, maneuverType: maneuverType, maneuverDirection: maneuverDirection, textComponents: textComponents, degrees: degrees)
+        self.init(text: text, maneuverType: maneuverType, maneuverDirection: maneuverDirection, components: components, degrees: degrees)
     }
     
     @objc public required init?(coder decoder: NSCoder) {
@@ -83,11 +102,10 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         }
         self.maneuverDirection = maneuverDirection
         
-        guard let textComponents = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "textComponents") as? [VisualInstructionComponent] else {
+        guard let components = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "components") as? [VisualInstructionComponent] else {
             return nil
         }
-        
-        self.textComponents = textComponents
+        self.components = components
         
         self.finalHeading = decoder.decodeDouble(forKey: "degrees")
     }
@@ -97,6 +115,6 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         coder.encode(maneuverType, forKey: "maneuverType")
         coder.encode(maneuverDirection, forKey: "maneuverDirection")
         coder.encode(finalHeading, forKey: "degrees")
+        coder.encode(components, forKey: "components")
     }
 }
-

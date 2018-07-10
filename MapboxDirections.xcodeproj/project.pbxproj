@@ -29,6 +29,20 @@
 		8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
+		AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
+		AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
+		AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
+		AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB391020D94699008F4E54 /* subVisualInstructions.json */; };
+		AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB391020D94699008F4E54 /* subVisualInstructions.json */; };
+		AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB391020D94699008F4E54 /* subVisualInstructions.json */; };
+		AEDC211920B5DBDE0052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC211D20B6104B0052DED8 /* MBComponentRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */; };
+		AEDC211E20B612530052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC211F20B612540052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC212020B612560052DED8 /* MBLaneIndicationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */; };
+		AEDC212120B6125C0052DED8 /* MBComponentRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */; };
+		AEDC212220B6125D0052DED8 /* MBComponentRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */; };
+		AEDC212320B6125E0052DED8 /* MBComponentRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */; };
 		C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* MBAttribute.swift */; };
 		C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5247D701E818A24004B6154 /* AnnotationTests.swift */; };
 		C52552B91FA15D5900B1545C /* MBVisualInstructionBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */; };
@@ -264,6 +278,10 @@
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = subLaneInstructions.json; sourceTree = "<group>"; };
+		AEAB391020D94699008F4E54 /* subVisualInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = subVisualInstructions.json; sourceTree = "<group>"; };
+		AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBLaneIndicationComponent.swift; sourceTree = "<group>"; };
+		AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBComponentRepresentable.swift; sourceTree = "<group>"; };
 		C51538CB1E807FF00093FF3E /* MBAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBAttribute.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionBanner.swift; sourceTree = "<group>"; };
@@ -484,6 +502,8 @@
 			isa = PBXGroup;
 			children = (
 				C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */,
+				AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */,
+				AEAB391020D94699008F4E54 /* subVisualInstructions.json */,
 			);
 			name = Instructions;
 			sourceTree = "<group>";
@@ -536,6 +556,8 @@
 				C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */,
 				C52552B81FA15D5900B1545C /* MBVisualInstructionBanner.swift */,
 				C52552BF1FA1628A00B1545C /* MBVisualInstructionComponent.swift */,
+				AEDC211C20B6104A0052DED8 /* MBComponentRepresentable.swift */,
+				AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */,
 				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 				35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */,
 			);
@@ -1003,9 +1025,11 @@
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
+				AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
+				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
 				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022B1E92C281009837BD /* annotation.json in Resources */,
@@ -1027,9 +1051,11 @@
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
+				AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
+				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
 				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022C1E92C281009837BD /* annotation.json in Resources */,
@@ -1058,9 +1084,11 @@
 				DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,
+				AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
+				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB4201AA9A7001F9261 /* match.json in Resources */,
 				C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */,
 				8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */,
@@ -1141,6 +1169,7 @@
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC211E20B612530052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				C52CE38F1F6AF63C0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1149,6 +1178,7 @@
 				C56516851FE1AB8F00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */,
+				AEDC212120B6125C0052DED8 /* MBComponentRepresentable.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1191,6 +1221,7 @@
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC211F20B612540052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A10F11D010247009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3901F6AF63D0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1199,6 +1230,7 @@
 				C56516861FE1AB9000A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */,
+				AEDC212220B6125D0052DED8 /* MBComponentRepresentable.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1241,6 +1273,7 @@
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* MBDirectionsOptions.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
+				AEDC212020B612560052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* MBRouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3911F6AF63E0069963D /* MBSpokenInstruction.swift in Sources */,
@@ -1249,6 +1282,7 @@
 				C56516871FE1AB9100A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */,
+				AEDC212320B6125E0052DED8 /* MBComponentRepresentable.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1273,6 +1307,7 @@
 				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* MBDirectionsResult.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */,
+				AEDC211920B5DBDE0052DED8 /* MBLaneIndicationComponent.swift in Sources */,
 				C5434B8A200693D00069E887 /* MBTracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */,
@@ -1281,6 +1316,7 @@
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
+				AEDC211D20B6104B0052DED8 /* MBComponentRepresentable.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

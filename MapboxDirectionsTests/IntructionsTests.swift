@@ -8,8 +8,8 @@ class SpokenInstructionsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testInstructions() {
-        let expectation = self.expectation(description: "calculating directions should return results")
+    func testPrimaryAndSecondaryInstructions() {
+        let expectation = self.expectation(description: "calculating directions with primary and secondary instructions should return results")
         
         let queryParams: [String: String?] = [
             "alternatives": "false",
@@ -84,21 +84,151 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(arrivalSpokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">You have arrived at the gym</prosody></amazon:effect></speak>")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
+        let visualInstructionComponent = visualInstructions?.first?.primaryInstruction.components.first as! VisualInstructionComponent
         
         XCTAssertNotNil(visualInstructions)
+        XCTAssertNotNil(visualInstructionComponent)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Page Street")
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first!.text, "Page Street")
+        XCTAssertEqual(visualInstructionComponent.text, "Page Street")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1107.1)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.finalHeading, 180.0)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverDirection, .left)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.type, .text)
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviation, "Page St")
-        XCTAssertEqual(visualInstructions?.first?.primaryInstruction.textComponents.first?.abbreviationPriority, 0)
+        XCTAssertEqual(visualInstructionComponent.type, .text)
+        XCTAssertEqual(visualInstructionComponent.abbreviation, "Page St")
+        XCTAssertEqual(visualInstructionComponent.abbreviationPriority, 0)
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
         let arrivalVisualInstructions = arrivalStep.instructionsDisplayedAlongStep!
         XCTAssertEqual(arrivalVisualInstructions.first?.secondaryInstruction?.text, "the gym")
+    }
+    
+    func testSubWithLaneInstructions() {
+        let expectation = self.expectation(description: "calculating directions with tertiary lane instructions should return results")
+        let queryParams: [String: String?] = [
+            "geometries": "polyline",
+            "steps": "true",
+            "access_token": BogusToken,
+            "banner_instructions": "true"
+        ]
+        
+        stub(condition: isHost("api.mapbox.com") && containsQueryParams(queryParams)) { _ in
+            let path = Bundle(for: type(of: self)).path(forResource: "subLaneInstructions", ofType: "json")
+            return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        }
+        
+        let startWaypoint =  Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.132063, longitude: -84.531074))
+        let endWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.138953, longitude: -84.532934))
+        
+        let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
+        options.shapeFormat = .polyline
+        options.includesSteps = true
+        options.includesAlternativeRoutes = false
+        options.includesVisualInstructions = true
+        
+        var route: Route?
+        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+            
+            XCTAssertNotNil(routes)
+            XCTAssertEqual(routes!.count, 1)
+            route = routes!.first!
+            
+            expectation.fulfill()
+        }
+        XCTAssertNotNil(task)
+        
+        waitForExpectations(timeout: 2) { (error) in
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+            XCTAssertEqual(task.state, .completed)
+        }
+        
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route!.routeIdentifier, "cjikck25m00v279ms1knttdgc")
+        
+        let step = route!.legs.first!.steps.first!
+        let visualInstructions = step.instructionsDisplayedAlongStep
+        
+        let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction
+        XCTAssertNotNil(tertiaryInstruction)
+        XCTAssertEqual(tertiaryInstruction?.text, "")
+        
+        let tertiaryInstructionComponents = tertiaryInstruction?.components
+        XCTAssertNotNil(tertiaryInstructionComponents)
+        let laneIndicationComponents = tertiaryInstructionComponents?.compactMap { $0 as? LaneIndicationComponent }
+        XCTAssertEqual(laneIndicationComponents?.count, 2)
+        
+        if let laneIndicationComponents = laneIndicationComponents {
+            
+            let inActiveLane = laneIndicationComponents[0]
+            XCTAssertEqual(inActiveLane.isUsable, false)
+            XCTAssertEqual(inActiveLane.indications, [.straightAhead])
+            
+            let activeLane = laneIndicationComponents[1]
+            XCTAssertEqual(activeLane.isUsable, true)
+            XCTAssertEqual(activeLane.indications, [.right])
+        }
+    }
+    
+    func testSubWithVisualInstructions() {
+        let expectation = self.expectation(description: "calculating directions with tertiary visual instructions should return results")
+        let queryParams: [String: String?] = [
+            "geometries": "polyline",
+            "steps": "true",
+            "access_token": BogusToken,
+            "banner_instructions": "true"
+        ]
+        
+        stub(condition: isHost("api.mapbox.com") && containsQueryParams(queryParams)) { _ in
+            let path = Bundle(for: type(of: self)).path(forResource: "subVisualInstructions", ofType: "json")
+            return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        }
+        
+        let startWaypoint =  Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.775469, longitude: -122.449158))
+        let endWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.347439837741376, longitude: -121.92883115196378))
+        
+        let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
+        options.shapeFormat = .polyline
+        options.includesSteps = true
+        options.includesAlternativeRoutes = false
+        options.includesVisualInstructions = true
+        
+        var route: Route?
+        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+            
+            XCTAssertNotNil(routes)
+            XCTAssertEqual(routes!.count, 1)
+            route = routes!.first!
+            
+            expectation.fulfill()
+        }
+        XCTAssertNotNil(task)
+        
+        waitForExpectations(timeout: 2) { (error) in
+            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+            XCTAssertEqual(task.state, .completed)
+        }
+        
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route!.routeIdentifier, "cjilrvx2200447omltwdayvm4")
+        
+        let step = route!.legs.first!.steps.first!
+        let visualInstructions = step.instructionsDisplayedAlongStep
+        
+        let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction
+        let tertiaryInstructionComponent = tertiaryInstruction?.components.first as! VisualInstructionComponent
+        
+        XCTAssertNotNil(tertiaryInstruction)
+        XCTAssertEqual(tertiaryInstruction?.text, "Grove Street")
+        XCTAssertEqual(tertiaryInstruction?.maneuverType, .turn)
+        XCTAssertEqual(tertiaryInstruction?.maneuverDirection, .left)
+        
+        XCTAssertNotNil(tertiaryInstructionComponent)
+        XCTAssertEqual(tertiaryInstructionComponent.text, "Grove Street")
+        XCTAssertEqual(tertiaryInstructionComponent.type, .text)
+        XCTAssertEqual(tertiaryInstructionComponent.abbreviation, "Grove St")
+        XCTAssertEqual(tertiaryInstructionComponent.abbreviationPriority, 0)
     }
 }

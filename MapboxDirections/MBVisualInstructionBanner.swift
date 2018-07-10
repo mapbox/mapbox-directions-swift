@@ -22,6 +22,13 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     @objc public let secondaryInstruction: VisualInstruction?
     
     /**
+     A visual instruction that is presented simultaneously to provide information about an additional maneuver that occurs in rapid succession.
+     
+     This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
+     */
+    @objc public let tertiaryInstruction: VisualInstruction?
+    
+    /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
     @objc public var drivingSide: DrivingSide
@@ -38,6 +45,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         
         let primary = json["primary"] as! JSONDictionary
         let secondary = json["secondary"] as? JSONDictionary
+        let tertiary = json["sub"] as? JSONDictionary
         
         let primaryInstruction = VisualInstruction(json: primary)
         var secondaryInstruction: VisualInstruction? = nil
@@ -45,7 +53,12 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
             secondaryInstruction = VisualInstruction(json: secondary)
         }
         
-        self.init(distanceAlongStep: distanceAlongStep, primaryInstruction: primaryInstruction, secondaryInstruction: secondaryInstruction, drivingSide: drivingSide)
+        var tertiaryInstruction: VisualInstruction? = nil
+        if let tertiary = tertiary {
+            tertiaryInstruction = VisualInstruction(json: tertiary)
+        }
+        
+        self.init(distanceAlongStep: distanceAlongStep, primaryInstruction: primaryInstruction, secondaryInstruction: secondaryInstruction, tertiaryInstruction: tertiaryInstruction, drivingSide: drivingSide)
     }
     
     /**
@@ -56,10 +69,11 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
      - parameter secondaryInstruction: Less important details about the `RouteStep`.
      - parameter drivingSide: Which side of a bidirectional road the driver should drive on.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
+    @objc public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryInstruction = primaryInstruction
         self.secondaryInstruction = secondaryInstruction
+        self.tertiaryInstruction = tertiaryInstruction
         self.drivingSide = drivingSide
     }
     
@@ -77,6 +91,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         }
         self.primaryInstruction = primaryInstruction
         self.secondaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "secondary")
+        self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "tertiaryInstruction")
     }
     
     open static var supportsSecureCoding = true
@@ -85,6 +100,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
         coder.encode(primaryInstruction, forKey: "primary")
         coder.encode(secondaryInstruction, forKey: "secondary")
+        coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
         coder.encode(drivingSide, forKey: "drivingSide")
     }
 }

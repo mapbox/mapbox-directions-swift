@@ -1,5 +1,3 @@
-import Foundation
-
 #if os(OSX)
     import Cocoa
 #elseif os(watchOS)
@@ -12,19 +10,7 @@ import Foundation
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 @objc(MBVisualInstructionComponent)
-open class VisualInstructionComponent: NSObject, NSSecureCoding {
-    
-    /**
-     The plain text representation of this component.
-     
-     Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
-     */
-    @objc public let text: String?
-    
-    /**
-     The type of visual instruction component. You can display the component differently depending on its type.
-     */
-    @objc public var type: VisualInstructionComponentType
+open class VisualInstructionComponent: NSObject, ComponentRepresentable {
     
     /**
     The URL to an image representation of this component.
@@ -44,6 +30,20 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
     @objc public var abbreviationPriority: Int = NSNotFound
+    
+    /**
+     The plain text representation of this component.
+
+     Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
+     */
+    @objc public var text: String?
+    
+    /**
+     The type of visual instruction component. You can display the component differently depending on its type.
+     */
+    @objc public var type: VisualInstructionComponentType
+    
+    public static var supportsSecureCoding: Bool = true
     
     /**
      Initializes a new visual instruction component object based on the given JSON dictionary representation.
@@ -85,25 +85,25 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
      */
     @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
         self.text = text
-        self.imageURL = imageURL
         self.type = type
+        self.imageURL = imageURL
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
     }
 
     @objc public required init?(coder decoder: NSCoder) {
-        
         self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
+        
+        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
+            return nil
+        }
+        self.type = type
+
         
         guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
             return nil
         }
         self.imageURL = imageURL
-        
-        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
-                return nil
-        }
-        self.type = type
         
         guard let abbreviation = decoder.decodeObject(of: NSString.self, forKey: "abbreviation") as String? else {
             return nil
@@ -113,11 +113,10 @@ open class VisualInstructionComponent: NSObject, NSSecureCoding {
         abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
     }
     
-    open static var supportsSecureCoding = true
-    
     public func encode(with coder: NSCoder) {
-        coder.encode(imageURL, forKey: "imageURL")
+        coder.encode(text, forKey: "text")
         coder.encode(type, forKey: "type")
+        coder.encode(imageURL, forKey: "imageURL")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
     }
