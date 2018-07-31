@@ -31,7 +31,7 @@ public class Lane: NSObject, NSSecureCoding {
         self.indications = indications
     }
     
-    open static var supportsSecureCoding = true
+    public static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
         coder.encode(indications.description.components(separatedBy: ","), forKey: "indications")

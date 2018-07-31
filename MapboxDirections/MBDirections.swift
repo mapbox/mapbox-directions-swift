@@ -121,7 +121,7 @@ open class Directions: NSObject {
      To use this object, a Mapbox [access token](https://www.mapbox.com/help/define-access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
     @objc(sharedDirections)
-    open static let shared = Directions(accessToken: nil)
+    public static let shared = Directions(accessToken: nil)
     
     /// The API endpoint to request the directions from.
     internal var apiEndpoint: URL

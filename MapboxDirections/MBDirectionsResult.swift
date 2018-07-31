@@ -68,7 +68,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    @objc open let coordinates: [CLLocationCoordinate2D]?
+    @objc public let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
@@ -107,7 +107,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      To determine the name of the route, concatenate the names of the route’s legs.
      */
-    @objc open let legs: [RouteLeg]
+    @objc public let legs: [RouteLeg]
     
     @objc open override var description: String {
         return legs.map { $0.name }.joined(separator: " – ")
@@ -120,7 +120,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    @objc open let distance: CLLocationDistance
+    @objc public let distance: CLLocationDistance
     
     /**
      The route’s expected travel time, measured in seconds.
@@ -129,14 +129,14 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    @objc open let expectedTravelTime: TimeInterval
+    @objc public let expectedTravelTime: TimeInterval
     
     /**
      `RouteOptions` used to create the directions request.
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    @objc open let directionsOptions: DirectionsOptions
+    @objc public let directionsOptions: DirectionsOptions
     
     /**
      The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.

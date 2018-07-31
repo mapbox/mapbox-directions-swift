@@ -123,7 +123,7 @@ public class Intersection: NSObject, NSSecureCoding {
         self.outletRoadClasses = outletRoadClasses
     }
     
-    open static var supportsSecureCoding = true
+    public static var supportsSecureCoding = true
     
     @objc public func encode(with coder: NSCoder) {
         coder.encode([
