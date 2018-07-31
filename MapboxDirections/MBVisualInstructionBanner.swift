@@ -94,7 +94,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "tertiaryInstruction")
     }
     
-    open static var supportsSecureCoding = true
+    public static var supportsSecureCoding = true
     
     public func encode(with coder: NSCoder) {
         coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
