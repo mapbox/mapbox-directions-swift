@@ -1,5 +1,9 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* Added `Waypoint.allowsArrivingOnOppositeSide` property for restricting the side of arrival. ([#288](https://github.com/mapbox/MapboxDirections.swift/pull/288))
+
 ## v0.22.0
 
 * Added the `VisualInstructionBanner.tertiaryInstruction` property for additional information to display, such as a lane configuration or subsequent turn. Renamed the `VisualInstruction.textComponents` property to `VisualInstruction.components`. Some of the components may be `LaneIndicationComponent` objects, representing a lane at an intersection. ([#258](https://github.com/mapbox/MapboxDirections.swift/pull/258))

@@ -80,6 +80,38 @@ class RouteOptionsTests: XCTestCase {
         let response = self.response(for: "apiDestinationName", waypoints: manuallySet)!
         XCTAssert(response.route.legs.last!.destination.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
     }
+    
+    func testApproachesURLQueryParams() {
+        let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        let wp1 = Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+        wp1.allowsArrivingOnOppositeSide = false
+        let waypoints = [
+            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            wp1,
+            Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+        ]
+        
+        let routeOptions = RouteOptions(waypoints: waypoints)
+        routeOptions.includesSteps = true
+        let params = routeOptions.params
+        let approaches = params.filter { $0.name == "approaches" }.first!
+        XCTAssertEqual(approaches.value!, "unrestricted;curb;unrestricted", "waypoints[1] should be restricted to curb")
+    }
+    
+    func testMissingApproaches() {
+        let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        let waypoints = [
+            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+        ]
+        
+        let routeOptions = RouteOptions(waypoints: waypoints)
+        routeOptions.includesSteps = true
+        let params = routeOptions.params
+        let hasApproaches = !params.filter { $0.name == "approaches" }.isEmpty
+        XCTAssertFalse(hasApproaches, "approaches query param should be omitted unless any waypoint is restricted to curb")
+    }
 }
 
 private extension RouteOptions {
