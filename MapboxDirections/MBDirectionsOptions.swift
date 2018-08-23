@@ -437,6 +437,12 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             URLQueryItem(name: "language", value: locale.identifier)
         ]
         
+        let mustArriveOnDrivingSide = !waypoints.filter { !$0.allowsArrivingOnOppositeSide }.isEmpty
+        if mustArriveOnDrivingSide {
+            let approaches = waypoints.map { $0.allowsArrivingOnOppositeSide ? "unrestricted" : "curb" }
+            params.append(URLQueryItem(name: "approaches", value: approaches.joined(separator: ";")))
+        }
+        
         if includesSpokenInstructions {
             params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
             params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
