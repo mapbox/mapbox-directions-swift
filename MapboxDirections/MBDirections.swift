@@ -103,7 +103,7 @@ open class Directions: NSObject {
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ response: Data?, _ error: NSError?) -> Void
+    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
@@ -174,7 +174,7 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json, responseData) in
+        let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
             if let routes = response.1 {
                 for route in routes {
@@ -183,9 +183,9 @@ open class Directions: NSObject {
                     route.routeIdentifier = json["uuid"] as? String
                 }
             }
-            completionHandler(response.0, response.1, responseData, nil)
+            completionHandler(response.0, response.1, nil)
         }) { (error) in
-            completionHandler(nil, nil, nil, error)
+            completionHandler(nil, nil, error)
         }
         task.resume()
         return task
@@ -203,7 +203,7 @@ open class Directions: NSObject {
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json, response) in
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
                 for match in matches {
@@ -224,7 +224,7 @@ open class Directions: NSObject {
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json, responseData) in
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 for route in routes {
@@ -233,9 +233,9 @@ open class Directions: NSObject {
                     route.routeIdentifier = json["uuid"] as? String
                 }
             }
-            completionHandler(response.0, response.1, responseData, nil)
+            completionHandler(response.0, response.1, nil)
         }) { (error) in
-            completionHandler(nil, nil, nil, error)
+            completionHandler(nil, nil, error)
         }
         task.resume()
         return task
@@ -250,7 +250,7 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary, _ response: Data?) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -282,7 +282,7 @@ open class Directions: NSObject {
             }
             
             DispatchQueue.main.async {
-                completionHandler(json, data)
+                completionHandler(json)
             }
         }
     }
