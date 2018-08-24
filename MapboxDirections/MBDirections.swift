@@ -142,8 +142,8 @@ open class Directions: NSObject {
         self.accessToken = accessToken!
         
         if(host == nil || host!.isEmpty){
-            let apiBaseURL = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
-            self.apiEndpoint = apiBaseURL != nil ? URL(string: apiBaseURL!)!: URL(string: "api.mapbox.com")!
+            let apiBaseURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
+            self.apiEndpoint = apiBaseURLString != nil ? URL(string: apiBaseURLString!)!: URL(string: "api.mapbox.com")!
             return
         }
         
