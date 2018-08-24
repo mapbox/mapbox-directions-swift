@@ -141,10 +141,17 @@ open class Directions: NSObject {
         
         self.accessToken = accessToken!
         
+        if(host == nil || host!.isEmpty){
+            let apiBaseURL = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
+            self.apiEndpoint = apiBaseURL != nil ? URL(string: apiBaseURL!)!: URL(string: "api.mapbox.com")!
+            return
+        }
+        
         var baseURLComponents = URLComponents()
         baseURLComponents.scheme = "https"
-        baseURLComponents.host = host ?? "api.mapbox.com"
+        baseURLComponents.host = host
         self.apiEndpoint = baseURLComponents.url!
+        
     }
     
     /**
