@@ -143,7 +143,7 @@ open class Directions: NSObject {
         self.accessToken = accessToken!
         
         if(host?.isEmpty ?? true){
-            self.apiEndpoint = defaultApiEndPointURLString != nil ? URL(string: defaultApiEndPointURLString!)!: URL(string: "https://api.mapbox.com")!
+            self.apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))
             return
         }
         
