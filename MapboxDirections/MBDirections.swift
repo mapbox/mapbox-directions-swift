@@ -142,15 +142,14 @@ open class Directions: NSObject {
         
         self.accessToken = accessToken!
         
-        if(host?.isEmpty ?? true){
+        if let host = host, !host.isEmpty {
+            var baseURLComponents = URLComponents()
+            baseURLComponents.scheme = "https"
+            baseURLComponents.host = host
+            self.apiEndpoint = baseURLComponents.url!
+        } else {
             self.apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))
-            return
         }
-        
-        var baseURLComponents = URLComponents()
-        baseURLComponents.scheme = "https"
-        baseURLComponents.host = host
-        self.apiEndpoint = baseURLComponents.url!
         
     }
     
