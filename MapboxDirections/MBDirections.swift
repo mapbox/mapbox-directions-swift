@@ -146,9 +146,9 @@ open class Directions: NSObject {
             var baseURLComponents = URLComponents()
             baseURLComponents.scheme = "https"
             baseURLComponents.host = host
-            self.apiEndpoint = baseURLComponents.url!
+            apiEndpoint = baseURLComponents.url!
         } else {
-            self.apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))
+            apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))!
         }
         
     }
