@@ -5,6 +5,7 @@ public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
+let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
 /// The user agent string for any HTTP requests performed directly within this library.
 let userAgent: String = {
@@ -141,10 +142,15 @@ open class Directions: NSObject {
         
         self.accessToken = accessToken!
         
-        var baseURLComponents = URLComponents()
-        baseURLComponents.scheme = "https"
-        baseURLComponents.host = host ?? "api.mapbox.com"
-        self.apiEndpoint = baseURLComponents.url!
+        if let host = host, !host.isEmpty {
+            var baseURLComponents = URLComponents()
+            baseURLComponents.scheme = "https"
+            baseURLComponents.host = host
+            apiEndpoint = baseURLComponents.url!
+        } else {
+            apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))!
+        }
+        
     }
     
     /**
