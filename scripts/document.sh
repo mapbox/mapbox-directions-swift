@@ -29,7 +29,6 @@ DEFAULT_THEME="docs/theme"
 THEME=${JAZZY_THEME:-$DEFAULT_THEME}
 
 jazzy \
-    --podspec MapboxDirections.swift.podspec \
     --config docs/jazzy.yml \
     --sdk iphonesimulator \
     --module-version ${VERSION} \

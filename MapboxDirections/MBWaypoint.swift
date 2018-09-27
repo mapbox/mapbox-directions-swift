@@ -70,6 +70,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         heading = decoder.decodeDouble(forKey: "heading")
         headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
         name = decoder.decodeObject(of: NSString.self, forKey: "name") as String?
+        allowsArrivingOnOppositeSide = decoder.decodeBool(forKey: "allowsArrivingOnOppositeSide")
     }
     
     open func encode(with coder: NSCoder) {
@@ -79,6 +80,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(heading, forKey: "heading")
         coder.encode(headingAccuracy, forKey: "headingAccuracy")
         coder.encode(name, forKey: "name")
+        coder.encode(allowsArrivingOnOppositeSide, forKey: "allowsArrivingOnOppositeSide")
     }
     
     open func copy(with zone: NSZone?) -> Any {
@@ -144,6 +146,13 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
     @objc open var name: String?
+    
+    /**
+     A boolean value indicating whether arriving on opposite side is allowed.
+     
+     This property has no effect if `RouteOptions.includesSteps` is set to `false`.
+     */
+    @objc open var allowsArrivingOnOppositeSide = true
     
     @objc open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
