@@ -9,8 +9,8 @@ import Polyline
 open class Route: DirectionsResult {
     // MARK: Creating a Route
     
-    @objc internal override init(legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
-        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
+    @objc internal override init(json: [String : Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+        super.init(json: json, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
     }
     
     /**
@@ -40,7 +40,7 @@ open class Route: DirectionsResult {
             speechLocale = Locale(identifier: locale)
         }
         
-        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
+        super.init(json: json, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
     }
     
     public var routeOptions: RouteOptions {

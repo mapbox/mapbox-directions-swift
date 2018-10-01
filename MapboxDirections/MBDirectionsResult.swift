@@ -8,7 +8,10 @@ import Polyline
 @objc(MBDirectionsResult)
 open class DirectionsResult: NSObject, NSSecureCoding {
     
-    @objc internal init(legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+    public var json: [String: Any]?
+    
+    @objc internal init(json: [String: Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+        self.json = json
         self.directionsOptions = options
         self.legs = legs
         self.distance = distance
