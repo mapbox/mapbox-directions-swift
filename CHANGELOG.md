@@ -1,6 +1,6 @@
 # Changes to the Mapbox Directions SDK for iOS
 
-## master
+## v0.24.0
 
 * `DirectionsResult` now includes the API response as JSON
 
