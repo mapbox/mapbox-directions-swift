@@ -1,5 +1,9 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* `DirectionsResult` now includes the API response as JSON
+
 ## v0.23.0
 
 * Added `Waypoint.allowsArrivingOnOppositeSide` property for restricting the side of arrival. ([#288](https://github.com/mapbox/MapboxDirections.swift/pull/288))
