@@ -152,7 +152,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter json: The API response in JSON dictionary format.
      - returns: A tuple containing an array of waypoints and an array of routes.
      */
-    internal func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    public func response(from json: [String: Any]) -> ([Waypoint]?, [Route]?) {
         var namedWaypoints: [Waypoint]?
         if let jsonWaypoints = (json["waypoints"] as? [JSONDictionary]) {
             namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
@@ -247,7 +247,7 @@ open class RouteOptionsV4: RouteOptions {
         ]
     }
 
-    override func response(from json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
+    override public func response(from json: [String: Any]) -> ([Waypoint]?, [Route]?) {
         let sourceWaypoint = Waypoint(geoJSON: json["origin"] as! JSONDictionary)!
         let destinationWaypoint = Waypoint(geoJSON: json["destination"] as! JSONDictionary)!
         let intermediateWaypoints = (json["waypoints"] as! [JSONDictionary]).compactMap { Waypoint(geoJSON: $0) }
