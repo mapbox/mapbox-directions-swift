@@ -1,6 +1,6 @@
 # Changes to the Mapbox Directions SDK for iOS
 
-## master
+## v0.24.1
 
 * Added `RouteOptions.response(from:)` which can be used for deserializing a response from an external source. ([#300](https://github.com/mapbox/MapboxDirections.swift/pull/300))
 
