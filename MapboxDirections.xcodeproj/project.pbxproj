@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
+		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
+		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
+		35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		358D48811E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		358D48821E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		358D48831E2EAB2500F32A65 /* MBRouteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 358D48801E2EAB2500F32A65 /* MBRouteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -15,6 +19,24 @@
 		358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		35DBF005217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
+		35DBF006217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
+		35DBF007217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
+		35DBF008217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
+		35DBF00A217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
+		35DBF00B217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
+		35DBF00C217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
+		35DBF00D217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
+		35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */; };
+		35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */; };
+		35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */; };
+		35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */; };
+		35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */; };
+		35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */; };
+		35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */; };
+		35DBF019217F38A30009D2AE /* versions.json in Resources */ = {isa = PBXBuildFile; fileRef = 35DBF018217F38A30009D2AE /* versions.json */; };
+		35DBF01A217F38A30009D2AE /* versions.json in Resources */ = {isa = PBXBuildFile; fileRef = 35DBF018217F38A30009D2AE /* versions.json */; };
+		35DBF01B217F38A30009D2AE /* versions.json in Resources */ = {isa = PBXBuildFile; fileRef = 35DBF018217F38A30009D2AE /* versions.json */; };
 		35EFD00B207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
@@ -272,8 +294,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
+		35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBBoundingBox.swift; sourceTree = "<group>"; };
+		35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
+		35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPURLResponse.swift; sourceTree = "<group>"; };
+		35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirectionsTests.swift; sourceTree = SOURCE_ROOT; };
+		35DBF018217F38A30009D2AE /* versions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = versions.json; sourceTree = "<group>"; };
 		35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBVisualInstruction.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
@@ -447,6 +475,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35DBF017217F387F0009D2AE /* Offline */ = {
+			isa = PBXGroup;
+			children = (
+				35DBF018217F38A30009D2AE /* versions.json */,
+			);
+			path = Offline;
+			sourceTree = "<group>";
+		};
 		4025371970E36C6D8BF67116 /* iOS Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -471,6 +507,8 @@
 			children = (
 				8D381B691FDB101F008D5A58 /* String.swift */,
 				C582BA2D2073ED6300647DAA /* Array.swift */,
+				35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */,
+				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -560,6 +598,8 @@
 				AEDC211820B5DBDE0052DED8 /* MBLaneIndicationComponent.swift */,
 				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 				35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */,
+				35828C9D217A003F00ED546E /* OfflineDirections.swift */,
+				35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */,
 			);
 			path = MapboxDirections;
 			sourceTree = "<group>";
@@ -577,6 +617,7 @@
 				DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */,
 				C52CE3921F6AF6E70069963D /* IntructionsTests.swift */,
 				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
+				35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */,
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
@@ -587,6 +628,7 @@
 		DA6C9DAD1CAEC93800094FBC /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				35DBF017217F387F0009D2AE /* Offline */,
 				C5DAACB2201AA97D001F9261 /* Match */,
 				8D381B5F1FD9F592008D5A58 /* Responses */,
 				C5D1D7EE1F6AF8FA00A1C4F1 /* Instructions */,
@@ -1029,6 +1071,7 @@
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
+				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
 				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
@@ -1055,6 +1098,7 @@
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
+				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
 				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
@@ -1088,6 +1132,7 @@
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
+				35DBF019217F38A30009D2AE /* versions.json in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				C5DAACB4201AA9A7001F9261 /* match.json in Resources */,
 				C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */,
@@ -1154,10 +1199,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */,
+				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				C52552C61FA162F900B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* MBVisualInstructionBanner.swift in Sources */,
+				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* MBTracepoint.swift in Sources */,
 				C5990B4A2045E72800D7DFD4 /* MBDirectionsResult.swift in Sources */,
 				35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
@@ -1165,6 +1212,7 @@
 				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
+				35DBF006217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1174,6 +1222,7 @@
 				C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */,
 				C52CE38F1F6AF63C0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AB1E9D7F73008F98CE /* MBCongestion.swift in Sources */,
+				35DBF00B217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */,
 				8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */,
 				C56516851FE1AB8F00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
@@ -1188,6 +1237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
@@ -1206,10 +1256,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */,
+				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				C52552C71FA162FA00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* MBVisualInstructionBanner.swift in Sources */,
+				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* MBTracepoint.swift in Sources */,
 				C5990B4B2045E72900D7DFD4 /* MBDirectionsResult.swift in Sources */,
 				35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
@@ -1217,6 +1269,7 @@
 				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
+				35DBF007217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1226,6 +1279,7 @@
 				C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3901F6AF63D0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AC1E9D7F74008F98CE /* MBCongestion.swift in Sources */,
+				35DBF00C217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */,
 				8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */,
 				C56516861FE1AB9000A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
@@ -1240,6 +1294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
@@ -1258,10 +1313,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */,
+				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				C52552C81FA162FB00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* MBVisualInstructionBanner.swift in Sources */,
+				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* MBTracepoint.swift in Sources */,
 				C5990B4C2045E72A00D7DFD4 /* MBDirectionsResult.swift in Sources */,
 				35EFD00E207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
@@ -1269,6 +1326,7 @@
 				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
+				35DBF008217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1278,6 +1336,7 @@
 				C57D55051DB566A900B94B74 /* MBIntersection.swift in Sources */,
 				C52CE3911F6AF63E0069963D /* MBSpokenInstruction.swift in Sources */,
 				C58EA7AD1E9D7F75008F98CE /* MBCongestion.swift in Sources */,
+				35DBF00D217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */,
 				8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */,
 				C56516871FE1AB9100A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
@@ -1292,10 +1351,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */,
+				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* MBVisualInstructionBanner.swift in Sources */,
 				C52552C01FA1628A00B1545C /* MBVisualInstructionComponent.swift in Sources */,
+				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* MBRoadClasses.swift in Sources */,
 				358D48861E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				35EFD00B207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
@@ -1303,6 +1364,7 @@
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
 				C59094BF203B800300EB2417 /* MBDirectionsOptions.swift in Sources */,
+				35DBF005217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
 				C5434B8C200695A50069E887 /* MBMatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* MBDirectionsResult.swift in Sources */,
@@ -1312,6 +1374,7 @@
 				DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */,
 				C55FB44B1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift in Sources */,
 				C5DAAC9A20191675001F9261 /* MBMatch.swift in Sources */,
+				35DBF00A217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */,
 				C58EA7AA1E9D7EAD008F98CE /* MBCongestion.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
@@ -1326,6 +1389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
