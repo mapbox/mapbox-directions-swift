@@ -11,12 +11,12 @@ step-library:
   - &restore-cache
       restore_cache:
         keys:
-          - carthage-cache-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
-          - carthage-cache-v1- # used if checksum fails
+          - carthage-cache-mbdirections-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+          - carthage-cache-mbdirections-v1- # used if checksum fails
 
   - &save-cache
       save_cache:
-        key: carthage-cache-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+        key: carthage-cache-mbdirections-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
         paths:
           - Carthage
 
