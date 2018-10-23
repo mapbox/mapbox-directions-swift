@@ -50,7 +50,7 @@ public class Version: NSObject, Codable {
 }
 
 @objc(MBOfflineDirections)
-public class OfflineDirections: NSObject, URLSessionDownloadDelegate {
+open class OfflineDirections: NSObject, URLSessionDownloadDelegate {
     
     var progressHandler: OfflineDownloaderProgressHandler?
     
@@ -164,11 +164,11 @@ public class OfflineDirections: NSObject, URLSessionDownloadDelegate {
         }
     }
     
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         completionHandler?(location, nil)
     }
     
-    private func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         progressHandler?(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
     }
 }
