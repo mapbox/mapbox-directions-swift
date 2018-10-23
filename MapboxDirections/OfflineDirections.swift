@@ -96,9 +96,13 @@ public class OfflineDirections: NSObject, URLSessionDownloadDelegate {
         
         return components!.url!
     }
-    
+
+    /**
+     Fetches the available versions.
+     */
     @discardableResult
-    func availableVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
+    @objc
+    public func availableVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         
         return URLSession.shared.dataTask(with: availableVersionsURL()) { (data, response, error) in
             if let error = error {
@@ -109,14 +113,27 @@ public class OfflineDirections: NSObject, URLSessionDownloadDelegate {
                 return completionHandler(nil, error)
             }
             
-            let versionResponse = try! JSONDecoder().decode(AvailableVersionsResponse.self, from: data)
-            
-            completionHandler(versionResponse.availableVersions, error)
+            do {
+                let versionResponse = try JSONDecoder().decode(AvailableVersionsResponse.self, from: data)
+                completionHandler(versionResponse.availableVersions, error)
+            } catch {
+                completionHandler(nil, error)
+            }
         }
     }
     
+    /**
+     Initiates a download process of all tiles needed to provide routing within the given bounding box.
+     
+     - parameter boundingBox: The region of the pack to be downloaded.
+     - parameter version: The version of the pack to be downloaded.
+     - parameter progressHandler: Reports the progress of downloaded and yet to be downloaded bytes
+     - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
+     
+     */
     @discardableResult
-    func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
+    @objc
+    public func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         
         self.progressHandler = progressHandler
         self.completionHandler = completionHandler
