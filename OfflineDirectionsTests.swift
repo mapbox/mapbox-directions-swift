@@ -12,7 +12,6 @@ class OfflineDirectionsTests: XCTestCase {
         let host = "api-routing-tiles-staging-195264016.us-east-1.elb.amazonaws.com"
         let directions = OfflineDirections(accessToken: token, host: host)
         
-        XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://" + host)
         XCTAssertEqual(directions.accessToken, token)
         
         let versionsExpectation = expectation(description: "Fetching available versions should return results")
@@ -30,7 +29,7 @@ class OfflineDirectionsTests: XCTestCase {
             XCTAssertEqual(versions!.count, 1)
             XCTAssertEqual(versions!.first!.versionString, "2018-10-16")
             versionsExpectation.fulfill()
-        }
+        }.resume()
         
         wait(for: [versionsExpectation], timeout: 2)
     }

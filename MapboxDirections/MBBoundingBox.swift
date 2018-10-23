@@ -1,13 +1,17 @@
 import Foundation
 import CoreLocation
 
-
-
+/**
+ A bounding box represents a geographic region.
+ */
 @objc(MBBoundingBox)
-class BoundingBox: NSObject, Codable {
+public class BoundingBox: NSObject, Codable {
     let northWest: CLLocationCoordinate2D
     let southEast: CLLocationCoordinate2D
     
+    /**
+     Initializes a `BoundingBox` with known bounds.
+     */
     @objc
     public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
         self.northWest = northWest
@@ -15,6 +19,9 @@ class BoundingBox: NSObject, Codable {
         super.init()
     }
     
+    /**
+     Initializes a `BoundingBox` from an array of `CLLocationCoordinate2D`’s.
+     */
     @objc
     convenience public init(_ coordinates: [CLLocationCoordinate2D]) {
         assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
