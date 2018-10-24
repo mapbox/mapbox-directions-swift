@@ -10,7 +10,7 @@ class OfflineDirectionsTests: XCTestCase {
     func testAvailableVersions() {
         // TODO: Replace with production
         let host = "api-routing-tiles-staging-195264016.us-east-1.elb.amazonaws.com"
-        let directions = OfflineDirections(accessToken: token, host: host)
+        let directions = Directions(accessToken: token, host: host)
         
         XCTAssertEqual(directions.accessToken, token)
         
@@ -25,7 +25,7 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        directions.availableVersions { (versions, error) in
+        directions.availableOfflineVersions { (versions, error) in
             XCTAssertEqual(versions!.count, 1)
             XCTAssertEqual(versions!.first!.versionString, "2018-10-16")
             versionsExpectation.fulfill()
@@ -35,7 +35,7 @@ class OfflineDirectionsTests: XCTestCase {
     }
 
     func testDownloadTiles() {
-        let directions = OfflineDirections(accessToken: token, host: nil)
+        let directions = Directions(accessToken: token, host: nil)
         
         let boundingBox = BoundingBox([CLLocationCoordinate2D(latitude: 37.7798, longitude: -122.5058),
                                        CLLocationCoordinate2D(latitude: 37.7362, longitude: -122.3947)])
