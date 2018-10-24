@@ -49,34 +49,29 @@ public class Version: NSObject, Codable {
     }
 }
 
-@objc(MBOfflineDirections)
-open class OfflineDirections: NSObject, URLSessionDownloadDelegate {
+@objc(MBOfflineDirectionsProtocol)
+public protocol OfflineDirectionsProtocol {
     
-    var progressHandler: OfflineDownloaderProgressHandler?
+    /**
+     Fetches the available versions.
+     */
+    @discardableResult
+    func availableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
     
-    var completionHandler: OfflineDownloaderCompletionHandler?
-    
-    /// The API endpoint to request the directions from.
-    internal var apiEndpoint: URL
-    
-    /// The Mapbox access token to associate the request with.
-    internal let accessToken: String
-    
-    @objc public init(accessToken: String?, host: String?) {
-        let accessToken = accessToken ?? defaultAccessToken
-        assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
-        
-        self.accessToken = accessToken!
-        
-        if let host = host, !host.isEmpty {
-            var baseURLComponents = URLComponents()
-            baseURLComponents.scheme = "https"
-            baseURLComponents.host = host
-            apiEndpoint = baseURLComponents.url!
-        } else {
-            apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))!
-        }
-    }
+    /**
+     Initiates a download process of all tiles needed to provide routing within the given bounding box.
+     
+     - parameter boundingBox: The region of the pack to be downloaded.
+     - parameter version: The version of the pack to be downloaded.
+     - parameter progressHandler: Reports the progress of downloaded and yet to be downloaded bytes
+     - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
+     
+     */
+    @discardableResult
+    func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
+}
+
+extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     
     func availableVersionsURL() -> URL {
         
@@ -97,12 +92,9 @@ open class OfflineDirections: NSObject, URLSessionDownloadDelegate {
         return components!.url!
     }
 
-    /**
-     Fetches the available versions.
-     */
     @discardableResult
     @objc
-    public func availableVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
+    public func availableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         
         return URLSession.shared.dataTask(with: availableVersionsURL()) { (data, response, error) in
             if let error = error {
@@ -122,21 +114,12 @@ open class OfflineDirections: NSObject, URLSessionDownloadDelegate {
         }
     }
     
-    /**
-     Initiates a download process of all tiles needed to provide routing within the given bounding box.
-     
-     - parameter boundingBox: The region of the pack to be downloaded.
-     - parameter version: The version of the pack to be downloaded.
-     - parameter progressHandler: Reports the progress of downloaded and yet to be downloaded bytes
-     - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
-     
-     */
     @discardableResult
     @objc
     public func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         
-        self.progressHandler = progressHandler
-        self.completionHandler = completionHandler
+        self.offlineProgressHandler = progressHandler
+        self.offlineCompletionHandler = completionHandler
         
         let configuration = URLSessionConfiguration.default
         
@@ -159,16 +142,16 @@ open class OfflineDirections: NSObject, URLSessionDownloadDelegate {
 //                }
                 
             } else {
-                self?.completionHandler?(nil, error)
+                self?.offlineCompletionHandler?(nil, error)
             }
         }
     }
     
     open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        completionHandler?(location, nil)
+        offlineCompletionHandler?(location, nil)
     }
     
     open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        progressHandler?(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
+        offlineProgressHandler?(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
     }
 }
