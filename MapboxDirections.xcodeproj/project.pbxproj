@@ -19,6 +19,9 @@
 		358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		35D92FEC2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEB2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar */; };
+		35D92FED2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEB2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar */; };
+		35D92FEE2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEB2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar */; };
 		35DBF005217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
 		35DBF006217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
 		35DBF007217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
@@ -297,6 +300,7 @@
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
+		35D92FEB2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "2018-10-16-CaliforniaST-FillmoreST.tar"; sourceTree = "<group>"; };
 		35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBBoundingBox.swift; sourceTree = "<group>"; };
 		35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPURLResponse.swift; sourceTree = "<group>"; };
@@ -478,6 +482,7 @@
 		35DBF017217F387F0009D2AE /* Offline */ = {
 			isa = PBXGroup;
 			children = (
+				35D92FEB2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar */,
 				35DBF018217F38A30009D2AE /* versions.json */,
 			);
 			path = Offline;
@@ -1069,6 +1074,7 @@
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
+				35D92FED2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
 				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
@@ -1096,6 +1102,7 @@
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
+				35D92FEE2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
 				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
@@ -1130,6 +1137,7 @@
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
+				35D92FEC2181E151000C78CB /* 2018-10-16-CaliforniaST-FillmoreST.tar in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				35DBF019217F38A30009D2AE /* versions.json in Resources */,
