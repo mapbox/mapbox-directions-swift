@@ -18,7 +18,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         super.viewDidLoad()
         
         assert(MapboxAccessToken != "<# your Mapbox access token #>", "You must set `MapboxAccessToken` to your Mapbox access token.")
-        MGLAccountManager.setAccessToken(MapboxAccessToken)
+        MGLAccountManager.accessToken = MapboxAccessToken
         
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
