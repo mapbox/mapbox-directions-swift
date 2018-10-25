@@ -49,7 +49,7 @@ class OfflineDirectionsTests: XCTestCase {
         
         let apiStub = stub(condition: isHost(host)) { _ in
             let bundle = Bundle(for: type(of: self))
-            let path = bundle.path(forResource: "2018-10-16-CaliforniaST-FillmoreST", ofType: "tar")
+            let path = bundle.path(forResource: "2018-10-16-Liechtenstein", ofType: "tar")
 
             let attributes = try! FileManager.default.attributesOfItem(atPath: path!)
             let fileSize = attributes[.size] as! UInt64
