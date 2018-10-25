@@ -126,7 +126,7 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
-        // TODO: resume download
+        // TODO: resume download when range headers are supported
     }
     
     open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
