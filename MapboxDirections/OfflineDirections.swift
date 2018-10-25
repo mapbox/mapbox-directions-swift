@@ -1,10 +1,8 @@
 import Foundation
 
 
-public typealias OfflineDownloaderCompletionHandler = (_ location: URL?, _ error: Error?) -> Void
-public typealias OfflineDownloaderProgressHandler = (_ bytesWritten: Int64,
-    _ totalBytesWritten: Int64,
-    _ totalBytesExpectedToWrite: Int64) -> Void
+public typealias OfflineDownloaderCompletionHandler = (_ location: URL?,_ response: URLResponse?, _ error: Error?) -> Void
+public typealias OfflineDownloaderProgressHandler = (_ bytesWritten: Int64, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> Void
 public typealias OfflineVersionsHandler = (_ version: [Version]?, _ error: Error?) -> Void
 
 struct AvailableVersionsResponse: Codable {
@@ -22,11 +20,11 @@ public class Version: NSObject, Codable {
         return formatter
     }()
     
-    convenience init(_ versionDate: Date) {
+    public convenience init(_ versionDate: Date) {
         self.init(versionString: Version.dateFormatter.string(from: versionDate), versionDate: versionDate)
     }
     
-    convenience init(_ versionString: String) {
+    public convenience init(_ versionString: String) {
         self.init(versionString: versionString, versionDate: Version.dateFormatter.date(from: versionString)!)
     }
     
@@ -65,7 +63,6 @@ public protocol OfflineDirectionsProtocol {
      - parameter version: The version of the pack to be downloaded.
      - parameter progressHandler: Reports the progress of downloaded and yet to be downloaded bytes
      - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
-     
      */
     @discardableResult
     func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
@@ -122,33 +119,18 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
         self.offlineCompletionHandler = completionHandler
         
         let configuration = URLSessionConfiguration.default
-        
         let url = tilesURL(for: boundingBox, version: version)
-        
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         
-        return session.downloadTask(with: url) { [weak self] (tempLocalUrl, response, error) in
-            if let tempLocalUrl = tempLocalUrl, error == nil {
-                // TODO: Move file from temporary location to a provided location
-//                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-//                    print("Success: \(statusCode)")
-//                }
-//                
-//                do {
-//                    try FileManager.default.copyItem(at: tempLocalUrl, to: localUrl)
-//                    completion()
-//                } catch (let writeError) {
-//                    print("error writing file \(localUrl) : \(writeError)")
-//                }
-                
-            } else {
-                self?.offlineCompletionHandler?(nil, error)
-            }
-        }
+        return session.downloadTask(with: url)
+    }
+    
+    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
+        // TODO: resume download
     }
     
     open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        offlineCompletionHandler?(location, nil)
+        offlineCompletionHandler?(location, downloadTask.response, downloadTask.error)
     }
     
     open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
