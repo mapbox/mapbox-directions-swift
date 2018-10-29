@@ -36,7 +36,7 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     func availableVersionsURL() -> URL {
         
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent("versions")
-        var components = URLComponents(string: url.absoluteString)
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "access_token", value: accessToken)]
         
         return components!.url!
@@ -45,7 +45,7 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     func tilesURL(for boundingBox: BoundingBox, version: OfflineVersion) -> URL {
         
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(boundingBox.path)
-        var components = URLComponents(string: url.absoluteString)
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
                                   URLQueryItem(name: "access_token", value: accessToken)]
         
