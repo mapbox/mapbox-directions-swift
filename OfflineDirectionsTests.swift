@@ -55,8 +55,10 @@ class OfflineDirectionsTests: XCTestCase {
             let fileSize = attributes[.size] as! UInt64
             
             var headers = [AnyHashable: Any]()
-            headers["Content-Type"] = "application/x-gtar"
+            headers["Content-Type"] = "application/gzip"
             headers["Content-Length"] = "\(fileSize)"
+            headers["Accept-Ranges"] = "bytes"
+            headers["Content-Disposition"] = "attachment; filename=\"\(version).tar\""
             
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
         }
@@ -68,6 +70,7 @@ class OfflineDirectionsTests: XCTestCase {
             
         }, completionHandler: { (url, response, error) in
             
+            XCTAssertEqual(response!.suggestedFilename, "2018-10-16.tar")
             XCTAssertNotNil(url, "url should point to the temporary local file")
             XCTAssertNil(error)
             
