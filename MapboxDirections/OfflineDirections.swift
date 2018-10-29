@@ -1,50 +1,13 @@
 import Foundation
 
 
+public typealias OfflineVersion = String
 public typealias OfflineDownloaderCompletionHandler = (_ location: URL?,_ response: URLResponse?, _ error: Error?) -> Void
 public typealias OfflineDownloaderProgressHandler = (_ bytesWritten: Int64, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> Void
-public typealias OfflineVersionsHandler = (_ version: [Version]?, _ error: Error?) -> Void
+public typealias OfflineVersionsHandler = (_ version: [OfflineVersion]?, _ error: Error?) -> Void
 
 struct AvailableVersionsResponse: Codable {
-    let availableVersions: [Version]
-}
-
-@objc(MBVersion)
-public class Version: NSObject, Codable {
-    let versionString: String
-    let versionDate: Date
-    
-    static var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-    
-    public convenience init(_ versionDate: Date) {
-        self.init(versionString: Version.dateFormatter.string(from: versionDate), versionDate: versionDate)
-    }
-    
-    public convenience init(_ versionString: String) {
-        self.init(versionString: versionString, versionDate: Version.dateFormatter.date(from: versionString)!)
-    }
-    
-    init(versionString: String, versionDate: Date) {
-        self.versionString = versionString
-        self.versionDate = versionDate
-    }
-    
-    required public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let versionString = try container.decode(String.self)
-        
-        self.versionString = versionString
-        self.versionDate = Version.dateFormatter.date(from: versionString)!
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(versionString)
-    }
+    let availableVersions: [String]
 }
 
 @objc(MBOfflineDirectionsProtocol)
@@ -65,7 +28,7 @@ public protocol OfflineDirectionsProtocol {
      - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
      */
     @discardableResult
-    func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
+    func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
 extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
@@ -79,11 +42,11 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
         return components!.url!
     }
     
-    func tilesURL(for boundingBox: BoundingBox, version: Version) -> URL {
+    func tilesURL(for boundingBox: BoundingBox, version: OfflineVersion) -> URL {
         
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(boundingBox.path)
         var components = URLComponents(string: url.absoluteString)
-        components?.queryItems = [URLQueryItem(name: "version", value: version.versionString),
+        components?.queryItems = [URLQueryItem(name: "version", value: version),
                                   URLQueryItem(name: "access_token", value: accessToken)]
         
         return components!.url!
@@ -113,7 +76,7 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     
     @discardableResult
     @objc
-    public func downloadTiles(for boundingBox: BoundingBox, version: Version, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
+    public func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         
         self.offlineProgressHandler = progressHandler
         self.offlineCompletionHandler = completionHandler

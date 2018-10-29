@@ -27,7 +27,7 @@ class OfflineDirectionsTests: XCTestCase {
         
         directions.availableOfflineVersions { (versions, error) in
             XCTAssertEqual(versions!.count, 1)
-            XCTAssertEqual(versions!.first!.versionString, "2018-10-16")
+            XCTAssertEqual(versions!.first!, "2018-10-16")
             
             versionsExpectation.fulfill()
             OHHTTPStubs.removeStub(apiStub)
@@ -44,7 +44,7 @@ class OfflineDirectionsTests: XCTestCase {
         let boundingBox = BoundingBox([CLLocationCoordinate2D(latitude: 37.7890, longitude: -122.4337),
                                        CLLocationCoordinate2D(latitude: 37.7881, longitude: -122.4318)])
         
-        let version = Version("2018-10-16")
+        let version = "2018-10-16"
         let downloadExpectation = self.expectation(description: "Download tile expectation")
         
         let apiStub = stub(condition: isHost(host)) { _ in
