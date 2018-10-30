@@ -7,7 +7,7 @@ class OfflineDirectionsTests: XCTestCase {
     
     let token = "foo"
     // TODO: replace with production
-    let host = "api-routing-tiles-staging-195264016.us-east-1.elb.amazonaws.com"
+    let host = "api.mapbox.com"
     
     func testAvailableVersions() {
         let directions = Directions(accessToken: token, host: host)
