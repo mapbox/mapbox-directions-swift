@@ -28,10 +28,10 @@ public protocol OfflineDirectionsProtocol {
      - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
      */
     @discardableResult
-    func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
+    func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, session: URLSession?, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
-extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
+extension Directions: OfflineDirectionsProtocol {
     
     func availableVersionsURL() -> URL {
         
@@ -56,7 +56,7 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
     @objc
     public func availableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         
-        return URLSession.shared.dataTask(with: availableVersionsURL()) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: availableVersionsURL()) { (data, response, error) in
             if let error = error {
                 return completionHandler(nil, error)
             }
@@ -72,31 +72,20 @@ extension Directions: OfflineDirectionsProtocol, URLSessionDownloadDelegate {
                 completionHandler(nil, error)
             }
         }
+        
+        return task
     }
     
     @discardableResult
     @objc
-    public func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, progressHandler: @escaping OfflineDownloaderProgressHandler, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
+    public func downloadTiles(for boundingBox: BoundingBox,
+                              version: OfflineVersion,
+                              session: URLSession? = URLSession.shared,
+                              completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         
-        self.offlineProgressHandler = progressHandler
-        self.offlineCompletionHandler = completionHandler
-        
-        let configuration = URLSessionConfiguration.default
+        let urlSession = session ?? URLSession.shared
         let url = tilesURL(for: boundingBox, version: version)
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         
-        return session.downloadTask(with: url)
-    }
-    
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
-        // TODO: resume download when range headers are supported
-    }
-    
-    open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        offlineCompletionHandler?(location, downloadTask.response, downloadTask.error)
-    }
-    
-    open func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        offlineProgressHandler?(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
+        return urlSession.downloadTask(with: url, completionHandler: completionHandler)
     }
 }
