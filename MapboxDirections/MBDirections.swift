@@ -96,12 +96,6 @@ open class Directions: NSObject {
     /// The Mapbox access token to associate the request with.
     internal let accessToken: String
     
-    /// The handler that reports the download progress of an offline tile pack
-    internal var offlineProgressHandler: OfflineDownloaderProgressHandler?
-    
-    /// The handler that reports the completion of an offline tile pack
-    internal var offlineCompletionHandler: OfflineDownloaderCompletionHandler?
-    
     /**
      Initializes a newly created directions object with an optional access token and host.
      

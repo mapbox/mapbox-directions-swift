@@ -6,7 +6,6 @@ import OHHTTPStubs
 class OfflineDirectionsTests: XCTestCase {
     
     let token = "foo"
-    // TODO: replace with production
     let host = "api.mapbox.com"
     
     func testAvailableVersions() {
@@ -63,13 +62,7 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
         }
         
-        _ = directions.downloadTiles(for: boundingBox, version: version, progressHandler: { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) in
-            
-            let progress = totalBytesExpectedToWrite / totalBytesWritten
-            print(progress)
-            
-        }, completionHandler: { (url, response, error) in
-            
+        _ = directions.downloadTiles(for: boundingBox, version: version, completionHandler: { (url, response, error) in
             XCTAssertEqual(response!.suggestedFilename, "2018-10-16.tar")
             XCTAssertNotNil(url, "url should point to the temporary local file")
             XCTAssertNil(error)
