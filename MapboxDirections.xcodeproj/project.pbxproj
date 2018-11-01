@@ -22,10 +22,10 @@
 		35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
-		35DBF005217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
-		35DBF006217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
-		35DBF007217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
-		35DBF008217DF0D90009D2AE /* MBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */; };
+		35DBF005217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */; };
+		35DBF006217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */; };
+		35DBF007217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */; };
+		35DBF008217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */; };
 		35DBF00A217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
 		35DBF00B217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
 		35DBF00C217E172C0009D2AE /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */; };
@@ -301,7 +301,7 @@
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "2018-10-16-Liechtenstein.tar"; sourceTree = "<group>"; };
-		35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBBoundingBox.swift; sourceTree = "<group>"; };
+		35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBCoordinateBounds.swift; sourceTree = "<group>"; };
 		35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPURLResponse.swift; sourceTree = "<group>"; };
 		35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirectionsTests.swift; sourceTree = SOURCE_ROOT; };
@@ -604,7 +604,7 @@
 				C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */,
 				35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */,
 				35828C9D217A003F00ED546E /* OfflineDirections.swift */,
-				35DBF004217DF0D90009D2AE /* MBBoundingBox.swift */,
+				35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */,
 			);
 			path = MapboxDirections;
 			sourceTree = "<group>";
@@ -1220,7 +1220,7 @@
 				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
-				35DBF006217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
+				35DBF006217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* MBRoute.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1277,7 +1277,7 @@
 				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
-				35DBF007217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
+				35DBF007217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* MBRoute.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1334,7 +1334,7 @@
 				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
 				358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
-				35DBF008217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
+				35DBF008217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* MBRoute.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* MBDirectionsOptions.swift in Sources */,
@@ -1372,7 +1372,7 @@
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
 				C59094BF203B800300EB2417 /* MBDirectionsOptions.swift in Sources */,
-				35DBF005217DF0D90009D2AE /* MBBoundingBox.swift in Sources */,
+				35DBF005217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				C5434B8C200695A50069E887 /* MBMatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* MBDirectionsResult.swift in Sources */,

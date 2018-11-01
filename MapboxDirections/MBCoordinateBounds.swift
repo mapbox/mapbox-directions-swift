@@ -4,8 +4,8 @@ import CoreLocation
 /**
  A bounding box represents a geographic region.
  */
-@objc(MBBoundingBox)
-public class BoundingBox: NSObject, Codable {
+@objc(MBCoordinateBounds)
+public class CoordinateBounds: NSObject, Codable {
     let northWest: CLLocationCoordinate2D
     let southEast: CLLocationCoordinate2D
     

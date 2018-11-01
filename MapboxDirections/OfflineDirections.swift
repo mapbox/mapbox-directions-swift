@@ -17,7 +17,7 @@ public protocol OfflineDirectionsProtocol {
      Fetches the available versions.
      */
     @discardableResult
-    func availableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
+    func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
     
     /**
      Initiates a download process of all tiles needed to provide routing within the given bounding box.
@@ -28,12 +28,13 @@ public protocol OfflineDirectionsProtocol {
      - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
      */
     @discardableResult
-    func downloadTiles(for boundingBox: BoundingBox, version: OfflineVersion, session: URLSession?, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
+    func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, session: URLSession?, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
 extension Directions: OfflineDirectionsProtocol {
     
-    func availableVersionsURL() -> URL {
+    /// URL to the endpoint listing available versions
+    public var availableVersionsURL: URL {
         
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent("versions")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -42,9 +43,10 @@ extension Directions: OfflineDirectionsProtocol {
         return components!.url!
     }
     
-    func tilesURL(for boundingBox: BoundingBox, version: OfflineVersion) -> URL {
+    /// URL to the endpoint for downloading a tile pack
+    public func tilesURL(for coordinateBounds: CoordinateBounds, version: OfflineVersion) -> URL {
         
-        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(boundingBox.path)
+        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.path)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
                                   URLQueryItem(name: "access_token", value: accessToken)]
@@ -52,11 +54,16 @@ extension Directions: OfflineDirectionsProtocol {
         return components!.url!
     }
 
+    /**
+     Fetch the available versions. A version is represented as a String (yyyy-MM-dd or yyyy-MM-dd-x).
+     
+     - parameter completionHandler: The closure to call with the results
+     - returns: A `URLSessionDataTask`
+     */
     @discardableResult
-    @objc
-    public func availableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
+    @objc public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         
-        let task = URLSession.shared.dataTask(with: availableVersionsURL()) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: availableVersionsURL) { (data, response, error) in
             if let error = error {
                 return completionHandler(nil, error)
             }
@@ -76,15 +83,24 @@ extension Directions: OfflineDirectionsProtocol {
         return task
     }
     
+    /**
+     Initializes an `URLSessionDownloadTask` used for downloading tiles within a given bounding box.
+     
+     - parameter coordinateBounds: The bounding box
+     - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
+     - parameter session: Optional URLSession
+     - parameter completionHandler: The closure to call with the results
+     
+     - returns: A `URLSessionDownloadTask`
+     */
     @discardableResult
-    @objc
-    public func downloadTiles(for boundingBox: BoundingBox,
+    @objc public func downloadTiles(in coordinateBounds: CoordinateBounds,
                               version: OfflineVersion,
                               session: URLSession? = URLSession.shared,
                               completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         
         let urlSession = session ?? URLSession.shared
-        let url = tilesURL(for: boundingBox, version: version)
+        let url = tilesURL(for: coordinateBounds, version: version)
         
         return urlSession.downloadTask(with: url, completionHandler: completionHandler)
     }
