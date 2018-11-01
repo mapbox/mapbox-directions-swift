@@ -1,5 +1,10 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## v0.25.0
+
+* Added `Directions.fetchAvailableOfflineVersions(completionHandler:)` for listing available offline versions. ([#303](https://github.com/mapbox/MapboxDirections.swift/pull/303))
+* Added `Directions.downloadTiles(in:version:session:completionHandler:)` for downloading a tile pack. ([#303](https://github.com/mapbox/MapboxDirections.swift/pull/303))
+
 ## v0.24.1
 
 * Added `RouteOptions.response(from:)` which can be used for deserializing a response from an external source. ([#300](https://github.com/mapbox/MapboxDirections.swift/pull/300))
