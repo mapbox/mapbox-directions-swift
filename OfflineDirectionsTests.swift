@@ -24,7 +24,7 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        directions.availableOfflineVersions { (versions, error) in
+        directions.fetchAvailableOfflineVersions { (versions, error) in
             XCTAssertEqual(versions!.count, 1)
             XCTAssertEqual(versions!.first!, "2018-10-16")
             
@@ -40,8 +40,8 @@ class OfflineDirectionsTests: XCTestCase {
         
         let directions = Directions(accessToken: token, host: host)
         
-        let boundingBox = BoundingBox([CLLocationCoordinate2D(latitude: 37.7890, longitude: -122.4337),
-                                       CLLocationCoordinate2D(latitude: 37.7881, longitude: -122.4318)])
+        let coordinateBounds = CoordinateBounds([CLLocationCoordinate2D(latitude: 37.7890, longitude: -122.4337),
+                                                 CLLocationCoordinate2D(latitude: 37.7881, longitude: -122.4318)])
         
         let version = "2018-10-16"
         let downloadExpectation = self.expectation(description: "Download tile expectation")
@@ -62,7 +62,7 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
         }
         
-        _ = directions.downloadTiles(for: boundingBox, version: version, completionHandler: { (url, response, error) in
+        _ = directions.downloadTiles(in: coordinateBounds, version: version, completionHandler: { (url, response, error) in
             XCTAssertEqual(response!.suggestedFilename, "2018-10-16.tar")
             XCTAssertNotNil(url, "url should point to the temporary local file")
             XCTAssertNil(error)
