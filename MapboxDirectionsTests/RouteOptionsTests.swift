@@ -122,7 +122,7 @@ class RouteOptionsTests: XCTestCase {
         let subject = DirectionsOptions(waypoints: wpts)
         
         let answer = subject.queries
-        let correct = ["53.03219, 9.9455", "54.03219, 10.9455"]
+        let correct = ["53.03219,9.9455", "54.03219,10.9455"]
         XCTAssert(answer == correct, "Coordinates should be truncated.")
         
     }

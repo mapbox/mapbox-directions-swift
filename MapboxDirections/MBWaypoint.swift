@@ -106,6 +106,24 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
     
+    internal enum CoordinatePrecision: Int {
+        case five = 5
+        case six = 6
+     }
+    
+    internal func jsonRepresentation(precision: CoordinatePrecision) -> String? {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = precision.rawValue
+        
+        guard let lat = formatter.string(for: coordinate.latitude),
+            let long = formatter.string(for: coordinate.longitude) else {
+                return nil
+        }
+        
+        return "\(long),\(lat)"
+    }
+    
+    
     // MARK: Getting the Direction of Approach
     
     /**
