@@ -55,7 +55,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
      - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
      - parameter source: The waypoint at the beginning of the leg.
      - parameter destination: The waypoint at the end of the leg.
-     - parameter profileIdentifier: The profile identifier used to request the routes.
+     - parameter options: The options used when requesting the route.
      */
     @objc(initWithJSON:source:destination:options:)
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
