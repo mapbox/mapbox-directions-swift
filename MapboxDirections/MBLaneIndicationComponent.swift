@@ -24,7 +24,7 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
      Initializes a new visual instruction component object that displays the given information.
      
      - parameter indications: The directions to go from a lane component.
-     - parameter isLaneActive: The flag to indicate that the upcoming maneuver can be completed with a lane component.
+     - parameter isUsable: The flag to indicate that the upcoming maneuver can be completed with a lane component.
      */
     @objc public init(indications: LaneIndication, isUsable: Bool) {
         self.indications = indications

@@ -20,7 +20,7 @@ open class Route: DirectionsResult {
      
      - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Directions API.
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
-     - parameter routeOptions: The `RouteOptions` used to create the request.
+     - parameter options: The options used when requesting the route.
      */
     @objc(initWithJSON:waypoints:routeOptions:)
     public init(json: [String: Any], waypoints: [Waypoint], options: RouteOptions) {
