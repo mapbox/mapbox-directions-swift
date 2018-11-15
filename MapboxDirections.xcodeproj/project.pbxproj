@@ -55,6 +55,9 @@
 		8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D381B691FDB101F008D5A58 /* String.swift */; };
 		8D434679219E1167008B7BF3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D434678219E1167008B7BF3 /* Double.swift */; };
+		8D43467A219E15C3008B7BF3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D434678219E1167008B7BF3 /* Double.swift */; };
+		8D43467B219E15C4008B7BF3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D434678219E1167008B7BF3 /* Double.swift */; };
+		8D43467C219E15C6008B7BF3 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D434678219E1167008B7BF3 /* Double.swift */; };
 		AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
 		AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
 		AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */; };
@@ -1211,6 +1214,7 @@
 			files = (
 				C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C52552C61FA162F900B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1268,6 +1272,7 @@
 			files = (
 				C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C52552C71FA162FA00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1325,6 +1330,7 @@
 			files = (
 				C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C52552C81FA162FB00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
