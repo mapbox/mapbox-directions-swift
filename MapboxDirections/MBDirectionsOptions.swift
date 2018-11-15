@@ -328,8 +328,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      An array of directions query strings to include in the request URL.
      */
     internal var queries: [String] {
-        let precision: Waypoint.CoordinatePrecision = shapeFormat == .polyline ? .five : .six
-        return waypoints.compactMap { return $0.jsonRepresentation(precision: precision) }
+        return waypoints.compactMap { return "\($0.coordinate.longitude.rounded(to: 1e6)),\($0.coordinate.latitude.rounded(to: 1e6))" }
     }
     
     internal var path: String {
