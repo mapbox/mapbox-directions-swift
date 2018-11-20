@@ -90,11 +90,15 @@ open class Directions: NSObject {
     @objc(sharedDirections)
     public static let shared = Directions(accessToken: nil)
     
-    /// The API endpoint to request the directions from.
-    internal var apiEndpoint: URL
+    /**
+     The API endpoint to use when requesting directions.
+     */
+    @objc public private(set) var apiEndpoint: URL
     
-    /// The Mapbox access token to associate the request with.
-    internal let accessToken: String
+    /**
+     The Mapbox access token to associate with the request.
+     */
+    @objc public let accessToken: String
     
     /**
      Initializes a newly created directions object with an optional access token and host.

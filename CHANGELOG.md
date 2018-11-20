@@ -1,5 +1,9 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* `Directions.apiEndpoint` and `Directions.accessToken` are now publicly readable, making it easier to share this information with other classes which might need it.
+
 ## v0.25.0
 
 * Added `Directions.fetchAvailableOfflineVersions(completionHandler:)` for listing available offline versions. ([#303](https://github.com/mapbox/MapboxDirections.swift/pull/303))
