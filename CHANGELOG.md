@@ -2,7 +2,7 @@
 
 ## master
 
-* `Directions.apiEndpoint` and `Directions.accessToken` are now publicly readable, making it easier to share this information with other classes which might need it.
+* Added the `Directions.apiEndpoint` and `Directions.accessToken` properties that reflect the values passed into the `Directions` class’s initializers. ([#313](https://github.com/mapbox/MapboxDirections.swift/pull/313))
 
 ## v0.25.0
 
