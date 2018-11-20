@@ -1,7 +1,7 @@
 typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
-public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
+public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
