@@ -150,7 +150,10 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json) in
+        
+        let handleError = { error in completionHandler(nil, nil, error)}
+        
+        let task = dataTask(with: url, completionHandler: { (rawResponse, json) in
             let response = options.response(from: json)
             if let routes = response.1 {
                 for route in routes {
@@ -158,11 +161,15 @@ open class Directions: NSObject {
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
                 }
+                completionHandler(response.0, response.1, nil)
+            } else { // we did not get a good result back, and this was not handled upstream.
+                
+                let description = NSLocalizedString("The service has encountered a situation where it has returned no response, or a response without a route. Usually this is because an unexpected error occured in the API. ", comment: "API no route response error")
+                let error = NSError(domain: MBDirectionsErrorDomain + ".noResponse", code: rawResponse?.statusCode ?? 0, userInfo: [NSLocalizedDescriptionKey: description])
+                handleError(error)
+                
             }
-            completionHandler(response.0, response.1, nil)
-        }) { (error) in
-            completionHandler(nil, nil, error)
-        }
+        }, errorHandler: handleError)
         task.resume()
         return task
     }
@@ -179,7 +186,7 @@ open class Directions: NSObject {
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json) in
+        let task = dataTask(with: url, data: data, completionHandler: { (_, json) in
             let response = options.response(from: json)
             if let matches = response {
                 for match in matches {
@@ -200,7 +207,7 @@ open class Directions: NSObject {
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json) in
+        let task = dataTask(with: url, data: data, completionHandler: { (_, json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 for route in routes {
@@ -226,7 +233,7 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ response: HTTPURLResponse?, _ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -258,7 +265,7 @@ open class Directions: NSObject {
             }
             
             DispatchQueue.main.async {
-                completionHandler(json)
+                completionHandler(response, json)
             }
         }
     }
