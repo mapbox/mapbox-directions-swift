@@ -256,7 +256,7 @@ open class Directions: NSObject {
             
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
-            guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
+            guard !json.isEmpty, data != nil, error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
                 let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
                 DispatchQueue.main.async {
                     errorHandler(apiError)
@@ -306,6 +306,11 @@ open class Directions: NSObject {
             case (404, "ProfileNotFound"):
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
+                
+            case (413, _):
+                failureReason = "Request Entity Too Large"
+                recoverySuggestion = "The API has rejected the request as being too large. Try and resubmit with a shorter query. Ususally this is encountered when requesting a route with a large number of waypoints."
+                
             case (429, _):
                 if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
                     let intervalFormatter = DateComponentsFormatter()
