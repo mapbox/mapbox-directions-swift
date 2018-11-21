@@ -1,7 +1,7 @@
 typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
-public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
+public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
@@ -249,7 +249,7 @@ open class Directions: NSObject {
             
             let apiStatusCode = json["code"] as? String
             let apiMessage = json["message"] as? String
-            guard data != nil && error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
+            guard !json.isEmpty, data != nil, error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
                 let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
                 DispatchQueue.main.async {
                     errorHandler(apiError)
@@ -299,6 +299,11 @@ open class Directions: NSObject {
             case (404, "ProfileNotFound"):
                 failureReason = "Unrecognized profile identifier."
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
+                
+            case (413, _):
+                failureReason = "The request is too large."
+                recoverySuggestion = "Try specifying fewer waypoints or giving the waypoints shorter names."
+                
             case (429, _):
                 if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
                     let intervalFormatter = DateComponentsFormatter()
