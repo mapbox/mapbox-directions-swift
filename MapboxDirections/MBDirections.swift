@@ -179,7 +179,7 @@ open class Directions: NSObject {
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (_, json) in
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
                 for match in matches {
@@ -200,7 +200,7 @@ open class Directions: NSObject {
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (_, json) in
+        let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 for route in routes {
@@ -226,7 +226,7 @@ open class Directions: NSObject {
      - returns: The data task for the URL.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ response: HTTPURLResponse?, _ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
         
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
@@ -258,7 +258,7 @@ open class Directions: NSObject {
             }
             
             DispatchQueue.main.async {
-                completionHandler(response as? HTTPURLResponse, json)
+                completionHandler(json)
             }
         }
     }
