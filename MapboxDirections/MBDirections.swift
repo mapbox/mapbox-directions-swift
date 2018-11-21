@@ -265,7 +265,7 @@ open class Directions: NSObject {
             }
             
             DispatchQueue.main.async {
-                completionHandler(response, json)
+                completionHandler(response as? HTTPURLResponse, json)
             }
         }
     }
