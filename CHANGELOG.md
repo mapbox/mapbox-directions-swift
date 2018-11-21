@@ -1,6 +1,6 @@
 # Changes to the Mapbox Directions SDK for iOS
 
-## master
+## v0.25.1
 
 * Added the `Directions.apiEndpoint` and `Directions.accessToken` properties that reflect the values passed into the `Directions` class’s initializers. ([#313](https://github.com/mapbox/MapboxDirections.swift/pull/313))
 
