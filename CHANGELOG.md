@@ -3,6 +3,8 @@
 ## v0.25.1
 
 * Added the `Directions.apiEndpoint` and `Directions.accessToken` properties that reflect the values passed into the `Directions` class’s initializers. ([#313](https://github.com/mapbox/MapboxDirections.swift/pull/313))
+* Fixed an issue causing some requests with many waypoints or long waypoint names to fail. ([#311](https://github.com/mapbox/MapboxDirections.swift/pull/311))
+* Fixed an issue where some requests with very many waypoints would fail silently. ([#314](https://github.com/mapbox/MapboxDirections.swift/pull/314))
 
 ## v0.25.0
 
