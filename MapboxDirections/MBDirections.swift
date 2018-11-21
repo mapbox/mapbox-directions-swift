@@ -301,8 +301,8 @@ open class Directions: NSObject {
                 recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
                 
             case (413, _):
-                failureReason = "Request Entity Too Large"
-                recoverySuggestion = "The API has rejected the request as being too large. Try and resubmit with a shorter query. Ususally this is encountered when requesting a route with a large number of waypoints."
+                failureReason = "The request is too large."
+                recoverySuggestion = "Try specifying fewer waypoints or giving the waypoints shorter names."
                 
             case (429, _):
                 if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {

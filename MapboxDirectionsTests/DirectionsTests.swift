@@ -41,7 +41,7 @@ class DirectionsTests: XCTestCase {
     }
     
     func testKnownBadResponse() {
-        let pass = "The operation couldn’t be completed. Request Entity Too Large"
+        let pass = "The operation couldn’t be completed. The request is too large."
         
         OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
@@ -56,9 +56,10 @@ class DirectionsTests: XCTestCase {
         let opts = RouteOptions(locations: [one, two])
         directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
             expectation.fulfill()
-            XCTAssert(routes == nil, "Unexpected route response")
-            XCTAssert(error != nil, "No error returned")
-            XCTAssert(error?.localizedDescription == pass, "Wrong type of error recieved")
+            XCTAssertNil(routes, "Unexpected route response")
+            XCTAssertNotNil(error, "No error returned")
+            XCTAssertNil(error?.userInfo[NSUnderlyingErrorKey])
+            XCTAssertEqual(error?.localizedDescription, pass, "Wrong type of error received")
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -80,9 +81,10 @@ class DirectionsTests: XCTestCase {
         let opts = RouteOptions(locations: [one, two])
         directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
             expectation.fulfill()
-            XCTAssert(routes == nil, "Unexpected route response")
-            XCTAssert(error != nil, "No error returned")
-            XCTAssert(error?.localizedDescription == pass, "Wrong type of error recieved")
+            XCTAssertNil(routes, "Unexpected route response")
+            XCTAssertNotNil(error, "No error returned")
+            XCTAssertNil(error?.userInfo[NSUnderlyingErrorKey])
+            XCTAssertEqual(error?.localizedDescription, pass, "Wrong type of error received")
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -101,6 +103,4 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(resultError.localizedFailureReason, "More than 600 requests have been made with this access token within a period of 1 minute.")
         XCTAssertEqual(resultError.localizedRecoverySuggestion, "Wait until November 18, 2016 at 9:16:24 AM GMT before retrying.")
     }
-    
-    
 }
