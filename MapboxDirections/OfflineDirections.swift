@@ -22,9 +22,8 @@ public protocol OfflineDirectionsProtocol {
     /**
      Initiates a download process of all tiles needed to provide routing within the given bounding box.
      
-     - parameter boundingBox: The region of the pack to be downloaded.
+     - parameter coordinateBounds: The region of the pack to be downloaded.
      - parameter version: The version of the pack to be downloaded.
-     - parameter progressHandler: Reports the progress of downloaded and yet to be downloaded bytes
      - parameter completionHandler: Informs when the download is completed or failed. The offline pack may be moved from the temporary directory and to a persistent store at this point.
      */
     @discardableResult
