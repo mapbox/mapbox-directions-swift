@@ -106,13 +106,6 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
     
-    internal enum CoordinatePrecision: Int {
-        case five = 5
-        case six = 6
-     }
-    
-    
-    
     // MARK: Getting the Direction of Approach
     
     /**
