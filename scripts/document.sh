@@ -34,7 +34,7 @@ jazzy \
     --module-version ${VERSION} \
     --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/v${VERSION}" \
     --documentation=docs/guides/*.md \
-    --root-url "https://mapbox.github.io/mapbox-navigation-ios/directions/${VERSION}/" \
+    --root-url "https://www.mapbox.com/mapbox-navigation-ios/directions/${VERSION}/" \
     --theme ${THEME} \
     --output "${OUTPUT}/${VERSION}"
 
