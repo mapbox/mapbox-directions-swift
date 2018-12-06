@@ -59,7 +59,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
         let abbreviationPriority = json["abbr_priority"] as? Int ?? NSNotFound
         
         var imageURL: URL?
-        if let baseURL = json["imageBaseURL"] as? String {
+        if let baseURL = json["imageBaseURL"] as? String, !baseURL.isEmpty {
             let scale: CGFloat
             #if os(OSX)
                 scale = NSScreen.main?.backingScaleFactor ?? 1
