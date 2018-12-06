@@ -23,7 +23,7 @@ public class CoordinateBounds: NSObject, Codable {
      Initializes a `BoundingBox` from an array of `CLLocationCoordinate2D`’s.
      */
     @objc
-    convenience public init(_ coordinates: [CLLocationCoordinate2D]) {
+    convenience public init(coordinates: [CLLocationCoordinate2D]) {
         assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
         
         var maximumLatitude: CLLocationDegrees = -90
