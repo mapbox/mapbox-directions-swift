@@ -1,5 +1,9 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* Fixed an issue where `VisualInstructionComponent(json:)` would set `VisualInstructionComponent.imageURL` to an invalid URL when the JSON representation includes an empty image URL. ([#322](https://github.com/mapbox/MapboxDirections.swift/pull/322))
+
 ## v0.25.1
 
 * Added the `Directions.apiEndpoint` and `Directions.accessToken` properties that reflect the values passed into the `Directions` class’s initializers. ([#313](https://github.com/mapbox/MapboxDirections.swift/pull/313))

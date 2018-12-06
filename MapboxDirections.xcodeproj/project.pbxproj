@@ -201,6 +201,9 @@
 		DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1A110A1D01045E009F82FA /* DirectionsTests.swift */; };
 		DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */; };
 		DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */; };
+		DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
+		DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
+		DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
 		DA6C9D8B1CAE442B00094FBC /* MapboxDirections.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA6C9DA61CAE462800094FBC /* MBDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6254731AE70CB700017857 /* MBDirections.swift */; };
 		DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */; };
@@ -362,6 +365,7 @@
 		DA1A110A1D01045E009F82FA /* DirectionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsTests.swift; sourceTree = "<group>"; };
 		DA2E03E81CB0E0B000D1269A /* MBRouteStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRouteStep.swift; sourceTree = "<group>"; };
 		DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRouteOptions.swift; sourceTree = "<group>"; };
+		DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualInstructionComponentTests.swift; sourceTree = SOURCE_ROOT; };
 		DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapboxDirections.h; sourceTree = "<group>"; };
 		DA6C9D8C1CAE442B00094FBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -630,6 +634,7 @@
 				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
 				35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */,
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
+				DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 			);
@@ -1254,6 +1259,7 @@
 				DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
+				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DA737EE91D0611CB005BDA16 /* V4Tests.swift in Sources */,
@@ -1312,6 +1318,7 @@
 				DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
+				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DA737EEA1D0611CB005BDA16 /* V4Tests.swift in Sources */,
@@ -1409,6 +1416,7 @@
 				DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
+				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
 				DA737EE81D0611CB005BDA16 /* V4Tests.swift in Sources */,
