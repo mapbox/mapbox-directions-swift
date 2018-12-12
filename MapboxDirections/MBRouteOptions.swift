@@ -142,6 +142,11 @@ open class RouteOptions: DirectionsOptions {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
             }
         }
+        
+        if waypoints.first(where: { CLLocationCoordinate2DIsValid($0.targetCoordinate) }) != nil {
+            let targetCoordinates = waypoints.map { $0.targetCoordinate.stringForRequestURL ?? "" }.joined(separator: ";")
+            params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
+        }
 
         return params
     }
