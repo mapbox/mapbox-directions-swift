@@ -328,7 +328,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      An array of directions query strings to include in the request URL.
      */
     internal var queries: [String] {
-        return waypoints.compactMap { return "\($0.coordinate.longitude.rounded(to: 1e6)),\($0.coordinate.latitude.rounded(to: 1e6))" }
+        return waypoints.compactMap{ $0.coordinate.stringForRequestURL }
     }
     
     internal var path: String {

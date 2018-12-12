@@ -126,6 +126,17 @@ class RouteOptionsTests: XCTestCase {
         XCTAssert(answer == correct, "Coordinates should be truncated.")
         
     }
+    
+    func testWaypointSerialization() {
+        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
+        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        destination.targetCoordinate = CLLocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
+        let options = RouteOptions(waypoints: [origin, destination])
+        
+        XCTAssertEqual(options.queries, ["-84.47182,39.15031", "-84.51638,39.12971"])
+        XCTAssertTrue(options.params.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
+        XCTAssertTrue(options.params.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
+    }
 }
 
 private extension RouteOptions {

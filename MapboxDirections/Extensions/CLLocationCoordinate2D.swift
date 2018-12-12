@@ -33,4 +33,14 @@ extension CLLocationCoordinate2D {
         let coordinates = lineString["coordinates"] as! [[Double]]
         return coordinates.map { self.init(geoJSON: $0) }
     }
+    
+    /**
+     A string representation of the coordinate suitable for insertion in a Directions API request URL.
+     */
+    internal var stringForRequestURL: String? {
+        guard CLLocationCoordinate2DIsValid(self) else {
+            return nil
+        }
+        return "\(longitude.rounded(to: 1e6)),\(latitude.rounded(to: 1e6))"
+    }
 }

@@ -67,6 +67,9 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         let longitude = decoder.decodeDouble(forKey: "longitude")
         coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         coordinateAccuracy = decoder.decodeDouble(forKey: "coordinateAccuracy")
+        let targetLatitude = decoder.decodeDouble(forKey: "targetLatitude")
+        let targetLongitude = decoder.decodeDouble(forKey: "targetLongitude")
+        targetCoordinate = CLLocationCoordinate2D(latitude: targetLatitude, longitude: targetLongitude)
         heading = decoder.decodeDouble(forKey: "heading")
         headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
         name = decoder.decodeObject(of: NSString.self, forKey: "name") as String?
@@ -77,6 +80,8 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(coordinate.latitude, forKey: "latitude")
         coder.encode(coordinate.longitude, forKey: "longitude")
         coder.encode(coordinateAccuracy, forKey: "coordinateAccuracy")
+        coder.encode(targetCoordinate.latitude, forKey: "targetLatitude")
+        coder.encode(targetCoordinate.longitude, forKey: "targetLongitude")
         coder.encode(heading, forKey: "heading")
         coder.encode(headingAccuracy, forKey: "headingAccuracy")
         coder.encode(name, forKey: "name")
@@ -85,6 +90,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     
     open func copy(with zone: NSZone?) -> Any {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
+        copy.targetCoordinate = targetCoordinate
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
         copy.allowsArrivingOnOppositeSide = allowsArrivingOnOppositeSide
@@ -106,6 +112,17 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      By default, the value of this property is a negative number.
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
+    
+    /**
+     The geographic coordinate of the waypoint’s target.
+     
+     The waypoint’s target affects arrival instructions without affecting the route’s shape. For example, a delivery or ride hailing application may specify a waypoint target that represents a drop-off location. The target determines whether the arrival visual and spoken instructions indicate that the destination is “on the left” or “on the right”.
+     
+     By default, this property is set to `kCLLocationCoordinate2DInvalid`, meaning the waypoint has no target. This property is ignored if `DirectionsOptions.includesSteps` is `false`.
+     
+     This property corresponds to the [`waypoint_targets`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     */
+    @objc open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
     
     // MARK: Getting the Direction of Approach
     
@@ -145,6 +162,8 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      The name of the waypoint.
      
      This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
+     
+     This property corresponds to the [`waypoint_names`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var name: String?
     
@@ -152,6 +171,8 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      A boolean value indicating whether arriving on opposite side is allowed.
      
      This property has no effect if `RouteOptions.includesSteps` is set to `false`.
+     
+     This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var allowsArrivingOnOppositeSide = true
     
