@@ -87,6 +87,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         let copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
+        copy.allowsArrivingOnOppositeSide = allowsArrivingOnOppositeSide
         return copy
     }
     
