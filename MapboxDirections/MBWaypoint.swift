@@ -110,6 +110,8 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      For a route to be considered viable, it must enter this waypoint’s circle of uncertainty. The `coordinate` property identifies the center of the circle, while this property indicates the circle’s radius. If the value of this property is negative, a route is considered viable regardless of whether it enters this waypoint’s circle of uncertainty, subject to an undefined maximum distance.
      
      By default, the value of this property is a negative number.
+     
+     This property corresponds to the [`radiuses`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
     
@@ -138,17 +140,21 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      You should be certain that the user is in motion before specifying a heading and heading accuracy; otherwise, you may be unnecessarily filtering out the best route. For example, suppose the user is sitting in a car parked in a driveway, facing due north, with the garage in front and the street to the rear. In that case, specifying a heading of 0 degrees and a heading accuracy of 90 degrees may result in a route that begins on the back alley or, worse, no route at all. For this reason, it is recommended that you only specify a heading and heading accuracy when automatically recalculating directions due to the user deviating from the route.
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
+     
+     This property corresponds to the angles in the [`bearings`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var heading: CLLocationDirection = -1
     
     /**
-     The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from `heading` in either direction in order to be considered viable.
+     The maximum tolerance, in degrees, within which a route’s approach to a waypoint may differ from `heading` in either direction but still be considered viable.
      
      A value of 0 degrees means that the approach must match the specified `heading` exactly – an unlikely scenario. A value of 180 degrees or more means that the approach may be as much as 180 degrees in either direction from the specified `heading`, effectively allowing a candidate route to approach the waypoint from any direction.
      
      If you set the `heading` property, you should set this property to a value such as 90 degrees, to avoid filtering out routes whose approaches differ only slightly from the specified `heading`. Otherwise, if the `heading` property is set to a negative value, this property is ignored.
      
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
+     
+     This property corresponds to the ranges in the [`bearings`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var headingAccuracy: CLLocationDirection = -1
     
