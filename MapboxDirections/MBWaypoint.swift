@@ -118,7 +118,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      
      The waypoint’s target affects arrival instructions without affecting the route’s shape. For example, a delivery or ride hailing application may specify a waypoint target that represents a drop-off location. The target determines whether the arrival visual and spoken instructions indicate that the destination is “on the left” or “on the right”.
      
-     By default, this property is set to `kCLLocationCoordinate2DInvalid`, meaning the waypoint has no target. This property is ignored if `DirectionsOptions.includesSteps` is `false`.
+     By default, this property is set to `kCLLocationCoordinate2DInvalid`, meaning the waypoint has no target. This property is ignored on the first waypoint of a `RouteOptions` object, on any waypoint of a `MatchOptions` object, or on any waypoint of a `RouteOptions` object if `DirectionsOptions.includesSteps` is set to `false`.
      
      This property corresponds to the [`waypoint_targets`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
@@ -161,7 +161,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The name of the waypoint.
      
-     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
+     This property does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method. This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
      
      This property corresponds to the [`waypoint_names`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
@@ -170,7 +170,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      A boolean value indicating whether arriving on opposite side is allowed.
      
-     This property has no effect if `RouteOptions.includesSteps` is set to `false`.
+     This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
      
      This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
