@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://www.mapbox.com/directions/"
-  s.documentation_url = "https://www.mapbox.com/mapbox-navigation-ios/directions/"
+  s.documentation_url = "https://www.mapbox.com/ios-sdk/api/directions/"
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
