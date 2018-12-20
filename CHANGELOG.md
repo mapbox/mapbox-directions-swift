@@ -1,6 +1,6 @@
 # Changes to the Mapbox Directions SDK for iOS
 
-## master
+## v0.26.0
 
 * Added a `Waypoint.targetCoordinate` property for specifying a more specific destination for arrival instructions. ([#326](https://github.com/mapbox/MapboxDirections.swift/pull/326))
 * Fixed an issue where the `Waypoint.allowsArrivingOnOppositeSide` property was not copied when copying a `Waypoint` object. ([#326](https://github.com/mapbox/MapboxDirections.swift/pull/326))
