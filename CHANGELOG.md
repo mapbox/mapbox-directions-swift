@@ -56,7 +56,7 @@
 * Added types `.exit` and `.exitCodes` to `MBVisualInstructionType`. (#252)
 * Made an initializer on `MBLane` public. (#253)
 
-This release includes the ability to make a [Mapbox Map Matching request](https://www.mapbox.com/api-documentation/#map-matching). 
+This release includes the ability to make a [Mapbox Map Matching request](https://www.mapbox.com/api-documentation/navigation/#map-matching).
 
 ## v0.19.0
 
