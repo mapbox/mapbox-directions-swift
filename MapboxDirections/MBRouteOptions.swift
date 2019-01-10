@@ -28,18 +28,18 @@ open class RouteOptions: DirectionsOptions {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
-    
+
     /**
      Initializes a route options object for routes between the given waypoints and an optional profile identifier.
-     
-     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
+
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
     @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
-    
+
     @objc internal convenience init(matchOptions: MatchOptions) {
         self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
         self.includesSteps = matchOptions.includesSteps
@@ -53,7 +53,7 @@ open class RouteOptions: DirectionsOptions {
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        
+
         allowsUTurnAtWaypoint = decoder.decodeBool(forKey: "allowsUTurnAtWaypoint")
 
         includesAlternativeRoutes = decoder.decodeBool(forKey: "includesAlternativeRoutes")
@@ -71,13 +71,13 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
     }
-    
+
     /**
      The path of the request URL, not including the hostname or any parameters.
      */
     internal override var path: String {
         assert(!queries.isEmpty, "No query")
-        
+
         let queryComponent = queries.joined(separator: ";")
         return "directions/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
     }
@@ -113,17 +113,17 @@ open class RouteOptions: DirectionsOptions {
 
     /**
      The route classes that the calculated routes will avoid.
-     
+
      Currently, you can only specify a single road class to avoid.
      */
     @objc open var roadClassesToAvoid: RoadClasses = []
-    
+
     /**
      An array of URL parameters to include in the request URL.
      */
     internal override var params: [URLQueryItem] {
         var params = super.params
-        
+
         params.append(contentsOf: [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
@@ -132,7 +132,7 @@ open class RouteOptions: DirectionsOptions {
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
-        
+
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
             if allRoadClasses.count > 1 {
@@ -142,7 +142,7 @@ open class RouteOptions: DirectionsOptions {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
             }
         }
-        
+
         if waypoints.first(where: { CLLocationCoordinate2DIsValid($0.targetCoordinate) }) != nil {
             let targetCoordinates = waypoints.map { $0.targetCoordinate.stringForRequestURL ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
@@ -168,20 +168,20 @@ open class RouteOptions: DirectionsOptions {
                 return Waypoint(coordinate: coordinate, name: local.name ?? apiName)
             }
         }
-        
+
         let waypoints = namedWaypoints ?? self.waypoints
-        
+
         let routes = (json["routes"] as? [JSONDictionary])?.map {
             Route(json: $0, waypoints: waypoints, options: self)
         }
         return (waypoints, routes)
     }
-    
+
     override public class var supportsSecureCoding: Bool {
         return true
     }
-    
-    
+
+
     // MARK: NSCopying
     override open func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy(with: zone) as! RouteOptions
@@ -191,13 +191,13 @@ open class RouteOptions: DirectionsOptions {
         copy.roadClassesToAvoid = roadClassesToAvoid
         return copy
     }
-    
+
     //MARK: - OBJ-C Equality
     open override func isEqual(_ object: Any?) -> Bool {
         guard let opts = object as? RouteOptions else { return false }
         return isEqual(to: opts)
     }
-    
+
     @objc(isEqualToRouteOptions:)
     open func isEqual(to routeOptions: RouteOptions?) -> Bool {
         guard let other = routeOptions else { return false }
@@ -263,4 +263,3 @@ open class RouteOptionsV4: RouteOptions {
         return (waypoints, routes)
     }
 }
-

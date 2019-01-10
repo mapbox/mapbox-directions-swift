@@ -31,7 +31,7 @@ Then `import MapboxDirections` or `@import MapboxDirections;`.
 
 v0.12.1 is the last release of MapboxDirections.swift written in Swift 3. All subsequent releases will be based on the `master` branch, which is written in Swift 4. The Swift examples below are written in Swift 4.
 
-This repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. More examples and detailed documentation are available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/?language=Swift#directions).
+This repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. Detailed documentation is available in the [Mapbox API Documentation](https://www.mapbox.com/api-documentation/navigation/#directions).
 
 ## Usage
 
@@ -267,21 +267,21 @@ NSURLSessionDataTask *task = [[[MBDirections alloc] initWithAccessToken:MapboxAc
         NSLog(@"Error matching waypoints: %@", error);
         return;
     }
-    
+
     MBMatch *match = matches.firstObject;
     MBRouteLeg *leg = match.legs.firstObject;
     if (leg) {
         NSLog(@"Match via %@:", leg);
-        
+
         NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
         NSString *formattedDistance = [distanceFormatter stringFromMeters:leg.distance];
-        
+
         NSDateComponentsFormatter *travelTimeFormatter = [[NSDateComponentsFormatter alloc] init];
         travelTimeFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
         NSString *formattedTravelTime = [travelTimeFormatter stringFromTimeInterval:match.expectedTravelTime];
-        
+
         NSLog(@"Distance: %@; ETA: %@", formattedDistance, formattedTravelTime);
-        
+
         for (MBRouteStep *step in leg.steps) {
             NSLog(@"%@", step.instructions);
             NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
