@@ -21,6 +21,9 @@ open class DirectionsResult: NSObject, NSSecureCoding {
     }
         
     @objc public required init?(coder decoder: NSCoder) {
+        accessToken = decoder.decodeObject(of: NSString.self, forKey: "accessToken") as String?
+        apiEndpoint = decoder.decodeObject(of: NSURL.self, forKey: "apiEndpoint") as URL?
+        
         let coordinateDictionaries = decoder.decodeObject(of: [NSArray.self, NSDictionary.self, NSString.self, NSNumber.self], forKey: "coordinates") as? [[String: CLLocationDegrees]]
         coordinates = coordinateDictionaries?.compactMap({ (coordinateDictionary) -> CLLocationCoordinate2D? in
             if let latitude = coordinateDictionary["latitude"],
@@ -50,6 +53,9 @@ open class DirectionsResult: NSObject, NSSecureCoding {
     }
     
     @objc public func encode(with coder: NSCoder) {
+        coder.encode(accessToken, forKey: "accessToken")
+        coder.encode(apiEndpoint, forKey: "apiEndpoint")
+        
         let coordinateDictionaries = coordinates?.map { [
             "latitude": $0.latitude,
             "longitude": $0.longitude,

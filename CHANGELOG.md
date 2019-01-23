@@ -1,5 +1,12 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* `Waypoint`s and `Tracepoint`s can now be compared for object equality. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
+* Fixed an issue where the `DirectionsResult.accessToken` and `DirectionsResult.apiEndpoint` properties failed to roundtrip through `NSCoder`. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
+* `Route` now supports secure coding via the `NSSecureCoding` protocol. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
+* Fixed an issue where `Intersection` failed to decode when an outlet road has no road classes (i.e., a normal road that isn’t a bridge, tunnel, toll road, or motorway). ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
+
 ## v0.26.0
 
 * Renamed `CoordinateBounds(_:)` to `CoordinateBounds(coordinates:)`. ([#325](https://github.com/mapbox/MapboxDirections.swift/pull/325))

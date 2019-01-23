@@ -96,7 +96,28 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         copy.allowsArrivingOnOppositeSide = allowsArrivingOnOppositeSide
         return copy
     }
-
+    
+    // MARK: Objective-C equality
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let opts = object as? Waypoint else { return false }
+        return isEqual(to: opts)
+    }
+    
+    @objc(isEqualToWaypoint:)
+    open func isEqual(to other: Waypoint?) -> Bool {
+        guard let other = other else { return false }
+        return type(of: self) == type(of: other) &&
+            coordinate.latitude == other.coordinate.latitude &&
+            coordinate.longitude == other.coordinate.longitude &&
+            coordinateAccuracy == other.coordinateAccuracy &&
+            targetCoordinate.latitude == other.targetCoordinate.latitude &&
+            targetCoordinate.longitude == other.targetCoordinate.longitude &&
+            heading == other.heading &&
+            headingAccuracy == other.headingAccuracy &&
+            name == other.name &&
+            allowsArrivingOnOppositeSide == other.allowsArrivingOnOppositeSide
+    }
+    
     // MARK: Getting the Waypoint’s Location
 
     /**
