@@ -50,6 +50,10 @@ open class Route: DirectionsResult {
     @objc public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
+    
+    override public class var supportsSecureCoding: Bool {
+        return true
+    }
 }
 
 // MARK: Support for Directions API v4

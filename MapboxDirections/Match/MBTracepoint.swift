@@ -27,4 +27,17 @@ public class Tracepoint: Waypoint {
     override public class var supportsSecureCoding: Bool {
         return true
     }
+    
+    // MARK: Objective-C equality
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let opts = object as? Tracepoint else { return false }
+        return isEqual(to: opts)
+    }
+    
+    @objc(isEqualToTracepoint:)
+    open func isEqual(to other: Tracepoint?) -> Bool {
+        guard let other = other else { return false }
+        return super.isEqual(to: other) && type(of: self) == type(of: other) &&
+            alternateCount == other.alternateCount
+    }
 }

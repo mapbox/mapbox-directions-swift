@@ -116,11 +116,11 @@ public class Intersection: NSObject, NSSecureCoding {
         approachLanes = decoder.decodeObject(of: [NSArray.self, Lane.self], forKey: "approachLanes") as? [Lane]
         usableApproachLanes = decoder.decodeObject(of: NSIndexSet.self, forKey: "usableApproachLanes") as IndexSet?
         
-        guard let descriptions = decoder.decodeObject(of: NSString.self, forKey: "outletRoadClasses") as String?,
-            let outletRoadClasses = RoadClasses(descriptions: descriptions.components(separatedBy: ",")) else {
-                return nil
+        if let descriptions = decoder.decodeObject(of: NSString.self, forKey: "outletRoadClasses") as String? {
+            outletRoadClasses = RoadClasses(descriptions: descriptions.components(separatedBy: ","))
+        } else {
+            outletRoadClasses = nil
         }
-        self.outletRoadClasses = outletRoadClasses
     }
     
     public static var supportsSecureCoding = true

@@ -59,25 +59,32 @@ class V5Tests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
+        test(route, options: options)
+    }
+    
+    func test(_ route: Route?, options: RouteOptions) {
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 28_442)
-        XCTAssertEqual(route!.accessToken, BogusToken)
-        XCTAssertEqual(route!.apiEndpoint, URL(string: "https://api.mapbox.com"))
-        XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
-        XCTAssertEqual(route!.speechLocale!.identifier, "en-US")
+        guard let route = route else {
+            return
+        }
         
+        XCTAssertNotNil(route.coordinates)
+        XCTAssertEqual(route.coordinates!.count, 28_442)
+        XCTAssertEqual(route.accessToken, BogusToken)
+        XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
+        XCTAssertEqual(route.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
+        XCTAssertEqual(route.speechLocale!.identifier, "en-US")
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(route!.coordinates!.first!.latitude), 38)
-        XCTAssertEqual(round(route!.coordinates!.first!.longitude), -122)
-        XCTAssertEqual(route!.legs.count, 1)
+        XCTAssertEqual(round(route.coordinates!.first!.latitude), 38)
+        XCTAssertEqual(round(route.coordinates!.first!.longitude), -122)
+        XCTAssertEqual(route.legs.count, 1)
         
-        let opts = route!.routeOptions
+        let opts = route.routeOptions
         XCTAssertEqual(opts, options)
         
-        let leg = route!.legs.first!
+        let leg = route.legs.first!
         XCTAssertEqual(leg.name, "I 80, I 80;US 30")
         XCTAssertEqual(leg.steps.count, 59)
         
@@ -194,5 +201,38 @@ class V5Tests: XCTestCase {
         }
         
         test(shapeFormat: .polyline6, transformer: transformer, filePath: "v5_driving_dc_polyline")
+    }
+    
+    func testCoding() {
+        let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_dc_polyline", ofType: "json")
+        let filePath = URL(fileURLWithPath: path!)
+        let data = try! Data(contentsOf: filePath, options: [])
+        let jsonResponse = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+        ])
+        let routes = options.response(from: jsonResponse).1
+        let route = routes!.first!
+        route.accessToken = BogusToken
+        route.apiEndpoint = URL(string: "https://api.mapbox.com")
+        route.routeIdentifier = jsonResponse["uuid"] as? String
+        
+        // Encode and decode the route securely.
+        // This may raise an Objective-C exception if an error occurs, which will fail the tests.
+        
+        let encodedData = NSMutableData()
+        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
+        keyedArchiver.requiresSecureCoding = true
+        keyedArchiver.encode(route, forKey: "route")
+        keyedArchiver.finishEncoding()
+        
+        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
+        keyedUnarchiver.requiresSecureCoding = true
+        let unarchivedRoute = keyedUnarchiver.decodeObject(of: Route.self, forKey: "route")!
+        keyedUnarchiver.finishDecoding()
+        
+        test(unarchivedRoute, options: options)
     }
 }
