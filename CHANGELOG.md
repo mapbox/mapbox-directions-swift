@@ -1,6 +1,6 @@
 # Changes to the Mapbox Directions SDK for iOS
 
-## master
+## v0.26.1
 
 * `Waypoint`s and `Tracepoint`s can now be compared for object equality. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
 * Fixed an issue where the `DirectionsResult.accessToken` and `DirectionsResult.apiEndpoint` properties failed to roundtrip through `NSCoder`. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))
