@@ -1,5 +1,9 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## master
+
+* Added a `DirectionsResult.fetchStartDate` property. ([#335](https://github.com/mapbox/MapboxDirections.swift/pull/335))
+
 ## v0.26.1
 
 * `Waypoint`s and `Tracepoint`s can now be compared for object equality. ([#331](https://github.com/mapbox/MapboxDirections.swift/pull/331))

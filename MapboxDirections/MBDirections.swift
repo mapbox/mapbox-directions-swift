@@ -149,6 +149,7 @@ open class Directions: NSObject {
      */
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
@@ -157,6 +158,7 @@ open class Directions: NSObject {
                     route.accessToken = self.accessToken
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
+                    route.fetchStartDate = fetchStartDate
                 }
             }
             completionHandler(response.0, response.1, nil)
@@ -177,6 +179,7 @@ open class Directions: NSObject {
      */
     @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
@@ -186,6 +189,7 @@ open class Directions: NSObject {
                     match.accessToken = self.accessToken
                     match.apiEndpoint = self.apiEndpoint
                     match.routeIdentifier = json["uuid"] as? String
+                    match.fetchStartDate = fetchStartDate
                 }
             }
             completionHandler(response, nil)
@@ -198,6 +202,7 @@ open class Directions: NSObject {
 
     @objc(calculateRoutesMatchingOptions:completionHandler:)
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
@@ -207,6 +212,7 @@ open class Directions: NSObject {
                     route.accessToken = self.accessToken
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
+                    route.fetchStartDate = fetchStartDate
                 }
             }
             completionHandler(response.0, response.1, nil)
