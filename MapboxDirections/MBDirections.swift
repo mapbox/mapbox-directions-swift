@@ -154,11 +154,13 @@ open class Directions: NSObject {
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
             if let routes = response.1 {
+                let responseEndDate = Date()
                 for route in routes {
                     route.accessToken = self.accessToken
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
                     route.fetchStartDate = fetchStartDate
+                    route.responseEndDate = responseEndDate
                 }
             }
             completionHandler(response.0, response.1, nil)
@@ -185,11 +187,13 @@ open class Directions: NSObject {
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
+                let responseEndDate = Date()
                 for match in matches {
                     match.accessToken = self.accessToken
                     match.apiEndpoint = self.apiEndpoint
                     match.routeIdentifier = json["uuid"] as? String
                     match.fetchStartDate = fetchStartDate
+                    match.responseEndDate = responseEndDate
                 }
             }
             completionHandler(response, nil)
@@ -208,11 +212,13 @@ open class Directions: NSObject {
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
+                let responseEndDate = Date()
                 for route in routes {
                     route.accessToken = self.accessToken
                     route.apiEndpoint = self.apiEndpoint
                     route.routeIdentifier = json["uuid"] as? String
                     route.fetchStartDate = fetchStartDate
+                    route.responseEndDate = responseEndDate
                 }
             }
             completionHandler(response.0, response.1, nil)

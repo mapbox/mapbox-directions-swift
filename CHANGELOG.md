@@ -2,7 +2,7 @@
 
 ## master
 
-* Added a `DirectionsResult.fetchStartDate` property. ([#335](https://github.com/mapbox/MapboxDirections.swift/pull/335))
+* Added `DirectionsResult.fetchStartDate` and `DirectionsResult.requestEndDate` properties. ([#335](https://github.com/mapbox/MapboxDirections.swift/pull/335))
 
 ## v0.26.1
 
