@@ -19,7 +19,7 @@ extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierAutomobi
  
  This profile avoids traffic congestion based on current traffic data. A driving route may use a ferry where necessary.
  
- Traffic data is available in [a number of countries and territories worldwide](https://www.mapbox.com/api-documentation/pages/traffic-countries.html). Where traffic data is unavailable, this profile prefers high-speed roads like highways, similar to `MBDirectionsProfileIdentifierAutomobile`.
+ Traffic data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/#traffic-data). Where traffic data is unavailable, this profile prefers high-speed roads like highways, similar to `MBDirectionsProfileIdentifierAutomobile`.
  */
 extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierAutomobileAvoidingTraffic;
 

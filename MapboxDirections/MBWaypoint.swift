@@ -132,7 +132,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number.
 
-     This property corresponds to the [`radiuses`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`radiuses`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
 
@@ -143,7 +143,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, this property is set to `kCLLocationCoordinate2DInvalid`, meaning the waypoint has no target. This property is ignored on the first waypoint of a `RouteOptions` object, on any waypoint of a `MatchOptions` object, or on any waypoint of a `RouteOptions` object if `DirectionsOptions.includesSteps` is set to `false`.
 
-     This property corresponds to the [`waypoint_targets`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
 
@@ -162,7 +162,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
 
-     This property corresponds to the angles in the [`bearings`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the angles in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var heading: CLLocationDirection = -1
 
@@ -175,7 +175,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
 
-     This property corresponds to the ranges in the [`bearings`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the ranges in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var headingAccuracy: CLLocationDirection = -1
 
@@ -190,7 +190,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method. This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
 
-     This property corresponds to the [`waypoint_names`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`waypoint_names`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var name: String?
 
@@ -199,7 +199,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
 
-     This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
      */
     @objc open var allowsArrivingOnOppositeSide = true
 

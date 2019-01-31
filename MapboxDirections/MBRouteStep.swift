@@ -618,7 +618,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      Normally, you do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
 
-     - parameter json: A JSON object that conforms to the [route step](https://www.mapbox.com/api-documentation/navigation/#route-step-object) format described in the Directions API documentation.
+     - parameter json: A JSON object that conforms to the [route step](https://docs.mapbox.com/api/navigation/#route-step-object) format described in the Directions API documentation.
      */
     @objc(initWithJSON:options:)
     public convenience init(json: [String: Any], options: RouteOptions) {
@@ -757,7 +757,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      The value of this property may be `nil`, for example when the maneuver type is `arrive`.
 
-     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
+     Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      */
     @objc public let coordinates: [CLLocationCoordinate2D]?
 
@@ -777,7 +777,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      The array may be empty, for example when the maneuver type is `arrive`.
 
-     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
+     Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
 
      - parameter coordinates: A pointer to a C array of `CLLocationCoordinate2D` instances. On output, this array contains all the vertices of the overlay.
      - returns: True if the step has coordinates and `coordinates` has been populated, or false if the step has no coordinates and `coordinates` has not been modified.
