@@ -51,7 +51,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      Initializes a new visual instruction object based on the given JSON dictionary representation.
 
-     - parameter json: A JSON object that conforms to the [banner instruction](https://www.mapbox.com/api-documentation/navigation/#banner-instruction-object) format described in the Directions API documentation.
+     - parameter json: A JSON object that conforms to the [banner instruction](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
      */
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {

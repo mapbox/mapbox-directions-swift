@@ -75,7 +75,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      This array may be `nil` or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
      
-     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
+     Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
     @objc public let coordinates: [CLLocationCoordinate2D]?
     
@@ -95,7 +95,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      The array may be empty or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
      
-     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
+     Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      
      - parameter coordinates: A pointer to a C array of `CLLocationCoordinate2D` instances. On output, this array contains all the vertices of the overlay.
      
@@ -148,7 +148,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
     @objc public let directionsOptions: DirectionsOptions
     
     /**
-     The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.
+     The [access token](https://docs.mapbox.com/help/glossary/access-token/) used to make the directions request.
      
      This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
      */

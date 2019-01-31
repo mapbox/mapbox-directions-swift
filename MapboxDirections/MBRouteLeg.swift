@@ -165,7 +165,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
 
-     Traffic data is available in [a number of countries and territories worldwide](https://www.mapbox.com/help/how-directions-work/#traffic-data).
+     Traffic data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/#traffic-data).
 
      You can color-code a route line according to the congestion level along each segment of the route.
 

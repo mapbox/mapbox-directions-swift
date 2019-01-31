@@ -63,7 +63,7 @@
 * Added types `.exit` and `.exitCodes` to `MBVisualInstructionType`. (#252)
 * Made an initializer on `MBLane` public. (#253)
 
-This release includes the ability to make a [Mapbox Map Matching request](https://www.mapbox.com/api-documentation/navigation/#map-matching).
+This release includes the ability to make a [Mapbox Map Matching request](https://docs.mapbox.com/api/navigation/#map-matching).
 
 ## v0.19.0
 
@@ -217,7 +217,7 @@ This is a complete rewrite of MapboxDirections.swift that focuses on making the 
 
 * Most types and methods can now be used in Objective-C.
 * Removed the `MB` class prefix from Swift but kept it for Objective-C. If any type conflicts with a type in your application’s module, prefix it with `MapboxDirections.`.
-* Added a shared (singleton) `Directions` object. Use the shared object if you’ve set your Mapbox access token in the `MGLMapboxAccessToken` key of your application’s Info.plist file. (You may have already done so if you’ve installed the [Mapbox iOS SDK](https://www.mapbox.com/ios-sdk/) or [Mapbox OS X SDK](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/osx).) Otherwise, create a `Directions` object with the access token explicitly.
+* Added a shared (singleton) `Directions` object. Use the shared object if you’ve set your Mapbox access token in the `MGLMapboxAccessToken` key of your application’s Info.plist file. (You may have already done so if you’ve installed the [Mapbox iOS SDK](https://docs.mapbox.com/ios/maps/) or [Mapbox OS X SDK](https://mapbox.github.io/mapbox-gl-native/macos/).) Otherwise, create a `Directions` object with the access token explicitly.
 * Simplified the networking part of the library:
   * Removed the dependency on RequestKit. If you’re upgrading to this version using CocoaPods, you can remove the `NBNRequestKit` dependency override.
   * `Directions` no longer needs to be strongly held in order for the request to finish. Instead, the request is made against the shared URL session; to use a custom URL session, make the request yourself using the URL returned by the `URLForCalculatingDirections(options:)` property.
@@ -239,7 +239,7 @@ Other changes since v0.5.0:
 * Added a way to specify the heading accuracy of any waypoint. ([#47](https://github.com/mapbox/MapboxDirections.swift/pull/47))
 * By default, returned routes may U-turn at intermediate waypoints. ([#47](https://github.com/mapbox/MapboxDirections.swift/pull/47))
 * Various error conditions returned by the API, such as the rate limiting error, cause the localized failure reason and recovery suggestion to be set in the NSError object that is passed into the completion handler. ([#47](https://github.com/mapbox/MapboxDirections.swift/pull/47))
-* Requests sent through this library now use a more specific user agent string, so you can more easily identify this library on [your Statistics page in Mapbox Studio](https://www.mapbox.com/studio/stats/). ([#50](https://github.com/mapbox/MapboxDirections.swift/pull/50))
+* Requests sent through this library now use a more specific user agent string, so you can more easily identify this library on [your Statistics page in Mapbox Studio](https://account.mapbox.com/statistics/). ([#50](https://github.com/mapbox/MapboxDirections.swift/pull/50))
 
 ## v0.5.0
 

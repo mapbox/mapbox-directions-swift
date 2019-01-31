@@ -36,7 +36,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     /**
      Initializes a new visual instruction banner object based on the given JSON dictionary representation and a driving side.
 
-     - parameter json: A JSON object that conforms to the [primary or secondary banner](https://www.mapbox.com/api-documentation/navigation/#banner-instruction-object) format described in the Directions API documentation.
+     - parameter json: A JSON object that conforms to the [primary or secondary banner](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
      - parameter drivingSide: The side of the road the user should drive on. This value should be consistent with the containing route step.
      */
     @objc(initWithJSON:drivingSide:)

@@ -36,7 +36,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
     /**
      Initializes a new spoken instruction object based on the given JSON dictionary representation.
 
-     - parameter json: A JSON object that conforms to the [voice instruction](https://www.mapbox.com/api-documentation/navigation/#voice-instruction-object) format described in the Directions API documentation.
+     - parameter json: A JSON object that conforms to the [voice instruction](https://docs.mapbox.com/api/navigation/#voice-instruction-object) format described in the Directions API documentation.
      */
     @objc(initWithJSON:)
     public convenience init(json: [String: Any]) {

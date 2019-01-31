@@ -4,7 +4,7 @@ import MapboxDirections
 import Mapbox
 
 // A Mapbox access token is required to use the Directions API.
-// https://www.mapbox.com/help/create-api-access-token/
+// https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#creating-and-managing-access-tokens
 let MapboxAccessToken = "<# your Mapbox access token #>"
 
 class ViewController: UIViewController, MBDrawingViewDelegate {
