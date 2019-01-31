@@ -154,14 +154,7 @@ open class Directions: NSObject {
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
             if let routes = response.1 {
-                let responseEndDate = Date()
-                for route in routes {
-                    route.accessToken = self.accessToken
-                    route.apiEndpoint = self.apiEndpoint
-                    route.routeIdentifier = json["uuid"] as? String
-                    route.fetchStartDate = fetchStartDate
-                    route.responseEndDate = responseEndDate
-                }
+                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -187,14 +180,7 @@ open class Directions: NSObject {
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
-                let responseEndDate = Date()
-                for match in matches {
-                    match.accessToken = self.accessToken
-                    match.apiEndpoint = self.apiEndpoint
-                    match.routeIdentifier = json["uuid"] as? String
-                    match.fetchStartDate = fetchStartDate
-                    match.responseEndDate = responseEndDate
-                }
+                self.postprocess(matches, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response, nil)
         }) { (error) in
@@ -212,14 +198,7 @@ open class Directions: NSObject {
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
-                let responseEndDate = Date()
-                for route in routes {
-                    route.accessToken = self.accessToken
-                    route.apiEndpoint = self.apiEndpoint
-                    route.routeIdentifier = json["uuid"] as? String
-                    route.fetchStartDate = fetchStartDate
-                    route.responseEndDate = responseEndDate
-                }
+                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -339,5 +318,19 @@ open class Directions: NSObject {
             userInfo[NSUnderlyingErrorKey] = error
         }
         return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
+    }
+    
+    /**
+     Adds request- or response-specific information to each result in a response.
+     */
+    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, uuid: String?) {
+        let responseEndDate = Date()
+        for result in results {
+            result.accessToken = self.accessToken
+            result.apiEndpoint = self.apiEndpoint
+            result.routeIdentifier = uuid
+            result.fetchStartDate = fetchStartDate
+            result.responseEndDate = responseEndDate
+        }
     }
 }
