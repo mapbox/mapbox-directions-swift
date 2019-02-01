@@ -137,9 +137,9 @@ open class Directions: NSObject {
     // MARK: Getting Directions
 
     /**
-     Begins asynchronously calculating the route or routes using the given options and delivers the results to a closure.
+     Begins asynchronously calculating routes using the given options and delivers the results to a closure.
 
-     This method retrieves the routes asynchronously over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     This method retrieves the routes asynchronously from the [Mapbox Directions API](https://www.mapbox.com/api-documentation/navigation/#directions) over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
 
      Routes may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/). They may be cached but may not be stored permanently. To use the results in other contexts or store them permanently, [upgrade to a Mapbox enterprise plan](https://www.mapbox.com/navigation/#pricing).
 
@@ -149,15 +149,12 @@ open class Directions: NSObject {
      */
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let task = dataTask(with: url, completionHandler: { (json) in
             let response = options.response(from: json)
             if let routes = response.1 {
-                for route in routes {
-                    route.accessToken = self.accessToken
-                    route.apiEndpoint = self.apiEndpoint
-                    route.routeIdentifier = json["uuid"] as? String
-                }
+                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -168,25 +165,25 @@ open class Directions: NSObject {
     }
 
     /**
-     Begins asynchronously calculating a match using the given options and delivers the results to a closure.
+     Begins asynchronously calculating matches using the given options and delivers the results to a closure.
 
+     This method retrieves the matches asynchronously from the [Mapbox Map Matching API](https://docs.mapbox.com/api/navigation/#map-matching) over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     To get `Route`s based on these matches, use the `calculateRoutes(matching:completionHandler:)` method instead.
 
-     - parameter options: A `MatchOptions` object specifying the requirements for the resulting match.
-     - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
-     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
+     - parameter options: A `MatchOptions` object specifying the requirements for the resulting matches.
+     - parameter completionHandler: The closure (block) to call with the resulting matches. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matches, cancel this task.
      */
     @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
-                for match in matches {
-                    match.accessToken = self.accessToken
-                    match.apiEndpoint = self.apiEndpoint
-                    match.routeIdentifier = json["uuid"] as? String
-                }
+                self.postprocess(matches, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response, nil)
         }) { (error) in
@@ -196,18 +193,26 @@ open class Directions: NSObject {
         return task
     }
 
+    /**
+     Begins asynchronously calculating routes that match the given options and delivers the results to a closure.
+     
+     This method retrieves the routes asynchronously from the [Mapbox Map Matching API](https://docs.mapbox.com/api/navigation/#map-matching) over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     To get the `Match`es that these routes are based on, use the `calculate(_:completionHandler:)` method instead.
+
+     - parameter options: A `MatchOptions` object specifying the requirements for the resulting match.
+     - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
+     */
     @objc(calculateRoutesMatchingOptions:completionHandler:)
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
+        let fetchStartDate = Date()
         let url = self.url(forCalculating: options)
         let data = options.encodedParam.data(using: .utf8)
         let task = dataTask(with: url, data: data, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
-                for route in routes {
-                    route.accessToken = self.accessToken
-                    route.apiEndpoint = self.apiEndpoint
-                    route.routeIdentifier = json["uuid"] as? String
-                }
+                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -327,5 +332,19 @@ open class Directions: NSObject {
             userInfo[NSUnderlyingErrorKey] = error
         }
         return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
+    }
+    
+    /**
+     Adds request- or response-specific information to each result in a response.
+     */
+    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, uuid: String?) {
+        let responseEndDate = Date()
+        for result in results {
+            result.accessToken = self.accessToken
+            result.apiEndpoint = self.apiEndpoint
+            result.routeIdentifier = uuid
+            result.fetchStartDate = fetchStartDate
+            result.responseEndDate = responseEndDate
+        }
     }
 }
