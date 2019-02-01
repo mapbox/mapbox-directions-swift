@@ -1,10 +1,7 @@
 # MapboxDirections
 
-[📱&nbsp;![iOS Build Status](https://app.bitrise.io/app/2f82077d3f083479/status.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479) &nbsp;&nbsp;&nbsp;
-[🖥💻&nbsp;![macOS Build Status](https://app.bitrise.io/app/3e18d5c284ee7fe4/status.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
-[📺&nbsp;![tvOS Build Status](https://app.bitrise.io/app/0dd69f13a42252d6/status.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
-[⌚️&nbsp;![watchOS Build Status](https://app.bitrise.io/app/6db52b89a8fbfb40/status.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40) &nbsp;&nbsp;&nbsp;
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) &nbsp;&nbsp;&nbsp;
+[![CircleCI](https://circleci.com/gh/mapbox/MapboxDirections.swift.svg?style=svg)](https://circleci.com/gh/mapbox/MapboxDirections.swift)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions](https://docs.mapbox.com/api/navigation/) and [Map Matching](https://docs.mapbox.com/api/navigation/#map-matching) APIs. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine. For more information, see the [Mapbox Navigation](https://www.mapbox.com/navigation/) homepage.
