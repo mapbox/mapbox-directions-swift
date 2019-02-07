@@ -471,6 +471,15 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
             params.append(URLQueryItem(name: "annotations", value: attributesStrings))
         }
+        
+        var waypointIndices = IndexSet(waypoints.enumerated().filter { $0.element.separatesLegs }.map { $0.offset })
+        waypointIndices.insert(waypoints.startIndex)
+        waypointIndices.insert(waypoints.endIndex - 1)
+        if waypointIndices.count < waypoints.count {
+            params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
+                String(describing: $0)
+            }.joined(separator: ";")))
+        }
 
         if !waypoints.compactMap({ $0.name }).isEmpty {
             let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")

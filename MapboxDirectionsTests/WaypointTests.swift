@@ -1,5 +1,5 @@
 import XCTest
-import MapboxDirections
+@testable import MapboxDirections
 
 class WaypointTests: XCTestCase {
     func testCopying() {
@@ -21,6 +21,7 @@ class WaypointTests: XCTestCase {
         XCTAssertEqual(copy.heading, originalWaypoint.heading)
         XCTAssertEqual(copy.headingAccuracy, originalWaypoint.headingAccuracy)
         XCTAssertEqual(copy.allowsArrivingOnOppositeSide, originalWaypoint.allowsArrivingOnOppositeSide)
+        XCTAssertEqual(copy.separatesLegs, originalWaypoint.separatesLegs)
     }
     
     func testCoding() {
@@ -53,5 +54,29 @@ class WaypointTests: XCTestCase {
         XCTAssertEqual(decodedWaypoint.heading, originalWaypoint.heading)
         XCTAssertEqual(decodedWaypoint.headingAccuracy, originalWaypoint.headingAccuracy)
         XCTAssertEqual(decodedWaypoint.allowsArrivingOnOppositeSide, originalWaypoint.allowsArrivingOnOppositeSide)
+        XCTAssertEqual(decodedWaypoint.separatesLegs, originalWaypoint.separatesLegs)
+    }
+    
+    func testSeparatesLegs() {
+        let one = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1))
+        let two = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 2))
+        let three = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 3, longitude: 3))
+        let four = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 4, longitude: 4))
+        
+        let routeOptions = RouteOptions(waypoints: [one, two, three, four])
+        let matchOptions = MatchOptions(waypoints: [one, two, three, four], profileIdentifier: nil)
+        
+        XCTAssertNil(routeOptions.params.first { $0.name == "waypoints" }?.value)
+        XCTAssertNil(matchOptions.params.first { $0.name == "waypoints" }?.value)
+        
+        two.separatesLegs = false
+        
+        XCTAssertEqual(routeOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
+        XCTAssertEqual(matchOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
+        
+        two.separatesLegs = true
+        matchOptions.waypointIndices = [0, 2, 3]
+        
+        XCTAssertEqual(matchOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
 }

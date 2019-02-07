@@ -74,6 +74,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         headingAccuracy = decoder.decodeDouble(forKey: "headingAccuracy")
         name = decoder.decodeObject(of: NSString.self, forKey: "name") as String?
         allowsArrivingOnOppositeSide = decoder.decodeBool(forKey: "allowsArrivingOnOppositeSide")
+        separatesLegs = decoder.decodeBool(forKey: "separatesLegs")
     }
 
     open func encode(with coder: NSCoder) {
@@ -86,6 +87,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         coder.encode(headingAccuracy, forKey: "headingAccuracy")
         coder.encode(name, forKey: "name")
         coder.encode(allowsArrivingOnOppositeSide, forKey: "allowsArrivingOnOppositeSide")
+        coder.encode(separatesLegs, forKey: "separatesLegs")
     }
 
     open func copy(with zone: NSZone?) -> Any {
@@ -94,6 +96,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         copy.heading = heading
         copy.headingAccuracy = headingAccuracy
         copy.allowsArrivingOnOppositeSide = allowsArrivingOnOppositeSide
+        copy.separatesLegs = separatesLegs
         return copy
     }
     
@@ -115,15 +118,16 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
             heading == other.heading &&
             headingAccuracy == other.headingAccuracy &&
             name == other.name &&
-            allowsArrivingOnOppositeSide == other.allowsArrivingOnOppositeSide
+            allowsArrivingOnOppositeSide == other.allowsArrivingOnOppositeSide &&
+            separatesLegs && other.separatesLegs
     }
     
-    // MARK: Getting the Waypoint’s Location
+    // MARK: Specifying the Waypoint’s Location
 
     /**
      The geographic coordinate of the waypoint.
      */
-    @objc public let coordinate: CLLocationCoordinate2D
+    @objc public internal(set) var coordinate: CLLocationCoordinate2D
 
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -132,7 +136,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number.
 
-     This property corresponds to the [`radiuses`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`radiuses`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     @objc open var coordinateAccuracy: CLLocationAccuracy = -1
 
@@ -143,11 +147,11 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, this property is set to `kCLLocationCoordinate2DInvalid`, meaning the waypoint has no target. This property is ignored on the first waypoint of a `RouteOptions` object, on any waypoint of a `MatchOptions` object, or on any waypoint of a `RouteOptions` object if `DirectionsOptions.includesSteps` is set to `false`.
 
-     This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     @objc open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
 
-    // MARK: Getting the Direction of Approach
+    // MARK: Specifying How the User Approaches the Waypoint
 
     /**
      The direction from which a route must approach this waypoint in order to be considered viable.
@@ -162,7 +166,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
 
-     This property corresponds to the angles in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the angles in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     @objc open var heading: CLLocationDirection = -1
 
@@ -175,7 +179,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
 
-     This property corresponds to the ranges in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the ranges in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     @objc open var headingAccuracy: CLLocationDirection = -1
 
@@ -183,25 +187,38 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
     }
 
-    // MARK: Getting the Waypoint’s Name
+    /**
+     A boolean value indicating whether arriving on opposite side is allowed.
+
+     This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
+
+     This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
+     */
+    @objc open var allowsArrivingOnOppositeSide = true
+
+    // MARK: Identifying the Waypoint
 
     /**
      The name of the waypoint.
 
      This property does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method. This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
 
-     This property corresponds to the [`waypoint_names`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`waypoint_names`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     @objc open var name: String?
-
+    
     /**
-     A boolean value indicating whether arriving on opposite side is allowed.
+     A Boolean value indicating whether the waypoint is significant enough to appear in the resulting routes as a waypoint separating two legs, along with corresponding guidance instructions.
+     
+     By default, this property is set to `true`, which means that each resulting route will include a leg that ends by arriving at the waypoint as `RouteLeg.destination` and a subsequent leg that begins by departing from the waypoint as `RouteLeg.source`. Otherwise, if this property is set to `false`, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the `coordinate` property, accounting for approach-related properties such as `heading`.
+     
+     With the Mapbox Directions API, set this property to `false` if you want the waypoint’s location to influence the path that the route follows without attaching any meaning to the waypoint object itself. With the Mapbox Map Matching API, use this property when the `DirectionsOptions.includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate.
 
-     This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
+     This property has no effect if `DirectionsOptions.includesSteps` is set to `false`, or if `MatchOptions.waypointIndices` is non-nil.
 
-     This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions API.
+     This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var allowsArrivingOnOppositeSide = true
+    @objc open var separatesLegs: Bool = true
 
     @objc open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"

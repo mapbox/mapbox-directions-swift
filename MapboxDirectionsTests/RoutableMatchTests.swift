@@ -31,8 +31,9 @@ class RoutableMatchTest: XCTestCase {
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
-        let indices: IndexSet = [0, locations.count - 1]
-        matchOptions.waypointIndices = indices
+        for waypoint in matchOptions.waypoints[1..<(locations.count - 1)] {
+            waypoint.separatesLegs = false
+        }
         
         
         let task = Directions(accessToken: BogusToken).calculateRoutes(matching: matchOptions) { (wpoints, routes, error) in
