@@ -49,21 +49,23 @@ open class MatchOptions: DirectionsOptions {
     /**
      An index set containing indices of two or more items in `coordinates`. These will be represented by `Waypoint`s in the resulting `Match` objects.
 
-     Use this property when the `includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate. If this property is `nil`, the resulting `Match` objects contain a waypoint for each coordinate in the match options.
+     Use this property when the `DirectionsOptions.includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate. If this property is `nil`, the resulting `Match` objects contain a waypoint for each coordinate in the match options.
 
      If specified, each index must correspond to a valid index in `coordinates`, and the index set must contain 0 and the last index (one less than `endIndex`) of `coordinates`.
      */
+    @available(*, deprecated: 0.1, message: "Use Waypoint.separatesLegs instead.")
     @objc open var waypointIndices: IndexSet?
-
+    
     @objc public required init?(coder decoder: NSCoder) {
         resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
-        waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
         super.init(coder: decoder)
+        var deprecations = self as MatchOptionsDeprecations
+        deprecations.waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
     }
 
     @objc public override func encode(with coder: NSCoder) {
         coder.encode(resamplesTraces, forKey: "resampleTraces")
-        coder.encode(waypointIndices, forKey: "waypointIndices")
+        coder.encode((self as MatchOptionsDeprecations).waypointIndices, forKey: "waypointIndices")
         super.encode(with: coder)
     }
 
@@ -76,10 +78,10 @@ open class MatchOptions: DirectionsOptions {
 
         params.append(URLQueryItem(name: "tidy", value: String(describing: resamplesTraces)))
 
-        if let waypointIndices = waypointIndices {
+        if let waypointIndices = (self as MatchOptionsDeprecations).waypointIndices {
             params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
                 String(describing: $0)
-                }.joined(separator: ";")))
+            }.joined(separator: ";")))
         }
 
         return params
@@ -140,7 +142,10 @@ open class MatchOptions: DirectionsOptions {
                 let coordinate = CLLocationCoordinate2D(geoJSON: location)
                 let possibleAPIName = api["name"] as? String
                 let apiName = possibleAPIName?.nonEmptyString
-                return Waypoint(coordinate: coordinate, name: local.name ?? apiName)
+                let waypoint = local.copy() as! Waypoint
+                waypoint.coordinate = coordinate
+                waypoint.name = waypoint.name ?? apiName
+                return waypoint
             }
         }
 
@@ -148,13 +153,17 @@ open class MatchOptions: DirectionsOptions {
         let opts = RouteOptions(matchOptions: self)
 
         var filteredWaypoints: [Waypoint]?
-        if let indices = self.waypointIndices {
+        if let indices = (self as MatchOptionsDeprecations).waypointIndices {
             filteredWaypoints = []
             for (i, waypoint) in waypoints.enumerated() {
                 if indices.contains(i) {
                     filteredWaypoints?.append(waypoint)
                 }
             }
+        } else {
+            waypoints.first?.separatesLegs = true
+            waypoints.last?.separatesLegs = true
+            filteredWaypoints = waypoints.filter { $0.separatesLegs }
         }
 
         let routes = (json["matchings"] as? [JSONDictionary])?.map {
@@ -164,3 +173,8 @@ open class MatchOptions: DirectionsOptions {
         return (waypoints, routes)
     }
 }
+
+private protocol MatchOptionsDeprecations {
+    var waypointIndices: IndexSet? { get set }
+}
+extension MatchOptions: MatchOptionsDeprecations {}
