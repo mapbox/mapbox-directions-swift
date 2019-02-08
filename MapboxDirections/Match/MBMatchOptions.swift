@@ -87,19 +87,8 @@ open class MatchOptions: DirectionsOptions {
         return params
     }
 
-    internal override var path: String {
+    internal override var abridgedPath: String {
         return "matching/v5/\(profileIdentifier.rawValue)"
-    }
-
-    internal var encodedParam: String {
-        let joinedParams = params.compactMap({ (param) -> String? in
-            guard let value = param.value else { return nil }
-            return "\(param.name)=\(value)"
-        }).joined(separator: "&")
-
-        let locations = waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }.joined(separator: ";")
-
-        return "\(joinedParams)&coordinates=\(locations)"
     }
 
     internal func response(from json: JSONDictionary) -> [Match]? {

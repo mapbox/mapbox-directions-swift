@@ -72,14 +72,8 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
     }
 
-    /**
-     The path of the request URL, not including the hostname or any parameters.
-     */
-    internal override var path: String {
-        assert(!queries.isEmpty, "No query")
-
-        let queryComponent = queries.joined(separator: ";")
-        return "directions/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
+    internal override var abridgedPath: String {
+        return "directions/v5/\(profileIdentifier.rawValue)"
     }
 
     /**
@@ -237,13 +231,10 @@ open class RouteOptionsV4: RouteOptions {
      The default value of this property is `true`.
      */
     @objc open var includesShapes: Bool = true
-
-    override var path: String {
-        assert(!queries.isEmpty, "No query")
-
+    
+    internal override var abridgedPath: String {
         let profileIdentifier = self.profileIdentifier.rawValue.replacingOccurrences(of: "/", with: ".")
-        let queryComponent = queries.joined(separator: ";")
-        return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
+        return "v4/directions/\(profileIdentifier)"
     }
 
     override var params: [URLQueryItem] {

@@ -150,8 +150,7 @@ open class Directions: NSObject {
     @objc(calculateDirectionsWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
-        let url = self.url(forCalculating: options)
-        let task = dataTask(with: url, completionHandler: { (json) in
+        let task = dataTask(forCalculating: options, completionHandler: { (json) in
             let response = options.response(from: json)
             if let routes = response.1 {
                 self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
@@ -178,9 +177,7 @@ open class Directions: NSObject {
     @objc(calculateMatchesWithOptions:completionHandler:)
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
-        let url = self.url(forCalculating: options)
-        let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json) in
+        let task = dataTask(forCalculating: options, completionHandler: { (json) in
             let response = options.response(from: json)
             if let matches = response {
                 self.postprocess(matches, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
@@ -207,9 +204,7 @@ open class Directions: NSObject {
     @objc(calculateRoutesMatchingOptions:completionHandler:)
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
-        let url = self.url(forCalculating: options)
-        let data = options.encodedParam.data(using: .utf8)
-        let task = dataTask(with: url, data: data, completionHandler: { (json) in
+        let task = dataTask(forCalculating: options, completionHandler: { (json) in
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
                 self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
@@ -223,26 +218,17 @@ open class Directions: NSObject {
     }
 
     /**
-     Returns a URL session task for the given URL that will run the given closures on completion or error.
+     Returns a URL session task for calculating routes based on the given options that will run the given closures on completion or error.
 
-     - parameter url: The URL to request.
+     - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
      - parameter completionHandler: The closure to call with the parsed JSON response dictionary.
      - parameter errorHandler: The closure to call when there is an error.
-     - returns: The data task for the URL.
+     - returns: The data task for calculating the routes.
      - postcondition: The caller must resume the returned task.
      */
-    fileprivate func dataTask(with url: URL, data: Data? = nil, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
-
-        var request = URLRequest(url: url)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-
-        if let data = data {
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            request.httpBody = data
-        }
-
-        return URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+    fileprivate func dataTask(forCalculating options: DirectionsOptions, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
+        let request = urlRequest(forCalculating: options)
+        return URLSession.shared.dataTask(with: request) { (data, response, error) in
             var json: JSONDictionary = [:]
             if let data = data, response?.mimeType == "application/json" {
                 do {
@@ -269,20 +255,66 @@ open class Directions: NSObject {
     }
 
     /**
-     The HTTP URL used to fetch the routes from the API.
-
-     After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer.
+     The GET HTTP URL used to fetch the routes from the API.
+     
+     After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer. Alternatively, you can use the `calculate(_:options:)` method, which automatically sends the request and parses the response.
+     
+     - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
+     - returns: The URL to send the request to.
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
     open func url(forCalculating options: DirectionsOptions) -> URL {
-        let params = options.params + [
+        return url(forCalculating: options, httpMethod: "GET")
+    }
+    
+    /**
+     The HTTP URL used to fetch the routes from the API using the specified HTTP method.
+     
+     The query part of the URL is generally suitable for GET requests. However, if the URL is exceptionally long, it may be more appropriate to send a POST request to a URL without the query part, relegating the query to the body of the HTTP request. Use the `urlRequest(forCalculating:)` method to get an HTTP request that is a GET or POST request as necessary.
+
+     After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer. Alternatively, you can use the `calculate(_:options:)` method, which automatically sends the request and parses the response.
+     
+     - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
+     - parameter httpMethod: The HTTP method to use. The value of this argument should match the `URLRequest.httpMethod` of the request you send. Currently, only GET and POST requests are supported by the API.
+     - returns: The URL to send the request to.
+     */
+    @objc(URLForCalculatingDirectionsWithOptions:HTTPMethod:)
+    open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
+        let includesQuery = httpMethod != "POST"
+        let params = (includesQuery ? options.params : []) + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
 
-        let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
+        let unparameterizedURL = URL(string: includesQuery ? options.path : options.abridgedPath, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!
+    }
+    
+    /**
+     The HTTP request used to fetch the routes from the API.
+     
+     The returned request is a GET or POST request as necessary to accommodate URL length limits.
+
+     After sending the request returned by this method, you can parse the JSON data in the response and pass it into the `Route.init(json:waypoints:profileIdentifier:)` initializer. Alternatively, you can use the `calculate(_:options:)` method, which automatically sends the request and parses the response.
+     
+     - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
+     - returns: A GET or POST HTTP request to calculate the specified options.
+     */
+    @objc(URLRequestForCalculatingDirectionsWithOptions:)
+    open func urlRequest(forCalculating options: DirectionsOptions) -> URLRequest {
+        let getURL = self.url(forCalculating: options, httpMethod: "GET")
+        var request = URLRequest(url: getURL)
+        if getURL.absoluteString.count > MaximumURLLength {
+            request.url = url(forCalculating: options, httpMethod: "POST")
+            
+            let body = options.encodedParams.data(using: .utf8)
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.httpMethod = "POST"
+            request.httpBody = body
+        }
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        return request
     }
 
     /**
