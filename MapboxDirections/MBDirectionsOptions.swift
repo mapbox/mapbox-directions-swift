@@ -449,10 +449,13 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     @objc open var includesVisualInstructions = false
 
     /**
-     An array of URL parameters to include in the request URL.
+     An array of URL query items to include in an HTTP request.
+     
+     The query items are included in the URL of a GET request or the body of a POST request.
      */
-    internal var params: [URLQueryItem] {
-        var params: [URLQueryItem] = [
+    @objc(URLQueryItems)
+    open var urlQueryItems: [URLQueryItem] {
+        var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
             URLQueryItem(name: "steps", value: String(includesSteps)),
@@ -462,22 +465,22 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         let mustArriveOnDrivingSide = !waypoints.filter { !$0.allowsArrivingOnOppositeSide }.isEmpty
         if mustArriveOnDrivingSide {
             let approaches = waypoints.map { $0.allowsArrivingOnOppositeSide ? "unrestricted" : "curb" }
-            params.append(URLQueryItem(name: "approaches", value: approaches.joined(separator: ";")))
+            queryItems.append(URLQueryItem(name: "approaches", value: approaches.joined(separator: ";")))
         }
 
         if includesSpokenInstructions {
-            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
-            params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
+            queryItems.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
+            queryItems.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
         }
 
         if includesVisualInstructions {
-            params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
+            queryItems.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
         if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
             let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
-            params.append(URLQueryItem(name: "bearings", value: headings))
+            queryItems.append(URLQueryItem(name: "bearings", value: headings))
         }
 
         // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
@@ -485,35 +488,35 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             let accuracies = waypoints.map {
                 $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
                 }.joined(separator: ";")
-            params.append(URLQueryItem(name: "radiuses", value: accuracies))
+            queryItems.append(URLQueryItem(name: "radiuses", value: accuracies))
         }
 
         if !attributeOptions.isEmpty {
             let attributesStrings = String(describing:attributeOptions)
 
-            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
+            queryItems.append(URLQueryItem(name: "annotations", value: attributesStrings))
         }
         
         var waypointIndices = IndexSet(waypoints.enumerated().filter { $0.element.separatesLegs }.map { $0.offset })
         waypointIndices.insert(waypoints.startIndex)
         waypointIndices.insert(waypoints.endIndex - 1)
         if waypointIndices.count < waypoints.count {
-            params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
+            queryItems.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
                 String(describing: $0)
             }.joined(separator: ";")))
         }
 
         if !waypoints.compactMap({ $0.name }).isEmpty {
             let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")
-            params.append(URLQueryItem(name: "waypoint_names", value: names))
+            queryItems.append(URLQueryItem(name: "waypoint_names", value: names))
         }
 
-        return params
+        return queryItems
     }
     
-    internal var encodedParams: String {
+    internal var httpBody: String {
         var components = URLComponents()
-        components.queryItems = params + [
+        components.queryItems = urlQueryItems + [
             URLQueryItem(name: "coordinates", value: queries.joined(separator: ";")),
         ]
         return components.percentEncodedQuery ?? ""

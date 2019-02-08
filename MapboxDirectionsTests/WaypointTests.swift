@@ -66,17 +66,17 @@ class WaypointTests: XCTestCase {
         let routeOptions = RouteOptions(waypoints: [one, two, three, four])
         let matchOptions = MatchOptions(waypoints: [one, two, three, four], profileIdentifier: nil)
         
-        XCTAssertNil(routeOptions.params.first { $0.name == "waypoints" }?.value)
-        XCTAssertNil(matchOptions.params.first { $0.name == "waypoints" }?.value)
+        XCTAssertNil(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
+        XCTAssertNil(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         
         two.separatesLegs = false
         
-        XCTAssertEqual(routeOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
-        XCTAssertEqual(matchOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
+        XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         
         two.separatesLegs = true
         matchOptions.waypointIndices = [0, 2, 3]
         
-        XCTAssertEqual(matchOptions.params.first { $0.name == "waypoints" }?.value, "0;2;3")
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
 }

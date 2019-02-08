@@ -281,13 +281,13 @@ open class Directions: NSObject {
     @objc(URLForCalculatingDirectionsWithOptions:HTTPMethod:)
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
-        let params = (includesQuery ? options.params : []) + [
+        let queryItems = (includesQuery ? options.urlQueryItems : []) + [
             URLQueryItem(name: "access_token", value: accessToken),
         ]
 
         let unparameterizedURL = URL(string: includesQuery ? options.path : options.abridgedPath, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
-        components.queryItems = params
+        components.queryItems = queryItems
         return components.url!
     }
     
@@ -308,7 +308,7 @@ open class Directions: NSObject {
         if getURL.absoluteString.count > MaximumURLLength {
             request.url = url(forCalculating: options, httpMethod: "POST")
             
-            let body = options.encodedParams.data(using: .utf8)
+            let body = options.httpBody.data(using: .utf8)
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.httpMethod = "POST"
             request.httpBody = body
