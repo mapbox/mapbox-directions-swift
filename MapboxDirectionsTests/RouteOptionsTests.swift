@@ -93,8 +93,8 @@ class RouteOptionsTests: XCTestCase {
         
         let routeOptions = RouteOptions(waypoints: waypoints)
         routeOptions.includesSteps = true
-        let params = routeOptions.params
-        let approaches = params.filter { $0.name == "approaches" }.first!
+        let urlQueryItems = routeOptions.urlQueryItems
+        let approaches = urlQueryItems.filter { $0.name == "approaches" }.first!
         XCTAssertEqual(approaches.value!, "unrestricted;curb;unrestricted", "waypoints[1] should be restricted to curb")
     }
     
@@ -108,8 +108,8 @@ class RouteOptionsTests: XCTestCase {
         
         let routeOptions = RouteOptions(waypoints: waypoints)
         routeOptions.includesSteps = true
-        let params = routeOptions.params
-        let hasApproaches = !params.filter { $0.name == "approaches" }.isEmpty
+        let urlQueryItems = routeOptions.urlQueryItems
+        let hasApproaches = !urlQueryItems.filter { $0.name == "approaches" }.isEmpty
         XCTAssertFalse(hasApproaches, "approaches query param should be omitted unless any waypoint is restricted to curb")
     }
     
@@ -134,8 +134,8 @@ class RouteOptionsTests: XCTestCase {
         let options = RouteOptions(waypoints: [origin, destination])
         
         XCTAssertEqual(options.queries, ["-84.47182,39.15031", "-84.51638,39.12971"])
-        XCTAssertTrue(options.params.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
-        XCTAssertTrue(options.params.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
     }
 }
 

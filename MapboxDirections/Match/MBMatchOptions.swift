@@ -73,18 +73,18 @@ open class MatchOptions: DirectionsOptions {
         return true
     }
 
-    override internal var params: [URLQueryItem] {
-        var params = super.params
+    override open var urlQueryItems: [URLQueryItem] {
+        var queryItems = super.urlQueryItems
 
-        params.append(URLQueryItem(name: "tidy", value: String(describing: resamplesTraces)))
+        queryItems.append(URLQueryItem(name: "tidy", value: String(describing: resamplesTraces)))
 
         if let waypointIndices = (self as MatchOptionsDeprecations).waypointIndices {
-            params.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
+            queryItems.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
                 String(describing: $0)
             }.joined(separator: ";")))
         }
 
-        return params
+        return queryItems
     }
 
     internal override var abridgedPath: String {

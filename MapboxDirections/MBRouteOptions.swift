@@ -112,19 +112,16 @@ open class RouteOptions: DirectionsOptions {
      */
     @objc open var roadClassesToAvoid: RoadClasses = []
 
-    /**
-     An array of URL parameters to include in the request URL.
-     */
-    internal override var params: [URLQueryItem] {
-        var params = super.params
+    override open var urlQueryItems: [URLQueryItem] {
+        var queryItems = super.urlQueryItems
 
-        params.append(contentsOf: [
+        queryItems.append(contentsOf: [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
         ])
 
         if includesExitRoundaboutManeuver {
-            params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+            queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
 
         if !roadClassesToAvoid.isEmpty {
@@ -133,16 +130,16 @@ open class RouteOptions: DirectionsOptions {
                 assert(false, "`roadClassesToAvoid` only accepts one `RoadClasses`.")
             }
             if let firstRoadClass = allRoadClasses.first {
-                params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+                queryItems.append(URLQueryItem(name: "exclude", value: firstRoadClass))
             }
         }
 
         if waypoints.first(where: { CLLocationCoordinate2DIsValid($0.targetCoordinate) }) != nil {
             let targetCoordinates = waypoints.map { $0.targetCoordinate.stringForRequestURL ?? "" }.joined(separator: ";")
-            params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
+            queryItems.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
         }
 
-        return params
+        return queryItems
     }
 
     /**
@@ -237,7 +234,7 @@ open class RouteOptionsV4: RouteOptions {
         return "v4/directions/\(profileIdentifier)"
     }
 
-    override var params: [URLQueryItem] {
+    override open var urlQueryItems: [URLQueryItem] {
         return [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "instructions", value: String(describing: instructionFormat)),

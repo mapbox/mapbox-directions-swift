@@ -9,6 +9,7 @@
 * Added the `Waypoint.separatesLegs` property, which you can set to `false` to create a route that travels “via” the waypoint but doesn’t stop there. Deprecated the `MatchOptions.waypointIndices` property in favor of `Waypoint.separatesLegs`, which also works with `RouteOptions`. ([#340](https://github.com/mapbox/MapboxDirections.swift/pull/340]))
 * Fixed unset properties in  `Waypoint` objects that are included in a calculated `Route`s or `Match`es. ([#340](https://github.com/mapbox/MapboxDirections.swift/pull/340]))
 * Added `DirectionsResult.fetchStartDate` and `DirectionsResult.requestEndDate` properties. ([#335](https://github.com/mapbox/MapboxDirections.swift/pull/335))
+* Added a `DirectionsOptions.urlQueryItems` property so that subclasses of `RouteOptions` and `MatchOptions` can add any additional URL query parameters that are supported by the Mapbox Directions and Map Matching APIs. ([#343](https://github.com/mapbox/MapboxDirections.swift/pull/343)) 
 
 ## v0.26.1
 
