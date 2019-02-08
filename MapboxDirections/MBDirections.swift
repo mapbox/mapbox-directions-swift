@@ -151,9 +151,10 @@ open class Directions: NSObject {
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
+            let responseEndDate = Date()
             let response = options.response(from: json)
             if let routes = response.1 {
-                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
+                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -178,9 +179,10 @@ open class Directions: NSObject {
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
+            let responseEndDate = Date()
             let response = options.response(from: json)
             if let matches = response {
-                self.postprocess(matches, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
+                self.postprocess(matches, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response, nil)
         }) { (error) in
@@ -205,9 +207,10 @@ open class Directions: NSObject {
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
+            let responseEndDate = Date()
             let response = options.response(containingRoutesFrom: json)
             if let routes = response.1 {
-                self.postprocess(routes, fetchStartDate: fetchStartDate, uuid: json["uuid"] as? String)
+                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
             }
             completionHandler(response.0, response.1, nil)
         }) { (error) in
@@ -369,8 +372,7 @@ open class Directions: NSObject {
     /**
      Adds request- or response-specific information to each result in a response.
      */
-    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, uuid: String?) {
-        let responseEndDate = Date()
+    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
         for result in results {
             result.accessToken = self.accessToken
             result.apiEndpoint = self.apiEndpoint
