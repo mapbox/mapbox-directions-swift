@@ -2,6 +2,14 @@ import Foundation
 import Polyline
 
 /**
+ Maximum length of an HTTP request URL for the purposes of switching from GET to
+ POST.
+ 
+ https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html#limits-general
+ */
+let MaximumURLLength = 1024 * 8
+
+/**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
 @objc(MBRouteShapeFormat)
@@ -331,8 +339,22 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         return waypoints.compactMap{ $0.coordinate.stringForRequestURL }
     }
 
+    /**
+     The path of the request URL, not including the hostname or any parameters.
+     */
     internal var path: String {
-        assert(false, "path should be overriden by subclass")
+        assert(!queries.isEmpty, "No query")
+        
+        let queryComponent = queries.joined(separator: ";")
+        return "\(abridgedPath)/\(queryComponent).json"
+    }
+    
+    /**
+     The path of the request URL, not including the hostname, query components,
+     or any parameters.
+     */
+    internal var abridgedPath: String {
+        assert(false, "abridgedPath should be overriden by subclass")
         return ""
     }
 
@@ -487,6 +509,14 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         }
 
         return params
+    }
+    
+    internal var encodedParams: String {
+        var components = URLComponents()
+        components.queryItems = params + [
+            URLQueryItem(name: "coordinates", value: queries.joined(separator: ";")),
+        ]
+        return components.percentEncodedQuery ?? ""
     }
 }
 

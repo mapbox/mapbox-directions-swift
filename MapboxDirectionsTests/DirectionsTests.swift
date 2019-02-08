@@ -40,6 +40,43 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://api.mapbox.com")
     }
     
+    let maximumCoordinateCount = 795
+    
+    func testGETRequest() {
+        // Bumps right up against MaximumURLLength
+        let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount)
+        let options = RouteOptions(coordinates: coordinates)
+        
+        let directions = Directions(accessToken: BogusToken)
+        let url = directions.url(forCalculating: options, httpMethod: "GET")
+        XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
+        
+        var components = URLComponents(string: url.absoluteString)
+        XCTAssertEqual(components?.queryItems?.count, 7)
+        XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.stringForRequestURL }.joined(separator: ";")) ?? false)
+        
+        let request = directions.urlRequest(forCalculating: options)
+        XCTAssertEqual(request.httpMethod, "GET")
+        XCTAssertEqual(request.url, url)
+    }
+    
+    func testPOSTRequest() {
+        let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
+        let options = RouteOptions(coordinates: coordinates)
+        
+        let directions = Directions(accessToken: BogusToken)
+        let request = directions.urlRequest(forCalculating: options)
+        
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.query, "access_token=\(BogusToken)")
+        XCTAssertNotNil(request.httpBody)
+        var components = URLComponents()
+        components.query = String(data: request.httpBody ?? Data(), encoding: .utf8)
+        XCTAssertEqual(components.queryItems?.count, 7)
+        XCTAssertEqual(components.queryItems?.first { $0.name == "coordinates" }?.value,
+                       coordinates.compactMap { $0.stringForRequestURL }.joined(separator: ";"))
+    }
+    
     func testKnownBadResponse() {
         let pass = "The operation couldn’t be completed. The request is too large."
         
