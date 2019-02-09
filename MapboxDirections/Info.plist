@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.26.1</string>
+	<string>0.27.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>38</string>
+	<string>39</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014–2019 Mapbox. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
