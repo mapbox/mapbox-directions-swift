@@ -1,5 +1,10 @@
 # Changes to the Mapbox Directions SDK for iOS
 
+## v0.27.1
+
+* Fixed an issue where `Directions.downloadTiles(in:version:session:completionHandler:)` always failed with an error after passing in a `CoordinateBounds` created using the `CoordinateBounds(northWest:southEast:)` initializer. ([#349](https://github.com/mapbox/MapboxDirections.swift/pull/349))
+* Added a `CoordinateBounds(southWest:northEast:)` initializer. ([#349](https://github.com/mapbox/MapboxDirections.swift/pull/349))
+
 ## v0.27.0
 
 * If a `RouteOptions` object has exceptionally many waypoints or if many of the waypoint have very long names, `Directions.calculate(_:completionHandler:)` sends a POST request to the Mapbox Directions API instead of sending a GET request that returns an error. ([#341](https://github.com/mapbox/MapboxDirections.swift/pull/341))

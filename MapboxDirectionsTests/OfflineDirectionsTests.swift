@@ -35,6 +35,16 @@ class OfflineDirectionsTests: XCTestCase {
         
         wait(for: [versionsExpectation], timeout: 2)
     }
+    
+    func testCoordinateBounds() {
+        let bounds = CoordinateBounds(coordinates: [CLLocationCoordinate2D(latitude: 37.7890, longitude: -122.4337),
+                                                    CLLocationCoordinate2D(latitude: 37.7881, longitude: -122.4318)])
+        XCTAssertEqual(bounds.southWest.latitude, 37.7881)
+        XCTAssertEqual(bounds.southWest.longitude, -122.4337)
+        XCTAssertEqual(bounds.northEast.latitude, 37.7890)
+        XCTAssertEqual(bounds.northEast.longitude, -122.4318)
+        XCTAssertEqual(bounds.description, "-122.4337,37.7881;-122.4318,37.789")
+    }
 
     func testDownloadTiles() {
         
