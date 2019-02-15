@@ -54,7 +54,7 @@ extension Directions: OfflineDirectionsProtocol {
     }
 
     /**
-     Fetch the available versions. A version is represented as a String (yyyy-MM-dd or yyyy-MM-dd-x).
+     Fetch the available versions in descending chronological order. A version is represented as a String (yyyy-MM-dd or yyyy-MM-dd-x).
      
      - parameter completionHandler: The closure to call with the results
      - returns: A `URLSessionDataTask`
@@ -73,7 +73,8 @@ extension Directions: OfflineDirectionsProtocol {
             
             do {
                 let versionResponse = try JSONDecoder().decode(AvailableVersionsResponse.self, from: data)
-                completionHandler(versionResponse.availableVersions, error)
+                let availableVersions = versionResponse.availableVersions.sorted(by: >)
+                completionHandler(availableVersions, error)
             } catch {
                 completionHandler(nil, error)
             }
