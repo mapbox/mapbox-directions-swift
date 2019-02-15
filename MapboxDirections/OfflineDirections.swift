@@ -45,7 +45,7 @@ extension Directions: OfflineDirectionsProtocol {
     /// URL to the endpoint for downloading a tile pack
     public func tilesURL(for coordinateBounds: CoordinateBounds, version: OfflineVersion) -> URL {
         
-        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.path)
+        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.description)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
                                   URLQueryItem(name: "access_token", value: accessToken)]
