@@ -115,7 +115,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
-        coder.encode(type, forKey: "type")
+        coder.encode(type.description, forKey: "type")
         coder.encode(imageURL, forKey: "imageURL")
         coder.encode(abbreviation, forKey: "abbreviation")
         coder.encode(abbreviationPriority, forKey: "abbreviationPriority")

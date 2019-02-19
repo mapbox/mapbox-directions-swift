@@ -101,6 +101,6 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         coder.encode(primaryInstruction, forKey: "primary")
         coder.encode(secondaryInstruction, forKey: "secondary")
         coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
-        coder.encode(drivingSide, forKey: "drivingSide")
+        coder.encode(drivingSide.description, forKey: "drivingSide")
     }
 }

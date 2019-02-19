@@ -229,6 +229,39 @@ open class RouteOptionsV4: RouteOptions {
      */
     @objc open var includesShapes: Bool = true
     
+    @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    }
+    
+    public required init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+        
+        if let description = decoder.decodeObject(of: NSString.self, forKey: "instructionFormat") as String?,
+            let format = InstructionFormat(description: description) {
+            instructionFormat = format
+        }
+        
+        includesShapes = decoder.decodeBool(forKey: "includesShapes")
+    }
+    
+    public override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        
+        coder.encode(instructionFormat.description, forKey: "instructionFormat")
+        coder.encode(includesShapes, forKey: "includesShapes")
+    }
+    
+    override public class var supportsSecureCoding: Bool {
+        return true
+    }
+    
+    override open func copy(with zone: NSZone? = nil) -> Any {
+        let copy = super.copy(with: zone) as! RouteOptionsV4
+        copy.instructionFormat = instructionFormat
+        copy.includesShapes = includesShapes
+        return copy
+    }
+    
     internal override var abridgedPath: String {
         let profileIdentifier = self.profileIdentifier.rawValue.replacingOccurrences(of: "/", with: ".")
         return "v4/directions/\(profileIdentifier)"

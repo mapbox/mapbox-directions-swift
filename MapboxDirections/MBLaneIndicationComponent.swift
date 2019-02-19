@@ -44,7 +44,7 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
     }
     
     public func encode(with coder: NSCoder) {
-        coder.encode(indications, forKey: "indications")
+        coder.encode(indications.description, forKey: "indications")
         coder.encode(isUsable, forKey: "isUsable")
     }
 }

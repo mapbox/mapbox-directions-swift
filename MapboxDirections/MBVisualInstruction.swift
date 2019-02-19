@@ -87,10 +87,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     }
 
     @objc public required init?(coder decoder: NSCoder) {
-        guard let text = decoder.decodeObject(of: NSString.self, forKey: "text") as String? else {
-            return nil
-        }
-        self.text = text
+        text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
 
         guard let maneuverTypeString = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: maneuverTypeString) else {
             return nil
@@ -102,7 +99,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         }
         self.maneuverDirection = maneuverDirection
 
-        guard let components = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self], forKey: "components") as? [VisualInstructionComponent] else {
+        guard let components = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self, LaneIndicationComponent.self], forKey: "components") as? [ComponentRepresentable] else {
             return nil
         }
         self.components = components
@@ -112,8 +109,8 @@ open class VisualInstruction: NSObject, NSSecureCoding {
 
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
-        coder.encode(maneuverType, forKey: "maneuverType")
-        coder.encode(maneuverDirection, forKey: "maneuverDirection")
+        coder.encode(maneuverType.description, forKey: "maneuverType")
+        coder.encode(maneuverDirection.description, forKey: "maneuverDirection")
         coder.encode(finalHeading, forKey: "degrees")
         coder.encode(components, forKey: "components")
     }
