@@ -112,8 +112,8 @@ open class VisualInstruction: NSObject, NSSecureCoding {
 
     public func encode(with coder: NSCoder) {
         coder.encode(text, forKey: "text")
-        coder.encode(maneuverType, forKey: "maneuverType")
-        coder.encode(maneuverDirection, forKey: "maneuverDirection")
+        coder.encode(maneuverType.description, forKey: "maneuverType")
+        coder.encode(maneuverDirection.description, forKey: "maneuverDirection")
         coder.encode(finalHeading, forKey: "degrees")
         coder.encode(components, forKey: "components")
     }
