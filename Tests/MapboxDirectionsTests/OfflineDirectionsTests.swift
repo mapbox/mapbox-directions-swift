@@ -25,14 +25,13 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        directions.fetchAvailableOfflineVersions { (versions, error) in
+        directions.fetchAvailableOfflineVersions(completionHandler: { (versions, error) in
             XCTAssertEqual(versions!.count, 1)
             XCTAssertEqual(versions!.first!, "2018-10-16")
             
             versionsExpectation.fulfill()
             OHHTTPStubs.removeStub(apiStub)
-            
-        }.resume()
+        })
         
         wait(for: [versionsExpectation], timeout: 2)
     }
@@ -73,15 +72,14 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
         }
         
-        _ = directions.downloadTiles(in: bounds, version: version, completionHandler: { (url, response, error) in
+        directions.downloadTiles(in: bounds, version: version, completionHandler: { (url, response, error) in
             XCTAssertEqual(response!.suggestedFilename, "2018-10-16.tar")
             XCTAssertNotNil(url, "url should point to the temporary local file")
             XCTAssertNil(error)
             
             downloadExpectation.fulfill()
             OHHTTPStubs.removeStub(apiStub)
-            
-        }).resume()
+        })
         
         wait(for: [downloadExpectation], timeout: 60)
     }
