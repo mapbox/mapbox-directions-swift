@@ -14,21 +14,21 @@ struct AvailableVersionsResponse: Codable {
 public protocol OfflineDirectionsProtocol {
     
     /**
-     Fetches the available routing tile versions. Typically, the most recent version should be passed into `downloadTiles(in:version:completionHandler:)`.
-
-     - parameter completionHandler: Executes when the download completes or fails.
+     Fetches the available offline routing tile versions and returns them in descending chronological order. The most recent version should typically be passed into `downloadTiles(in:version:completionHandler:)`.
+     
+     - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
-    @objc(fetchAvailableOfflineVersionsWithCompletion:)
+    @objc(fetchAvailableOfflineVersionsWithCompletionHandler:)
     func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> ()
     
     /**
-     Fetches routing tiles needed to generate a route within the given bounding box.
+     Downloads offline routing tiles of the given version within the given coordinate bounds using the shared URLSession. The tiles are written to disk at the location passed into the `completionHandler`.
      
-     - parameter coordinateBounds: The region of the pack to be downloaded.
-     - parameter version: The version of the pack to be downloaded.
-     - parameter completionHandler: Executes when the download completes or fails. The offline pack may be moved from the temporary directory to a persistent store at this point.
+     - parameter coordinateBounds: The bounding box
+     - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
+     - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
-    @objc(downloadTilesInCoordinateBounds:withVersion:completion:)
+    @objc(downloadTilesInCoordinateBounds:withVersion:completionHandler:)
     func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> ()
 }
 
@@ -56,9 +56,9 @@ extension Directions: OfflineDirectionsProtocol {
     }
 
     /**
-     Fetch the available versions in descending chronological order. A version is represented as a String (yyyy-MM-dd or yyyy-MM-dd-x).
+     Fetches the available offline routing tile versions and returns them in descending chronological order. The most recent version should typically be passed into `downloadTiles(in:version:completionHandler:)`.
      
-     - parameter completionHandler: The closure to call with the results
+     - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
     public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> () {
         let task = availableVersionsDataTask(completionHandler: completionHandler)
@@ -66,7 +66,12 @@ extension Directions: OfflineDirectionsProtocol {
         return task.resume()
     }
 
-    @objc(availableVersionsDataTaskWithCompletion:)
+    /**
+     Creates and returns a URLSessionDataTask for downloading available offline routing tile versions. The caller is responsible for calling `-resume` on the task.
+     
+     - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
+     */
+    @objc(availableVersionsDataTaskWithCompletionHandler:)
     public func availableVersionsDataTask(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: availableVersionsURL) { (data, response, error) in
             if let error = error {
@@ -90,11 +95,11 @@ extension Directions: OfflineDirectionsProtocol {
     }
     
     /**
-     Downloads offline routing tiles of the given version within the given coordinate bounds, using the shared URLSession.
-     
+     Downloads offline routing tiles of the given version within the given coordinate bounds using the shared URLSession. The tiles are written to disk at the location passed into the `completionHandler`.
+
      - parameter coordinateBounds: The bounding box
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
-     - parameter completionHandler: The closure to call with the results
+     - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
     public func downloadTiles(in coordinateBounds: CoordinateBounds,
                               version: OfflineVersion,
@@ -103,7 +108,14 @@ extension Directions: OfflineDirectionsProtocol {
         return task.resume()
     }
 
-    @objc(routingTilesDataTaskWithCoordinateBounds:version:completion:)
+    /**
+     Creates and returns a URLSessionDataTask for downloading offline routing tiles of the given version within the given coordinate bounds, using the shared URLSession.
+     
+     - parameter coordinateBounds: The bounding box
+     - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
+     - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
+     */
+    @objc(routingTilesDataTaskWithCoordinateBounds:version:completionHandler:)
     public func routingTilesDataTaskWith(_ coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         let url = tilesURL(for: coordinateBounds, version: version)
         let task: URLSessionDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: completionHandler)
