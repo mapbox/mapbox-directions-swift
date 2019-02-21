@@ -25,13 +25,13 @@ class OfflineDirectionsTests: XCTestCase {
             return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        directions.fetchAvailableOfflineVersions(completionHandler: { (versions, error) in
+        directions.fetchAvailableOfflineVersions { (versions, error) in
             XCTAssertEqual(versions!.count, 1)
             XCTAssertEqual(versions!.first!, "2018-10-16")
             
             versionsExpectation.fulfill()
             OHHTTPStubs.removeStub(apiStub)
-        })
+        }
         
         wait(for: [versionsExpectation], timeout: 2)
     }
