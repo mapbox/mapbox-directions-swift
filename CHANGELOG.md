@@ -1,4 +1,4 @@
-# Changes to the Mapbox Directions SDK for iOS
+# Changes to MapboxDirections.swift
 
 ## v0.27.1
 
