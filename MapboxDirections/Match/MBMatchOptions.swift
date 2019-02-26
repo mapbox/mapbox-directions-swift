@@ -56,6 +56,14 @@ open class MatchOptions: DirectionsOptions {
     @available(*, deprecated: 0.1, message: "Use Waypoint.separatesLegs instead.")
     @objc open var waypointIndices: IndexSet?
     
+    override var legSeparators: [Waypoint] {
+        if let indices = (self as MatchOptionsDeprecations).waypointIndices {
+            return indices.map { super.waypoints[$0] }
+        } else {
+            return super.legSeparators
+        }
+    }
+    
     @objc public required init?(coder decoder: NSCoder) {
         resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
         super.init(coder: decoder)
