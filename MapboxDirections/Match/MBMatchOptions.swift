@@ -141,22 +141,17 @@ open class MatchOptions: DirectionsOptions {
         let waypoints = namedWaypoints ?? self.waypoints
         let opts = RouteOptions(matchOptions: self)
 
-        var filteredWaypoints: [Waypoint]?
+        let legSeparators: [Waypoint]
         if let indices = (self as MatchOptionsDeprecations).waypointIndices {
-            filteredWaypoints = []
-            for (i, waypoint) in waypoints.enumerated() {
-                if indices.contains(i) {
-                    filteredWaypoints?.append(waypoint)
-                }
-            }
+            legSeparators = indices.map { waypoints[$0] }
         } else {
             waypoints.first?.separatesLegs = true
             waypoints.last?.separatesLegs = true
-            filteredWaypoints = waypoints.filter { $0.separatesLegs }
+            legSeparators = waypoints.filter { $0.separatesLegs }
         }
 
         let routes = (json["matchings"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: filteredWaypoints ?? waypoints, options: opts)
+            Route(json: $0, waypoints: legSeparators, options: opts)
         }
 
         return (waypoints, routes)

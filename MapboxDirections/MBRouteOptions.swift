@@ -164,9 +164,12 @@ open class RouteOptions: DirectionsOptions {
         }
 
         let waypoints = namedWaypoints ?? self.waypoints
+        waypoints.first?.separatesLegs = true
+        waypoints.last?.separatesLegs = true
+        let legSeparators = waypoints.filter { $0.separatesLegs }
 
         let routes = (json["routes"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: waypoints, options: self)
+            Route(json: $0, waypoints: legSeparators, options: self)
         }
         return (waypoints, routes)
     }

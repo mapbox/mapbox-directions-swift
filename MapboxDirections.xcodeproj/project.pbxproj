@@ -232,6 +232,9 @@
 		DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F171CFC075300FA0071 /* MBRoute.swift */; };
 		DAC05F1A1CFC077C00FA0071 /* MBRouteLeg.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */; };
 		DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */; };
+		DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
+		DACCFCAA2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
+		DACCFCAB2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
 		DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */; };
 		DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B91E5AAAD800D31FAD /* ViewController.swift */; };
 		DADD27BF1E5AAAD800D31FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADD27BE1E5AAAD800D31FAD /* Assets.xcassets */; };
@@ -387,6 +390,7 @@
 		DAC05F171CFC075300FA0071 /* MBRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRoute.swift; sourceTree = "<group>"; };
 		DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBRouteLeg.swift; sourceTree = "<group>"; };
 		DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_polyline.json; sourceTree = "<group>"; };
+		DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_oldenburg_polyline.json; sourceTree = "<group>"; };
 		DADD27B51E5AAAD800D31FAD /* Example (Swift).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example (Swift).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADD27B91E5AAAD800D31FAD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -665,6 +669,7 @@
 			children = (
 				DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */,
 				DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */,
+				DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */,
 			);
 			name = V5;
 			path = v5;
@@ -1095,6 +1100,7 @@
 				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				DACCFCAA2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
 				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022B1E92C281009837BD /* annotation.json in Resources */,
@@ -1123,6 +1129,7 @@
 				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				DACCFCAB2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
 				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022C1E92C281009837BD /* annotation.json in Resources */,
@@ -1158,6 +1165,7 @@
 				35DBF019217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				C5DAACB4201AA9A7001F9261 /* match.json in Resources */,
 				C5A3D3981E8188FE00D494A0 /* annotation.json in Resources */,
 				8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */,
