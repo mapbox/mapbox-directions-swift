@@ -366,6 +366,16 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
     @objc open var waypoints: [Waypoint]
+    
+    /**
+     The waypoints that separate legs.
+     */
+    var legSeparators: [Waypoint] {
+        var waypoints = self.waypoints
+        let source = waypoints.removeFirst()
+        let destination = waypoints.removeLast()
+        return [source] + waypoints.filter { $0.separatesLegs } + [destination]
+    }
 
     /**
      A string specifying the primary mode of transportation for the routes.
@@ -507,7 +517,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         }
 
         if !waypoints.compactMap({ $0.name }).isEmpty {
-            let names = waypoints.map { $0.name ?? "" }.joined(separator: ";")
+            let names = legSeparators.map { $0.name ?? "" }.joined(separator: ";")
             queryItems.append(URLQueryItem(name: "waypoint_names", value: names))
         }
 

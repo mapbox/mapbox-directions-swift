@@ -1,5 +1,10 @@
 # Changes to MapboxDirections.swift
 
+## master
+
+* Fixed an issue where `Waypoint.separatesLegs` caused the resulting `RouteLeg.source` and `RouteLeg.destination` to have mismatched coordinates and names. ([#358](https://github.com/mapbox/MapboxDirections.swift/pull/358))
+* Fixed an issue where a Directions API or Map Matching API request would fail if a `Waypoint` has `Waypoint.name` set and `Waypoint.separatesLegs` set to `false`. ([#358](https://github.com/mapbox/MapboxDirections.swift/pull/358))
+
 ## v0.27.1
 
 ### Offline routing

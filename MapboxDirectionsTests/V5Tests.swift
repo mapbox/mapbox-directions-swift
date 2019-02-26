@@ -50,6 +50,8 @@ class V5Tests: XCTestCase {
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
+            XCTAssertEqual(waypoints?.count, 2)
+            
             XCTAssertNotNil(routes)
             XCTAssertEqual(routes!.count, 2)
             route = routes!.first!
@@ -89,6 +91,7 @@ class V5Tests: XCTestCase {
         let opts = route.routeOptions
         XCTAssertEqual(opts, options)
         
+        XCTAssertEqual(route.legs.count, 1)
         let leg = route.legs.first
         XCTAssertEqual(leg?.name, "Dwight D. Eisenhower Highway, I-80")
         XCTAssertEqual(leg?.steps.count, 59)
@@ -201,6 +204,78 @@ class V5Tests: XCTestCase {
         }
         
         test(shapeFormat: .polyline6, transformer: transformer, filePath: "v5_driving_dc_polyline")
+    }
+    
+    func testViaPoints() {
+        let expectation = self.expectation(description: "calculating directions should return results")
+        
+        let queryParams: [String: String?] = [
+            "geometries": "polyline",
+            "overview": "full",
+            "steps": "true",
+            "language": "de_US",
+            "waypoints": "0;2",
+            "waypoint_names": "From;To",
+            "alternatives": "false",
+            "continue_straight": "true",
+            "roundabout_exits": "true",
+            "access_token": BogusToken,
+        ]
+        stub(condition: isHost("api.mapbox.com")
+            && isPath("/directions/v5/mapbox/driving/-85.206232,39.33841;-85.203991,39.34181;-85.199697,39.342048.json")
+            && containsQueryParams(queryParams)) { _ in
+                let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_oldenburg_polyline", ofType: "json")
+                let filePath = URL(fileURLWithPath: path!)
+                let data = try! Data(contentsOf: filePath, options: [])
+                let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
+                return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
+        }
+        
+        let waypoints = [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.33841036211459, longitude: -85.20623174166413), coordinateAccuracy: -1, name: "From"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34181048315713, longitude: -85.20399062653789), coordinateAccuracy: -1, name: "Via"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34204769474999, longitude: -85.19969651878529), coordinateAccuracy: -1, name: "To"),
+        ]
+        for waypoint in waypoints {
+            waypoint.separatesLegs = false
+        }
+        
+        let options = RouteOptions(waypoints: waypoints)
+        XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
+        options.shapeFormat = .polyline
+        options.includesSteps = true
+        options.routeShapeResolution = .full
+        options.locale = Locale(identifier: "de_US")
+        options.includesExitRoundaboutManeuver = true
+        
+        var route: Route?
+        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+            XCTAssertNil(error, "Error: \(error!)")
+            
+            XCTAssertEqual(waypoints?.count, 3)
+            
+            XCTAssertNotNil(routes)
+            XCTAssertEqual(routes!.count, 1)
+            route = routes!.first!
+            
+            expectation.fulfill()
+        }
+        XCTAssertNotNil(task)
+        
+        waitForExpectations(timeout: 2) { (error) in
+            XCTAssertNil(error, "Error: \(error!)")
+            XCTAssertEqual(task.state, .completed)
+        }
+        
+        XCTAssertEqual(route?.legs.count, 1)
+        let leg = route?.legs.first
+        XCTAssertEqual(leg?.source.name, waypoints[0].name)
+        XCTAssertEqual(leg?.source.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination.name, waypoints[2].name)
+        XCTAssertEqual(leg?.destination.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.name, "Perlen Strasse, Haupt Strasse")
     }
     
     func testCoding() {
