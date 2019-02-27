@@ -41,13 +41,13 @@ step-library:
       run:
         name: Build and Test MapboxDirections for iOS 11
         command: |
-          xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=11.4,name=iPhone 6 Plus' clean build test
+          xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=11.4,name=iPhone 6 Plus' clean build test -enableCodeCoverage "YES"
 
   - &build-test-MapboxDirections-ios-12
       run:
         name: Build and Test MapboxDirections for iOS 12
         command: |
-          xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=12.0,name=iPhone 6 Plus' clean build test
+          xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=12.0,name=iPhone 6 Plus' clean build test -enableCodeCoverage "YES"
 
   - &build-MapboxDirections-watchos-4
     run:
@@ -65,13 +65,18 @@ step-library:
     run:
       name: Build and Test MapboxDirections for tvOS 12
       command: |
-        xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=12.0' clean build test
+        xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=12.0' clean build test -enableCodeCoverage "YES"
 
   - &build-test-MapboxDirections-macos
     run:
       name: Build and Test MapboxDirections for macOS
       command: |
-        xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build test | xcpretty
+        xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build test -enableCodeCoverage "YES" | xcpretty
+
+  - &publish-codecov
+      run:
+        name: Publish Code Coverage data
+        command: bash <(curl -s https://codecov.io/bash)
 
 jobs:
   xcode-10:
@@ -88,6 +93,7 @@ jobs:
       - *build-MapboxDirections-watchos-5
       - *build-test-MapboxDirections-tvos-12
       - *build-test-MapboxDirections-macos
+      - *publish-codecov
       - *save-cache
 
   xcode-9:

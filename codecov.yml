@@ -1,0 +1,9 @@
+ignore:
+  - "Directions Example"
+  - "MapboxDirectionsTests"
+
+coverage:
+  status:
+    project:
+      default:
+        threshold: 1%
