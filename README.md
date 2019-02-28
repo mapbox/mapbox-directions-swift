@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/mapbox/MapboxDirections.swift.svg?style=svg)](https://circleci.com/gh/mapbox/MapboxDirections.swift)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
+[![codecov](https://codecov.io/gh/mapbox/MapboxDirections.swift/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/MapboxDirections.swift)
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions](https://docs.mapbox.com/api/navigation/) and [Map Matching](https://docs.mapbox.com/api/navigation/#map-matching) APIs. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine. For more information, see the [Mapbox Navigation](https://www.mapbox.com/navigation/) homepage.
 
