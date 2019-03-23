@@ -1,4 +1,6 @@
 import Foundation
+import CoreLocation
+
 
 /**
  An instruction about an upcoming `RouteStep`’s maneuver, optimized for speech synthesis.
