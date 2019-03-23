@@ -1,4 +1,6 @@
 import Foundation
+import CoreLocation
+
 
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.

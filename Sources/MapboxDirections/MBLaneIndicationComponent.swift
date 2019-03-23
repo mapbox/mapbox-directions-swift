@@ -1,3 +1,6 @@
+import Foundation
+
+
 /**
 A component that represents a lane  representation of an instruction.
  */

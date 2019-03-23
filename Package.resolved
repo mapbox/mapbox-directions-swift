@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Polyline",
+        "repositoryURL": "/Users/fredrik/Workspace/mapbox/Polyline",
+        "state": {
+          "branch": "fred/spm4.2",
+          "revision": "4b4b4957549f7d0f1d59e6b3c662234402717de9",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

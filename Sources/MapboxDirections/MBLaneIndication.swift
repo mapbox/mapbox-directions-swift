@@ -1,5 +1,6 @@
 import Foundation
 
+
 public typealias LaneIndication = MBLaneIndication
 
 extension LaneIndication: CustomStringConvertible {
