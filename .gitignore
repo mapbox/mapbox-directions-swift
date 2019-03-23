@@ -10,3 +10,4 @@ Carthage/Build
 Carthage/Checkouts
 /build
 /documentation
+.build

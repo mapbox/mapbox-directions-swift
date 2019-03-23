@@ -1,3 +1,5 @@
+import Foundation
+import CoreLocation
 import Polyline
 
 /**

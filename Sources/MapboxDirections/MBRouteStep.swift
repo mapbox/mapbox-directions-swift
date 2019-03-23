@@ -1,4 +1,7 @@
+import Foundation
+import CoreLocation
 import Polyline
+
 
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.

@@ -1,3 +1,7 @@
+import Foundation
+import CoreLocation
+
+
 /**
  By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
  */
