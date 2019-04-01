@@ -17,18 +17,8 @@ step-library:
       run:
         name: Prepare
         command: |
-          git submodule sync
-          if (brew outdated | grep carthage > /dev/null); then brew upgrade carthage; fi
+          if [ $(carthage outdated | grep -cF "latest Carthage version") -eq 0 ]; then brew update && brew upgrade carthage || true; fi
           echo "foo" > ~/.mapbox
-
-  - &install-dependencies
-      run:
-        name: Install Dependencies
-        command: |
-          carthage bootstrap --platform ios --cache-builds --no-use-binaries
-          carthage bootstrap --platform tvos --cache-builds --no-use-binaries
-          carthage bootstrap --platform macos --cache-builds --no-use-binaries
-          carthage bootstrap --platform watchos --cache-builds --no-use-binaries
 
   - &publish-codecov
       run:
@@ -40,7 +30,6 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "10.1.0"
       device:
         type: string
         default: "iPhone 6 Plus"
@@ -74,15 +63,31 @@ jobs:
           condition: << parameters.install_legacy_sim >>
           steps:
             - run: xcversion simulators --install="iOS << parameters.iOS >>"
-      - *install-dependencies
       - run:
-          name: Build and Test SDK
+          name: iOS
           command: |
-            xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-            xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'watchOS Simulator,name=Apple Watch Series 3 - 42mm,OS=<< parameters.iOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+            carthage bootstrap --platform ios --cache-builds --no-use-binaries --new-resolver
+            xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>  
+      - run:
+          name: tvOS
+          command: |
+            carthage bootstrap --platform tvos --cache-builds --no-use-binaries --new-resolver
             xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-      - *save-cache            
+      - run:
+          name: macOS
+          command: |
+            carthage bootstrap --platform macos --cache-builds --no-use-binaries --new-resolver
+            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+      - run:
+          name: watchOS
+          command: |
+            carthage bootstrap --platform watchos --cache-builds --no-use-binaries --new-resolver
+            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 3 - 42mm,OS=<< parameters.watchOS >>' clean build
+      - when:
+          condition: << parameters.codecoverage >>
+          steps:
+            - run: bash <(curl -s https://codecov.io/bash)
+      - *save-cache           
 
 workflows:
   workflow:
@@ -91,12 +96,15 @@ workflows:
           name: "Xcode 10.2 iOS 12.2"
           xcode: "10.2.0"
           iOS: "12.2"
+          tvOS: "12.2"
+          watchOS: "5.2"
       - build-job:
           name: "Xcode 10.1 iOS 12.1"
           xcode: "10.1.0"
           iOS: "12.1"
+          tvOS: "12.1"
       - build-job:
-          name: "Xcode 9.4 iOS 11.2"
+          name: "Xcode 9.4 iOS 9.3"
           xcode: "9.4.1"
-          iOS: "11.4"
-          watchOS: "4.2"
+          iOS: "9.3"
+          install_legacy_sim: true
