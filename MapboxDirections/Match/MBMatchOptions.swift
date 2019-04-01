@@ -53,7 +53,7 @@ open class MatchOptions: DirectionsOptions {
 
      If specified, each index must correspond to a valid index in `coordinates`, and the index set must contain 0 and the last index (one less than `endIndex`) of `coordinates`.
      */
-    @available(*, deprecated: 0.1, message: "Use Waypoint.separatesLegs instead.")
+    @available(*, deprecated, message: "Use Waypoint.separatesLegs instead.")
     @objc open var waypointIndices: IndexSet?
     
     override var legSeparators: [Waypoint] {
