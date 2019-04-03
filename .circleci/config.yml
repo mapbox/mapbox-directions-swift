@@ -4,12 +4,12 @@ step-library:
   - &restore-cache
       restore_cache:
         keys:
-          - carthage-cache-mbdirections-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
-          - carthage-cache-mbdirections-v1- # used if checksum fails
+          - carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+          - carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }} # used if checksum fails
 
   - &save-cache
       save_cache:
-        key: carthage-cache-mbdirections-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+        key: carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
         paths:
           - Carthage
 
@@ -19,6 +19,11 @@ step-library:
         command: |
           if [ $(carthage outdated | grep -cF "latest Carthage version") -eq 0 ]; then brew update && brew upgrade carthage || true; fi
           echo "foo" > ~/.mapbox
+
+  - &publish-codecov
+      run:
+        name: Publish code coverage
+        command: bash <(curl -s https://codecov.io/bash)
 
 jobs:
   build-job:
@@ -52,30 +57,37 @@ jobs:
       - *prepare
       - *restore-cache
       - run:
+          name: Install prerequisites
+          command: |
+            if [ $(xcversion simulators | grep -cF "iOS << parameters.iOS >> Simulator (installed)") -eq 0 ]; then xcversion simulators --install="iOS << parameters.iOS >>" || true; fi
+      - run:
+          name: Dependencies
+          command: |
+            carthage bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
+            carthage bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
+            carthage bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
+            carthage bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
+      - *save-cache
+      - run:
           name: iOS
-          command: |
-            carthage bootstrap --platform ios --cache-builds --no-use-binaries --new-resolver
-            xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>  
-      - run:
-          name: tvOS
-          command: |
-            carthage bootstrap --platform tvos --cache-builds --no-use-binaries --new-resolver
-            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-      - run:
-          name: macOS
-          command: |
-            carthage bootstrap --platform macos --cache-builds --no-use-binaries --new-resolver
-            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-      - run:
-          name: watchOS
-          command: |
-            carthage bootstrap --platform watchos --cache-builds --no-use-binaries --new-resolver
-            xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 3 - 42mm,OS=<< parameters.watchOS >>' clean build
+          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
       - when:
           condition: << parameters.codecoverage >>
           steps:
-            - run: bash <(curl -s https://codecov.io/bash)
-      - *save-cache           
+            - *publish-codecov
+      - run:
+          name: tvOS
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+      - when:
+          condition: << parameters.codecoverage >>
+          steps:
+            - *publish-codecov
+      - run:
+          name: macOS
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+      - run:
+          name: watchOS
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 3 - 42mm,OS=<< parameters.watchOS >>' clean build
 
 workflows:
   workflow:
@@ -86,15 +98,16 @@ workflows:
           iOS: "12.2"
           tvOS: "12.2"
           watchOS: "5.2"
-          codecoverage: true
       - build-job:
           name: "Xcode_10.0"
           xcode: "10.0.0"
           iOS: "12.0"
           tvOS: "12.0"
+          codecoverage: true
       - build-job:
           name: "Xcode_9.4"
           xcode: "9.4.1"
-          iOS: "10.3.1"
+          iOS: "9.3"
           tvOS: "11.4"
           watchOS: "4.3"
+          test: false
