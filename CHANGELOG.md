@@ -1,5 +1,9 @@
 # Changes to MapboxDirections.swift
 
+## master
+
+* Fixed compatibility issues with Xcode 10.2 when the SDK is installed using Carthage. ([#363](https://github.com/mapbox/MapboxDirections.swift/pull/363))
+
 ## v0.27.2
 
 * Fixed an issue where `Waypoint.separatesLegs` caused the resulting `RouteLeg.source` and `RouteLeg.destination` to have mismatched coordinates and names. ([#358](https://github.com/mapbox/MapboxDirections.swift/pull/358))
