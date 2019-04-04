@@ -1,6 +1,6 @@
 # Changes to MapboxDirections.swift
 
-## master
+## v0.27.3
 
 * Fixed compatibility issues with Xcode 10.2 when the SDK is installed using Carthage. ([#363](https://github.com/mapbox/MapboxDirections.swift/pull/363))
 
