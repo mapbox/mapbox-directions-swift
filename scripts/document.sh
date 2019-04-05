@@ -14,49 +14,48 @@ if [ -z `which jazzy` ]; then
 fi
 
 
+OUTPUT=${OUTPUT:-documentation}
+
 BRANCH=$( git describe --tags --match=v*.*.* --abbrev=0 )
 SHORT_VERSION=$( echo ${BRANCH} | sed 's/^v//' )
-OUTPUT=${OUTPUT:-documentation}
-DEFAULT_VERSION=$( echo ${SHORT_VERSION} | sed -e 's/^v//' -e 's/-.*//' )
-VERSION=${VERSION:-$DEFAULT_VERSION}
-
-rm -rf "${OUTPUT}/${VERSION}"
-mkdir -p "${OUTPUT}/${VERSION}"
-
-#cp -r docs/img "${OUTPUT}"
+RELEASE_VERSION=$( echo ${SHORT_VERSION} | sed -e 's/-.*//' )
+MINOR_VERSION=$( echo ${SHORT_VERSION} | grep -Eo '^\d+\.\d+' )
 
 DEFAULT_THEME="docs/theme"
 THEME=${JAZZY_THEME:-$DEFAULT_THEME}
 
+BASE_URL="https://docs.mapbox.com/ios/api"
+
+rm -rf ${OUTPUT}
+mkdir -p ${OUTPUT}
+
+#cp -r docs/img "${OUTPUT}"
+
+rm -rf /tmp/mbdirections
+mkdir -p /tmp/mbdirections/
+README=/tmp/mbdirections/README.md
+cp docs/cover.md "${README}"
+perl -pi -e "s/\\$\\{MINOR_VERSION\\}/${MINOR_VERSION}/" "${README}"
+# http://stackoverflow.com/a/4858011/4585461
+echo "## Changes in version ${RELEASE_VERSION}" >> "${README}"
+sed -n -e '/^## /{' -e ':a' -e 'n' -e '/^## /q' -e 'p' -e 'ba' -e '}' CHANGELOG.md >> "${README}"
+
 jazzy \
     --config docs/jazzy.yml \
     --sdk iphonesimulator \
-    --module-version ${VERSION} \
-    --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/v${VERSION}" \
-    --documentation=docs/guides/*.md \
-    --root-url "https://www.mapbox.com/ios-sdk/api/directions/${VERSION}/" \
+    --module-version ${SHORT_VERSION} \
+    --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/${BRANCH}" \
+    --readme ${README} \
+    --documentation="docs/guides/*.md" \
+    --root-url "${BASE_URL}/directions/${RELEASE_VERSION}/" \
     --theme ${THEME} \
-    --output "${OUTPUT}/${VERSION}"
+    --output ${OUTPUT}
 
-find "${OUTPUT}/${VERSION}" -name *.html -exec \
-    perl -pi -e 's/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, s/MapboxDirections.swift\s+(Docs|Reference)/MapboxDirections.swift $1/' {} \;
+REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/MapboxDirections.swift $1/, '
+REPLACE_REGEXP+='s/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, '
 
-function parseSemver() {
-    local RE='[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)'
-    eval $2=`echo $1 | sed -e "s#$RE#\1#"` # major
-    eval $3=`echo $1 | sed -e "s#$RE#\2#"` # minor
-    eval $4=`echo $1 | sed -e "s#$RE#\3#"` # patch
-    eval $5=`echo $1 | sed -e "s#$RE#\4#"` # prerelease
-}
+find ${OUTPUT} -name *.html -exec \
+    perl -pi -e "$REPLACE_REGEXP" {} \;
 
-parseSemver $VERSION MAJOR MINOR PATCH PRERELEASE
-# Replace version numbers unless this is a pre-release
-if [[ -z ${PRERELEASE} ]]; then
-    # Replace version numbers
-    echo "✅ Updating redirects for ${VERSION}"
-    sed -i '' -e 's|url=[^0-9.]*\([0-9.]*\)|url='${VERSION}'|g' ${OUTPUT}/index.html
-    sed -i '' -e 's|[0-9.]\([0-9.]\)\([0-9]\)|{x}|g; s|{x}{x}|'${VERSION}'|g' ${OUTPUT}/docsets/MapboxDirections.xml
-else
-    echo "🛑 Skip updating redirects because ${VERSION} is a pre-release"  
-fi
 
+echo $SHORT_VERSION > $OUTPUT/latest_version
