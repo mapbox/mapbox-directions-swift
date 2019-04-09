@@ -13,11 +13,3 @@ FOUNDATION_EXPORT const unsigned char MapboxDirectionsVersionString[];
 #import "MBRouteOptions.h"
 #import "MBRoadClasses.h"
 #endif
-
-#if SWIFT_PACKAGE
-#define OBJC_NO_SPM
-#define OBJC_NO_SPM(x)
-#else
-#define OBJC_NO_SPM @objc
-#define OBJC_NO_SPM(x) @objc(x)
-#endif
