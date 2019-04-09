@@ -1,5 +1,7 @@
 import XCTest
+import CoreLocation
 @testable import MapboxDirections
+
 
 class RouteOptionsTests: XCTestCase {
     func testCoding() {

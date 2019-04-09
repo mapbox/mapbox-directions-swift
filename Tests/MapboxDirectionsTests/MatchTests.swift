@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -159,3 +160,4 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(unarchivedMatch.waypointIndices, unarchivedMatch.waypointIndices)
     }
 }
+#endif
