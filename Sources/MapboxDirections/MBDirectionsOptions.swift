@@ -221,6 +221,7 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
 
  You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
+@objcMembers
 @objc(MBDirectionsOptions)
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
@@ -232,7 +233,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
@@ -300,7 +301,12 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         guard let profileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
             return nil
         }
+        
+        #if SWIFT_PACKAGE
+        self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier) ?? MBDirectionsProfileIdentifier.automobileAvoidingTraffic
+        #else
         self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier)
+        #endif
 
         includesSteps = decoder.decodeBool(forKey: "includesSteps")
 
@@ -384,7 +390,12 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
+    #if SWIFT_PACKAGE
+    open var profileIdentifier: MBDirectionsProfileIdentifier
+    #else
     @objc open var profileIdentifier: MBDirectionsProfileIdentifier
+    #endif
+    
 
     /**
      A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
@@ -420,7 +431,11 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
+    #if SWIFT_PACKAGE
+    open var attributeOptions: AttributeOptions = []
+    #else
     @objc open var attributeOptions: AttributeOptions = []
+    #endif
 
     /**
      The locale in which the route’s instructions are written.

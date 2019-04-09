@@ -8,6 +8,7 @@ import Polyline
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
+@objcMembers
 @objc(MBRouteLeg)
 open class RouteLeg: NSObject, NSSecureCoding {
 
@@ -90,7 +91,11 @@ open class RouteLeg: NSObject, NSSecureCoding {
         guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
             return nil
         }
+        #if SWIFT_PACKAGE
+        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier) ?? MBDirectionsProfileIdentifier.automobileAvoidingTraffic
+        #else
         profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
+        #endif
 
         segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
@@ -212,7 +217,11 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
+    #if SWIFT_PACKAGE
+    public let profileIdentifier: MBDirectionsProfileIdentifier
+    #else
     @objc public let profileIdentifier: MBDirectionsProfileIdentifier
+    #endif
 
     func debugQuickLookObject() -> Any? {
         let coordinates = steps.reduce([], { $0 + ($1.coordinates ?? []) })
