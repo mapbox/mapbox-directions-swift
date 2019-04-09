@@ -3,19 +3,30 @@ import Foundation
 /**
  A lane on the road approaching an intersection.
  */
+@objcMembers
 @objc(MBLane)
 public class Lane: NSObject, NSSecureCoding {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.
      */
+    #if SWIFT_PACKAGE
+    public let indications: LaneIndication
+    #else
     @objc public let indications: LaneIndication
+    #endif
     
     /**
      Initializes a new `Lane` using the given lane indications.
      */
+    #if SWIFT_PACKAGE
+    public init(indications: LaneIndication) {
+        self.indications = indications
+    }
+    #else
     @objc public init(indications: LaneIndication) {
         self.indications = indications
     }
+    #endif
     
     internal convenience init(json: JSONDictionary) {
         let indications = LaneIndication(descriptions: json["indications"] as! [String])

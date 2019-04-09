@@ -313,12 +313,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		352FFA1122565F25007E7C40 /* LaneIndication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaneIndication.swift; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
-		35C0D78A22563B2A005E05A5 /* MBRoadClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRoadClasses.h; path = Sources/MapboxDirections/objc/MBRoadClasses.h; sourceTree = SOURCE_ROOT; };
-		35C0D78B22563B2A005E05A5 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRouteOptions.h; path = Sources/MapboxDirections/objc/MBRouteOptions.h; sourceTree = SOURCE_ROOT; };
-		35C0D78C22563B2B005E05A5 /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBLaneIndication.h; path = Sources/MapboxDirections/objc/MBLaneIndication.h; sourceTree = SOURCE_ROOT; };
-		35C0D78D22563B2B005E05A5 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBRouteOptions.m; path = Sources/MapboxDirections/objc/MBRouteOptions.m; sourceTree = SOURCE_ROOT; };
-		35C0D78E22563B2B005E05A5 /* MBAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAttribute.h; path = Sources/MapboxDirections/objc/MBAttribute.h; sourceTree = SOURCE_ROOT; };
+		35C0D78A22563B2A005E05A5 /* MBRoadClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRoadClasses.h; path = Sources/objc/MBRoadClasses.h; sourceTree = SOURCE_ROOT; };
+		35C0D78B22563B2A005E05A5 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRouteOptions.h; path = Sources/objc/MBRouteOptions.h; sourceTree = SOURCE_ROOT; };
+		35C0D78C22563B2B005E05A5 /* MBLaneIndication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBLaneIndication.h; path = Sources/objc/MBLaneIndication.h; sourceTree = SOURCE_ROOT; };
+		35C0D78D22563B2B005E05A5 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBRouteOptions.m; path = Sources/objc/MBRouteOptions.m; sourceTree = SOURCE_ROOT; };
+		35C0D78E22563B2B005E05A5 /* MBAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBAttribute.h; path = Sources/objc/MBAttribute.h; sourceTree = SOURCE_ROOT; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
 		35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "2018-10-16-Liechtenstein.tar"; sourceTree = "<group>"; };
@@ -501,6 +502,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		352FFA1022565F17007E7C40 /* SPM */ = {
+			isa = PBXGroup;
+			children = (
+				352FFA1122565F25007E7C40 /* LaneIndication.swift */,
+			);
+			path = SPM;
+			sourceTree = "<group>";
+		};
 		35C0D78922563B1C005E05A5 /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
@@ -511,7 +520,7 @@
 				35C0D78D22563B2B005E05A5 /* MBRouteOptions.m */,
 			);
 			name = "Objective-C";
-			path = "objc-test";
+			path = ../objc;
 			sourceTree = "<group>";
 		};
 		35DBF017217F387F0009D2AE /* Offline */ = {
@@ -609,6 +618,7 @@
 		DA6C9D891CAE442B00094FBC /* MapboxDirections */ = {
 			isa = PBXGroup;
 			children = (
+				352FFA1022565F17007E7C40 /* SPM */,
 				35C0D78922563B1C005E05A5 /* Objective-C */,
 				8D381B681FDB1009008D5A58 /* Extensions */,
 				C5DAAC9E20191683001F9261 /* Match */,
