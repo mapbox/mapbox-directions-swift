@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -67,3 +68,4 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(leg.segmentCongestionLevels!.last!, .low)
     }
 }
+#endif

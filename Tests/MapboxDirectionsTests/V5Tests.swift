@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 import Polyline
 @testable import MapboxDirections
@@ -311,3 +312,4 @@ class V5Tests: XCTestCase {
         test(unarchivedRoute, options: options)
     }
 }
+#endif

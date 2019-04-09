@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -89,3 +90,4 @@ class V4Tests: XCTestCase {
         test(shapeFormat: .polyline)
     }
 }
+#endif
