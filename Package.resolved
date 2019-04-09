@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Polyline",
-        "repositoryURL": "/Users/fredrik/Workspace/mapbox/Polyline",
+        "repositoryURL": "https://github.com/raphaelmor/Polyline.git",
         "state": {
-          "branch": "fred/spm4.2",
-          "revision": "4b4b4957549f7d0f1d59e6b3c662234402717de9",
+          "branch": "master",
+          "revision": "b5b6dff67db5d692c2253df79d9d6802953316b8",
           "version": null
         }
       }
