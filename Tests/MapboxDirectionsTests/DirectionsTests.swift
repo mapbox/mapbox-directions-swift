@@ -1,5 +1,7 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
+import CoreLocation
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
@@ -141,3 +143,4 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(resultError.localizedRecoverySuggestion, "Wait until November 18, 2016 at 9:16:24 AM GMT before retrying.")
     }
 }
+#endif

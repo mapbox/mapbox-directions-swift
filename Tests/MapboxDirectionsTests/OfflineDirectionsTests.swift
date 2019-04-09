@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -85,3 +86,4 @@ class OfflineDirectionsTests: XCTestCase {
         wait(for: [downloadExpectation], timeout: 60)
     }
 }
+#endif

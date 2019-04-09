@@ -1,4 +1,5 @@
 import XCTest
+#if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -98,5 +99,4 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertEqual(round(coordinate.longitude), -117)
     }
 }
-
-
+#endif

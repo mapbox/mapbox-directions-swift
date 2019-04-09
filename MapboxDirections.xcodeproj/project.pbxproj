@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		356CBE53225CE73500048087 /* CoreLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CBE52225CE73500048087 /* CoreLocation.swift */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -311,6 +312,7 @@
 
 /* Begin PBXFileReference section */
 		352FFA1122565F25007E7C40 /* LaneIndication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaneIndication.swift; sourceTree = "<group>"; };
+		356CBE52225CE73500048087 /* CoreLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocation.swift; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		35C0D78A22563B2A005E05A5 /* MBRoadClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRoadClasses.h; path = Sources/objc/MBRoadClasses.h; sourceTree = SOURCE_ROOT; };
 		35C0D78B22563B2A005E05A5 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBRouteOptions.h; path = Sources/objc/MBRouteOptions.h; sourceTree = SOURCE_ROOT; };
@@ -501,6 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				352FFA1122565F25007E7C40 /* LaneIndication.swift */,
+				356CBE52225CE73500048087 /* CoreLocation.swift */,
 			);
 			path = SPM;
 			sourceTree = "<group>";
@@ -1473,6 +1476,7 @@
 				DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */,
 				C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */,
 				DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */,
+				356CBE53225CE73500048087 /* CoreLocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
