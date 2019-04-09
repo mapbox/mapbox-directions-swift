@@ -10,7 +10,6 @@ struct AvailableVersionsResponse: Codable {
     let availableVersions: [String]
 }
 
-@objc(MBOfflineDirectionsProtocol)
 public protocol OfflineDirectionsProtocol {
     
     /**

@@ -1,6 +1,8 @@
 import Foundation
 import Polyline
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
@@ -8,12 +10,12 @@ import CoreLocation
  
  You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-@objc(MBDirectionsResult)
+@objcMembers
 open class DirectionsResult: NSObject, NSSecureCoding {
     
     public var json: [String: Any]?
     
-    @objc internal init(json: [String: Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+    internal init(json: [String: Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
         self.json = json
         self.directionsOptions = options
         self.legs = legs
@@ -23,7 +25,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
         self.speechLocale = speechLocale
     }
         
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         accessToken = decoder.decodeObject(of: NSString.self, forKey: "accessToken") as String?
         apiEndpoint = decoder.decodeObject(of: NSURL.self, forKey: "apiEndpoint") as URL?
         
@@ -55,7 +57,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
         return true
     }
     
-    @objc public func encode(with coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         coder.encode(accessToken, forKey: "accessToken")
         coder.encode(apiEndpoint, forKey: "apiEndpoint")
         
@@ -80,7 +82,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    @objc public let coordinates: [CLLocationCoordinate2D]?
+    public let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
@@ -89,7 +91,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
-    @objc open var coordinateCount: UInt {
+    open var coordinateCount: UInt {
         return UInt(coordinates?.count ?? 0)
     }
     
@@ -106,7 +108,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    @objc open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
+    open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
         for i in 0..<(self.coordinates?.count ?? 0) {
             coordinates.advanced(by: i).pointee = self.coordinates![i]
         }
@@ -119,9 +121,9 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      To determine the name of the route, concatenate the names of the route’s legs.
      */
-    @objc public let legs: [RouteLeg]
+    public let legs: [RouteLeg]
     
-    @objc open override var description: String {
+    open override var description: String {
         return legs.map { $0.name }.joined(separator: " – ")
     }
     
@@ -132,7 +134,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    @objc public let distance: CLLocationDistance
+    public let distance: CLLocationDistance
     
     /**
      The route’s expected travel time, measured in seconds.
@@ -141,7 +143,7 @@ open class DirectionsResult: NSObject, NSSecureCoding {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    @objc public let expectedTravelTime: TimeInterval
+    public let expectedTravelTime: TimeInterval
     
     /**
      `RouteOptions` used to create the directions request.

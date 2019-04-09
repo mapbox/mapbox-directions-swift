@@ -1,11 +1,13 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 extension CLLocation {
     /**
      Initializes a CLLocation object with the given coordinate pair.
      */
-    internal convenience init(coordinate: CLLocationCoordinate2D) {
+    internal init(coordinate: CLLocationCoordinate2D) {
         self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
 }

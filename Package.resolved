@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Polyline",
-        "repositoryURL": "https://github.com/raphaelmor/Polyline.git",
+        "repositoryURL": "https://github.com/frederoni/Polyline.git",
         "state": {
-          "branch": "master",
-          "revision": "b5b6dff67db5d692c2253df79d9d6802953316b8",
+          "branch": "linux",
+          "revision": "5b189aca4675a442d280b93f0d6c16d76f297e48",
           "version": null
         }
       }

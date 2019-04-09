@@ -1,5 +1,7 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 import Polyline
 
 
@@ -8,11 +10,11 @@ import Polyline
  
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
-@objc(MBRoute)
+@objcMembers
 open class Route: DirectionsResult {
     // MARK: Creating a Route
     
-    @objc internal override init(json: [String : Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
+    internal override init(json: [String : Any]? = nil, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, speechLocale: Locale?, options: DirectionsOptions) {
         super.init(json: json, legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: options)
     }
     
@@ -25,7 +27,6 @@ open class Route: DirectionsResult {
      - parameter waypoints: An array of waypoints that the route visits in chronological order.
      - parameter options: The options used when requesting the route.
      */
-    @objc(initWithJSON:waypoints:routeOptions:)
     public init(json: [String: Any], waypoints: [Waypoint], options: RouteOptions) {
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)),
@@ -50,7 +51,7 @@ open class Route: DirectionsResult {
         return super.directionsOptions as! RouteOptions
     }
     
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
     
@@ -72,7 +73,12 @@ internal class RouteV4: Route {
         case let geometry as JSONDictionary:
             coordinates = CLLocationCoordinate2D.coordinates(geoJSON: geometry)
         case let geometry as String:
-            coordinates = decodePolyline(geometry, precision: 1e6)!
+            //let polylineCoords = decodePolyline(geometry, precision: 1e6)! 
+            // TODO: MapboxDirections.CLLocationCoordinate2D for linux
+            // TODO: Polyline.CLLocationCoordinate2D
+            //coordinates = decodePolyline(geometry, precision: 1e6)!
+            print(geometry)
+            coordinates = nil
         default:
             coordinates = nil
         }

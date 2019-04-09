@@ -37,9 +37,12 @@ let userAgent: String = {
     #elseif os(Linux)
         system = "Linux"
     #endif
+
+    #if !os(Linux) // TODO: Linux is missing ProcessInfo.operatingSystemVersion
     let systemVersion = ProcessInfo().operatingSystemVersion
     components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
-
+    #endif
+    
     let chip: String
     #if arch(x86_64)
         chip = "x86_64"

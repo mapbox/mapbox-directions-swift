@@ -1,5 +1,7 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
@@ -9,7 +11,7 @@ import CoreLocation
 
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
-@objc(MBSpokenInstruction)
+@objcMembers
 open class SpokenInstruction: NSObject, NSSecureCoding {
 
     /**

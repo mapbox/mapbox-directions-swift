@@ -1,6 +1,8 @@
 import Foundation
 import Polyline
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
@@ -67,19 +69,24 @@ extension RouteShapeFormat {
     func coordinates(from geometry: Any?) -> [CLLocationCoordinate2D]? {
         switch self {
         case .geoJSON:
-            if let geometry = geometry as? JSONDictionary {
-                return CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-            }
+            return nil
+            // TODO:
+            // if let geometry = geometry as? JSONDictionary {
+            //     return CLLocationCoordinate2D.coordinates(geoJSON: geometry)
+            // }
         case .polyline:
-            if let geometry = geometry as? String {
-                return decodePolyline(geometry, precision: 1e5)!
-            }
+            return nil
+            // TODO:
+            // if let geometry = geometry as? String {
+            //     return decodePolyline(geometry, precision: 1e5)!
+            // }
         case .polyline6:
-            if let geometry = geometry as? String {
-                return decodePolyline(geometry, precision: 1e6)!
-            }
+            return nil
+            // TODO:
+            // if let geometry = geometry as? String {
+            //     return decodePolyline(geometry, precision: 1e6)!
+            // }
         }
-        return nil
     }
 }
 
@@ -222,7 +229,6 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
  You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
 @objcMembers
-@objc(MBDirectionsOptions)
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
     /**
@@ -243,7 +249,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     }
 
     // MARK: NSCopying
-    @objc open func copy(with zone: NSZone? = nil) -> Any {
+    open func copy(with zone: NSZone? = nil) -> Any {
         let copy = type(of: self).init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         copy.includesSteps = includesSteps
         copy.shapeFormat = shapeFormat
@@ -262,7 +268,6 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         return isEqual(to: opts)
     }
 
-    @objc(isEqualToDirectionsOptions:)
     open func isEqual(to directionsOptions: DirectionsOptions?) -> Bool {
         guard let other = directionsOptions else { return false }
         guard type(of: self) == type(of: other) else { return false }

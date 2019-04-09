@@ -1,13 +1,14 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 import Polyline
 
 
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
-@objc(MBTransportType)
-public enum TransportType: Int, CustomStringConvertible {
+@objc(MBTransportType) public enum TransportType: Int, CustomStringConvertible {
     // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
 
     /**
@@ -555,7 +556,7 @@ struct Road {
 
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-@objc(MBRouteStep)
+@objcMembers
 open class RouteStep: NSObject, NSSecureCoding {
     // MARK: Creating a Step
 
@@ -623,7 +624,6 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      - parameter json: A JSON object that conforms to the [route step](https://docs.mapbox.com/api/navigation/#route-step-object) format described in the Directions API documentation.
      */
-    @objc(initWithJSON:options:)
     public convenience init(json: [String: Any], options: RouteOptions) {
         let maneuver = json["maneuver"] as! JSONDictionary
         let finalHeading = maneuver["bearing_after"] as? Double
@@ -762,7 +762,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
      */
-    @objc public let coordinates: [CLLocationCoordinate2D]?
+    public let coordinates: [CLLocationCoordinate2D]?
 
     /**
      The number of coordinates.
@@ -789,7 +789,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    @objc open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
+    open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) -> Bool {
         guard let stepCoordinates = self.coordinates else {
             return false
         }
@@ -818,7 +818,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      This property is non-`nil` if the `RouteOptions.includesSpokenInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
      */
-    @objc public let instructionsSpokenAlongStep: [SpokenInstruction]?
+    public let instructionsSpokenAlongStep: [SpokenInstruction]?
 
     /**
      Instructions about the next step’s maneuver, optimized for display in real time.
@@ -827,7 +827,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
-    @objc public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
+    public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
 
     @objc open override var description: String {
         return instructions
@@ -863,7 +863,7 @@ open class RouteStep: NSObject, NSSecureCoding {
     /**
      The location of the maneuver at the beginning of this step.
      */
-    @objc public let maneuverLocation: CLLocationCoordinate2D
+    public let maneuverLocation: CLLocationCoordinate2D
 
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
@@ -976,7 +976,7 @@ open class RouteStep: NSObject, NSSecureCoding {
 
      Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
     */
-    @objc public let intersections: [Intersection]?
+    public let intersections: [Intersection]?
 
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {
@@ -1035,6 +1035,9 @@ internal class RouteStepV4: RouteStep {
 }
 
 func debugQuickLookURL(illustrating coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier = .automobile) -> URL? {
+    #if os(Linux)
+    return nil
+    #else
     guard let accessToken = defaultAccessToken else {
         return nil
     }
@@ -1068,4 +1071,5 @@ func debugQuickLookURL(illustrating coordinates: [CLLocationCoordinate2D], profi
     ]
 
     return URL(string: "https://api.mapbox.com\(path)?\(components.percentEncodedQuery!)")
+    #endif
 }

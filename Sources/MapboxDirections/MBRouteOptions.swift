@@ -1,5 +1,7 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 #if SWIFT_PACKAGE
 public enum MBDirectionsProfileIdentifier: String {
@@ -16,7 +18,6 @@ public enum MBDirectionsProfileIdentifier: String {
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objcMembers
-@objc(MBRouteOptions)
 open class RouteOptions: DirectionsOptions {
     /**
      Initializes a route options object for routes between the given locations and an optional profile identifier.
@@ -208,7 +209,6 @@ open class RouteOptions: DirectionsOptions {
         return isEqual(to: opts)
     }
 
-    @objc(isEqualToRouteOptions:)
     open func isEqual(to routeOptions: RouteOptions?) -> Bool {
         guard let other = routeOptions else { return false }
         guard super.isEqual(to: routeOptions) else { return false }
@@ -226,7 +226,6 @@ open class RouteOptions: DirectionsOptions {
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objcMembers
-@objc(MBRouteOptionsV4)
 open class RouteOptionsV4: RouteOptions {
     // MARK: Specifying the Response Format
 

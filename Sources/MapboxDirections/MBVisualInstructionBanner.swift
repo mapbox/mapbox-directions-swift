@@ -1,11 +1,13 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-@objc(MBVisualInstructionBanner)
+@objcMembers
 open class VisualInstructionBanner: NSObject, NSSecureCoding {
 
     /**
@@ -16,19 +18,19 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     /**
      The most important information to convey to the user about the `RouteStep`.
      */
-    @objc public let primaryInstruction: VisualInstruction
+    public let primaryInstruction: VisualInstruction
 
     /**
      Less important details about the `RouteStep`.
      */
-    @objc public let secondaryInstruction: VisualInstruction?
+    public let secondaryInstruction: VisualInstruction?
 
     /**
      A visual instruction that is presented simultaneously to provide information about an additional maneuver that occurs in rapid succession.
 
      This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
      */
-    @objc public let tertiaryInstruction: VisualInstruction?
+    public let tertiaryInstruction: VisualInstruction?
 
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
@@ -71,7 +73,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
      - parameter secondaryInstruction: Less important details about the `RouteStep`.
      - parameter drivingSide: Which side of a bidirectional road the driver should drive on.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
+    public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryInstruction = primaryInstruction
         self.secondaryInstruction = secondaryInstruction

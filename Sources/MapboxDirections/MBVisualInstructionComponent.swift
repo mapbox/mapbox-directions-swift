@@ -1,15 +1,17 @@
+import Foundation
 #if os(OSX)
     import Cocoa
 #elseif os(watchOS)
     import WatchKit
-#else
+#elseif !os(Linux)
     import UIKit
 #endif
+
 
 /**
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
-@objc(MBVisualInstructionComponent)
+@objcMembers
 open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
     /**
@@ -17,31 +19,31 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
     The URL refers to an image that uses the device’s native screen scale.
     */
-    @objc public var imageURL: URL?
+    public var imageURL: URL?
 
     /**
      An abbreviated representation of the `text` property.
      */
-    @objc public var abbreviation: String?
+    public var abbreviation: String?
 
     /**
      The priority for which the component should be abbreviated.
 
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
-    @objc public var abbreviationPriority: Int = NSNotFound
+    public var abbreviationPriority: Int = NSNotFound
 
     /**
      The plain text representation of this component.
 
      Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
      */
-    @objc public var text: String?
+    public var text: String?
 
     /**
      The type of visual instruction component. You can display the component differently depending on its type.
      */
-    @objc public var type: VisualInstructionComponentType
+    public var type: VisualInstructionComponentType
 
     public static var supportsSecureCoding: Bool = true
 
@@ -65,8 +67,10 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
                 scale = NSScreen.main?.backingScaleFactor ?? 1
             #elseif os(watchOS)
                 scale = WKInterfaceDevice.current().screenScale
-            #else
+            #elseif !os(Linux)
                 scale = UIScreen.main.scale
+            #else
+                scale = 2
             #endif
             imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
         }
@@ -91,7 +95,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
         self.abbreviationPriority = abbreviationPriority
     }
 
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
 
         guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {

@@ -1,5 +1,8 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
+
 
 /**
  A bounding box represents a geographic region.

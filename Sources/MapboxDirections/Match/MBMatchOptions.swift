@@ -1,5 +1,7 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
@@ -8,7 +10,6 @@ import CoreLocation
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 @objcMembers
-@objc(MBMatchOptions)
 open class MatchOptions: DirectionsOptions {
 
     /**

@@ -1,11 +1,13 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
-@objc(MBVisualInstruction)
+@objcMembers
 open class VisualInstruction: NSObject, NSSecureCoding {
 
     public static var supportsSecureCoding = true
@@ -13,22 +15,22 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      A plain text representation of the instruction.
      */
-    @objc public let text: String?
+    public let text: String?
 
     /**
      The type of maneuver required for beginning the step described by the visual instruction.
      */
-    @objc public var maneuverType: ManeuverType
+    public var maneuverType: ManeuverType
 
     /**
      Additional directional information to clarify the maneuver type.
      */
-    @objc public var maneuverDirection: ManeuverDirection
+    public var maneuverDirection: ManeuverDirection
 
     /**
      A structured representation of the instruction.
      */
-    @objc public let components: [ComponentRepresentable]
+    public let components: [ComponentRepresentable]
 
     /**
      The heading at which the user exits a roundabout (traffic circle or rotary).
@@ -37,12 +39,12 @@ open class VisualInstruction: NSObject, NSSecureCoding {
 
      This property is only relevant if the `maneuverType` is any of the following values: `ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, or `ManeuverType.exitRotary`.
      */
-    @objc public var finalHeading: CLLocationDegrees = 180
+    public var finalHeading: CLLocationDegrees = 180
 
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    @objc public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [ComponentRepresentable], degrees: CLLocationDegrees = 180) {
+    public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [ComponentRepresentable], degrees: CLLocationDegrees = 180) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
@@ -88,7 +90,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.init(text: text, maneuverType: maneuverType, maneuverDirection: maneuverDirection, components: components, degrees: degrees)
     }
 
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
 
         guard let maneuverTypeString = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: maneuverTypeString) else {

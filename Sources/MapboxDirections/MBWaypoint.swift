@@ -1,10 +1,13 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
+@objcMembers
 @objc(MBWaypoint)
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
@@ -22,7 +25,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         It is recommended that the value of this parameter be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    @objc public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
+    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
@@ -56,7 +59,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      - parameter heading: A `CLHeading` object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the `CLHeading` class’s `trueHeading` property or `magneticHeading` property, converting it into the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    @objc public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
+    public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading {
@@ -131,7 +134,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The geographic coordinate of the waypoint.
      */
-    @objc public internal(set) var coordinate: CLLocationCoordinate2D
+    public internal(set) var coordinate: CLLocationCoordinate2D
 
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -153,7 +156,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+    open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
 
     // MARK: Specifying How the User Approaches the Waypoint
 

@@ -1,11 +1,13 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 
 
 /**
  A single cross street along a step.
  */
-@objc(MBIntersection)
+@objcMembers
 public class Intersection: NSObject, NSSecureCoding {
     /**
      The geographic coordinates at the center of the intersection.

@@ -1,5 +1,7 @@
 import Foundation
+#if !os(Linux)
 import CoreLocation
+#endif
 import Polyline
 
 
@@ -9,12 +11,11 @@ import Polyline
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 @objcMembers
-@objc(MBRouteLeg)
 open class RouteLeg: NSObject, NSSecureCoding {
 
     // MARK: Creating a Leg
 
-    @objc internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = options.profileIdentifier
@@ -61,7 +62,6 @@ open class RouteLeg: NSObject, NSSecureCoding {
      - parameter destination: The waypoint at the end of the leg.
      - parameter options: The options used when requesting the route.
      */
-    @objc(initWithJSON:source:destination:options:)
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0, options: options) }
         self.init(steps: steps, json: json, source: source, destination: destination, options: options)
@@ -142,7 +142,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
      */
-    @objc public let steps: [RouteStep]
+    public let steps: [RouteStep]
 
 
     /**
