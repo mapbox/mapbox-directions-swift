@@ -26,6 +26,18 @@ step-library:
         command: bash <(curl -s https://codecov.io/bash)
 
 jobs:
+  spm-job:
+    parameters:
+      xcode:
+        type: string
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - run: swift build
+
   build-job:
     parameters:
       xcode:
@@ -111,3 +123,6 @@ workflows:
           tvOS: "11.4"
           watchOS: "4.3"
           test: false
+      - spm-job:
+          name: "SPM_build"
+          xcode: "10.2.0"
