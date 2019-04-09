@@ -1,12 +1,21 @@
 import Foundation
 import CoreLocation
 
+#if SWIFT_PACKAGE
+public enum MBDirectionsProfileIdentifier: String {
+    case automobile = "mapbox/driving"
+    case automobileAvoidingTraffic = "mapbox/driving-traffic"
+    case cycling = "cycling"
+    case walking = "walking"
+}
+#endif
 
 /**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
+@objcMembers
 @objc(MBRouteOptions)
 open class RouteOptions: DirectionsOptions {
     /**
@@ -17,7 +26,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -28,7 +37,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -39,12 +48,12 @@ open class RouteOptions: DirectionsOptions {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
 
-    @objc internal convenience init(matchOptions: MatchOptions) {
+    internal convenience init(matchOptions: MatchOptions) {
         self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
         self.includesSteps = matchOptions.includesSteps
         self.shapeFormat = matchOptions.shapeFormat
@@ -89,7 +98,7 @@ open class RouteOptions: DirectionsOptions {
 
      The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` and `true` otherwise.
      */
-    @objc open var allowsUTurnAtWaypoint: Bool = false
+    open var allowsUTurnAtWaypoint: Bool = false
 
     /**
      A Boolean value indicating whether alternative routes should be included in the response.
@@ -100,21 +109,21 @@ open class RouteOptions: DirectionsOptions {
 
      The default value of this property is `false`.
      */
-    @objc open var includesAlternativeRoutes = false
+    open var includesAlternativeRoutes = false
 
     /**
      A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
 
      If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
      */
-    @objc open var includesExitRoundaboutManeuver = false
+    open var includesExitRoundaboutManeuver = false
 
     /**
      The route classes that the calculated routes will avoid.
 
      Currently, you can only specify a single road class to avoid.
      */
-    @objc open var roadClassesToAvoid: RoadClasses = []
+    open var roadClassesToAvoid: RoadClasses = []
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -216,6 +225,7 @@ open class RouteOptions: DirectionsOptions {
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
+@objcMembers
 @objc(MBRouteOptionsV4)
 open class RouteOptionsV4: RouteOptions {
     // MARK: Specifying the Response Format
@@ -225,7 +235,7 @@ open class RouteOptionsV4: RouteOptions {
 
      By default, the value of this property is `text`, specifying plain text instructions.
      */
-    @objc open var instructionFormat: InstructionFormat = .text
+    open var instructionFormat: InstructionFormat = .text
 
     /**
      A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
@@ -234,9 +244,9 @@ open class RouteOptionsV4: RouteOptions {
 
      The default value of this property is `true`.
      */
-    @objc open var includesShapes: Bool = true
+    open var includesShapes: Bool = true
     
-    @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
