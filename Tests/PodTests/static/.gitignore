@@ -1,0 +1,4 @@
+Pods/
+StaticPod.xcodeproj
+StaticPod.xcworkspace
+Podfile.lock
