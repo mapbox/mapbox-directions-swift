@@ -5,6 +5,7 @@ import CoreLocation
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
+@objcMembers
 @objc(MBWaypoint)
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
@@ -22,7 +23,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         It is recommended that the value of this parameter be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    @objc public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
+    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
