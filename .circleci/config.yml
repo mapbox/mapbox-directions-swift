@@ -38,6 +38,25 @@ jobs:
       - checkout
       - run: swift build
 
+  static-pod-test:
+    parameters:
+      xcode:
+        type: string
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - run:
+          name: CP static obj-c
+          command: |
+            cd Tests/PodTests/static
+            brew install xcodegen
+            xcodegen generate
+            pod install
+            xcodebuild -sdk iphonesimulator -workspace StaticPod.xcworkspace -scheme 'app' clean build | xcpretty
+
   build-job:
     parameters:
       xcode:
@@ -125,4 +144,7 @@ workflows:
           test: false
       - spm-job:
           name: "SPM_build"
+          xcode: "10.2.0"
+      - static-pod-test:
+          name: "CP_static"
           xcode: "10.2.0"
