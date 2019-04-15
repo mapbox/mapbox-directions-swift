@@ -12,7 +12,7 @@ public class Lane: NSObject, NSSecureCoding {
     #if SWIFT_PACKAGE
     public let indications: LaneIndication
     #else
-    @objc public let indications: LaneIndication
+    @objc public let indications: MBLaneIndication
     #endif
     
     /**

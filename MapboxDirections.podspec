@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.name         = "MapboxDirections.swift"
+  s.name         = "MapboxDirections"
   s.version      = "0.28.0"
   s.summary      = "Mapbox Directions API wrapper for Swift and Objective-C."
 
@@ -37,7 +37,8 @@ Pod::Spec.new do |s|
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source_files  = ["MapboxDirections", "MapboxDirections/*/*"]
+  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*", "Sources/objc"]
+  s.exclude_files = ["Sources/MapboxDirections/SPM"]
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 

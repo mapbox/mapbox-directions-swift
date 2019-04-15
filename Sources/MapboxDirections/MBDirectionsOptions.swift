@@ -434,7 +434,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     #if SWIFT_PACKAGE
     open var attributeOptions: AttributeOptions = []
     #else
-    @objc open var attributeOptions: AttributeOptions = []
+    @objc open var attributeOptions: MBAttributeOptions = []
     #endif
 
     /**
