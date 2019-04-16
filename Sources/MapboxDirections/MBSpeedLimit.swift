@@ -1,6 +1,5 @@
 import Foundation
 
-
 /**
  A localized limit for measuring speed limits.
  */
@@ -12,7 +11,6 @@ public class SpeedLimit: NSObject, NSSecureCoding {
      */
     @objc public static let invalid = SpeedLimit(value: -1, speedUnits: .kilometersPerHour)
     
-    
     /**
      A unitless measure of speed which is dependent on the `MaximumSpeedLimit.speedUnits`.
      
@@ -22,12 +20,10 @@ public class SpeedLimit: NSObject, NSSecureCoding {
      */
     @objc public var value: Double = -1
     
-    
     /**
      Units for `MaximumSpeedLimit.speed`.
      */
     @objc public var unit: SpeedUnit = .kilometersPerHour
-    
     
     /**
      Initialize a new `SpeedLimit` object.
@@ -37,24 +33,26 @@ public class SpeedLimit: NSObject, NSSecureCoding {
         self.unit = speedUnits
     }
 
-    
     /**
      Initialize a new `SpeedLimit` object from a JSON dictionary.
      */
     @objc public convenience init(json: [String: Any]) {
-        var speed = json["speed"] as? Double ?? -1
+        var speed = json["speed"] as? Double ?? SpeedLimit.invalid.value
+        if let speedUnknown = json["unknown"] as? Bool, speedUnknown {
+            speed = SpeedLimit.invalid.value
+        }
         if let speedNone = json["none"] as? Bool, speedNone {
             speed = .greatestFiniteMagnitude
         }
         
-        let speedUnits: SpeedUnit
-        if let speedString = json["unit"] as? String {
-            speedUnits = SpeedUnit(description: speedString) ?? .kilometersPerHour
+        let speedUnit: SpeedUnit
+        if let speedUnitString = json["unit"] as? String {
+            speedUnit = SpeedUnit(description: speedUnitString) ?? .kilometersPerHour
         } else {
-            speedUnits = .kilometersPerHour
+            speedUnit = .kilometersPerHour
         }
         
-        self.init(value: speed, speedUnits: speedUnits)
+        self.init(value: speed, speedUnits: speedUnit)
     }
     
     public static var supportsSecureCoding = true
@@ -62,10 +60,10 @@ public class SpeedLimit: NSObject, NSSecureCoding {
     public required init?(coder decoder: NSCoder) {
         value = decoder.decodeDouble(forKey: "value")
         
-        guard let speedUnitString = decoder.decodeObject(of: NSString.self, forKey: "unit") as String?, let speedUnits = SpeedUnit(description: speedUnitString) else {
+        guard let speedUnitString = decoder.decodeObject(of: NSString.self, forKey: "unit") as String?, let speedUnit = SpeedUnit(description: speedUnitString) else {
                 return nil
         }
-        self.unit = speedUnits
+        self.unit = speedUnit
     }
     
     public func encode(with coder: NSCoder) {
@@ -74,9 +72,8 @@ public class SpeedLimit: NSObject, NSSecureCoding {
     }
 }
 
-
 /**
- Units for measure `SpeedLimit`.
+ Unit of measurement for `SpeedLimit`.
  */
 @objc(MBSpeedUnits)
 public enum SpeedUnit: Int, CustomStringConvertible {
@@ -113,4 +110,3 @@ public enum SpeedUnit: Int, CustomStringConvertible {
         }
     }
 }
-

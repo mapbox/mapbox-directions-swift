@@ -274,6 +274,7 @@
 		F448F8401DDCC709000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
 		F448F8411DDCC70C000BC343 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */; };
 		F448F8421DDCC70D000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
+		F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
@@ -317,6 +318,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1252,7 +1254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		DADD27F61E5AC7FA00D31FAD /* Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

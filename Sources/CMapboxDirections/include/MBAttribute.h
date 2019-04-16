@@ -41,5 +41,5 @@ typedef NS_OPTIONS(NSUInteger, MBAttributeOptions) {
      
      When this attribute is specified, the `RouteLeg.congestionLevels` property contains one value for each segment in the leg’s full geometry.
      */
-    MBAttributeMaximumSpeedLimit = (1 << 6),
+    MBAttributeMaximumSpeedLimit = (1 << 5),
 };
