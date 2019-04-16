@@ -19,6 +19,10 @@
                              completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
         
     }];
+    
+    MBMatchOptions *matchOptions = [[MBMatchOptions alloc] initWithLocations:locations profileIdentifier:MBDirectionsProfileIdentifierAutomobileAvoidingTraffic];
+    
+    XCTAssertNotNil(matchOptions);
 }
 
 - (void)testRouteOptions {
