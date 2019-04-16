@@ -14,7 +14,7 @@
     MBRouteOptions *options = [[MBRouteOptions alloc] initWithLocations:locations
                                                       profileIdentifier:MBDirectionsProfileIdentifierAutomobileAvoidingTraffic];
     
-    MBDirections *directions = [[MBDirections alloc] initWithAccessToken:nil];
+    MBDirections *directions = [[MBDirections alloc] initWithAccessToken:@"foo"];
     [directions calculateDirectionsWithOptions:options
                              completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
         
