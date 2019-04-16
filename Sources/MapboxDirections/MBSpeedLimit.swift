@@ -1,22 +1,26 @@
 import Foundation
 
 /**
- A localized limit for measuring speed limits.
+ A `SpeedLimit` represents a bound on velocity that is in place for regulatory or safety reasons.
+
+ It includes a numeric value as well as the measurement units used for velocity.
+
+ A speed limit could indicate either an upper or lower bound for velocity.
  */
 @objc(MBSpeedLimit)
 public class SpeedLimit: NSObject, NSSecureCoding {
     
     /**
-     Represents an unknown speed limit for a segment.
+     Represents an invalid or unknown speed limit.
      */
     @objc public static let invalid = SpeedLimit(value: -1, speedUnits: .kilometersPerHour)
     
     /**
-     A unitless measure of speed which is dependent on the `MaximumSpeedLimit.speedUnits`.
+     A unitless measure of speed which is dependent on the `SpeedLimit.unit`.
      
      By default, the speed will be unknown and equal to `SpeedLimit.invalid` which is -1.
      
-     If the speed is none, the value will be equal to `Double.greatestFiniteMagnitude`.
+     If there is no maximum speed limit, the property is set to `Double.greatestFiniteMagnitude`.
      */
     @objc public var value: Double = -1
     
@@ -69,6 +73,11 @@ public class SpeedLimit: NSObject, NSSecureCoding {
     public func encode(with coder: NSCoder) {
         coder.encode(value, forKey: "value")
         coder.encode(unit, forKey: "unit")
+    }
+
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let other = object as? SpeedLimit else { return false }
+        return other.unit == self.unit && other.value == self.value
     }
 }
 

@@ -1,5 +1,9 @@
 # Changes to MapboxDirections.swift
 
+## master
+
+* Added support for maxspeed annotations from the Directions API. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
+
 ## v0.30.0
 
 * `Directions.fetchAvailableOfflineVersions(completionHandler:)` and `Directions.downloadTiles(in:version:completionHandler:)` now resumes the data task before returning it to conform to its naming conventions and avoid confusion. ([#353](https://github.com/mapbox/MapboxDirections.swift/pull/353))
