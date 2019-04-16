@@ -5,9 +5,9 @@
         "package": "Polyline",
         "repositoryURL": "https://github.com/raphaelmor/Polyline.git",
         "state": {
-          "branch": "master",
-          "revision": "b5b6dff67db5d692c2253df79d9d6802953316b8",
-          "version": null
+          "branch": null,
+          "revision": "011fbc1b0f27a3398bd0fb7c5e2cf5c62ae82717",
+          "version": "4.2.1"
         }
       }
     ]
