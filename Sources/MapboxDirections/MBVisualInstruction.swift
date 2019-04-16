@@ -5,6 +5,7 @@ import CoreLocation
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
+@objcMembers
 @objc(MBVisualInstruction)
 open class VisualInstruction: NSObject, NSSecureCoding {
 
@@ -13,7 +14,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      A plain text representation of the instruction.
      */
-    @objc public let text: String?
+    public let text: String?
 
     /**
      The type of maneuver required for beginning the step described by the visual instruction.
@@ -23,12 +24,12 @@ open class VisualInstruction: NSObject, NSSecureCoding {
     /**
      Additional directional information to clarify the maneuver type.
      */
-    @objc public var maneuverDirection: ManeuverDirection
+    @objc public dynamic var maneuverDirection: ManeuverDirection
 
     /**
      A structured representation of the instruction.
      */
-    @objc public let components: [ComponentRepresentable]
+    public let components: [ComponentRepresentable]
 
     /**
      The heading at which the user exits a roundabout (traffic circle or rotary).

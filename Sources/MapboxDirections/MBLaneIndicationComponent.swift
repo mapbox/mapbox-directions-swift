@@ -4,7 +4,9 @@ import Foundation
 /**
 A component that represents a lane  representation of an instruction.
  */
-@objcMembers open class LaneIndicationComponent: NSObject, ComponentRepresentable {
+@objcMembers
+@objc(MBLaneIndicationComponent)
+open class LaneIndicationComponent: NSObject, ComponentRepresentable {
 
     /**
      An array indicating which directions you can go from a lane (left, right, or straight).
