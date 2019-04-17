@@ -2,7 +2,7 @@
 
 ## master
 
-* Added support for maxspeed annotations from the Directions API. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
+* Added `AttributeOptions.maximumSpeedLimit` for getting maximum posted speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
 
 ## v0.30.0
 
