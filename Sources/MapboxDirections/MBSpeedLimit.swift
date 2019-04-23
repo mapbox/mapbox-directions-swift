@@ -20,7 +20,7 @@ public class SpeedLimit: NSObject, NSSecureCoding {
      
      By default, the speed will be unknown and equal to `SpeedLimit.invalid` which is -1.
      
-     If there is no maximum speed limit, the property is set to `Double.greatestFiniteMagnitude`.
+     If there is no maximum speed limit, the property is set to `SpeedLimit.invalid.value`.
      */
     @objc public var value: Double = -1
     
