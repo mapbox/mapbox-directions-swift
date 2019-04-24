@@ -96,10 +96,10 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
                 
                 for step in leg.steps {
-                    print("\(step.instructions)")
+                    print("\(step.instructions) [\(step.maneuverType) \(step.maneuverDirection)]")
                     if step.distance > 0 {
                         let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
-                        print("— \(formattedDistance) —")
+                        print("— \(step.transportType) for \(formattedDistance) —")
                     }
                 }
                 

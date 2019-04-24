@@ -115,6 +115,13 @@ public enum TransportType: Int, CustomStringConvertible {
 }
 
 /**
+ Returns a string describing the given transport type.
+ */
+public func MBStringFromTransportType(transportType: TransportType) -> String {
+    return transportType.description
+}
+
+/**
  A `ManeuverType` specifies the type of maneuver required to complete the route step. You can pair a maneuver type with a `ManeuverDirection` to choose an appropriate visual or voice prompt to present the user.
 
  In Swift, you can use pattern matching with a single switch statement on a tuple containing the maneuver type and maneuver direction to avoid a complex series of if-else-if statements or switch statements.
@@ -348,6 +355,13 @@ public enum ManeuverType: Int, CustomStringConvertible {
 }
 
 /**
+ Returns a string describing the given maneuver type.
+ */
+public func MBStringFromManeuverType(maneuverType: ManeuverType) -> String {
+    return maneuverType.description
+}
+
+/**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
 @objc(MBManeuverDirection)
@@ -451,6 +465,13 @@ public enum ManeuverDirection: Int, CustomStringConvertible {
 }
 
 /**
+ Returns a string describing the given maneuver direction.
+ */
+public func MBStringFromManeuverDirection(maneuverDirection: ManeuverDirection) -> String {
+    return maneuverDirection.description
+}
+
+/**
  A `DrivingSide` indicates which side of the road cars and traffic flow.
  */
 @objc(MBDrivingSide)
@@ -487,6 +508,13 @@ public enum DrivingSide: Int, CustomStringConvertible {
             return "right"
         }
     }
+}
+
+/**
+ Returns a string describing the given driving side.
+ */
+public func MBStringFromDrivingSide(drivingSide: DrivingSide) -> String {
+    return drivingSide.description
 }
 
 extension String {
