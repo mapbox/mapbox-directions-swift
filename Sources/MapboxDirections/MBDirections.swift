@@ -10,6 +10,12 @@ public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
 let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
+var skuToken: String? {
+    guard let mbx: AnyClass = NSClassFromString("MBXAccounts") else { return nil }
+    guard mbx.responds(to: Selector(("serviceSkuToken"))) else { return nil }
+    return mbx.value(forKeyPath: "serviceSkuToken") as? String
+}
+
 /// The user agent string for any HTTP requests performed directly within this library.
 let userAgent: String = {
     var components: [String] = []
@@ -287,13 +293,16 @@ open class Directions: NSObject {
     @objc(URLForCalculatingDirectionsWithOptions:HTTPMethod:)
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
-        let queryItems = (includesQuery ? options.urlQueryItems : []) + [
-            URLQueryItem(name: "access_token", value: accessToken),
-        ]
+        var params = (includesQuery ? options.urlQueryItems : [])
+        params += [URLQueryItem(name: "access_token", value: accessToken)]
+        
+        if let skuToken = skuToken {
+            params += [URLQueryItem(name: "sku", value: skuToken)]
+        }
 
         let unparameterizedURL = URL(string: includesQuery ? options.path : options.abridgedPath, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
-        components.queryItems = queryItems
+        components.queryItems = params
         return components.url!
     }
     
