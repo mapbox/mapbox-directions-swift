@@ -63,9 +63,9 @@ open class RouteOptions: DirectionsOptions {
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
         
-        alleyBias = decoder.decodeIfPresent(Double.self, forKey: "alleyBias")
-        walkwayBias = decoder.decodeIfPresent(Double.self, forKey: "walkwayBias")
-        walkingSpeed = decoder.decodeIfPresent(CLLocationSpeed.self, forKey: "walkingSpeed")
+        alleyBias = decoder.decodeDouble(forKey: "alleyBias")
+        walkwayBias = decoder.decodeDouble(forKey: "walkwayBias")
+        walkingSpeed = decoder.decodeDouble(forKey: "walkingSpeed")
     }
 
     public override func encode(with coder: NSCoder) {
@@ -74,9 +74,9 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
-        coder.encodeIfPresent(alleyBias, forKey: "alleyBias")
-        coder.encodeIfPresent(walkwayBias, forKey: "walkwayBias")
-        coder.encodeIfPresent(walkingSpeed, forKey: "walkingSpeed")
+        coder.encode(alleyBias, forKey: "alleyBias")
+        coder.encode(walkwayBias, forKey: "walkwayBias")
+        coder.encode(walkingSpeed, forKey: "walkingSpeed")
     }
 
     internal override var abridgedPath: String {
@@ -124,9 +124,10 @@ open class RouteOptions: DirectionsOptions {
      allowed range of values is from -1.0 to 1.0, where -1 indicates preference to avoid
      alleys, 1 indicates preference to favor alleys, and 0 indicates no preference.
      
-     Defaults to 0
+     Defaults to 0.
+     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
      */
-    open var alleyBias: Double? = 0
+    @objc open var alleyBias: Double = 0
     
     /**
      A bias which determines whether the route should prefer or avoid the use of roads or paths
@@ -134,16 +135,18 @@ open class RouteOptions: DirectionsOptions {
      -1.0 to 1.0, where -1 indicates indicates preference to avoid walkways, 1 indicates preference
      to favor walkways, and 0 indicates no preference.
      
-     Defeaults to 0
+     Defeaults to 0.
+     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
      */
-    open var walkwayBias: Double? = 0
+    @objc open var walkwayBias: Double = 0
     
     /**
      Walking speed in meters per second. Must be between 0.14 and 6.94 meters per second.
      
      Defaults to 1.42
+     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
      */
-    open var walkingSpeed: CLLocationSpeed? = 1.42
+    @objc open var walkingSpeed: CLLocationSpeed = 1.42
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -160,17 +163,9 @@ open class RouteOptions: DirectionsOptions {
             }
             
         case .walking:
-            if let alleyBias = self.alleyBias {
-                queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyBias)))
-            }
-            
-            if let walkwayBias = self.walkwayBias {
-                queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayBias)))
-            }
-            
-            if let walkingSpeed = self.walkingSpeed {
-                queryItems.append(URLQueryItem(name: "walking_speed", value: String(walkingSpeed)))
-            }
+            queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyBias)))
+            queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayBias)))
+            queryItems.append(URLQueryItem(name: "walking_speed", value: String(walkingSpeed)))
         case .cycling:
             break
         default:

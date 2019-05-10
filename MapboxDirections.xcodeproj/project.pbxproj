@@ -22,10 +22,6 @@
 		35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
 		35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
 		35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
-		35CC310F2285803000EA1966 /* NSCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310E2285803000EA1966 /* NSCoder.swift */; };
-		35CC31102285803000EA1966 /* NSCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310E2285803000EA1966 /* NSCoder.swift */; };
-		35CC31112285803000EA1966 /* NSCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310E2285803000EA1966 /* NSCoder.swift */; };
-		35CC31122285803000EA1966 /* NSCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310E2285803000EA1966 /* NSCoder.swift */; };
 		35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
@@ -321,7 +317,6 @@
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
 		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
-		35CC310E2285803000EA1966 /* NSCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCoder.swift; sourceTree = "<group>"; };
 		35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "2018-10-16-Liechtenstein.tar"; sourceTree = "<group>"; };
 		35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBCoordinateBounds.swift; sourceTree = "<group>"; };
 		35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
@@ -541,7 +536,6 @@
 				35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */,
 				8D434678219E1167008B7BF3 /* Double.swift */,
 				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
-				35CC310E2285803000EA1966 /* NSCoder.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1244,7 +1238,6 @@
 				C5DAAC9B2019167C001F9261 /* MBMatch.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
-				35CC31102285803000EA1966 /* NSCoder.swift in Sources */,
 				C52552C61FA162F900B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02261E92C26E009837BD /* MBAttribute.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1306,7 +1299,6 @@
 				C5DAAC9C2019167D001F9261 /* MBMatch.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
-				35CC31112285803000EA1966 /* NSCoder.swift in Sources */,
 				C52552C71FA162FA00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02271E92C26F009837BD /* MBAttribute.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1368,7 +1360,6 @@
 				C5DAAC9D2019167E001F9261 /* MBMatch.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
-				35CC31122285803000EA1966 /* NSCoder.swift in Sources */,
 				C52552C81FA162FB00B1545C /* MBVisualInstructionComponent.swift in Sources */,
 				C53A02281E92C271009837BD /* MBAttribute.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* MBRouteLeg.swift in Sources */,
@@ -1408,7 +1399,6 @@
 				C51538CC1E807FF00093FF3E /* MBAttribute.swift in Sources */,
 				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
-				35CC310F2285803000EA1966 /* NSCoder.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* MBRouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* MBVisualInstructionBanner.swift in Sources */,
