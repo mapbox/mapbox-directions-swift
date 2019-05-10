@@ -62,6 +62,10 @@ open class RouteOptions: DirectionsOptions {
 
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
+        
+        alleyBias = decoder.decodeIfPresent(Double.self, forKey: "alleyBias")
+        walkwayBias = decoder.decodeIfPresent(Double.self, forKey: "walkwayBias")
+        walkingSpeed = decoder.decodeIfPresent(CLLocationSpeed.self, forKey: "walkingSpeed")
     }
 
     public override func encode(with coder: NSCoder) {
@@ -70,6 +74,9 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
+        coder.encodeIfPresent(alleyBias, forKey: "alleyBias")
+        coder.encodeIfPresent(walkwayBias, forKey: "walkwayBias")
+        coder.encodeIfPresent(walkingSpeed, forKey: "walkingSpeed")
     }
 
     internal override var abridgedPath: String {
@@ -111,6 +118,32 @@ open class RouteOptions: DirectionsOptions {
      Currently, you can only specify a single road class to avoid.
      */
     @objc open var roadClassesToAvoid: RoadClasses = []
+    
+    /**
+     A bias which determines whether the route should prefer or avoid the use of alleys. The
+     allowed range of values is from -1.0 to 1.0, where -1 indicates preference to avoid
+     alleys, 1 indicates preference to favor alleys, and 0 indicates no preference.
+     
+     Defaults to 0
+     */
+    open var alleyBias: Double? = 0
+    
+    /**
+     A bias which determines whether the route should prefer or avoid the use of roads or paths
+     that are set aside for pedestrian-only use (walkways). The allowed range of values is from
+     -1.0 to 1.0, where -1 indicates indicates preference to avoid walkways, 1 indicates preference
+     to favor walkways, and 0 indicates no preference.
+     
+     Defeaults to 0
+     */
+    open var walkwayBias: Double? = 0
+    
+    /**
+     Walking speed in meters per second. Must be between 0.14 and 6.94 meters per second.
+     
+     Defaults to 1.42
+     */
+    open var walkingSpeed: CLLocationSpeed? = 1.42
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -119,9 +152,29 @@ open class RouteOptions: DirectionsOptions {
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
         ])
-
-        if includesExitRoundaboutManeuver {
-            queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+        
+        switch profileIdentifier {
+        case .automobile, .automobileAvoidingTraffic:
+            if includesExitRoundaboutManeuver {
+                queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+            }
+            
+        case .walking:
+            if let alleyBias = self.alleyBias {
+                queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyBias)))
+            }
+            
+            if let walkwayBias = self.walkwayBias {
+                queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayBias)))
+            }
+            
+            if let walkingSpeed = self.walkingSpeed {
+                queryItems.append(URLQueryItem(name: "walking_speed", value: String(walkingSpeed)))
+            }
+        case .cycling:
+            break
+        default:
+            break
         }
 
         if !roadClassesToAvoid.isEmpty {
@@ -186,6 +239,9 @@ open class RouteOptions: DirectionsOptions {
         copy.includesAlternativeRoutes = includesAlternativeRoutes
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.roadClassesToAvoid = roadClassesToAvoid
+        copy.alleyBias = alleyBias
+        copy.walkwayBias = walkwayBias
+        copy.walkingSpeed = walkingSpeed
         return copy
     }
 
@@ -202,7 +258,10 @@ open class RouteOptions: DirectionsOptions {
         guard allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
             includesAlternativeRoutes == other.includesAlternativeRoutes,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-            roadClassesToAvoid == other.roadClassesToAvoid else { return false }
+            roadClassesToAvoid == other.roadClassesToAvoid,
+            alleyBias == other.alleyBias,
+            walkwayBias == other.walkwayBias,
+            walkingSpeed == other.walkingSpeed else { return false }
         return true
     }
 }
