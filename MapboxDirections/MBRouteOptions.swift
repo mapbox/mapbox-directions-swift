@@ -63,9 +63,9 @@ open class RouteOptions: DirectionsOptions {
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
         
-        alleyBias = decoder.decodeDouble(forKey: "alleyBias")
-        walkwayBias = decoder.decodeDouble(forKey: "walkwayBias")
-        walkingSpeed = decoder.decodeDouble(forKey: "walkingSpeed")
+        alleyPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "alleyPriority"))
+        walkwayPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "walkwayPriority"))
+        speed = decoder.decodeDouble(forKey: "speed")
     }
 
     public override func encode(with coder: NSCoder) {
@@ -74,9 +74,9 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
-        coder.encode(alleyBias, forKey: "alleyBias")
-        coder.encode(walkwayBias, forKey: "walkwayBias")
-        coder.encode(walkingSpeed, forKey: "walkingSpeed")
+        coder.encode(alleyPriority.rawValue, forKey: "alleyPriority")
+        coder.encode(walkwayPriority.rawValue, forKey: "walkwayPriority")
+        coder.encode(speed, forKey: "speed")
     }
 
     internal override var abridgedPath: String {
@@ -120,33 +120,31 @@ open class RouteOptions: DirectionsOptions {
     @objc open var roadClassesToAvoid: RoadClasses = []
     
     /**
-     A bias which determines whether the route should prefer or avoid the use of alleys. The
-     allowed range of values is from -1.0 to 1.0, where -1 indicates preference to avoid
-     alleys, 1 indicates preference to favor alleys, and 0 indicates no preference.
+     A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
      
-     Defaults to 0.
-     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     
+     The value of this property must be at least −1.0 and at most 1.0. The default value of 0 neither prefers nor avoids alleys, while a negative value avoids alleys and a positive value prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
-    @objc open var alleyBias: Double = 0
+    @objc open var alleyPriority: MBDirectionsPriority = .default
     
     /**
-     A bias which determines whether the route should prefer or avoid the use of roads or paths
-     that are set aside for pedestrian-only use (walkways). The allowed range of values is from
-     -1.0 to 1.0, where -1 indicates indicates preference to avoid walkways, 1 indicates preference
-     to favor walkways, and 0 indicates no preference.
+     A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
      
-     Defeaults to 0.
-     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
+     
+     The value of this property must be at least −1.0 and at most 1.0. The default value of 0 neither prefers nor avoids walkways, while a negative value avoids walkways and a positive value prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
-    @objc open var walkwayBias: Double = 0
+    @objc open var walkwayPriority: MBDirectionsPriority = .default
     
     /**
-     Walking speed in meters per second. Must be between 0.14 and 6.94 meters per second.
+     The expected uniform travel speed measured in meters per second.
      
-     Defaults to 1.42
-     This property has no effect unless profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `MBDirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
+     
+     The value of this property must be at least 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) and at most 6.94 meters per second (25.0 km/h or 15.5 mph). The default value is 1.42 meters per second (about 5.11 km/h or 3.18 mph).
      */
-    @objc open var walkingSpeed: CLLocationSpeed = 1.42
+    @objc open var speed: CLLocationSpeed = 1.42
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -156,20 +154,14 @@ open class RouteOptions: DirectionsOptions {
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
         ])
         
-        switch profileIdentifier {
-        case .automobile, .automobileAvoidingTraffic:
-            if includesExitRoundaboutManeuver {
-                queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
-            }
-            
-        case .walking:
-            queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyBias)))
-            queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayBias)))
-            queryItems.append(URLQueryItem(name: "walking_speed", value: String(walkingSpeed)))
-        case .cycling:
-            break
-        default:
-            break
+        if includesExitRoundaboutManeuver {
+            queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+        }
+        
+        if profileIdentifier == .walking {
+            queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
+            queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
+            queryItems.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
 
         if !roadClassesToAvoid.isEmpty {
@@ -234,9 +226,9 @@ open class RouteOptions: DirectionsOptions {
         copy.includesAlternativeRoutes = includesAlternativeRoutes
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.roadClassesToAvoid = roadClassesToAvoid
-        copy.alleyBias = alleyBias
-        copy.walkwayBias = walkwayBias
-        copy.walkingSpeed = walkingSpeed
+        copy.alleyPriority = alleyPriority
+        copy.walkwayPriority = walkwayPriority
+        copy.speed = speed
         return copy
     }
 
@@ -254,9 +246,9 @@ open class RouteOptions: DirectionsOptions {
             includesAlternativeRoutes == other.includesAlternativeRoutes,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
             roadClassesToAvoid == other.roadClassesToAvoid,
-            alleyBias == other.alleyBias,
-            walkwayBias == other.walkwayBias,
-            walkingSpeed == other.walkingSpeed else { return false }
+            alleyPriority == other.alleyPriority,
+            walkwayPriority == other.walkwayPriority,
+            speed == other.speed else { return false }
         return true
     }
 }

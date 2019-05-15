@@ -17,9 +17,9 @@ class WalkingOptionsTests: XCTestCase {
         XCTAssertEqual(queryItems.filter { $0.name == "walkway_bias" }.first?.value, "0.0")
         XCTAssertEqual(queryItems.filter { $0.name == "walking_speed" }.first?.value, "1.42")
 
-        options.alleyBias = 0.4
-        options.walkwayBias = 0.5
-        options.walkingSpeed = 5.2
+        options.alleyPriority = MBDirectionsPriority(rawValue: 0.4)
+        options.walkwayPriority = MBDirectionsPriority(rawValue: 0.5)
+        options.speed = 5.2
 
         queryItems = options.urlQueryItems
 
