@@ -1,4 +1,19 @@
 /**
+ By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
+ */
+public let MBDefaultWalkingSpeed: CLLocationSpeed = 1.42
+
+/**
+ Pedestrians are assumed to walk no slower than 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) on average.
+ */
+public let MBMinimumWalkingSpeed: CLLocationSpeed = 0.14
+
+/**
+ Pedestrians are assumed to walk no faster than 6.94 meters per second (25.0 kilometers per hour or 15.5 miles per hour) on average.
+ */
+public let MBMaximumWalkingSpeed: CLLocationSpeed = 6.94
+
+/**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
@@ -124,7 +139,7 @@ open class RouteOptions: DirectionsOptions {
      
      This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
      
-     The value of this property must be at least −1.0 and at most 1.0. The default value of 0 neither prefers nor avoids alleys, while a negative value avoids alleys and a positive value prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids alleys, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
     @objc open var alleyPriority: MBDirectionsPriority = .default
     
@@ -133,7 +148,7 @@ open class RouteOptions: DirectionsOptions {
      
      This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
      
-     The value of this property must be at least −1.0 and at most 1.0. The default value of 0 neither prefers nor avoids walkways, while a negative value avoids walkways and a positive value prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids walkways, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
     @objc open var walkwayPriority: MBDirectionsPriority = .default
     
@@ -142,9 +157,9 @@ open class RouteOptions: DirectionsOptions {
      
      This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `MBDirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
      
-     The value of this property must be at least 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) and at most 6.94 meters per second (25.0 km/h or 15.5 mph). The default value is 1.42 meters per second (about 5.11 km/h or 3.18 mph).
+     The value of this property must be at least `MBMinimumWalkingSpeed` and at most `MBMaximumWalkingSpeed`. The default value is `MBDefaultWalkingSpeed`.
      */
-    @objc open var speed: CLLocationSpeed = 1.42
+    @objc open var speed: CLLocationSpeed = MBDefaultWalkingSpeed
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
