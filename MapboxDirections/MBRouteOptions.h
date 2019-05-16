@@ -36,3 +36,23 @@ extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierCycling;
  This profile prioritizes short routes, making use of sidewalks and trails where available. A walking route may use other modes of transportation, such as ferries or trains, where necessary.
  */
 extern MBDirectionsProfileIdentifier const MBDirectionsProfileIdentifierWalking;
+
+/**
+ A number that influences whether a route should prefer or avoid roadways or pathways of a given type.
+ */
+typedef double MBDirectionsPriority NS_TYPED_EXTENSIBLE_ENUM;
+
+/**
+ The priority level with which a route avoids a particular type of roadway or pathway.
+ */
+extern const MBDirectionsPriority MBDirectionsPriorityLow;
+
+/**
+ The priority level with which a route neither avoids nor prefers a particular type of roadway or pathway.
+ */
+extern const MBDirectionsPriority MBDirectionsPriorityDefault;
+
+/**
+ The priority level with which a route prefers a particular type of roadway or pathway.
+ */
+extern const MBDirectionsPriority MBDirectionsPriorityHigh;

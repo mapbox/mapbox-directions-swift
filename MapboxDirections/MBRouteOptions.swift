@@ -1,4 +1,19 @@
 /**
+ By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
+ */
+public let MBDefaultWalkingSpeed: CLLocationSpeed = 1.42
+
+/**
+ Pedestrians are assumed to walk no slower than 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) on average.
+ */
+public let MBMinimumWalkingSpeed: CLLocationSpeed = 0.14
+
+/**
+ Pedestrians are assumed to walk no faster than 6.94 meters per second (25.0 kilometers per hour or 15.5 miles per hour) on average.
+ */
+public let MBMaximumWalkingSpeed: CLLocationSpeed = 6.94
+
+/**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
@@ -62,6 +77,10 @@ open class RouteOptions: DirectionsOptions {
 
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
+        
+        alleyPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "alleyPriority"))
+        walkwayPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "walkwayPriority"))
+        speed = decoder.decodeDouble(forKey: "speed")
     }
 
     public override func encode(with coder: NSCoder) {
@@ -70,6 +89,9 @@ open class RouteOptions: DirectionsOptions {
         coder.encode(includesAlternativeRoutes, forKey: "includesAlternativeRoutes")
         coder.encode(includesExitRoundaboutManeuver, forKey: "includesExitRoundaboutManeuver")
         coder.encode(roadClassesToAvoid.description, forKey: "roadClassesToAvoid")
+        coder.encode(alleyPriority.rawValue, forKey: "alleyPriority")
+        coder.encode(walkwayPriority.rawValue, forKey: "walkwayPriority")
+        coder.encode(speed, forKey: "speed")
     }
 
     internal override var abridgedPath: String {
@@ -111,6 +133,33 @@ open class RouteOptions: DirectionsOptions {
      Currently, you can only specify a single road class to avoid.
      */
     @objc open var roadClassesToAvoid: RoadClasses = []
+    
+    /**
+     A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids alleys, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
+     */
+    @objc open var alleyPriority: MBDirectionsPriority = .default
+    
+    /**
+     A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
+     
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids walkways, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
+     */
+    @objc open var walkwayPriority: MBDirectionsPriority = .default
+    
+    /**
+     The expected uniform travel speed measured in meters per second.
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `MBDirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
+     
+     The value of this property must be at least `MBMinimumWalkingSpeed` and at most `MBMaximumWalkingSpeed`. The default value is `MBDefaultWalkingSpeed`.
+     */
+    @objc open var speed: CLLocationSpeed = MBDefaultWalkingSpeed
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -119,9 +168,15 @@ open class RouteOptions: DirectionsOptions {
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint))
         ])
-
+        
         if includesExitRoundaboutManeuver {
             queryItems.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+        }
+        
+        if profileIdentifier == .walking {
+            queryItems.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
+            queryItems.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
+            queryItems.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
 
         if !roadClassesToAvoid.isEmpty {
@@ -186,6 +241,9 @@ open class RouteOptions: DirectionsOptions {
         copy.includesAlternativeRoutes = includesAlternativeRoutes
         copy.includesExitRoundaboutManeuver = includesExitRoundaboutManeuver
         copy.roadClassesToAvoid = roadClassesToAvoid
+        copy.alleyPriority = alleyPriority
+        copy.walkwayPriority = walkwayPriority
+        copy.speed = speed
         return copy
     }
 
@@ -202,7 +260,10 @@ open class RouteOptions: DirectionsOptions {
         guard allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
             includesAlternativeRoutes == other.includesAlternativeRoutes,
             includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-            roadClassesToAvoid == other.roadClassesToAvoid else { return false }
+            roadClassesToAvoid == other.roadClassesToAvoid,
+            alleyPriority == other.alleyPriority,
+            walkwayPriority == other.walkwayPriority,
+            speed == other.speed else { return false }
         return true
     }
 }

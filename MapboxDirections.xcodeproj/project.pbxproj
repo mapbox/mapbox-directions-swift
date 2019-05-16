@@ -19,6 +19,9 @@
 		358D48871E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48881E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
 		358D48891E2EAB4500F32A65 /* MBRouteOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 358D48851E2EAB4500F32A65 /* MBRouteOptions.m */; };
+		35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
+		35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
+		35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */; };
 		35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
 		35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */ = {isa = PBXBuildFile; fileRef = 35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */; };
@@ -313,6 +316,7 @@
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		358D48801E2EAB2500F32A65 /* MBRouteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBRouteOptions.h; sourceTree = "<group>"; };
 		358D48851E2EAB4500F32A65 /* MBRouteOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBRouteOptions.m; sourceTree = "<group>"; };
+		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
 		35D92FEF218203AA000C78CB /* 2018-10-16-Liechtenstein.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = "2018-10-16-Liechtenstein.tar"; sourceTree = "<group>"; };
 		35DBF004217DF0D90009D2AE /* MBCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBCoordinateBounds.swift; sourceTree = "<group>"; };
 		35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
@@ -646,6 +650,7 @@
 				DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
+				35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */,
 			);
 			path = MapboxDirectionsTests;
 			sourceTree = "<group>";
@@ -1282,6 +1287,7 @@
 				DA1A110C1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F31F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
 				DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1342,6 +1348,7 @@
 				DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F41F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
 				DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1441,6 +1448,7 @@
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C52CE3931F6AF6E70069963D /* IntructionsTests.swift in Sources */,
 				DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
