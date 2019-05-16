@@ -1,6 +1,6 @@
 # Changes to MapboxDirections.swift
 
-## master
+## v0.28.0
 
 * Added the `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` properties for fine-tuning walking directions. ([#370](https://github.com/mapbox/MapboxDirections.swift/pull/370))
 * Added the `MBStringFromManeuverType()`, `MBStringFromManeuverDirection()`, `MBStringFromDrivingSide()`, and `MBStringFromTransportType()` functions, which are intended for use in Objective-C. ([#369](https://github.com/mapbox/MapboxDirections.swift/pull/369))
