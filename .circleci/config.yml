@@ -135,13 +135,6 @@ workflows:
           iOS: "12.0"
           tvOS: "12.0"
           codecoverage: true
-      - build-job:
-          name: "Xcode_9.4"
-          xcode: "9.4.1"
-          iOS: "9.3"
-          tvOS: "11.4"
-          watchOS: "4.3"
-          test: false
       - spm-job:
           name: "SPM_build"
           xcode: "10.2.0"
