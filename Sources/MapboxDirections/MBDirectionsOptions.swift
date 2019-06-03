@@ -390,12 +390,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
-    #if SWIFT_PACKAGE
     open var profileIdentifier: MBDirectionsProfileIdentifier
-    #else
-    @objc open var profileIdentifier: MBDirectionsProfileIdentifier
-    #endif
-    
 
     /**
      A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
