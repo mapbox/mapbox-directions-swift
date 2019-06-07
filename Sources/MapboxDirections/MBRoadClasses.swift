@@ -1,6 +1,6 @@
 import Foundation
 #if SWIFT_PACKAGE
-import MapboxDirectionsCompat
+import CMapboxDirections
 #endif
 
 

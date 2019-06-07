@@ -8,5 +8,5 @@ FOUNDATION_EXPORT double MapboxDirectionsVersionNumber;
 FOUNDATION_EXPORT const unsigned char MapboxDirectionsVersionString[];
 
 #if !SWIFT_PACKAGE
-#import "MapboxDirectionsCompat.h"
+#import "CMapboxDirections.h"
 #endif
