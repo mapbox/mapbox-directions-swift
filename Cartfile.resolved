@@ -1,3 +1,3 @@
-binary "https://www.mapbox.com/ios-sdk/Mapbox-iOS-SDK.json" "4.9.0"
+binary "https://www.mapbox.com/ios-sdk/Mapbox-iOS-SDK.json" "4.11.0"
 github "linksmt/OHHTTPStubs" "563f48d3fab84ef04639649c770b00f4fa502cca"
-github "raphaelmor/Polyline" "v4.2.0"
+github "raphaelmor/Polyline" "v4.2.1"

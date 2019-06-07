@@ -1,6 +1,8 @@
 import Foundation
 import CoreLocation
+#if SWIFT_PACKAGE
 import MapboxDirectionsCompat
+#endif
 
 
 /**
