@@ -1,6 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
+import MapboxDirectionsCompat
 
 
 /**

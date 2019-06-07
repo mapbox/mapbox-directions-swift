@@ -1,6 +1,7 @@
 import Foundation
 import Polyline
 import CoreLocation
+import MapboxDirectionsCompat
 
 
 /**
@@ -302,11 +303,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             return nil
         }
         
-        #if SWIFT_PACKAGE
-        self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier) ?? MBDirectionsProfileIdentifier.automobileAvoidingTraffic
-        #else
         self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier)
-        #endif
 
         includesSteps = decoder.decodeBool(forKey: "includesSteps")
 
@@ -426,11 +423,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
-    #if SWIFT_PACKAGE
-    open var attributeOptions: AttributeOptions = []
-    #else
-    @objc open var attributeOptions: MBAttributeOptions = []
-    #endif
+    open var attributeOptions: MBAttributeOptions = []
 
     /**
      The locale in which the route’s instructions are written.

@@ -1,4 +1,6 @@
 import Foundation
+import MapboxDirectionsCompat
+
 
 public typealias RoadClasses = MBRoadClasses
 

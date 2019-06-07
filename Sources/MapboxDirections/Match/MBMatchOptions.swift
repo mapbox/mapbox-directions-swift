@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import MapboxDirectionsCompat
 
 
 /**
@@ -17,21 +18,12 @@ open class MatchOptions: DirectionsOptions {
      - parameter locations: An array of `CLLocation` objects representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 25 locations. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    #if SWIFT_PACKAGE
-    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
-        let waypoints = locations.map {
-            Waypoint(location: $0)
-        }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
-    }
-    #else
     @objc public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
         }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
-    #endif
 
     /**
      Initializes a match options object for matching geographic coordinates against the road network.
@@ -39,31 +31,16 @@ open class MatchOptions: DirectionsOptions {
      - parameter coordinates: An array of geographic coordinates representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 25 locations. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).) Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    #if SWIFT_PACKAGE
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
-        let waypoints = coordinates.map {
-            Waypoint(coordinate: $0)
-        }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
-    }
-    #else
     @objc public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map {
             Waypoint(coordinate: $0)
         }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
-    #endif
-    
-    #if SWIFT_PACKAGE
-    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
-        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
-    }
-    #else
+
     @objc public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
-    #endif
 
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
