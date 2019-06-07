@@ -1,7 +1,9 @@
 import Foundation
 import CoreLocation
 import Polyline
+#if SWIFT_PACKAGE
 import MapboxDirectionsCompat
+#endif
 
 
 /**
