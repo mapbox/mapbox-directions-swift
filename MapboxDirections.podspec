@@ -37,7 +37,7 @@ Pod::Spec.new do |s|
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*", "Sources/objc"]
+  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*", "Sources/MapboxDirectionsCompat/*/*"]
   s.exclude_files = ["Sources/MapboxDirections/SPM"]
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

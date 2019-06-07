@@ -1,14 +1,7 @@
 import Foundation
 import CoreLocation
+import MapboxDirectionsCompat
 
-#if SWIFT_PACKAGE
-public enum MBDirectionsProfileIdentifier: String {
-    case automobile = "mapbox/driving"
-    case automobileAvoidingTraffic = "mapbox/driving-traffic"
-    case cycling = "cycling"
-    case walking = "walking"
-}
-#endif
 
 /**
  By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
