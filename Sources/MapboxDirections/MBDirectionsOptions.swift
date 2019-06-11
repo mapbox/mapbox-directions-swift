@@ -425,7 +425,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
-    open var attributeOptions: MBAttributeOptions = []
+    open var attributeOptions: AttributeOptions = []
 
     /**
      The locale in which the route’s instructions are written.
