@@ -10,11 +10,7 @@ let package = Package(
         .library(
             name: "MapboxDirections",
             targets: ["MapboxDirections"]
-        ),
-        .library(
-            name: "CMapboxDirections",
-            targets: ["CMapboxDirections"]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
