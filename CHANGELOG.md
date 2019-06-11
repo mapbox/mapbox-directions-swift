@@ -1,5 +1,9 @@
 # Changes to MapboxDirections.swift
 
+## master
+
+* Added support for Swift Package Manager. ([#362](https://github.com/mapbox/MapboxDirections.swift/pull/362))
+
 ## v0.28.0
 
 * Added the `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` properties for fine-tuning walking directions. ([#370](https://github.com/mapbox/MapboxDirections.swift/pull/370))
