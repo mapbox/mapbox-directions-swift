@@ -1,5 +1,7 @@
 import XCTest
 import MapboxDirections
+import CoreLocation
+
 
 class WalkingOptionsTests: XCTestCase {
     
