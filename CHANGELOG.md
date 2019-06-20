@@ -1,6 +1,6 @@
 # Changes to MapboxDirections.swift
 
-## master
+## v0.29.0
 
 * Added support for Swift Package Manager. ([#362](https://github.com/mapbox/MapboxDirections.swift/pull/362))
 
