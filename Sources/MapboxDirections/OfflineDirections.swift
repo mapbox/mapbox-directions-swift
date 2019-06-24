@@ -19,7 +19,7 @@ public protocol OfflineDirectionsProtocol {
      - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
     @objc(fetchAvailableOfflineVersionsWithCompletionHandler:)
-    func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> ()
+    func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
     
     /**
      Downloads offline routing tiles of the given version within the given coordinate bounds using the shared URLSession. The tiles are written to disk at the location passed into the `completionHandler`.
@@ -28,8 +28,8 @@ public protocol OfflineDirectionsProtocol {
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
-    @objc(downloadTilesInCoordinateBounds:withVersion:completionHandler:)
-    func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> ()
+    @objc(downloadTilesInCoordinateBounds:version:completionHandler:)
+    func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
 extension Directions: OfflineDirectionsProtocol {
@@ -60,10 +60,11 @@ extension Directions: OfflineDirectionsProtocol {
      
      - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
-    public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> () {
+    @discardableResult
+    public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         let task = availableVersionsDataTask(completionHandler: completionHandler)
-
-        return task.resume()
+        task.resume()
+        return task
     }
 
     /**
@@ -71,6 +72,7 @@ extension Directions: OfflineDirectionsProtocol {
      
      - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
+    @discardableResult
     @objc(availableVersionsDataTaskWithCompletionHandler:)
     public func availableVersionsDataTask(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: availableVersionsURL) { (data, response, error) in
@@ -101,11 +103,13 @@ extension Directions: OfflineDirectionsProtocol {
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
+    @discardableResult
     public func downloadTiles(in coordinateBounds: CoordinateBounds,
                               version: OfflineVersion,
-                              completionHandler: @escaping OfflineDownloaderCompletionHandler) -> () {
+                              completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         let task = routingTilesDataTaskWith(coordinateBounds, version: version, completionHandler: completionHandler)
-        return task.resume()
+        task.resume()
+        return task
     }
 
     /**
