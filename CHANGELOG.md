@@ -3,6 +3,7 @@
 ## master
 
 * Added support for Swift Package Manager. ([#362](https://github.com/mapbox/MapboxDirections.swift/pull/362))
+* `Directions.fetchAvailableOfflineVersions(completionHandler:)` and `Directions.downloadTiles(in:version:completionHandler:)` now resumes the data task before returning it to conform to its naming conventions and avoid confusion. ([#353](https://github.com/mapbox/MapboxDirections.swift/pull/353))
 
 ## v0.28.0
 
