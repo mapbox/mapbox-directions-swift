@@ -62,19 +62,6 @@ extension Directions: OfflineDirectionsProtocol {
      */
     @discardableResult
     public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
-        let task = availableVersionsDataTask(completionHandler: completionHandler)
-        task.resume()
-        return task
-    }
-
-    /**
-     Creates and returns a URLSessionDataTask for downloading available offline routing tile versions. The caller is responsible for calling `-resume` on the task.
-     
-     - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
-     */
-    @discardableResult
-    @objc(availableVersionsDataTaskWithCompletionHandler:)
-    public func availableVersionsDataTask(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: availableVersionsURL) { (data, response, error) in
             if let error = error {
                 return completionHandler(nil, error)
@@ -93,6 +80,8 @@ extension Directions: OfflineDirectionsProtocol {
             }
         }
         
+        task.resume()
+        
         return task
     }
     
@@ -107,22 +96,9 @@ extension Directions: OfflineDirectionsProtocol {
     public func downloadTiles(in coordinateBounds: CoordinateBounds,
                               version: OfflineVersion,
                               completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
-        let task = routingTilesDataTaskWith(coordinateBounds, version: version, completionHandler: completionHandler)
-        task.resume()
-        return task
-    }
-
-    /**
-     Creates and returns a URLSessionDataTask for downloading offline routing tiles of the given version within the given coordinate bounds, using the shared URLSession.
-     
-     - parameter coordinateBounds: The bounding box
-     - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
-     - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
-     */
-    @objc(routingTilesDataTaskWithCoordinateBounds:version:completionHandler:)
-    public func routingTilesDataTaskWith(_ coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         let url = tilesURL(for: coordinateBounds, version: version)
         let task: URLSessionDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: completionHandler)
+        task.resume()
         return task
     }
 }
