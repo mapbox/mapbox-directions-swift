@@ -25,6 +25,12 @@ Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 pod 'MapboxDirections.swift', '~> 0.28'
 ```
 
+Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
+
+```swift
+.package(url: "https://github.com/mapbox/MapboxDirections.swift.git", from: "0.28.0")
+```
+
 Then `import MapboxDirections` or `@import MapboxDirections;`.
 
 v0.12.1 is the last release of MapboxDirections.swift written in Swift 3. All subsequent releases are based on the `master` branch, which is written in Swift 4.2. The Swift examples below are written in Swift 4.2.
