@@ -53,7 +53,7 @@ class DirectionsTests: XCTestCase {
         let url = directions.url(forCalculating: options, httpMethod: "GET")
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
-        var components = URLComponents(string: url.absoluteString)
+        let components = URLComponents(string: url.absoluteString)
         XCTAssertEqual(components?.queryItems?.count, 7)
         XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.stringForRequestURL }.joined(separator: ";")) ?? false)
         
