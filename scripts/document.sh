@@ -52,7 +52,6 @@ jazzy \
     --output ${OUTPUT}
 
 REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/MapboxDirections.swift $1/, '
-REPLACE_REGEXP+='s/BRANDLESS_DOCSET_TITLE/Directions.swift $1/, '
 
 find ${OUTPUT} -name *.html -exec \
     perl -pi -e "$REPLACE_REGEXP" {} \;
