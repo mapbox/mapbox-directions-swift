@@ -1,5 +1,6 @@
 module: MapboxDirections
 author: Mapbox
+title: Directions.swift
 author_url: https://docs.mapbox.com/ios/directions/
 github_url: https://github.com/mapbox/MapboxDirections.swift
 dash_url: https://docs.mapbox.com/ios/docsets/MapboxDirections.xml
