@@ -19,7 +19,7 @@ class AnnotationTests: XCTestCase {
             "steps": "false",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,speed,congestion"
+            "annotations": "distance,duration,speed,congestion,maxspeed"
             ]
         
         stub(condition: isHost("api.mapbox.com")
@@ -36,7 +36,7 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = false
         options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel]
+        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .maximumSpeedLimit]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
@@ -56,27 +56,38 @@ class AnnotationTests: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 128)
-        XCTAssertEqual(route!.routeIdentifier, "cjeyp52zv00097iulwb4m8wiw")
+        XCTAssertEqual(route!.coordinates!.count, 171)
+        XCTAssertEqual(route!.routeIdentifier, "cjz0ke3xu00367vs13pae5pgp")
         
         let leg = route!.legs.first!
-        XCTAssertEqual(leg.segmentDistances!.count, 98)
-        XCTAssertEqual(leg.segmentSpeeds!.count, 98)
-        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 98)
-        XCTAssertEqual(leg.segmentCongestionLevels!.count, 98)
-        XCTAssertEqual(leg.segmentCongestionLevels!.first!, .moderate)
-        XCTAssertEqual(leg.segmentMaximumSpeedLimits!.count, 127)
+        XCTAssertEqual(leg.segmentDistances!.count, 170)
+        XCTAssertEqual(leg.segmentSpeeds!.count, 170)
+        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 170)
+        XCTAssertEqual(leg.segmentCongestionLevels!.count, 170)
+        XCTAssertEqual(leg.segmentCongestionLevels!.first!, .low)
+        XCTAssertEqual(leg.segmentMaximumSpeedLimits!.count, 170)
         
         let maxSpeeds = leg.segmentMaximumSpeedLimits!
         
-        XCTAssertEqual(maxSpeeds[0].value, 30)
-        XCTAssertEqual(maxSpeeds[0].unit, .milesPerHour)
+        XCTAssertEqual(maxSpeeds[0].value, 48)
+        XCTAssertEqual(maxSpeeds[0].unit, .kilometersPerHour)
         
         XCTAssertEqual(maxSpeeds[3].value, SpeedLimit.invalid.value)
         XCTAssertEqual(maxSpeeds[3].unit, .kilometersPerHour)
+    }
+    
+    func testSpeedLimits() {
+        XCTAssertEqual(SpeedLimit(json: ["speed": 55.0, "unit": "mph"]).value, 55.0)
+        XCTAssertEqual(SpeedLimit(json: ["speed": 55.0, "unit": "mph"]).unit, .milesPerHour)
         
-        XCTAssertEqual(maxSpeeds.last!.value, .greatestFiniteMagnitude)
-        XCTAssertEqual(maxSpeeds.last!.unit, .kilometersPerHour)
+        XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).value, 80.0)
+        XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).unit, .kilometersPerHour)
+        
+        XCTAssertEqual(SpeedLimit(json: ["unknown": true]).value, SpeedLimit.invalid.value)
+        XCTAssertEqual(SpeedLimit(json: ["unknown": true]).unit, SpeedLimit.invalid.unit)
+        
+        XCTAssertEqual(SpeedLimit(json: ["none": true]).value, .greatestFiniteMagnitude)
+        XCTAssertEqual(SpeedLimit(json: ["none": true]).unit, .kilometersPerHour)
     }
 }
 #endif

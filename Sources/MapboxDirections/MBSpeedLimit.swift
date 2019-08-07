@@ -57,7 +57,7 @@ public class SpeedLimit: NSObject, NSSecureCoding {
         self.init(value: speed, speedUnits: speedUnits)
     }
     
-    open static var supportsSecureCoding = true
+    public static var supportsSecureCoding = true
     
     public required init?(coder decoder: NSCoder) {
         value = decoder.decodeDouble(forKey: "value")
