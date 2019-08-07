@@ -83,8 +83,7 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).value, 80.0)
         XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).unit, .kilometersPerHour)
         
-        XCTAssertEqual(SpeedLimit(json: ["unknown": true]).value, SpeedLimit.invalid.value)
-        XCTAssertEqual(SpeedLimit(json: ["unknown": true]).unit, SpeedLimit.invalid.unit)
+        XCTAssertEqual(SpeedLimit(json: ["unknown": true]), SpeedLimit.invalid)
         
         XCTAssertEqual(SpeedLimit(json: ["none": true]).value, .greatestFiniteMagnitude)
         XCTAssertEqual(SpeedLimit(json: ["none": true]).unit, .kilometersPerHour)
