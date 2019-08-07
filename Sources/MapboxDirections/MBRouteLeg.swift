@@ -192,6 +192,12 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
     /**
      An array containing the maximum speed limit along each road segment along the route leg’s shape.
+     
+     The maximum speed may be an advisory speed limit for segments where legal limits are not posted, such as highway entrance and exit ramps.
+
+     Speed limit data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/).
+
+     This property is set if the `RouteOptions.attributeOptions` property contains `.maximumSpeedLimit`.
      */
     @objc public let segmentMaximumSpeedLimits: [SpeedLimit]?
     

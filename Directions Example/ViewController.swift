@@ -76,6 +76,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         wp2.allowsArrivingOnOppositeSide = false
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
+        options.routeShapeResolution = .full
+        options.attributeOptions = [.congestionLevel, .maximumSpeedLimit]
         
         Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
             guard error == nil else {
