@@ -2,6 +2,7 @@
 
 ## master
 
+* This library now requires a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 3.0 or above. Older operating system versions are no longer supported. ([#379](https://github.com/mapbox/MapboxDirections.swift/pull/379))
 * Added `AttributeOptions.maximumSpeedLimit` for getting maximum posted speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
 
 ## v0.30.0

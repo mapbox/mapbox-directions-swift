@@ -35,6 +35,8 @@ Then `import MapboxDirections` or `@import MapboxDirections;`.
 
 v0.12.1 is the last release of MapboxDirections.swift written in Swift 3. All subsequent releases are based on the `master` branch, which is written in Swift 4.2. The Swift examples below are written in Swift 4.2.
 
+This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_.
+
 This repository contains example applications written in Swift and Objective-C that demonstrate how to use the framework. To run them, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. Detailed documentation is available in the [Mapbox API Documentation](https://docs.mapbox.com/api/navigation/#directions).
 
 ## Usage
