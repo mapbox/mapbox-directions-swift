@@ -1,5 +1,9 @@
 # Changes to MapboxDirections.swift
 
+## master
+
+* This library now requires a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 3.0 or above. Older operating system versions are no longer supported. ([#379](https://github.com/mapbox/MapboxDirections.swift/pull/379))
+
 ## v0.30.0
 
 * `Directions.fetchAvailableOfflineVersions(completionHandler:)` and `Directions.downloadTiles(in:version:completionHandler:)` now resumes the data task before returning it to conform to its naming conventions and avoid confusion. ([#353](https://github.com/mapbox/MapboxDirections.swift/pull/353))
