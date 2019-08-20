@@ -30,7 +30,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         var expectedSegmentTravelTimes: [TimeInterval]?
         var segmentSpeeds: [CLLocationSpeed]?
         var congestionLevels: [CongestionLevel]?
-        var maximumSpeedLimits: [SpeedLimit]?
+        var maximumSpeedLimits: [Measurement<UnitSpeed>]?
 
         if let jsonAttributes = json["annotation"] as? [String: Any] {
             if let distance = jsonAttributes["distance"] {
@@ -49,7 +49,8 @@ open class RouteLeg: NSObject, NSSecureCoding {
             }
             if let maximumSpeed = jsonAttributes["maxspeed"] as? [JSONDictionary] {
                 maximumSpeedLimits = maximumSpeed.map {
-                    SpeedLimit(json: $0)
+                    // Objective-C support and NSCoding both disallow optional array items.
+                    Measurement<UnitSpeed>(json: $0) ?? Measurement<UnitSpeed>(value: -1, unit: .kilometersPerHour)
                 }
             }
         }
@@ -108,7 +109,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
         segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
         segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
-        segmentMaximumSpeedLimits = decoder.decodeObject(of: [NSArray.self, SpeedLimit.self], forKey: "segmentMaximumSpeedLimits") as? [SpeedLimit]
+        segmentMaximumSpeedLimits = decoder.decodeObject(of: [NSArray.self, NSMeasurement.self], forKey: "segmentMaximumSpeedLimits") as? [Measurement<UnitSpeed>]
     }
 
     @objc public static var supportsSecureCoding = true
@@ -193,13 +194,13 @@ open class RouteLeg: NSObject, NSSecureCoding {
     /**
      An array containing the maximum speed limit along each road segment along the route leg’s shape.
      
-     The maximum speed may be an advisory speed limit for segments where legal limits are not posted, such as highway entrance and exit ramps.
+     The maximum speed may be an advisory speed limit for segments where legal limits are not posted, such as highway entrance and exit ramps. If the speed limit along a particular segment is unknown, it is represented in the array by a measurement whose value is negative. If the speed is unregulated along the segment, such as on the German _Autobahn_ system, it is represented by a measurement whose value is `Double.greatestFiniteMagnitude`.
 
      Speed limit data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/).
 
      This property is set if the `RouteOptions.attributeOptions` property contains `.maximumSpeedLimit`.
      */
-    @objc public let segmentMaximumSpeedLimits: [SpeedLimit]?
+    @objc public let segmentMaximumSpeedLimits: [Measurement<UnitSpeed>]?
     
     // MARK: Getting Additional Leg Details
 

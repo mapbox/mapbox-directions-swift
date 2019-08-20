@@ -128,10 +128,6 @@
 		C56516851FE1AB8F00A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
 		C56516861FE1AB9000A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
 		C56516871FE1AB9100A0AD18 /* MBVisualInstructionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */; };
-		C56A2F6420602C400036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
-		C56A2F6520602C460036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
-		C56A2F6620602C470036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
-		C56A2F6720602C480036846D /* MBSpeedLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56A2F6320602C400036846D /* MBSpeedLimit.swift */; };
 		C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55031DB566A700B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
 		C57D55041DB566A800B94B74 /* MBIntersection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57D55001DB5669600B94B74 /* MBIntersection.swift */; };
@@ -263,6 +259,10 @@
 		DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
+		DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
 		DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
@@ -360,7 +360,6 @@
 		C5434B8B200695A50069E887 /* MBMatchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBMatchOptions.swift; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* MBSpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpokenInstruction.swift; sourceTree = "<group>"; };
 		C56516831FE1A2DD00A0AD18 /* MBVisualInstructionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBVisualInstructionType.swift; sourceTree = "<group>"; };
-		C56A2F6320602C400036846D /* MBSpeedLimit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBSpeedLimit.swift; sourceTree = "<group>"; };
 		C57D55001DB5669600B94B74 /* MBIntersection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBIntersection.swift; sourceTree = "<group>"; };
 		C57D55071DB58C0200B94B74 /* MBLane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLane.swift; sourceTree = "<group>"; };
 		C582BA2D2073ED6300647DAA /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -426,6 +425,7 @@
 		DADD27ED1E5AB0EB00D31FAD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		DADD27F21E5ABD4300D31FAD /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = Carthage/Build/iOS/Mapbox.framework; sourceTree = "<group>"; };
 		DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntersectionTests.swift; sourceTree = "<group>"; };
+		DAE7EA93230B5FD10003B211 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
 		DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteOptionsTests.swift; path = Tests/MapboxDirectionsTests/RouteOptionsTests.swift; sourceTree = SOURCE_ROOT; };
 		DD6254731AE70CB700017857 /* MBDirections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBDirections.swift; sourceTree = "<group>"; };
 		F448F82A1DDCC5B6000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/iOS/Polyline.framework; sourceTree = "<group>"; };
@@ -567,6 +567,7 @@
 				35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */,
 				8D434678219E1167008B7BF3 /* Double.swift */,
 				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
+				DAE7EA93230B5FD10003B211 /* Measurement.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -584,7 +585,6 @@
 			children = (
 				C51538CB1E807FF00093FF3E /* MBAttribute.swift */,
 				C58EA7A91E9D7EAD008F98CE /* MBCongestion.swift */,
-				C56A2F6320602C400036846D /* MBSpeedLimit.swift */,
 			);
 			name = Attributes;
 			sourceTree = "<group>";
@@ -1292,7 +1292,7 @@
 				35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MBMatchOptions.swift in Sources */,
-				C56A2F6520602C460036846D /* MBSpeedLimit.swift in Sources */,
+				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF006217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1355,7 +1355,7 @@
 				35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MBMatchOptions.swift in Sources */,
-				C56A2F6620602C470036846D /* MBSpeedLimit.swift in Sources */,
+				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				DA1A10F21D010247009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF007217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A10F01D010247009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1418,7 +1418,7 @@
 				35EFD00E207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* MBRoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MBMatchOptions.swift in Sources */,
-				C56A2F6720602C480036846D /* MBSpeedLimit.swift in Sources */,
+				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* MBWaypoint.swift in Sources */,
 				35DBF008217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* MBRouteOptions.swift in Sources */,
@@ -1458,7 +1458,7 @@
 				DAC05F161CFBFAC400FA0071 /* MBWaypoint.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* MBLane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* MBRoute.swift in Sources */,
-				C56A2F6420602C400036846D /* MBSpeedLimit.swift in Sources */,
+				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				C59094BF203B800300EB2417 /* MBDirectionsOptions.swift in Sources */,
 				35DBF005217DF0D90009D2AE /* MBCoordinateBounds.swift in Sources */,
 				C5434B8C200695A50069E887 /* MBMatchOptions.swift in Sources */,

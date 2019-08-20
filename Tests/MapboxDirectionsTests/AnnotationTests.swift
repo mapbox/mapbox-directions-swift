@@ -72,21 +72,21 @@ class AnnotationTests: XCTestCase {
         XCTAssertEqual(maxSpeeds[0].value, 48)
         XCTAssertEqual(maxSpeeds[0].unit, .kilometersPerHour)
         
-        XCTAssertEqual(maxSpeeds[3].value, SpeedLimit.invalid.value)
+        XCTAssertEqual(maxSpeeds[3].value, -1)
         XCTAssertEqual(maxSpeeds[3].unit, .kilometersPerHour)
     }
     
     func testSpeedLimits() {
-        XCTAssertEqual(SpeedLimit(json: ["speed": 55.0, "unit": "mph"]).value, 55.0)
-        XCTAssertEqual(SpeedLimit(json: ["speed": 55.0, "unit": "mph"]).unit, .milesPerHour)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["speed": 55.0, "unit": "mph"])?.value, 55.0)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["speed": 55.0, "unit": "mph"])?.unit, .milesPerHour)
         
-        XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).value, 80.0)
-        XCTAssertEqual(SpeedLimit(json: ["speed": 80.0, "unit": "km/h"]).unit, .kilometersPerHour)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["speed": 80.0, "unit": "km/h"])?.value, 80.0)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["speed": 80.0, "unit": "km/h"])?.unit, .kilometersPerHour)
         
-        XCTAssertEqual(SpeedLimit(json: ["unknown": true]), SpeedLimit.invalid)
+        XCTAssertNil(Measurement<UnitSpeed>(json: ["unknown": true]))
         
-        XCTAssertEqual(SpeedLimit(json: ["none": true]).value, .greatestFiniteMagnitude)
-        XCTAssertEqual(SpeedLimit(json: ["none": true]).unit, .kilometersPerHour)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["none": true])?.value, .greatestFiniteMagnitude)
+        XCTAssertEqual(Measurement<UnitSpeed>(json: ["none": true])?.unit, .kilometersPerHour)
     }
 }
 #endif
