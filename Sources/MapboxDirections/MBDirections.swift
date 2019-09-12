@@ -150,7 +150,7 @@ open class Directions: NSObject {
 
      This method retrieves the routes asynchronously from the [Mapbox Directions API](https://www.mapbox.com/api-documentation/navigation/#directions) over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
 
-     Routes may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/). They may be cached but may not be stored permanently. To use the results in other contexts or store them permanently, [upgrade to a Mapbox enterprise plan](https://www.mapbox.com/navigation/#pricing).
+     Routes may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/).
 
      - parameter options: A `RouteOptions` object specifying the requirements for the resulting routes.
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
