@@ -4,8 +4,8 @@ import Foundation
 /**
 A component that represents a lane  representation of an instruction.
  */
-@objcMembers
-@objc(MBLaneIndicationComponent)
+
+
 open class LaneIndicationComponent: NSObject, ComponentRepresentable {
 
     /**

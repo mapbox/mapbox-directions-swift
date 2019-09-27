@@ -5,35 +5,35 @@ import CoreLocation
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-@objc(MBVisualInstructionBanner)
+
 open class VisualInstructionBanner: NSObject, NSSecureCoding {
 
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
      */
-    @objc public let distanceAlongStep: CLLocationDistance
+    public let distanceAlongStep: CLLocationDistance
 
     /**
      The most important information to convey to the user about the `RouteStep`.
      */
-    @objc public let primaryInstruction: VisualInstruction
+    public let primaryInstruction: VisualInstruction
 
     /**
      Less important details about the `RouteStep`.
      */
-    @objc public let secondaryInstruction: VisualInstruction?
+    public let secondaryInstruction: VisualInstruction?
 
     /**
      A visual instruction that is presented simultaneously to provide information about an additional maneuver that occurs in rapid succession.
 
      This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
      */
-    @objc public let tertiaryInstruction: VisualInstruction?
+    public let tertiaryInstruction: VisualInstruction?
 
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
-    @objc public var drivingSide: DrivingSide
+    public var drivingSide: DrivingSide
 
     /**
      Initializes a new visual instruction banner object based on the given JSON dictionary representation and a driving side.
@@ -41,7 +41,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
      - parameter json: A JSON object that conforms to the [primary or secondary banner](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
      - parameter drivingSide: The side of the road the user should drive on. This value should be consistent with the containing route step.
      */
-    @objc(initWithJSON:drivingSide:)
+    
     public convenience init(json: [String: Any], drivingSide: DrivingSide) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
 
@@ -71,7 +71,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
      - parameter secondaryInstruction: Less important details about the `RouteStep`.
      - parameter drivingSide: Which side of a bidirectional road the driver should drive on.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
+    public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         self.primaryInstruction = primaryInstruction
         self.secondaryInstruction = secondaryInstruction

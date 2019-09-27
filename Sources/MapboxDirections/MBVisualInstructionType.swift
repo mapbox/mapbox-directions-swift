@@ -3,7 +3,7 @@ import Foundation
 /**
  `VisualInstructionComponentType` describes the type of `VisualInstructionComponent`.
  */
-@objc(MBVisualInstructionComponentType)
+
 public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     
     /**

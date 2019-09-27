@@ -66,7 +66,7 @@ let userAgent: String = {
 
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
-@objc(MBDirections)
+
 open class Directions: NSObject {
     /**
      A closure (block) to be called when a directions request is complete.
@@ -96,18 +96,18 @@ open class Directions: NSObject {
 
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    @objc(sharedDirections)
+    
     public static let shared = Directions(accessToken: nil)
 
     /**
      The API endpoint to use when requesting directions.
      */
-    @objc public private(set) var apiEndpoint: URL
+    public private(set) var apiEndpoint: URL
 
     /**
      The Mapbox access token to associate with the request.
      */
-    @objc public let accessToken: String
+    public let accessToken: String
 
     /**
      Initializes a newly created directions object with an optional access token and host.
@@ -115,7 +115,7 @@ open class Directions: NSObject {
      - parameter accessToken: A Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) endpoint is used by default.
      */
-    @objc public init(accessToken: String?, host: String?) {
+    public init(accessToken: String?, host: String?) {
         let accessToken = accessToken ?? defaultAccessToken
         assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
 
@@ -139,7 +139,7 @@ open class Directions: NSObject {
 
      - parameter accessToken: A Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    @objc public convenience init(accessToken: String?) {
+    public convenience init(accessToken: String?) {
         self.init(accessToken: accessToken, host: nil)
     }
 
@@ -156,7 +156,7 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    @objc(calculateDirectionsWithOptions:completionHandler:)
+    
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
@@ -184,7 +184,7 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting matches. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matches, cancel this task.
      */
-    @objc(calculateMatchesWithOptions:completionHandler:)
+    
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
@@ -212,7 +212,7 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    @objc(calculateRoutesMatchingOptions:completionHandler:)
+    
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStartDate = Date()
         let task = dataTask(forCalculating: options, completionHandler: { (json) in
@@ -274,7 +274,7 @@ open class Directions: NSObject {
      - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
      - returns: The URL to send the request to.
      */
-    @objc(URLForCalculatingDirectionsWithOptions:)
+    
     open func url(forCalculating options: DirectionsOptions) -> URL {
         return url(forCalculating: options, httpMethod: "GET")
     }
@@ -290,7 +290,7 @@ open class Directions: NSObject {
      - parameter httpMethod: The HTTP method to use. The value of this argument should match the `URLRequest.httpMethod` of the request you send. Currently, only GET and POST requests are supported by the API.
      - returns: The URL to send the request to.
      */
-    @objc(URLForCalculatingDirectionsWithOptions:HTTPMethod:)
+    
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
@@ -316,7 +316,7 @@ open class Directions: NSObject {
      - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
      - returns: A GET or POST HTTP request to calculate the specified options.
      */
-    @objc(URLRequestForCalculatingDirectionsWithOptions:)
+    
     open func urlRequest(forCalculating options: DirectionsOptions) -> URLRequest {
         let getURL = self.url(forCalculating: options, httpMethod: "GET")
         var request = URLRequest(url: getURL)

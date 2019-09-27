@@ -9,7 +9,7 @@
 /**
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
-@objc(MBVisualInstructionComponent)
+
 open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
     /**
@@ -17,31 +17,31 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
     The URL refers to an image that uses the device’s native screen scale.
     */
-    @objc public var imageURL: URL?
+    public var imageURL: URL?
 
     /**
      An abbreviated representation of the `text` property.
      */
-    @objc public var abbreviation: String?
+    public var abbreviation: String?
 
     /**
      The priority for which the component should be abbreviated.
 
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
-    @objc public var abbreviationPriority: Int = NSNotFound
+    public var abbreviationPriority: Int = NSNotFound
 
     /**
      The plain text representation of this component.
 
      Use this property if `imageURL` is `nil` or if the URL contained in that property is not yet available.
      */
-    @objc public var text: String?
+    public var text: String?
 
     /**
      The type of visual instruction component. You can display the component differently depending on its type.
      */
-    @objc public var type: VisualInstructionComponentType
+    public var type: VisualInstructionComponentType
 
     public static var supportsSecureCoding: Bool = true
 
@@ -50,7 +50,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
      - parameter json: A JSON object that conforms to the [banner component](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
      */
-    @objc(initWithJSON:)
+    
     public convenience init(json: [String: Any]) {
         let text = json["text"] as? String
         let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
@@ -83,7 +83,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
      - parameter abbreviation: An abbreviated representation of `text`.
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
      */
-    @objc public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
+    public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
         self.text = text
         self.type = type
         self.imageURL = imageURL
@@ -91,7 +91,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
         self.abbreviationPriority = abbreviationPriority
     }
 
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
 
         guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {

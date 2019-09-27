@@ -18,7 +18,7 @@ open class MatchOptions: DirectionsOptions {
      - parameter locations: An array of `CLLocation` objects representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 100 locations. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
         }
@@ -31,14 +31,14 @@ open class MatchOptions: DirectionsOptions {
      - parameter coordinates: An array of geographic coordinates representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 100 locations. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).) Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map {
             Waypoint(coordinate: $0)
         }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
-    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
@@ -56,7 +56,7 @@ open class MatchOptions: DirectionsOptions {
      If specified, each index must correspond to a valid index in `coordinates`, and the index set must contain 0 and the last index (one less than `endIndex`) of `coordinates`.
      */
     @available(*, deprecated, message: "Use Waypoint.separatesLegs instead.")
-    @objc open var waypointIndices: IndexSet?
+    open var waypointIndices: IndexSet?
     
     override var legSeparators: [Waypoint] {
         if let indices = (self as MatchOptionsDeprecations).waypointIndices {
@@ -66,14 +66,14 @@ open class MatchOptions: DirectionsOptions {
         }
     }
     
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
         super.init(coder: decoder)
         var deprecations = self as MatchOptionsDeprecations
         deprecations.waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
     }
 
-    @objc public override func encode(with coder: NSCoder) {
+    public override func encode(with coder: NSCoder) {
         coder.encode(resamplesTraces, forKey: "resampleTraces")
         coder.encode((self as MatchOptionsDeprecations).waypointIndices, forKey: "waypointIndices")
         super.encode(with: coder)

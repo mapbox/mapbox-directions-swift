@@ -7,7 +7,6 @@ import Polyline
  
  Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-@objc(MBMatch)
 open class Match: DirectionsResult {
     
     init(matchOptions: MatchOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?, waypointIndices: IndexSet) {
@@ -24,7 +23,6 @@ open class Match: DirectionsResult {
      - parameter tracepoints: An array of `Tracepoint` that the match found in order.
      - parameter matchOptions: The `MatchOptions` used to create the request.
     */
-    @objc(initWithJSON:tracepoints:waypointIndices:matchOptions:)
     public convenience init(json: [String: Any], tracepoints: [Tracepoint], waypointIndices: IndexSet, matchOptions: MatchOptions) {
         let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
                           json["legs"] as? [JSONDictionary] ?? [])
@@ -50,7 +48,7 @@ open class Match: DirectionsResult {
     /**
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
-    @objc open var confidence: Float
+    open var confidence: Float
     
     
     /**
@@ -58,13 +56,13 @@ open class Match: DirectionsResult {
      
      Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint is a `Tracepoint` object whose `Tracepoint.coordinate` property is `kCLLocationCoordinate2DInvalid`.
      */
-    @objc open var tracepoints: [Tracepoint]
+    open var tracepoints: [Tracepoint]
     
     
     /**
      Index of the waypoint inside the matched route.
      */
-    @objc open var waypointIndices: IndexSet?
+    open var waypointIndices: IndexSet?
     
     /**
      `MatchOptions` used to create the match request.
@@ -73,7 +71,7 @@ open class Match: DirectionsResult {
         return super.directionsOptions as! MatchOptions
     }
     
-    @objc public required init?(coder decoder: NSCoder) {
+    public required init?(coder decoder: NSCoder) {
         confidence = decoder.decodeFloat(forKey: "confidence")
         
         guard let tracepoints = decoder.decodeObject(of: [NSArray.self, Tracepoint.self], forKey: "tracepoints") as? [Tracepoint] else {
@@ -90,7 +88,7 @@ open class Match: DirectionsResult {
         return true
     }
     
-    @objc public override func encode(with coder: NSCoder) {
+    public override func encode(with coder: NSCoder) {
         coder.encode(confidence, forKey: "confidence")
         coder.encode(tracepoints, forKey: "tracepoints")
         coder.encode(waypointIndices, forKey: "waypointIndices")
@@ -103,7 +101,6 @@ open class Match: DirectionsResult {
         return isEqual(to: opts)
     }
     
-    @objc(isEqualToMatch:)
     open func isEqual(to match: Match?) -> Bool {
         guard let other = match else { return false }
         guard tracepoints == other.tracepoints,

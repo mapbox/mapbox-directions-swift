@@ -3,8 +3,8 @@ import Foundation
 /**
  A lane on the road approaching an intersection.
  */
-@objcMembers
-@objc(MBLane)
+
+
 public class Lane: NSObject, NSSecureCoding {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.

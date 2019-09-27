@@ -11,13 +11,13 @@ import CMapboxDirections
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
-@objcMembers
-@objc(MBRouteLeg)
+
+
 open class RouteLeg: NSObject, NSSecureCoding {
 
     // MARK: Creating a Leg
 
-    @objc internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
+    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
         self.source = source
         self.destination = destination
         self.profileIdentifier = options.profileIdentifier
@@ -64,7 +64,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
      - parameter destination: The waypoint at the end of the leg.
      - parameter options: The options used when requesting the route.
      */
-    @objc(initWithJSON:source:destination:options:)
+    
     public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
         let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0, options: options) }
         self.init(steps: steps, json: json, source: source, destination: destination, options: options)
@@ -95,7 +95,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
             return nil
         }
         
-        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
+        profileIdentifier = DirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
 
         segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
         expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
@@ -103,7 +103,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
         segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
     }
 
-    @objc public static var supportsSecureCoding = true
+    public static var supportsSecureCoding = true
 
     public func encode(with coder: NSCoder) {
         coder.encode(source, forKey: "source")
@@ -126,14 +126,14 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
      */
-    @objc public let source: Waypoint
+    public let source: Waypoint
 
     /**
      The endpoint of the route leg.
 
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
-    @objc public let destination: Waypoint
+    public let destination: Waypoint
 
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.
@@ -142,7 +142,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
      */
-    @objc public let steps: [RouteStep]
+    public let steps: [RouteStep]
 
 
     /**
@@ -150,7 +150,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `.distance`.
      */
-    @objc public let segmentDistances: [CLLocationDistance]?
+    public let segmentDistances: [CLLocationDistance]?
 
     /**
      An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
@@ -159,7 +159,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `.expectedTravelTime`.
      */
-    @objc public let expectedSegmentTravelTimes: [TimeInterval]?
+    public let expectedSegmentTravelTimes: [TimeInterval]?
 
     /**
      An array containing the expected average speed (measured in meters per second) between each coordinate in the route leg geometry.
@@ -168,7 +168,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `.speed`.
      */
-    @objc public let segmentSpeeds: [CLLocationSpeed]?
+    public let segmentSpeeds: [CLLocationSpeed]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
@@ -190,9 +190,9 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      The leg’s name does not identify the start and end points of the leg. To distinguish one leg from another within the same route, concatenate the `name` properties of the `source` and `destination` waypoints.
      */
-    @objc public let name: String
+    public let name: String
 
-    @objc open override var description: String {
+    open override var description: String {
         return name
     }
 
@@ -201,7 +201,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      The value of this property accounts for the distance that the user must travel to arrive at the destination from the source. It is not the direct distance between the source and destination, nor should not assume that the user would travel along this distance at a fixed speed.
      */
-    @objc public let distance: CLLocationDistance
+    public let distance: CLLocationDistance
 
     /**
      The route leg’s expected travel time, measured in seconds.
@@ -210,14 +210,14 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
-    @objc public let expectedTravelTime: TimeInterval
+    public let expectedTravelTime: TimeInterval
 
     /**
      A string specifying the primary mode of transportation for the route leg.
 
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
-    public let profileIdentifier: MBDirectionsProfileIdentifier
+    public let profileIdentifier: DirectionsProfileIdentifier
 
     func debugQuickLookObject() -> Any? {
         let coordinates = steps.reduce([], { $0 + ($1.coordinates ?? []) })

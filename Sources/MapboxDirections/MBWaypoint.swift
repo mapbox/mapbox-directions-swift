@@ -5,8 +5,8 @@ import CoreLocation
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
-@objcMembers
-@objc(MBWaypoint)
+
+
 open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     // MARK: Creating a Waypoint Object
 
@@ -57,7 +57,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
      - parameter heading: A `CLHeading` object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the `CLHeading` class’s `trueHeading` property or `magneticHeading` property, converting it into the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    @objc public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
+    public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading {
@@ -111,7 +111,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
         return isEqual(to: opts)
     }
     
-    @objc(isEqualToWaypoint:)
+    
     open func isEqual(to other: Waypoint?) -> Bool {
         guard let other = other else { return false }
         return type(of: self) == type(of: other) &&
@@ -132,7 +132,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
     /**
      The geographic coordinate of the waypoint.
      */
-    @objc public internal(set) var coordinate: CLLocationCoordinate2D
+    public internal(set) var coordinate: CLLocationCoordinate2D
 
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -143,7 +143,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`radiuses`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var coordinateAccuracy: CLLocationAccuracy = -1
+    open var coordinateAccuracy: CLLocationAccuracy = -1
 
     /**
      The geographic coordinate of the waypoint’s target.
@@ -154,7 +154,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+    open var targetCoordinate: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
 
     // MARK: Specifying How the User Approaches the Waypoint
 
@@ -173,7 +173,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the angles in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var heading: CLLocationDirection = -1
+    open var heading: CLLocationDirection = -1
 
     /**
      The maximum tolerance, in degrees, within which a route’s approach to a waypoint may differ from `heading` in either direction but still be considered viable.
@@ -186,7 +186,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the ranges in the [`bearings`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var headingAccuracy: CLLocationDirection = -1
+    open var headingAccuracy: CLLocationDirection = -1
 
     internal var headingDescription: String {
         return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
@@ -199,7 +199,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var allowsArrivingOnOppositeSide = true
+    open var allowsArrivingOnOppositeSide = true
 
     // MARK: Identifying the Waypoint
 
@@ -210,7 +210,7 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`waypoint_names`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var name: String?
+    open var name: String?
     
     /**
      A Boolean value indicating whether the waypoint is significant enough to appear in the resulting routes as a waypoint separating two legs, along with corresponding guidance instructions.
@@ -223,9 +223,9 @@ open class Waypoint: NSObject, NSCopying, NSSecureCoding {
 
      This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var separatesLegs: Bool = true
+    open var separatesLegs: Bool = true
 
-    @objc open override var description: String {
+    open override var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
 

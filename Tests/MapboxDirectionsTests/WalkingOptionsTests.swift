@@ -12,7 +12,7 @@ class WalkingOptionsTests: XCTestCase {
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
         ]
 
-        let options = RouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        let options = RouteOptions(waypoints: waypoints, profileIdentifier: DirectionsProfileIdentifier.walking)
         var queryItems = options.urlQueryItems
 
         XCTAssertEqual(queryItems.filter { $0.name == "alley_bias" }.first?.value, "0.0")

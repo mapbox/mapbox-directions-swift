@@ -17,7 +17,7 @@ let MaximumURLLength = 1024 * 8
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
-@objc(MBRouteShapeFormat)
+
 public enum RouteShapeFormat: UInt, CustomStringConvertible {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
@@ -89,7 +89,7 @@ extension RouteShapeFormat {
 /**
  A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
  */
-@objc(MBRouteShapeResolution)
+
 public enum RouteShapeResolution: UInt, CustomStringConvertible {
     /**
      The route’s shape is omitted.
@@ -140,7 +140,7 @@ public enum RouteShapeResolution: UInt, CustomStringConvertible {
 /**
  A system of units of measuring distances and other quantities.
  */
-@objc(MBMeasurementSystem)
+
 public enum MeasurementSystem: UInt, CustomStringConvertible {
 
     /**
@@ -183,7 +183,7 @@ public enum MeasurementSystem: UInt, CustomStringConvertible {
 /**
  A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
  */
-@objc(MBInstructionFormat)
+
 public enum InstructionFormat: UInt, CustomStringConvertible {
     /**
      The route steps’ instructions are delivered in plain text format.
@@ -224,8 +224,8 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
 
  You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
-@objcMembers
-@objc(MBDirectionsOptions)
+
+
 open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
     /**
@@ -236,7 +236,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    required public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    required public init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
@@ -246,7 +246,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
     }
 
     // MARK: NSCopying
-    @objc open func copy(with zone: NSZone? = nil) -> Any {
+    open func copy(with zone: NSZone? = nil) -> Any {
         let copy = type(of: self).init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         copy.includesSteps = includesSteps
         copy.shapeFormat = shapeFormat
@@ -265,7 +265,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         return isEqual(to: opts)
     }
 
-    @objc(isEqualToDirectionsOptions:)
+    
     open func isEqual(to directionsOptions: DirectionsOptions?) -> Bool {
         guard let other = directionsOptions else { return false }
         guard type(of: self) == type(of: other) else { return false }
@@ -305,7 +305,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
             return nil
         }
         
-        self.profileIdentifier = MBDirectionsProfileIdentifier(rawValue: profileIdentifier)
+        self.profileIdentifier = DirectionsProfileIdentifier(rawValue: profileIdentifier)
 
         includesSteps = decoder.decodeBool(forKey: "includesSteps")
 
@@ -372,7 +372,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
-    @objc open var waypoints: [Waypoint]
+    open var waypoints: [Waypoint]
     
     /**
      The waypoints that separate legs.
@@ -389,7 +389,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
      */
-    open var profileIdentifier: MBDirectionsProfileIdentifier
+    open var profileIdentifier: DirectionsProfileIdentifier
 
     /**
      A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
@@ -400,7 +400,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      The default value of this property is `false`.
      */
-    @objc open var includesSteps = false
+    open var includesSteps = false
 
     /**
      Format of the data from which the shapes of the returned route and its steps are derived.
@@ -409,7 +409,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      The default value of this property is `polyline`.
      */
-    @objc open var shapeFormat = RouteShapeFormat.polyline
+    open var shapeFormat = RouteShapeFormat.polyline
 
     /**
      Resolution of the shape of the returned route.
@@ -418,7 +418,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      The default value of this property is `low`, specifying a low-resolution route shape.
      */
-    @objc open var routeShapeResolution = RouteShapeResolution.low
+    open var routeShapeResolution = RouteShapeResolution.low
 
     /**
      AttributeOptions for the route. Any combination of `AttributeOptions` can be specified.
@@ -436,7 +436,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      By default, this property is set to the current system locale.
      */
-    @objc open var locale = Locale.autoupdatingCurrent {
+    open var locale = Locale.autoupdatingCurrent {
         didSet {
             self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
         }
@@ -447,7 +447,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      If this option is set to true, the `RouteStep.instructionsSpokenAlongStep` property is set to an array of `SpokenInstructions`.
      */
-    @objc open var includesSpokenInstructions = false
+    open var includesSpokenInstructions = false
 
     /**
      The measurement system used in spoken instructions included in route steps.
@@ -456,21 +456,21 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
+    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
 
     /**
      If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
 
      `visualInstructionsAlongStep` contains an array of `VisualInstruction` objects used for visually conveying information about a given `RouteStep`.
      */
-    @objc open var includesVisualInstructions = false
+    open var includesVisualInstructions = false
 
     /**
      An array of URL query items to include in an HTTP request.
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */
-    @objc(URLQueryItems)
+    
     open var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),

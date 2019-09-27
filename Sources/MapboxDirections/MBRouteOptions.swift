@@ -25,8 +25,6 @@ public let MBMaximumWalkingSpeed: CLLocationSpeed = 6.94
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
-@objcMembers
-@objc(MBRouteOptions)
 open class RouteOptions: DirectionsOptions {
     /**
      Initializes a route options object for routes between the given locations and an optional profile identifier.
@@ -36,7 +34,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -47,7 +45,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -58,7 +56,7 @@ open class RouteOptions: DirectionsOptions {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
@@ -86,8 +84,8 @@ open class RouteOptions: DirectionsOptions {
         let roadClassesToAvoidDescriptions = decoder.decodeObject(of: NSString.self, forKey: "roadClassesToAvoid") as String?
         roadClassesToAvoid = RoadClasses(descriptions: roadClassesToAvoidDescriptions?.components(separatedBy: ",") ?? []) ?? []
         
-        alleyPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "alleyPriority"))
-        walkwayPriority = MBDirectionsPriority(rawValue: decoder.decodeDouble(forKey: "walkwayPriority"))
+        alleyPriority = DirectionsPriority(rawValue: decoder.decodeDouble(forKey: "alleyPriority"))
+        walkwayPriority = DirectionsPriority(rawValue: decoder.decodeDouble(forKey: "walkwayPriority"))
         speed = decoder.decodeDouble(forKey: "speed")
     }
 
@@ -149,7 +147,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids alleys, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
-    open var alleyPriority: MBDirectionsPriority = .default
+    open var alleyPriority: DirectionsPriority = .default
     
     /**
      A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
@@ -158,7 +156,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids walkways, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
-    open var walkwayPriority: MBDirectionsPriority = .default
+    open var walkwayPriority: DirectionsPriority = .default
     
     /**
      The expected uniform travel speed measured in meters per second.
@@ -261,7 +259,7 @@ open class RouteOptions: DirectionsOptions {
         return isEqual(to: opts)
     }
 
-    @objc(isEqualToRouteOptions:)
+    
     open func isEqual(to routeOptions: RouteOptions?) -> Bool {
         guard let other = routeOptions else { return false }
         guard super.isEqual(to: routeOptions) else { return false }
@@ -302,7 +300,7 @@ open class RouteOptionsV4: RouteOptions {
      */
     open var includesShapes: Bool = true
     
-    public required init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier?) {
+    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     

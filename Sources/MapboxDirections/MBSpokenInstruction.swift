@@ -9,7 +9,7 @@ import CoreLocation
 
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
-@objc(MBSpokenInstruction)
+
 open class SpokenInstruction: NSObject, NSSecureCoding {
 
     /**
@@ -17,7 +17,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
 
      The distance is measured in meters from the beginning of the associated step.
      */
-    @objc public let distanceAlongStep: CLLocationDistance
+    public let distanceAlongStep: CLLocationDistance
 
 
     /**
@@ -25,7 +25,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
 
      This representation is appropriate for speech synthesizers that lack support for the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML), such as `AVSpeechSynthesizer`. For speech synthesizers that support SSML, use the `ssmlText` property instead.
      */
-    @objc public let text: String
+    public let text: String
 
 
     /**
@@ -33,14 +33,14 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
 
      This representation is appropriate for speech synthesizers that support the [Speech Synthesis Markup Language](https://en.wikipedia.org/wiki/Speech_Synthesis_Markup_Language) (SSML), such as [Amazon Polly](https://aws.amazon.com/polly/). Numbers and names are marked up to ensure correct pronunciation. For speech synthesizers that lack SSML support, use the `text` property instead.
      */
-    @objc public let ssmlText: String
+    public let ssmlText: String
 
     /**
      Initializes a new spoken instruction object based on the given JSON dictionary representation.
 
      - parameter json: A JSON object that conforms to the [voice instruction](https://docs.mapbox.com/api/navigation/#voice-instruction-object) format described in the Directions API documentation.
      */
-    @objc(initWithJSON:)
+    
     public convenience init(json: [String: Any]) {
         let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
         let text = json["announcement"] as! String
@@ -56,7 +56,7 @@ open class SpokenInstruction: NSObject, NSSecureCoding {
      - parameter text: A plain-text representation of the speech-optimized instruction.
      - parameter ssmlText: A formatted representation of the speech-optimized instruction.
      */
-    @objc public init(distanceAlongStep: CLLocationDistance, text: String, ssmlText: String) {
+    public init(distanceAlongStep: CLLocationDistance, text: String, ssmlText: String) {
         self.distanceAlongStep = distanceAlongStep
         self.text = text
         self.ssmlText = ssmlText

@@ -4,7 +4,7 @@ import CoreLocation
 /**
  A bounding box represents a geographic region.
  */
-@objc(MBCoordinateBounds)
+
 public class CoordinateBounds: NSObject, Codable {
     let southWest: CLLocationCoordinate2D
     let northEast: CLLocationCoordinate2D
@@ -12,8 +12,7 @@ public class CoordinateBounds: NSObject, Codable {
     /**
      Initializes a `BoundingBox` with known bounds.
      */
-    @objc
-    public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         self.southWest = southWest
         self.northEast = northEast
         super.init()
@@ -22,8 +21,7 @@ public class CoordinateBounds: NSObject, Codable {
     /**
      Initializes a `BoundingBox` with known bounds.
      */
-    @objc
-    public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
+        public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
         self.southWest = CLLocationCoordinate2D(latitude: southEast.latitude, longitude: northWest.longitude)
         self.northEast = CLLocationCoordinate2D(latitude: northWest.latitude, longitude: southEast.longitude)
         super.init()
@@ -32,8 +30,7 @@ public class CoordinateBounds: NSObject, Codable {
     /**
      Initializes a `BoundingBox` from an array of `CLLocationCoordinate2D`’s.
      */
-    @objc
-    convenience public init(coordinates: [CLLocationCoordinate2D]) {
+        convenience public init(coordinates: [CLLocationCoordinate2D]) {
         assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
         
         var maximumLatitude: CLLocationDegrees = -90

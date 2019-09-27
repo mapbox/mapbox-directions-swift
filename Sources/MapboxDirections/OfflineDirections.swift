@@ -10,7 +10,7 @@ struct AvailableVersionsResponse: Codable {
     let availableVersions: [String]
 }
 
-@objc(MBOfflineDirectionsProtocol)
+
 public protocol OfflineDirectionsProtocol {
     
     /**
@@ -18,7 +18,7 @@ public protocol OfflineDirectionsProtocol {
      
      - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
-    @objc(fetchAvailableOfflineVersionsWithCompletionHandler:)
+    
     func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
     
     /**
@@ -28,7 +28,7 @@ public protocol OfflineDirectionsProtocol {
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
-    @objc(downloadTilesInCoordinateBounds:version:completionHandler:)
+    
     func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
