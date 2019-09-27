@@ -4,10 +4,41 @@ import CMapboxDirections
 #endif
 
 
-public typealias LaneIndication = MBLaneIndication
+public struct LaneIndication: OptionSet, CustomStringConvertible {
+    public var rawValue: Int
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+    
+    
+    public typealias RawValue = Int
 
+    /// Indicates a sharp turn to the right.
+    static let sharpRight = LaneIndication(rawValue: 1 << 1)
+    
+    /// Indicates a turn to the right.
+    static let right = LaneIndication(rawValue: 1 << 2)
+    
+    /// Indicates a turn to the right.
+    static let slightRight = LaneIndication(rawValue: 1 << 3)
+    
+    /// Indicates no turn.
+    static let straightAhead = LaneIndication(rawValue: 1 << 4)
+    
+    /// Indicates a slight turn to the left.
+    static let slightLeft = LaneIndication(rawValue: 1 << 5)
+    
+    /// Indicates a turn to the left.
+    static let left = LaneIndication(rawValue: 1 << 6)
+    
+    /// Indicates a sharp turn to the left.
+    static let sharpLeft = LaneIndication(rawValue: 1 << 7)
+    
+    /// Indicates a U-turn.
+    static let uTurn = LaneIndication(rawValue: 1 << 8)
+    
 
-extension LaneIndication: CustomStringConvertible {
     /**
      Creates a lane indication from the given description strings.
      */

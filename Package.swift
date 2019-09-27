@@ -22,9 +22,6 @@ let package = Package(
         .target(
             name: "MapboxDirections",
             dependencies: ["CMapboxDirections", "Polyline"]),
-        .target(
-            name: "CMapboxDirections"
-        ),
         .testTarget(
             name: "MapboxDirectionsTests",
             dependencies: ["MapboxDirections"]),
