@@ -43,7 +43,8 @@ open class RouteLeg: NSObject, NSSecureCoding {
             }
             if let congestion = jsonAttributes["congestion"] as? [String] {
                 congestionLevels = congestion.map {
-                    CongestionLevel(description: $0)!
+                    #warning("derail")
+                   return CongestionLevel(rawValue: $0)!
                 }
             }
         }

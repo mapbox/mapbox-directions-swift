@@ -4,7 +4,7 @@ import Foundation
  A `CongestionLevel` indicates the level of traffic congestion along a road segment relative to the normal flow of traffic along that segment. You can color-code a route line according to the congestion level along each segment of the route.
  */
 
-public enum CongestionLevel: Int, CustomStringConvertible {
+public enum CongestionLevel: String, Codable{
     /**
      There is not enough data to determine the level of congestion along the road segment.
      */
@@ -37,38 +37,4 @@ public enum CongestionLevel: Int, CustomStringConvertible {
      Severe congestion levels are conventionally highlighted in red.
      */
     case severe
-    
-    public init?(description: String) {
-        let level: CongestionLevel
-        switch description {
-        case "unknown":
-            level = .unknown
-        case "low":
-            level = .low
-        case "moderate":
-            level = .moderate
-        case "heavy":
-            level = .heavy
-        case "severe":
-            level = .severe
-        default:
-            return nil
-        }
-        self.init(rawValue: level.rawValue)
-    }
-    
-    public var description: String {
-        switch self {
-        case .unknown:
-            return "unknown"
-        case .low:
-            return "low"
-        case .moderate:
-            return "moderate"
-        case .heavy:
-            return "heavy"
-        case .severe:
-            return "severe"
-        }
-    }
 }

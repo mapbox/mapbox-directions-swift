@@ -79,7 +79,7 @@ open class Directions: NSObject {
         If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: NSError?) -> Void
+    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: DirectionsError?) -> Void
 
     /**
      A closure (block) to be called when a map matching request is complete.
@@ -144,6 +144,7 @@ open class Directions: NSObject {
     }
 
     // MARK: Getting Directions
+    
 
     /**
      Begins asynchronously calculating routes using the given options and delivers the results to a closure.
@@ -158,19 +159,34 @@ open class Directions: NSObject {
      */
     
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
-        let fetchStartDate = Date()
-        let task = dataTask(forCalculating: options, completionHandler: { (json) in
-            let responseEndDate = Date()
-            let response = options.response(from: json)
-            if let routes = response.1 {
-                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
+        let fetchStart = Date()
+        let requestURL = url(forCalculating: options)
+        let request = URLRequest(url: requestURL)
+        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+            guard let data = possibleData else {
+                completionHandler(nil, nil, .noData)
             }
-            completionHandler(response.0, response.1, nil)
-        }) { (error) in
-            completionHandler(nil, nil, error)
+            if let error = possibleError {
+                completionHandler(nil, nil, .unknown(underlying: error))
+            }
+            
+            
         }
-        task.resume()
-        return task
+        
+        
+//        let fetchStartDate = Date()
+//        let task = dataTask(forCalculating: options, completionHandler: { (json) in
+//            let responseEndDate = Date()
+//            let response = options.response(from: json)
+//            if let routes = response.1 {
+//                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
+//            }
+//            completionHandler(response.0, response.1, nil)
+//        }) { (error) in
+//            completionHandler(nil, nil, error)
+//        }
+//        task.resume()
+//        return task
     }
 
     /**
@@ -186,19 +202,19 @@ open class Directions: NSObject {
      */
     
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
-        let fetchStartDate = Date()
-        let task = dataTask(forCalculating: options, completionHandler: { (json) in
-            let responseEndDate = Date()
-            let response = options.response(from: json)
-            if let matches = response {
-                self.postprocess(matches, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
-            }
-            completionHandler(response, nil)
-        }) { (error) in
-            completionHandler(nil, error)
-        }
-        task.resume()
-        return task
+//        let fetchStartDate = Date()
+//        let task = dataTask(forCalculating: options, completionHandler: { (json) in
+//            let responseEndDate = Date()
+//            let response = options.response(from: json)
+//            if let matches = response {
+//                self.postprocess(matches, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
+//            }
+//            completionHandler(response, nil)
+//        }) { (error) in
+//            completionHandler(nil, error)
+//        }
+//        task.resume()
+//        return task
     }
 
     /**
@@ -214,19 +230,19 @@ open class Directions: NSObject {
      */
     
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
-        let fetchStartDate = Date()
-        let task = dataTask(forCalculating: options, completionHandler: { (json) in
-            let responseEndDate = Date()
-            let response = options.response(containingRoutesFrom: json)
-            if let routes = response.1 {
-                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
-            }
-            completionHandler(response.0, response.1, nil)
-        }) { (error) in
-            completionHandler(nil, nil, error)
-        }
-        task.resume()
-        return task
+//        let fetchStartDate = Date()
+//        let task = dataTask(forCalculating: options, completionHandler: { (json) in
+//            let responseEndDate = Date()
+//            let response = options.response(containingRoutesFrom: json)
+//            if let routes = response.1 {
+//                self.postprocess(routes, fetchStartDate: fetchStartDate, responseEndDate: responseEndDate, uuid: json["uuid"] as? String)
+//            }
+//            completionHandler(response.0, response.1, nil)
+//        }) { (error) in
+//            completionHandler(nil, nil, error)
+//        }
+//        task.resume()
+//        return task
     }
 
     /**
@@ -239,31 +255,31 @@ open class Directions: NSObject {
      - postcondition: The caller must resume the returned task.
      */
     fileprivate func dataTask(forCalculating options: DirectionsOptions, completionHandler: @escaping (_ json: JSONDictionary) -> Void, errorHandler: @escaping (_ error: NSError) -> Void) -> URLSessionDataTask {
-        let request = urlRequest(forCalculating: options)
-        return URLSession.shared.dataTask(with: request) { (data, response, error) in
-            var json: JSONDictionary = [:]
-            if let data = data, response?.mimeType == "application/json" {
-                do {
-                    json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
-                } catch {
-                    assert(false, "Invalid data")
-                }
-            }
-
-            let apiStatusCode = json["code"] as? String
-            let apiMessage = json["message"] as? String
-            guard !json.isEmpty, data != nil, error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
-                let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
-                DispatchQueue.main.async {
-                    errorHandler(apiError)
-                }
-                return
-            }
-
-            DispatchQueue.main.async {
-                completionHandler(json)
-            }
-        }
+//        let request = urlRequest(forCalculating: options)
+//        return URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            var json: JSONDictionary = [:]
+//            if let data = data, response?.mimeType == "application/json" {
+//                do {
+//                    json = try JSONSerialization.jsonObject(with: data, options: []) as! JSONDictionary
+//                } catch {
+//                    assert(false, "Invalid data")
+//                }
+//            }
+//
+//            let apiStatusCode = json["code"] as? String
+//            let apiMessage = json["message"] as? String
+//            guard !json.isEmpty, data != nil, error == nil && ((apiStatusCode == nil && apiMessage == nil) || apiStatusCode == "Ok") else {
+//                let apiError = Directions.informativeError(describing: json, response: response, underlyingError: error as NSError?)
+//                DispatchQueue.main.async {
+//                    errorHandler(apiError)
+//                }
+//                return
+//            }
+//
+//            DispatchQueue.main.async {
+//                completionHandler(json)
+//            }
+//        }
     }
 
     /**
@@ -335,48 +351,24 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func informativeError(describing json: JSONDictionary, response: URLResponse?, underlyingError error: NSError?) -> NSError {
-        let apiStatusCode = json["code"] as? String
-        var userInfo = error?.userInfo ?? [:]
+    static func informativeError(code: String?, response: URLResponse?, underlyingError error: Error?) -> DirectionsError {
         if let response = response as? HTTPURLResponse {
-            var failureReason: String? = nil
-            var recoverySuggestion: String? = nil
-            switch (response.statusCode, apiStatusCode ?? "") {
+            switch (response.statusCode, code ?? "") {
             case (200, "NoRoute"):
-                failureReason = "No route could be found between the specified locations."
-                recoverySuggestion = "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
+                return .unableToRoute
             case (200, "NoSegment"):
-                failureReason = "A specified location could not be associated with a roadway or pathway."
-                recoverySuggestion = "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to a negative value."
+                return .unableToLocate
             case (404, "ProfileNotFound"):
-                failureReason = "Unrecognized profile identifier."
-                recoverySuggestion = "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
+                return .profileNotFound
 
             case (413, _):
-                failureReason = "The request is too large."
-                recoverySuggestion = "Try specifying fewer waypoints or giving the waypoints shorter names."
+                return .requestTooLarge
 
             case (429, _):
-                if let timeInterval = response.rateLimitInterval, let maximumCountOfRequests = response.rateLimit {
-                    let intervalFormatter = DateComponentsFormatter()
-                    intervalFormatter.unitsStyle = .full
-                    let formattedInterval = intervalFormatter.string(from: timeInterval) ?? "\(timeInterval) seconds"
-                    let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: maximumCountOfRequests), number: .decimal)
-                    failureReason = "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
-                }
-                if let rolloverTime = response.rateLimitResetTime {
-                    let formattedDate = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .long)
-                    recoverySuggestion = "Wait until \(formattedDate) before retrying."
-                }
+                return .rateLimited(rateLimitInterval: response.rateLimitInterval, rateLimit: response.rateLimit, resetTime: response.rateLimitResetTime)
             default:
-                // `message` is v4 or v5; `error` is v4
-                failureReason = json["message"] as? String ?? json["error"] as? String
+                return .unknown(response: response, underlying: error)
             }
-            userInfo[NSLocalizedFailureReasonErrorKey] = failureReason ?? userInfo[NSLocalizedFailureReasonErrorKey] ?? HTTPURLResponse.localizedString(forStatusCode: error?.code ?? -1)
-            userInfo[NSLocalizedRecoverySuggestionErrorKey] = recoverySuggestion ?? userInfo[NSLocalizedRecoverySuggestionErrorKey]
-        }
-        if let error = error {
-            userInfo[NSUnderlyingErrorKey] = error
         }
         return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
     }

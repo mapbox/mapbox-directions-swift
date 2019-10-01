@@ -39,10 +39,18 @@
 		35EFD00C207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00D207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
 		35EFD00E207DFACA00BF3873 /* MBVisualInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */; };
+		43208BA72343F7C300D8BD89 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BA62343F7C300D8BD89 /* Codable.swift */; };
+		43208BA92343F7E900D8BD89 /* CoreLocation.Swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BA82343F7E900D8BD89 /* CoreLocation.Swift */; };
+		43208BAB2343F81900D8BD89 /* GeoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BAA2343F81900D8BD89 /* GeoJSON.swift */; };
+		43208BAD2343FF5500D8BD89 /* DirectionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BAC2343FF5500D8BD89 /* DirectionsResponse.swift */; };
 		438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
+		439255772344113B006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
+		439255792344113D006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
+		4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
+		4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
 		8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
 		8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
@@ -302,9 +310,14 @@
 		35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirectionsTests.swift; sourceTree = "<group>"; };
 		35DBF018217F38A30009D2AE /* versions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = versions.json; sourceTree = "<group>"; };
 		35EFD00A207DFACA00BF3873 /* MBVisualInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBVisualInstruction.swift; sourceTree = "<group>"; };
+		43208BA62343F7C300D8BD89 /* Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codable.swift; sourceTree = "<group>"; };
+		43208BA82343F7E900D8BD89 /* CoreLocation.Swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocation.Swift; sourceTree = "<group>"; };
+		43208BAA2343F81900D8BD89 /* GeoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSON.swift; sourceTree = "<group>"; };
+		43208BAC2343FF5500D8BD89 /* DirectionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsResponse.swift; sourceTree = "<group>"; };
 		438BFEBC233D7FA900457294 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
+		4392557523440EC2006EEE88 /* DirectionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsError.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -503,6 +516,9 @@
 			isa = PBXGroup;
 			children = (
 				8D381B691FDB101F008D5A58 /* String.swift */,
+				43208BA62343F7C300D8BD89 /* Codable.swift */,
+				43208BA82343F7E900D8BD89 /* CoreLocation.Swift */,
+				43208BAA2343F81900D8BD89 /* GeoJSON.swift */,
 				C582BA2D2073ED6300647DAA /* Array.swift */,
 				35DBF009217E172C0009D2AE /* CLLocationCoordinate2D.swift */,
 				8D434678219E1167008B7BF3 /* Double.swift */,
@@ -569,7 +585,9 @@
 				C5DAAC9E20191683001F9261 /* Match */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				DD6254731AE70CB700017857 /* MBDirections.swift */,
+				4392557523440EC2006EEE88 /* DirectionsError.swift */,
 				C59094C0203DE6BC00EB2417 /* MBDirectionsResult.swift */,
+				43208BAC2343FF5500D8BD89 /* DirectionsResponse.swift */,
 				DAC05F171CFC075300FA0071 /* MBRoute.swift */,
 				DAC05F191CFC077C00FA0071 /* MBRouteLeg.swift */,
 				DA2E03EA1CB0E13D00D1269A /* MBRouteOptions.swift */,
@@ -1127,25 +1145,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Look for a global file named 'mapbox' or '.mapbox' within the home directory\ntoken_file=~/.mapbox\ntoken_file2=~/mapbox\ntoken=\"$(cat $token_file 2>/dev/null || cat $token_file2 2>/dev/null)\"\nif [ \"$token\" ]; then\n  plutil -replace MGLMapboxAccessToken -string $token \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nelse\n  echo 'warning: Missing Mapbox access token'\n  open 'https://account.mapbox.com/access-tokens/'\n  echo \"warning: Get an access token from <https://account.mapbox.com/access-tokens/>, then create a new file at $token_file or $token_file2 that contains the access token.\"\nfi\n";
 		};
-		DA3DFB09236975E5003AE57F /* Apply Mapbox Access Token */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
-			);
-			name = "Apply Mapbox Access Token";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Look for a global file named 'mapbox' or '.mapbox' within the home directory\ntoken_file=~/.mapbox\ntoken_file2=~/mapbox\ntoken=\"$(cat $token_file 2>/dev/null || cat $token_file2 2>/dev/null)\"\nif [ \"$token\" ]; then\n  plutil -replace MGLMapboxAccessToken -string $token \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nelse\n  echo 'warning: Missing Mapbox access token'\n  open 'https://account.mapbox.com/access-tokens/'\n  echo \"warning: Get an access token from <https://account.mapbox.com/access-tokens/>, then create a new file at $token_file or $token_file2 that contains the access token.\"\nfi\n";
-		};
 		DADD27F51E5ABD6600D31FAD /* Copy Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1200,6 +1199,7 @@
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* MBLane.swift in Sources */,
 				AEDC212120B6125C0052DED8 /* MBComponentRepresentable.swift in Sources */,
+				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1261,6 +1261,7 @@
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* MBLane.swift in Sources */,
 				AEDC212220B6125D0052DED8 /* MBComponentRepresentable.swift in Sources */,
+				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1322,6 +1323,7 @@
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* MBLane.swift in Sources */,
 				AEDC212320B6125E0052DED8 /* MBComponentRepresentable.swift in Sources */,
+				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* MBDirections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1361,6 +1363,7 @@
 				C56516841FE1A2DD00A0AD18 /* MBVisualInstructionType.swift in Sources */,
 				C57D55011DB5669600B94B74 /* MBIntersection.swift in Sources */,
 				AEDC211D20B6104B0052DED8 /* MBComponentRepresentable.swift in Sources */,
+				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* MBRouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1392,8 +1395,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */,
+				43208BA92343F7E900D8BD89 /* CoreLocation.Swift in Sources */,
 				C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */,
+				43208BA72343F7C300D8BD89 /* Codable.swift in Sources */,
 				DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */,
+				43208BAB2343F81900D8BD89 /* GeoJSON.swift in Sources */,
+				43208BAD2343FF5500D8BD89 /* DirectionsResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
