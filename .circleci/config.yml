@@ -44,7 +44,7 @@ jobs:
         type: string
       device:
         type: string
-        default: "iPhone 6 Plus"
+        default: "iPhone 8 Plus"
       iOS:
         type: string
         default: "12.1"
@@ -99,22 +99,23 @@ jobs:
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
       - run:
           name: watchOS
-          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 3 - 42mm,OS=<< parameters.watchOS >>' clean build
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 4 - 44mm,OS=<< parameters.watchOS >>' clean build
 
 workflows:
   workflow:
     jobs:
+      - build-job:
+          name: "Xcode_11.1"
+          xcode: "11.1.0"
+          iOS: "13.1"
+          tvOS: "13.0"
+          watchOS: "6.0"
       - build-job:
           name: "Xcode_10.2"
           xcode: "10.2.0"
           iOS: "12.2"
           tvOS: "12.2"
           watchOS: "5.2"
-      - build-job:
-          name: "Xcode_10.0"
-          xcode: "10.0.0"
-          iOS: "12.0"
-          tvOS: "12.0"
           codecoverage: true
       - spm-job:
           name: "SPM_build"
