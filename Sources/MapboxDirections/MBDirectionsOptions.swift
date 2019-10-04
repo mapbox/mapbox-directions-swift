@@ -1,9 +1,6 @@
 import Foundation
 import Polyline
 import CoreLocation
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
 /**
@@ -18,7 +15,7 @@ let MaximumURLLength = 1024 * 8
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
 
-public enum RouteShapeFormat: UInt, CustomStringConvertible {
+public enum RouteShapeFormat: String, Codable {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
 
@@ -37,111 +34,38 @@ public enum RouteShapeFormat: UInt, CustomStringConvertible {
      This format is an order of magnitude more precise than `polyline`.
      */
     case polyline6
-
-    public init?(description: String) {
-        let format: RouteShapeFormat
-        switch description {
-        case "geojson":
-            format = .geoJSON
-        case "polyline":
-            format = .polyline
-        case "polyline6":
-            format = .polyline6
-        default:
-            return nil
-        }
-        self.init(rawValue: format.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .geoJSON:
-            return "geojson"
-        case .polyline:
-            return "polyline"
-        case .polyline6:
-            return "polyline6"
-        }
-    }
-}
-
-extension RouteShapeFormat {
-
-    func coordinates(from geometry: Any?) -> [CLLocationCoordinate2D]? {
-        switch self {
-        case .geoJSON:
-            if let geometry = geometry as? JSONDictionary {
-                return CLLocationCoordinate2D.coordinates(geoJSON: geometry)
-            }
-        case .polyline:
-            if let geometry = geometry as? String {
-                return decodePolyline(geometry, precision: 1e5)!
-            }
-        case .polyline6:
-            if let geometry = geometry as? String {
-                return decodePolyline(geometry, precision: 1e6)!
-            }
-        }
-        return nil
-    }
 }
 
 /**
  A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
  */
 
-public enum RouteShapeResolution: UInt, CustomStringConvertible {
+public enum RouteShapeResolution: String, Codable {
     /**
      The route’s shape is omitted.
 
      Specify this resolution if you do not intend to show the route line to the user or analyze the route line in any way.
      */
-    case none
+    case none = "false"
     /**
      The route’s shape is simplified.
 
      This resolution considerably reduces the size of the response. The resulting shape is suitable for display at a low zoom level, but it lacks the detail necessary for focusing on individual segments of the route.
      */
-    case low
+    case low = "simplified"
     /**
      The route’s shape is as detailed as possible.
 
      The resulting shape is equivalent to concatenating the shapes of all the route’s consitituent steps. You can focus on individual segments of this route while faithfully representing the path of the route. If you only intend to show a route overview and do not need to analyze the route line in any way, consider specifying `low` instead to considerably reduce the size of the response.
      */
     case full
-
-    public init?(description: String) {
-        let granularity: RouteShapeResolution
-        switch description {
-        case "false":
-            granularity = .none
-        case "simplified":
-            granularity = .low
-        case "full":
-            granularity = .full
-        default:
-            return nil
-        }
-        self.init(rawValue: granularity.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .none:
-            return "false"
-        case .low:
-            return "simplified"
-        case .full:
-            return "full"
-        }
-    }
 }
 
 /**
  A system of units of measuring distances and other quantities.
  */
 
-public enum MeasurementSystem: UInt, CustomStringConvertible {
+public enum MeasurementSystem: String, Codable {
 
     /**
      U.S. customary and British imperial units.
@@ -156,68 +80,8 @@ public enum MeasurementSystem: UInt, CustomStringConvertible {
      Distances are measured in kilometers and meters.
      */
     case metric
-
-    public init?(description: String) {
-        let measurementSystem: MeasurementSystem
-        switch description {
-        case "imperial":
-            measurementSystem = .imperial
-        case "metric":
-            measurementSystem = .metric
-        default:
-            return nil
-        }
-        self.init(rawValue: measurementSystem.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .imperial:
-            return "imperial"
-        case .metric:
-            return "metric"
-        }
-    }
 }
 
-/**
- A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
- */
-
-public enum InstructionFormat: UInt, CustomStringConvertible {
-    /**
-     The route steps’ instructions are delivered in plain text format.
-     */
-    case text
-    /**
-     The route steps’ instructions are delivered in HTML format.
-
-     Key phrases are boldfaced.
-     */
-    case html
-
-    public init?(description: String) {
-        let format: InstructionFormat
-        switch description {
-        case "text":
-            format = .text
-        case "html":
-            format = .html
-        default:
-            return nil
-        }
-        self.init(rawValue: format.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .text:
-            return "text"
-        case .html:
-            return "html"
-        }
-    }
-}
 
 /**
  Options for calculating results from the Mapbox Directions service.
@@ -226,7 +90,7 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
  */
 
 
-open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
+open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 
     /**
      Initializes an options object for routes between the given waypoints and an optional profile identifier.
@@ -240,129 +104,52 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
-
-    public class var supportsSecureCoding: Bool {
-        return true
-    }
-
-    // MARK: NSCopying
-    open func copy(with zone: NSZone? = nil) -> Any {
-        let copy = type(of: self).init(waypoints: waypoints, profileIdentifier: profileIdentifier)
-        copy.includesSteps = includesSteps
-        copy.shapeFormat = shapeFormat
-        copy.routeShapeResolution = routeShapeResolution
-        copy.locale = locale
-        copy.attributeOptions = attributeOptions
-        copy.includesSpokenInstructions = includesSpokenInstructions
-        copy.distanceMeasurementSystem = distanceMeasurementSystem
-        copy.includesVisualInstructions = includesVisualInstructions
-        return copy
-    }
-
-    // MARK: Objective-C equality
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let opts = object as? DirectionsOptions else { return false }
-        return isEqual(to: opts)
-    }
-
     
-    open func isEqual(to directionsOptions: DirectionsOptions?) -> Bool {
-        guard let other = directionsOptions else { return false }
-        guard type(of: self) == type(of: other) else { return false }
-        guard waypoints == other.waypoints,
-            profileIdentifier == other.profileIdentifier,
-            includesSteps == other.includesSteps,
-            shapeFormat == other.shapeFormat,
-            routeShapeResolution == other.routeShapeResolution,
-            attributeOptions == other.attributeOptions,
-            locale == other.locale,
-            includesSpokenInstructions == other.includesSpokenInstructions,
-            includesVisualInstructions == other.includesVisualInstructions,
-            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
-        return true
-    }
-
-    public func encode(with coder: NSCoder) {
-        coder.encode(waypoints, forKey: "waypoints")
-        coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(includesSteps, forKey: "includesSteps")
-        coder.encode(shapeFormat.description, forKey: "shapeFormat")
-        coder.encode(routeShapeResolution.description, forKey: "routeShapeResolution")
-        coder.encode(attributeOptions.description, forKey: "attributeOptions")
-        coder.encode(locale, forKey: "locale")
-        coder.encode(includesSpokenInstructions, forKey: "includesSpokenInstructions")
-        coder.encode(distanceMeasurementSystem.description, forKey: "distanceMeasurementSystem")
-        coder.encode(includesVisualInstructions, forKey: "includesVisualInstructions")
-    }
-
-    public required init?(coder decoder: NSCoder) {
-        guard let waypoints = decoder.decodeObject(of: [NSArray.self, Waypoint.self], forKey: "waypoints") as? [Waypoint] else {
-            return nil
-        }
-        self.waypoints = waypoints
-
-        guard let profileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
-            return nil
-        }
-        
-        self.profileIdentifier = DirectionsProfileIdentifier(rawValue: profileIdentifier)
-
-        includesSteps = decoder.decodeBool(forKey: "includesSteps")
-
-        guard let shapeFormat = RouteShapeFormat(description: decoder.decodeObject(of: NSString.self, forKey: "shapeFormat") as String? ?? "") else {
-            return nil
-        }
-        self.shapeFormat = shapeFormat
-
-        guard let routeShapeResolution = RouteShapeResolution(description: decoder.decodeObject(of: NSString.self, forKey: "routeShapeResolution") as String? ?? "") else {
-            return nil
-        }
-        self.routeShapeResolution = routeShapeResolution
-
-        guard let descriptions = decoder.decodeObject(of: NSString.self, forKey: "attributeOptions") as String?,
-            let attributeOptions = AttributeOptions(descriptions: descriptions.components(separatedBy: ",")) else {
-                return nil
-        }
-        self.attributeOptions = attributeOptions
-
-
-        if let locale = decoder.decodeObject(of: NSLocale.self, forKey: "locale") as Locale? {
-            self.locale = locale
-        }
-
-        includesSpokenInstructions = decoder.decodeBool(forKey: "includesSpokenInstructions")
-
-        if let distanceMeasurementSystem = MeasurementSystem(description: decoder.decodeObject(of: NSString.self, forKey: "distanceMeasurementSystem") as String? ?? "") {
-            self.distanceMeasurementSystem = distanceMeasurementSystem
-        }
-
-        includesVisualInstructions = decoder.decodeBool(forKey: "includesVisualInstructions")
-    }
-
-    /**
-     An array of directions query strings to include in the request URL.
-     */
-    internal var queries: [String] {
-        return waypoints.compactMap{ $0.coordinate.stringForRequestURL }
-    }
-
-    /**
-     The path of the request URL, not including the hostname or any parameters.
-     */
-    internal var path: String {
-        assert(!queries.isEmpty, "No query")
-        
-        let queryComponent = queries.joined(separator: ";")
-        return "\(abridgedPath)/\(queryComponent).json"
+    private enum CodingKeys: String, CodingKey {
+        case waypoints
+        case profileIdentifier
+        case includesSteps
+        case shapeFormat
+        case routeShapeResolution
+        case attributeOptions
+        case locale
+        case includesSpokenInstructions
+        case distanceMeasurementSystem
+        case includesVisualInstructions
     }
     
-    /**
-     The path of the request URL, not including the hostname, query components,
-     or any parameters.
-     */
-    internal var abridgedPath: String {
-        assert(false, "abridgedPath should be overriden by subclass")
-        return ""
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(waypoints, forKey: .waypoints)
+        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
+        try container.encode(includesSteps, forKey: .includesSteps)
+        try container.encode(shapeFormat.rawValue, forKey: .shapeFormat)
+        try container.encode(routeShapeResolution.rawValue, forKey: .routeShapeResolution)
+        try container.encode(attributeOptions.rawValue, forKey: .attributeOptions)
+        try container.encode(locale, forKey: .locale)
+        try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
+        try container.encode(distanceMeasurementSystem.rawValue, forKey: .distanceMeasurementSystem)
+        try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
+        try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
+        if includesSpokenInstructions {
+            try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
+        }
+        
+        
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        waypoints = try container.decode([Waypoint].self, forKey: .waypoints)
+        profileIdentifier = try container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
+        includesSteps = try container.decode(Bool.self, forKey: .includesSteps)
+        shapeFormat = try container.decode(RouteShapeFormat.self, forKey: .shapeFormat)
+        routeShapeResolution = try container.decode(RouteShapeResolution.self, forKey: .routeShapeResolution)
+        attributeOptions = try container.decode(AttributeOptions.self, forKey: .attributeOptions)
+        locale = try container.decode(Locale.self, forKey: .locale)
+        includesSpokenInstructions = try container.decode(Bool.self, forKey: .includesSpokenInstructions)
+        distanceMeasurementSystem = try container.decode(MeasurementSystem.self, forKey: .distanceMeasurementSystem)
+        includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
     }
 
     /**
@@ -438,7 +225,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      */
     open var locale = Locale.autoupdatingCurrent {
         didSet {
-            self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
+            self.distanceMeasurementSystem = locale.usesMetricSystem ? .metric : .imperial
         }
     }
 
@@ -456,7 +243,7 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
+    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetricSystem ? .metric : .imperial
 
     /**
      If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
@@ -471,7 +258,11 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
      The query items are included in the URL of a GET request or the body of a POST request.
      */
     
-    open var urlQueryItems: [URLQueryItem] {
+}
+
+// MARK: - URL Queries
+public extension DirectionsOptions {
+     var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
             URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
@@ -495,57 +286,86 @@ open class DirectionsOptions: NSObject, NSSecureCoding, NSCopying {
         }
 
         // Include headings and heading accuracies if any waypoint has a nonnegative heading.
-        if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
-            let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
-            queryItems.append(URLQueryItem(name: "bearings", value: headings))
+        if let bearings = self.bearings {
+            queryItems.append(URLQueryItem(name: "bearings", value: bearings))
         }
 
         // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
-        if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
-            let accuracies = waypoints.map {
-                $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-                }.joined(separator: ";")
-            queryItems.append(URLQueryItem(name: "radiuses", value: accuracies))
+        if let radiuses = self.radiuses {
+            queryItems.append(URLQueryItem(name: "radiuses", value: radiuses))
         }
 
-        if !attributeOptions.isEmpty {
-            let attributesStrings = String(describing:attributeOptions)
-
-            queryItems.append(URLQueryItem(name: "annotations", value: attributesStrings))
-        }
-        
-        var waypointIndices = IndexSet(waypoints.enumerated().filter { $0.element.separatesLegs }.map { $0.offset })
-        waypointIndices.insert(waypoints.startIndex)
-        waypointIndices.insert(waypoints.endIndex - 1)
-        if waypointIndices.count < waypoints.count {
-            queryItems.append(URLQueryItem(name: "waypoints", value: waypointIndices.map {
-                String(describing: $0)
-            }.joined(separator: ";")))
+        if let annotations = self.annotations {
+            queryItems.append((URLQueryItem(name: "annotations", value: annotations)))
         }
 
-        if !waypoints.compactMap({ $0.name }).isEmpty {
-            let names = legSeparators.map { $0.name ?? "" }.joined(separator: ";")
+        if let waypointIndices = self.waypointIndices {
+            queryItems.append(URLQueryItem(name: "waypoints", value: waypointIndices))
+        }
+
+        if let names = self.waypointNames {
             queryItems.append(URLQueryItem(name: "waypoint_names", value: names))
         }
-
+        
+        if let coordinates = self.coordinates {
+            queryItems.append(URLQueryItem(name: "coordinates", value: coordinates))
+        }
+        
         return queryItems
     }
     
-    internal var httpBody: String {
-        var components = URLComponents()
-        components.queryItems = urlQueryItems + [
-            URLQueryItem(name: "coordinates", value: queries.joined(separator: ";")),
-        ]
-        return components.percentEncodedQuery ?? ""
-    }
-}
-
-
-extension Locale {
-    fileprivate var usesMetric: Bool {
-        guard let measurementSystem = (self as NSLocale).object(forKey: .measurementSystem) as? String else {
-            return false
+    private var bearings: String? {
+        if waypoints.filter({$0.heading >= 0}).isEmpty {
+            return nil
         }
-        return measurementSystem == "Metric"
+        return waypoints.map({ $0.headingDescription }).joined(separator: ";")
     }
+    
+    private var radiuses: String? {
+        if waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
+            return nil
+        }
+        return waypoints.map {
+            $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
+        }.joined(separator: ";")
+    }
+    
+    private var approaches: String? {
+        if waypoints.filter( { !$0.allowsArrivingOnOppositeSide }).isEmpty {
+            return nil
+        }
+        return waypoints.map { $0.allowsArrivingOnOppositeSide ? "unrestricted" : "curb" }.joined(separator: ";")
+    }
+    
+    private var annotations: String? {
+        if attributeOptions.isEmpty {
+            return nil
+        }
+        return attributeOptions.description
+    }
+    
+    private var waypointIndices: String? {
+        var waypointIndices = IndexSet(waypoints.enumerated().filter { $0.element.separatesLegs }.map { $0.offset })
+        waypointIndices.insert(waypoints.startIndex)
+        waypointIndices.insert(waypoints.endIndex - 1)
+        
+        guard waypointIndices.count < waypoints.count else {
+            return nil
+        }
+        let indicesString = waypointIndices.map(String.init(describing:)).joined(separator: ";")
+        return indicesString
+        
+    }
+    
+    private var waypointNames: String? {
+        if waypoints.compactMap({ $0.name }).isEmpty {
+            return nil
+        }
+        return legSeparators.map({ $0.name ?? "" }).joined(separator: ";")
+    }
+    
+    private var coordinates: String? {
+        return waypoints.map { $0.coordinate.jsonDescription }.joined(separator: ";")
+    }
+
 }

@@ -74,7 +74,7 @@ open class Route: NSObject, Codable {
     
     // MARK: Creating a Route
     
-    @objc internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
+    internal init(routeOptions: RouteOptions, legs: [RouteLeg], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?) {
         self.routeOptions = routeOptions
         self.legs = legs
         self.distance = distance
@@ -91,7 +91,7 @@ open class Route: NSObject, Codable {
      
      Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    @objc open let coordinates: [CLLocationCoordinate2D]?
+    public let coordinates: [CLLocationCoordinate2D]?
     
     /**
      The number of coordinates.
@@ -100,7 +100,7 @@ open class Route: NSObject, Codable {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates.count` property.
      */
-    @objc open var coordinateCount: UInt {
+    open var coordinateCount: UInt {
         return UInt(coordinates?.count ?? 0)
     }
     
@@ -117,7 +117,7 @@ open class Route: NSObject, Codable {
      
      - note: This initializer is intended for Objective-C usage. In Swift code, use the `coordinates` property.
      */
-    @objc open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
+    open func getCoordinates(_ coordinates: UnsafeMutablePointer<CLLocationCoordinate2D>) {
         for i in 0..<(self.coordinates?.count ?? 0) {
             coordinates.advanced(by: i).pointee = self.coordinates![i]
         }
@@ -130,9 +130,9 @@ open class Route: NSObject, Codable {
      
      To determine the name of the route, concatenate the names of the route’s legs.
      */
-    @objc open let legs: [RouteLeg]
+    public let legs: [RouteLeg]
     
-    @objc open override var description: String {
+    open override var description: String {
         return legs.map { $0.name }.joined(separator: " – ")
     }
     
@@ -143,7 +143,7 @@ open class Route: NSObject, Codable {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    @objc open let distance: CLLocationDistance
+    public let distance: CLLocationDistance
     
     /**
      The route’s expected travel time, measured in seconds.
@@ -152,28 +152,28 @@ open class Route: NSObject, Codable {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    @objc open let expectedTravelTime: TimeInterval
+    public let expectedTravelTime: TimeInterval
     
     /**
      `RouteOptions` used to create the directions request.
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    @objc open let routeOptions: RouteOptions
+    public let routeOptions: RouteOptions
     
     /**
      The [access token](https://www.mapbox.com/help/define-access-token/) used to make the directions request.
      
      This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
-    @objc open var accessToken: String?
+    open var accessToken: String?
     
     /**
      The endpoint used to make the directions request.
      
      This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
-    @objc open var apiEndpoint: URL?
+    open var apiEndpoint: URL?
     
     func debugQuickLookObject() -> Any? {
         if let coordinates = coordinates {
@@ -187,4 +187,5 @@ open class Route: NSObject, Codable {
      
      Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
      */
-    @objc open var routeIdentifier: String?
+    open var routeIdentifier: String?
+}

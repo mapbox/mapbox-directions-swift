@@ -1,9 +1,6 @@
 import Foundation
 import CoreLocation
 import Polyline
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
 /**
@@ -477,51 +474,6 @@ public func MBStringFromManeuverDirection(maneuverDirection: ManeuverDirection) 
     return maneuverDirection.description
 }
 
-/**
- A `DrivingSide` indicates which side of the road cars and traffic flow.
- */
-
-public enum DrivingSide: Int, CustomStringConvertible {
-    /**
-     Indicates driving occurs on the `left` side.
-     */
-    case left
-
-    /**
-     Indicates driving occurs on the `right` side.
-     */
-    case right
-
-    public init?(description: String) {
-        var side: DrivingSide
-        switch description {
-        case "left":
-            side = .left
-        case "right":
-            side = .right
-        default:
-            return nil
-        }
-
-        self.init(rawValue: side.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .left:
-            return "left"
-        case .right:
-            return "right"
-        }
-    }
-}
-
-/**
- Returns a string describing the given driving side.
- */
-public func MBStringFromDrivingSide(drivingSide: DrivingSide) -> String {
-    return drivingSide.description
-}
 
 extension String {
     internal func tagValues(separatedBy separator: String) -> [String] {

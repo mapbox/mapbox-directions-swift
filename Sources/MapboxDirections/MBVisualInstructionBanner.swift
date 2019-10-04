@@ -82,7 +82,7 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
     public required init?(coder decoder: NSCoder) {
         distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
 
-        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(description: drivingSideDescription) {
+        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(rawValue: drivingSideDescription) {
             self.drivingSide = drivingSide
         } else {
             self.drivingSide = .right
@@ -103,6 +103,6 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
         coder.encode(primaryInstruction, forKey: "primary")
         coder.encode(secondaryInstruction, forKey: "secondary")
         coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
-        coder.encode(drivingSide.description, forKey: "drivingSide")
+        coder.encode(drivingSide.rawValue, forKey: "drivingSide")
     }
 }

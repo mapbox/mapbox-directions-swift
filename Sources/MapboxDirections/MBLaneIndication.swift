@@ -1,10 +1,7 @@
 import Foundation
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
-public struct LaneIndication: OptionSet, CustomStringConvertible {
+public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
     public var rawValue: Int
     
     public init(rawValue: Int) {

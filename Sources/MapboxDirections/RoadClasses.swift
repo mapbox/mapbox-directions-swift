@@ -1,19 +1,27 @@
 import Foundation
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
 /**
 Option set that contains attributes of a road segment.
 */
-public struct RoadClasses: OptionSet, CustomStringConvertible {
+public struct RoadClasses: OptionSet, Codable, CustomStringConvertible {
     public var rawValue: Int
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
     
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(description.components(separatedBy: ","))
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let descriptions = try container.decode([String].self)
+        self = RoadClasses(descriptions: descriptions)!
+    }
+
     
     public typealias RawValue = Int
     

@@ -9,7 +9,7 @@ The returned directions are appropriate for driving or riding a car, truck, or m
 
 This profile prioritizes fast routes by preferring high-speed roads like highways. A driving route may use a ferry where necessary.
 */
-public struct DirectionsProfileIdentifier: Equatable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
+public struct DirectionsProfileIdentifier: Codable, Equatable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     public typealias RawValue = String
      

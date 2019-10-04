@@ -1,155 +1,10 @@
-/**
- A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
- */
-@objc(MBRouteShapeFormat)
-public enum RouteShapeFormat: UInt, CustomStringConvertible {
-    /**
-     The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
-
-     This standard format is human-readable and can be parsed straightforwardly, but it is far more verbose than `polyline`.
-     */
-    case geoJSON
-    /**
-     The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format with 1×10<sup>−5</sup> precision.
-
-     This machine-readable format is considerably more compact than `geoJSON` but less precise than `polyline6`.
-     */
-    case polyline
-    /**
-     The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format with 1×10<sup>−6</sup> precision.
-
-     This format is an order of magnitude more precise than `polyline`.
-     */
-    case polyline6
-
-    public init?(description: String) {
-        let format: RouteShapeFormat
-        switch description {
-        case "geojson":
-            format = .geoJSON
-        case "polyline":
-            format = .polyline
-        case "polyline6":
-            format = .polyline6
-        default:
-            return nil
-        }
-        self.init(rawValue: format.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .geoJSON:
-            return "geojson"
-        case .polyline:
-            return "polyline"
-        case .polyline6:
-            return "polyline6"
-        }
-    }
-}
-
-/**
- A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
- */
-@objc(MBRouteShapeResolution)
-public enum RouteShapeResolution: UInt, CustomStringConvertible {
-    /**
-     The route’s shape is omitted.
-
-     Specify this resolution if you do not intend to show the route line to the user or analyze the route line in any way.
-     */
-    case none
-    /**
-     The route’s shape is simplified.
-
-     This resolution considerably reduces the size of the response. The resulting shape is suitable for display at a low zoom level, but it lacks the detail necessary for focusing on individual segments of the route.
-     */
-    case low
-    /**
-     The route’s shape is as detailed as possible.
-
-     The resulting shape is equivalent to concatenating the shapes of all the route’s consitituent steps. You can focus on individual segments of this route while faithfully representing the path of the route. If you only intend to show a route overview and do not need to analyze the route line in any way, consider specifying `low` instead to considerably reduce the size of the response.
-     */
-    case full
-
-    public init?(description: String) {
-        let granularity: RouteShapeResolution
-        switch description {
-        case "false":
-            granularity = .none
-        case "simplified":
-            granularity = .low
-        case "full":
-            granularity = .full
-        default:
-            return nil
-        }
-        self.init(rawValue: granularity.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .none:
-            return "false"
-        case .low:
-            return "simplified"
-        case .full:
-            return "full"
-        }
-    }
-}
-
-/**
- A system of units of measuring distances and other quantities.
- */
-@objc(MBMeasurementSystem)
-public enum MeasurementSystem: UInt, CustomStringConvertible {
-
-    /**
-     U.S. customary and British imperial units.
-
-     Distances are measured in miles and feet.
-     */
-    case imperial
-
-    /**
-     The metric system.
-
-     Distances are measured in kilometers and meters.
-     */
-    case metric
-
-    public init?(description: String) {
-        let measurementSystem: MeasurementSystem
-        switch description {
-        case "imperial":
-            measurementSystem = .imperial
-        case "metric":
-            measurementSystem = .metric
-        default:
-            return nil
-        }
-        self.init(rawValue: measurementSystem.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .imperial:
-            return "imperial"
-        case .metric:
-            return "metric"
-        }
-    }
-}
 
 /**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
-@objc(MBRouteOptions)
-open class RouteOptions: NSObject, Codable, NSCopying {
+open class RouteOptions: DirectionsOptions, Codable {
     // MARK: Creating a Route Options Object
 
     /**
@@ -158,13 +13,13 @@ open class RouteOptions: NSObject, Codable, NSCopying {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public init(waypoints: [Waypoint], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         assert(waypoints.count >= 2, "A route requires at least a source and destination.")
         assert(waypoints.count <= 25, "A route may not have more than 25 waypoints.")
 
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
-        self.allowsUTurnAtWaypoint = ![MBDirectionsProfileIdentifier.automobile.rawValue, MBDirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
+        self.allowsUTurnAtWaypoint = ![DirectionsProfileIdentifier.automobile.rawValue, DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
     }
 
     /**
@@ -175,7 +30,7 @@ open class RouteOptions: NSObject, Codable, NSCopying {
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public convenience init(locations: [CLLocation], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -186,74 +41,48 @@ open class RouteOptions: NSObject, Codable, NSCopying {
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    @objc public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: MBDirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
     private enum CodingKeys: String, CodingKey {
-        case waypoints
         case allowsUTurnAtWaypoint
-        case profileIdentifier
         case includesAlternativeRoutes
-        case includesSteps
-        case shapeFormat
-        case routeShapeResolution
-        case attributeOptions
+       // case includesSteps
+       // case shapeFormat
+        //case routeShapeResolution
+       // case attributeOptions
         case includesExitRoundaboutManeuver
-        case locale
-        case includesSpokenInstructions
-        case distanceMeasurementSystem
-        case includesVisualInstructions
+       // case locale
+       // case includesSpokenInstructions
+        //case distanceMeasurementSystem
+        //case includesVisualInstructions
         case roadClassesToAvoid
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(waypoints, forKey: .waypoints)
         try container.encode(allowsUTurnAtWaypoint, forKey: .allowsUTurnAtWaypoint)
-        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
         try container.encode(includesAlternativeRoutes, forKey: .includesAlternativeRoutes)
-        try container.encode(includesSteps, forKey: .includesSteps)
-        try container.encode(shapeFormat.rawValue, forKey: .shapeFormat)
-        try container.encode(routeShapeResolution.rawValue, forKey: .routeShapeResolution)
-        try container.encode(attributeOptions.rawValue, forKey: .attributeOptions)
         try container.encode(includesExitRoundaboutManeuver, forKey: .includesExitRoundaboutManeuver)
-        try container.encode(locale, forKey: .locale)
-        try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
-        try container.encode(distanceMeasurementSystem.rawValue, forKey: .distanceMeasurementSystem)
-        try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
         try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
     }
     
     public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        waypoints = try container.decode([Waypoint].self, forKey: .waypoints)
         allowsUTurnAtWaypoint = try container.decode(Bool.self, forKey: .allowsUTurnAtWaypoint)
-        profileIdentifier = MBDirectionsProfileIdentifier(rawValue: try container.decode(String.self, forKey: .profileIdentifier))
+
         includesAlternativeRoutes = try container.decode(Bool.self, forKey: .includesAlternativeRoutes)
-        includesSteps = try container.decode(Bool.self, forKey: .includesSteps)
-        shapeFormat = RouteShapeFormat(rawValue: try container.decode(UInt.self, forKey: .shapeFormat))!
-        routeShapeResolution = RouteShapeResolution(rawValue: try container.decode(UInt.self, forKey: .routeShapeResolution))!
-        attributeOptions = AttributeOptions(rawValue: try container.decode(UInt.self, forKey: .attributeOptions))
+
         includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
-        locale = try container.decode(Locale.self, forKey: .locale)
-        includesSpokenInstructions = try container.decode(Bool.self, forKey: .includesSpokenInstructions)
-        distanceMeasurementSystem = MeasurementSystem(rawValue: try container.decode(UInt.self, forKey: .distanceMeasurementSystem))!
-        includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
+    
         roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
     }
     
     // MARK: Specifying the Path of the Route
-
-    /**
-     An array of `Waypoint` objects representing locations that the route should visit in chronological order.
-
-     A waypoint object indicates a location to visit, as well as an optional heading from which to approach the location.
-
-     The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
-     */
-    @objc open var waypoints: [Waypoint]
 
     /**
      A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.
@@ -264,16 +93,8 @@ open class RouteOptions: NSObject, Codable, NSCopying {
 
      The default value of this property is `false` when the profile identifier is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` and `true` otherwise.
      */
-    @objc open var allowsUTurnAtWaypoint: Bool
+    open var allowsUTurnAtWaypoint: Bool
 
-    // MARK: Specifying Transportation Options
-
-    /**
-     A string specifying the primary mode of transportation for the routes.
-
-     This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
-     */
-    @objc open var profileIdentifier: MBDirectionsProfileIdentifier
 
     // MARK: Specifying the Response Format
 
@@ -286,115 +107,23 @@ open class RouteOptions: NSObject, Codable, NSCopying {
 
      The default value of this property is `false`.
      */
-    @objc open var includesAlternativeRoutes = false
+    open var includesAlternativeRoutes = false
 
-    /**
-     A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
-
-     If the value of this property is `true`, the returned route contains turn-by-turn instructions. Each returned `MBRoute` object contains one or more `MBRouteLeg` object that in turn contains one or more `MBRouteStep` objects. On the other hand, if the value of this property is `false`, the `MBRouteLeg` objects contain no `MBRouteStep` objects.
-
-     If you only want to know the distance or estimated travel time to a destination, set this property to `false` to minimize the size of the response and the time it takes to calculate the response. If you need to display turn-by-turn instructions, set this property to `true`.
-
-     The default value of this property is `false`.
-     */
-    @objc open var includesSteps = false
-
-    /**
-     Format of the data from which the shapes of the returned route and its steps are derived.
-
-     This property has no effect on the returned shape objects, although the choice of format can significantly affect the size of the underlying HTTP response.
-
-     The default value of this property is `polyline`.
-     */
-    @objc open var shapeFormat = RouteShapeFormat.polyline
-
-    /**
-     Resolution of the shape of the returned route.
-
-     This property has no effect on the shape of the returned route’s steps.
-
-     The default value of this property is `low`, specifying a low-resolution route shape.
-     */
-    @objc open var routeShapeResolution = RouteShapeResolution.low
-
-    /**
-     AttributeOptions for the route. Any combination of `AttributeOptions` can be specified.
-
-     By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
-     */
-    @objc open var attributeOptions: AttributeOptions = []
-
-    // MARK: Constructing the Request URL
-
-    /**
-     The path of the request URL, not including the hostname or any parameters.
-     */
-    internal var path: String {
-        assert(!queries.isEmpty, "No query")
-
-        let queryComponent = queries.joined(separator: ";")
-        return "directions/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
-    }
-
-    /**
-     An array of directions query strings to include in the request URL.
-     */
-    internal var queries: [String] {
-        return waypoints.map { "\($0.coordinate.longitude),\($0.coordinate.latitude)" }
-    }
 
     /**
      A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
 
      If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
      */
-    @objc open var includesExitRoundaboutManeuver = false
+    open var includesExitRoundaboutManeuver = false
 
-    /**
-     The locale in which the route’s instructions are written.
-
-     If you use MapboxDirections.swift with the Mapbox Directions API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
-
-     The Directions API can provide instructions in [a number of languages](https://www.mapbox.com/api-documentation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
-
-     By default, this property is set to the current system locale.
-     */
-    @objc open var locale = Locale.autoupdatingCurrent {
-        didSet {
-            self.distanceMeasurementSystem = locale.usesMetric ? .metric : .imperial
-        }
-    }
-    
-    /**
-     A Boolean value indicating whether each route step includes an array of `SpokenInstructions`.
-
-     If this option is set to true, the `RouteStep.instructionsSpokenAlongStep` property is set to an array of `SpokenInstructions`.
-     */
-    @objc open var includesSpokenInstructions = false
-
-    /**
-     The measurement system used in spoken instructions included in route steps.
-
-     If the `includesSpokenInstructions` property is set to `true`, this property determines the units used for measuring the distance remaining until an upcoming maneuver. If the `includesSpokenInstructions` property is set to `false`, this property has no effect.
-
-     You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
-     */
-    @objc open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetric ? .metric : .imperial
-    
-    /**
-     :nodoc:
-     If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
-     
-     `visualInstructionsAlongStep` contains an array of `VisualInstruction` used for visually conveying information about a given `RouteStep`.
-     */
-    @objc open var includesVisualInstructions = false
 
     /**
      The route classes that the calculated routes will avoid.
      
      Currently, you can only specify a single road class to avoid.
      */
-    @objc open var roadClassesToAvoid: RoadClasses = []
+    open var roadClassesToAvoid: RoadClasses = []
     
     /**
      An array of URL parameters to include in the request URL.
@@ -402,21 +131,21 @@ open class RouteOptions: NSObject, Codable, NSCopying {
     internal var params: [URLQueryItem] {
         var params: [URLQueryItem] = [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
-            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
-            URLQueryItem(name: "steps", value: String(includesSteps)),
+//            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
+//            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
+//            URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-            URLQueryItem(name: "language", value: locale.identifier)
+//            URLQueryItem(name: "language", value: locale.identifier)
         ]
 
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
 
-        if includesSpokenInstructions {
-            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
-            params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
-        }
+//        if includesSpokenInstructions {
+//            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
+//            params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
+//        }
         
         if includesVisualInstructions {
             params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
@@ -432,59 +161,59 @@ open class RouteOptions: NSObject, Codable, NSCopying {
             }
         }
 
-        // Include headings and heading accuracies if any waypoint has a nonnegative heading.
-        if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
-            let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
-            params.append(URLQueryItem(name: "bearings", value: headings))
-        }
+//        // Include headings and heading accuracies if any waypoint has a nonnegative heading.
+//        if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
+//            let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
+//            params.append(URLQueryItem(name: "bearings", value: headings))
+//        }
 
-        // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
-        if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
-            let accuracies = waypoints.map {
-                $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-                }.joined(separator: ";")
-            params.append(URLQueryItem(name: "radiuses", value: accuracies))
-        }
-
-        if !attributeOptions.isEmpty {
-            let attributesStrings = String(describing:attributeOptions)
-
-            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
-        }
+//        // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
+//        if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
+//            let accuracies = waypoints.map {
+//                $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
+//                }.joined(separator: ";")
+//            params.append(URLQueryItem(name: "radiuses", value: accuracies))
+//        }
+//
+//        if !attributeOptions.isEmpty {
+//            let attributesStrings = String(describing:attributeOptions)
+//
+//            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
+//        }
 
         return params
     }
     
-    // MARK: NSCopying
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let data = try! JSONEncoder().encode(self)
-        return try! JSONDecoder().decode(RouteOptions.self, from: data)
-    }
-    
-    //MARK: - OBJ-C Equality
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let opts = object as? RouteOptions else { return false }
-        return isEqual(to: opts)
-    }
-    
-    @objc(isEqualToRouteOptions:)
-    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
-        guard let other = routeOptions else { return false }
-        guard waypoints == other.waypoints,
-            profileIdentifier == other.profileIdentifier,
-            allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
-            includesSteps == other.includesSteps,
-            shapeFormat == other.shapeFormat,
-            routeShapeResolution == other.routeShapeResolution,
-            attributeOptions == other.attributeOptions,
-            includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-            locale == other.locale,
-            includesSpokenInstructions == other.includesSpokenInstructions,
-            includesVisualInstructions == other.includesVisualInstructions,
-            roadClassesToAvoid == other.roadClassesToAvoid,
-            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
-        return true
-    }
+//    // MARK: NSCopying
+//    public func copy(with zone: NSZone? = nil) -> Any {
+//        let data = try! JSONEncoder().encode(self)
+//        return try! JSONDecoder().decode(RouteOptions.self, from: data)
+//    }
+//
+//    //MARK: - OBJ-C Equality
+//    open override func isEqual(_ object: Any?) -> Bool {
+//        guard let opts = object as? RouteOptions else { return false }
+//        return isEqual(to: opts)
+//    }
+//
+//    @objc(isEqualToRouteOptions:)
+//    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
+//        guard let other = routeOptions else { return false }
+//        guard waypoints == other.waypoints,
+//            profileIdentifier == other.profileIdentifier,
+//            allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
+//            includesSteps == other.includesSteps,
+//            shapeFormat == other.shapeFormat,
+//            routeShapeResolution == other.routeShapeResolution,
+//            attributeOptions == other.attributeOptions,
+//            includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
+//            locale == other.locale,
+//            includesSpokenInstructions == other.includesSpokenInstructions,
+//            includesVisualInstructions == other.includesVisualInstructions,
+//            roadClassesToAvoid == other.roadClassesToAvoid,
+//            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
+//        return true
+//    }
 }
 
 // MARK: Support for Directions API v4
@@ -492,8 +221,7 @@ open class RouteOptions: NSObject, Codable, NSCopying {
 /**
  A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
  */
-@objc(MBInstructionFormat)
-public enum InstructionFormat: UInt, CustomStringConvertible {
+public enum InstructionFormat: String {
     /**
      The route steps’ instructions are delivered in plain text format.
      */
@@ -504,78 +232,5 @@ public enum InstructionFormat: UInt, CustomStringConvertible {
      Key phrases are boldfaced.
      */
     case html
-
-    public init?(description: String) {
-        let format: InstructionFormat
-        switch description {
-        case "text":
-            format = .text
-        case "html":
-            format = .html
-        default:
-            return nil
-        }
-        self.init(rawValue: format.rawValue)
-    }
-
-    public var description: String {
-        switch self {
-        case .text:
-            return "text"
-        case .html:
-            return "html"
-        }
-    }
 }
 
-/**
- A `RouteOptionsV4` object is a structure that specifies the criteria for results returned by the Mapbox Directions API v4.
-
- Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
- */
-@objc(MBRouteOptionsV4)
-open class RouteOptionsV4: RouteOptions {
-    // MARK: Specifying the Response Format
-
-    /**
-     The format of the returned route steps’ instructions.
-
-     By default, the value of this property is `text`, specifying plain text instructions.
-     */
-    @objc open var instructionFormat: InstructionFormat = .text
-
-    /**
-     A Boolean value indicating whether the returned routes and their route steps should include any geographic coordinate data.
-
-     If the value of this property is `true`, the returned routes and their route steps include coordinates; if the value of this property is `false, they do not.
-
-     The default value of this property is `true`.
-     */
-    @objc open var includesShapes: Bool = true
-
-    override var path: String {
-        assert(!queries.isEmpty, "No query")
-
-        let profileIdentifier = self.profileIdentifier.rawValue.replacingOccurrences(of: "/", with: ".")
-        let queryComponent = queries.joined(separator: ";")
-        return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
-    }
-
-    override var params: [URLQueryItem] {
-        return [
-            URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "instructions", value: String(describing: instructionFormat)),
-            URLQueryItem(name: "geometry", value: includesShapes ? String(describing: shapeFormat) : String(false)),
-            URLQueryItem(name: "steps", value: String(includesSteps)),
-        ]
-    }
-}
-
-extension Locale {
-    fileprivate var usesMetric: Bool {
-        guard let measurementSystem = (self as NSLocale).object(forKey: .measurementSystem) as? String else {
-            return false
-        }
-        return measurementSystem == "Metric"
-    }
-}

@@ -41,7 +41,7 @@ struct DirectionsResponse: Codable {
         if let destinations = waypoints?.dropFirst() {
             routesWithDestinations = rawRoutes?.map({ (route) -> Route in
                 for (leg, destination) in zip(route.legs, destinations) {
-                    if leg.destination?.name?.nonEmptyString == nil {
+                    if leg.destination.name?.nonEmptyString == nil {
                         leg.destination = destination
                     }
                 }

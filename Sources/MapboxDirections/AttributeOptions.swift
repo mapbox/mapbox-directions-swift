@@ -1,11 +1,8 @@
 import Foundation
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
 
-public struct AttributeOptions: OptionSet, CustomStringConvertible {
+public struct AttributeOptions: OptionSet, CustomStringConvertible{
     public typealias RawValue = Int
     
     public var rawValue: Int
@@ -84,5 +81,18 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
             descriptions.append("congestion")
         }
         return descriptions.joined(separator: ",")
+    }
+}
+
+extension AttributeOptions: Codable {
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(description.components(separatedBy: ","))
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let descriptions = try container.decode([String].self)
+        self = AttributeOptions(descriptions: descriptions)!
     }
 }

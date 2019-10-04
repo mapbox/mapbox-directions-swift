@@ -5,17 +5,25 @@ import CoreLocation
  A bounding box represents a geographic region.
  */
 
-public class CoordinateBounds: NSObject, Codable {
+public struct CoordinateBounds: Codable {
     let southWest: CLLocationCoordinate2D
     let northEast: CLLocationCoordinate2D
     
+    enum CodingKeys: String, CodingKey {
+        case southWest, northEast
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        southWest = try container.decode(CLLocationCoordinate2D.self, forKey: .southWest)
+        northEast = try container.decode(CLLocationCoordinate2D.self, forKey: .northEast)
+    }
     /**
      Initializes a `BoundingBox` with known bounds.
      */
         public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         self.southWest = southWest
         self.northEast = northEast
-        super.init()
     }
     
     /**
@@ -24,13 +32,12 @@ public class CoordinateBounds: NSObject, Codable {
         public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
         self.southWest = CLLocationCoordinate2D(latitude: southEast.latitude, longitude: northWest.longitude)
         self.northEast = CLLocationCoordinate2D(latitude: northWest.latitude, longitude: southEast.longitude)
-        super.init()
     }
     
     /**
      Initializes a `BoundingBox` from an array of `CLLocationCoordinate2D`’s.
      */
-        convenience public init(coordinates: [CLLocationCoordinate2D]) {
+    public init(coordinates: [CLLocationCoordinate2D]) {
         assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
         
         var maximumLatitude: CLLocationDegrees = -90
@@ -51,23 +58,7 @@ public class CoordinateBounds: NSObject, Codable {
         self.init(southWest: southWest, northEast: northEast)
     }
     
-    public override var description: String {
+    public var description: String {
         return "\(southWest.longitude),\(southWest.latitude);\(northEast.longitude),\(northEast.latitude)"
-    }
-}
-
-
-extension CLLocationCoordinate2D: Codable {
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        try container.encode(longitude)
-        try container.encode(latitude)
-    }
-    
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        let longitude = try container.decode(CLLocationDegrees.self)
-        let latitude = try container.decode(CLLocationDegrees.self)
-        self.init(latitude: latitude, longitude: longitude)
     }
 }

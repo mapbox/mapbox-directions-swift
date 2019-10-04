@@ -1,9 +1,6 @@
 import Foundation
 import CoreLocation
 import Polyline
-#if SWIFT_PACKAGE
-import CMapboxDirections
-#endif
 
 
 /**
@@ -134,7 +131,7 @@ open class RouteLeg: NSObject, NSSecureCoding {
 
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
-    public let destination: Waypoint
+    public var destination: Waypoint
 
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.

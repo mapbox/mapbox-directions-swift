@@ -21,7 +21,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "MapboxDirections",
-            dependencies: ["CMapboxDirections", "Polyline"]),
+            dependencies: ["Polyline"]),
         .testTarget(
             name: "MapboxDirectionsTests",
             dependencies: ["MapboxDirections"]),

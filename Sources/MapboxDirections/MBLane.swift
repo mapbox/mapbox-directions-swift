@@ -3,38 +3,34 @@ import Foundation
 /**
  A lane on the road approaching an intersection.
  */
-
-
-public class Lane: NSObject, NSSecureCoding {
+public struct Lane: Codable {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.
      */
     public let indications: LaneIndication
     
-    /**
-     Initializes a new `Lane` using the given lane indications.
-     */
-    public init(indications: LaneIndication) {
+    let isValid: Bool
+    
+    internal init(indications: LaneIndication, valid: Bool = false) {
         self.indications = indications
+        self.isValid = valid
     }
     
-    internal convenience init(json: JSONDictionary) {
-        let indications = LaneIndication(descriptions: json["indications"] as! [String])
-        
-        self.init(indications: indications!)
+    private enum CodingKeys: String, CodingKey {
+        case indications
+        case valid
     }
     
-    public required init?(coder decoder: NSCoder) {
-        guard let descriptions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "indications") as? [String],
-            let indications = LaneIndication(descriptions: descriptions) else {
-            return nil
-        }
-        self.indications = indications
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(indications, forKey: .indications)
+        try container.encode(isValid, forKey: .valid)
     }
     
-    public static var supportsSecureCoding = true
-    
-    public func encode(with coder: NSCoder) {
-        coder.encode(indications.description.components(separatedBy: ","), forKey: "indications")
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let descriptions = try container.decode([String].self, forKey: .indications)
+        indications = LaneIndication(descriptions: descriptions)!
+        isValid = try container.decode(Bool.self, forKey: .valid)
     }
 }

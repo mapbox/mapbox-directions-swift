@@ -2,7 +2,7 @@ import Foundation
 import CoreLocation
 
 
-public enum DirectionsError: RawRepresentable {
+public enum DirectionsError: Error, RawRepresentable {
     public init?(rawValue: String) {
         assertionFailure("Do not use init(rawValue:) for DirectionsError.")
         return nil
@@ -36,8 +36,8 @@ public enum DirectionsError: RawRepresentable {
             let formattedInterval = intervalFormatter.string(from: interval) ?? "\(interval) seconds"
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)"
-        case let .unknown(response: response, underlying: error):
-            return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription)"
+        case let .unknown(response: response, underlying: error, code: code):
+            return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription) Code: \(code.debugDescription)"
         
         }
     }
@@ -60,7 +60,7 @@ public enum DirectionsError: RawRepresentable {
             }
             let formattedDate: String = DateFormatter.localizedString(from: reset, dateStyle: .long, timeStyle: .long)
             return "Wait until \(formattedDate) before retrying."
-        case .unknown(_,_):
+        case .unknown(_,_,_):
             return "Please contact Mapbox Support."
         }
     }
@@ -73,6 +73,6 @@ public enum DirectionsError: RawRepresentable {
     case profileNotFound
     case requestTooLarge
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
-    case unknown(response: URLResponse?, underlying: Error?)
+    case unknown(response: URLResponse?, underlying: Error?, code: String?)
     
 }

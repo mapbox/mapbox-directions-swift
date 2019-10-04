@@ -367,22 +367,22 @@ open class Directions: NSObject {
             case (429, _):
                 return .rateLimited(rateLimitInterval: response.rateLimitInterval, rateLimit: response.rateLimit, resetTime: response.rateLimitResetTime)
             default:
-                return .unknown(response: response, underlying: error)
+                return .unknown(response: response, underlying: error, code: code)
             }
         }
-        return NSError(domain: error?.domain ?? MBDirectionsErrorDomain, code: error?.code ?? -1, userInfo: userInfo)
+        return .unknown(response: nil, underlying: error, code: code)
     }
     
-    /**
-     Adds request- or response-specific information to each result in a response.
-     */
-    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
-        for result in results {
-            result.accessToken = self.accessToken
-            result.apiEndpoint = self.apiEndpoint
-            result.routeIdentifier = uuid
-            result.fetchStartDate = fetchStartDate
-            result.responseEndDate = responseEndDate
-        }
-    }
+//    /**
+//     Adds request- or response-specific information to each result in a response.
+//     */
+//    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
+//        for result in results {
+//            result.accessToken = self.accessToken
+//            result.apiEndpoint = self.apiEndpoint
+//            result.routeIdentifier = uuid
+//            result.fetchStartDate = fetchStartDate
+//            result.responseEndDate = responseEndDate
+//        }
+//    }
 }
