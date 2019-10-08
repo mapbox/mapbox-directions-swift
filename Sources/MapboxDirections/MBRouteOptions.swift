@@ -4,7 +4,7 @@
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
-open class RouteOptions: DirectionsOptions, Codable {
+open class RouteOptions: DirectionsOptions {
     // MARK: Creating a Route Options Object
 
     /**

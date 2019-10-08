@@ -10,112 +10,157 @@ import Polyline
  */
 
 
-open class RouteLeg: NSObject, NSSecureCoding {
+open class RouteLeg: Codable {
 
-    // MARK: Creating a Leg
-
-    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
-        self.source = source
-        self.destination = destination
-        self.profileIdentifier = options.profileIdentifier
-        self.steps = steps
-        distance = json["distance"] as! Double
-        expectedTravelTime = json["duration"] as! Double
-        self.name = json["summary"] as! String
-
-        var segmentDistances: [CLLocationDistance]?
-        var expectedSegmentTravelTimes: [TimeInterval]?
-        var segmentSpeeds: [CLLocationSpeed]?
-        var congestionLevels: [CongestionLevel]?
-
-        if let jsonAttributes = json["annotation"] as? [String: Any] {
-            if let distance = jsonAttributes["distance"] {
-                segmentDistances = distance as? [CLLocationDistance]
-            }
-            if let duration = jsonAttributes["duration"] {
-                expectedSegmentTravelTimes = duration as? [TimeInterval] ?? []
-            }
-            if let speed = jsonAttributes["speed"] {
-                segmentSpeeds = speed as? [CLLocationSpeed] ?? []
-            }
-            if let congestion = jsonAttributes["congestion"] as? [String] {
-                congestionLevels = congestion.map {
-                    #warning("derail")
-                   return CongestionLevel(rawValue: $0)!
-                }
-            }
-        }
-
-        self.segmentDistances = segmentDistances
-        self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
-        self.segmentSpeeds = segmentSpeeds
-        self.segmentCongestionLevels = congestionLevels
+    public enum CodingKeys: String, CodingKey {
+        case source
+        case destination
+        case steps
+        case segmentDistances
+        case expectedSegmentTravelTimes
+        case segmentSpeeds
+        case segmentCongestionLevels
+        case name
+        case distance
+        case expectedTravelTime
+        case profileIdentifier
     }
-
-    /**
-     Initializes a new route leg object with the given JSON dictionary representation and waypoints.
-
-     Normally, you do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
-
-     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
-     - parameter source: The waypoint at the beginning of the leg.
-     - parameter destination: The waypoint at the end of the leg.
-     - parameter options: The options used when requesting the route.
-     */
     
-    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0, options: options) }
-        self.init(steps: steps, json: json, source: source, destination: destination, options: options)
+    
+    public required init(from decoder: Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+        source = try container.decode(Waypoint.self, forKey: .source)
+        destination = try container.decode(Waypoint.self, forKey: .destination)
+        steps = try container.decode([RouteStep].self, forKey: .steps)
+        segmentDistances = try container.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
+        expectedSegmentTravelTimes = try container.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
+        segmentSpeeds = try container.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
+        segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
+        name = try container.decode(String.self, forKey: .name)
+        distance = container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        profileIdentifier = container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
     }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(source, forKey: .source)
+        try container.encode(destination, forKey: .destination)
+        try container.encode(steps, forKey: .steps)
+        try container.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
+        try container.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+        try container.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
+        try container.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        try container.encode(name, forKey: .name)
+        try container.encode(distance, forKey: .distance)
+        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encode(profileIdentifier, forKey: .profileIdentifier)
 
-    public required init?(coder decoder: NSCoder) {
-        guard let decodedSource = decoder.decodeObject(of: Waypoint.self, forKey: "source") else {
-            return nil
-        }
-        source = decodedSource
-
-        guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
-            return nil
-        }
-        destination = decodedDestination
-
-        steps = decoder.decodeObject(of: [NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
-
-        guard let decodedName = decoder.decodeObject(of: NSString.self, forKey: "name") as String? else {
-            return nil
-        }
-        name = decodedName
-
-        distance = decoder.decodeDouble(forKey: "distance")
-        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
-
-        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
-            return nil
-        }
-        
-        profileIdentifier = DirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
-
-        segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
-        expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
-        segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
-        segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
     }
-
-    public static var supportsSecureCoding = true
-
-    public func encode(with coder: NSCoder) {
-        coder.encode(source, forKey: "source")
-        coder.encode(destination, forKey: "destination")
-        coder.encode(steps, forKey: "steps")
-        coder.encode(name, forKey: "name")
-        coder.encode(distance, forKey: "distance")
-        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
-        coder.encode(profileIdentifier, forKey: "profileIdentifier")
-        coder.encode(segmentDistances, forKey: "segmentDistances")
-        coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
-        coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
-        coder.encode(segmentCongestionLevels, forKey: "segmentCongestionLevels")
-    }
+    
+//    // MARK: Creating a Leg
+//
+//    internal init(steps: [RouteStep], json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
+//        self.source = source
+//        self.destination = destination
+//        self.profileIdentifier = options.profileIdentifier
+//        self.steps = steps
+//        distance = json["distance"] as! Double
+//        expectedTravelTime = json["duration"] as! Double
+//        self.name = json["summary"] as! String
+//
+//        var segmentDistances: [CLLocationDistance]?
+//        var expectedSegmentTravelTimes: [TimeInterval]?
+//        var segmentSpeeds: [CLLocationSpeed]?
+//        var congestionLevels: [CongestionLevel]?
+//
+//        if let jsonAttributes = json["annotation"] as? [String: Any] {
+//            if let distance = jsonAttributes["distance"] {
+//                segmentDistances = distance as? [CLLocationDistance]
+//            }
+//            if let duration = jsonAttributes["duration"] {
+//                expectedSegmentTravelTimes = duration as? [TimeInterval] ?? []
+//            }
+//            if let speed = jsonAttributes["speed"] {
+//                segmentSpeeds = speed as? [CLLocationSpeed] ?? []
+//            }
+//            if let congestion = jsonAttributes["congestion"] as? [String] {
+//                congestionLevels = congestion.map {
+//                    #warning("derail")
+//                   return CongestionLevel(rawValue: $0)!
+//                }
+//            }
+//        }
+//
+//        self.segmentDistances = segmentDistances
+//        self.expectedSegmentTravelTimes = expectedSegmentTravelTimes
+//        self.segmentSpeeds = segmentSpeeds
+//        self.segmentCongestionLevels = congestionLevels
+//    }
+//
+//    /**
+//     Initializes a new route leg object with the given JSON dictionary representation and waypoints.
+//
+//     Normally, you do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculateDirections(options:completionHandler:)` method.
+//
+//     - parameter json: A JSON dictionary representation of a route leg object as returnd by the Mapbox Directions API.
+//     - parameter source: The waypoint at the beginning of the leg.
+//     - parameter destination: The waypoint at the end of the leg.
+//     - parameter options: The options used when requesting the route.
+//     */
+//
+//    public convenience init(json: [String: Any], source: Waypoint, destination: Waypoint, options: RouteOptions) {
+//        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStep(json: $0, options: options) }
+//        self.init(steps: steps, json: json, source: source, destination: destination, options: options)
+//    }
+//
+//    public required init?(coder decoder: NSCoder) {
+//        guard let decodedSource = decoder.decodeObject(of: Waypoint.self, forKey: "source") else {
+//            return nil
+//        }
+//        source = decodedSource
+//
+//        guard let decodedDestination = decoder.decodeObject(of: Waypoint.self, forKey: "destination") else {
+//            return nil
+//        }
+//        destination = decodedDestination
+//
+//        steps = decoder.decodeObject(of: [NSArray.self, RouteStep.self], forKey: "steps") as? [RouteStep] ?? []
+//
+//        guard let decodedName = decoder.decodeObject(of: NSString.self, forKey: "name") as String? else {
+//            return nil
+//        }
+//        name = decodedName
+//
+//        distance = decoder.decodeDouble(forKey: "distance")
+//        expectedTravelTime = decoder.decodeDouble(forKey: "expectedTravelTime")
+//
+//        guard let decodedProfileIdentifier = decoder.decodeObject(of: NSString.self, forKey: "profileIdentifier") as String? else {
+//            return nil
+//        }
+//
+//        profileIdentifier = DirectionsProfileIdentifier(rawValue: decodedProfileIdentifier)
+//
+//        segmentDistances = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentDistances") as? [CLLocationDistance]
+//        expectedSegmentTravelTimes = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "expectedSegmentTravelTimes") as? [TimeInterval]
+//        segmentSpeeds = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentSpeeds") as? [CLLocationSpeed]
+//        segmentCongestionLevels = decoder.decodeObject(of: [NSArray.self, NSNumber.self], forKey: "segmentCongestionLevels") as? [CongestionLevel]
+//    }
+//
+//    public static var supportsSecureCoding = true
+//
+//    public func encode(with coder: NSCoder) {
+//        coder.encode(source, forKey: "source")
+//        coder.encode(destination, forKey: "destination")
+//        coder.encode(steps, forKey: "steps")
+//        coder.encode(name, forKey: "name")
+//        coder.encode(distance, forKey: "distance")
+//        coder.encode(expectedTravelTime, forKey: "expectedTravelTime")
+//        coder.encode(profileIdentifier, forKey: "profileIdentifier")
+//        coder.encode(segmentDistances, forKey: "segmentDistances")
+//        coder.encode(expectedSegmentTravelTimes, forKey: "expectedSegmentTravelTimes")
+//        coder.encode(segmentSpeeds, forKey: "segmentSpeeds")
+//        coder.encode(segmentCongestionLevels, forKey: "segmentCongestionLevels")
+//    }
 
     // MARK: Getting the Leg Geometry
 
@@ -223,14 +268,5 @@ open class RouteLeg: NSObject, NSSecureCoding {
             return nil
         }
         return debugQuickLookURL(illustrating: coordinates)
-    }
-}
-
-// MARK: Support for Directions API v4
-
-internal class RouteLegV4: RouteLeg {
-    internal convenience init(json: JSONDictionary, source: Waypoint, destination: Waypoint, options: RouteOptions) {
-        let steps = (json["steps"] as? [JSONDictionary] ?? []).map { RouteStepV4(json: $0) }
-        self.init(steps: steps, json: json, source: source, destination: destination, options: options)
     }
 }
