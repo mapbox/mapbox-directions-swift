@@ -386,3 +386,25 @@ open class Directions: NSObject {
 //        }
 //    }
 }
+
+extension CodingUserInfoKey {
+    static let routeOptions = CodingUserInfoKey(rawValue: "options")
+}
+
+/**
+ A JSONDecoder with an associated `RouteOptions` to use when decoding a directions response.
+ */
+public class DirectionsDecoder: JSONDecoder {
+    
+    /**
+     Initializes a `DirectionsDecoder` with a given `RouteOption`.
+     */
+    convenience public init(options: RouteOptions) {
+        self.init(userInfo: [CodingUserInfoKey.routeOptions!: options])
+    }
+    
+    init(userInfo: [CodingUserInfoKey: Any]) {
+        super.init()
+        self.userInfo = userInfo
+    }
+}

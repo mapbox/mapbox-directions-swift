@@ -18,7 +18,7 @@ extension CLLocationCoordinate2D: Codable, Equatable {
         return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
     
-    internal var jsonDescription: String {
+    internal var requestDescription: String {
         return "\(longitude.rounded(to: 1e6)),\(latitude.rounded(to: 1e6))"
     }
 }

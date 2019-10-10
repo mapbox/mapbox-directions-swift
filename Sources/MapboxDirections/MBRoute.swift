@@ -38,11 +38,7 @@ open class Route: NSObject, Codable {
         
         let geometry = try container.decodeIfPresent(UncertainCodable<Geometry, String>.self, forKey: .geometry)
         if let geo = geometry?.value as? String {
-            if routeOptions is RouteOptionsV4 {
-                coordinates = decodePolyline(geo, precision: 1e6)
-            } else {
-                coordinates = decodePolyline(geo, precision: 1e5)
-            }
+        coordinates = decodePolyline(geo, precision: 1e5)
         } else if let geo = geometry?.value as? Geometry {
             coordinates = geo.coordinates
         } else {

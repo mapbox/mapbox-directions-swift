@@ -261,7 +261,24 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 }
 
 // MARK: - URL Queries
-public extension DirectionsOptions {
+internal extension DirectionsOptions {
+ 
+    var abridgedPath: String {
+    assertionFailure("abridgedPath should be overriden by subclass")
+    return ""
+    }
+    /**
+     The path of the request URL, not including the hostname or any parameters.
+     */
+    var path: String {
+        guard let coordinates = coordinates, !coordinates.isEmpty else {
+            assertionFailure("No query")
+            return ""
+        }
+        return "\(abridgedPath)/\(coordinates).json"
+    }
+    
+    
      var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
@@ -365,7 +382,7 @@ public extension DirectionsOptions {
     }
     
     private var coordinates: String? {
-        return waypoints.map { $0.coordinate.jsonDescription }.joined(separator: ";")
+        return waypoints.map { $0.coordinate.requestDescription }.joined(separator: ";")
     }
 
 }

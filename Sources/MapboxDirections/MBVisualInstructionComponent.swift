@@ -10,7 +10,7 @@
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
  */
 
-open class VisualInstructionComponent: NSObject, ComponentRepresentable {
+open class VisualInstructionComponent: ComponentRepresentable {
 
     /**
     The URL to an image representation of this component.
@@ -29,7 +29,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
 
      A component with a lower abbreviation priority value should be abbreviated before a component with a higher abbreviation priority value.
      */
-    public var abbreviationPriority: Int = NSNotFound
+    public var abbreviationPriority: Int?
 
     /**
      The plain text representation of this component.
@@ -83,7 +83,7 @@ open class VisualInstructionComponent: NSObject, ComponentRepresentable {
      - parameter abbreviation: An abbreviated representation of `text`.
      - parameter abbreviationPriority: The priority for which the component should be abbreviated.
      */
-    public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int) {
+    public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int?) {
         self.text = text
         self.type = type
         self.imageURL = imageURL

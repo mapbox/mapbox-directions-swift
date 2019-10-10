@@ -4,7 +4,7 @@ import Foundation
  `VisualInstructionComponentType` describes the type of `VisualInstructionComponent`.
  */
 
-public enum VisualInstructionComponentType: Int, CustomStringConvertible {
+public enum VisualInstructionComponentType: String, Codable {
     
     /**
      The component separates two other destination components.
@@ -21,7 +21,7 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     /**
      Component contains an image that should be rendered.
      */
-    case image
+    case image = "icon"
     
     /**
      The compoment contains the localized word for "exit".
@@ -33,39 +33,11 @@ public enum VisualInstructionComponentType: Int, CustomStringConvertible {
     /**
      A component contains an exit number.
      */
-    case exitCode
+    case exitCode = "exit-number"
     
-    public init?(description: String) {
-        let type: VisualInstructionComponentType
-        switch description {
-        case "delimiter":
-            type = .delimiter
-        case "icon":
-            type = .image
-        case "text":
-            type = .text
-        case "exit":
-            type = .exit
-        case "exit-number":
-            type = .exitCode
-        default:
-            return nil
-        }
-        self.init(rawValue: type.rawValue)
-    }
+    /**
+    A component contains a lane.
+     */
+    case lane
     
-    public var description: String {
-        switch self {
-        case .delimiter:
-            return "delimiter"
-        case .image:
-            return "icon"
-        case .text:
-            return "text"
-        case .exit:
-            return "exit"
-        case .exitCode:
-            return "exit-number"
-        }
-    }
 }

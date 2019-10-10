@@ -13,13 +13,11 @@ open class RouteOptions: DirectionsOptions {
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
      */
-    public init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
-        assert(waypoints.count >= 2, "A route requires at least a source and destination.")
-        assert(waypoints.count <= 25, "A route may not have more than 25 waypoints.")
+    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
 
-        self.waypoints = waypoints
-        self.profileIdentifier = profileIdentifier ?? .automobile
-        self.allowsUTurnAtWaypoint = ![DirectionsProfileIdentifier.automobile.rawValue, DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue].contains(self.profileIdentifier.rawValue)
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        let profilesDisallowingUTurns: [DirectionsProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
+        self.allowsUTurnAtWaypoint =  !profilesDisallowingUTurns.contains(self.profileIdentifier)
     }
 
     /**

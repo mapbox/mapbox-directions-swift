@@ -7,9 +7,7 @@ import CoreLocation
  */
 
 
-open class VisualInstruction: NSObject, NSSecureCoding {
-
-    public static var supportsSecureCoding = true
+open class VisualInstruction: Codable {
 
     /**
      A plain text representation of the instruction.
@@ -38,7 +36,7 @@ open class VisualInstruction: NSObject, NSSecureCoding {
 
      This property is only relevant if the `maneuverType` is any of the following values: `ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, or `ManeuverType.exitRotary`.
      */
-    public var finalHeading: CLLocationDegrees = 180
+    public var finalHeading: CLLocationDegrees?
 
     /**
      Initializes a new visual instruction banner object that displays the given information.
@@ -50,71 +48,37 @@ open class VisualInstruction: NSObject, NSSecureCoding {
         self.components = components
         self.finalHeading = degrees
     }
-
-    /**
-     Initializes a new visual instruction object based on the given JSON dictionary representation.
-
-     - parameter json: A JSON object that conforms to the [banner instruction](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
-     */
     
-    public convenience init(json: [String: Any]) {
-        let text = json["text"] as? String
-        var components = [ComponentRepresentable]()
-
-        var maneuverType: ManeuverType = .none
-        if let type = json["type"] as? String, let derivedType = ManeuverType(description: type) {
-            maneuverType = derivedType
-        }
-
-        var maneuverDirection: ManeuverDirection = .none
-        if let modifier = json["modifier"] as? String,
-            let derivedDirection = ManeuverDirection(description: modifier) {
-            maneuverDirection = derivedDirection
-        }
-
-        if let dictionary = json["components"] as? [JSONDictionary] {
-            if let firstComponent = dictionary.first, let type = firstComponent["type"] as? String, type.lowercased() == "lane" {
-                components = dictionary.map { record in
-                    let indications = LaneIndication(descriptions: record["directions"] as? [String] ?? []) ?? LaneIndication()
-                    let isUsable = record["active"] as? Bool ?? false
-                    return LaneIndicationComponent(indications: indications, isUsable: isUsable)
-                }
-            } else {
-                components = dictionary.map(VisualInstructionComponent.init(json:))
-            }
-        }
-
-        let degrees = json["degrees"] as? CLLocationDegrees ?? 180
-
-        self.init(text: text, maneuverType: maneuverType, maneuverDirection: maneuverDirection, components: components, degrees: degrees)
+    
+    // MARK: - Codable
+    private enum CodingKeys: String, CodingKey {
+        case text
+        case maneuverType = "type"
+        case maneuverDirection = "modifier"
+        case components
+        case finalHeading = "degrees"
     }
-
-    public required init?(coder decoder: NSCoder) {
-        text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
-
-        guard let maneuverTypeString = decoder.decodeObject(of: NSString.self, forKey: "maneuverType") as String?, let maneuverType = ManeuverType(description: maneuverTypeString) else {
-            return nil
-        }
-        self.maneuverType = maneuverType
-
-        guard let direction = decoder.decodeObject(of: NSString.self, forKey: "maneuverDirection") as String?, let maneuverDirection = ManeuverDirection(description: direction) else {
-            return nil
-        }
-        self.maneuverDirection = maneuverDirection
-
-        guard let components = decoder.decodeObject(of: [NSArray.self, VisualInstructionComponent.self, LaneIndicationComponent.self], forKey: "components") as? [ComponentRepresentable] else {
-            return nil
-        }
-        self.components = components
-
-        self.finalHeading = decoder.decodeDouble(forKey: "degrees")
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(text, forKey: .text)
+        try container.encode(maneuverType, forKey: .maneuverType)
+        try container.encode(maneuverDirection, forKey: .maneuverDirection)
+        
+        let wrappedComponents = components.map(ComponentCoder.init(component:))
+        try container.encode(wrappedComponents, forKey: .components)
+        
+        try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
     }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        text = try container.decodeIfPresent(String.self, forKey: .text)
+        maneuverType = try container.decode(ManeuverType.self, forKey: .maneuverType)
+        maneuverDirection = try container.decode(ManeuverDirection.self, forKey: .maneuverDirection)
 
-    public func encode(with coder: NSCoder) {
-        coder.encode(text, forKey: "text")
-        coder.encode(maneuverType.description, forKey: "maneuverType")
-        coder.encode(maneuverDirection.description, forKey: "maneuverDirection")
-        coder.encode(finalHeading, forKey: "degrees")
-        coder.encode(components, forKey: "components")
+        let componentsWrapped = try container.decode([ComponentCoder].self, forKey: .components)
+        components = componentsWrapped.map { $0.component }
+        
+        finalHeading = try container.decodeIfPresent(CLLocationDegrees.self, forKey: .finalHeading)
     }
 }
