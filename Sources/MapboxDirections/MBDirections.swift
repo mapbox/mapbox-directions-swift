@@ -163,15 +163,56 @@ open class Directions: NSObject {
         let requestURL = url(forCalculating: options)
         let request = URLRequest(url: requestURL)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+            
+            guard let response = possibleResponse, response.mimeType == "application/json" else {
+                completionHandler(nil, nil, .invalidResponse)
+                return
+            }
+            
             guard let data = possibleData else {
                 completionHandler(nil, nil, .noData)
-            }
-            if let error = possibleError {
-                completionHandler(nil, nil, .unknown(underlying: error))
+                return
             }
             
+            
+            if let error = possibleError {
+                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil))
+                return
+            }
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.userInfo[.options] = options
+                    let result = try decoder.decode(RouteResponse.self, from: data)
+                    guard (result.code == nil && result.message == nil) || result.code == "Ok" else {
+                        let apiError = Directions.informativeError(code: result.code, response: response, underlyingError: possibleError)
+                        completionHandler(nil, nil, apiError)
+                        return
+                    }
+                    result.routes?.forEach {
+                        $0.accessToken = self.accessToken
+                        $0.apiEndpoint = self.apiEndpoint
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completionHandler(result.waypoints, result.routes, nil)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completionHandler(nil, nil, .unknown(response: nil, underlying: error, code: nil))
+                    }
+                }
+
+            
+            }
             
         }
+        requestTask.priority = 1
+        requestTask.resume()
+        
+        return requestTask
+    }
         
         
 //        let fetchStartDate = Date()
@@ -187,7 +228,7 @@ open class Directions: NSObject {
 //        }
 //        task.resume()
 //        return task
-    }
+
 
     /**
      Begins asynchronously calculating matches using the given options and delivers the results to a closure.
@@ -373,38 +414,20 @@ open class Directions: NSObject {
         return .unknown(response: nil, underlying: error, code: code)
     }
     
-//    /**
-//     Adds request- or response-specific information to each result in a response.
-//     */
-//    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
-//        for result in results {
-//            result.accessToken = self.accessToken
-//            result.apiEndpoint = self.apiEndpoint
-//            result.routeIdentifier = uuid
-//            result.fetchStartDate = fetchStartDate
-//            result.responseEndDate = responseEndDate
-//        }
-//    }
-}
-
-extension CodingUserInfoKey {
-    static let routeOptions = CodingUserInfoKey(rawValue: "options")
-}
-
-/**
- A JSONDecoder with an associated `RouteOptions` to use when decoding a directions response.
- */
-public class DirectionsDecoder: JSONDecoder {
-    
     /**
-     Initializes a `DirectionsDecoder` with a given `RouteOption`.
+     Adds request- or response-specific information to each result in a response.
      */
-    convenience public init(options: RouteOptions) {
-        self.init(userInfo: [CodingUserInfoKey.routeOptions!: options])
+    func postprocess(_ results: inout [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
+        for result in results {
+            result.accessToken = self.accessToken
+            result.apiEndpoint = self.apiEndpoint
+            result.routeIdentifier = uuid
+            result.fetchStartDate = fetchStartDate
+            result.responseEndDate = responseEndDate
+        }
     }
-    
-    init(userInfo: [CodingUserInfoKey: Any]) {
-        super.init()
-        self.userInfo = userInfo
-    }
+}
+
+public extension CodingUserInfoKey {
+    static let options = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeOptions")!
 }

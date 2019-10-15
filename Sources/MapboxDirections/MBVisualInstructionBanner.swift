@@ -2,12 +2,52 @@ import Foundation
 import CoreLocation
 
 
+internal extension CodingUserInfoKey {
+     static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!
+ }
+
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
 
-open class VisualInstructionBanner: NSObject, NSSecureCoding {
+open class VisualInstructionBanner: Codable {
+   
+    private enum CodingKeys: String, CodingKey {
+        case distanceAlongStep = "distanceAlongGeometry"
+        case primaryInstruction = "primary"
+        case secondaryInstruction = "secondary"
+        case tertiaryInstruction = "sub"
+        case drivingSide
+    }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
+        try container.encode(primaryInstruction, forKey: .primaryInstruction)
+        try container.encodeIfPresent(secondaryInstruction, forKey: .secondaryInstruction)
+        try container.encodeIfPresent(tertiaryInstruction, forKey: .tertiaryInstruction)
+        try container.encode(drivingSide, forKey: .drivingSide)
+    }
+    
 
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        distanceAlongStep = try container.decode(CLLocationDistance.self, forKey: .distanceAlongStep)
+        primaryInstruction = try container.decode(VisualInstruction.self, forKey: .primaryInstruction)
+        secondaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .secondaryInstruction)
+        tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
+        if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
+            drivingSide = directlyEncoded
+        } else if let drivingSide = decoder.userInfo[.drivingSide] as? DrivingSide {
+            self.drivingSide = drivingSide
+        } else {
+            #warning("make real error")
+            throw NSError(domain: "directions", code: 500, userInfo: [NSLocalizedDescriptionKey: "Did not supply driving side."])
+        }
+    }
+    
+    
+    
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
      */
@@ -35,74 +75,75 @@ open class VisualInstructionBanner: NSObject, NSSecureCoding {
      */
     public var drivingSide: DrivingSide
 
-    /**
-     Initializes a new visual instruction banner object based on the given JSON dictionary representation and a driving side.
-
-     - parameter json: A JSON object that conforms to the [primary or secondary banner](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
-     - parameter drivingSide: The side of the road the user should drive on. This value should be consistent with the containing route step.
-     */
-    
-    public convenience init(json: [String: Any], drivingSide: DrivingSide) {
-        let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
-
-        let primary = json["primary"] as! JSONDictionary
-        let secondary = json["secondary"] as? JSONDictionary
-        let tertiary = json["sub"] as? JSONDictionary
-
-        let primaryInstruction = VisualInstruction(json: primary)
-        var secondaryInstruction: VisualInstruction? = nil
-        if let secondary = secondary {
-            secondaryInstruction = VisualInstruction(json: secondary)
-        }
-
-        var tertiaryInstruction: VisualInstruction? = nil
-        if let tertiary = tertiary {
-            tertiaryInstruction = VisualInstruction(json: tertiary)
-        }
-
-        self.init(distanceAlongStep: distanceAlongStep, primaryInstruction: primaryInstruction, secondaryInstruction: secondaryInstruction, tertiaryInstruction: tertiaryInstruction, drivingSide: drivingSide)
-    }
-
-    /**
-     Initializes a new visual instruction banner object that displays the given information.
-
-     - parameter distanceAlongStep: The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
-     - parameter primaryInstruction: The most important information to convey to the user about the `RouteStep`.
-     - parameter secondaryInstruction: Less important details about the `RouteStep`.
-     - parameter drivingSide: Which side of a bidirectional road the driver should drive on.
-     */
-    public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
-        self.distanceAlongStep = distanceAlongStep
-        self.primaryInstruction = primaryInstruction
-        self.secondaryInstruction = secondaryInstruction
-        self.tertiaryInstruction = tertiaryInstruction
-        self.drivingSide = drivingSide
-    }
-
-    public required init?(coder decoder: NSCoder) {
-        distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
-
-        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(rawValue: drivingSideDescription) {
-            self.drivingSide = drivingSide
-        } else {
-            self.drivingSide = .right
-        }
-
-        guard let primaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "primary") else {
-            return nil
-        }
-        self.primaryInstruction = primaryInstruction
-        self.secondaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "secondary")
-        self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "tertiaryInstruction")
-    }
-
-    public static var supportsSecureCoding = true
-
-    public func encode(with coder: NSCoder) {
-        coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
-        coder.encode(primaryInstruction, forKey: "primary")
-        coder.encode(secondaryInstruction, forKey: "secondary")
-        coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
-        coder.encode(drivingSide.rawValue, forKey: "drivingSide")
-    }
+//    /**
+//     Initializes a new visual instruction banner object based on the given JSON dictionary representation and a driving side.
+//
+//     - parameter json: A JSON object that conforms to the [primary or secondary banner](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
+//     - parameter drivingSide: The side of the road the user should drive on. This value should be consistent with the containing route step.
+//     */
+//    
+//    public convenience init(json: [String: Any], drivingSide: DrivingSide) {
+//        let distanceAlongStep = json["distanceAlongGeometry"] as! CLLocationDistance
+//
+//        let primary = json["primary"] as! JSONDictionary
+//        let secondary = json["secondary"] as? JSONDictionary
+//        let tertiary = json["sub"] as? JSONDictionary
+//
+//        let primaryInstruction = VisualInstruction(json: primary)
+//        var secondaryInstruction: VisualInstruction? = nil
+//        if let secondary = secondary {
+//            secondaryInstruction = VisualInstruction(json: secondary)
+//        }
+//
+//        var tertiaryInstruction: VisualInstruction? = nil
+//        if let tertiary = tertiary {
+//            tertiaryInstruction = VisualInstruction(json: tertiary)
+//        }
+//
+//        self.init(distanceAlongStep: distanceAlongStep, primaryInstruction: primaryInstruction, secondaryInstruction: secondaryInstruction, tertiaryInstruction: tertiaryInstruction, drivingSide: drivingSide)
+//    }
+//
+//    /**
+//     Initializes a new visual instruction banner object that displays the given information.
+//
+//     - parameter distanceAlongStep: The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
+//     - parameter primaryInstruction: The most important information to convey to the user about the `RouteStep`.
+//     - parameter secondaryInstruction: Less important details about the `RouteStep`.
+//     - parameter drivingSide: Which side of a bidirectional road the driver should drive on.
+//     */
+//    public init(distanceAlongStep: CLLocationDistance, primaryInstruction: VisualInstruction, secondaryInstruction: VisualInstruction?, tertiaryInstruction: VisualInstruction?, drivingSide: DrivingSide) {
+//        self.distanceAlongStep = distanceAlongStep
+//        self.primaryInstruction = primaryInstruction
+//        self.secondaryInstruction = secondaryInstruction
+//        self.tertiaryInstruction = tertiaryInstruction
+//        self.drivingSide = drivingSide
+//    }
+//
+//    public required init?(coder decoder: NSCoder) {
+//        distanceAlongStep = decoder.decodeDouble(forKey: "distanceAlongStep")
+//
+//        if let drivingSideDescription = decoder.decodeObject(of: NSString.self, forKey: "drivingSide") as String?, let drivingSide = DrivingSide(rawValue: drivingSideDescription) {
+//            self.drivingSide = drivingSide
+//        } else {
+//            self.drivingSide = .right
+//        }
+//
+//        guard let primaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "primary") else {
+//            return nil
+//        }
+//        self.primaryInstruction = primaryInstruction
+//        self.secondaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "secondary")
+//        self.tertiaryInstruction = decoder.decodeObject(of: VisualInstruction.self, forKey: "tertiaryInstruction")
+//    }
+//
+//    public static var supportsSecureCoding = true
+//
+//    public func encode(with coder: NSCoder) {
+//        coder.encode(distanceAlongStep, forKey: "distanceAlongStep")
+//        coder.encode(primaryInstruction, forKey: "primary")
+//        coder.encode(secondaryInstruction, forKey: "secondary")
+//        coder.encode(tertiaryInstruction, forKey: "tertiaryInstruction")
+//        coder.encode(drivingSide.rawValue, forKey: "drivingSide")
+//    }
+//}
 }

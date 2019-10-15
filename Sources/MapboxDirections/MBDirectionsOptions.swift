@@ -151,6 +151,8 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
         distanceMeasurementSystem = try container.decode(MeasurementSystem.self, forKey: .distanceMeasurementSystem)
         includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
     }
+    
+    
 
     /**
      An array of `Waypoint` objects representing locations that the route should visit in chronological order.
@@ -257,11 +259,10 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */
-    
-}
+
 
 // MARK: - URL Queries
-internal extension DirectionsOptions {
+
  
     var abridgedPath: String {
     assertionFailure("abridgedPath should be overriden by subclass")
@@ -385,4 +386,12 @@ internal extension DirectionsOptions {
         return waypoints.map { $0.coordinate.requestDescription }.joined(separator: ";")
     }
 
+    internal var httpBody: String {
+        guard let coordinates = self.coordinates else { return "" }
+        var components = URLComponents()
+        components.queryItems = urlQueryItems + [
+            URLQueryItem(name: "coordinates", value: coordinates),
+        ]
+        return components.percentEncodedQuery ?? ""
+    }
 }

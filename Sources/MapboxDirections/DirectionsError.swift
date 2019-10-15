@@ -19,6 +19,8 @@ public enum DirectionsError: Error, RawRepresentable {
         switch self {
         case .noData:
             return "No data was returned from the server."
+        case .invalidResponse:
+            return "A response was recieved from the server, but it was not of a valid format."
         case .unableToRoute:
             return "No route could be found between the specified locations."
         case .unableToLocate:
@@ -38,7 +40,6 @@ public enum DirectionsError: Error, RawRepresentable {
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)"
         case let .unknown(response: response, underlying: error, code: code):
             return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription) Code: \(code.debugDescription)"
-        
         }
     }
     
@@ -60,6 +61,8 @@ public enum DirectionsError: Error, RawRepresentable {
             }
             let formattedDate: String = DateFormatter.localizedString(from: reset, dateStyle: .long, timeStyle: .long)
             return "Wait until \(formattedDate) before retrying."
+        case .invalidResponse:
+            fallthrough
         case .unknown(_,_,_):
             return "Please contact Mapbox Support."
         }
@@ -68,6 +71,7 @@ public enum DirectionsError: Error, RawRepresentable {
      
     
     case noData
+    case invalidResponse
     case unableToRoute
     case unableToLocate
     case profileNotFound

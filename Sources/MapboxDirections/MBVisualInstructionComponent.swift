@@ -8,6 +8,7 @@
 
 /**
  A component of a `VisualInstruction` that represents a single run of similarly formatted text or an image with a textual fallback representation.
+ Note: This class does not conform to Codable because it's serialization is directly handled by `Component`
  */
 
 open class VisualInstructionComponent: ComponentRepresentable {
@@ -42,82 +43,12 @@ open class VisualInstructionComponent: ComponentRepresentable {
      The type of visual instruction component. You can display the component differently depending on its type.
      */
     public var type: VisualInstructionComponentType
-
-    public static var supportsSecureCoding: Bool = true
-
-    /**
-     Initializes a new visual instruction component object based on the given JSON dictionary representation.
-
-     - parameter json: A JSON object that conforms to the [banner component](https://docs.mapbox.com/api/navigation/#banner-instruction-object) format described in the Directions API documentation.
-     */
     
-    public convenience init(json: [String: Any]) {
-        let text = json["text"] as? String
-        let type = VisualInstructionComponentType(description: json["type"] as? String ?? "") ?? .text
-
-        let abbreviation = json["abbr"] as? String
-        let abbreviationPriority = json["abbr_priority"] as? Int ?? NSNotFound
-
-        var imageURL: URL?
-        if let baseURL = json["imageBaseURL"] as? String, !baseURL.isEmpty {
-            let scale: CGFloat
-            #if os(OSX)
-                scale = NSScreen.main?.backingScaleFactor ?? 1
-            #elseif os(watchOS)
-                scale = WKInterfaceDevice.current().screenScale
-            #else
-                scale = UIScreen.main.scale
-            #endif
-            imageURL = URL(string: "\(baseURL)@\(Int(scale))x.png")
-        }
-
-        self.init(type: type, text: text, imageURL: imageURL, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-    }
-
-    /**
-     Initializes a new visual instruction component object that displays the given information.
-
-     - parameter type: The type of visual instruction component.
-     - parameter text: The plain text representation of this component.
-     - parameter imageURL: The URL to an image representation of this component.
-     - parameter abbreviation: An abbreviated representation of `text`.
-     - parameter abbreviationPriority: The priority for which the component should be abbreviated.
-     */
     public init(type: VisualInstructionComponentType, text: String?, imageURL: URL?, abbreviation: String?, abbreviationPriority: Int?) {
         self.text = text
         self.type = type
         self.imageURL = imageURL
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
-    }
-
-    public required init?(coder decoder: NSCoder) {
-        self.text = decoder.decodeObject(of: NSString.self, forKey: "text") as String?
-
-        guard let typeString = decoder.decodeObject(of: NSString.self, forKey: "type") as String?, let type = VisualInstructionComponentType(description: typeString) else {
-            return nil
-        }
-        self.type = type
-
-
-        guard let imageURL = decoder.decodeObject(of: NSURL.self, forKey: "imageURL") as URL? else {
-            return nil
-        }
-        self.imageURL = imageURL
-
-        guard let abbreviation = decoder.decodeObject(of: NSString.self, forKey: "abbreviation") as String? else {
-            return nil
-        }
-        self.abbreviation = abbreviation
-
-        abbreviationPriority = decoder.decodeInteger(forKey: "abbreviationPriority")
-    }
-
-    public func encode(with coder: NSCoder) {
-        coder.encode(text, forKey: "text")
-        coder.encode(type.description, forKey: "type")
-        coder.encode(imageURL, forKey: "imageURL")
-        coder.encode(abbreviation, forKey: "abbreviation")
-        coder.encode(abbreviationPriority, forKey: "abbreviationPriority")
     }
 }

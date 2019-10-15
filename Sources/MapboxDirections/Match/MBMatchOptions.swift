@@ -38,7 +38,21 @@ open class MatchOptions: DirectionsOptions {
     public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier?) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
-
+    
+    
+    private enum CodingKeys: String, CodingKey {
+        case resamplesTraces = "tidy"
+    }
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(resamplesTraces, forKey: .resamplesTraces)
+        try super.encode(to: encoder)
+    }
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        resamplesTraces = try container.decode(Bool.self, forKey: .resamplesTraces)
+        try super.init(from: decoder)
+    }
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
      */
@@ -63,22 +77,19 @@ open class MatchOptions: DirectionsOptions {
         }
     }
     
-    public required init?(coder decoder: NSCoder) {
-        resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
-        super.init(coder: decoder)
-        var deprecations = self as MatchOptionsDeprecations
-        deprecations.waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
-    }
+//    public required init?(coder decoder: NSCoder) {
+//        resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
+//        super.init(coder: decoder)
+//        var deprecations = self as MatchOptionsDeprecations
+//        deprecations.waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
+//    }
+//
+//    public override func encode(with coder: NSCoder) {
+//        coder.encode(resamplesTraces, forKey: "resampleTraces")
+//        coder.encode((self as MatchOptionsDeprecations).waypointIndices, forKey: "waypointIndices")
+//        super.encode(with: coder)
+//    }
 
-    public override func encode(with coder: NSCoder) {
-        coder.encode(resamplesTraces, forKey: "resampleTraces")
-        coder.encode((self as MatchOptionsDeprecations).waypointIndices, forKey: "waypointIndices")
-        super.encode(with: coder)
-    }
-
-    public override class var supportsSecureCoding: Bool {
-        return true
-    }
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems

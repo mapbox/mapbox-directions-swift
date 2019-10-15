@@ -1,6 +1,7 @@
 import Foundation
-import Polyline
+import struct Polyline.Polyline
 import CoreLocation
+import struct Turf.LineString
 
 
 
@@ -19,12 +20,11 @@ import CoreLocation
  */
 
 open class DirectionsResult: Codable {
-    
     private enum CodingKeys: String, CodingKey {
-        case coordinates
+        case shape = "geometry"
         case legs
         case distance
-        case expectedTravelTime
+        case expectedTravelTime = "duration"
         case directionsOptions
         case accessToken
         case apiEndpoint
@@ -32,23 +32,64 @@ open class DirectionsResult: Codable {
         case speechLocale
     }
     
-     public required init(from decoder: Decoder) throws {
+    
+    
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        coordinates = try container.decodeIfPresent([CLLocationCoordinate2D].self, forKey: .coordinates)
-//        legs = try container.decode([RouteLeg.self], forKey: .legs)
+        legs = try container.decode([RouteLeg].self, forKey: .legs)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        directionsOptions = try container.decode(DirectionsOptions.self, forKey: .directionsOptions)
+        
+        directionsOptions = try container.decodeIfPresent(DirectionsOptions.self, forKey: .directionsOptions) ?? decoder.userInfo[.options] as! DirectionsOptions
+    
+        
+        switch directionsOptions.shapeFormat {
+
+        case .geoJSON:
+            shape = try container.decodeIfPresent(LineString.self, forKey: .shape)
+        
+        case .polyline:
+            guard let polyString = try container.decodeIfPresent(String.self, forKey: .shape) else {
+                shape = nil
+                break
+            }
+            let polyline = Polyline(encodedPolyline: polyString, precision: 1e5)
+            shape = LineString(polyline.coordinates!)
+            
+        case .polyline6:
+            guard let polyString = try container.decodeIfPresent(String.self, forKey: .shape) else {
+                shape = nil
+                break
+            }
+            let polyline = Polyline(encodedPolyline: polyString, precision: 1e6)
+            shape = LineString(polyline.coordinates!)
+        }
+        
         accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
         apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
     }
     
-     public func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(legs, forKey: .legs)
-        try container.encodeIfPresent(coordinates, forKey: .coordinates)
+        try container.encode(legs, forKey: .legs)
+        switch directionsOptions.shapeFormat {
+        
+        case .geoJSON:
+            try container.encode(shape, forKey: .shape)
+        
+        case .polyline:
+        let coordinates = shape!.coordinates
+        let polyString = Polyline(coordinates: coordinates, precision: 1e5).encodedPolyline
+        try container.encode(polyString, forKey: .shape)
+            
+        case .polyline6:
+            let coordinates = shape!.coordinates
+            let polyString = Polyline(coordinates: coordinates, precision: 1e6).encodedPolyline
+            try container.encode(polyString, forKey: .shape)
+        }
+        
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(directionsOptions, forKey: .directionsOptions)
@@ -56,14 +97,16 @@ open class DirectionsResult: Codable {
         try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
         try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
-
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
     }
+    
+    public let shape: LineString?
     
     /**
      An array of geographic coordinates defining the path of the route from start to finish.
@@ -72,9 +115,9 @@ open class DirectionsResult: Codable {
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */
-    public let coordinates: [CLLocationCoordinate2D]?
+    //    public let coordinates: [CLLocationCoordinate2D]?
+    //    
     
-
     /**
      An array of `RouteLeg` objects representing the legs of the route.
      
@@ -84,9 +127,9 @@ open class DirectionsResult: Codable {
      */
     public let legs: [RouteLeg]
     
-//    open override var description: String {
-//        return legs.map { $0.name }.joined(separator: " – ")
-//    }
+    //    open override var description: String {
+    //        return legs.map { $0.name }.joined(separator: " – ")
+    //    }
     
     // MARK: Getting Additional Route Details
     
@@ -126,13 +169,7 @@ open class DirectionsResult: Codable {
      This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
     open var apiEndpoint: URL?
-    
-    func debugQuickLookObject() -> Any? {
-        if let coordinates = coordinates {
-            return debugQuickLookURL(illustrating: coordinates, profileIdentifier: directionsOptions.profileIdentifier)
-        }
-        return nil
-    }
+  
     
     /**
      A unique identifier for a directions request.

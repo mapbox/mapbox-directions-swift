@@ -28,7 +28,7 @@ open class RouteLeg: Codable {
     
     
     public required init(from decoder: Decoder) throws {
-        var container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
         source = try container.decode(Waypoint.self, forKey: .source)
         destination = try container.decode(Waypoint.self, forKey: .destination)
         steps = try container.decode([RouteStep].self, forKey: .steps)
@@ -37,9 +37,9 @@ open class RouteLeg: Codable {
         segmentSpeeds = try container.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
         name = try container.decode(String.self, forKey: .name)
-        distance = container.decode(CLLocationDistance.self, forKey: .distance)
-        expectedTravelTime = container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        profileIdentifier = container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
+        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        profileIdentifier = try container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
     }
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -169,7 +169,7 @@ open class RouteLeg: Codable {
 
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
      */
-    public let source: Waypoint
+    public var source: Waypoint
 
     /**
      The endpoint of the route leg.
@@ -235,9 +235,6 @@ open class RouteLeg: Codable {
      */
     public let name: String
 
-    open override var description: String {
-        return name
-    }
 
     /**
      The route leg’s distance, measured in meters.
@@ -261,12 +258,4 @@ open class RouteLeg: Codable {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     public let profileIdentifier: DirectionsProfileIdentifier
-
-    func debugQuickLookObject() -> Any? {
-        let coordinates = steps.reduce([], { $0 + ($1.coordinates ?? []) })
-        guard !coordinates.isEmpty else {
-            return nil
-        }
-        return debugQuickLookURL(illustrating: coordinates)
-    }
 }

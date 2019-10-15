@@ -64,7 +64,7 @@ open class VisualInstruction: Codable {
         try container.encode(maneuverType, forKey: .maneuverType)
         try container.encode(maneuverDirection, forKey: .maneuverDirection)
         
-        let wrappedComponents = components.map(ComponentCoder.init(component:))
+        let wrappedComponents = components.map(Component.init(component:))
         try container.encode(wrappedComponents, forKey: .components)
         
         try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
@@ -76,7 +76,7 @@ open class VisualInstruction: Codable {
         maneuverType = try container.decode(ManeuverType.self, forKey: .maneuverType)
         maneuverDirection = try container.decode(ManeuverDirection.self, forKey: .maneuverDirection)
 
-        let componentsWrapped = try container.decode([ComponentCoder].self, forKey: .components)
+        let componentsWrapped = try container.decode([Component].self, forKey: .components)
         components = componentsWrapped.map { $0.component }
         
         finalHeading = try container.decodeIfPresent(CLLocationDegrees.self, forKey: .finalHeading)

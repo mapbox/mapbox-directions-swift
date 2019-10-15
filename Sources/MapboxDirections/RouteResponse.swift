@@ -1,6 +1,6 @@
 import Foundation
 
-struct DirectionsResponse: Codable {
+struct RouteResponse: Codable {
     
     enum CodingKeys: String, CodingKey {
         case code
@@ -29,6 +29,12 @@ struct DirectionsResponse: Codable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.code = try container.decodeIfPresent(String.self, forKey: .code)
+        
+        self.message = try container.decodeIfPresent(String.self, forKey: .message)
+        
+        self.error = try container.decodeIfPresent(String.self, forKey: .error)
         
         let uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         self.uuid = uuid

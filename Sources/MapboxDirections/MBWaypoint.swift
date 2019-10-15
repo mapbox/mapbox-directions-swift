@@ -162,15 +162,6 @@ public class Waypoint: Codable {
     public var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
-    
-    func debugQuickLookObject() -> Any {
-        return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: coordinateAccuracy, verticalAccuracy: -1, course: heading, speed: -1, timestamp: Date())
-    }
-    
-//    public func isEqual(_ object: Any?) -> Bool {
-//        guard let other = object as? Waypoint else { return false }
-//        return self.coordinate == other.coordinate && self.name == other.name && self.coordinateAccuracy == other.coordinateAccuracy
-//    }
 }
 
 extension Waypoint: Equatable {

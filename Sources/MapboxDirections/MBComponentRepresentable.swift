@@ -8,7 +8,7 @@ The component representable protocol that comprises what the instruction banner 
 
 public protocol ComponentRepresentable: class { }
 
-internal struct ComponentCoder: Codable {
+internal struct Component: Codable {
     let component: ComponentRepresentable
     
     private enum CodingKeys: String, CodingKey {

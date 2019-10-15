@@ -15,9 +15,9 @@ open class RouteOptions: DirectionsOptions {
      */
     public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
 
-        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
         let profilesDisallowingUTurns: [DirectionsProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
-        self.allowsUTurnAtWaypoint =  !profilesDisallowingUTurns.contains(self.profileIdentifier)
+        allowsUTurnAtWaypoint =  !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
     /**
@@ -69,7 +69,6 @@ open class RouteOptions: DirectionsOptions {
     }
     
     public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
         let container = try decoder.container(keyedBy: CodingKeys.self)
         allowsUTurnAtWaypoint = try container.decode(Bool.self, forKey: .allowsUTurnAtWaypoint)
 
@@ -78,6 +77,7 @@ open class RouteOptions: DirectionsOptions {
         includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
     
         roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
+        try super.init(from: decoder)
     }
     
     // MARK: Specifying the Path of the Route
