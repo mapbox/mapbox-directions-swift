@@ -282,8 +282,9 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
     
      var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
-            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
-            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
+            URLQueryItem(name: "geometries", value: shapeFormat.rawValue),
+            URLQueryItem(name: "overview", value: routeShapeResolution.rawValue),
+            
             URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "language", value: locale.identifier)
         ]
@@ -296,7 +297,7 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 
         if includesSpokenInstructions {
             queryItems.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
-            queryItems.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
+            queryItems.append(URLQueryItem(name: "voice_units", value: distanceMeasurementSystem.rawValue))
         }
 
         if includesVisualInstructions {
@@ -323,10 +324,6 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 
         if let names = self.waypointNames {
             queryItems.append(URLQueryItem(name: "waypoint_names", value: names))
-        }
-        
-        if let coordinates = self.coordinates {
-            queryItems.append(URLQueryItem(name: "coordinates", value: coordinates))
         }
         
         return queryItems

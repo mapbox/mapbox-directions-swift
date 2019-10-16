@@ -65,8 +65,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func setupDirections() {
         let wp1 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox")
         let wp2 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
-        wp1.allowsArrivingOnOppositeSide = false
-        wp2.allowsArrivingOnOppositeSide = false
+//        wp1.allowsArrivingOnOppositeSide = false
+//        wp2.allowsArrivingOnOppositeSide = false
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
         
@@ -124,8 +124,16 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     }
     
     func drawingView(drawingView: MBDrawingView, didDrawWithPoints points: [CGPoint]) {
+        guard points.count > 0 else { return }
         
-        let coordinates = points.map {
+        let ratio: Double = Double(points.count) / 100.0
+        let keepEvery = Int(ratio.rounded(.up))
+        
+        let abridgedPoints = points.enumerated().compactMap { index, element -> CGPoint? in
+            guard index % keepEvery == 0 else { return nil }
+            return element
+        }
+        let coordinates = abridgedPoints.map {
             mapView.convert($0, toCoordinateFrom: mapView)
         }
         makeMatchRequest(locations: coordinates)
@@ -136,7 +144,14 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
 
         Directions.shared.calculate(matchOptions) { (matches, error) in
             if let error = error {
-                print(error.localizedDescription)
+                let errorString = """
+                ⚠️ Error Enountered. ⚠️
+                Failure Reason: \(error.failureReason)
+                Recovery Suggestion: \(error.recoverySuggestion)
+                
+                Technical Details: \(error)
+                """
+                print(errorString)
                 return
             }
             

@@ -16,44 +16,55 @@ open class RouteLeg: Codable {
         case source
         case destination
         case steps
-        case segmentDistances
-        case expectedSegmentTravelTimes
-        case segmentSpeeds
-        case segmentCongestionLevels
-        case name
+        case name = "summary"
         case distance
-        case expectedTravelTime
+        case expectedTravelTime = "duration"
         case profileIdentifier
+        case annotation
     }
+    
+    private enum AnnotationCodingKeys: String, CodingKey {
+        case segmentDistances = "distance"
+        case expectedSegmentTravelTimes = "duration"
+        case segmentSpeeds = "speed"
+        case segmentCongestionLevels = "congestion"
+    }
+    
     
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        source = try container.decode(Waypoint.self, forKey: .source)
-        destination = try container.decode(Waypoint.self, forKey: .destination)
+        let options = decoder.userInfo[.options] as? DirectionsOptions
+
+        source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
+        destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
         steps = try container.decode([RouteStep].self, forKey: .steps)
-        segmentDistances = try container.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
-        expectedSegmentTravelTimes = try container.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
-        segmentSpeeds = try container.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
-        segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        profileIdentifier = try container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
+        profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) ?? options!.profileIdentifier
+        
+        let annotation = try? container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+        segmentDistances = try annotation?.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
+        expectedSegmentTravelTimes = try annotation?.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
+        segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
+        segmentCongestionLevels = try annotation?.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
     }
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(source, forKey: .source)
         try container.encode(destination, forKey: .destination)
         try container.encode(steps, forKey: .steps)
-        try container.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
-        try container.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-        try container.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
-        try container.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
         try container.encode(name, forKey: .name)
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
+        
+        var annotation = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+        try annotation.encode(segmentDistances, forKey: .segmentDistances)
+        try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+        try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
+        try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
 
     }
     
@@ -169,14 +180,14 @@ open class RouteLeg: Codable {
 
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
      */
-    public var source: Waypoint
+    public var source: Waypoint?
 
     /**
      The endpoint of the route leg.
 
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
-    public var destination: Waypoint
+    public var destination: Waypoint?
 
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.

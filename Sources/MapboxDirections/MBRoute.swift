@@ -9,6 +9,8 @@ import Polyline
 open class Route: DirectionsResult {
     public required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
+        
+        
     }
     
     public override func encode(to encoder: Encoder) throws {

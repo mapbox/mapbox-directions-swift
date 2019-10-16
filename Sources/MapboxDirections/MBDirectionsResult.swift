@@ -42,7 +42,7 @@ open class DirectionsResult: Codable {
         
         directionsOptions = try container.decodeIfPresent(DirectionsOptions.self, forKey: .directionsOptions) ?? decoder.userInfo[.options] as! DirectionsOptions
     
-        
+    
         switch directionsOptions.shapeFormat {
 
         case .geoJSON:
@@ -63,6 +63,14 @@ open class DirectionsResult: Codable {
             }
             let polyline = Polyline(encodedPolyline: polyString, precision: 1e6)
             shape = LineString(polyline.coordinates!)
+        }
+        
+        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
+        let waypoints = directionsOptions.waypoints
+        let legInfos = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
+        for legInfo in legInfos {
+            legInfo.1.source = legInfo.0.0
+            legInfo.1.destination = legInfo.0.1
         }
         
         accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)

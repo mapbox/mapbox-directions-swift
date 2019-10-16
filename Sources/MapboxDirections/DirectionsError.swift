@@ -15,10 +15,16 @@ public enum DirectionsError: Error, RawRepresentable {
         Recovery Suggestion: \(recoverySuggestion)
         """
     }
+    public var localizedDescription: String {
+        return failureReason
+    }
+    
     public var failureReason: String {
         switch self {
         case .noData:
             return "No data was returned from the server."
+        case let .invalidInput(message):
+            return "The server did not accept the format of the request. Message returned: \(message ?? "<none>")"
         case .invalidResponse:
             return "A response was recieved from the server, but it was not of a valid format."
         case .unableToRoute:
@@ -42,8 +48,8 @@ public enum DirectionsError: Error, RawRepresentable {
             let formattedInterval = intervalFormatter.string(from: interval) ?? "\(interval) seconds"
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)"
-        case let .unknown(response: response, underlying: error, code: code):
-            return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription) Code: \(code.debugDescription)"
+        case let .unknown(response, underlying: error, code, message):
+            return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription) Code: \(code.debugDescription) Message:\(message.debugDescription)"
         }
     }
     
@@ -51,6 +57,8 @@ public enum DirectionsError: Error, RawRepresentable {
         switch self {
         case .noData:
             return "Make sure you have an active internet connection."
+        case let .invalidInput(message):
+            return "Please adjust the input according to the message returned from the server. Message Returned: \(message ?? "<none>")"
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
         case .noMatches:
@@ -71,7 +79,7 @@ public enum DirectionsError: Error, RawRepresentable {
             return "Wait until \(formattedDate) before retrying."
         case .invalidResponse:
             fallthrough
-        case .unknown(_,_,_):
+        case .unknown(_,_,_,_):
             return "Please contact Mapbox Support."
         }
     }
@@ -79,6 +87,7 @@ public enum DirectionsError: Error, RawRepresentable {
      
     
     case noData
+    case invalidInput(message: String?)
     case invalidResponse
     case unableToRoute
     case noMatches
@@ -87,6 +96,6 @@ public enum DirectionsError: Error, RawRepresentable {
     case profileNotFound
     case requestTooLarge
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
-    case unknown(response: URLResponse?, underlying: Error?, code: String?)
+    case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
     
 }

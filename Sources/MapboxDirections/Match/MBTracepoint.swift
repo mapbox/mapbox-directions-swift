@@ -14,7 +14,7 @@ public class Tracepoint: Waypoint {
     open var alternateCount: Int = NSNotFound
     
     private enum CodingKeys: String, CodingKey {
-        case alternateCount
+        case alternateCount = "alternatives_count"
     }
     
     init(coordinate: CLLocationCoordinate2D, alternateCount: Int?, name: String?) {

@@ -175,7 +175,7 @@ open class Directions: NSObject {
             
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil))
+                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -185,7 +185,7 @@ open class Directions: NSObject {
                     decoder.userInfo[.options] = options
                     let result = try decoder.decode(RouteResponse.self, from: data)
                     guard (result.code == nil && result.message == nil) || result.code == "Ok" else {
-                        let apiError = Directions.informativeError(code: result.code, response: response, underlyingError: possibleError)
+                        let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
                         completionHandler(nil, nil, apiError)
                         return
                     }
@@ -202,7 +202,7 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, nil, .unknown(response: nil, underlying: error, code: nil))
+                        completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
                 
@@ -247,7 +247,7 @@ open class Directions: NSObject {
             
             
             if let error = possibleError {
-                completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil))
+                completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -257,7 +257,7 @@ open class Directions: NSObject {
                     decoder.userInfo[.options] = options
                     let result = try decoder.decode(MatchResponse.self, from: data)
                     guard result.code == "Ok" else {
-                        let apiError = Directions.informativeError(code: result.code, response: response, underlyingError: possibleError)
+                        let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
                         completionHandler(nil, apiError)
                         return
                     }
@@ -274,7 +274,7 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, .unknown(response: nil, underlying: error, code: nil))
+                        completionHandler(nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
                 
@@ -317,7 +317,7 @@ open class Directions: NSObject {
             
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil))
+                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -327,7 +327,7 @@ open class Directions: NSObject {
                     decoder.userInfo[.options] = options
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     guard result.code == "Ok" else {
-                        let apiError = Directions.informativeError(code: result.code, response: response, underlyingError: possibleError)
+                        let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
                         completionHandler(nil, nil, apiError)
                         return
                     }
@@ -344,7 +344,7 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, nil, .unknown(response: nil, underlying: error, code: nil))
+                        completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
                 
@@ -428,7 +428,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func informativeError(code: String?, response: URLResponse?, underlyingError error: Error?) -> DirectionsError {
+    static func informativeError(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) -> DirectionsError {
         if let response = response as? HTTPURLResponse {
             switch (response.statusCode, code ?? "") {
             case (200, "NoRoute"):
@@ -437,21 +437,22 @@ open class Directions: NSObject {
                 return .unableToLocate
             case (200, "NoMatch"):
                 return .noMatches
-            case (200, "TooManyCoordinates"):
+            case (422, "TooManyCoordinates"):
                 return .tooManyCoordinates
             case (404, "ProfileNotFound"):
                 return .profileNotFound
                 
             case (413, _):
                 return .requestTooLarge
-                
+            case (422, "InvalidInput"):
+                return .invalidInput(message: message)
             case (429, _):
                 return .rateLimited(rateLimitInterval: response.rateLimitInterval, rateLimit: response.rateLimit, resetTime: response.rateLimitResetTime)
             default:
-                return .unknown(response: response, underlying: error, code: code)
+                return .unknown(response: response, underlying: error, code: code, message: message)
             }
         }
-        return .unknown(response: nil, underlying: error, code: code)
+        return .unknown(response: response, underlying: error, code: code, message: message)
     }
     
     /**

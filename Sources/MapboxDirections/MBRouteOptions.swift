@@ -93,6 +93,10 @@ open class RouteOptions: DirectionsOptions {
     
     // MARK: Specifying the Path of the Route
 
+    internal override var abridgedPath: String {
+        return "directions/v5/\(profileIdentifier.rawValue)"
+    }
+    
     /**
      A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.
 
@@ -190,7 +194,7 @@ open class RouteOptions: DirectionsOptions {
 //            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
 //        }
 
-        return params
+        return params + super.urlQueryItems
     }
     
 //    // MARK: NSCopying
