@@ -2,18 +2,21 @@ import Foundation
 
 
 class MatchResponse: Codable {
-    var matches : [Match]
+    var code: String
+    var matches : [Match]?
     var tracepoints: [Tracepoint]
     
     private enum CodingKeys: String, CodingKey {
+        case code
         case matches = "matchings"
         case tracepoints
     }
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        code = try container.decode(String.self, forKey: .code)
         tracepoints = try container.decode([Tracepoint].self, forKey: .tracepoints)
         (decoder as? JSONDecoder)?.userInfo[.tracepoints] = tracepoints
-        matches = try container.decode([Match].self, forKey: .matches)
+        matches = try container.decodeIfPresent([Match].self, forKey: .matches)
     }
 }

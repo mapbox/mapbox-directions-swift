@@ -23,6 +23,10 @@ public enum DirectionsError: Error, RawRepresentable {
             return "A response was recieved from the server, but it was not of a valid format."
         case .unableToRoute:
             return "No route could be found between the specified locations."
+        case .noMatches:
+            return "The input did not produce any matches."
+        case .tooManyCoordinates:
+            return "There are too many points in the request."
         case .unableToLocate:
             return "A specified location could not be associated with a roadway or pathway."
         case .profileNotFound:
@@ -49,6 +53,10 @@ public enum DirectionsError: Error, RawRepresentable {
             return "Make sure you have an active internet connection."
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
+        case .noMatches:
+            return "Please try again making sure that your tracepoints lie in close proximity to a road or path."
+        case .tooManyCoordinates:
+            return "Please try again with 100 coordinates or less."
         case .unableToLocate:
             return "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to a negative value."
         case .profileNotFound:
@@ -73,6 +81,8 @@ public enum DirectionsError: Error, RawRepresentable {
     case noData
     case invalidResponse
     case unableToRoute
+    case noMatches
+    case tooManyCoordinates
     case unableToLocate
     case profileNotFound
     case requestTooLarge

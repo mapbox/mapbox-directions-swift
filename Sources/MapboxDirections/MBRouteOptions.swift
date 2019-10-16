@@ -80,6 +80,17 @@ open class RouteOptions: DirectionsOptions {
         try super.init(from: decoder)
     }
     
+    internal convenience init(matchOptions: MatchOptions) {
+        self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
+        self.includesSteps = matchOptions.includesSteps
+        self.shapeFormat = matchOptions.shapeFormat
+        self.attributeOptions = matchOptions.attributeOptions
+        self.routeShapeResolution = matchOptions.routeShapeResolution
+        self.locale = matchOptions.locale
+        self.includesSpokenInstructions = matchOptions.includesSpokenInstructions
+        self.includesVisualInstructions = matchOptions.includesVisualInstructions
+    }
+    
     // MARK: Specifying the Path of the Route
 
     /**

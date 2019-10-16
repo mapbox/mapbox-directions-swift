@@ -76,20 +76,6 @@ open class MatchOptions: DirectionsOptions {
             return super.legSeparators
         }
     }
-    
-//    public required init?(coder decoder: NSCoder) {
-//        resamplesTraces = decoder.decodeBool(forKey: "resampleTraces")
-//        super.init(coder: decoder)
-//        var deprecations = self as MatchOptionsDeprecations
-//        deprecations.waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
-//    }
-//
-//    public override func encode(with coder: NSCoder) {
-//        coder.encode(resamplesTraces, forKey: "resampleTraces")
-//        coder.encode((self as MatchOptionsDeprecations).waypointIndices, forKey: "waypointIndices")
-//        super.encode(with: coder)
-//    }
-
 
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
@@ -108,74 +94,7 @@ open class MatchOptions: DirectionsOptions {
     internal override var abridgedPath: String {
         return "matching/v5/\(profileIdentifier.rawValue)"
     }
-
-    internal func response(from json: JSONDictionary) -> [Match]? {
-
-        var waypointIndices = IndexSet()
-
-        let tracepoints = (json["tracepoints"] as! [Any]).map { api -> Tracepoint in
-            guard let api = api as? JSONDictionary else {
-                return Tracepoint(coordinate: kCLLocationCoordinate2DInvalid, alternateCount: nil, name: nil)
-            }
-            let location = api["location"] as! [Double]
-            let coordinate = CLLocationCoordinate2D(geoJSON: location)
-            let alternateCount = api["alternatives_count"] as! Int
-            let name = api["name"] as? String
-            if let waypointIndex = api["waypoint_index"] as? Int {
-                waypointIndices.insert(waypointIndex)
-            }
-            return Tracepoint(coordinate: coordinate, alternateCount: alternateCount, name: name)
-        }
-
-        let matchings = (json["matchings"] as? [JSONDictionary])?.map {
-            Match(json: $0, tracepoints: tracepoints, waypointIndices: waypointIndices, matchOptions: self)
-        }
-
-        return matchings
-    }
-
-    /**
-     Returns response objects that represent the given JSON dictionary data.
-
-     - parameter json: The API response in JSON dictionary format.
-     - returns: A tuple containing an array of waypoints and an array of routes.
-     */
-    internal func response(containingRoutesFrom json: JSONDictionary) -> ([Waypoint]?, [Route]?) {
-
-        var namedWaypoints: [Waypoint]?
-        if let jsonWaypoints = (json["tracepoints"] as? [JSONDictionary]) {
-            namedWaypoints = zip(jsonWaypoints, self.waypoints).map { (api, local) -> Waypoint in
-                let location = api["location"] as! [Double]
-                let coordinate = CLLocationCoordinate2D(geoJSON: location)
-                let possibleAPIName = api["name"] as? String
-                let apiName = possibleAPIName?.nonEmptyString
-                let waypoint = local.copy() as! Waypoint
-                waypoint.coordinate = coordinate
-                waypoint.name = waypoint.name ?? apiName
-                return waypoint
-            }
-        }
-
-        let waypoints = namedWaypoints ?? self.waypoints
-        let opts = RouteOptions(matchOptions: self)
-
-        let legSeparators: [Waypoint]
-        if let indices = (self as MatchOptionsDeprecations).waypointIndices {
-            legSeparators = indices.map { waypoints[$0] }
-        } else {
-            waypoints.first?.separatesLegs = true
-            waypoints.last?.separatesLegs = true
-            legSeparators = waypoints.filter { $0.separatesLegs }
-        }
-
-        let routes = (json["matchings"] as? [JSONDictionary])?.map {
-            Route(json: $0, waypoints: legSeparators, options: opts)
-        }
-
-        return (waypoints, routes)
-    }
 }
-
 private protocol MatchOptionsDeprecations {
     var waypointIndices: IndexSet? { get set }
 }

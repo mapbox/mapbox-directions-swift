@@ -96,14 +96,15 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                     }
                 }
                 
-                if route.coordinateCount > 0 {
+                if let shape = route.shape, shape.coordinates.count > 0 {
                     // Convert the route’s coordinates into a polyline.
-                    var routeCoordinates = route.coordinates!
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+                    var routeCoordinates = shape.coordinates
+                    let coordCount = UInt(routeCoordinates.count)
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
                     
                     // Add the polyline to the map and fit the viewport to the polyline.
                     self.mapView.addAnnotation(routeLine)
-                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
+                    self.mapView?.setVisibleCoordinates(&routeCoordinates, count: coordCount, edgePadding: .zero, animated: true)
                 }
             }
         }
@@ -145,8 +146,9 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 self.mapView.removeAnnotations(annotations)
             }
             
-            var routeCoordinates = match.coordinates!
-            let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: match.coordinateCount)
+            var routeCoordinates = match.shape!.coordinates
+            let coordCount = UInt(routeCoordinates.count)
+            let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
             self.mapView.addAnnotation(routeLine)
             self.drawingView?.reset()
         }

@@ -26,7 +26,7 @@ open class Match: DirectionsResult {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         confidence = try container.decode(Float.self, forKey: .confidence)
-        tracepoints = try container.decodeIfPresent([Tracepoint].self, forKey: .tracepoints) ?? decoder.userInfo[.tracepoints] as! [Tracepoint]
+        tracepoints = try container.decodeIfPresent([Tracepoint].self, forKey: .tracepoints) ?? decoder.userInfo[.tracepoints] as? [Tracepoint] ?? []
         try super.init(from: decoder)
     }
     
