@@ -53,8 +53,8 @@ class RoutableMatchTest: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route.coordinates)
-        XCTAssertEqual(route.coordinates!.count, 8)
+        XCTAssertNotNil(route.shape)
+        XCTAssertEqual(route.shape!.coordinates.count, 8)
         XCTAssertEqual(route.accessToken, BogusToken)
         XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier, nil)
@@ -66,8 +66,8 @@ class RoutableMatchTest: XCTestCase {
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(route!.coordinates!.first!.latitude), 33)
-        XCTAssertEqual(round(route!.coordinates!.first!.longitude), -117)
+        XCTAssertEqual(round(route!.shape!.coordinates.first!.latitude), 33)
+        XCTAssertEqual(round(route!.shape!.coordinates.first!.longitude), -117)
         XCTAssertEqual(route!.legs.count, 1)
         
         let leg = route!.legs.first!
@@ -93,7 +93,6 @@ class RoutableMatchTest: XCTestCase {
         
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 4)
-        XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
         let coordinate = step.coordinates!.first!
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)

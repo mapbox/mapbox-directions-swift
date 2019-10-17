@@ -2,7 +2,7 @@ import Foundation
 import CoreLocation
 
 
-public enum DirectionsError: Error, RawRepresentable {
+public enum DirectionsError: Error, RawRepresentable, Equatable {
     public init?(rawValue: String) {
         assertionFailure("Do not use init(rawValue:) for DirectionsError.")
         return nil
@@ -47,7 +47,7 @@ public enum DirectionsError: Error, RawRepresentable {
             }
             let formattedInterval = intervalFormatter.string(from: interval) ?? "\(interval) seconds"
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
-            return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)"
+            return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
         case let .unknown(response, underlying: error, code, message):
             return "Unknown Error. Response: \(response.debugDescription) Underlying Error: \(error.debugDescription) Code: \(code.debugDescription) Message:\(message.debugDescription)"
         }

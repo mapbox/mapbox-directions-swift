@@ -46,6 +46,11 @@
                BlueprintName = "MapboxDirectionsTests"
                ReferencedContainer = "container:MapboxDirections.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "SpokenInstructionsTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

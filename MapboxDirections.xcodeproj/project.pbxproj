@@ -229,9 +229,6 @@
 		DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
-		DA737EE81D0611CB005BDA16 /* V4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA737EE71D0611CB005BDA16 /* V4Tests.swift */; };
-		DA737EE91D0611CB005BDA16 /* V4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA737EE71D0611CB005BDA16 /* V4Tests.swift */; };
-		DA737EEA1D0611CB005BDA16 /* V4Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA737EE71D0611CB005BDA16 /* V4Tests.swift */; };
 		DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
 		DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
 		DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
@@ -397,7 +394,6 @@
 		DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V5Tests.swift; sourceTree = "<group>"; };
 		DA6C9DB11CAECA0E00094FBC /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
 		DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_geojson.json; sourceTree = "<group>"; };
-		DA737EE71D0611CB005BDA16 /* V4Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V4Tests.swift; sourceTree = "<group>"; };
 		DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_geojson.json; sourceTree = "<group>"; };
 		DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_polyline.json; sourceTree = "<group>"; };
 		DA9E1B121E5A675F0081EDC7 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/watchOS/Polyline.framework; sourceTree = "<group>"; };
@@ -646,7 +642,6 @@
 				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
 				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
 				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
-				DA737EE71D0611CB005BDA16 /* V4Tests.swift */,
 				DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */,
 				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
 				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
@@ -1244,7 +1239,6 @@
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
-				DA737EE91D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
@@ -1312,7 +1306,6 @@
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
-				DA737EEA1D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
@@ -1426,7 +1419,6 @@
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
-				DA737EE81D0611CB005BDA16 /* V4Tests.swift in Sources */,
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,

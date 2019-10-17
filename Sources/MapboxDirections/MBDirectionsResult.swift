@@ -40,10 +40,10 @@ open class DirectionsResult: Codable {
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        directionsOptions = try container.decodeIfPresent(DirectionsOptions.self, forKey: .directionsOptions) ?? decoder.userInfo[.options] as! DirectionsOptions
+        _directionsOptions = try container.decodeIfPresent(DirectionsOptions.self, forKey: .directionsOptions) ?? decoder.userInfo[.options] as! DirectionsOptions
     
     
-        switch directionsOptions.shapeFormat {
+        switch _directionsOptions.shapeFormat {
 
         case .geoJSON:
             shape = try container.decodeIfPresent(LineString.self, forKey: .shape)
@@ -162,8 +162,12 @@ open class DirectionsResult: Codable {
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */
-    public let directionsOptions: DirectionsOptions
+    public var directionsOptions: DirectionsOptions {
+        return _directionsOptions
+    }
     
+    
+    private let _directionsOptions: DirectionsOptions
     /**
      The [access token](https://docs.mapbox.com/help/glossary/access-token/) used to make the directions request.
      

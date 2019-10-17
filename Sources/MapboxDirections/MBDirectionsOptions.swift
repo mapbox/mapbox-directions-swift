@@ -90,7 +90,9 @@ public enum MeasurementSystem: String, Codable {
  */
 
 
-open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
+open class DirectionsOptions: Codable, Equatable {
+
+    
 
     /**
      Initializes an options object for routes between the given waypoints and an optional profile identifier.
@@ -118,17 +120,18 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
         case includesVisualInstructions
     }
     
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(waypoints, forKey: .waypoints)
         try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
         try container.encode(includesSteps, forKey: .includesSteps)
-        try container.encode(shapeFormat.rawValue, forKey: .shapeFormat)
-        try container.encode(routeShapeResolution.rawValue, forKey: .routeShapeResolution)
-        try container.encode(attributeOptions.rawValue, forKey: .attributeOptions)
+        try container.encode(shapeFormat, forKey: .shapeFormat)
+        try container.encode(routeShapeResolution, forKey: .routeShapeResolution)
+        try container.encode(attributeOptions, forKey: .attributeOptions)
         try container.encode(locale, forKey: .locale)
         try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
-        try container.encode(distanceMeasurementSystem.rawValue, forKey: .distanceMeasurementSystem)
+        try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
         try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
         try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
         if includesSpokenInstructions {
@@ -225,7 +228,7 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 
      By default, this property is set to the current system locale.
      */
-    open var locale = Locale.autoupdatingCurrent {
+    open var locale = Locale.current {
         didSet {
             self.distanceMeasurementSystem = locale.usesMetricSystem ? .metric : .imperial
         }
@@ -245,7 +248,7 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = Locale.autoupdatingCurrent.usesMetricSystem ? .metric : .imperial
+    open var distanceMeasurementSystem: MeasurementSystem = Locale.current.usesMetricSystem ? .metric : .imperial
 
     /**
      If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
@@ -337,12 +340,17 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
     }
     
     private var radiuses: String? {
-        if waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
+        guard !self.waypoints.filter({ $0.coordinateAccuracy != nil}).isEmpty else {
             return nil
         }
-        return waypoints.map {
-            $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-        }.joined(separator: ";")
+        
+        let accuracies =  self.waypoints.map { (waypoint) -> String in
+            guard let accuracy = waypoint.coordinateAccuracy else {
+                return "unlimited"
+            }
+            return String(accuracy)
+        }
+        return accuracies.joined(separator: ";")
     }
     
     private var approaches: String? {
@@ -390,5 +398,19 @@ open class DirectionsOptions: Codable { // NSSecureCoding, NSCopying {
             URLQueryItem(name: "coordinates", value: coordinates),
         ]
         return components.percentEncodedQuery ?? ""
+    }
+    
+    //MARK: - Equatable
+    public static func == (lhs: DirectionsOptions, rhs: DirectionsOptions) -> Bool {
+        return lhs.waypoints == rhs.waypoints &&
+            lhs.profileIdentifier == rhs.profileIdentifier &&
+            lhs.includesSteps == rhs.includesSteps &&
+            lhs.shapeFormat == rhs.shapeFormat &&
+            lhs.routeShapeResolution == rhs.routeShapeResolution &&
+            lhs.attributeOptions == rhs.attributeOptions &&
+        lhs.locale.identifier == rhs.locale.identifier &&
+            lhs.includesSpokenInstructions == rhs.includesSpokenInstructions &&
+            lhs.distanceMeasurementSystem == rhs.distanceMeasurementSystem &&
+            lhs.includesVisualInstructions == rhs.includesVisualInstructions
     }
 }

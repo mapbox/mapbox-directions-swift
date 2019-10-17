@@ -163,7 +163,7 @@ open class Directions: NSObject {
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
-            guard let response = possibleResponse, response.mimeType == "application/json" else {
+            guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
                 completionHandler(nil, nil, .invalidResponse)
                 return
             }
@@ -181,8 +181,7 @@ open class Directions: NSObject {
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
-                    let decoder = JSONDecoder()
-                    decoder.userInfo[.options] = options
+                    let decoder = DirectionsDecoder(options: options)
                     let result = try decoder.decode(RouteResponse.self, from: data)
                     guard (result.code == nil && result.message == nil) || result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
@@ -202,7 +201,8 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
+                        let bailError = Directions.informativeError(code: nil, message: nil, response: response, underlyingError: error)
+                        completionHandler(nil, nil, bailError)
                     }
                 }
                 
@@ -253,8 +253,7 @@ open class Directions: NSObject {
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
-                    let decoder = JSONDecoder()
-                    decoder.userInfo[.options] = options
+                    let decoder = DirectionsDecoder(options: options)
                     let result = try decoder.decode(MatchResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
@@ -323,8 +322,7 @@ open class Directions: NSObject {
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
-                    let decoder = JSONDecoder()
-                    decoder.userInfo[.options] = options
+                    let decoder = DirectionsDecoder(options: options)
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
@@ -471,4 +469,32 @@ open class Directions: NSObject {
 
 public extension CodingUserInfoKey {
     static let options = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeOptions")!
+}
+
+public class DirectionsDecoder: JSONDecoder {
+    
+    /**
+     Initializes a `DirectionsDecoder` with a given `RouteOption`.
+     */
+    public init(options: DirectionsOptions) {
+        super.init()
+        routeOptions = options
+    }
+    
+    
+    var routeOptions: DirectionsOptions? {
+        get {
+            return userInfo[.options] as? DirectionsOptions
+        } set {
+            userInfo[.options] = newValue
+        }
+    }
+    
+    var tracepoints: [Tracepoint?]? {
+        get {
+            return userInfo[.tracepoints] as? [Tracepoint?]
+        } set {
+            userInfo[.tracepoints] = newValue
+        }
+    }
 }

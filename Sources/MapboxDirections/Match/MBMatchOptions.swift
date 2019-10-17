@@ -99,3 +99,13 @@ private protocol MatchOptionsDeprecations {
     var waypointIndices: IndexSet? { get set }
 }
 extension MatchOptions: MatchOptionsDeprecations {}
+
+//MARK: - Equatable
+public extension MatchOptions {
+    static func == (lhs: MatchOptions, rhs: MatchOptions) -> Bool {
+            let isSuperEqual = ((lhs as DirectionsOptions) == (rhs as DirectionsOptions))
+            return isSuperEqual &&
+                lhs.abridgedPath == rhs.abridgedPath &&
+                lhs.resamplesTraces == rhs.resamplesTraces
+    }
+}

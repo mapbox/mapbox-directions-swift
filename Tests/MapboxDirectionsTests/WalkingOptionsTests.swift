@@ -1,7 +1,7 @@
 import XCTest
 import MapboxDirections
 import CoreLocation
-
+@testable import MapboxDirections
 
 class WalkingOptionsTests: XCTestCase {
     
@@ -18,9 +18,9 @@ class WalkingOptionsTests: XCTestCase {
         XCTAssertEqual(queryItems.filter { $0.name == "alley_bias" }.first?.value, "0.0")
         XCTAssertEqual(queryItems.filter { $0.name == "walkway_bias" }.first?.value, "0.0")
         XCTAssertEqual(queryItems.filter { $0.name == "walking_speed" }.first?.value, "1.42")
-
-        options.alleyPriority = MBDirectionsPriority(rawValue: 0.4)
-        options.walkwayPriority = MBDirectionsPriority(rawValue: 0.5)
+        
+        options.alleyPriority = DirectionsPriority(rawValue: 0.4)
+        options.walkwayPriority = DirectionsPriority(rawValue: 0.5)
         options.speed = 5.2
 
         queryItems = options.urlQueryItems

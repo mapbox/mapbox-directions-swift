@@ -55,8 +55,8 @@ class AnnotationTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route!.coordinates)
-        XCTAssertEqual(route!.coordinates!.count, 99)
+        XCTAssertNotNil(route!.shape)
+        XCTAssertEqual(route!.shape?.coordinates.count, 99)
         XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
         
         let leg = route!.legs.first!

@@ -75,8 +75,8 @@ class V5Tests: XCTestCase {
             return
         }
         
-        XCTAssertNotNil(route.coordinates)
-        XCTAssertEqual(route.coordinates?.count, 30_097)
+        XCTAssertNotNil(route.shape)
+        XCTAssertEqual(route.shape!.coordinates.count, 30_097)
         XCTAssertEqual(route.accessToken, BogusToken)
         XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier?.count, 25)
@@ -85,8 +85,8 @@ class V5Tests: XCTestCase {
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(route.coordinates?.first?.latitude ?? 0, 38, accuracy: 1)
-        XCTAssertEqual(route.coordinates?.first?.longitude ?? 0, -122, accuracy: 1)
+        XCTAssertEqual(route.shape?.coordinates.first?.latitude ?? 0, 38, accuracy: 1)
+        XCTAssertEqual(route.shape?.coordinates.first?.longitude ?? 0, -122, accuracy: 1)
         XCTAssertEqual(route.legs.count, 1)
         
         let opts = route.routeOptions
@@ -121,7 +121,6 @@ class V5Tests: XCTestCase {
         
         XCTAssertNotNil(step?.coordinates)
         XCTAssertEqual(step?.coordinates?.count, 13)
-        XCTAssertEqual(step?.coordinates?.count, Int(step?.coordinateCount ?? 0))
         XCTAssertEqual(step?.coordinates?.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
         XCTAssertEqual(step?.coordinates?.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
         
@@ -270,46 +269,50 @@ class V5Tests: XCTestCase {
         
         XCTAssertEqual(route?.legs.count, 1)
         let leg = route?.legs.first
-        XCTAssertEqual(leg?.source.name, waypoints[0].name)
-        XCTAssertEqual(leg?.source.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.source.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination.name, waypoints[2].name)
-        XCTAssertEqual(leg?.destination.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source!.name, waypoints[0].name)
+        XCTAssertEqual(leg?.source?.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source?.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination!.name, waypoints[2].name)
+        XCTAssertEqual(leg?.destination?.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination?.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
         XCTAssertEqual(leg?.name, "Perlen Strasse, Haupt Strasse")
     }
     
     func testCoding() {
         let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_dc_polyline", ofType: "json")
         let filePath = URL(fileURLWithPath: path!)
-        let data = try! Data(contentsOf: filePath, options: [])
-        let jsonResponse = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-        
+        let data = try! Data(contentsOf: filePath)
         let options = RouteOptions(coordinates: [
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
-        let routes = options.response(from: jsonResponse).1
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        let result = try! decoder.decode(RouteResponse.self, from: data)
+        
+        let routes = result.routes
         let route = routes!.first!
         route.accessToken = BogusToken
         route.apiEndpoint = URL(string: "https://api.mapbox.com")
-        route.routeIdentifier = jsonResponse["uuid"] as? String
+        route.routeIdentifier = result.uuid
         
+        XCTFail("Finish this")
         // Encode and decode the route securely.
         // This may raise an Objective-C exception if an error occurs, which will fail the tests.
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(route, forKey: "route")
-        keyedArchiver.finishEncoding()
-        
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedRoute = keyedUnarchiver.decodeObject(of: Route.self, forKey: "route")!
-        keyedUnarchiver.finishDecoding()
-        
-        test(unarchivedRoute, options: options)
+//        let encodedData = NSMutableData()
+//        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
+//        keyedArchiver.requiresSecureCoding = true
+//        keyedArchiver.encode(route, forKey: "route")
+//        keyedArchiver.finishEncoding()
+//
+//        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
+//        keyedUnarchiver.requiresSecureCoding = true
+//        let unarchivedRoute = keyedUnarchiver.decodeObject(of: Route.self, forKey: "route")!
+//        keyedUnarchiver.finishDecoding()
+//
+//        test(unarchivedRoute, options: options)
     }
 }
 #endif

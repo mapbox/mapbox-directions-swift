@@ -19,7 +19,14 @@ class MatchResponse: Codable {
         code = try container.decode(String.self, forKey: .code)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
-        (decoder as? JSONDecoder)?.userInfo[.tracepoints] = tracepoints
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
+        
+        if let points = self.tracepoints {
+            matches?.forEach {
+                $0.tracepoints = points
+            }
+        }
+
     }
 }
+

@@ -22,11 +22,13 @@ open class Match: DirectionsResult {
     private enum CodingKeys: String, CodingKey {
         case confidence
         case tracepoints
+        case matchOptions
     }
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         confidence = try container.decode(Float.self, forKey: .confidence)
-        tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints) ?? decoder.userInfo[.tracepoints] as? [Tracepoint?] ?? []
+        tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints) ?? []
+        matchOptions = try container.decodeIfPresent(MatchOptions.self, forKey: .matchOptions) ?? decoder.userInfo[.options] as! MatchOptions
         try super.init(from: decoder)
     }
     
@@ -34,6 +36,7 @@ open class Match: DirectionsResult {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(confidence, forKey: .confidence)
         try container.encode(tracepoints, forKey: .tracepoints)
+        try container.encode(matchOptions, forKey: .matchOptions)
         try super.encode(to: encoder)
     }
     
@@ -75,17 +78,18 @@ open class Match: DirectionsResult {
     /**
      Tracepoints on the road network that match the tracepoints in the match options.
      
-     Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint is a `Tracepoint` object whose `Tracepoint.coordinate` property is `kCLLocationCoordinate2DInvalid`.
+     Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint if the element is `nil`.
      */
     open var tracepoints: [Tracepoint?]
     
+    public override var directionsOptions: DirectionsOptions {
+        return matchOptions
+    }
     
     /**
      `MatchOptions` used to create the match request.
      */
-    public var matchOptions: MatchOptions {
-        return super.directionsOptions as! MatchOptions
-    }
+    public let matchOptions: MatchOptions
     
 //    public required init?(coder decoder: NSCoder) {
 //        confidence = decoder.decodeFloat(forKey: "confidence")

@@ -8,13 +8,15 @@ public class Waypoint: Codable {
     private enum CodingKeys: String, CodingKey {
         case coordinate = "location"
         case coordinateAccuracy
+        case targetCoordinate
         case name
     }
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         coordinate = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinate)
-        coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy) ?? -1
+        coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy)
+        targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2D.self, forKey: .targetCoordinate)
         
         if let name = try container.decodeIfPresent(String.self, forKey: .name),
             !name.isEmpty {
@@ -33,7 +35,7 @@ public class Waypoint: Codable {
         It is recommended that the value of this parameter be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy = -1, name: String? = nil) {
+    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy? = nil, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
@@ -77,13 +79,6 @@ public class Waypoint: Codable {
     }
     #endif
     
-    public func copy(with zone: NSZone?) -> Any {
-        var copy = Waypoint(coordinate: coordinate, coordinateAccuracy: coordinateAccuracy, name: name)
-        copy.heading = heading
-        copy.headingAccuracy = headingAccuracy
-        return copy
-    }
-    
     // MARK: Getting the Waypoint’s Location
     
     /**
@@ -98,8 +93,18 @@ public class Waypoint: Codable {
      
      By default, the value of this property is a negative number.
      */
-    public var coordinateAccuracy: CLLocationAccuracy = -1
+    public var coordinateAccuracy: CLLocationAccuracy?
     
+    /**
+     The geographic coordinate of the waypoint’s target.
+
+     The waypoint’s target affects arrival instructions without affecting the route’s shape. For example, a delivery or ride hailing application may specify a waypoint target that represents a drop-off location. The target determines whether the arrival visual and spoken instructions indicate that the destination is “on the left” or “on the right”.
+
+     By default, this property is set to `nil`, meaning the waypoint has no target. This property is ignored on the first waypoint of a `RouteOptions` object, on any waypoint of a `MatchOptions` object, or on any waypoint of a `RouteOptions` object if `DirectionsOptions.includesSteps` is set to `false`.
+
+     This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
+     */
+    public var targetCoordinate: CLLocationCoordinate2D?
     // MARK: Getting the Direction of Approach
     
     /**
@@ -151,7 +156,7 @@ public class Waypoint: Codable {
     /**
      A Boolean value indicating whether the waypoint is significant enough to appear in the resulting routes as a waypoint separating two legs, along with corresponding guidance instructions.
      
-     By default, this property is set to `true`, which means that each resulting route will include a leg that ends by arriving at the waypoint as `RouteLeg.destination` and a subsequent leg that begins by departing from the waypoint as `RouteLeg.source`. Otherwise, if this property is set to `false`, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the `coordinate` property, accounting for approach-related properties such as `heading`.
+     By default, this property is set to `true`, which means that each resulting route will include a leg that ends by arriving at the waypoint as `RouteLeg.destination` and a subsequent leg that begins by departing from the waypoint as `RouteLeg.source`. Otherwise, if this property is set to `false`, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the `coordinate` property, accounting for approach-related properties such as `                 heading`.
      
      With the Mapbox Directions API, set this property to `false` if you want the waypoint’s location to influence the path that the route follows without attaching any meaning to the waypoint object itself. With the Mapbox Map Matching API, use this property when the `DirectionsOptions.includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate.
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`, or if `MatchOptions.waypointIndices` is non-nil.

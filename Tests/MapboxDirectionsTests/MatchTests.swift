@@ -46,27 +46,26 @@ class MatchTests: XCTestCase {
         }
         
         let opts = match.matchOptions
-        XCTAssertEqual(opts, matchOptions)
+        XCTAssert(matchOptions == opts)
         
         XCTAssertNotNil(match)
-        XCTAssertNotNil(match.coordinates)
-        XCTAssertEqual(match.coordinates!.count, 8)
+        XCTAssertNotNil(match.shape)
+        XCTAssertEqual(match.shape!.coordinates.count, 8)
         XCTAssertEqual(match.accessToken, BogusToken)
         XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(match.routeIdentifier, nil)
         
         let tracePoints = match.tracepoints
         XCTAssertNotNil(tracePoints)
-        XCTAssertEqual(tracePoints.first!.alternateCount, 0)
-        XCTAssertEqual(tracePoints.last!.name, "West G Street")
+        XCTAssertEqual(tracePoints.first!!.alternateCount, 0)
+        XCTAssertEqual(tracePoints.last!!.name, "West G Street")
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(match!.coordinates!.first!.latitude), 33)
-        XCTAssertEqual(round(match!.coordinates!.first!.longitude), -117)
+        XCTAssertEqual(round(match!.shape!.coordinates.first!.latitude), 33)
+        XCTAssertEqual(round(match!.shape!.coordinates.first!.longitude), -117)
         XCTAssertEqual(match!.legs.count, 6)
         XCTAssertEqual(match!.confidence, 0.95)
-        XCTAssertEqual(match!.waypointIndices, IndexSet([0, 1, 2, 3, 4, 5, 6]))
 
         let leg = match!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
@@ -91,7 +90,6 @@ class MatchTests: XCTestCase {
 
         XCTAssertNotNil(step.coordinates)
         XCTAssertEqual(step.coordinates!.count, 4)
-        XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
         let coordinate = step.coordinates!.first!
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)
@@ -134,30 +132,21 @@ class MatchTests: XCTestCase {
         XCTAssertNotNil(match)
         let tracepoints = match.tracepoints
         XCTAssertEqual(tracepoints.count, 7)
-        XCTAssertEqual(tracepoints[0].coordinate.latitude, kCLLocationCoordinate2DInvalid.latitude)
-        XCTAssertEqual(tracepoints[0].coordinate.longitude, kCLLocationCoordinate2DInvalid.longitude)
+        XCTAssertEqual(tracepoints.first!, nil)
         
         
         // Encode and decode the match securely.
         // This may raise an Objective-C exception if an error is encountered which will fail the tests.
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(match, forKey: "match")
-        keyedArchiver.finishEncoding()
+        let encoded = try! JSONEncoder().encode(match)
+        let encodedString = String(data: encoded, encoding: .utf8)!
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedMatch = keyedUnarchiver.decodeObject(of: Match.self, forKey: "match")!
-        keyedUnarchiver.finishDecoding()
+        let unarchivedMatch = try! JSONDecoder().decode(Match.self, from: encodedString.data(using: .utf8)!)
+    
         
-        XCTAssertNotNil(unarchivedMatch)
-        
-        XCTAssertEqual(unarchivedMatch.confidence, unarchivedMatch.confidence)
-        XCTAssertEqual(unarchivedMatch.matchOptions, unarchivedMatch.matchOptions)
-        XCTAssertEqual(unarchivedMatch.tracepoints, unarchivedMatch.tracepoints)
-        XCTAssertEqual(unarchivedMatch.waypointIndices, unarchivedMatch.waypointIndices)
+        XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
+        XCTAssertEqual(match.matchOptions, unarchivedMatch.matchOptions)
+        XCTAssertEqual(match.tracepoints, unarchivedMatch.tracepoints)
     }
 }
 #endif

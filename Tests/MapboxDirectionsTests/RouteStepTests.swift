@@ -106,59 +106,55 @@ class RoadTests: XCTestCase {
 
 class RouteStepTests: XCTestCase {
     func testCoding() {
-        let coordinates = [
-            CLLocationCoordinate2D(latitude: -122.220694, longitude: 37.853913),
-            CLLocationCoordinate2D(latitude: -122.22044, longitude: 37.854032),
-            CLLocationCoordinate2D(latitude: -122.220168, longitude: 37.854149),
-        ]
-        let json = [
-            "mode": "driving",
-            "maneuver": [
-                "instruction": "Keep left at the fork onto CA 24",
-                "bearing_before": 55,
-            ],
-            "distance": 1669.7,
-            "duration": 75.6,
-            "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
-        ] as [String: Any]
+        let step = try! JSONDecoder().decode(RouteStep.self, from: routeStepJSON.data(using: .utf8)!)
         
-        let step = RouteStep(finalHeading: 59, maneuverType: .reachFork, maneuverDirection: .left, drivingSide: .left, maneuverLocation: CLLocationCoordinate2D(latitude: 37.853913, longitude: -122.220694), name: "", coordinates: coordinates, json: json)
+        let encoded = try! JSONEncoder().encode(step)
+        let roundTripJSON = String(data: encoded, encoding: .utf8)
         
-        // Encode and decode the route step securely
-        // This may raise an Obj-C exception if an error is encountered which will fail the tests
-        
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(step, forKey: "step")
-        keyedArchiver.finishEncoding()
-        
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedStep = keyedUnarchiver.decodeObject(of: RouteStep.self, forKey: "step")!
-        keyedUnarchiver.finishDecoding()
-        
-        XCTAssertNotNil(unarchivedStep)
-        
-        XCTAssertEqual(unarchivedStep.coordinates?.count, step.coordinates?.count)
-        XCTAssertEqual(unarchivedStep.coordinates?.first?.latitude, step.coordinates?.first?.latitude)
-        XCTAssertEqual(unarchivedStep.coordinates?.first?.longitude, step.coordinates?.first?.longitude)
-        XCTAssertEqual(unarchivedStep.instructions, step.instructions)
-        XCTAssertEqual(unarchivedStep.initialHeading, step.initialHeading)
-        XCTAssertEqual(unarchivedStep.finalHeading, step.finalHeading)
-        XCTAssertEqual(unarchivedStep.maneuverType, step.maneuverType)
-        XCTAssertEqual(unarchivedStep.maneuverDirection, step.maneuverDirection)
-        XCTAssertEqual(unarchivedStep.maneuverLocation.latitude, step.maneuverLocation.latitude)
-        XCTAssertEqual(unarchivedStep.maneuverLocation.longitude, step.maneuverLocation.longitude)
-        XCTAssertEqual(unarchivedStep.exitIndex, step.exitIndex)
-        XCTAssertEqual(unarchivedStep.distance, step.distance)
-        XCTAssertEqual(unarchivedStep.expectedTravelTime, step.expectedTravelTime)
-        XCTAssertEqual(unarchivedStep.names ?? [], step.names ?? [])
-        XCTAssertEqual(unarchivedStep.phoneticNames ?? [], step.phoneticNames ?? [])
-        XCTAssertEqual(unarchivedStep.transportType, step.transportType)
-        XCTAssertEqual(unarchivedStep.destinations ?? [], step.destinations ?? [])
-        XCTAssertEqual(unarchivedStep.instructionsSpokenAlongStep ?? [], step.instructionsSpokenAlongStep ?? [])
-        XCTAssertEqual(unarchivedStep.instructionsDisplayedAlongStep ?? [], step.instructionsDisplayedAlongStep ?? [])
-        XCTAssertEqual(unarchivedStep.drivingSide, DrivingSide.left)
+        XCTAssert(roundTripJSON == routeStepJSON)
     }
 }
+
+
+let routeStepJSON = """
+{
+    "intersections": [
+      {
+        "out": 1,
+        "location": [ 13.424671, 52.508812 ],
+        "bearings": [ 120, 210, 300 ],
+        "entry": [ false, true, true ],
+        "in": 0,
+        "lanes": [
+          {
+            "valid": true,
+            "indications": [ "left" ]
+          },
+          {
+            "valid": true,
+            "indications": [ "straight" ]
+          },
+          {
+            "valid": false,
+            "indications": [ "right" ]
+          }
+        ]
+      }
+    ],
+    "geometry": "asn_Ie_}pAdKxG",
+    "maneuver": {
+      "bearing_after": 202,
+      "type": "turn",
+      "modifier": "left",
+      "bearing_before": 299,
+      "location": [ 13.424671, 52.508812 ],
+      "instruction": "Turn left onto Adalbertstraße"
+    },
+    "duration": 59.1,
+    "distance": 236.9,
+    "driving_side": "right",
+    "weight": 59.1,
+    "name": "Adalbertstraße",
+    "mode": "driving"
+}
+"""

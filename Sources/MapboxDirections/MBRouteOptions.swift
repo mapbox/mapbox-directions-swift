@@ -138,31 +138,53 @@ open class RouteOptions: DirectionsOptions {
      */
     open var roadClassesToAvoid: RoadClasses = []
     
+    
+    /**
+     A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`.
+     
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids alleys, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
+     */
+    open var alleyPriority: MBDirectionsPriority = .default
+    
+    /**
+     A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
+     
+     The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids walkways, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
+     */
+    open var walkwayPriority: DirectionsPriority = .default
+    
+    /**
+     The expected uniform travel speed measured in meters per second.
+     
+     This property has no effect unless the profile identifier is set to `MBDirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `MBDirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
+     
+     The value of this property must be at least `MBMinimumWalkingSpeed` and at most `MBMaximumWalkingSpeed`. The default value is `MBDefaultWalkingSpeed`.
+     */
+    open var speed: CLLocationSpeed = CLLocationSpeed.Mapbox.default
+    
     /**
      An array of URL parameters to include in the request URL.
      */
-    internal var params: [URLQueryItem] {
+    override var urlQueryItems: [URLQueryItem] {
         var params: [URLQueryItem] = [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-//            URLQueryItem(name: "geometries", value: String(describing: shapeFormat)),
-//            URLQueryItem(name: "overview", value: String(describing: routeShapeResolution)),
-//            URLQueryItem(name: "steps", value: String(includesSteps)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
-//            URLQueryItem(name: "language", value: locale.identifier)
         ]
 
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
 
-//        if includesSpokenInstructions {
-//            params.append(URLQueryItem(name: "voice_instructions", value: String(includesSpokenInstructions)))
-//            params.append(URLQueryItem(name: "voice_units", value: String(describing: distanceMeasurementSystem)))
-//        }
-        
-        if includesVisualInstructions {
-            params.append(URLQueryItem(name: "banner_instructions", value: String(includesVisualInstructions)))
+        if profileIdentifier == .walking {
+            params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
+            params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
+            params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
+    
         
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
@@ -173,26 +195,11 @@ open class RouteOptions: DirectionsOptions {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
             }
         }
-
-//        // Include headings and heading accuracies if any waypoint has a nonnegative heading.
-//        if !waypoints.filter({ $0.heading >= 0 }).isEmpty {
-//            let headings = waypoints.map { $0.headingDescription }.joined(separator: ";")
-//            params.append(URLQueryItem(name: "bearings", value: headings))
-//        }
-
-//        // Include location accuracies if any waypoint has a nonnegative coordinate accuracy.
-//        if !waypoints.filter({ $0.coordinateAccuracy >= 0 }).isEmpty {
-//            let accuracies = waypoints.map {
-//                $0.coordinateAccuracy >= 0 ? String($0.coordinateAccuracy) : "unlimited"
-//                }.joined(separator: ";")
-//            params.append(URLQueryItem(name: "radiuses", value: accuracies))
-//        }
-//
-//        if !attributeOptions.isEmpty {
-//            let attributesStrings = String(describing:attributeOptions)
-//
-//            params.append(URLQueryItem(name: "annotations", value: attributesStrings))
-//        }
+        
+        if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
+            let targetCoordinates = waypoints.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
+            params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
+        }
 
         return params + super.urlQueryItems
     }
@@ -247,3 +254,20 @@ public enum InstructionFormat: String {
     case html
 }
 
+
+extension CLLocationSpeed {
+    enum Mapbox{
+        /**
+        By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
+        */
+        static let minimum: CLLocationSpeed = 0.14
+        /**
+        Pedestrians are assumed to walk no slower than 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) on average.
+        */
+        static let `default`: CLLocationSpeed = 1.42
+        /**
+        Pedestrians are assumed to walk no faster than 6.94 meters per second (25.0 kilometers per hour or 15.5 miles per hour) on average.
+        */
+        static let maximum: CLLocationSpeed = 6.94
+    }
+}

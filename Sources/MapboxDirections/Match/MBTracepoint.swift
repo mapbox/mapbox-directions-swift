@@ -11,7 +11,7 @@ public class Tracepoint: Waypoint {
     /**
      Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.
      */
-    open var alternateCount: Int = NSNotFound
+    public let alternateCount: Int
     
     private enum CodingKeys: String, CodingKey {
         case alternateCount = "alternatives_count"
@@ -24,9 +24,15 @@ public class Tracepoint: Waypoint {
 
     
     required public init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
         let container = try decoder.container(keyedBy: CodingKeys.self)
         alternateCount = try container.decode(Int.self, forKey: .alternateCount)
+        try super.init(from: decoder)
+    }
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(alternateCount, forKey: .alternateCount)
+        try super.encode(to: encoder)
     }
 
     
