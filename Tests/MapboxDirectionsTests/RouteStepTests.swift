@@ -106,9 +106,12 @@ class RoadTests: XCTestCase {
 
 class RouteStepTests: XCTestCase {
     func testCoding() {
+        
         let step = try! JSONDecoder().decode(RouteStep.self, from: routeStepJSON.data(using: .utf8)!)
         
-        let encoded = try! JSONEncoder().encode(step)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted]
+        let encoded = try! encoder.encode(step)
         let roundTripJSON = String(data: encoded, encoding: .utf8)
         
         XCTAssert(roundTripJSON == routeStepJSON)

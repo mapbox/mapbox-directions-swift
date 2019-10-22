@@ -378,23 +378,26 @@ open class RouteStep: NSObject, Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
-        try container.encode(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
-        try container.encode(exitIndex, forKey: .exitIndex)
-        try container.encode(exitCodes, forKey: .exitCodes)
-        try container.encode(exitNames, forKey: .exitNames)
-        try container.encode(phoneticExitNames, forKey: .phoneticExitNames)
-        try container.encode(phoneticNames, forKey: .phoneticNames)
-        try container.encode(distance, forKey: .distance)
-        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
-        try container.encode(codes, forKey: .codes)
-        try container.encode(transportType, forKey: .transportType)
-        try container.encode(destinationCodes, forKey: .destinationCodes)
-        try container.encode(destinations, forKey: .destinations)
-        try container.encode(intersections, forKey: .intersections)
+        try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
+        try container.encodeIfPresent(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
+        try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
+        try container.encodeIfPresent(exitCodes, forKey: .exitCodes)
+        try container.encodeIfPresent(exitNames, forKey: .exitNames)
+        try container.encodeIfPresent(phoneticExitNames, forKey: .phoneticExitNames)
+        try container.encodeIfPresent(phoneticNames, forKey: .phoneticNames)
+        try container.encode(distance.rounded(to: 1e1), forKey: .distance)
+        try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
+        try container.encodeIfPresent(codes, forKey: .codes)
+        
+        if transportType != .none {
+            try container.encode(transportType, forKey: .transportType)
+        }
+        try container.encodeIfPresent(destinationCodes, forKey: .destinationCodes)
+        try container.encodeIfPresent(destinations, forKey: .destinations)
+        try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
         try container.encode(name, forKey: .name)
-        try container.encode(geometry, forKey: .geometry)
+        try container.encodeIfPresent(geometry, forKey: .geometry)
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
@@ -448,10 +451,18 @@ open class RouteStep: NSObject, Codable {
             instructions = ""
         }
         drivingSide = try container.decode(DrivingSide.self, forKey: .drivingSide)
-        (decoder as? JSONDecoder)?.userInfo[.drivingSide] = drivingSide
+  
         instructionsSpokenAlongStep = try container.decodeIfPresent([SpokenInstruction].self, forKey: .instructionsSpokenAlongStep)
         
-        instructionsDisplayedAlongStep = try container.decodeIfPresent([VisualInstructionBanner].self, forKey: .instructionsDisplayedAlongStep)
+        
+        if let visuals = try container.decodeIfPresent([VisualInstructionBanner].self, forKey: .instructionsDisplayedAlongStep) {
+            for instruction in visuals {
+                instruction.drivingSide = drivingSide
+            }
+            instructionsDisplayedAlongStep = visuals
+        } else {
+            instructionsDisplayedAlongStep = nil
+        }
         
         exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
         exitCodes = try container.decodeIfPresent([String].self, forKey: .exitCodes)

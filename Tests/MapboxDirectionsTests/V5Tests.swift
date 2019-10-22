@@ -17,7 +17,7 @@ class V5Tests: XCTestCase {
         
         let queryParams: [String: String?] = [
             "alternatives": "true",
-            "geometries": String(describing: shapeFormat),
+            "geometries": shapeFormat.rawValue,
             "overview": "full",
             "steps": "true",
             "continue_straight": "true",
@@ -26,7 +26,7 @@ class V5Tests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat)", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat.rawValue)", ofType: "json")
                 let filePath = URL(fileURLWithPath: path!)
                 let data = try! Data(contentsOf: filePath, options: [])
                 let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
@@ -157,17 +157,17 @@ class V5Tests: XCTestCase {
     }
     
     func testGeoJSON() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.geoJSON), "geojson")
+        XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
         test(shapeFormat: .geoJSON)
     }
     
     func testPolyline() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
+        XCTAssertEqual(RouteShapeFormat.polyline.rawValue, "polyline")
         test(shapeFormat: .polyline)
     }
     
     func testPolyline6() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.polyline6), "polyline6")
+        XCTAssertEqual(RouteShapeFormat.polyline6.rawValue, "polyline6")
         
         // Transform polyline5 to polyline6
         let transformer: JSONTransformer = { json in

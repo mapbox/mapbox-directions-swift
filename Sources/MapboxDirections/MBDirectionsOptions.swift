@@ -21,7 +21,7 @@ public enum RouteShapeFormat: String, Codable {
 
      This standard format is human-readable and can be parsed straightforwardly, but it is far more verbose than `polyline`.
      */
-    case geoJSON
+    case geoJSON = "geojson"
     /**
      The route’s shape is delivered in [encoded polyline algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) format with 1×10<sup>−5</sup> precision.
 

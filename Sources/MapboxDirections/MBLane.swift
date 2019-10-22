@@ -29,8 +29,7 @@ public struct Lane: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let descriptions = try container.decode([String].self, forKey: .indications)
-        indications = LaneIndication(descriptions: descriptions)!
+        indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
     }
 }

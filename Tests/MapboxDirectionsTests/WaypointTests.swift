@@ -12,6 +12,7 @@ class WaypointTests: XCTestCase {
   
         let coded = try! JSONEncoder().encode(originalWaypoint)
         let codedString = String(data: coded, encoding: .utf8)
+        XCTFail("finish this")
 //        let encodedData = NSMutableData()
 //        let coder = NSKeyedArchiver(forWritingWith: encodedData)
 //        coder.requiresSecureCoding = true

@@ -229,12 +229,6 @@
 		DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
-		DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
-		DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
-		DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */; };
-		DA737EF21D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
-		DA737EF31D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
-		DA737EF41D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */; };
 		DA9E1B131E5A675F0081EDC7 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9E1B121E5A675F0081EDC7 /* Polyline.framework */; };
 		DAA76D681DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
 		DAA76D691DD127CB0015EC78 /* MBLaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */; };
@@ -394,8 +388,6 @@
 		DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V5Tests.swift; sourceTree = "<group>"; };
 		DA6C9DB11CAECA0E00094FBC /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
 		DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_geojson.json; sourceTree = "<group>"; };
-		DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_geojson.json; sourceTree = "<group>"; };
-		DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v4_driving_dc_polyline.json; sourceTree = "<group>"; };
 		DA9E1B121E5A675F0081EDC7 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/watchOS/Polyline.framework; sourceTree = "<group>"; };
 		DAA76D671DD127CB0015EC78 /* MBLaneIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBLaneIndication.swift; sourceTree = "<group>"; };
 		DAC05F151CFBFAC400FA0071 /* MBWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBWaypoint.swift; sourceTree = "<group>"; };
@@ -669,7 +661,6 @@
 				8D381B5F1FD9F592008D5A58 /* Responses */,
 				C5D1D7EE1F6AF8FA00A1C4F1 /* Instructions */,
 				C5247D721E818A8D004B6154 /* annotation */,
-				DA737EEC1D061514005BDA16 /* V4 */,
 				DA737EEB1D0614FA005BDA16 /* V5 */,
 			);
 			path = Fixtures;
@@ -684,16 +675,6 @@
 			);
 			name = V5;
 			path = v5;
-			sourceTree = "<group>";
-		};
-		DA737EEC1D061514005BDA16 /* V4 */ = {
-			isa = PBXGroup;
-			children = (
-				DA737EED1D06175B005BDA16 /* v4_driving_dc_geojson.json */,
-				DA737EF11D061AA2005BDA16 /* v4_driving_dc_polyline.json */,
-			);
-			name = V4;
-			path = v4;
 			sourceTree = "<group>";
 		};
 		DA9E1B111E5A675F0081EDC7 /* watchOS Frameworks */ = {
@@ -1050,7 +1031,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA737EF31D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */,
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
@@ -1063,7 +1043,6 @@
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				DACCFCAA2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				C5DAACB5201AA9A7001F9261 /* match.json in Resources */,
-				DA737EEF1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022B1E92C281009837BD /* annotation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1079,7 +1058,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA737EF41D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */,
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
@@ -1092,7 +1070,6 @@
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				DACCFCAB2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				C5DAACB6201AA9A7001F9261 /* match.json in Resources */,
-				DA737EF01D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				C53A022C1E92C281009837BD /* annotation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1115,14 +1092,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA737EF21D061AA2005BDA16 /* v4_driving_dc_polyline.json in Resources */,
 				DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */,
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
-				DA737EEE1D06175B005BDA16 /* v4_driving_dc_geojson.json in Resources */,
 				35DBF019217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
@@ -1172,13 +1147,14 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Mapbox.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Polyline.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Turf.framework",
 			);
 			name = "Copy Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

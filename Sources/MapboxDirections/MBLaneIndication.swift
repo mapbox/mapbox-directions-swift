@@ -68,9 +68,9 @@ public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
         self.init(rawValue: laneIndication.rawValue)
     }
     
-    public var description: String {
+    public var descriptions: [String] {
         if isEmpty {
-            return "none"
+            return []
         }
         
         var descriptions: [String] = []
@@ -98,6 +98,29 @@ public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
         if contains(.uTurn) {
             descriptions.append("uturn")
         }
+        return descriptions
+    }
+    
+    public var description: String {
         return descriptions.joined(separator: ",")
+    }
+    
+    public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    let stringValues = try container.decode([String].self)
+        
+    self = try LaneIndication.indications(from: stringValues, container: container)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(descriptions)
+    }
+    
+    static func indications(from strings: [String], container: SingleValueDecodingContainer) throws -> LaneIndication {
+        guard let indications = self.init(descriptions: strings) else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unable to initialize lane indications from decoded string. This should not happen.")
+        }
+        return indications
     }
 }

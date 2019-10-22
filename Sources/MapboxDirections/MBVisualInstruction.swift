@@ -11,18 +11,19 @@ open class VisualInstruction: Codable {
 
     /**
      A plain text representation of the instruction.
+     - Note: This is optional despite the API Documentation because it is commonplace for the SDK to return an empty string, which we consder to be equivelent to `null`
      */
     public let text: String?
 
     /**
      The type of maneuver required for beginning the step described by the visual instruction.
      */
-    public var maneuverType: ManeuverType
+    public var maneuverType: ManeuverType?
 
     /**
      Additional directional information to clarify the maneuver type.
      */
-    public dynamic var maneuverDirection: ManeuverDirection
+    public dynamic var maneuverDirection: ManeuverDirection?
 
     /**
      A structured representation of the instruction.
@@ -61,8 +62,8 @@ open class VisualInstruction: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(text, forKey: .text)
-        try container.encode(maneuverType, forKey: .maneuverType)
-        try container.encode(maneuverDirection, forKey: .maneuverDirection)
+        try container.encodeIfPresent(maneuverType, forKey: .maneuverType)
+        try container.encodeIfPresent(maneuverDirection, forKey: .maneuverDirection)
         
         let wrappedComponents = components.map(Component.init(component:))
         try container.encode(wrappedComponents, forKey: .components)
@@ -73,8 +74,8 @@ open class VisualInstruction: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         text = try container.decodeIfPresent(String.self, forKey: .text)
-        maneuverType = try container.decode(ManeuverType.self, forKey: .maneuverType)
-        maneuverDirection = try container.decode(ManeuverDirection.self, forKey: .maneuverDirection)
+        maneuverType = try container.decodeIfPresent(ManeuverType.self, forKey: .maneuverType)
+        maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .maneuverDirection)
 
         let componentsWrapped = try container.decode([Component].self, forKey: .components)
         components = componentsWrapped.map { $0.component }

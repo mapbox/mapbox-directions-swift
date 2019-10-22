@@ -38,11 +38,6 @@ open class VisualInstructionBanner: Codable {
         tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
         if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
             drivingSide = directlyEncoded
-        } else if let drivingSide = decoder.userInfo[.drivingSide] as? DrivingSide {
-            self.drivingSide = drivingSide
-        } else {
-            #warning("make real error")
-            throw NSError(domain: "directions", code: 500, userInfo: [NSLocalizedDescriptionKey: "Did not supply driving side."])
         }
     }
     
@@ -73,7 +68,7 @@ open class VisualInstructionBanner: Codable {
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
-    public var drivingSide: DrivingSide
+    public var drivingSide: DrivingSide!
 
 //    /**
 //     Initializes a new visual instruction banner object based on the given JSON dictionary representation and a driving side.

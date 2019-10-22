@@ -21,14 +21,9 @@ class IntersectionTests: XCTestCase {
     \"bearings\" : [
       80
     ],
-    \"entry\" : {
-      \"indexes\" : [
-        {
-          \"location\" : 0,
-          \"length\" : 1
-        }
-      ]
-    },
+    \"entry\" : [
+        true
+    ],
     \"out\" : 0,
     \"approachLanes\" : null
   },
@@ -44,14 +39,11 @@ class IntersectionTests: XCTestCase {
       120,
       300
     ],
-    \"entry\" : {
-      \"indexes\" : [
-        {
-          \"location\" : 0,
-          \"length\" : 2
-        }
-      ]
-    },
+    \"entry\" : [
+        false,
+        true,
+        true
+    ],
     \"out\" : 1,
     \"approachLanes\" : null
   }

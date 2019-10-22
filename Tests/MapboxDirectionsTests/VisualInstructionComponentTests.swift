@@ -3,8 +3,9 @@ import XCTest
 
 let componentJSON = """
 {
+"type": "text",
 "text": "Take a hike",
-"imageBaseURL: "",
+"imageBaseURL": "",
 }
 """
 class VisualInstructionComponentTests: XCTestCase {

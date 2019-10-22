@@ -63,8 +63,8 @@ public struct Intersection: Codable {
         case approachIndex = "in"
         case outletIndex = "out"
         case lanes
-        case approachLanes
-        case usableApproachLanes
+//        case approachLanes
+//        case usableApproachLanes
         case outletRoadClasses = "classes"
     }
     
@@ -94,10 +94,15 @@ public struct Intersection: Codable {
         try container.encode(approachIndex, forKey: .approachIndex)
         try container.encode(outletIndex, forKey: .outletIndex)
         
-        try container.encode(outletIndexes, forKey: .outletIndexes)
+        var outletArray: [Bool] = Array<Bool>.init(repeating: false, count: (outletIndexes.max()! + 1))
+    
+        for index in outletIndexes {
+            outletArray[index] = true
+        }
         
-        try container.encode(approachLanes, forKey: .approachLanes)
-        try container.encode(usableApproachLanes, forKey: .usableApproachLanes)
+        try container.encode(outletArray, forKey: .outletIndexes)
+        
+        try container.encode(approachLanes, forKey: .lanes)
         
         if let classes = outletRoadClasses?.description.components(separatedBy: ",") {
             try container.encode(classes, forKey: .outletRoadClasses)
@@ -125,12 +130,11 @@ public struct Intersection: Codable {
         
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
-        if let outletIndexes = try? container.decode(IndexSet.self, forKey: .outletIndexes) {
-            self.outletIndexes = outletIndexes
-        } else {
-            let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
-            outletIndexes = IndexSet(outletsArray.enumerated().filter { $1 }.map { $0.offset })
-        }
+        let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
+        let filtered = outletsArray.enumerated().filter { $1 }
+        let mapped = filtered.map { $0.offset }
+        outletIndexes =
+            IndexSet(mapped)
         
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1
