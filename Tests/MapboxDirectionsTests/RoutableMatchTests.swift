@@ -68,7 +68,7 @@ class RoutableMatchTest: XCTestCase {
         // uses an atypical precision level for polyline encoding
         XCTAssertEqual(round(route!.shape!.coordinates.first!.latitude), 33)
         XCTAssertEqual(round(route!.shape!.coordinates.first!.longitude), -117)
-        XCTAssertEqual(route!.legs.count, 1)
+        XCTAssertEqual(route!.legs.count, 6)
         
         let leg = route!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")

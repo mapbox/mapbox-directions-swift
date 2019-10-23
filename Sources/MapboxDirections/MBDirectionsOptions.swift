@@ -333,7 +333,7 @@ open class DirectionsOptions: Codable, Equatable {
     }
     
     private var bearings: String? {
-        if waypoints.filter({$0.heading >= 0}).isEmpty {
+        if waypoints.compactMap({ $0.heading }).isEmpty {
             return nil
         }
         return waypoints.map({ $0.headingDescription }).joined(separator: ";")
@@ -387,7 +387,7 @@ open class DirectionsOptions: Codable, Equatable {
         return legSeparators.map({ $0.name ?? "" }).joined(separator: ";")
     }
     
-    private var coordinates: String? {
+    internal var coordinates: String? {
         return waypoints.map { $0.coordinate.requestDescription }.joined(separator: ";")
     }
 

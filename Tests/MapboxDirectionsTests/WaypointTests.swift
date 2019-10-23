@@ -10,25 +10,19 @@ class WaypointTests: XCTestCase {
         originalWaypoint.headingAccuracy = 10
         originalWaypoint.allowsArrivingOnOppositeSide = false
   
-        let coded = try! JSONEncoder().encode(originalWaypoint)
-        let codedString = String(data: coded, encoding: .utf8)
-        XCTFail("finish this")
-//        let encodedData = NSMutableData()
-//        let coder = NSKeyedArchiver(forWritingWith: encodedData)
-//        coder.requiresSecureCoding = true
-//        coder.encode(originalWaypoint, forKey: "waypoint")
-//        coder.finishEncoding()
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted]
         
-//        let decoder = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-//        decoder.requiresSecureCoding = true
-//        defer {
-//            decoder.finishDecoding()
-//        }
-//        guard let decodedWaypoint = decoder.decodeObject(of: Waypoint.self, forKey: "waypoint") else {
-//            return XCTFail("Unable to decode waypoint")
-//        }
+        let encodedData = try! encoder.encode(originalWaypoint)
+        let encodedString = String(data: encodedData, encoding: .utf8)!
         
-        let decodedWaypoint = try! JSONDecoder().decode(Waypoint.self, from: (codedString?.data(using: .utf8))!)
+        XCTAssertEqual(encodedString, pass)
+        
+        
+        let decoder = JSONDecoder()
+
+        
+        let decodedWaypoint = try! decoder.decode(Waypoint.self, from: encodedData)
         
         XCTAssertEqual(decodedWaypoint.coordinate.latitude, originalWaypoint.coordinate.latitude)
         XCTAssertEqual(decodedWaypoint.coordinate.longitude, originalWaypoint.coordinate.longitude)
@@ -64,3 +58,22 @@ class WaypointTests: XCTestCase {
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
 }
+
+fileprivate let pass = """
+{
+  \"headingAccuracy\" : 10,
+  \"location\" : [
+    -77.036500000000004,
+    38.8977
+  ],
+  \"targetCoordinate\" : [
+    -77.032788199999999,
+    38.895226100000002
+  ],
+  \"coordinateAccuracy\" : 5,
+  \"allowsArrivingOnOppositeSide\" : false,
+  \"heading\" : 90,
+  \"separatesLegs\" : true,
+  \"name\" : \"White House\"
+}
+"""

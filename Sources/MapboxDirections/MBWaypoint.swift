@@ -1,3 +1,5 @@
+import CoreLocation
+
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
@@ -9,14 +11,33 @@ public class Waypoint: Codable {
         case coordinate = "location"
         case coordinateAccuracy
         case targetCoordinate
+        case heading
+        case headingAccuracy
+        case separatesLegs
         case name
+        case allowsArrivingOnOppositeSide
     }
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
         coordinate = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinate)
+        
         coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy)
+        
         targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2D.self, forKey: .targetCoordinate)
+        
+        heading = try container.decodeIfPresent(CLLocationDirection.self, forKey: .heading)
+        
+        headingAccuracy = try container.decodeIfPresent(CLLocationDirection.self, forKey: .headingAccuracy)
+        
+        if let separates = try container.decodeIfPresent(Bool.self, forKey: .separatesLegs) {
+            separatesLegs = separates
+        }
+        
+        if let allows = try container.decodeIfPresent(Bool.self, forKey: .allowsArrivingOnOppositeSide) {
+            allowsArrivingOnOppositeSide = allows
+        }
         
         if let name = try container.decodeIfPresent(String.self, forKey: .name),
             !name.isEmpty {
@@ -91,7 +112,7 @@ public class Waypoint: Codable {
      
      For a route to be considered viable, it must enter this waypoint’s circle of uncertainty. The `coordinate` property identifies the center of the circle, while this property indicates the circle’s radius. If the value of this property is negative, a route is considered viable regardless of whether it enters this waypoint’s circle of uncertainty, subject to an undefined maximum distance.
      
-     By default, the value of this property is a negative number.
+     By default, the value of this property is `nil`.
      */
     public var coordinateAccuracy: CLLocationAccuracy?
     
@@ -112,15 +133,15 @@ public class Waypoint: Codable {
      
      This property is measured in degrees clockwise from true north. A value of 0 degrees means due north, 90 degrees means due east, 180 degrees means due south, and so on. If the value of this property is negative, a route is considered viable regardless of the direction from which it approaches this waypoint.
      
-     If this waypoint is the first waypoint (the source waypoint), the route must start out by heading in the direction specified by this property. You should always set the `headingAccuracy` property in conjunction with this property. If the `headingAccuracy` property is set to a negative value, this property is ignored.
+     If this waypoint is the first waypoint (the source waypoint), the route must start out by heading in the direction specified by this property. You should always set the `headingAccuracy` property in conjunction with this property. If the `headingAccuracy` property is set to `nil`, this property is ignored.
      
      For driving directions, this property can be useful for avoiding a route that begins by going in the direction opposite the current direction of travel. For example, if you know the user is moving eastwardly and the first waypoint is the user’s current location, specifying a heading of 90 degrees and a heading accuracy of 90 degrees for the first waypoint avoids a route that begins with a “head west” instruction.
      
      You should be certain that the user is in motion before specifying a heading and heading accuracy; otherwise, you may be unnecessarily filtering out the best route. For example, suppose the user is sitting in a car parked in a driveway, facing due north, with the garage in front and the street to the rear. In that case, specifying a heading of 0 degrees and a heading accuracy of 90 degrees may result in a route that begins on the back alley or, worse, no route at all. For this reason, it is recommended that you only specify a heading and heading accuracy when automatically recalculating directions due to the user deviating from the route.
      
-     By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
+     By default, the value of this property is `nil`, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var heading: CLLocationDirection = -1
+    public var heading: CLLocationDirection? = nil
     
     /**
      The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from `heading` in either direction in order to be considered viable.
@@ -129,12 +150,16 @@ public class Waypoint: Codable {
      
      If you set the `heading` property, you should set this property to a value such as 90 degrees, to avoid filtering out routes whose approaches differ only slightly from the specified `heading`. Otherwise, if the `heading` property is set to a negative value, this property is ignored.
      
-     By default, the value of this property is a negative number, meaning that a route is considered viable regardless of the direction of approach.
+     By default, the value of this property is `nil`, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var headingAccuracy: CLLocationDirection = -1
+    public var headingAccuracy: CLLocationDirection? = nil
     
     internal var headingDescription: String {
-        return heading >= 0 && headingAccuracy >= 0 ? "\(heading.truncatingRemainder(dividingBy: 360)),\(min(headingAccuracy, 180))" : ""
+        guard let heading = self.heading, let accuracy = self.headingAccuracy else {
+            return ""
+        }
+        
+        return "\(heading.truncatingRemainder(dividingBy: 360)),\(min(accuracy, 180))"
     }
     
     /**

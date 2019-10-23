@@ -114,12 +114,12 @@ class RouteStepTests: XCTestCase {
         let encoded = try! encoder.encode(step)
         let roundTripJSON = String(data: encoded, encoding: .utf8)
         
-        XCTAssert(roundTripJSON == routeStepJSON)
+        XCTAssert(roundTripJSON == pass)
     }
 }
 
 
-let routeStepJSON = """
+fileprivate let routeStepJSON = """
 {
     "intersections": [
       {
@@ -159,5 +159,66 @@ let routeStepJSON = """
     "weight": 59.1,
     "name": "Adalbertstraße",
     "mode": "driving"
+}
+"""
+
+fileprivate let pass = """
+{
+  \"intersections\" : [
+    {
+      \"entry\" : [
+        false,
+        true,
+        true
+      ],
+      \"in\" : 0,
+      \"out\" : 1,
+      \"lanes\" : [
+        {
+          \"valid\" : true,
+          \"indications\" : [
+            \"left\"
+          ]
+        },
+        {
+          \"valid\" : true,
+          \"indications\" : [
+            \"straight\"
+          ]
+        },
+        {
+          \"valid\" : false,
+          \"indications\" : [
+            \"right\"
+          ]
+        }
+      ],
+      \"location\" : [
+        13.424671,
+        52.508811999999999
+      ],
+      \"bearings\" : [
+        120,
+        210,
+        300
+      ]
+    }
+  ],
+  \"distance\" : 236.90000000000001,
+  \"geometry\" : \"asn_Ie_}pAdKxG\",
+  \"maneuver\" : {
+    \"location\" : [
+      13.424671,
+      52.508811999999999
+    ],
+    \"bearing_after\" : 202,
+    \"bearing_before\" : 299,
+    \"type\" : \"turn\",
+    \"modifier\" : \"left\",
+    \"instruction\" : \"Turn left onto Adalbertstraße\"
+  },
+  \"driving_side\" : \"right\",
+  \"duration\" : 59.100000000000001,
+  \"name\" : \"Adalbertstraße\"
 }
 """
