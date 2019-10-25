@@ -23,7 +23,7 @@ open class VisualInstruction: Codable {
     /**
      Additional directional information to clarify the maneuver type.
      */
-    public dynamic var maneuverDirection: ManeuverDirection?
+    public var maneuverDirection: ManeuverDirection?
 
     /**
      A structured representation of the instruction.

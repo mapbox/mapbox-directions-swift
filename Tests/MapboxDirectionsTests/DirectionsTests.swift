@@ -119,7 +119,7 @@ class DirectionsTests: XCTestCase {
             XCTAssertNil(routes, "Unexpected route response")
             XCTAssertNotNil(error, "No error returned")
             switch error {
-            case .invalidResponse:
+            case .invalidResponse?:
                 break // pass
             default:
                 XCTFail("Wrong type of error.")
