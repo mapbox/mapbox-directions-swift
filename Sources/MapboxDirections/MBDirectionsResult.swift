@@ -66,11 +66,13 @@ open class DirectionsResult: Codable {
         }
         
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        let waypoints = directionsOptions.waypoints
-        let legInfos = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
-        for legInfo in legInfos {
-            legInfo.1.source = legInfo.0.0
-            legInfo.1.destination = legInfo.0.1
+        
+        let waypoints = directionsOptions.legSeparators //we don't want to name via points
+        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
+        
+        for (endpoints, leg) in legInfo {
+            leg.source = endpoints.0
+            leg.destination = endpoints.1
         }
         
         accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
