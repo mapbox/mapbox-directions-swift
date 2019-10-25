@@ -13,7 +13,7 @@ public struct DirectionsProfileIdentifier: Codable, Equatable, Hashable, RawRepr
     public typealias StringLiteralType = String
     public typealias RawValue = String
      
-     public init(stringLiteral value: Self.StringLiteralType) {
+     public init(stringLiteral value: StringLiteralType) {
          self.init(rawValue: value)
      }
     
