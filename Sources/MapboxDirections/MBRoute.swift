@@ -6,18 +6,23 @@ import Polyline
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
 
+private enum CodingKeys: String, CodingKey {
+    case routeOptions
+}
+
 open class Route: DirectionsResult {
     public required init(from decoder: Decoder) throws {
+        if let matchOptions = decoder.userInfo[.options] as? MatchOptions {
+            routeOptions = RouteOptions(matchOptions: matchOptions)
+        } else {
+            routeOptions = decoder.userInfo[.options] as! RouteOptions
+        }
+
         try super.init(from: decoder)
-        
-        
     }
     
-    public override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
+    public override var directionsOptions: DirectionsOptions {
+        return routeOptions as DirectionsOptions
     }
-    
-    public var routeOptions: RouteOptions {
-         return super.directionsOptions as! RouteOptions
-     }
+    public var routeOptions: RouteOptions
 }

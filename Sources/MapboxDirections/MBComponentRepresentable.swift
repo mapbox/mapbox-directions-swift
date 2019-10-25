@@ -31,11 +31,13 @@ internal struct Component: Codable {
         if let lane = component as? LaneIndicationComponent {
             try container.encode(lane.indications, forKey: .directions)
             try container.encode(lane.isUsable, forKey: .isActive)
+            try container.encode(VisualInstructionComponentType.lane, forKey: .type)
         } else if let instruction = component as? VisualInstructionComponent {
             try container.encodeIfPresent(instruction.text, forKey: .text)
             try container.encodeIfPresent(instruction.abbreviation, forKey: .abbreviatedText)
             try container.encodeIfPresent(instruction.abbreviationPriority, forKey: .abbreviatedTextPriority)
             try container.encodeIfPresent(instruction.imageURL, forKey: .imageURL)
+            try container.encode(instruction.type, forKey: .type)
             
         }
         

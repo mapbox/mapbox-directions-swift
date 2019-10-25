@@ -124,7 +124,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(step?.coordinates?.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
         XCTAssertEqual(step?.coordinates?.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
         
-        XCTAssertNil(leg?.steps[32].names)
+        XCTAssertEqual(leg?.steps[32].names, nil)
         XCTAssertEqual(leg?.steps[32].codes, ["I-80"])
         XCTAssertEqual(leg?.steps[32].destinationCodes, ["I-80 East", "I-90"])
         XCTAssertEqual(leg?.steps[32].destinations, ["Toll Road"])
@@ -242,6 +242,7 @@ class V5Tests: XCTestCase {
         
         let options = RouteOptions(waypoints: waypoints)
         XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
+        
         options.shapeFormat = .polyline
         options.includesSteps = true
         options.routeShapeResolution = .full
@@ -297,22 +298,16 @@ class V5Tests: XCTestCase {
         route.apiEndpoint = URL(string: "https://api.mapbox.com")
         route.routeIdentifier = result.uuid
         
-        XCTFail("Finish this")
         // Encode and decode the route securely.
-        // This may raise an Objective-C exception if an error occurs, which will fail the tests.
         
-//        let encodedData = NSMutableData()
-//        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-//        keyedArchiver.requiresSecureCoding = true
-//        keyedArchiver.encode(route, forKey: "route")
-//        keyedArchiver.finishEncoding()
-//
-//        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-//        keyedUnarchiver.requiresSecureCoding = true
-//        let unarchivedRoute = keyedUnarchiver.decodeObject(of: Route.self, forKey: "route")!
-//        keyedUnarchiver.finishDecoding()
-//
-//        test(unarchivedRoute, options: options)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted]
+        
+        let jsonData = try! encoder.encode(route)
+    
+        let newRoute = try! decoder.decode(Route.self, from: jsonData)
+        test(newRoute, options: options)
+        
     }
 }
 #endif

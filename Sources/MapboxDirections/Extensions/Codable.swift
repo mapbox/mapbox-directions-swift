@@ -19,6 +19,8 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
     var t: T?
     var u: U?
     
+    var options: DirectionsOptions
+    
     var value: Codable? {
         return t ?? u
     }
@@ -27,18 +29,26 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
         if let geo = value as? Geometry {
             return geo.coordinates
         } else if let geo = value as? String {
-            return decodePolyline(geo, precision: 1e5)!
+            return decodePolyline(geo, precision: options.shapeFormat == .polyline6 ? 1e6 : 1e5)!
         } else {
             return []
         }
     }
     
     init(from decoder: Decoder) throws {
+        
+        guard let options = decoder.userInfo[.options] as? DirectionsOptions else {
+            let error: Error = "Directions options object not found."
+            throw error
+        }
+        self.options = options
+        
         let container = try decoder.singleValueContainer()
         t = try? container.decode(T.self)
         if t == nil {
             u = try? container.decode(U.self)
         }
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -51,3 +61,5 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
         }
     }
 }
+
+extension String: Error {}

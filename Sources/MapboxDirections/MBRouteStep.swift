@@ -338,8 +338,7 @@ import Polyline
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-@objc(MBRouteStep)
-open class RouteStep: NSObject, Codable {
+open class RouteStep: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case codes
@@ -387,16 +386,16 @@ open class RouteStep: NSObject, Codable {
         try container.encodeIfPresent(phoneticNames, forKey: .phoneticNames)
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
-        try container.encodeIfPresent(codes, forKey: .codes)
+        try container.encodeIfPresent(codes?.joined(separator: "; "), forKey: .ref)
         
         if transportType != .none {
             try container.encode(transportType, forKey: .transportType)
         }
-        try container.encodeIfPresent(destinationCodes, forKey: .destinationCodes)
-        try container.encodeIfPresent(destinations, forKey: .destinations)
+        
+        try container.encodeIfPresent(destinationString, forKey: .destinations)
         try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
-        try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(geometry, forKey: .geometry)
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
@@ -433,10 +432,12 @@ open class RouteStep: NSObject, Codable {
         
         name = try container.decode(String.self, forKey: .name)
         
+        let dest = try container.decodeIfPresent(String.self, forKey: .destinations)
+        
         let road = Road(name: name,
                         ref: try container.decodeIfPresent(String.self, forKey: .ref),
                         exits: try container.decodeIfPresent(String.self, forKey: .exits),
-                        destination: try container.decodeIfPresent(String.self, forKey: .destinations),
+                        destination: dest,
                         rotaryName: try container.decodeIfPresent(String.self, forKey: .rotaryName))
         
         if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
@@ -471,6 +472,7 @@ open class RouteStep: NSObject, Codable {
         
         codes = road.codes
         transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType) ?? .none
+        
         destinationCodes = road.destinationCodes
         
         intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
@@ -489,6 +491,20 @@ open class RouteStep: NSObject, Codable {
             phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
             exitNames = nil
             phoneticExitNames = nil
+        }
+    }
+    
+    private var destinationString: String? {
+        let destCodeString = destinationCodes?.joined(separator: ", ")
+        let destString = destinations?.joined(separator: ", ")
+        
+        if let destCodes = destCodeString {
+            guard let dests = destString else {
+                return destCodes
+            }
+            return destCodes + ": " + dests
+        } else {
+            return destString ?? nil
         }
     }
     

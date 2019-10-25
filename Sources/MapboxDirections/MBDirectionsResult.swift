@@ -29,7 +29,7 @@ open class DirectionsResult: Codable {
         case accessToken
         case apiEndpoint
         case routeIdentifier
-        case speechLocale
+        case speechLocale = "voiceLocale"
     }
     
     
@@ -40,7 +40,7 @@ open class DirectionsResult: Codable {
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        _directionsOptions = try container.decodeIfPresent(DirectionsOptions.self, forKey: .directionsOptions) ?? decoder.userInfo[.options] as! DirectionsOptions
+        _directionsOptions = decoder.userInfo[.options] as! DirectionsOptions
     
     
         switch _directionsOptions.shapeFormat {
@@ -76,7 +76,16 @@ open class DirectionsResult: Codable {
         accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
         apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
-        speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
+        
+        do {
+            speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
+        } catch let DecodingError.typeMismatch(mismatchedType, context){
+            guard mismatchedType == Dictionary<String, Any>.self else {
+                throw DecodingError.typeMismatch(mismatchedType, context)
+            }
+            let identifier = try container.decode(String.self, forKey: .speechLocale)
+            speechLocale = Locale(identifier: identifier)
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -100,7 +109,6 @@ open class DirectionsResult: Codable {
         
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
-        try container.encode(directionsOptions, forKey: .directionsOptions)
         try container.encodeIfPresent(accessToken, forKey: .accessToken)
         try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)

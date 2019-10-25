@@ -141,7 +141,9 @@ class MatchTests: XCTestCase {
         let encoded = try! JSONEncoder().encode(match)
         let encodedString = String(data: encoded, encoding: .utf8)!
         
-        let unarchivedMatch = try! JSONDecoder().decode(Match.self, from: encodedString.data(using: .utf8)!)
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = matchOptions
+        let unarchivedMatch = try! decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
     
         
         XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
