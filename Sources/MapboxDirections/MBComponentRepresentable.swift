@@ -1,6 +1,13 @@
 import Foundation
-import UIKit
 import CoreGraphics
+
+#if os(OSX)
+import Cocoa
+#elseif os(watchOS)
+import WatchKit
+#else
+import UIKit
+#endif
 
 /**
 The component representable protocol that comprises what the instruction banner should display.
