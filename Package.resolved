@@ -9,6 +9,15 @@
           "revision": "011fbc1b0f27a3398bd0fb7c5e2cf5c62ae82717",
           "version": "4.2.1"
         }
+      },
+      {
+        "package": "Turf",
+        "repositoryURL": "https://github.com/mapbox/turf-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "40079b9133402b1fd57a9845f8785cca19beb472",
+          "version": "0.3.0"
+        }
       }
     ]
   },
