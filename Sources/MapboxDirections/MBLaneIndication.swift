@@ -12,28 +12,28 @@ public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
     public typealias RawValue = Int
 
     /// Indicates a sharp turn to the right.
-    static let sharpRight = LaneIndication(rawValue: 1 << 1)
+    public static let sharpRight = LaneIndication(rawValue: 1 << 1)
     
     /// Indicates a turn to the right.
-    static let right = LaneIndication(rawValue: 1 << 2)
+    public static let right = LaneIndication(rawValue: 1 << 2)
     
     /// Indicates a turn to the right.
-    static let slightRight = LaneIndication(rawValue: 1 << 3)
+    public static let slightRight = LaneIndication(rawValue: 1 << 3)
     
     /// Indicates no turn.
-    static let straightAhead = LaneIndication(rawValue: 1 << 4)
+    public static let straightAhead = LaneIndication(rawValue: 1 << 4)
     
     /// Indicates a slight turn to the left.
-    static let slightLeft = LaneIndication(rawValue: 1 << 5)
+    public static let slightLeft = LaneIndication(rawValue: 1 << 5)
     
     /// Indicates a turn to the left.
-    static let left = LaneIndication(rawValue: 1 << 6)
+    public static let left = LaneIndication(rawValue: 1 << 6)
     
     /// Indicates a sharp turn to the left.
-    static let sharpLeft = LaneIndication(rawValue: 1 << 7)
+    public static let sharpLeft = LaneIndication(rawValue: 1 << 7)
     
     /// Indicates a U-turn.
-    static let uTurn = LaneIndication(rawValue: 1 << 8)
+    public static let uTurn = LaneIndication(rawValue: 1 << 8)
     
 
     /**

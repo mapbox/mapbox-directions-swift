@@ -16,21 +16,21 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible{
      
      When this attribute is specified, the `RouteLeg.segmentDistances` property contains one value for each segment in the leg’s full geometry.
      */
-    static let distance = AttributeOptions(rawValue: 1 << 1)
+    public static let distance = AttributeOptions(rawValue: 1 << 1)
     
     /**
      Expected travel time (in seconds) along the segment.
      
      When this attribute is specified, the `RouteLeg.expectedSegmentTravelTimes` property contains one value for each segment in the leg’s full geometry.
      */
-    static let expectedTravelTime = AttributeOptions(rawValue: 1 << 2)
+    public static let expectedTravelTime = AttributeOptions(rawValue: 1 << 2)
 
     /**
      Current average speed (in meters per second) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry.
      */
-    static let speed = AttributeOptions(rawValue: 1 << 3)
+    public static let speed = AttributeOptions(rawValue: 1 << 3)
     
      /**
      Traffic congestion level along the segment.
@@ -39,7 +39,7 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible{
      
      This attribute requires `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
-    static let congestionLevel = AttributeOptions(rawValue: 1 << 4)
+    public static let congestionLevel = AttributeOptions(rawValue: 1 << 4)
     
     
     /**
