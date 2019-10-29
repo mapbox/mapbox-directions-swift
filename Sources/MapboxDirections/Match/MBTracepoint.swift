@@ -34,20 +34,6 @@ public class Tracepoint: Waypoint {
         try container.encode(alternateCount, forKey: .alternateCount)
         try super.encode(to: encoder)
     }
-
-    
-//    // MARK: Objective-C equality
-//    open override func isEqual(_ object: Any?) -> Bool {
-//        guard let opts = object as? Tracepoint else { return false }
-//        return isEqual(to: opts)
-//    }
-//
-//
-//    open func isEqual(to other: Tracepoint?) -> Bool {
-//        guard let other = other else { return false }
-//        return super.isEqual(to: other) && type(of: self) == type(of: other) &&
-//            alternateCount == other.alternateCount
-//    }
 }
 
 extension Tracepoint { //Equatable

@@ -3,16 +3,6 @@ import struct Polyline.Polyline
 import CoreLocation
 import struct Turf.LineString
 
-
-
-//protocol DirectionsResult: Codable {
-//    var coordinates: [CLLocationCoordinate2D] { get }
-//    var legs: [RouteLeg] { get }
-//    var distance: CLLocationDistance { get }
-//    var expectedTravelTime: TimeInterval { get }
-//    var options: DirectionsOptions
-//}
-
 /**
  A `DirectionsResult` represents a result returned from either the Mapbox Directions service.
  
@@ -132,9 +122,7 @@ open class DirectionsResult: Codable {
      This array may be `nil` or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
-     */
-    //    public let coordinates: [CLLocationCoordinate2D]?
-    //    
+     */   
     
     /**
      An array of `RouteLeg` objects representing the legs of the route.
@@ -145,9 +133,6 @@ open class DirectionsResult: Codable {
      */
     public let legs: [RouteLeg]
     
-    //    open override var description: String {
-    //        return legs.map { $0.name }.joined(separator: " – ")
-    //    }
     
     // MARK: Getting Additional Route Details
     

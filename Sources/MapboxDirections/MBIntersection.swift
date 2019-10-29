@@ -63,8 +63,6 @@ public struct Intersection: Codable {
         case approachIndex = "in"
         case outletIndex = "out"
         case lanes
-//        case approachLanes
-//        case usableApproachLanes
         case outletRoadClasses = "classes"
     }
     

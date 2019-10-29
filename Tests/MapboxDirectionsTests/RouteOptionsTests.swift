@@ -120,7 +120,6 @@ class RouteOptionsTests: XCTestCase {
         destination.targetCoordinate = CLLocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
         let options = RouteOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")
-//        XCTFail("Get the path")
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
     }

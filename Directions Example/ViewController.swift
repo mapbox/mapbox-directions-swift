@@ -65,8 +65,6 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func setupDirections() {
         let wp1 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox")
         let wp2 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
-//        wp1.allowsArrivingOnOppositeSide = false
-//        wp2.allowsArrivingOnOppositeSide = false
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
         

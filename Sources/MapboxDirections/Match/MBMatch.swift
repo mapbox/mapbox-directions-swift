@@ -11,14 +11,6 @@ extension CodingUserInfoKey {
  Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
 open class Match: DirectionsResult {
-    #warning("check this")
-//    init(matchOptions: MatchOptions, legs: [RouteLeg], tracepoints: [Tracepoint], distance: CLLocationDistance, expectedTravelTime: TimeInterval, coordinates: [CLLocationCoordinate2D]?, confidence: Float, speechLocale: Locale?, waypointIndices: IndexSet) {
-//        self.confidence = confidence
-//        self.tracepoints = tracepoints
-//        self.waypointIndices = waypointIndices
-//        super.init(legs: legs, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, speechLocale: speechLocale, options: matchOptions)
-//    }
-    
     private enum CodingKeys: String, CodingKey {
         case confidence
         case tracepoints
@@ -39,35 +31,6 @@ open class Match: DirectionsResult {
         try container.encode(matchOptions, forKey: .matchOptions)
         try super.encode(to: encoder)
     }
-    
-//    /**
-//     Initializes a new match object with the given JSON dictionary representation and tracepoints.
-//     
-//     - parameter json: A JSON dictionary representation of the route as returned by the Mapbox Map Matching API.
-//     - parameter tracepoints: An array of `Tracepoint` that the match found in order.
-//     - parameter matchOptions: The `MatchOptions` used to create the request.
-//    */
-//    public convenience init(json: [String: Any], tracepoints: [Tracepoint], waypointIndices: IndexSet, matchOptions: MatchOptions) {
-//        let legInfo = zip(zip(tracepoints.prefix(upTo: tracepoints.endIndex - 1), tracepoints.suffix(from: 1)),
-//                          json["legs"] as? [JSONDictionary] ?? [])
-//        let legs = legInfo.map { (endpoints, json) -> RouteLeg in
-//            return RouteLeg(json: json, source: endpoints.0, destination: endpoints.1, options: RouteOptions(matchOptions: matchOptions))
-//        }
-//        
-//        let distance = json["distance"] as! Double
-//        let expectedTravelTime = json["duration"] as! Double
-//        
-//        let coordinates = matchOptions.shapeFormat.coordinates(from: json["geometry"])
-//        
-//        let confidence = (json["confidence"] as! NSNumber).floatValue
-//        
-//        var speechLocale: Locale?
-//        if let locale = json["voiceLocale"] as? String {
-//            speechLocale = Locale(identifier: locale)
-//        }
-//        
-//        self.init(matchOptions: matchOptions, legs: legs, tracepoints: tracepoints, distance: distance, expectedTravelTime: expectedTravelTime, coordinates: coordinates, confidence: confidence, speechLocale: speechLocale, waypointIndices: waypointIndices)
-//    }
     
     /**
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
@@ -90,28 +53,4 @@ open class Match: DirectionsResult {
      `MatchOptions` used to create the match request.
      */
     public let matchOptions: MatchOptions
-    
-//    public required init?(coder decoder: NSCoder) {
-//        confidence = decoder.decodeFloat(forKey: "confidence")
-//
-//        guard let tracepoints = decoder.decodeObject(of: [NSArray.self, Tracepoint.self], forKey: "tracepoints") as? [Tracepoint] else {
-//            return nil
-//        }
-//        self.tracepoints = tracepoints
-//
-//        waypointIndices = decoder.decodeObject(of: NSIndexSet.self, forKey: "waypointIndices") as IndexSet?
-//
-//        super.init(coder: decoder)
-//    }
-//
-//    override public class var supportsSecureCoding: Bool {
-//        return true
-//    }
-    
-//    public override func encode(with coder: NSCoder) {
-//        coder.encode(confidence, forKey: "confidence")
-//        coder.encode(tracepoints, forKey: "tracepoints")
-//        coder.encode(waypointIndices, forKey: "waypointIndices")
-//        super.encode(with: coder)
-//    }
 }

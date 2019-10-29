@@ -47,15 +47,7 @@ open class RouteOptions: DirectionsOptions {
     private enum CodingKeys: String, CodingKey {
         case allowsUTurnAtWaypoint
         case includesAlternativeRoutes
-       // case includesSteps
-       // case shapeFormat
-        //case routeShapeResolution
-       // case attributeOptions
         case includesExitRoundaboutManeuver
-       // case locale
-       // case includesSpokenInstructions
-        //case distanceMeasurementSystem
-        //case includesVisualInstructions
         case roadClassesToAvoid
     }
     
@@ -203,37 +195,6 @@ open class RouteOptions: DirectionsOptions {
 
         return params + super.urlQueryItems
     }
-    
-//    // MARK: NSCopying
-//    public func copy(with zone: NSZone? = nil) -> Any {
-//        let data = try! JSONEncoder().encode(self)
-//        return try! JSONDecoder().decode(RouteOptions.self, from: data)
-//    }
-//
-//    //MARK: - OBJ-C Equality
-//    open override func isEqual(_ object: Any?) -> Bool {
-//        guard let opts = object as? RouteOptions else { return false }
-//        return isEqual(to: opts)
-//    }
-//
-//    @objc(isEqualToRouteOptions:)
-//    open func isEqual(to routeOptions: RouteOptions?) -> Bool {
-//        guard let other = routeOptions else { return false }
-//        guard waypoints == other.waypoints,
-//            profileIdentifier == other.profileIdentifier,
-//            allowsUTurnAtWaypoint == other.allowsUTurnAtWaypoint,
-//            includesSteps == other.includesSteps,
-//            shapeFormat == other.shapeFormat,
-//            routeShapeResolution == other.routeShapeResolution,
-//            attributeOptions == other.attributeOptions,
-//            includesExitRoundaboutManeuver == other.includesExitRoundaboutManeuver,
-//            locale == other.locale,
-//            includesSpokenInstructions == other.includesSpokenInstructions,
-//            includesVisualInstructions == other.includesVisualInstructions,
-//            roadClassesToAvoid == other.roadClassesToAvoid,
-//            distanceMeasurementSystem == other.distanceMeasurementSystem else { return false }
-//        return true
-//    }
 }
 
 // MARK: Support for Directions API v4

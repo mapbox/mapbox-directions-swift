@@ -413,7 +413,7 @@ open class RouteStep: Codable {
         
         if let coordinate = try? maneuver.decode(CLLocationCoordinate2D.self, forKey: .location) {
             maneuverLocation = coordinate
-        } else if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first {
+        } else if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first  {
             // V4
             maneuverLocation = coordinate
         } else {
