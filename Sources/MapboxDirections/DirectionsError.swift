@@ -2,7 +2,12 @@ import Foundation
 import CoreLocation
 
 
-public enum DirectionsError: Error, RawRepresentable, Equatable {
+public protocol DirectionsError: Error {
+    var failureReason: String { get }
+    var recoverySuggestion: String { get }
+}
+
+public enum MapboxDirectionsError: DirectionsError, RawRepresentable, Equatable {
     public init?(rawValue: String) {
         assertionFailure("Do not use init(rawValue:) for DirectionsError.")
         return nil
