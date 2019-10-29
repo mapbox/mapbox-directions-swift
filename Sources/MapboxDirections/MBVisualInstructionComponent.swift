@@ -11,8 +11,7 @@
  Note: This class does not conform to Codable because it's serialization is directly handled by `Component`
  */
 
-open class VisualInstructionComponent: ComponentRepresentable {
-
+open class VisualInstructionComponent: Equatable {
     /**
     The URL to an image representation of this component.
 
@@ -50,5 +49,14 @@ open class VisualInstructionComponent: ComponentRepresentable {
         self.imageURL = imageURL
         self.abbreviation = abbreviation
         self.abbreviationPriority = abbreviationPriority
+    }
+    
+    // MARK: - Equatable
+    public static func == (lhs: VisualInstructionComponent, rhs: VisualInstructionComponent) -> Bool {
+        return lhs.imageURL == rhs.imageURL &&
+            lhs.abbreviation == rhs.abbreviation &&
+            lhs.abbreviationPriority == rhs.abbreviationPriority &&
+            lhs.text == rhs.text &&
+            lhs.type == rhs.type
     }
 }

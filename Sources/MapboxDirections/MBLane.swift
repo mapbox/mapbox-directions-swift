@@ -3,7 +3,7 @@ import Foundation
 /**
  A lane on the road approaching an intersection.
  */
-public struct Lane: Codable {
+public struct Lane: Codable, Equatable {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.
      */

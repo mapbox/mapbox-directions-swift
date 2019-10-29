@@ -3,7 +3,8 @@ import Foundation
 /**
  A single cross street along a step.
  */
-public struct Intersection: Codable {
+public struct Intersection: Codable, Equatable {
+    
     /**
      The geographic coordinates at the center of the intersection.
      */
@@ -137,4 +138,18 @@ public struct Intersection: Codable {
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1
     }
+    
+    //MARK: - Equatable
+    
+    public static func == (lhs: Intersection, rhs: Intersection) -> Bool {
+        return lhs.location == rhs.location &&
+            lhs.headings == rhs.headings &&
+            lhs.outletIndexes == rhs.outletIndexes &&
+            lhs.approachIndex == rhs.approachIndex &&
+            lhs.outletIndex == rhs.outletIndex &&
+            lhs.approachLanes == rhs.approachLanes &&
+            lhs.usableApproachLanes == rhs.usableApproachLanes &&
+            lhs.outletRoadClasses == rhs.outletRoadClasses
+    }
+
 }

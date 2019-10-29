@@ -15,7 +15,7 @@ extension Decodable {
     }
 }
 
-struct UncertainCodable<T: Codable, U: Codable>: Codable {
+struct UncertainCodable<T: Codable, U: Codable>: Codable, Equatable {    
     var t: T?
     var u: U?
     
@@ -43,6 +43,7 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
         }
         self.options = options
         
+        
         let container = try decoder.singleValueContainer()
         t = try? container.decode(T.self)
         if t == nil {
@@ -63,3 +64,7 @@ struct UncertainCodable<T: Codable, U: Codable>: Codable {
 }
 
 extension String: Error {}
+
+
+public StepGeometry
+// make this a varient transform that's used instead of MBDirectionsResult:38-55, do equatable here, have computed property `shape` that always returns a Polyline no matter the backing data

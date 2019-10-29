@@ -10,8 +10,7 @@ import CoreLocation
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
 
-open class SpokenInstruction: Codable {
-
+open class SpokenInstruction: Codable, Equatable {
     /**
      A distance along the associated `RouteStep` at which to read the instruction aloud.
 
@@ -53,5 +52,12 @@ open class SpokenInstruction: Codable {
         self.distanceAlongStep = distanceAlongStep
         self.text = text
         self.ssmlText = ssmlText
+    }
+    
+    //MARK: - Equatable
+    public static func == (lhs: SpokenInstruction, rhs: SpokenInstruction) -> Bool {
+        return lhs.distanceAlongStep == rhs.distanceAlongStep &&
+            lhs.text == rhs.text &&
+            lhs.ssmlText == rhs.ssmlText
     }
 }

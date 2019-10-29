@@ -10,8 +10,8 @@ import Polyline
  */
 
 
-open class RouteLeg: Codable {
-
+open class RouteLeg: Codable, Equatable {
+    
     public enum CodingKeys: String, CodingKey {
         case source
         case destination
@@ -164,4 +164,20 @@ open class RouteLeg: Codable {
      The value of this property is `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`, depending on the `profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     public let profileIdentifier: DirectionsProfileIdentifier
+    
+    // MARK: - Equatable Conformance
+    
+    public static func == (lhs: RouteLeg, rhs: RouteLeg) -> Bool {
+        return lhs.source == rhs.source &&
+            lhs.destination == rhs.destination &&
+            lhs.steps == rhs.steps &&
+            lhs.segmentDistances == rhs.segmentDistances &&
+            lhs.expectedSegmentTravelTimes == rhs.expectedSegmentTravelTimes &&
+            lhs.segmentSpeeds == rhs.segmentSpeeds &&
+            lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
+            lhs.name == rhs.name &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.profileIdentifier == rhs.profileIdentifier
+    }
 }

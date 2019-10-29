@@ -338,8 +338,8 @@ import Polyline
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-open class RouteStep: Codable {
-    
+open class RouteStep: Codable, Equatable {
+
     private enum CodingKeys: String, CodingKey {
         case codes
         case geometry
@@ -357,7 +357,6 @@ open class RouteStep: Codable {
         case intersections
         case maneuver
         case name
-        case v4wayName = "way_name"
         case ref
         case exits
         case phoneticExitNames = "pronunciation"
@@ -695,4 +694,30 @@ open class RouteStep: Codable {
      Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
     */
     public let intersections: [Intersection]?
+        
+    // MARK: - Equality
+    public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
+            return lhs.codes == rhs.codes &&
+                lhs.geometry == rhs.geometry &&
+                lhs.destinationCodes == rhs.destinationCodes &&
+                lhs.destinations == rhs.destinations &&
+                lhs.distance == rhs.distance &&
+                lhs.drivingSide == rhs.drivingSide &&
+                lhs.exitNames == rhs.exitNames &&
+                lhs.exitCodes == rhs.exitCodes &&
+                lhs.exitIndex == rhs.exitIndex &&
+                lhs.exitNames == rhs.exitNames &&
+                lhs.expectedTravelTime == rhs.expectedTravelTime &&
+                lhs.instructions == rhs.instructions &&
+                lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
+                lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
+                lhs.intersections == rhs.intersections &&
+                lhs.maneuverType == rhs.maneuverType &&
+                lhs.maneuverLocation == rhs.maneuverLocation &&
+                lhs.maneuverDirection == rhs.maneuverDirection &&
+                lhs.name == rhs.name &&
+                lhs.phoneticNames == rhs.phoneticNames &&
+                lhs.phoneticExitNames == rhs.phoneticExitNames &&
+                lhs.transportType == rhs.transportType
+        }
 }

@@ -7,7 +7,7 @@ import CoreLocation
  */
 
 
-open class VisualInstruction: Codable {
+open class VisualInstruction: Codable, Equatable {
 
     /**
      A plain text representation of the instruction.
@@ -28,7 +28,7 @@ open class VisualInstruction: Codable {
     /**
      A structured representation of the instruction.
      */
-    public let components: [ComponentRepresentable]
+    public let components: [Component]
 
     /**
      The heading at which the user exits a roundabout (traffic circle or rotary).
@@ -42,7 +42,7 @@ open class VisualInstruction: Codable {
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [ComponentRepresentable], degrees: CLLocationDegrees = 180) {
+    public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [Component], degrees: CLLocationDegrees = 180) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
@@ -65,7 +65,7 @@ open class VisualInstruction: Codable {
         try container.encodeIfPresent(maneuverType, forKey: .maneuverType)
         try container.encodeIfPresent(maneuverDirection, forKey: .maneuverDirection)
         
-        let wrappedComponents = components.map(Component.init(component:))
+        let wrappedComponents = components.map(ComponentSerializer.init(component:))
         try container.encode(wrappedComponents, forKey: .components)
         
         try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
@@ -77,9 +77,20 @@ open class VisualInstruction: Codable {
         maneuverType = try container.decodeIfPresent(ManeuverType.self, forKey: .maneuverType)
         maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .maneuverDirection)
 
-        let componentsWrapped = try container.decode([Component].self, forKey: .components)
+        let componentsWrapped = try container.decode([ComponentSerializer].self, forKey: .components)
         components = componentsWrapped.map { $0.component }
         
         finalHeading = try container.decodeIfPresent(CLLocationDegrees.self, forKey: .finalHeading)
+    }
+    
+    // MARK: - Equatable
+    public static func == (lhs: VisualInstruction, rhs: VisualInstruction) -> Bool {
+        return lhs.text == rhs.text &&
+            lhs.maneuverType == rhs.maneuverType &&
+            lhs.maneuverDirection == rhs.maneuverDirection &&
+            
+            
+            lhs.components == rhs.components &&
+            lhs.finalHeading == rhs.finalHeading
     }
 }

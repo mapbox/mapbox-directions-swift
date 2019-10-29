@@ -12,11 +12,58 @@ import UIKit
 /**
 The component representable protocol that comprises what the instruction banner should display.
  */
+public enum Component: Equatable {
+    public static func == (lhs: Component, rhs: Component) -> Bool {
+        switch lhs {
+        case let .lane(left):
+            switch rhs {
+            case let .lane(right):
+                return left == right
+            default:
+                return false
+            }
+        case let .visual(left):
+            switch rhs {
+            case let .visual(right):
+                return left == right
+            default:
+                return false
+            }
+        }
+    }
+    
+    case lane(_ component: LaneIndicationComponent)
+    case visual(_ component: VisualInstructionComponent)
+    
+    
+}
+//public typealias ComponentRepresentable = Representable & Equatable
+//public protocol Representable: class {
+//
+//}
 
-public protocol ComponentRepresentable: class { }
+//public struct SomeRepreentable: Representable, Equatable {
+//
+//}
 
-internal struct Component: Codable {
-    let component: ComponentRepresentable
+//public extension ComponentRepresentable {
+//    static func == (lhs: Self, rhs: Self) -> Bool {
+//
+//    }
+//}
+
+//public extension Equatable where Self: ComponentRepresentable {
+//        public static func == (lhs: ComponentRepresentable, rhs: ComponentRepresentable) -> Bool {
+//
+//    }
+//}
+
+//public func == (lhs: ComponentRepresentable, rhs: ComponentRepresentable) -> Bool {
+//
+//}
+
+internal struct ComponentSerializer: Codable {
+    let component: Component
     
     private enum CodingKeys: String, CodingKey {
         case type
@@ -28,24 +75,24 @@ internal struct Component: Codable {
         case directions
         case isActive = "active"
     }
-    init(component: ComponentRepresentable) {
+    init(component: Component) {
         self.component = component
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        if let lane = component as? LaneIndicationComponent {
+        switch component {
+        case let .lane(lane):
             try container.encode(lane.indications, forKey: .directions)
             try container.encode(lane.isUsable, forKey: .isActive)
             try container.encode(VisualInstructionComponentType.lane, forKey: .type)
-        } else if let instruction = component as? VisualInstructionComponent {
-            try container.encodeIfPresent(instruction.text, forKey: .text)
-            try container.encodeIfPresent(instruction.abbreviation, forKey: .abbreviatedText)
-            try container.encodeIfPresent(instruction.abbreviationPriority, forKey: .abbreviatedTextPriority)
-            try container.encodeIfPresent(instruction.imageURL, forKey: .imageURL)
-            try container.encode(instruction.type, forKey: .type)
-            
+        case let .visual(instruction):
+             try container.encodeIfPresent(instruction.text, forKey: .text)
+             try container.encodeIfPresent(instruction.abbreviation, forKey: .abbreviatedText)
+             try container.encodeIfPresent(instruction.abbreviationPriority, forKey: .abbreviatedTextPriority)
+             try container.encodeIfPresent(instruction.imageURL, forKey: .imageURL)
+             try container.encode(instruction.type, forKey: .type)
         }
         
     }
@@ -57,7 +104,8 @@ internal struct Component: Codable {
         case .lane:
             let indications = try container.decode(LaneIndication.self, forKey: .directions)
             let isUsable = try container.decode(Bool.self, forKey: .isActive)
-            component = LaneIndicationComponent(indications: indications, isUsable: isUsable)
+            let comp = LaneIndicationComponent(indications: indications, isUsable: isUsable)
+            component = .lane(comp)
         default:
             let text = try container.decode(String.self, forKey: .text)
             let abbreviatedText = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
@@ -77,7 +125,8 @@ internal struct Component: Codable {
                     imageURL = URL(string: "\(imageBaseURL)@\(Int(scale))x.png")
             }
             let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
-            component = VisualInstructionComponent(type: type, text: text, imageURL: imageURL, abbreviation: abbreviatedText, abbreviationPriority: abbreviationPriority)
+            let comp = VisualInstructionComponent(type: type, text: text, imageURL: imageURL, abbreviation: abbreviatedText, abbreviationPriority: abbreviationPriority)
+            component = .visual(comp)
         }
 
     }

@@ -6,7 +6,7 @@ A component that represents a lane  representation of an instruction.
  */
 
 
-open class LaneIndicationComponent: NSObject, ComponentRepresentable {
+open class LaneIndicationComponent: Equatable {
 
     /**
      An array indicating which directions you can go from a lane (left, right, or straight).
@@ -22,8 +22,6 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
      */
     public var isUsable: Bool = false
     
-    public static var supportsSecureCoding: Bool = true
-    
     /**
      Initializes a new visual instruction component object that displays the given information.
      
@@ -35,20 +33,9 @@ open class LaneIndicationComponent: NSObject, ComponentRepresentable {
         self.isUsable = isUsable
     }
     
-    public required init?(coder decoder: NSCoder) {
-        guard let directions = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "indications") as? [String], let indications = LaneIndication(descriptions: directions) else {
-            return nil
-        }
-        self.indications = indications
-        
-        guard let isUsable = decoder.decodeObject(forKey: "isUsable") as? Bool else {
-            return nil
-        }
-        self.isUsable = isUsable
-    }
-    
-    public func encode(with coder: NSCoder) {
-        coder.encode(indications.description, forKey: "indications")
-        coder.encode(isUsable, forKey: "isUsable")
+    // MARK: - Codable
+    public static func == (lhs: LaneIndicationComponent, rhs: LaneIndicationComponent) -> Bool {
+        return lhs.indications == rhs.indications &&
+            lhs.isUsable == rhs.isUsable
     }
 }
