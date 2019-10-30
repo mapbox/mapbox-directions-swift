@@ -233,21 +233,23 @@ class SpokenInstructionsTests: XCTestCase {
         
         let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction
         
-        let visualComponents: [VisualInstructionComponent] = tertiaryInstruction?.components.compactMap {
+        let visualComponents: [VisualInstructionComponent]? = tertiaryInstruction?.components.compactMap {
             guard case let Component.visual(instruction) = $0 else {
                 return nil
             }
             return instruction
         }
         
-        let tertiaryInstruction = visualComponents.first
+        guard let tertiaryInstructionComponent = visualComponents?.first else {
+            XCTFail("expecting component to not be nil.")
+            return
+        }
         
         XCTAssertNotNil(tertiaryInstruction)
         XCTAssertEqual(tertiaryInstruction?.text, "Grove Street")
         XCTAssertEqual(tertiaryInstruction?.maneuverType, .turn)
         XCTAssertEqual(tertiaryInstruction?.maneuverDirection, .left)
         
-        XCTAssertNotNil(tertiaryInstructionComponent)
         XCTAssertEqual(tertiaryInstructionComponent.text, "Grove Street")
         XCTAssertEqual(tertiaryInstructionComponent.type, .text)
         XCTAssertEqual(tertiaryInstructionComponent.abbreviation, "Grove St")
