@@ -395,8 +395,8 @@ open class RouteStep: Codable, Equatable {
         try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
         try container.encodeIfPresent(name, forKey: .name)
-        if let lineString = lineString, let shapeFormat = encoder.userInfo[.options] as? RouteShapeFormat {
-            let polyLineString = PolyLineString(lineString: lineString, shapeFormat: shapeFormat)
+        if let shape = shape, let shapeFormat = encoder.userInfo[.options] as? RouteShapeFormat {
+            let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
             try container.encode(polyLineString, forKey: .geometry)
         }
         
@@ -426,9 +426,9 @@ open class RouteStep: Codable, Equatable {
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
-            lineString = try LineString(polyLineString: polyLineString)
+            shape = try LineString(polyLineString: polyLineString)
         } else {
-            lineString = nil
+            shape = nil
         }
         
         name = try container.decode(String.self, forKey: .name)
@@ -518,7 +518,7 @@ open class RouteStep: Codable, Equatable {
      
      Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using the `LineString.coordinates` property to display a portion of a route on an `MGLMapView`.
      */
-    public var lineString: LineString?
+    public var shape: LineString?
     
     // MARK: Getting Details About the Maneuver
     
@@ -698,7 +698,7 @@ open class RouteStep: Codable, Equatable {
     // MARK: - Equality
     public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
             return lhs.codes == rhs.codes &&
-                lhs.lineString == rhs.lineString &&
+                lhs.shape == rhs.shape &&
                 lhs.destinationCodes == rhs.destinationCodes &&
                 lhs.destinations == rhs.destinations &&
                 lhs.distance == rhs.distance &&

@@ -33,9 +33,9 @@ open class DirectionsResult: Codable {
         _directionsOptions = decoder.userInfo[.options] as! DirectionsOptions
     
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
-            lineString = try LineString(polyLineString: polyLineString)
+            shape = try LineString(polyLineString: polyLineString)
         } else {
-            lineString = nil
+            shape = nil
         }
         
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
@@ -66,8 +66,8 @@ open class DirectionsResult: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
-        if let lineString = lineString {
-            let polyLineString = PolyLineString(lineString: lineString, shapeFormat: directionsOptions.shapeFormat)
+        if let shape = shape {
+            let polyLineString = PolyLineString(lineString: shape, shapeFormat: directionsOptions.shapeFormat)
             try container.encode(polyLineString, forKey: .geometry)
         }
         try container.encode(distance, forKey: .distance)
@@ -85,7 +85,7 @@ open class DirectionsResult: Codable {
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
-    public let lineString: LineString?
+    public let shape: LineString?
     
     /**
      An array of `RouteLeg` objects representing the legs of the route.
