@@ -7,7 +7,7 @@
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions](https://docs.mapbox.com/api/navigation/) and [Map Matching](https://docs.mapbox.com/api/navigation/#map-matching) APIs. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine. For more information, see the [Mapbox Navigation](https://www.mapbox.com/navigation/) homepage.
 
-Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift 4.2.
+Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScript code in addition to Swift.
 
 MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/), and the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/).
 
@@ -32,8 +32,6 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 ```
 
 Then `import MapboxDirections` or `@import MapboxDirections;`.
-
-v0.12.1 is the last release of MapboxDirections.swift written in Swift 3. All subsequent releases are based on the `master` branch, which is written in Swift 4.2. The Swift examples below are written in Swift 4.2.
 
 This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_.
 
