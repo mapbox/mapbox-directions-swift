@@ -21,17 +21,17 @@ extension LineString {
     }
 }
 
-public enum GeometryError: DirectionsError {
+public enum GeometryError: LocalizedError {
     case cannotDecodePolyline(precision: Double)
     
-    public var failureReason: String {
+    public var failureReason: String? {
         switch self {
         case let .cannotDecodePolyline(precision):
             return "Unable to decode the string as a polyline with precision \(precision)"
         }
     }
     
-    public var recoverySuggestion: String {
+    public var recoverySuggestion: String? {
         switch self {
         case .cannotDecodePolyline:
             return "Choose the precision that the string was encoded with."
