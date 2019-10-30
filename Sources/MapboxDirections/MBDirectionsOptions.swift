@@ -181,9 +181,9 @@ open class DirectionsOptions: Codable, Equatable {
     open var profileIdentifier: DirectionsProfileIdentifier
 
     /**
-     A Boolean value indicating whether `MBRouteStep` objects should be included in the response.
+     A Boolean value indicating whether `RouteStep` objects should be included in the response.
 
-     If the value of this property is `true`, the returned route contains turn-by-turn instructions. Each returned `MBRoute` object contains one or more `MBRouteLeg` object that in turn contains one or more `MBRouteStep` objects. On the other hand, if the value of this property is `false`, the `MBRouteLeg` objects contain no `MBRouteStep` objects.
+     If the value of this property is `true`, the returned route contains turn-by-turn instructions. Each returned `Route` object contains one or more `RouteLeg` object that in turn contains one or more `RouteStep` objects. On the other hand, if the value of this property is `false`, the `RouteLeg` objects contain no `RouteStep` objects.
 
      If you only want to know the distance or estimated travel time to a destination, set this property to `false` to minimize the size of the response and the time it takes to calculate the response. If you need to display turn-by-turn instructions, set this property to `true`.
 
