@@ -113,27 +113,12 @@ public struct Intersection: Codable, Equatable {
         location = try container.decode(CLLocationCoordinate2D.self, forKey: .location)
         headings = try container.decode([CLLocationDirection].self, forKey: .headings)
         
-        let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes)
-
-        approachLanes = lanes
-        var usableApproachLanes = IndexSet()
-        if let lanes = lanes {
-            for (i, lane) in lanes.enumerated() {
-                if lane.isValid {
-                    usableApproachLanes.update(with: i)
-                }
-            }
-        }
-        
-        self.usableApproachLanes = usableApproachLanes.isEmpty ? nil : usableApproachLanes
-        
+        approachLanes = try container.decodeIfPresent([Lane].self, forKey: .lanes)
+        usableApproachLanes = approachLanes?.indices { $0.isValid }
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
-        let filtered = outletsArray.enumerated().filter { $1 }
-        let mapped = filtered.map { $0.offset }
-        outletIndexes =
-            IndexSet(mapped)
+        outletIndexes = outletsArray.indices { $0 }
         
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1

@@ -368,7 +368,7 @@ open class DirectionsOptions: Codable, Equatable {
     }
     
     private var waypointIndices: String? {
-        var waypointIndices = IndexSet(waypoints.enumerated().filter { $0.element.separatesLegs }.map { $0.offset })
+        var waypointIndices = waypoints.indices { $0.separatesLegs }
         waypointIndices.insert(waypoints.startIndex)
         waypointIndices.insert(waypoints.endIndex - 1)
         
