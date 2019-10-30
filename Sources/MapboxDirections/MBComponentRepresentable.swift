@@ -13,6 +13,9 @@ import UIKit
 The component representable protocol that comprises what the instruction banner should display.
  */
 public enum Component: Equatable {
+    case lane(_ component: LaneIndicationComponent)
+    case visual(_ component: VisualInstructionComponent)
+    
     public static func == (lhs: Component, rhs: Component) -> Bool {
         switch lhs {
         case let .lane(left):
@@ -31,36 +34,7 @@ public enum Component: Equatable {
             }
         }
     }
-    
-    case lane(_ component: LaneIndicationComponent)
-    case visual(_ component: VisualInstructionComponent)
-    
-    
 }
-//public typealias ComponentRepresentable = Representable & Equatable
-//public protocol Representable: class {
-//
-//}
-
-//public struct SomeRepreentable: Representable, Equatable {
-//
-//}
-
-//public extension ComponentRepresentable {
-//    static func == (lhs: Self, rhs: Self) -> Bool {
-//
-//    }
-//}
-
-//public extension Equatable where Self: ComponentRepresentable {
-//        public static func == (lhs: ComponentRepresentable, rhs: ComponentRepresentable) -> Bool {
-//
-//    }
-//}
-
-//public func == (lhs: ComponentRepresentable, rhs: ComponentRepresentable) -> Bool {
-//
-//}
 
 internal struct ComponentSerializer: Codable {
     let component: Component

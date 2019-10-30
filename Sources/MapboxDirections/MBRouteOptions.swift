@@ -138,7 +138,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `MBDirectionsPriority.low` and at most `MBDirectionsPriority.high`. The default value of `MBDirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `MBDirectionsPriority.low` and `MBDirectionsPriority.default` avoids alleys, and a positive value between `MBDirectionsPriority.default` and `MBDirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
-    open var alleyPriority: MBDirectionsPriority = .default
+    open var alleyPriority: DirectionsPriority = .default
     
     /**
      A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).

@@ -1,70 +1,42 @@
 import Foundation
 import Polyline
-import CoreLocation
+import struct Turf.LineString
 
-
-extension Decodable {
-    static internal func from<T: Decodable>(json: String, using encoding: String.Encoding = .utf8) -> T? {
-        guard let data = json.data(using: encoding) else { return nil }
-        return from(data: data) as T?
-    }
+enum PolyLineString: Codable {
+    case lineString(_ lineString: LineString)
+    case polyline(_ encodedPolyline: String, precision: Double)
     
-    static internal func from<T: Decodable>(data: Data) -> T? {
-        let decoder = JSONDecoder()
-        return try! decoder.decode(T.self, from: data) as T?
-    }
-}
-
-struct UncertainCodable<T: Codable, U: Codable>: Codable, Equatable {    
-    var t: T?
-    var u: U?
-    
-    var options: DirectionsOptions
-    
-    var value: Codable? {
-        return t ?? u
-    }
-    
-    var coordinates: [CLLocationCoordinate2D] {
-        if let geo = value as? Geometry {
-            return geo.coordinates
-        } else if let geo = value as? String {
-            return decodePolyline(geo, precision: options.shapeFormat == .polyline6 ? 1e6 : 1e5)!
-        } else {
-            return []
+    init(lineString: LineString, shapeFormat: RouteShapeFormat) {
+        switch shapeFormat {
+        case .geoJSON:
+            self = .lineString(lineString)
+        case .polyline, .polyline6:
+            let precision = shapeFormat == .polyline6 ? 1e6 : 1e5
+            let encodedPolyline = encodeCoordinates(lineString.coordinates, precision: precision)
+            self = .polyline(encodedPolyline, precision: precision)
         }
     }
     
     init(from decoder: Decoder) throws {
-        
-        guard let options = decoder.userInfo[.options] as? DirectionsOptions else {
-            let error: Error = "Directions options object not found."
-            throw error
-        }
-        self.options = options
-        
-        
         let container = try decoder.singleValueContainer()
-        t = try? container.decode(T.self)
-        if t == nil {
-            u = try? container.decode(U.self)
+        let options = decoder.userInfo[.options] as? DirectionsOptions
+        switch options?.shapeFormat ?? .polyline {
+        case .geoJSON:
+            self = .lineString(try container.decode(LineString.self))
+        case .polyline, .polyline6:
+            let precision = options?.shapeFormat == .polyline6 ? 1e6 : 1e5
+            let encodedPolyline = try container.decode(String.self)
+            self = .polyline(encodedPolyline, precision: precision)
         }
-        
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        if let t = t {
-            try? container.encode(t)
-        }
-        if let u = u {
-            try? container.encode(u)
+        switch self {
+        case let .lineString(lineString):
+            try container.encode(lineString)
+        case let .polyline(encodedPolyline, precision: _):
+            try container.encode(encodedPolyline)
         }
     }
 }
-
-extension String: Error {}
-
-
-public StepGeometry
-// make this a varient transform that's used instead of MBDirectionsResult:38-55, do equatable here, have computed property `shape` that always returns a Polyline no matter the backing data

@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-
+import struct Turf.LineString
 
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
@@ -395,7 +395,10 @@ open class RouteStep: Codable, Equatable {
         try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
         try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(geometry, forKey: .geometry)
+        if let lineString = lineString, let shapeFormat = encoder.userInfo[.options] as? RouteShapeFormat {
+            let polyLineString = PolyLineString(lineString: lineString, shapeFormat: shapeFormat)
+            try container.encode(polyLineString, forKey: .geometry)
+        }
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
@@ -412,9 +415,6 @@ open class RouteStep: Codable, Equatable {
         
         if let coordinate = try? maneuver.decode(CLLocationCoordinate2D.self, forKey: .location) {
             maneuverLocation = coordinate
-        } else if let coordinate = try? maneuver.decode(UncertainCodable<Geometry, String>.self, forKey: .location).coordinates.first  {
-            // V4
-            maneuverLocation = coordinate
         } else {
             maneuverLocation = CLLocationCoordinate2D()
         }
@@ -425,8 +425,11 @@ open class RouteStep: Codable, Equatable {
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
-        geometry = try container.decodeIfPresent(UncertainCodable<Geometry, String>.self, forKey: .geometry)
-        coordinates = geometry?.coordinates
+        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
+            lineString = try LineString(polyLineString: polyLineString)
+        } else {
+            lineString = nil
+        }
         
         name = try container.decode(String.self, forKey: .name)
         
@@ -509,14 +512,13 @@ open class RouteStep: Codable, Equatable {
     // MARK: Getting the Step Geometry
     
     /**
-     An array of geographic coordinates defining the path of the route step from the location of the maneuver to the location of the next step’s maneuver.
+     The path of the route step from the location of the maneuver to the location of the next step’s maneuver.
      
      The value of this property may be `nil`, for example when the maneuver type is `arrive`.
      
-     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using these coordinates to display a portion of a route on an `MGLMapView`.
+     Using the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [Mapbox Maps SDK for macOS](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/macos/), you can create an `MGLPolyline` object using the `LineString.coordinates` property to display a portion of a route on an `MGLMapView`.
      */
-    public let coordinates: [CLLocationCoordinate2D]?
-    
+    public var lineString: LineString?
     
     // MARK: Getting Details About the Maneuver
     
@@ -530,8 +532,6 @@ open class RouteStep: Codable, Equatable {
     public let instructions: String
     
     fileprivate let name: String
-    
-    fileprivate var geometry: UncertainCodable<Geometry, String>?
     
     /**
      Instructions about the next step’s maneuver, optimized for speech synthesis.
@@ -698,7 +698,7 @@ open class RouteStep: Codable, Equatable {
     // MARK: - Equality
     public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
             return lhs.codes == rhs.codes &&
-                lhs.geometry == rhs.geometry &&
+                lhs.lineString == rhs.lineString &&
                 lhs.destinationCodes == rhs.destinationCodes &&
                 lhs.destinations == rhs.destinations &&
                 lhs.distance == rhs.distance &&

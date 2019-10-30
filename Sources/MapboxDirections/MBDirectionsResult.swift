@@ -11,7 +11,7 @@ import struct Turf.LineString
 
 open class DirectionsResult: Codable {
     private enum CodingKeys: String, CodingKey {
-        case shape = "geometry"
+        case geometry = "geometry"
         case legs
         case distance
         case expectedTravelTime = "duration"
@@ -32,27 +32,10 @@ open class DirectionsResult: Codable {
         
         _directionsOptions = decoder.userInfo[.options] as! DirectionsOptions
     
-    
-        switch _directionsOptions.shapeFormat {
-
-        case .geoJSON:
-            shape = try container.decodeIfPresent(LineString.self, forKey: .shape)
-        
-        case .polyline:
-            guard let polyString = try container.decodeIfPresent(String.self, forKey: .shape) else {
-                shape = nil
-                break
-            }
-            let polyline = Polyline(encodedPolyline: polyString, precision: 1e5)
-            shape = LineString(polyline.coordinates!)
-            
-        case .polyline6:
-            guard let polyString = try container.decodeIfPresent(String.self, forKey: .shape) else {
-                shape = nil
-                break
-            }
-            let polyline = Polyline(encodedPolyline: polyString, precision: 1e6)
-            shape = LineString(polyline.coordinates!)
+        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
+            lineString = try LineString(polyLineString: polyLineString)
+        } else {
+            lineString = nil
         }
         
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
@@ -83,38 +66,17 @@ open class DirectionsResult: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
-        switch directionsOptions.shapeFormat {
-        
-        case .geoJSON:
-            try container.encode(shape, forKey: .shape)
-        
-        case .polyline:
-        let coordinates = shape!.coordinates
-        let polyString = Polyline(coordinates: coordinates, precision: 1e5).encodedPolyline
-        try container.encode(polyString, forKey: .shape)
-            
-        case .polyline6:
-            let coordinates = shape!.coordinates
-            let polyString = Polyline(coordinates: coordinates, precision: 1e6).encodedPolyline
-            try container.encode(polyString, forKey: .shape)
+        if let lineString = lineString {
+            let polyLineString = PolyLineString(lineString: lineString, shapeFormat: directionsOptions.shapeFormat)
+            try container.encode(polyLineString, forKey: .geometry)
         }
-        
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encodeIfPresent(accessToken, forKey: .accessToken)
         try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
         try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
-        
-        
-        
-        
-        
-        
-        
     }
-    
-    public let shape: LineString?
     
     /**
      An array of geographic coordinates defining the path of the route from start to finish.
@@ -123,6 +85,7 @@ open class DirectionsResult: Codable {
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
+    public let lineString: LineString?
     
     /**
      An array of `RouteLeg` objects representing the legs of the route.
