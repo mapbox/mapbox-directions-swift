@@ -3,10 +3,6 @@
 
 #import "ViewController.h"
 
-// A Mapbox access token is required to use the Directions API.
-// https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#creating-and-managing-access-tokens
-NSString * const MapboxAccessToken = @"<# your Mapbox access token #>";
-
 @interface ViewController ()
 
 @property (nonatomic) MGLMapView *mapView;
@@ -17,9 +13,6 @@ NSString * const MapboxAccessToken = @"<# your Mapbox access token #>";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    NSAssert(![MapboxAccessToken isEqualToString:@"<# your Mapbox access token #>"], @"You must set `MapboxAccessToken` to your Mapbox access token.");
-    [MGLAccountManager setAccessToken:MapboxAccessToken];
     
     self.mapView = [[MGLMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -36,7 +29,7 @@ NSString * const MapboxAccessToken = @"<# your Mapbox access token #>";
     MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:waypoints profileIdentifier:nil];
     options.includesSteps = YES;
     
-    [[[MBDirections alloc] initWithAccessToken:MapboxAccessToken] calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
+    [[MBDirections sharedDirections] calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error calculating directions: %@", error);
             return;

@@ -3,10 +3,6 @@ import CoreLocation
 import MapboxDirections
 import Mapbox
 
-// A Mapbox access token is required to use the Directions API.
-// https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#creating-and-managing-access-tokens
-let MapboxAccessToken = "<# your Mapbox access token #>"
-
 class ViewController: UIViewController, MBDrawingViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     var drawingView: MBDrawingView?
@@ -16,9 +12,6 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        assert(MapboxAccessToken != "<# your Mapbox access token #>", "You must set `MapboxAccessToken` to your Mapbox access token.")
-        MGLAccountManager.accessToken = MapboxAccessToken
         
         mapView = MGLMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -77,7 +70,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
         
-        Directions(accessToken: MapboxAccessToken).calculate(options) { (waypoints, routes, error) in
+        Directions.shared.calculate(options) { (waypoints, routes, error) in
             guard error == nil else {
                 print("Error calculating directions: \(error!)")
                 return
@@ -140,7 +133,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchOptions(coordinates: locations)
 
-        Directions(accessToken: MapboxAccessToken).calculate(matchOptions) { (matches, error) in
+        Directions.shared.calculate(matchOptions) { (matches, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
