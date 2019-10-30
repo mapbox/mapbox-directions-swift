@@ -73,7 +73,7 @@ public enum MapboxDirectionsError: DirectionsError, RawRepresentable, Equatable 
         case .unableToLocate:
             return "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to a negative value."
         case .profileNotFound:
-            return "Make sure the profileIdentifier option is set to one of the provided constants, such as MBDirectionsProfileIdentifierAutomobile."
+            return "Make sure the profileIdentifier option is set to one of the provided constants, such as DirectionsProfileIdentifier.automobile."
         case .requestTooLarge:
             return "Try specifying fewer waypoints or giving the waypoints shorter names."
         case let .rateLimited(rateLimitInterval: _, rateLimit: _, resetTime: reset):

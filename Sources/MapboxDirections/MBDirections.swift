@@ -73,10 +73,10 @@ open class Directions: NSObject {
      
      - parameter waypoints: An array of `Waypoint` objects. Each waypoint object corresponds to a `Waypoint` object in the original `RouteOptions` object. The locations and names of these waypoints are the result of conflating the original waypoints to known roads. The waypoints may include additional information that was not specified in the original waypoints.
      
-     If the request was canceled or there was an error obtaining the routes, this parameter may be `nil`.
+     If the request was canceled or there was an error obtaining the routes, this argument may be `nil`.
      - parameter routes: An array of `Route` objects. The preferred route is first; any alternative routes come next if the `RouteOptions` object’s `includesAlternativeRoutes` property was set to `true`. The preferred route depends on the route options object’s `profileIdentifier` property.
      
-     If the request was canceled or there was an error obtaining the routes, this parameter is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
+     If the request was canceled or there was an error obtaining the routes, this argument is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
     public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: DirectionsError?) -> Void
@@ -84,7 +84,7 @@ open class Directions: NSObject {
     /**
      A closure (block) to be called when a map matching request is complete.
      
-     If the request was canceled or there was an error obtaining the matches, this parameter is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
+     If the request was canceled or there was an error obtaining the matches, this argument is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
     public typealias MatchCompletionHandler = (_ matches: [Match]?, _ error: DirectionsError?) -> Void

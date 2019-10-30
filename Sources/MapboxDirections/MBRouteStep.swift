@@ -8,7 +8,7 @@ import struct Turf.LineString
  */
 
 public enum TransportType: String, Codable {
-    // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`
+    // Possible transport types when the `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`
 
     /**
      The step does not have a particular transport type associated with it.
@@ -20,7 +20,7 @@ public enum TransportType: String, Codable {
     /**
      The route requires the user to drive or ride a car, truck, or motorcycle.
 
-     This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierAutomobile` or `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`.
+     This is the usual transport type when the `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
      */
     case automobile = "driving" // automobile
 
@@ -45,21 +45,21 @@ public enum TransportType: String, Codable {
      */
     case inaccessible = "unaccessible" // automobile, walking, cycling
 
-    // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`
+    // Possible transport types when the `profileIdentifier` is `DirectionsProfileIdentifier.walking`
 
     /**
      The route requires the user to walk.
 
-     This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierWalking`. For cycling directions, this value indicates that the user is expected to dismount.
+     This is the usual transport type when the `profileIdentifier` is `DirectionsProfileIdentifier.walking`. For cycling directions, this value indicates that the user is expected to dismount.
      */
     case walking // walking, cycling
 
-    // Possible transport types when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`
+    // Possible transport types when the `profileIdentifier` is `DirectionsProfileIdentifier.cycling`
 
     /**
      The route requires the user to ride a bicycle.
 
-     This is the usual transport type when the `profileIdentifier` is `MBDirectionsProfileIdentifierCycling`.
+     This is the usual transport type when the `profileIdentifier` is `DirectionsProfileIdentifier.cycling`.
      */
     case cycling // cycling
 
@@ -630,7 +630,7 @@ open class RouteStep: Codable, Equatable {
     /**
      The step’s expected travel time, measured in seconds.
      
-     The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location. If the route was calculated using the `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic` profile, this property reflects current traffic conditions at the time of the request, not necessarily the traffic conditions at the time the user would begin this step. For other profiles, this property reflects travel time under ideal conditions and does not account for traffic congestion. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
+     The value of this property reflects the time it takes to go from this step’s maneuver location to the next step’s maneuver location. If the route was calculated using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile, this property reflects current traffic conditions at the time of the request, not necessarily the traffic conditions at the time the user would begin this step. For other profiles, this property reflects travel time under ideal conditions and does not account for traffic congestion. If the step makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
      
      Do not assume that the user would travel along the step at a fixed speed. For the expected travel time on each individual segment along the leg, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */

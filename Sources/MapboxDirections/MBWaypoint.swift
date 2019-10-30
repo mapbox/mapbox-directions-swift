@@ -51,10 +51,10 @@ public class Waypoint: Codable {
      Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.
      
      - parameter coordinate: The geographic coordinate of the waypoint.
-     - parameter coordinateAccuracy: The maximum distance away from the waypoint that the route may come and still be considered viable. This parameter is measured in meters. A negative value means the route may be an indefinite number of meters away from the route and still be considered viable.
+     - parameter coordinateAccuracy: The maximum distance away from the waypoint that the route may come and still be considered viable. This argument is measured in meters. A negative value means the route may be an indefinite number of meters away from the route and still be considered viable.
         
-        It is recommended that the value of this parameter be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
-     - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
+        It is recommended that the value of this argument be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
+     - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
     public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy? = nil, name: String? = nil) {
         self.coordinate = coordinate
@@ -70,7 +70,7 @@ public class Waypoint: Codable {
      
      - parameter location: A `CLLocation` object representing the waypoint’s location. This initializer respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter heading: A `CLLocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
-     - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
+     - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
     public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
         coordinate = location.coordinate
@@ -88,7 +88,7 @@ public class Waypoint: Codable {
      
      - parameter location: A `CLLocation` object representing the waypoint’s location. This initializer respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter heading: A `CLHeading` object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the `CLHeading` class’s `trueHeading` property or `magneticHeading` property, converting it into the `headingAccuracy` property.
-     - parameter name: The name of the waypoint. This parameter does not affect the route but may help you to distinguish one waypoint from another.
+     - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
     public init(location: CLLocation, heading: CLHeading? = nil, name: String? = nil) {
         coordinate = location.coordinate
@@ -174,7 +174,7 @@ public class Waypoint: Codable {
     /**
      The name of the waypoint.
      
-     This parameter does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
+     This argument does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
     public var name: String?
     

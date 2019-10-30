@@ -91,16 +91,13 @@ public enum MeasurementSystem: String, Codable {
 
 
 open class DirectionsOptions: Codable, Equatable {
-
-    
-
     /**
      Initializes an options object for routes between the given waypoints and an optional profile identifier.
 
      Do not call `DirectionsOptions(waypoints:profileIdentifier:)` directly; instead call the corresponding initializer of `RouteOptions` or `MatchOptions`.
 
-     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. This parameter, if set, should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. `MBDirectionsProfileIdentifierAutomobile` is used by default.
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `DirectionsProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
      */
     required public init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         self.waypoints = waypoints
@@ -179,7 +176,7 @@ open class DirectionsOptions: Codable, Equatable {
     /**
      A string specifying the primary mode of transportation for the routes.
 
-     This property should be set to `MBDirectionsProfileIdentifierAutomobile`, `MBDirectionsProfileIdentifierAutomobileAvoidingTraffic`, `MBDirectionsProfileIdentifierCycling`, or `MBDirectionsProfileIdentifierWalking`. The default value of this property is `MBDirectionsProfileIdentifierAutomobile`, which specifies driving directions.
+     The default value of this property is `DirectionsProfileIdentifier.automobile`, which specifies driving directions.
      */
     open var profileIdentifier: DirectionsProfileIdentifier
 
