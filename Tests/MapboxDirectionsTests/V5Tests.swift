@@ -119,10 +119,10 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(step?.initialHeading, 192)
         XCTAssertEqual(step?.finalHeading, 202)
         
-        XCTAssertNotNil(step?.coordinates)
-        XCTAssertEqual(step?.coordinates?.count, 13)
-        XCTAssertEqual(step?.coordinates?.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
-        XCTAssertEqual(step?.coordinates?.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
+        XCTAssertNotNil(step?.shape)
+            XCTAssertEqual(step?.shape?.coordinates.count, 13)
+            XCTAssertEqual(step?.shape?.coordinates.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
+            XCTAssertEqual(step?.shape?.coordinates.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
         
         XCTAssertEqual(leg?.steps[32].names, nil)
         XCTAssertEqual(leg?.steps[32].codes, ["I-80"])

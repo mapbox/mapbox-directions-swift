@@ -91,9 +91,9 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertEqual(step.initialHeading, 0)
         XCTAssertEqual(step.finalHeading, 340)
         
-        XCTAssertNotNil(step.coordinates)
-        XCTAssertEqual(step.coordinates!.count, 4)
-        let coordinate = step.coordinates!.first!
+        XCTAssertNotNil(step.shape)
+        XCTAssertEqual(step.shape!.coordinates.count, 4)
+        let coordinate = step.shape!.coordinates.first!
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)
     }
