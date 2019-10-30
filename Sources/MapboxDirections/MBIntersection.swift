@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 /**
  A single cross street along a step.
