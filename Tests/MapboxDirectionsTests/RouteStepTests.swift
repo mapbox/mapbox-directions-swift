@@ -116,6 +116,7 @@ class RouteStepTests: XCTestCase {
         let step = try! decoder.decode(RouteStep.self, from: routeStepJSON.data(using: .utf8)!)
         
         let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
         encoder.outputFormatting = [.prettyPrinted]
         let encoded = try! encoder.encode(step)
         let roundTripJSON = String(data: encoded, encoding: .utf8)
