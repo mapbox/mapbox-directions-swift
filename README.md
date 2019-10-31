@@ -183,3 +183,4 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcodeproj`
 1. Go to Product ‣ Test.
+

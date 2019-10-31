@@ -301,6 +301,7 @@ class V5Tests: XCTestCase {
         // Encode and decode the route securely.
         
         let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
         encoder.outputFormatting = [.prettyPrinted]
         
         let jsonData = try! encoder.encode(route)
