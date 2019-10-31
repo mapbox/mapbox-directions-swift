@@ -133,11 +133,14 @@ class DirectionsTests: XCTestCase {
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
         let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
         
-        
         let resultError = Directions.informativeError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
-        
-        XCTAssertEqual(resultError.failureReason, "More than 600 requests have been made with this access token within a period of 1 minute.")
-        XCTAssertEqual(resultError.recoverySuggestion, "Wait until November 18, 2016 at 9:16:24 AM GMT before retrying.")
+        if case let .rateLimited(rateLimitInterval, rateLimit, resetTime) = resultError {
+            XCTAssertEqual(rateLimitInterval, 60.0)
+            XCTAssertEqual(rateLimit, 600)
+            XCTAssertEqual(resetTime, Date(timeIntervalSince1970: 1479460584))
+        } else {
+            XCTFail("Code 429 should be interpreted as a rate limiting error.")
+        }
     }
 }
 #endif
