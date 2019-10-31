@@ -1,12 +1,9 @@
 import Foundation
 import CoreLocation
 
-
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
-
-
 open class VisualInstruction: Codable, Equatable {
 
     /**
@@ -64,10 +61,7 @@ open class VisualInstruction: Codable, Equatable {
         try container.encodeIfPresent(text, forKey: .text)
         try container.encodeIfPresent(maneuverType, forKey: .maneuverType)
         try container.encodeIfPresent(maneuverDirection, forKey: .maneuverDirection)
-        
-        let wrappedComponents = components.map(ComponentSerializer.init(component:))
-        try container.encode(wrappedComponents, forKey: .components)
-        
+        try container.encode(components, forKey: .components)
         try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
     }
     
@@ -76,10 +70,7 @@ open class VisualInstruction: Codable, Equatable {
         text = try container.decodeIfPresent(String.self, forKey: .text)
         maneuverType = try container.decodeIfPresent(ManeuverType.self, forKey: .maneuverType)
         maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .maneuverDirection)
-
-        let componentsWrapped = try container.decode([ComponentSerializer].self, forKey: .components)
-        components = componentsWrapped.map { $0.component }
-        
+        components = try container.decode([Component].self, forKey: .components)
         finalHeading = try container.decodeIfPresent(CLLocationDegrees.self, forKey: .finalHeading)
     }
     
@@ -88,8 +79,6 @@ open class VisualInstruction: Codable, Equatable {
         return lhs.text == rhs.text &&
             lhs.maneuverType == rhs.maneuverType &&
             lhs.maneuverDirection == rhs.maneuverDirection &&
-            
-            
             lhs.components == rhs.components &&
             lhs.finalHeading == rhs.finalHeading
     }

@@ -9,16 +9,15 @@ class VisualInstructionComponentTests: XCTestCase {
             "imageBaseURL": "",
         ]
         let componentData = try! JSONSerialization.data(withJSONObject: componentJSON, options: [])
-        var component: Component?
-        XCTAssertNoThrow(component = try JSONDecoder().decode(ComponentSerializer.self, from: componentData).component)
+        var component: VisualInstruction.Component?
+        XCTAssertNoThrow(component = try JSONDecoder().decode(VisualInstruction.Component.self, from: componentData))
         XCTAssertNotNil(component)
         if let component = component {
             switch component {
-            case .lane(_):
-                XCTFail("Text component should not be interpreted as lane component.")
-            case let .visual(component):
-                XCTAssertEqual(component.text, "Take a hike")
-                XCTAssertNil(component.imageURL)
+            case .text(let text):
+                XCTAssertEqual(text.text, "Take a hike")
+            default:
+                XCTFail("Text component should not be decoded as any other kind of component.")
             }
         }
     }

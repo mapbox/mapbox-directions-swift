@@ -85,27 +85,23 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertEqual(arrivalSpokenInstructions[0].ssmlText, "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">You have arrived at the gym</prosody></amazon:effect></speak>")
         
         let visualInstructions = step.instructionsDisplayedAlongStep
-        guard let firstComponent = visualInstructions?.first?.primaryInstruction.components.first else {
-            XCTFail("first primary component of first visual instruction does not exist")
-            return
-        }
-        
-        guard case let Component.visual(visualInstructionComponent) = firstComponent else {
-            XCTFail("First component of visual instruction should be visual component")
-            return
-        }
-        
         XCTAssertNotNil(visualInstructions)
-        XCTAssertNotNil(visualInstructionComponent)
+        
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.text, "Page Street")
-        XCTAssertEqual(visualInstructionComponent.text, "Page Street")
         XCTAssertEqual(visualInstructions?.first?.distanceAlongStep, 1107.1)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.finalHeading, nil)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverType, .turn)
         XCTAssertEqual(visualInstructions?.first?.primaryInstruction.maneuverDirection, .left)
-        XCTAssertEqual(visualInstructionComponent.type, .text)
-        XCTAssertEqual(visualInstructionComponent.abbreviation, "Page St")
-        XCTAssertEqual(visualInstructionComponent.abbreviationPriority, 0)
+        
+        if let firstComponent = visualInstructions?.first?.primaryInstruction.components.first,
+            case let VisualInstruction.Component.text(text) = firstComponent {
+            XCTAssertEqual(text.text, "Page Street")
+            XCTAssertEqual(text.abbreviation, "Page St")
+            XCTAssertEqual(text.abbreviationPriority, 0)
+        } else {
+            XCTFail("First primary component of visual instruction should be text component")
+        }
+        
         XCTAssertEqual(visualInstructions?.first?.drivingSide, .right)
         XCTAssertNil(visualInstructions?.first?.secondaryInstruction)
         
@@ -163,25 +159,23 @@ class SpokenInstructionsTests: XCTestCase {
         XCTAssertNotNil(tertiaryInstruction)
         XCTAssertEqual(tertiaryInstruction?.text, "")
         
-        let tertiaryInstructionComponents = tertiaryInstruction?.components
-        XCTAssertNotNil(tertiaryInstructionComponents)
-        let laneIndicationComponents: [LaneIndicationComponent]? = tertiaryInstructionComponents?.compactMap {
-            guard case let Component.lane(lane) = $0 else {
-                return nil
+        let laneIndicationComponents = tertiaryInstruction?.components.filter { (component) -> Bool in
+            if case VisualInstruction.Component.lane = component {
+                return true
             }
-            return lane
+            return false
         }
         XCTAssertEqual(laneIndicationComponents?.count, 2)
         
-        if let laneIndicationComponents = laneIndicationComponents {
-            
-            let inActiveLane = laneIndicationComponents[0]
-            XCTAssertEqual(inActiveLane.isUsable, false)
-            XCTAssertEqual(inActiveLane.indications, [.straightAhead])
-            
-            let activeLane = laneIndicationComponents[1]
-            XCTAssertEqual(activeLane.isUsable, true)
-            XCTAssertEqual(activeLane.indications, [.right])
+        if let laneIndicationComponents = laneIndicationComponents, laneIndicationComponents.count > 1 {
+            if case let VisualInstruction.Component.lane(indications, isUsable) = laneIndicationComponents[0] {
+                XCTAssertEqual(indications, .straightAhead)
+                XCTAssertFalse(isUsable)
+            }
+            if case let VisualInstruction.Component.lane(indications, isUsable) = laneIndicationComponents[1] {
+                XCTAssertEqual(indications, .right)
+                XCTAssertTrue(isUsable)
+            }
         }
     }
     
@@ -232,28 +226,21 @@ class SpokenInstructionsTests: XCTestCase {
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction
-        
-        let visualComponents: [VisualInstructionComponent]? = tertiaryInstruction?.components.compactMap {
-            guard case let Component.visual(instruction) = $0 else {
-                return nil
-            }
-            return instruction
-        }
-        
-        guard let tertiaryInstructionComponent = visualComponents?.first else {
-            XCTFail("expecting component to not be nil.")
-            return
-        }
-        
         XCTAssertNotNil(tertiaryInstruction)
         XCTAssertEqual(tertiaryInstruction?.text, "Grove Street")
         XCTAssertEqual(tertiaryInstruction?.maneuverType, .turn)
         XCTAssertEqual(tertiaryInstruction?.maneuverDirection, .left)
         
-        XCTAssertEqual(tertiaryInstructionComponent.text, "Grove Street")
-        XCTAssertEqual(tertiaryInstructionComponent.type, .text)
-        XCTAssertEqual(tertiaryInstructionComponent.abbreviation, "Grove St")
-        XCTAssertEqual(tertiaryInstructionComponent.abbreviationPriority, 0)
+        let tertiaryInstructionComponent = tertiaryInstruction?.components.first { (component) -> Bool in
+            if case let VisualInstruction.Component.text(textRepresentation) = component {
+                XCTAssertEqual(textRepresentation.text, "Grove Street")
+                XCTAssertEqual(textRepresentation.abbreviation, "Grove St")
+                XCTAssertEqual(textRepresentation.abbreviationPriority, 0)
+                return true
+            }
+            return false
+        }
+        XCTAssertNotNil(tertiaryInstructionComponent)
     }
 }
 #endif
