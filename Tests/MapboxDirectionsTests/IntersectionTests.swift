@@ -8,20 +8,18 @@ class IntersectionTests: XCTestCase {
                 "location": [13.426579, 52.508068],
                 "in": -1,
                 "classes": ["toll", "restricted"],
-                "usableApproachLanes": nil,
                 "bearings": [80],
                 "entry": [true],
                 "out": 0,
-                "approachLanes": nil,
+                "lanes": nil,
             ],
             [
                 "location": [13.426688, 52.508022],
                 "in": 2,
-                "usableApproachLanes": nil,
                 "bearings": [30, 120, 300],
                 "entry": [false, true, true],
                 "out": 1,
-                "approachLanes": nil,
+                "lanes": nil,
             ],
         ]
         let intersectionsData = try! JSONSerialization.data(withJSONObject: intersectionsJSON, options: [])
