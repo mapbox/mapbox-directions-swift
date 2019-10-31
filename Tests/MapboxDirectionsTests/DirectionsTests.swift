@@ -86,7 +86,7 @@ class DirectionsTests: XCTestCase {
         }) { (_) -> OHHTTPStubsResponse in
             return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "application/json"])
         }
-        let expectation = XCTestExpectation(description: "Async callback")
+        let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
@@ -108,7 +108,7 @@ class DirectionsTests: XCTestCase {
         }) { (_) -> OHHTTPStubsResponse in
             return OHHTTPStubsResponse(data: message.data(using: .utf8)!, statusCode: 420, headers: ["Content-Type" : "text/plain"])
         }
-        let expectation = XCTestExpectation(description: "Async callback")
+        let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
