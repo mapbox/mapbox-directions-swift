@@ -1,11 +1,9 @@
 import Foundation
 
-public struct AttributeOptions: OptionSet, CustomStringConvertible{
-    public typealias RawValue = Int
-    
+public struct AttributeOptions: OptionSet, CustomStringConvertible {
     public var rawValue: Int
     
-    public init(rawValue: AttributeOptions.RawValue) {
+    public init(rawValue: Int) {
         self.rawValue = rawValue
     }
     
@@ -30,7 +28,7 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible{
      */
     public static let speed = AttributeOptions(rawValue: 1 << 3)
     
-     /**
+    /**
      Traffic congestion level along the segment.
      
      When this attribute is specified, the `RouteLeg.congestionLevels` property contains one value for each segment in the leg’s full geometry.

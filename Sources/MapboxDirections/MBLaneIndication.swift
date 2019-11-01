@@ -7,8 +7,6 @@ public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
         self.rawValue = rawValue
     }
     
-    public typealias RawValue = Int
-
     /// Indicates a sharp turn to the right.
     public static let sharpRight = LaneIndication(rawValue: 1 << 1)
     
@@ -33,7 +31,6 @@ public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
     /// Indicates a U-turn.
     public static let uTurn = LaneIndication(rawValue: 1 << 8)
     
-
     /**
      Creates a lane indication from the given description strings.
      */

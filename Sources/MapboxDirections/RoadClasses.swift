@@ -21,8 +21,6 @@ public struct RoadClasses: OptionSet, Codable, CustomStringConvertible {
         self = RoadClasses(descriptions: descriptions)!
     }
     
-    public typealias RawValue = Int
-    
     /**
      The road segment is [tolled](https://wiki.openstreetmap.org/wiki/Key:toll).
      */

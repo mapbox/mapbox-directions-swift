@@ -63,8 +63,6 @@ public struct DirectionsPriority: Hashable, RawRepresentable {
     
     public var rawValue: Double
     
-    public typealias RawValue = Double
-    
     static let low = DirectionsPriority(rawValue: -1.0)
     static let `default` = DirectionsPriority(rawValue: 0.0)
     static let high = DirectionsPriority(rawValue: 1.0)
