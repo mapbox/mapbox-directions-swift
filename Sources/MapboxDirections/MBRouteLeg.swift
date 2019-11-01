@@ -2,16 +2,12 @@ import Foundation
 import CoreLocation
 import Polyline
 
-
 /**
  A `RouteLeg` object defines a single leg of a route between two waypoints. If the overall route has only two waypoints, it has a single `RouteLeg` object that covers the entire route. The route leg object includes information about the leg, such as its name, distance, and expected travel time. Depending on the criteria used to calculate the route, the route leg object may also include detailed turn-by-turn instructions.
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
-
-
 open class RouteLeg: Codable, Equatable {
-    
     public enum CodingKeys: String, CodingKey {
         case source
         case destination
@@ -29,8 +25,6 @@ open class RouteLeg: Codable, Equatable {
         case segmentSpeeds = "speed"
         case segmentCongestionLevels = "congestion"
     }
-    
-    
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -92,8 +86,7 @@ open class RouteLeg: Codable, Equatable {
      This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
      */
     public let steps: [RouteStep]
-
-
+    
     /**
      An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
 
@@ -140,8 +133,7 @@ open class RouteLeg: Codable, Equatable {
      The leg’s name does not identify the start and end points of the leg. To distinguish one leg from another within the same route, concatenate the `name` properties of the `source` and `destination` waypoints.
      */
     public let name: String
-
-
+    
     /**
      The route leg’s distance, measured in meters.
 

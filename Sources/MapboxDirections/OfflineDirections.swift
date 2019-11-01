@@ -1,6 +1,5 @@
 import Foundation
 
-
 public typealias OfflineVersion = String
 public typealias OfflineDownloaderCompletionHandler = (_ location: URL?,_ response: URLResponse?, _ error: Error?) -> Void
 public typealias OfflineDownloaderProgressHandler = (_ bytesWritten: Int64, _ totalBytesWritten: Int64, _ totalBytesExpectedToWrite: Int64) -> Void
@@ -10,15 +9,12 @@ struct AvailableVersionsResponse: Codable {
     let availableVersions: [String]
 }
 
-
 public protocol OfflineDirectionsProtocol {
-    
     /**
      Fetches the available offline routing tile versions and returns them in descending chronological order. The most recent version should typically be passed into `downloadTiles(in:version:completionHandler:)`.
      
      - parameter completionHandler: A closure of type `OfflineVersionsHandler` which will be called when the request completes
      */
-    
     func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask
     
     /**
@@ -28,30 +24,32 @@ public protocol OfflineDirectionsProtocol {
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
-    
     func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
 extension Directions: OfflineDirectionsProtocol {
-    
-    /// URL to the endpoint listing available versions
+    /**
+     The URL to a list of available versions.
+     */
     public var availableVersionsURL: URL {
-        
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent("versions")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "access_token", value: accessToken)]
-        
         return components!.url!
     }
     
-    /// URL to the endpoint for downloading a tile pack
+    /**
+     Returns the URL to generate and download a tile pack from the Route Tiles API.
+     
+     - parameter coordinateBounds: The coordinate bounds that the tiles should cover.
+     - parameter version: A version obtained from `availableVersionsURL`.
+     - returns: The URL to generate and download the tile pack that covers the coordinate bounds.
+     */
     public func tilesURL(for coordinateBounds: CoordinateBounds, version: OfflineVersion) -> URL {
-        
         let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.description)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
                                   URLQueryItem(name: "access_token", value: accessToken)]
-        
         return components!.url!
     }
 

@@ -5,7 +5,6 @@ import CoreLocation
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
 open class VisualInstruction: Codable, Equatable {
-
     /**
      A plain text representation of the instruction.
      - Note: This is optional despite the API Documentation because it is commonplace for the SDK to return an empty string, which we consder to be equivelent to `null`
@@ -47,8 +46,8 @@ open class VisualInstruction: Codable, Equatable {
         self.finalHeading = degrees
     }
     
-    
     // MARK: - Codable
+    
     private enum CodingKeys: String, CodingKey {
         case text
         case maneuverType = "type"
@@ -56,6 +55,7 @@ open class VisualInstruction: Codable, Equatable {
         case components
         case finalHeading = "degrees"
     }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(text, forKey: .text)
@@ -75,6 +75,7 @@ open class VisualInstruction: Codable, Equatable {
     }
     
     // MARK: - Equatable
+    
     public static func == (lhs: VisualInstruction, rhs: VisualInstruction) -> Bool {
         return lhs.text == rhs.text &&
             lhs.maneuverType == rhs.maneuverType &&

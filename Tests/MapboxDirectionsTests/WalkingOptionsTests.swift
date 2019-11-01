@@ -4,9 +4,7 @@ import CoreLocation
 @testable import MapboxDirections
 
 class WalkingOptionsTests: XCTestCase {
-    
     func testURLQueryParams() {
-
         let waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))

@@ -3,7 +3,6 @@ import Foundation
 @available(*, deprecated, renamed: "DirectionsProfileIdentifier")
 public typealias MBDirectionsProfileIdentifier = DirectionsProfileIdentifier
 
-
 /**
 The returned directions are appropriate for driving or riding a car, truck, or motorcycle.
 
@@ -22,7 +21,6 @@ public struct DirectionsProfileIdentifier: Codable, Hashable, RawRepresentable, 
     }
     
     public var rawValue: String
-    
     
     /**
     The returned directions are appropriate for driving or riding a car, truck, or motorcycle.

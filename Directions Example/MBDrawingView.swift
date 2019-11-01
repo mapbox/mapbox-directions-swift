@@ -5,7 +5,6 @@ public protocol MBDrawingViewDelegate: class {
 }
 
 public class MBDrawingView: UIView {
-    
     private var points: [CGPoint]!
     private var context: CGContext!
     private var strokeColor = UIColor.blue.withAlphaComponent(0.75) {

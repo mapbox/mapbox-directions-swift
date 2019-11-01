@@ -1,6 +1,5 @@
 import Foundation
 
-
 class MatchResponse: Codable {
     var code: String
     var message: String?

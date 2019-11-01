@@ -2,7 +2,6 @@ import XCTest
 import CoreLocation
 @testable import MapboxDirections
 
-
 class RouteOptionsTests: XCTestCase {
     func testCoding() {
         let options = testRouteOptions
@@ -11,7 +10,6 @@ class RouteOptionsTests: XCTestCase {
         let optionsString: String = String(data: encoded, encoding: .utf8)!
         
         let unarchivedOptions: RouteOptions = try! JSONDecoder().decode(RouteOptions.self, from: optionsString.data(using: .utf8)!)
-
         
         XCTAssertNotNil(unarchivedOptions)
         
@@ -33,12 +31,15 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
     }
     
+    // MARK: API name-handling tests
     
-    //MARK: API Name Handling Tests
-    private static var testWaypoints: [Waypoint] { return [Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
-                                                        Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226))]}
-   
-   
+    private static var testWaypoints: [Waypoint] {
+        return [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
+        ]
+    }
+    
     private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
         let testBundle = Bundle(for: type(of: self))
         guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else { XCTFail(); return nil }

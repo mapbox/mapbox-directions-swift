@@ -1,6 +1,5 @@
 import Foundation
 
-
 /**
 Option set that contains attributes of a road segment.
 */
@@ -21,10 +20,8 @@ public struct RoadClasses: OptionSet, Codable, CustomStringConvertible {
         let descriptions = try container.decode([String].self)
         self = RoadClasses(descriptions: descriptions)!
     }
-
     
     public typealias RawValue = Int
-    
     
     /**
      The road segment is [tolled](https://wiki.openstreetmap.org/wiki/Key:toll).
@@ -58,8 +55,6 @@ public struct RoadClasses: OptionSet, Codable, CustomStringConvertible {
      The user must travel this segment of the route through a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
      */
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
-    
-    
     
     /**
      Creates a `RoadClasses` given an array of strings.

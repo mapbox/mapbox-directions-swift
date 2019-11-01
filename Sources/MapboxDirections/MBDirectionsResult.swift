@@ -8,7 +8,6 @@ import struct Turf.LineString
  
  You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-
 open class DirectionsResult: Codable {
     private enum CodingKeys: String, CodingKey {
         case geometry = "geometry"
@@ -21,8 +20,6 @@ open class DirectionsResult: Codable {
         case routeIdentifier
         case speechLocale = "voiceLocale"
     }
-    
-    
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -96,7 +93,6 @@ open class DirectionsResult: Codable {
      */
     public let legs: [RouteLeg]
     
-    
     // MARK: Getting Additional Route Details
     
     /**
@@ -124,8 +120,8 @@ open class DirectionsResult: Codable {
         return _directionsOptions
     }
     
-    
     private let _directionsOptions: DirectionsOptions
+    
     /**
      The [access token](https://docs.mapbox.com/help/glossary/access-token/) used to make the directions request.
      
@@ -139,7 +135,6 @@ open class DirectionsResult: Codable {
      This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
      */
     open var apiEndpoint: URL?
-  
     
     /**
      A unique identifier for a directions request.

@@ -1,14 +1,12 @@
 import Foundation
 import CoreLocation
 
-
 /**
  A `MatchOptions` object is a structure that specifies the criteria for results returned by the Mapbox Map Matching API.
 
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 open class MatchOptions: DirectionsOptions {
-
     /**
      Initializes a match options object for matching locations against the road network.
 
@@ -39,26 +37,27 @@ open class MatchOptions: DirectionsOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
-    
     private enum CodingKeys: String, CodingKey {
         case resamplesTraces = "tidy"
     }
+    
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(resamplesTraces, forKey: .resamplesTraces)
         try super.encode(to: encoder)
     }
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         resamplesTraces = try container.decode(Bool.self, forKey: .resamplesTraces)
         try super.init(from: decoder)
     }
+    
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
      */
     open var resamplesTraces: Bool = false
-
-
+    
     /**
      An index set containing indices of two or more items in `coordinates`. These will be represented by `Waypoint`s in the resulting `Match` objects.
 
@@ -95,17 +94,19 @@ open class MatchOptions: DirectionsOptions {
         return "matching/v5/\(profileIdentifier.rawValue)"
     }
 }
+
 private protocol MatchOptionsDeprecations {
     var waypointIndices: IndexSet? { get set }
 }
+
 extension MatchOptions: MatchOptionsDeprecations {}
 
-//MARK: - Equatable
+// MARK: - Equatable
 public extension MatchOptions {
     static func == (lhs: MatchOptions, rhs: MatchOptions) -> Bool {
-            let isSuperEqual = ((lhs as DirectionsOptions) == (rhs as DirectionsOptions))
-            return isSuperEqual &&
-                lhs.abridgedPath == rhs.abridgedPath &&
-                lhs.resamplesTraces == rhs.resamplesTraces
+        let isSuperEqual = ((lhs as DirectionsOptions) == (rhs as DirectionsOptions))
+        return isSuperEqual &&
+            lhs.abridgedPath == rhs.abridgedPath &&
+            lhs.resamplesTraces == rhs.resamplesTraces
     }
 }

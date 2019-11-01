@@ -6,7 +6,6 @@ import struct Turf.LineString
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
-
 public enum TransportType: String, Codable {
     // Possible transport types when the `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`
 
@@ -71,13 +70,11 @@ public enum TransportType: String, Codable {
     case train // cycling
 }
 
-
 /**
  A `ManeuverType` specifies the type of maneuver required to complete the route step. You can pair a maneuver type with a `ManeuverDirection` to choose an appropriate visual or voice prompt to present the user.
 
  In Swift, you can use pattern matching with a single switch statement on a tuple containing the maneuver type and maneuver direction to avoid a complex series of if-else-if statements or switch statements.
  */
-
 public enum ManeuverType: String, Codable {
     /**
      The step does not have a particular maneuver type associated with it.
@@ -213,7 +210,6 @@ public enum ManeuverType: String, Codable {
 /**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
-
 public enum ManeuverDirection: String, Codable {
     /**
      The step does not have a particular maneuver direction associated with it.
@@ -264,7 +260,6 @@ public enum ManeuverDirection: String, Codable {
      */
     case uTurn = "uturn"
 }
-
 
 extension String {
     internal func tagValues(separatedBy separator: String) -> [String] {
@@ -326,20 +321,10 @@ struct Road {
 
 /**
  A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
-
- You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
- */
-
-import Polyline
-
-
-/**
- A `RouteStep` object represents a single distinct maneuver along a route and the approach to the next maneuver. The route step object corresponds to a single instruction the user must follow to complete a portion of the route. For example, a step might require the user to turn then follow a road.
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
 open class RouteStep: Codable, Equatable {
-
     private enum CodingKeys: String, CodingKey {
         case codes
         case geometry
@@ -457,7 +442,6 @@ open class RouteStep: Codable, Equatable {
   
         instructionsSpokenAlongStep = try container.decodeIfPresent([SpokenInstruction].self, forKey: .instructionsSpokenAlongStep)
         
-        
         if let visuals = try container.decodeIfPresent([VisualInstructionBanner].self, forKey: .instructionsDisplayedAlongStep) {
             for instruction in visuals {
                 instruction.drivingSide = drivingSide
@@ -549,7 +533,6 @@ open class RouteStep: Codable, Equatable {
      This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
     public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
-
     
     /**
      The user’s heading immediately before performing the maneuver.

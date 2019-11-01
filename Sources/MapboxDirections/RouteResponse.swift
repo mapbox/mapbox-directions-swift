@@ -1,7 +1,6 @@
 import Foundation
 
 struct RouteResponse: Codable {
-    
     enum CodingKeys: String, CodingKey {
         case code
         case message

@@ -1,6 +1,5 @@
 import Foundation
 
-
 typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
@@ -66,7 +65,6 @@ let userAgent: String = {
  
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
-
 open class Directions: NSObject {
     /**
      A closure (block) to be called when a directions request is complete.
@@ -96,7 +94,6 @@ open class Directions: NSObject {
      
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
-    
     public static let shared = Directions(accessToken: nil)
     
     /**
@@ -145,7 +142,6 @@ open class Directions: NSObject {
     
     // MARK: Getting Directions
     
-    
     /**
      Begins asynchronously calculating routes using the given options and delivers the results to a closure.
      
@@ -157,8 +153,6 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    
-    
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
@@ -173,7 +167,6 @@ open class Directions: NSObject {
                 completionHandler(nil, nil, .noData)
                 return
             }
-            
             
             if let error = possibleError {
                 completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
@@ -206,18 +199,13 @@ open class Directions: NSObject {
                         completionHandler(nil, nil, bailError)
                     }
                 }
-                
-                
             }
-            
         }
         requestTask.priority = 1
         requestTask.resume()
         
         return requestTask
     }
-    
-    
     
     /**
      Begins asynchronously calculating matches using the given options and delivers the results to a closure.
@@ -230,7 +218,6 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting matches. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matches, cancel this task.
      */
-    
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
@@ -245,7 +232,6 @@ open class Directions: NSObject {
                 completionHandler(nil, .noData)
                 return
             }
-            
             
             if let error = possibleError {
                 completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
@@ -299,7 +285,6 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
@@ -314,7 +299,6 @@ open class Directions: NSObject {
                 completionHandler(nil, nil, .noData)
                 return
             }
-            
             
             if let error = possibleError {
                 completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
@@ -346,17 +330,13 @@ open class Directions: NSObject {
                         completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
-                
-                
             }
-            
         }
         requestTask.priority = 1
         requestTask.resume()
         
         return requestTask
     }
-    
     
     /**
      The GET HTTP URL used to fetch the routes from the API.
@@ -366,7 +346,6 @@ open class Directions: NSObject {
      - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
      - returns: The URL to send the request to.
      */
-    
     open func url(forCalculating options: DirectionsOptions) -> URL {
         return url(forCalculating: options, httpMethod: "GET")
     }
@@ -382,7 +361,6 @@ open class Directions: NSObject {
      - parameter httpMethod: The HTTP method to use. The value of this argument should match the `URLRequest.httpMethod` of the request you send. Currently, only GET and POST requests are supported by the API.
      - returns: The URL to send the request to.
      */
-    
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
@@ -408,7 +386,6 @@ open class Directions: NSObject {
      - parameter options: A `DirectionsOptions` object specifying the requirements for the resulting routes.
      - returns: A GET or POST HTTP request to calculate the specified options.
      */
-    
     open func urlRequest(forCalculating options: DirectionsOptions) -> URLRequest {
         let getURL = self.url(forCalculating: options, httpMethod: "GET")
         var request = URLRequest(url: getURL)
@@ -473,7 +450,6 @@ public extension CodingUserInfoKey {
 }
 
 public class DirectionsDecoder: JSONDecoder {
-    
     /**
      Initializes a `DirectionsDecoder` with a given `RouteOption`.
      */
@@ -481,7 +457,6 @@ public class DirectionsDecoder: JSONDecoder {
         super.init()
         routeOptions = options
     }
-    
     
     var routeOptions: DirectionsOptions? {
         get {

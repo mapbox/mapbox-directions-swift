@@ -5,9 +5,7 @@ extension CLLocationCoordinate2D {
     internal var requestDescription: String {
         return "\(longitude.rounded(to: 1e6)),\(latitude.rounded(to: 1e6))"
     }
-    
 }
-
 
 extension CLLocation {
     /**

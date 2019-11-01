@@ -134,7 +134,6 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(tracepoints.count, 7)
         XCTAssertEqual(tracepoints.first!, nil)
         
-        
         // Encode and decode the match securely.
         // This may raise an Objective-C exception if an error is encountered which will fail the tests.
         
@@ -144,7 +143,6 @@ class MatchTests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = matchOptions
         let unarchivedMatch = try! decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
-    
         
         XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
         XCTAssertEqual(match.matchOptions, unarchivedMatch.matchOptions)

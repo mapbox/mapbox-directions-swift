@@ -1,6 +1,5 @@
 import Foundation
 
-
 class MapMatchingResponse: Decodable {
     var code: String
     var routes : [Route]?

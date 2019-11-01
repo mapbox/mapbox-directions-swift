@@ -37,7 +37,6 @@ open class Match: DirectionsResult {
      */
     open var confidence: Float
     
-    
     /**
      Tracepoints on the road network that match the tracepoints in the match options.
      

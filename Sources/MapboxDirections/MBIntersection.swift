@@ -5,7 +5,6 @@ import CoreLocation
  A single cross street along a step.
  */
 public struct Intersection: Codable, Equatable {
-    
     /**
      The geographic coordinates at the center of the intersection.
      */

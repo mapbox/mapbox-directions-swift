@@ -18,9 +18,7 @@ class WaypointTests: XCTestCase {
         
         XCTAssertEqual(encodedString, pass)
         
-        
         let decoder = JSONDecoder()
-
         
         let decodedWaypoint = try! decoder.decode(Waypoint.self, from: encodedData)
         

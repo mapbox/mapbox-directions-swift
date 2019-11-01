@@ -149,7 +149,6 @@ let task = directions.calculate(options) { (matches, error) in
 }
 ```
 
-
 You can also use the `Directions.calculateRoutes(matching:completionHandler:)` method to get Route objects suitable for use anywhere a standard Directions API response would be used.
 
 ## Usage with other Mapbox libraries

@@ -1,13 +1,11 @@
 import Foundation
 
-
 public struct LaneIndication: OptionSet, CustomStringConvertible, Codable {
     public var rawValue: Int
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }
-    
     
     public typealias RawValue = Int
 

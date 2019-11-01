@@ -5,7 +5,6 @@ import Polyline
  
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can pass the results of the HTTP request into this class’s initializer.
  */
-
 private enum CodingKeys: String, CodingKey {
     case routeOptions
 }

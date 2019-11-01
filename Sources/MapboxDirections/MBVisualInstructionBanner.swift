@@ -1,7 +1,6 @@
 import Foundation
 import CoreLocation
 
-
 internal extension CodingUserInfoKey {
      static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!
  }
@@ -9,9 +8,7 @@ internal extension CodingUserInfoKey {
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-
 open class VisualInstructionBanner: Codable, Equatable {
-    
     private enum CodingKeys: String, CodingKey {
         case distanceAlongStep = "distanceAlongGeometry"
         case primaryInstruction = "primary"
@@ -28,8 +25,6 @@ open class VisualInstructionBanner: Codable, Equatable {
         try container.encode(drivingSide, forKey: .drivingSide)
     }
     
-
-    
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         distanceAlongStep = try container.decode(CLLocationDistance.self, forKey: .distanceAlongStep)
@@ -40,8 +35,6 @@ open class VisualInstructionBanner: Codable, Equatable {
             drivingSide = directlyEncoded
         }
     }
-    
-    
     
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.

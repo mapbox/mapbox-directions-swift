@@ -106,7 +106,6 @@ class RoadTests: XCTestCase {
 
 class RouteStepTests: XCTestCase {
     func testCoding() {
-        
         let options = RouteOptions(coordinates: [CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 1, longitude: 1)])
         options.shapeFormat = .polyline
         
@@ -124,7 +123,6 @@ class RouteStepTests: XCTestCase {
         XCTAssert(roundTripJSON == pass)
     }
 }
-
 
 fileprivate let routeStepJSON = """
 {

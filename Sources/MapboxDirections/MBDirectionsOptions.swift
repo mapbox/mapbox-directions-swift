@@ -2,7 +2,6 @@ import Foundation
 import Polyline
 import CoreLocation
 
-
 /**
  Maximum length of an HTTP request URL for the purposes of switching from GET to
  POST.
@@ -14,7 +13,6 @@ let MaximumURLLength = 1024 * 8
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
-
 public enum RouteShapeFormat: String, Codable {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
@@ -39,7 +37,6 @@ public enum RouteShapeFormat: String, Codable {
 /**
  A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
  */
-
 public enum RouteShapeResolution: String, Codable {
     /**
      The route’s shape is omitted.
@@ -64,9 +61,7 @@ public enum RouteShapeResolution: String, Codable {
 /**
  A system of units of measuring distances and other quantities.
  */
-
 public enum MeasurementSystem: String, Codable {
-
     /**
      U.S. customary and British imperial units.
 
@@ -82,14 +77,11 @@ public enum MeasurementSystem: String, Codable {
     case metric
 }
 
-
 /**
  Options for calculating results from the Mapbox Directions service.
 
  You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
-
-
 open class DirectionsOptions: Codable, Equatable {
     /**
      Initializes an options object for routes between the given waypoints and an optional profile identifier.
@@ -117,7 +109,6 @@ open class DirectionsOptions: Codable, Equatable {
         case includesVisualInstructions
     }
     
-
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(waypoints, forKey: .waypoints)
@@ -134,8 +125,6 @@ open class DirectionsOptions: Codable, Equatable {
         if includesSpokenInstructions {
             try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
         }
-        
-        
     }
     
     public required init(from decoder: Decoder) throws {
@@ -152,8 +141,6 @@ open class DirectionsOptions: Codable, Equatable {
         includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
     }
     
-    
-
     /**
      An array of `Waypoint` objects representing locations that the route should visit in chronological order.
 
@@ -253,21 +240,19 @@ open class DirectionsOptions: Codable, Equatable {
      `visualInstructionsAlongStep` contains an array of `VisualInstruction` objects used for visually conveying information about a given `RouteStep`.
      */
     open var includesVisualInstructions = false
-
+    
+    // MARK: - URL Queries
+    
     /**
      An array of URL query items to include in an HTTP request.
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */
-
-
-// MARK: - URL Queries
-
- 
     var abridgedPath: String {
-    assertionFailure("abridgedPath should be overriden by subclass")
-    return ""
+        assertionFailure("abridgedPath should be overriden by subclass")
+        return ""
     }
+    
     /**
      The path of the request URL, not including the hostname or any parameters.
      */
@@ -279,8 +264,7 @@ open class DirectionsOptions: Codable, Equatable {
         return "\(abridgedPath)/\(coordinates).json"
     }
     
-    
-     var urlQueryItems: [URLQueryItem] {
+    var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: shapeFormat.rawValue),
             URLQueryItem(name: "overview", value: routeShapeResolution.rawValue),

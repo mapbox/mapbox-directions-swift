@@ -36,7 +36,6 @@ class RoutableMatchTest: XCTestCase {
             waypoint.separatesLegs = false
         }
         
-        
         let task = Directions(accessToken: BogusToken).calculateRoutes(matching: matchOptions) { (wpoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!)")
             

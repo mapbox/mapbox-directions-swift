@@ -1,13 +1,10 @@
 import Foundation
 import CoreLocation
 
-
 /**
  A `Tracepoint` represents a location matched to the road network.
  */
-
 public class Tracepoint: Waypoint {
-    
     /**
      Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.
      */
@@ -21,7 +18,6 @@ public class Tracepoint: Waypoint {
         self.alternateCount = alternateCount ?? NSNotFound
         super.init(coordinate: coordinate, name: name)
     }
-
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

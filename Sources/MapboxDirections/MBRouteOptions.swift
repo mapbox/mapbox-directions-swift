@@ -15,9 +15,8 @@ open class RouteOptions: DirectionsOptions {
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
      */
     public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
-
         let profilesDisallowingUTurns: [DirectionsProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
-        allowsUTurnAtWaypoint =  !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
+        allowsUTurnAtWaypoint = !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
@@ -100,8 +99,7 @@ open class RouteOptions: DirectionsOptions {
      The default value of this property is `false` when the profile identifier is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic` and `true` otherwise.
      */
     open var allowsUTurnAtWaypoint: Bool
-
-
+    
     // MARK: Specifying the Response Format
 
     /**
@@ -114,23 +112,20 @@ open class RouteOptions: DirectionsOptions {
      The default value of this property is `false`.
      */
     open var includesAlternativeRoutes = false
-
-
+    
     /**
      A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
 
      If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
      */
     open var includesExitRoundaboutManeuver = false
-
-
+    
     /**
      The route classes that the calculated routes will avoid.
      
      Currently, you can only specify a single road class to avoid.
      */
     open var roadClassesToAvoid: RoadClasses = []
-    
     
     /**
      A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
@@ -177,7 +172,6 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
             params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
-    
         
         if !roadClassesToAvoid.isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
@@ -215,7 +209,6 @@ public enum InstructionFormat: String {
      */
     case html
 }
-
 
 extension CLLocationSpeed {
     /**

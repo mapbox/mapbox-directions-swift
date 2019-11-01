@@ -4,7 +4,6 @@ import CoreLocation
 /**
  A bounding box represents a geographic region.
  */
-
 public struct CoordinateBounds: Codable {
     let southWest: CLLocationCoordinate2D
     let northEast: CLLocationCoordinate2D
