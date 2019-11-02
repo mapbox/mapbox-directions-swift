@@ -1,5 +1,10 @@
 import Foundation
 
+/**
+ Attributes are metadata information for a route leg.
+ 
+ When any of the attributes are specified, the resulting route leg contains one attribute value for each segment in leg, where a segment is the straight line between two coordinates in the route leg’s full geometry.
+ */
 public struct AttributeOptions: OptionSet, CustomStringConvertible {
     public var rawValue: Int
     

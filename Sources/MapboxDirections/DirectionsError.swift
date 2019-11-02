@@ -1,16 +1,67 @@
 import Foundation
 
 public enum DirectionsError: LocalizedError {
+    /**
+     The server returned an empty response.
+     */
     case noData
+    
     case invalidInput(message: String?)
+    
+    /**
+     The server returned a response that isn’t correctly formatted.
+     */
     case invalidResponse
+    
+    /**
+     No route could be found between the specified locations.
+     
+     Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection.
+     */
     case unableToRoute
+    
+    /**
+     The specified coordinates could not be matched to the road network.
+     
+     Try again making sure that your tracepoints lie in close proximity to a road or path.
+     */
     case noMatches
+    
+    /**
+     The request specifies too many coordinates.
+     
+     Try again with fewer coordinates.
+     */
     case tooManyCoordinates
+    
+    /**
+     A specified location could not be associated with a roadway or pathway.
+     
+     Make sure the locations are close enough to a roadway or pathway. Try setting the `Waypoint.coordinateAccuracy` property of all the waypoints to `nil`.
+     */
     case unableToLocate
+    
+    /**
+     Unrecognized profile identifier.
+     
+     Make sure the `DirectionsOptions.profileIdentifier` option is set to one of the predefined values, such as `DirectionsProfileIdentifier.automobile`.
+     */
     case profileNotFound
+    
+    /**
+     The request is too large.
+     
+     Try specifying fewer waypoints or giving the waypoints shorter names.
+     */
     case requestTooLarge
+    
+    /**
+     Too many requests have been made with the same access token within a certain period of time.
+     
+     Wait before retrying.
+     */
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
+    
     case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
     
     public var failureReason: String? {

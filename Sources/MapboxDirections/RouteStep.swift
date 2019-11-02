@@ -73,7 +73,7 @@ public enum TransportType: String, Codable {
 /**
  A `ManeuverType` specifies the type of maneuver required to complete the route step. You can pair a maneuver type with a `ManeuverDirection` to choose an appropriate visual or voice prompt to present the user.
 
- In Swift, you can use pattern matching with a single switch statement on a tuple containing the maneuver type and maneuver direction to avoid a complex series of if-else-if statements or switch statements.
+ To avoid a complex series of if-else-if statements or switch statements, use pattern matching with a single switch statement on a tuple that consists of the maneuver type and maneuver direction.
  */
 public enum ManeuverType: String, Codable {
     /**
