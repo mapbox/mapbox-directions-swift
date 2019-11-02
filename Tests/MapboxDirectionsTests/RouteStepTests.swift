@@ -43,14 +43,6 @@ class RoadTests: XCTestCase {
         XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2" ])
         XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
 
-        // Name in Ref (Mapbox Directions API v4)
-        r = Road(name: "Way Name (Ref)", ref: nil, exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertEqual(r.names ?? [], [ "Way Name" ])
-        XCTAssertEqual(r.codes ?? [], [ "Ref" ])
-        r = Road(name: "Way Name 1; Way Name 2 (Ref 1; Ref 2)", ref: nil, exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2"])
-        XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
-
         // Ref duplicated in Name (Mapbox Directions API v5)
         r = Road(name: "Way Name (Ref)", ref: "Ref", exits: nil, destination: nil, rotaryName: nil)
         XCTAssertEqual(r.names ?? [], [ "Way Name" ])
@@ -104,6 +96,55 @@ class RoadTests: XCTestCase {
 }
 
 class RouteStepTests: XCTestCase {
+    func testDecoding() {
+        // Derived from <https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-122.22060192394258,37.853964632136226;-122.22001854348318,37.85415735273948.json?geometries=polyline&steps=true&overview=full&access_token=pk.feedcafedeadbeef>
+        let stepJSON = [
+            "driving_side": "right",
+            "geometry": "ek`fFxc~hVIu@",
+            "mode": "driving",
+            "maneuver": [
+                "bearing_after": 73,
+                "bearing_before": 60,
+                "location": [37.854109, -122.220291],
+                "modifier": "slight right",
+                "type": "fork",
+                "instruction": "Keep right onto CA 24",
+            ],
+            "ref": "CA 24",
+            "weight": 2.5,
+            "duration": 2.5,
+            "name": "Grove Shafter Freeway (CA 24)",
+            "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
+            "distance": 24.5,
+        ] as [String: Any?]
+        
+        let stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
+        var step: RouteStep?
+        XCTAssertNoThrow(step = try JSONDecoder().decode(RouteStep.self, from: stepData))
+        XCTAssertNotNil(step)
+        
+        if let step = step {
+            XCTAssertEqual(step.drivingSide, .right)
+            XCTAssertEqual(step.transportType, .automobile)
+            XCTAssertEqual(step.shape?.coordinates.count, 2)
+            XCTAssertEqual(step.shape?.coordinates.first?.latitude ?? 0, 37.854109, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.first?.longitude ?? 0, -122.220291, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.last?.latitude ?? 0, 37.854164, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.last?.longitude ?? 0, -122.220021, accuracy: 1e-5)
+            XCTAssertEqual(step.finalHeading, 73)
+            XCTAssertEqual(step.initialHeading, 60)
+            XCTAssertEqual(step.maneuverLocation, CLLocationCoordinate2D(latitude: -122.220291, longitude: 37.854109))
+            XCTAssertEqual(step.maneuverDirection, .slightRight)
+            XCTAssertEqual(step.maneuverType, .reachFork)
+            XCTAssertEqual(step.instructions, "Keep right onto CA 24")
+            XCTAssertEqual(step.codes, ["CA 24"])
+            XCTAssertEqual(step.expectedTravelTime, 2.5)
+            XCTAssertEqual(step.names, ["Grove Shafter Freeway"])
+            XCTAssertEqual(step.phoneticNames, ["ˈaɪˌfoʊ̯n ˈtɛn"])
+            XCTAssertEqual(step.distance, 24.5)
+        }
+    }
+    
     func testCoding() {
         let options = RouteOptions(coordinates: [CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 1, longitude: 1)])
         options.shapeFormat = .polyline

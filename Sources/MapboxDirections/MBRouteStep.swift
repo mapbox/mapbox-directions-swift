@@ -267,6 +267,12 @@ extension String {
     }
 }
 
+extension Array where Element == String {
+    internal func tagValues(joinedBy separator: String) -> String {
+        return joined(separator: "\(separator) ")
+    }
+}
+
 /**
  Encapsulates all the information about a road.
  */
@@ -289,15 +295,6 @@ struct Road {
                 self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
             }
             codes = ref.tagValues(separatedBy: ";")
-        } else if !name.isEmpty, let codesRange = name.range(of: "\\(.+?\\)$", options: .regularExpression, range: name.startIndex..<name.endIndex) {
-            // Mapbox Directions API v4 encodes the ref inside a parenthetical. Remove the ref from the name.
-            let parenthetical = name[codesRange]
-            if name == ref {
-                self.names = nil
-            } else {
-                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
-            }
-            codes = parenthetical.trimmingCharacters(in: CharacterSet(charactersIn: "()")).tagValues(separatedBy: ";")
         } else {
             self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
             codes = ref?.tagValues(separatedBy: ";")
@@ -344,9 +341,9 @@ open class RouteStep: Codable {
         case name
         case ref
         case exits
-        case phoneticExitNames = "pronunciation"
-        case phoneticNames = "rotary_pronunciation"
-        case transportType
+        case pronunciation
+        case rotaryPronunciation = "rotary_pronunciation"
+        case transportType = "mode"
         case rotaryName = "rotary_name"
     }
     
@@ -368,11 +365,15 @@ open class RouteStep: Codable {
         try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
         try container.encodeIfPresent(exitCodes, forKey: .exitCodes)
         try container.encodeIfPresent(exitNames, forKey: .exitNames)
-        try container.encodeIfPresent(phoneticExitNames, forKey: .phoneticExitNames)
-        try container.encodeIfPresent(phoneticNames, forKey: .phoneticNames)
+        if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
+            try container.encodeIfPresent(phoneticExitNames, forKey: .rotaryPronunciation)
+            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
+        } else {
+            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
+        }
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
-        try container.encodeIfPresent(codes?.joined(separator: "; "), forKey: .ref)
+        try container.encodeIfPresent(codes?.tagValues(joinedBy: ";"), forKey: .ref)
         
         if transportType != .none {
             try container.encode(transportType, forKey: .transportType)
@@ -467,24 +468,23 @@ open class RouteStep: Codable {
         
         destinations = road.destinations
         
-        let mType = maneuverType
-        if mType != .none,
-            mType == .takeRotary || mType == .takeRoundabout {
+        let type = maneuverType
+        if type == .takeRotary || type == .takeRoundabout {
             names = road.rotaryNames
-            phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
+            phoneticNames = try container.decodeIfPresent(String.self, forKey: .rotaryPronunciation)?.tagValues(separatedBy: ";")
             exitNames = road.names
-            phoneticExitNames = try container.decodeIfPresent(String.self, forKey: .phoneticExitNames)?.tagValues(separatedBy: ";")
+            phoneticExitNames = try container.decodeIfPresent(String.self, forKey: .pronunciation)?.tagValues(separatedBy: ";")
         } else {
             names = road.names
-            phoneticNames = try container.decodeIfPresent(String.self, forKey: .phoneticNames)?.tagValues(separatedBy: ";")
+            phoneticNames = try container.decodeIfPresent(String.self, forKey: .pronunciation)?.tagValues(separatedBy: ";")
             exitNames = nil
             phoneticExitNames = nil
         }
     }
     
     private var destinationString: String? {
-        let destCodeString = destinationCodes?.joined(separator: ", ")
-        let destString = destinations?.joined(separator: ", ")
+        let destCodeString = destinationCodes?.tagValues(joinedBy: ",")
+        let destString = destinations?.tagValues(joinedBy: ",")
         
         if let destCodes = destCodeString {
             guard let dests = destString else {
