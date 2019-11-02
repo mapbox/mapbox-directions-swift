@@ -104,7 +104,7 @@
 		C52CE38F1F6AF63C0069963D /* SpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */; };
 		C52CE3901F6AF63D0069963D /* SpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */; };
 		C52CE3911F6AF63E0069963D /* SpokenInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */; };
-		C52CE3931F6AF6E70069963D /* IntructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* IntructionsTests.swift */; };
+		C52CE3931F6AF6E70069963D /* InstructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* InstructionsTests.swift */; };
 		C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* AttributeOptions.swift */; };
 		C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* AttributeOptions.swift */; };
 		C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51538CB1E807FF00093FF3E /* AttributeOptions.swift */; };
@@ -154,8 +154,8 @@
 		C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
 		C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */; };
-		C5D1D7F31F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* IntructionsTests.swift */; };
-		C5D1D7F41F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* IntructionsTests.swift */; };
+		C5D1D7F31F6AFBD600A1C4F1 /* InstructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* InstructionsTests.swift */; };
+		C5D1D7F41F6AFBD600A1C4F1 /* InstructionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE3921F6AF6E70069963D /* InstructionsTests.swift */; };
 		C5DAAC9A20191675001F9261 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* Match.swift */; };
 		C5DAAC9B2019167C001F9261 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* Match.swift */; };
 		C5DAAC9C2019167D001F9261 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DAAC9920191675001F9261 /* Match.swift */; };
@@ -332,7 +332,7 @@
 		C51538CB1E807FF00093FF3E /* AttributeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeOptions.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualInstructionBanner.swift; sourceTree = "<group>"; };
-		C52CE3921F6AF6E70069963D /* IntructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntructionsTests.swift; sourceTree = "<group>"; };
+		C52CE3921F6AF6E70069963D /* InstructionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionsTests.swift; sourceTree = "<group>"; };
 		C5434B89200693D00069E887 /* Tracepoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracepoint.swift; sourceTree = "<group>"; };
 		C5434B8B200695A50069E887 /* MatchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchOptions.swift; sourceTree = "<group>"; };
 		C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenInstruction.swift; sourceTree = "<group>"; };
@@ -346,13 +346,7 @@
 		C59426061F1EA6C400C8E59C /* RoadClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoadClasses.swift; sourceTree = "<group>"; };
 		C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableMatchTests.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
-		C5AD8658202E24F500BF47D5 /* AWSPolly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSPolly.framework; path = Carthage/Build/iOS/AWSPolly.framework; sourceTree = "<group>"; };
-		C5AD8659202E24F500BF47D5 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSCore.framework; path = Carthage/Build/iOS/AWSCore.framework; sourceTree = "<group>"; };
 		C5AD865A202E24F500BF47D5 /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/iOS/Turf.framework; sourceTree = "<group>"; };
-		C5AD865B202E24F500BF47D5 /* MapboxNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxNavigation.framework; path = Carthage/Build/iOS/MapboxNavigation.framework; sourceTree = "<group>"; };
-		C5AD865C202E24F500BF47D5 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
-		C5AD865D202E24F500BF47D5 /* MapboxCoreNavigation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxCoreNavigation.framework; path = Carthage/Build/iOS/MapboxCoreNavigation.framework; sourceTree = "<group>"; };
-		C5AD865E202E24F500BF47D5 /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
 		C5C0D6332058523E003A3B1D /* null-tracepoint.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "null-tracepoint.json"; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
 		C5DAAC9920191675001F9261 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
@@ -489,6 +483,7 @@
 				DADD27F21E5ABD4300D31FAD /* Mapbox.framework */,
 				F448F8381DDCC6D7000BC343 /* OHHTTPStubs.framework */,
 				F448F82A1DDCC5B6000BC343 /* Polyline.framework */,
+				C5AD865A202E24F500BF47D5 /* Turf.framework */,
 			);
 			name = "iOS Frameworks";
 			sourceTree = "<group>";
@@ -514,13 +509,13 @@
 		8D381B681FDB1009008D5A58 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8D381B691FDB101F008D5A58 /* String.swift */,
+				C582BA2D2073ED6300647DAA /* Array.swift */,
 				43208BA62343F7C300D8BD89 /* Codable.swift */,
 				43208BA82343F7E900D8BD89 /* CoreLocation.swift */,
-				43208BAA2343F81900D8BD89 /* GeoJSON.swift */,
-				C582BA2D2073ED6300647DAA /* Array.swift */,
 				8D434678219E1167008B7BF3 /* Double.swift */,
+				43208BAA2343F81900D8BD89 /* GeoJSON.swift */,
 				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
+				8D381B691FDB101F008D5A58 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -536,13 +531,6 @@
 		C5AD8656202E24F400BF47D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C5AD8659202E24F500BF47D5 /* AWSCore.framework */,
-				C5AD8658202E24F500BF47D5 /* AWSPolly.framework */,
-				C5AD865D202E24F500BF47D5 /* MapboxCoreNavigation.framework */,
-				C5AD865E202E24F500BF47D5 /* MapboxMobileEvents.framework */,
-				C5AD865B202E24F500BF47D5 /* MapboxNavigation.framework */,
-				C5AD865C202E24F500BF47D5 /* SDWebImage.framework */,
-				C5AD865A202E24F500BF47D5 /* Turf.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -560,11 +548,11 @@
 		C5DAAC9E20191683001F9261 /* MapMatching */ = {
 			isa = PBXGroup;
 			children = (
-				C5434B89200693D00069E887 /* Tracepoint.swift */,
-				C5434B8B200695A50069E887 /* MatchOptions.swift */,
-				43F89F922350F952007B591E /* MatchResponse.swift */,
 				43F89F97235778DE007B591E /* MapMatchingResponse.swift */,
 				C5DAAC9920191675001F9261 /* Match.swift */,
+				C5434B8B200695A50069E887 /* MatchOptions.swift */,
+				43F89F922350F952007B591E /* MatchResponse.swift */,
+				C5434B89200693D00069E887 /* Tracepoint.swift */,
 			);
 			path = MapMatching;
 			sourceTree = "<group>";
@@ -583,32 +571,32 @@
 			children = (
 				8D381B681FDB1009008D5A58 /* Extensions */,
 				C5DAAC9E20191683001F9261 /* MapMatching */,
-				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
+				C51538CB1E807FF00093FF3E /* AttributeOptions.swift */,
+				C58EA7A91E9D7EAD008F98CE /* Congestion.swift */,
+				35DBF004217DF0D90009D2AE /* CoordinateBounds.swift */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
-				C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */,
-				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
-				DAC05F171CFC075300FA0071 /* Route.swift */,
-				431E93BE234664A200A71B44 /* DrivingSide.swift */,
-				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
-				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
-				438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */,
 				C59094BE203B800300EB2417 /* DirectionsOptions.swift */,
-				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
+				438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */,
+				C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */,
+				431E93BE234664A200A71B44 /* DrivingSide.swift */,
+				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 				C57D55001DB5669600B94B74 /* Intersection.swift */,
 				C57D55071DB58C0200B94B74 /* Lane.swift */,
 				DAA76D671DD127CB0015EC78 /* LaneIndication.swift */,
-				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
-				C51538CB1E807FF00093FF3E /* AttributeOptions.swift */,
-				C58EA7A91E9D7EAD008F98CE /* Congestion.swift */,
-				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
-				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
-				C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */,
-				C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */,
-				35EFD00A207DFACA00BF3873 /* VisualInstruction.swift */,
-				AEDC211C20B6104A0052DED8 /* VisualInstructionComponent.swift */,
+				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				35828C9D217A003F00ED546E /* OfflineDirections.swift */,
-				35DBF004217DF0D90009D2AE /* CoordinateBounds.swift */,
+				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
+				DAC05F171CFC075300FA0071 /* Route.swift */,
+				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
+				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
+				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
+				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
+				C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */,
+				35EFD00A207DFACA00BF3873 /* VisualInstruction.swift */,
+				C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */,
+				AEDC211C20B6104A0052DED8 /* VisualInstructionComponent.swift */,
+				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
 			);
 			name = MapboxDirections;
 			path = Sources/MapboxDirections;
@@ -617,24 +605,24 @@
 		DA6C9D971CAE442B00094FBC /* MapboxDirectionsTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
-				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
-				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
-				DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */,
-				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
-				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
+				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
+				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
+				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
+				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
+				C52CE3921F6AF6E70069963D /* InstructionsTests.swift */,
 				DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */,
-				C52CE3921F6AF6E70069963D /* IntructionsTests.swift */,
+				DABE6C7D236A37E200D370F4 /* JSONSerialization.swift */,
+				3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */,
 				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
 				35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */,
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
+				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
+				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
+				DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */,
 				DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */,
-				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
-				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */,
-				3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */,
-				DABE6C7D236A37E200D370F4 /* JSONSerialization.swift */,
+				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
 			);
 			name = MapboxDirectionsTests;
 			path = Tests/MapboxDirectionsTests;
@@ -1195,7 +1183,7 @@
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
 				DA1A110C1D01045E009F82FA /* DirectionsTests.swift in Sources */,
-				C5D1D7F31F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
+				C5D1D7F31F6AFBD600A1C4F1 /* InstructionsTests.swift in Sources */,
 				DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
@@ -1260,7 +1248,7 @@
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
 				DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */,
-				C5D1D7F41F6AFBD600A1C4F1 /* IntructionsTests.swift in Sources */,
+				C5D1D7F41F6AFBD600A1C4F1 /* InstructionsTests.swift in Sources */,
 				DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
@@ -1368,7 +1356,7 @@
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
-				C52CE3931F6AF6E70069963D /* IntructionsTests.swift in Sources */,
+				C52CE3931F6AF6E70069963D /* InstructionsTests.swift in Sources */,
 				DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
