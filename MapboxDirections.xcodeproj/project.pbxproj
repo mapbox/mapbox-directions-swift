@@ -675,20 +675,12 @@
 		DADD27B61E5AAAD800D31FAD /* Directions Example */ = {
 			isa = PBXGroup;
 			children = (
-				DADD27CA1E5AAF4D00D31FAD /* Swift */,
-				DADD27CB1E5AAF5600D31FAD /* Supporting Files */,
-			);
-			path = "Directions Example";
-			sourceTree = "<group>";
-		};
-		DADD27CA1E5AAF4D00D31FAD /* Swift */ = {
-			isa = PBXGroup;
-			children = (
 				DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */,
 				DADD27B91E5AAAD800D31FAD /* ViewController.swift */,
 				C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */,
+				DADD27CB1E5AAF5600D31FAD /* Supporting Files */,
 			);
-			name = Swift;
+			path = "Directions Example";
 			sourceTree = "<group>";
 		};
 		DADD27CB1E5AAF5600D31FAD /* Supporting Files */ = {
