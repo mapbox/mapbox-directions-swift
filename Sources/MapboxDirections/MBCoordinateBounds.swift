@@ -12,7 +12,7 @@ public struct CoordinateBounds {
     let northEast: CLLocationCoordinate2D
     
     /**
-     Initializes a `BoundingBox` with known bounds.
+     Initializes a coordinate bounds based on the southwest and northeast corners.
      */
     public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         self.southWest = southWest
@@ -20,7 +20,7 @@ public struct CoordinateBounds {
     }
     
     /**
-     Initializes a `BoundingBox` with known bounds.
+     Initializes a coordinate bounds based on the northwest and southeast corners.
      */
     public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
         self.southWest = CLLocationCoordinate2D(latitude: southEast.latitude, longitude: northWest.longitude)
@@ -28,7 +28,7 @@ public struct CoordinateBounds {
     }
     
     /**
-     Initializes a `BoundingBox` from an array of `CLLocationCoordinate2D`’s.
+     Initializes a coordinate bounds that includes all the given coordinates.
      */
     public init(coordinates: [CLLocationCoordinate2D]) {
         assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
