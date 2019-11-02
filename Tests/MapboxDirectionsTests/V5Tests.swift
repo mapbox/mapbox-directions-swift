@@ -304,10 +304,16 @@ class V5Tests: XCTestCase {
         encoder.userInfo[.options] = options
         encoder.outputFormatting = [.prettyPrinted]
         
-        let jsonData = try! encoder.encode(route)
+        var jsonData: Data?
+        XCTAssertNoThrow(jsonData = try encoder.encode(route))
+        XCTAssertNotNil(jsonData)
     
-        let newRoute = try! decoder.decode(Route.self, from: jsonData)
-        test(newRoute, options: options)
+        if let jsonData = jsonData {
+            var newRoute: Route?
+            XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
+            XCTAssertNotNil(newRoute)
+            test(newRoute, options: options)
+        }
     }
 }
 #endif

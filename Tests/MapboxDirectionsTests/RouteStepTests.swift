@@ -160,7 +160,7 @@ class RouteStepTests: XCTestCase {
         let encoded = try! encoder.encode(step)
         let roundTripJSON = String(data: encoded, encoding: .utf8)
         
-        XCTAssert(roundTripJSON == pass)
+        XCTAssertEqual(roundTripJSON, pass)
     }
 }
 
@@ -250,6 +250,7 @@ fileprivate let pass = """
     }
   ],
   \"distance\" : 236.90000000000001,
+  \"mode\" : \"driving\",
   \"geometry\" : \"asn_Ie_}pAdKxG\",
   \"maneuver\" : {
     \"location\" : [

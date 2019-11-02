@@ -283,9 +283,17 @@ struct Road {
     let destinations: [String]?
     let destinationCodes: [String]?
     let rotaryNames: [String]?
-
+    
+    init(names: [String]?, codes: [String]?, exitCodes: [String]?, destinations: [String]?, destinationCodes: [String]?, rotaryNames: [String]?) {
+        self.names = names
+        self.codes = codes
+        self.exitCodes = exitCodes
+        self.destinations = destinations
+        self.destinationCodes = destinationCodes
+        self.rotaryNames = rotaryNames
+    }
+    
     init(name: String, ref: String?, exits: String?, destination: String?, rotaryName: String?) {
-        var codes: [String]?
         if !name.isEmpty, let ref = ref {
             // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
             let parenthetical = "(\(ref))"
@@ -294,10 +302,8 @@ struct Road {
             } else {
                 self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
             }
-            codes = ref.tagValues(separatedBy: ";")
         } else {
             self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
-            codes = ref?.tagValues(separatedBy: ";")
         }
 
         // Mapbox Directions API v5 combines the destination’s ref and name.
@@ -311,8 +317,54 @@ struct Road {
         }
 
         self.exitCodes = exits?.tagValues(separatedBy: ";")
-        self.codes = codes
+        self.codes = ref?.tagValues(separatedBy: ";")
         self.rotaryNames = rotaryName?.tagValues(separatedBy: ";")
+    }
+}
+
+extension Road: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case ref
+        case exits
+        case destinations
+        case rotaryName = "rotary_name"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Decoder apparently treats an empty string as a null value.
+        let name = try container.decodeIfPresent(String.self, forKey: .name) ?? ""
+        let ref = try container.decodeIfPresent(String.self, forKey: .ref)
+        let exits = try container.decodeIfPresent(String.self, forKey: .exits)
+        let destinations = try container.decodeIfPresent(String.self, forKey: .destinations)
+        let rotaryName = try container.decodeIfPresent(String.self, forKey: .rotaryName)
+        self.init(name: name, ref: ref, exits: exits, destination: destinations, rotaryName: rotaryName)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let ref = codes?.tagValues(joinedBy: ";")
+        if var name = names?.tagValues(joinedBy: ";") {
+            if let ref = ref {
+                name = "\(name) (\(ref))"
+            }
+            try container.encodeIfPresent(name, forKey: .name)
+        } else {
+            try container.encodeIfPresent(ref, forKey: .name)
+        }
+        
+        if var destinations = destinations?.tagValues(joinedBy: ",") {
+            if let destinationCodes = destinationCodes?.tagValues(joinedBy: ",") {
+                destinations = "\(destinationCodes): \(destinations)"
+            }
+            try container.encode(destinations, forKey: .destinations)
+        }
+        
+        try container.encodeIfPresent(exitCodes?.tagValues(joinedBy: ";"), forKey: .exits)
+        try container.encodeIfPresent(ref, forKey: .ref)
+        try container.encodeIfPresent(rotaryNames?.tagValues(joinedBy: ";"), forKey: .rotaryName)
     }
 }
 
@@ -323,28 +375,19 @@ struct Road {
  */
 open class RouteStep: Codable {
     private enum CodingKeys: String, CodingKey {
-        case codes
-        case geometry
-        case destinationCodes
-        case destinations
+        case shape = "geometry"
         case distance
         case drivingSide = "driving_side"
-        case exitCodes
-        case exitIndex
-        case exitNames
+        case exitIndex = "exit"
         case expectedTravelTime = "duration"
         case instructions
         case instructionsDisplayedAlongStep = "bannerInstructions"
         case instructionsSpokenAlongStep = "voiceInstructions"
         case intersections
         case maneuver
-        case name
-        case ref
-        case exits
         case pronunciation
         case rotaryPronunciation = "rotary_pronunciation"
         case transportType = "mode"
-        case rotaryName = "rotary_name"
     }
     
     private enum ManeuverCodingKeys: String, CodingKey {
@@ -363,30 +406,34 @@ open class RouteStep: Codable {
         try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
         try container.encodeIfPresent(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
         try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
-        try container.encodeIfPresent(exitCodes, forKey: .exitCodes)
-        try container.encodeIfPresent(exitNames, forKey: .exitNames)
-        if maneuverType == .takeRotary || maneuverType == .takeRoundabout {
-            try container.encodeIfPresent(phoneticExitNames, forKey: .rotaryPronunciation)
-            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
-        } else {
-            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
-        }
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
-        try container.encodeIfPresent(codes?.tagValues(joinedBy: ";"), forKey: .ref)
         
         if transportType != .none {
             try container.encode(transportType, forKey: .transportType)
         }
         
-        try container.encodeIfPresent(destinationString, forKey: .destinations)
+        let isRound = maneuverType == .takeRotary || maneuverType == .takeRoundabout
+        let road = Road(names: isRound ? exitNames : names,
+                        codes: codes,
+                        exitCodes: exitCodes,
+                        destinations: destinations,
+                        destinationCodes: destinationCodes,
+                        rotaryNames: isRound ? names : nil)
+        try road.encode(to: encoder)
+        if isRound {
+            try container.encodeIfPresent(phoneticNames, forKey: .rotaryPronunciation)
+            try container.encodeIfPresent(phoneticExitNames, forKey: .pronunciation)
+        } else {
+            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
+        }
+        
         try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
-        try container.encodeIfPresent(name, forKey: .name)
         if let shape = shape, let options = encoder.userInfo[.options] as? DirectionsOptions {
             let shapeFormat = options.shapeFormat
             let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
-            try container.encode(polyLineString, forKey: .geometry)
+            try container.encode(polyLineString, forKey: .shape)
         }
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
@@ -414,21 +461,11 @@ open class RouteStep: Codable {
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
-        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
+        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
         } else {
             shape = nil
         }
-        
-        name = try container.decode(String.self, forKey: .name)
-        
-        let dest = try container.decodeIfPresent(String.self, forKey: .destinations)
-        
-        let road = Road(name: name,
-                        ref: try container.decodeIfPresent(String.self, forKey: .ref),
-                        exits: try container.decodeIfPresent(String.self, forKey: .exits),
-                        destination: dest,
-                        rotaryName: try container.decodeIfPresent(String.self, forKey: .rotaryName))
         
         if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
             instructions = instruction
@@ -455,18 +492,17 @@ open class RouteStep: Codable {
         }
         
         exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
-        exitCodes = try container.decodeIfPresent([String].self, forKey: .exitCodes)
         distance = try container.decode(CLLocationDirection.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        codes = road.codes
         transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType) ?? .none
-        
-        destinationCodes = road.destinationCodes
-        
         intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
         
+        let road = try Road(from: decoder)
+        codes = road.codes
+        exitCodes = road.exitCodes
         destinations = road.destinations
+        destinationCodes = road.destinationCodes
         
         let type = maneuverType
         if type == .takeRotary || type == .takeRoundabout {
@@ -479,20 +515,6 @@ open class RouteStep: Codable {
             phoneticNames = try container.decodeIfPresent(String.self, forKey: .pronunciation)?.tagValues(separatedBy: ";")
             exitNames = nil
             phoneticExitNames = nil
-        }
-    }
-    
-    private var destinationString: String? {
-        let destCodeString = destinationCodes?.tagValues(joinedBy: ",")
-        let destString = destinations?.tagValues(joinedBy: ",")
-        
-        if let destCodes = destCodeString {
-            guard let dests = destString else {
-                return destCodes
-            }
-            return destCodes + ": " + dests
-        } else {
-            return destString ?? nil
         }
     }
     
@@ -548,7 +570,7 @@ open class RouteStep: Codable {
     /**
      The location of the maneuver at the beginning of this step.
      */
-    @objc public let maneuverLocation: CLLocationCoordinate2D
+    public let maneuverLocation: CLLocationCoordinate2D
     
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
@@ -612,8 +634,6 @@ open class RouteStep: Codable {
      If the maneuver is a roundabout maneuver, the outlet to take is named in the `exitNames` property; the `names` property is only set for large roundabouts that have their own names.
      */
     public let names: [String]?
-    
-    fileprivate let name: String
     
     /**
      A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
@@ -686,27 +706,34 @@ open class RouteStep: Codable {
 
 extension RouteStep: Equatable {
     public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
-        return lhs.codes == rhs.codes &&
-            lhs.shape == rhs.shape &&
+        // Compare all the properties, from cheapest to most expensive to compare.
+        return lhs.initialHeading == rhs.initialHeading &&
+            lhs.finalHeading == rhs.finalHeading &&
+            lhs.instructions == rhs.instructions &&
+            lhs.exitIndex == rhs.exitIndex &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            
+            lhs.maneuverType == rhs.maneuverType &&
+            lhs.maneuverDirection == rhs.maneuverDirection &&
+            lhs.drivingSide == rhs.drivingSide &&
+            lhs.transportType == rhs.transportType &&
+            
+            lhs.maneuverLocation == rhs.maneuverLocation &&
+            
+            lhs.exitCodes == rhs.exitCodes &&
+            lhs.exitNames == rhs.exitNames &&
+            lhs.phoneticExitNames == rhs.phoneticExitNames &&
+            lhs.names == rhs.names &&
+            lhs.phoneticNames == rhs.phoneticNames &&
+            lhs.codes == rhs.codes &&
             lhs.destinationCodes == rhs.destinationCodes &&
             lhs.destinations == rhs.destinations &&
-            lhs.distance == rhs.distance &&
-            lhs.drivingSide == rhs.drivingSide &&
-            lhs.exitNames == rhs.exitNames &&
-            lhs.exitCodes == rhs.exitCodes &&
-            lhs.exitIndex == rhs.exitIndex &&
-            lhs.exitNames == rhs.exitNames &&
-            lhs.expectedTravelTime == rhs.expectedTravelTime &&
-            lhs.instructions == rhs.instructions &&
-            lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
-            lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
+            
             lhs.intersections == rhs.intersections &&
-            lhs.maneuverType == rhs.maneuverType &&
-            lhs.maneuverLocation == rhs.maneuverLocation &&
-            lhs.maneuverDirection == rhs.maneuverDirection &&
-            lhs.name == rhs.name &&
-            lhs.phoneticNames == rhs.phoneticNames &&
-            lhs.phoneticExitNames == rhs.phoneticExitNames &&
-            lhs.transportType == rhs.transportType
+            lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
+            lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
+            
+            lhs.shape == rhs.shape
     }
 }
