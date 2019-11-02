@@ -160,14 +160,16 @@ With the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS 
 ```swift
 // main.swift
 
-if route.coordinateCount > 0 {
+if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
     // Convert the route’s coordinates into a polyline.
-    var routeCoordinates = route.coordinates!
-    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: UInt(routeCoordinates.count))
 
-    // Add the polyline to the map and fit the viewport to the polyline.
+    // Add the polyline to the map.
     mapView.addAnnotation(routeLine)
-    mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
+    
+    // Fit the viewport to the polyline.
+    let camera = mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
+    mapView.setCamera(camera, animated: true)
 }
 ```
 

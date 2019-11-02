@@ -69,8 +69,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         options.includesSteps = true
         
         Directions.shared.calculate(options) { (waypoints, routes, error) in
-            guard error == nil else {
-                print("Error calculating directions: \(error!)")
+            if let error = error {
+                print("Error calculating directions: \(error)")
                 return
             }
             
@@ -94,15 +94,16 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                     }
                 }
                 
-                if let shape = route.shape, shape.coordinates.count > 0 {
+                if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
                     // Convert the route’s coordinates into a polyline.
-                    var routeCoordinates = shape.coordinates
-                    let coordCount = UInt(routeCoordinates.count)
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
-                    
-                    // Add the polyline to the map and fit the viewport to the polyline.
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: UInt(routeCoordinates.count))
+
+                    // Add the polyline to the map.
                     self.mapView.addAnnotation(routeLine)
-                    self.mapView?.setVisibleCoordinates(&routeCoordinates, count: coordCount, edgePadding: .zero, animated: true)
+                    
+                    // Fit the viewport to the polyline.
+                    let camera = self.mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
+                    self.mapView.setCamera(camera, animated: true)
                 }
             }
         }
@@ -144,8 +145,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
             if let error = error {
                 let errorString = """
                 ⚠️ Error Enountered. ⚠️
-                Failure Reason: \(error.failureReason)
-                Recovery Suggestion: \(error.recoverySuggestion)
+                Failure Reason: \(error.failureReason ?? "")
+                Recovery Suggestion: \(error.recoverySuggestion ?? "")
                 
                 Technical Details: \(error)
                 """
