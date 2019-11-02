@@ -146,125 +146,66 @@ class RouteStepTests: XCTestCase {
     }
     
     func testCoding() {
-        let options = RouteOptions(coordinates: [CLLocationCoordinate2D(latitude: 0, longitude: 0), CLLocationCoordinate2D(latitude: 1, longitude: 1)])
-        options.shapeFormat = .polyline
+        let stepJSON = [
+            "intersections": [
+                [
+                    "out": 1,
+                    "location": [13.424671, 52.508812],
+                    "bearings": [120, 210, 300],
+                    "entry": [false, true, true],
+                    "in": 0,
+                    "lanes": [
+                        ["valid": true, "indications": ["left"]],
+                        ["valid": true, "indications": ["straight"]],
+                        ["valid": false, "indications": ["right"]],
+                    ],
+                ],
+            ],
+            "geometry": "asn_Ie_}pAdKxG",
+            "maneuver": [
+                "bearing_after": 202,
+                "type": "turn",
+                "modifier": "left",
+                "bearing_before": 299,
+                "location": [13.424671, 52.508812],
+                "instruction": "Turn left onto Adalbertstraße",
+            ],
+            "duration": 59.1,
+            "distance": 236.9,
+            "driving_side": "right",
+            "weight": 59.1,
+            "name": "Adalbertstraße",
+            "mode": "driving",
+        ] as [String : Any?]
+        let stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
+        var step: RouteStep?
+        XCTAssertNoThrow(step = try JSONDecoder().decode(RouteStep.self, from: stepData))
+        XCTAssertNotNil(step)
         
-        let decoder = JSONDecoder()
-        decoder.userInfo[.options] = options
-        
-        let step = try! decoder.decode(RouteStep.self, from: routeStepJSON.data(using: .utf8)!)
-        
-        let encoder = JSONEncoder()
-        encoder.userInfo[.options] = options
-        encoder.outputFormatting = [.prettyPrinted]
-        let encoded = try! encoder.encode(step)
-        let roundTripJSON = String(data: encoded, encoding: .utf8)
-        
-        XCTAssertEqual(roundTripJSON, pass)
-    }
-}
+        if let step = step {
+            let options = RouteOptions(coordinates: [
+                CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                CLLocationCoordinate2D(latitude: 1, longitude: 1),
+            ])
+            options.shapeFormat = .polyline
+            
+            let encoder = JSONEncoder()
+            encoder.userInfo[.options] = options
+            var encodedStepData: Data?
+            XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
+            XCTAssertNotNil(encodedStepData)
+            
+            if let encodedStepData = encodedStepData {
+                var encodedStepJSON: Any?
+                XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []))
+                XCTAssertNotNil(encodedStepJSON)
 
-fileprivate let routeStepJSON = """
-{
-    "intersections": [
-      {
-        "out": 1,
-        "location": [ 13.424671, 52.508812 ],
-        "bearings": [ 120, 210, 300 ],
-        "entry": [ false, true, true ],
-        "in": 0,
-        "lanes": [
-          {
-            "valid": true,
-            "indications": [ "left" ]
-          },
-          {
-            "valid": true,
-            "indications": [ "straight" ]
-          },
-          {
-            "valid": false,
-            "indications": [ "right" ]
-          }
-        ]
-      }
-    ],
-    "geometry": "asn_Ie_}pAdKxG",
-    "maneuver": {
-      "bearing_after": 202,
-      "type": "turn",
-      "modifier": "left",
-      "bearing_before": 299,
-      "location": [ 13.424671, 52.508812 ],
-      "instruction": "Turn left onto Adalbertstraße"
-    },
-    "duration": 59.1,
-    "distance": 236.9,
-    "driving_side": "right",
-    "weight": 59.1,
-    "name": "Adalbertstraße",
-    "mode": "driving"
-}
-"""
-
-fileprivate let pass = """
-{
-  \"intersections\" : [
-    {
-      \"entry\" : [
-        false,
-        true,
-        true
-      ],
-      \"in\" : 0,
-      \"out\" : 1,
-      \"lanes\" : [
-        {
-          \"valid\" : true,
-          \"indications\" : [
-            \"left\"
-          ]
-        },
-        {
-          \"valid\" : true,
-          \"indications\" : [
-            \"straight\"
-          ]
-        },
-        {
-          \"valid\" : false,
-          \"indications\" : [
-            \"right\"
-          ]
+                // https://github.com/mapbox/MapboxDirections.swift/issues/125
+                var referenceStepJSON = stepJSON
+                referenceStepJSON.removeValue(forKey: "weight")
+                
+                XCTAssert(JSONSerialization.objectsAreEqual(referenceStepJSON, encodedStepJSON, approximate: true))
+            }
         }
-      ],
-      \"location\" : [
-        13.424671,
-        52.508811999999999
-      ],
-      \"bearings\" : [
-        120,
-        210,
-        300
-      ]
     }
-  ],
-  \"distance\" : 236.90000000000001,
-  \"mode\" : \"driving\",
-  \"geometry\" : \"asn_Ie_}pAdKxG\",
-  \"maneuver\" : {
-    \"location\" : [
-      13.424671,
-      52.508811999999999
-    ],
-    \"bearing_after\" : 202,
-    \"bearing_before\" : 299,
-    \"type\" : \"turn\",
-    \"modifier\" : \"left\",
-    \"instruction\" : \"Turn left onto Adalbertstraße\"
-  },
-  \"driving_side\" : \"right\",
-  \"duration\" : 59.100000000000001,
-  \"name\" : \"Adalbertstraße\"
 }
-"""

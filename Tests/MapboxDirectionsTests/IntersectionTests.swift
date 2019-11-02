@@ -61,9 +61,8 @@ class IntersectionTests: XCTestCase {
             var encodedIntersectionsJSON: [[String: Any?]]?
             XCTAssertNoThrow(encodedIntersectionsJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [[String: Any?]])
             XCTAssertNotNil(encodedIntersectionsJSON)
-            if let encodedIntersectionsJSON = encodedIntersectionsJSON {
-                XCTAssert(JSONSerialization.objectsAreEqual(intersectionsJSON, encodedIntersectionsJSON, approximate: true))
-            }
+
+            XCTAssert(JSONSerialization.objectsAreEqual(intersectionsJSON, encodedIntersectionsJSON, approximate: true))
         }
     }
 }
