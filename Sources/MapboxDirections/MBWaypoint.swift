@@ -186,7 +186,7 @@ public class Waypoint: Codable {
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`, or if `MatchOptions.waypointIndices` is non-nil.
      This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-   public var separatesLegs: Bool = true
+    public var separatesLegs: Bool = true
     
     public var description: String {
         return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"

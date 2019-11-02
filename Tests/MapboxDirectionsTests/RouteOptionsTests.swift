@@ -112,7 +112,6 @@ class RouteOptionsTests: XCTestCase {
         let answer = [start.requestDescription, end.requestDescription]
         let correct = ["53.032188,9.945497", "54.032188,10.945497"]
         XCTAssert(answer == correct, "Coordinates should be truncated.")
-        
     }
     
     func testWaypointSerialization() {

@@ -11,7 +11,6 @@ class RoadTests: XCTestCase {
         XCTAssertNil(r.destinations)
         XCTAssertNil(r.destinationCodes)
         XCTAssertNil(r.rotaryNames)
-        
     }
 
     func testNamesCodes() {

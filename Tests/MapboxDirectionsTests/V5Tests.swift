@@ -308,7 +308,6 @@ class V5Tests: XCTestCase {
     
         let newRoute = try! decoder.decode(Route.self, from: jsonData)
         test(newRoute, options: options)
-        
     }
 }
 #endif

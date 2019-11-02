@@ -60,6 +60,5 @@ struct RouteResponse: Codable {
         })
         
         self.routes = routesWithIdentifiers
-        
     }
 }

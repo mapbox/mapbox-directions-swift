@@ -44,6 +44,7 @@ open class RouteLeg: Codable, Equatable {
         segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try annotation?.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
     }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(source, forKey: .source)
@@ -59,7 +60,6 @@ open class RouteLeg: Codable, Equatable {
         try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
         try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
         try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
-
     }
 
     // MARK: Getting the Leg Geometry

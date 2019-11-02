@@ -11,10 +11,10 @@ This profile prioritizes fast routes by preferring high-speed roads like highway
 public struct DirectionsProfileIdentifier: Codable, Hashable, RawRepresentable, ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     public typealias RawValue = String
-     
-     public init(stringLiteral value: StringLiteralType) {
-         self.init(rawValue: value)
-     }
+    
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(rawValue: value)
+    }
     
     public init(rawValue: String) {
         self.rawValue = rawValue

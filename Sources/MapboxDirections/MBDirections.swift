@@ -126,7 +126,6 @@ open class Directions: NSObject {
         } else {
             apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))!
         }
-        
     }
     
     /**
@@ -263,10 +262,7 @@ open class Directions: NSObject {
                         completionHandler(nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
-                
-                
             }
-            
         }
         requestTask.priority = 1
         requestTask.resume()

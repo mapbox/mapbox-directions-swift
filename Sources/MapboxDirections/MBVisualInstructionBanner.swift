@@ -2,8 +2,8 @@ import Foundation
 import CoreLocation
 
 internal extension CodingUserInfoKey {
-     static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!
- }
+    static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!
+}
 
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.

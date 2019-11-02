@@ -136,5 +136,4 @@ public struct Intersection: Codable, Equatable {
             lhs.usableApproachLanes == rhs.usableApproachLanes &&
             lhs.outletRoadClasses == rhs.outletRoadClasses
     }
-
 }

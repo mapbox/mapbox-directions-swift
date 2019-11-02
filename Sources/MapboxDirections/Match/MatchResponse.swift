@@ -25,7 +25,5 @@ class MatchResponse: Codable {
                 $0.tracepoints = points
             }
         }
-
     }
 }
-

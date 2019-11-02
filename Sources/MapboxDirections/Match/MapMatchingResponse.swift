@@ -30,5 +30,4 @@ class MapMatchingResponse: Decodable {
         
         routes = try container.decodeIfPresent([Route].self, forKey: .matches)
     }
-
 }
