@@ -31,7 +31,7 @@ public struct CoordinateBounds {
      Initializes a coordinate bounds that includes all the given coordinates.
      */
     public init(coordinates: [CLLocationCoordinate2D]) {
-        assert(coordinates.count >= 2, "coordinates must consist of at least two coordinates")
+        precondition(coordinates.count >= 2, "There must be at least two coordinates to create a coordinate bounds.")
         
         var maximumLatitude: CLLocationDegrees = -90
         var minimumLatitude: CLLocationDegrees = 90
