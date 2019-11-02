@@ -192,24 +192,6 @@ open class RouteOptions: DirectionsOptions {
     }
 }
 
-// MARK: Support for Directions API v4
-
-/**
- A `RouteShapeFormat` indicates the format of a route’s shape in the raw HTTP response.
- */
-public enum InstructionFormat: String {
-    /**
-     The route steps’ instructions are delivered in plain text format.
-     */
-    case text
-    /**
-     The route steps’ instructions are delivered in HTML format.
-
-     Key phrases are boldfaced.
-     */
-    case html
-}
-
 extension CLLocationSpeed {
     /**
      By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
