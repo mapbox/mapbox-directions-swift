@@ -557,7 +557,7 @@
 			name = Instructions;
 			sourceTree = "<group>";
 		};
-		C5DAAC9E20191683001F9261 /* Match */ = {
+		C5DAAC9E20191683001F9261 /* MapMatching */ = {
 			isa = PBXGroup;
 			children = (
 				C5434B89200693D00069E887 /* Tracepoint.swift */,
@@ -566,7 +566,7 @@
 				43F89F97235778DE007B591E /* MapMatchingResponse.swift */,
 				C5DAAC9920191675001F9261 /* Match.swift */,
 			);
-			path = Match;
+			path = MapMatching;
 			sourceTree = "<group>";
 		};
 		C5DAACB2201AA97D001F9261 /* Match */ = {
@@ -582,7 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				8D381B681FDB1009008D5A58 /* Extensions */,
-				C5DAAC9E20191683001F9261 /* Match */,
+				C5DAAC9E20191683001F9261 /* MapMatching */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
