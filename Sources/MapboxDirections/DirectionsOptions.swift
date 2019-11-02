@@ -77,6 +77,35 @@ public enum MeasurementSystem: String, Codable {
     case metric
 }
 
+@available(*, deprecated, renamed: "DirectionsPriority")
+public typealias MBDirectionsPriority = DirectionsPriority
+
+/**
+ A number that influences whether a route should prefer or avoid roadways or pathways of a given type.
+ */
+public struct DirectionsPriority: Hashable, RawRepresentable {
+    public init(rawValue: Double) {
+        self.rawValue = rawValue
+    }
+    
+    public var rawValue: Double
+    
+    /**
+     The priority level with which a route avoids a particular type of roadway or pathway.
+     */
+    static let low = DirectionsPriority(rawValue: -1.0)
+    
+    /**
+     The priority level with which a route neither avoids nor prefers a particular type of roadway or pathway.
+     */
+    static let `default` = DirectionsPriority(rawValue: 0.0)
+    
+    /**
+     The priority level with which a route prefers a particular type of roadway or pathway.
+     */
+    static let high = DirectionsPriority(rawValue: 1.0)
+}
+
 /**
  Options for calculating results from the Mapbox Directions service.
 

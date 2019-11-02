@@ -4,10 +4,8 @@ import Foundation
 public typealias MBDirectionsProfileIdentifier = DirectionsProfileIdentifier
 
 /**
-The returned directions are appropriate for driving or riding a car, truck, or motorcycle.
-
-This profile prioritizes fast routes by preferring high-speed roads like highways. A driving route may use a ferry where necessary.
-*/
+ Options determining the primary mode of transportation for the routes.
+ */
 public struct DirectionsProfileIdentifier: Codable, Hashable, RawRepresentable {
     public init(rawValue: String) {
         self.rawValue = rawValue
@@ -44,19 +42,4 @@ public struct DirectionsProfileIdentifier: Codable, Hashable, RawRepresentable {
     This profile prioritizes short routes, making use of sidewalks and trails where available. A walking route may use other modes of transportation, such as ferries or trains, where necessary.
     */
     public static let walking: DirectionsProfileIdentifier = .init(rawValue: "mapbox/walking")
-}
-
-@available(*, deprecated, renamed: "DirectionsPriority")
-public typealias MBDirectionsPriority = DirectionsPriority
-
-public struct DirectionsPriority: Hashable, RawRepresentable {
-    public init(rawValue: Double) {
-        self.rawValue = rawValue
-    }
-    
-    public var rawValue: Double
-    
-    static let low = DirectionsPriority(rawValue: -1.0)
-    static let `default` = DirectionsPriority(rawValue: 0.0)
-    static let high = DirectionsPriority(rawValue: 1.0)
 }
