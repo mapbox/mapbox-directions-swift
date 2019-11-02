@@ -8,7 +8,7 @@ internal extension CodingUserInfoKey {
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-open class VisualInstructionBanner: Codable, Equatable {
+open class VisualInstructionBanner: Codable {
     private enum CodingKeys: String, CodingKey {
         case distanceAlongStep = "distanceAlongGeometry"
         case primaryInstruction = "primary"
@@ -16,6 +16,9 @@ open class VisualInstructionBanner: Codable, Equatable {
         case tertiaryInstruction = "sub"
         case drivingSide
     }
+    
+    // MARK: Creating a Visual Instruction Banner
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
@@ -36,11 +39,15 @@ open class VisualInstructionBanner: Codable, Equatable {
         }
     }
     
+    // MARK: Timing When to Display the Banner
+    
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
      */
     public let distanceAlongStep: CLLocationDistance
-
+    
+    // MARK: Getting the Instructions to Display
+    
     /**
      The most important information to convey to the user about the `RouteStep`.
      */
@@ -57,13 +64,16 @@ open class VisualInstructionBanner: Codable, Equatable {
      This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
      */
     public let tertiaryInstruction: VisualInstruction?
-
+    
+    // MARK: Respecting Regional Driving Rules
+    
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
     public var drivingSide: DrivingSide!
-    
-    //MARK: - Equatable
+}
+
+extension VisualInstructionBanner: Equatable {
     public static func == (lhs: VisualInstructionBanner, rhs: VisualInstructionBanner) -> Bool {
         return lhs.distanceAlongStep == rhs.distanceAlongStep &&
             lhs.primaryInstruction == rhs.primaryInstruction &&

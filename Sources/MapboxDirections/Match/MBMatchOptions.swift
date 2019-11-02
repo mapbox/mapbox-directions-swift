@@ -7,6 +7,8 @@ import CoreLocation
  Pass an instance of this class into the `Directions.calculate(_:completionHandler:)` method.
  */
 open class MatchOptions: DirectionsOptions {
+    // MARK: Creating a Match Options Object
+    
     /**
      Initializes a match options object for matching locations against the road network.
 
@@ -53,10 +55,14 @@ open class MatchOptions: DirectionsOptions {
         try super.init(from: decoder)
     }
     
+    // MARK: Resampling the Locations Before Matching
+    
     /**
      If true, the input locations are re-sampled for improved map matching results. The default is  `false`.
      */
     open var resamplesTraces: Bool = false
+    
+    // MARK: Separating the Matches Into Legs
     
     /**
      An index set containing indices of two or more items in `coordinates`. These will be represented by `Waypoint`s in the resulting `Match` objects.
@@ -75,7 +81,9 @@ open class MatchOptions: DirectionsOptions {
             return super.legSeparators
         }
     }
-
+    
+    // MARK: Getting the Request URL
+    
     override open var urlQueryItems: [URLQueryItem] {
         var queryItems = super.urlQueryItems
 

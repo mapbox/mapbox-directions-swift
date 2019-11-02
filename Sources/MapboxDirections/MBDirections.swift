@@ -397,6 +397,8 @@ open class Directions: NSObject {
         return request
     }
     
+    // MARK: Postprocessing Responses
+    
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */

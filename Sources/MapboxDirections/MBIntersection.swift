@@ -4,68 +4,8 @@ import CoreLocation
 /**
  A single cross street along a step.
  */
-public struct Intersection: Codable, Equatable {
-    /**
-     The geographic coordinates at the center of the intersection.
-     */
-    public let location: CLLocationCoordinate2D
-    
-    /**
-     An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
-     
-     A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
-     
-     A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
-     */
-    public let headings: [CLLocationDirection]
-    
-    /**
-     The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
-     
-     This index set effectively excludes any one-way road that leads toward the intersection.
-     */
-    public let outletIndexes: IndexSet
-    
-    /**
-     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
-     */
-    public let approachIndex: Int
-    
-    /**
-     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to leave the intersection.
-     */
-    public let outletIndex: Int
-    
-    /**
-     An array of `Lane` objects representing all the lanes of the road that the containing route step uses to approach the intersection.
-     
-     If no lane information is available for an intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
-     */
-    public let approachLanes: [Lane]?
-    
-    /**
-     The indices of the items in the `approachLanes` array that correspond to the roads that may be used to execute the maneuver.
-     
-     If no lane information is available for an intersection, this property’s value is `nil`.
-     */
-    public let usableApproachLanes: IndexSet?
-    
-    /**
-     The road classes of the road that the containing step uses to leave the intersection.
-     
-     If road class information is unavailable, this property is set to `nil`.
-     */
-    public let outletRoadClasses: RoadClasses?
-    
-    private enum CodingKeys: String, CodingKey {
-        case outletIndexes = "entry"
-        case headings = "bearings"
-        case location
-        case approachIndex = "in"
-        case outletIndex = "out"
-        case lanes
-        case outletRoadClasses = "classes"
-    }
+public struct Intersection {
+    // MARK: Creating an Intersection
     
     public init(location: CLLocationCoordinate2D,
                 headings: [CLLocationDirection],
@@ -83,6 +23,78 @@ public struct Intersection: Codable, Equatable {
         self.outletIndexes = outletIndexes
         self.usableApproachLanes = usableApproachLanes
         self.outletRoadClasses = outletRoadClasses
+    }
+    
+    // MARK: Getting the Location of the Intersection
+    
+    /**
+     The geographic coordinates at the center of the intersection.
+     */
+    public let location: CLLocationCoordinate2D
+    
+    // MARK: Getting the Roads that Meet at the Intersection
+    
+    /**
+     An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
+     
+     A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
+     
+     A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
+     */
+    public let headings: [CLLocationDirection]
+    
+    /**
+     The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
+     
+     This index set effectively excludes any one-way road that leads toward the intersection.
+     */
+    public let outletIndexes: IndexSet
+    
+    // MARK: Getting the Roads That Take the Route Through the Intersection
+    
+    /**
+     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
+     */
+    public let approachIndex: Int
+    
+    /**
+     The index of the item in the `headings` array that corresponds to the road that the containing route step uses to leave the intersection.
+     */
+    public let outletIndex: Int
+    
+    /**
+     The road classes of the road that the containing step uses to leave the intersection.
+     
+     If road class information is unavailable, this property is set to `nil`.
+     */
+    public let outletRoadClasses: RoadClasses?
+    
+    // MARK: Telling the User Which Lanes to Use
+    
+    /**
+     An array of `Lane` objects representing all the lanes of the road that the containing route step uses to approach the intersection.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
+     */
+    public let approachLanes: [Lane]?
+    
+    /**
+     The indices of the items in the `approachLanes` array that correspond to the roads that may be used to execute the maneuver.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`.
+     */
+    public let usableApproachLanes: IndexSet?
+}
+
+extension Intersection: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case outletIndexes = "entry"
+        case headings = "bearings"
+        case location
+        case approachIndex = "in"
+        case outletIndex = "out"
+        case lanes
+        case outletRoadClasses = "classes"
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -123,9 +135,9 @@ public struct Intersection: Codable, Equatable {
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1
     }
-    
-    //MARK: - Equatable
-    
+}
+
+extension Intersection: Equatable {
     public static func == (lhs: Intersection, rhs: Intersection) -> Bool {
         return lhs.location == rhs.location &&
             lhs.headings == rhs.headings &&

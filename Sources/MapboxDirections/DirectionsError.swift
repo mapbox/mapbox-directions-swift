@@ -1,6 +1,6 @@
 import Foundation
 
-public enum DirectionsError: LocalizedError, Equatable {
+public enum DirectionsError: LocalizedError {
     case noData
     case invalidInput(message: String?)
     case invalidResponse
@@ -75,7 +75,9 @@ public enum DirectionsError: LocalizedError, Equatable {
             return (error as NSError?)?.userInfo[NSLocalizedRecoverySuggestionErrorKey] as? String
         }
     }
-    
+}
+
+extension DirectionsError: Equatable {
     public static func == (lhs: DirectionsError, rhs: DirectionsError) -> Bool {
         switch (lhs, rhs) {
         case (.noData, .noData),

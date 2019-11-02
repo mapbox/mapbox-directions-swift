@@ -1,15 +1,6 @@
 import Foundation
 
-struct RouteResponse: Codable {
-    enum CodingKeys: String, CodingKey {
-        case code
-        case message
-        case error
-        case uuid
-        case routes
-        case waypoints
-    }
-    
+struct RouteResponse {
     var code: String?
     var message: String?
     var error: String?
@@ -24,6 +15,17 @@ struct RouteResponse: Codable {
         self.uuid = nil
         self.routes = nil
         self.waypoints = nil
+    }
+}
+
+extension RouteResponse: Codable {
+    enum CodingKeys: String, CodingKey {
+        case code
+        case message
+        case error
+        case uuid
+        case routes
+        case waypoints
     }
     
     init(from decoder: Decoder) throws {

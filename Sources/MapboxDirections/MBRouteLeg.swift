@@ -7,7 +7,7 @@ import Polyline
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
-open class RouteLeg: Codable, Equatable {
+open class RouteLeg: Codable {
     public enum CodingKeys: String, CodingKey {
         case source
         case destination
@@ -25,6 +25,8 @@ open class RouteLeg: Codable, Equatable {
         case segmentSpeeds = "speed"
         case segmentCongestionLevels = "congestion"
     }
+    
+    // MARK: Creating a Leg
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -62,7 +64,7 @@ open class RouteLeg: Codable, Equatable {
         try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
     }
 
-    // MARK: Getting the Leg Geometry
+    // MARK: Getting the Endpoints of the Leg
 
     /**
      The starting point of the route leg.
@@ -77,7 +79,9 @@ open class RouteLeg: Codable, Equatable {
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
      */
     public var destination: Waypoint?
-
+    
+    // MARK: Getting the Steps Along the Leg
+    
     /**
      An array of one or more `RouteStep` objects representing the steps for traversing this leg of the route.
 
@@ -86,6 +90,8 @@ open class RouteLeg: Codable, Equatable {
      This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
      */
     public let steps: [RouteStep]
+    
+    // MARK: Getting Per-Segment Attributes Along the Leg
     
     /**
      An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
@@ -123,7 +129,7 @@ open class RouteLeg: Codable, Equatable {
      */
     public let segmentCongestionLevels: [CongestionLevel]?
 
-    // MARK: Getting Additional Leg Details
+    // MARK: Getting Statistics About the Leg
 
     /**
      A name that describes the route leg.
@@ -149,16 +155,18 @@ open class RouteLeg: Codable, Equatable {
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
     public let expectedTravelTime: TimeInterval
-
+    
+    // MARK: Reproducing the Route
+    
     /**
      A string specifying the primary mode of transportation for the route leg.
 
      The value of this property depends on the `RouteOptions.profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     public let profileIdentifier: DirectionsProfileIdentifier
-    
-    // MARK: - Equatable Conformance
-    
+}
+
+extension RouteLeg: Equatable {
     public static func == (lhs: RouteLeg, rhs: RouteLeg) -> Bool {
         return lhs.source == rhs.source &&
             lhs.destination == rhs.destination &&

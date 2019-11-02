@@ -15,7 +15,7 @@ public class Waypoint: Codable {
         case allowsArrivingOnOppositeSide
     }
     
-    // MARK: Creating a Waypoint Object
+    // MARK: Creating a Waypoint
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -99,7 +99,7 @@ public class Waypoint: Codable {
     }
     #endif
     
-    // MARK: Getting the Waypoint’s Location
+    // MARK: Positioning the Waypoint
     
     /**
      The geographic coordinate of the waypoint.
@@ -125,6 +125,7 @@ public class Waypoint: Codable {
      This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     public var targetCoordinate: CLLocationCoordinate2D?
+    
     // MARK: Getting the Direction of Approach
     
     /**
@@ -177,10 +178,12 @@ public class Waypoint: Codable {
      */
     public var name: String?
     
+    // MARK: Separating the Routes Into Legs
+    
     /**
      A Boolean value indicating whether the waypoint is significant enough to appear in the resulting routes as a waypoint separating two legs, along with corresponding guidance instructions.
      
-     By default, this property is set to `true`, which means that each resulting route will include a leg that ends by arriving at the waypoint as `RouteLeg.destination` and a subsequent leg that begins by departing from the waypoint as `RouteLeg.source`. Otherwise, if this property is set to `false`, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the `coordinate` property, accounting for approach-related properties such as `                 heading`.
+     By default, this property is set to `true`, which means that each resulting route will include a leg that ends by arriving at the waypoint as `RouteLeg.destination` and a subsequent leg that begins by departing from the waypoint as `RouteLeg.source`. Otherwise, if this property is set to `false`, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the `coordinate` property, accounting for approach-related properties such as `heading`.
      
      With the Mapbox Directions API, set this property to `false` if you want the waypoint’s location to influence the path that the route follows without attaching any meaning to the waypoint object itself. With the Mapbox Map Matching API, use this property when the `DirectionsOptions.includesSteps` property is `true` or when `coordinates` represents a trace with a high sample rate.
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`, or if `MatchOptions.waypointIndices` is non-nil.

@@ -13,7 +13,7 @@ public extension VisualInstruction {
     /**
      A unit of information displayed to the user as part of a `VisualInstruction`.
      */
-    enum Component: Codable, Equatable {
+    enum Component {
         /**
          The component separates two other destination components.
          
@@ -55,122 +55,6 @@ public extension VisualInstruction {
          - parameter isUsable: Whether the user can use this lane to continue along the current route.
          */
         case lane(indications: LaneIndication, isUsable: Bool)
-        
-        private enum CodingKeys: String, CodingKey {
-            case kind = "type"
-            case text
-            case abbreviatedText = "abbr"
-            case abbreviatedTextPriority = "abbr_priority"
-            case imageBaseURL
-            case directions
-            case isActive = "active"
-        }
-        
-        enum Kind: String, Codable {
-            case delimiter
-            case text
-            case image = "icon"
-            case exit
-            case exitCode = "exit-number"
-            case lane
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let kind = try container.decode(Kind.self, forKey: .kind)
-            
-            if kind == .lane {
-                let indications = try container.decode(LaneIndication.self, forKey: .directions)
-                let isUsable = try container.decode(Bool.self, forKey: .isActive)
-                self = .lane(indications: indications, isUsable: isUsable)
-                return
-            }
-            
-            let text = try container.decode(String.self, forKey: .text)
-            let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
-            let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
-            let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-            
-            switch kind {
-            case .delimiter:
-                self = .delimiter(text: textRepresentation)
-            case .text:
-                self = .text(text: textRepresentation)
-            case .image:
-                var imageBaseURL: URL?
-                if let imageBaseURLString = try container.decodeIfPresent(String.self, forKey: .imageBaseURL) {
-                    imageBaseURL = URL(string: imageBaseURLString)
-                }
-                let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL)
-                self = .image(image: imageRepresentation, alternativeText: textRepresentation)
-            case .exit:
-                self = .exit(text: textRepresentation)
-            case .exitCode:
-                self = .exitCode(text: textRepresentation)
-            case .lane:
-                preconditionFailure("Lane component should have been initialized before decoding text")
-            }
-        }
-        
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            
-            let textRepresentation: TextRepresentation?
-            switch self {
-            case .delimiter(let text):
-                try container.encode(Kind.delimiter, forKey: .kind)
-                textRepresentation = text
-            case .text(let text):
-                try container.encode(Kind.text, forKey: .kind)
-                textRepresentation = text
-            case .image(let image, let alternativeText):
-                try container.encode(Kind.image, forKey: .kind)
-                textRepresentation = alternativeText
-                try container.encodeIfPresent(image.imageBaseURL, forKey: .imageBaseURL)
-            case .exit(let text):
-                try container.encode(Kind.exit, forKey: .kind)
-                textRepresentation = text
-            case .exitCode(let text):
-                try container.encode(Kind.exitCode, forKey: .kind)
-                textRepresentation = text
-            case .lane(let indications, let isUsable):
-                try container.encode(Kind.lane, forKey: .kind)
-                textRepresentation = nil
-                try container.encode(indications, forKey: .directions)
-                try container.encode(isUsable, forKey: .isActive)
-            }
-            
-            if let textRepresentation = textRepresentation {
-                try container.encodeIfPresent(textRepresentation.text, forKey: .text)
-                try container.encodeIfPresent(textRepresentation.abbreviation, forKey: .abbreviatedText)
-                try container.encodeIfPresent(textRepresentation.abbreviationPriority, forKey: .abbreviatedTextPriority)
-            }
-        }
-        
-        public static func ==(lhs: Component, rhs: Component) -> Bool {
-            switch (lhs, rhs) {
-            case (let .delimiter(lhsText), let .delimiter(rhsText)),
-                 (let .text(lhsText), let .text(rhsText)),
-                 (let .exit(lhsText), let .exit(rhsText)),
-                 (let .exitCode(lhsText), let .exitCode(rhsText)):
-                return lhsText == rhsText
-            case (let .image(lhsURL, lhsAlternativeText),
-                  let .image(rhsURL, rhsAlternativeText)):
-                return lhsURL == rhsURL
-                    && lhsAlternativeText == rhsAlternativeText
-            case (let .lane(lhsIndications, lhsIsUsable),
-                  let .lane(rhsIndications, rhsIsUsable)):
-                return lhsIndications == rhsIndications
-                    && lhsIsUsable == rhsIsUsable
-            case (.delimiter, _),
-                 (.text, _),
-                 (.image, _),
-                 (.exit, _),
-                 (.exitCode, _),
-                 (.lane, _):
-                return false
-            }
-        }
     }
 }
 
@@ -245,6 +129,126 @@ public extension VisualInstruction.Component {
             scale = UIScreen.main.scale
             #endif
             return scale
+        }
+    }
+}
+
+extension VisualInstruction.Component: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case kind = "type"
+        case text
+        case abbreviatedText = "abbr"
+        case abbreviatedTextPriority = "abbr_priority"
+        case imageBaseURL
+        case directions
+        case isActive = "active"
+    }
+    
+    enum Kind: String, Codable {
+        case delimiter
+        case text
+        case image = "icon"
+        case exit
+        case exitCode = "exit-number"
+        case lane
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let kind = try container.decode(Kind.self, forKey: .kind)
+        
+        if kind == .lane {
+            let indications = try container.decode(LaneIndication.self, forKey: .directions)
+            let isUsable = try container.decode(Bool.self, forKey: .isActive)
+            self = .lane(indications: indications, isUsable: isUsable)
+            return
+        }
+        
+        let text = try container.decode(String.self, forKey: .text)
+        let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
+        let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
+        let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
+        
+        switch kind {
+        case .delimiter:
+            self = .delimiter(text: textRepresentation)
+        case .text:
+            self = .text(text: textRepresentation)
+        case .image:
+            var imageBaseURL: URL?
+            if let imageBaseURLString = try container.decodeIfPresent(String.self, forKey: .imageBaseURL) {
+                imageBaseURL = URL(string: imageBaseURLString)
+            }
+            let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL)
+            self = .image(image: imageRepresentation, alternativeText: textRepresentation)
+        case .exit:
+            self = .exit(text: textRepresentation)
+        case .exitCode:
+            self = .exitCode(text: textRepresentation)
+        case .lane:
+            preconditionFailure("Lane component should have been initialized before decoding text")
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let textRepresentation: TextRepresentation?
+        switch self {
+        case .delimiter(let text):
+            try container.encode(Kind.delimiter, forKey: .kind)
+            textRepresentation = text
+        case .text(let text):
+            try container.encode(Kind.text, forKey: .kind)
+            textRepresentation = text
+        case .image(let image, let alternativeText):
+            try container.encode(Kind.image, forKey: .kind)
+            textRepresentation = alternativeText
+            try container.encodeIfPresent(image.imageBaseURL, forKey: .imageBaseURL)
+        case .exit(let text):
+            try container.encode(Kind.exit, forKey: .kind)
+            textRepresentation = text
+        case .exitCode(let text):
+            try container.encode(Kind.exitCode, forKey: .kind)
+            textRepresentation = text
+        case .lane(let indications, let isUsable):
+            try container.encode(Kind.lane, forKey: .kind)
+            textRepresentation = nil
+            try container.encode(indications, forKey: .directions)
+            try container.encode(isUsable, forKey: .isActive)
+        }
+        
+        if let textRepresentation = textRepresentation {
+            try container.encodeIfPresent(textRepresentation.text, forKey: .text)
+            try container.encodeIfPresent(textRepresentation.abbreviation, forKey: .abbreviatedText)
+            try container.encodeIfPresent(textRepresentation.abbreviationPriority, forKey: .abbreviatedTextPriority)
+        }
+    }
+}
+
+extension VisualInstruction.Component: Equatable {
+    public static func ==(lhs: VisualInstruction.Component, rhs: VisualInstruction.Component) -> Bool {
+        switch (lhs, rhs) {
+        case (let .delimiter(lhsText), let .delimiter(rhsText)),
+             (let .text(lhsText), let .text(rhsText)),
+             (let .exit(lhsText), let .exit(rhsText)),
+             (let .exitCode(lhsText), let .exitCode(rhsText)):
+            return lhsText == rhsText
+        case (let .image(lhsURL, lhsAlternativeText),
+              let .image(rhsURL, rhsAlternativeText)):
+            return lhsURL == rhsURL
+                && lhsAlternativeText == rhsAlternativeText
+        case (let .lane(lhsIndications, lhsIsUsable),
+              let .lane(rhsIndications, rhsIsUsable)):
+            return lhsIndications == rhsIndications
+                && lhsIsUsable == rhsIsUsable
+        case (.delimiter, _),
+             (.text, _),
+             (.image, _),
+             (.exit, _),
+             (.exitCode, _),
+             (.lane, _):
+            return false
         }
     }
 }

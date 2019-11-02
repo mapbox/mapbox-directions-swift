@@ -3,7 +3,7 @@ import Foundation
 /**
  A `CongestionLevel` indicates the level of traffic congestion along a road segment relative to the normal flow of traffic along that segment. You can color-code a route line according to the congestion level along each segment of the route.
  */
-public enum CongestionLevel: String, Codable{
+public enum CongestionLevel: String, Codable {
     /**
      There is not enough data to determine the level of congestion along the road segment.
      */

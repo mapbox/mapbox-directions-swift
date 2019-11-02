@@ -21,6 +21,8 @@ open class DirectionsResult: Codable {
         case speechLocale = "voiceLocale"
     }
     
+    // MARK: Creating a Directions Result
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         legs = try container.decode([RouteLeg].self, forKey: .legs)
@@ -75,14 +77,18 @@ open class DirectionsResult: Codable {
         try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
     }
     
+    // MARK: Getting the Shape of the Route
+    
     /**
      An array of geographic coordinates defining the path of the route from start to finish.
      
-     This array may be `nil` or simplified depending on the `routeShapeResolution` property of the original `RouteOptions` object.
+     This array may be `nil` or simplified depending on the `DirectionsOptions.routeShapeResolution` property of the original `RouteOptions` or `MatchOptions` object.
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
     public let shape: LineString?
+    
+    // MARK: Getting the Legs Along the Route
     
     /**
      An array of `RouteLeg` objects representing the legs of the route.
@@ -93,7 +99,7 @@ open class DirectionsResult: Codable {
      */
     public let legs: [RouteLeg]
     
-    // MARK: Getting Additional Route Details
+    // MARK: Getting Statistics About the Route
     
     /**
      The route’s distance, measured in meters.
@@ -110,6 +116,17 @@ open class DirectionsResult: Codable {
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
     public let expectedTravelTime: TimeInterval
+    
+    // MARK: Configuring Speech Synthesis
+    
+    /**
+     The locale to use for spoken instructions.
+     
+     This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
+     */
+    open var speechLocale: Locale?
+    
+    // MARK: Reproducing the Route
     
     /**
      `RouteOptions` used to create the directions request.
@@ -136,19 +153,14 @@ open class DirectionsResult: Codable {
      */
     open var apiEndpoint: URL?
     
+    // MARK: Auditing the Server Response
+    
     /**
      A unique identifier for a directions request.
      
      Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
      */
     open var routeIdentifier: String?
-    
-    /**
-     The locale to use for spoken instructions.
-     
-     This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
-     */
-    open var speechLocale: Locale?
     
     /**
      The time immediately before a `Directions` object fetched this result.

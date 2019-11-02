@@ -2,25 +2,19 @@ import Foundation
 import CoreLocation
 
 /**
- A bounding box represents a geographic region.
+ A bounding box represents a geographic region that is rectangular in the Spherical Mercator projection.
  */
-public struct CoordinateBounds: Codable {
+public struct CoordinateBounds {
+    /// The southwest corner.
     let southWest: CLLocationCoordinate2D
+    
+    /// The northeast corner.
     let northEast: CLLocationCoordinate2D
     
-    enum CodingKeys: String, CodingKey {
-        case southWest, northEast
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        southWest = try container.decode(CLLocationCoordinate2D.self, forKey: .southWest)
-        northEast = try container.decode(CLLocationCoordinate2D.self, forKey: .northEast)
-    }
     /**
      Initializes a `BoundingBox` with known bounds.
      */
-        public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+    public init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         self.southWest = southWest
         self.northEast = northEast
     }
@@ -28,7 +22,7 @@ public struct CoordinateBounds: Codable {
     /**
      Initializes a `BoundingBox` with known bounds.
      */
-        public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
+    public init(northWest: CLLocationCoordinate2D, southEast: CLLocationCoordinate2D) {
         self.southWest = CLLocationCoordinate2D(latitude: southEast.latitude, longitude: northWest.longitude)
         self.northEast = CLLocationCoordinate2D(latitude: northWest.latitude, longitude: southEast.longitude)
     }
@@ -59,5 +53,17 @@ public struct CoordinateBounds: Codable {
     
     public var description: String {
         return "\(southWest.longitude),\(southWest.latitude);\(northEast.longitude),\(northEast.latitude)"
+    }
+}
+
+extension CoordinateBounds: Codable {
+    enum CodingKeys: String, CodingKey {
+        case southWest, northEast
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        southWest = try container.decode(CLLocationCoordinate2D.self, forKey: .southWest)
+        northEast = try container.decode(CLLocationCoordinate2D.self, forKey: .northEast)
     }
 }

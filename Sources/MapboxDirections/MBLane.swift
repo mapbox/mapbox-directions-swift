@@ -3,7 +3,7 @@ import Foundation
 /**
  A lane on the road approaching an intersection.
  */
-public struct Lane: Codable, Equatable {
+public struct Lane: Equatable {
     /**
      The lane indications specifying the maneuvers that may be executed from the lane.
      */
@@ -15,7 +15,9 @@ public struct Lane: Codable, Equatable {
         self.indications = indications
         self.isValid = valid
     }
-    
+}
+
+extension Lane: Codable {
     private enum CodingKeys: String, CodingKey {
         case indications
         case valid

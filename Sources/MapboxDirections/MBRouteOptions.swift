@@ -83,12 +83,12 @@ open class RouteOptions: DirectionsOptions {
         self.includesVisualInstructions = matchOptions.includesVisualInstructions
     }
     
-    // MARK: Specifying the Path of the Route
-
     internal override var abridgedPath: String {
         return "directions/v5/\(profileIdentifier.rawValue)"
     }
     
+    // MARK: Influencing the Path of the Route
+
     /**
      A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.
 
@@ -99,26 +99,6 @@ open class RouteOptions: DirectionsOptions {
      The default value of this property is `false` when the profile identifier is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic` and `true` otherwise.
      */
     open var allowsUTurnAtWaypoint: Bool
-    
-    // MARK: Specifying the Response Format
-
-    /**
-     A Boolean value indicating whether alternative routes should be included in the response.
-
-     If the value of this property is `false`, the server only calculates a single route that visits each of the waypoints. If the value of this property is `true`, the server attempts to find additional reasonable routes that visit the waypoints. Regardless, multiple routes are only returned if it is possible to visit the waypoints by a different route without significantly increasing the distance or travel time. The alternative routes may partially overlap with the preferred route, especially if intermediate waypoints are specified.
-
-     Alternative routes may take longer to calculate and make the response significantly larger, so only request alternative routes if you intend to display them to the user or let the user choose them over the preferred route. For example, do not request alternative routes if you only want to know the distance or estimated travel time to a destination.
-
-     The default value of this property is `false`.
-     */
-    open var includesAlternativeRoutes = false
-    
-    /**
-     A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
-
-     If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
-     */
-    open var includesExitRoundaboutManeuver = false
     
     /**
      The route classes that the calculated routes will avoid.
@@ -153,6 +133,28 @@ open class RouteOptions: DirectionsOptions {
      The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. The default value is `CLLocationSpeed.normalWalking`.
      */
     open var speed: CLLocationSpeed = .normalWalking
+    
+    // MARK: Specifying the Response Format
+
+    /**
+     A Boolean value indicating whether alternative routes should be included in the response.
+
+     If the value of this property is `false`, the server only calculates a single route that visits each of the waypoints. If the value of this property is `true`, the server attempts to find additional reasonable routes that visit the waypoints. Regardless, multiple routes are only returned if it is possible to visit the waypoints by a different route without significantly increasing the distance or travel time. The alternative routes may partially overlap with the preferred route, especially if intermediate waypoints are specified.
+
+     Alternative routes may take longer to calculate and make the response significantly larger, so only request alternative routes if you intend to display them to the user or let the user choose them over the preferred route. For example, do not request alternative routes if you only want to know the distance or estimated travel time to a destination.
+
+     The default value of this property is `false`.
+     */
+    open var includesAlternativeRoutes = false
+    
+    /**
+     A Boolean value indicating whether the route includes a `ManeuverType.exitRoundabout` or `ManeuverType.exitRotary` step when traversing a roundabout or rotary, respectively.
+
+     If this option is set to `true`, a route that traverses a roundabout includes both a `ManeuverType.takeRoundabout` step and a `ManeuverType.exitRoundabout` step; likewise, a route that traverses a large, named roundabout includes both a `ManeuverType.takeRotary` step and a `ManeuverType.exitRotary` step. Otherwise, it only includes a `ManeuverType.takeRoundabout` or `ManeuverType.takeRotary` step. This option is set to `false` by default.
+     */
+    open var includesExitRoundaboutManeuver = false
+    
+    // MARK: Getting the Request URL
     
     /**
      An array of URL parameters to include in the request URL.

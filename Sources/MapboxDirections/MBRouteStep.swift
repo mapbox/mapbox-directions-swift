@@ -324,7 +324,7 @@ struct Road {
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-open class RouteStep: Codable, Equatable {
+open class RouteStep: Codable {
     private enum CodingKeys: String, CodingKey {
         case codes
         case geometry
@@ -358,6 +358,8 @@ open class RouteStep: Codable, Equatable {
         case initialHeading = "bearing_before"
         case finalHeading = "bearing_after"
     }
+    
+    // MARK: Creating a Step
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -494,7 +496,7 @@ open class RouteStep: Codable, Equatable {
         }
     }
     
-    // MARK: Getting the Step Geometry
+    // MARK: Getting the Shape of the Step
     
     /**
      The path of the route step from the location of the maneuver to the location of the next step’s maneuver.
@@ -515,24 +517,6 @@ open class RouteStep: Codable, Equatable {
      - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
     public let instructions: String
-    
-    fileprivate let name: String
-    
-    /**
-     Instructions about the next step’s maneuver, optimized for speech synthesis.
-    
-     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
-     
-     This property is non-`nil` if the `RouteOptions.includesSpokenInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
-     */
-    public let instructionsSpokenAlongStep: [SpokenInstruction]?
-    
-     /**
-     Instructions about the next step’s maneuver, optimized for display in real time.
-     As the user traverses this step, you can give them advance notice of the upcoming maneuver by displaying each item in this array in order as the user reaches the specified distances along this step. The text and images of the visual instructions refer to the details in the next step, but the distances are measured from the beginning of this step.
-     This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
-     */
-    public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
     
     /**
      The user’s heading immediately before performing the maneuver.
@@ -629,6 +613,8 @@ open class RouteStep: Codable, Equatable {
      */
     public let names: [String]?
     
+    fileprivate let name: String
+    
     /**
      A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
      
@@ -646,15 +632,6 @@ open class RouteStep: Codable, Equatable {
      If a highway ramp is part of a numbered route, its reference code is contained in this property. On the other hand, guide signage for a highway ramp usually indicates route reference codes of the adjoining road; use the `destinationCodes` property for those route reference codes.
      */
     public let codes: [String]?
-    
-    // MARK: Getting Additional Step Details
-    
-    /**
-     The mode of transportation used for the step.
-     
-     This step may use a different mode of transportation than the overall route.
-     */
-    public let transportType: TransportType
     
     /**
      Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
@@ -678,30 +655,58 @@ open class RouteStep: Codable, Equatable {
      Each item in the array corresponds to a cross street, starting with the intersection at the maneuver location indicated by the coordinates property and continuing with each cross street along the step.
     */
     public let intersections: [Intersection]?
-        
-    // MARK: - Equality
+    
+    // MARK: Getting Details About the Next Maneuver
+    
+    /**
+     Instructions about the next step’s maneuver, optimized for speech synthesis.
+    
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by reading aloud each item in this array in order as the user reaches the specified distances along this step. The text of the spoken instructions refers to the details in the next step, but the distances are measured from the beginning of this step.
+     
+     This property is non-`nil` if the `RouteOptions.includesSpokenInstructions` option is set to `true`. For instructions designed for display, use the `instructions` property.
+     */
+    public let instructionsSpokenAlongStep: [SpokenInstruction]?
+    
+     /**
+     Instructions about the next step’s maneuver, optimized for display in real time.
+     As the user traverses this step, you can give them advance notice of the upcoming maneuver by displaying each item in this array in order as the user reaches the specified distances along this step. The text and images of the visual instructions refer to the details in the next step, but the distances are measured from the beginning of this step.
+     This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
+     */
+    public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
+    
+    // MARK: Getting the Mode of Transportation
+    
+    /**
+     The mode of transportation used for the step.
+     
+     This step may use a different mode of transportation than the overall route.
+     */
+    public let transportType: TransportType
+}
+
+extension RouteStep: Equatable {
     public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
-            return lhs.codes == rhs.codes &&
-                lhs.shape == rhs.shape &&
-                lhs.destinationCodes == rhs.destinationCodes &&
-                lhs.destinations == rhs.destinations &&
-                lhs.distance == rhs.distance &&
-                lhs.drivingSide == rhs.drivingSide &&
-                lhs.exitNames == rhs.exitNames &&
-                lhs.exitCodes == rhs.exitCodes &&
-                lhs.exitIndex == rhs.exitIndex &&
-                lhs.exitNames == rhs.exitNames &&
-                lhs.expectedTravelTime == rhs.expectedTravelTime &&
-                lhs.instructions == rhs.instructions &&
-                lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
-                lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
-                lhs.intersections == rhs.intersections &&
-                lhs.maneuverType == rhs.maneuverType &&
-                lhs.maneuverLocation == rhs.maneuverLocation &&
-                lhs.maneuverDirection == rhs.maneuverDirection &&
-                lhs.name == rhs.name &&
-                lhs.phoneticNames == rhs.phoneticNames &&
-                lhs.phoneticExitNames == rhs.phoneticExitNames &&
-                lhs.transportType == rhs.transportType
-        }
+        return lhs.codes == rhs.codes &&
+            lhs.shape == rhs.shape &&
+            lhs.destinationCodes == rhs.destinationCodes &&
+            lhs.destinations == rhs.destinations &&
+            lhs.distance == rhs.distance &&
+            lhs.drivingSide == rhs.drivingSide &&
+            lhs.exitNames == rhs.exitNames &&
+            lhs.exitCodes == rhs.exitCodes &&
+            lhs.exitIndex == rhs.exitIndex &&
+            lhs.exitNames == rhs.exitNames &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.instructions == rhs.instructions &&
+            lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
+            lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
+            lhs.intersections == rhs.intersections &&
+            lhs.maneuverType == rhs.maneuverType &&
+            lhs.maneuverLocation == rhs.maneuverLocation &&
+            lhs.maneuverDirection == rhs.maneuverDirection &&
+            lhs.name == rhs.name &&
+            lhs.phoneticNames == rhs.phoneticNames &&
+            lhs.phoneticExitNames == rhs.phoneticExitNames &&
+            lhs.transportType == rhs.transportType
+    }
 }

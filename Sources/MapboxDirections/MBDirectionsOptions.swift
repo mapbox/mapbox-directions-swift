@@ -82,7 +82,9 @@ public enum MeasurementSystem: String, Codable {
 
  You do not create instances of this class directly. Instead, create instances of `MatchOptions` or `RouteOptions`.
  */
-open class DirectionsOptions: Codable, Equatable {
+open class DirectionsOptions: Codable {
+    // MARK: Creating a Directions Options Object
+    
     /**
      Initializes an options object for routes between the given waypoints and an optional profile identifier.
 
@@ -141,6 +143,8 @@ open class DirectionsOptions: Codable, Equatable {
         includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
     }
     
+    // MARK: Specifying the Path of the Route
+    
     /**
      An array of `Waypoint` objects representing locations that the route should visit in chronological order.
 
@@ -159,13 +163,17 @@ open class DirectionsOptions: Codable, Equatable {
         let destination = waypoints.removeLast()
         return [source] + waypoints.filter { $0.separatesLegs } + [destination]
     }
-
+    
+    // MARK: Specifying the Mode of Transportation
+    
     /**
      A string specifying the primary mode of transportation for the routes.
 
      The default value of this property is `DirectionsProfileIdentifier.automobile`, which specifies driving directions.
      */
     open var profileIdentifier: DirectionsProfileIdentifier
+
+    // MARK: Specifying the Response Format
 
     /**
      A Boolean value indicating whether `RouteStep` objects should be included in the response.
@@ -241,7 +249,7 @@ open class DirectionsOptions: Codable, Equatable {
      */
     open var includesVisualInstructions = false
     
-    // MARK: - URL Queries
+    // MARK: Getting the Request URL
     
     /**
      An array of URL query items to include in an HTTP request.
@@ -378,8 +386,9 @@ open class DirectionsOptions: Codable, Equatable {
         ]
         return components.percentEncodedQuery ?? ""
     }
-    
-    //MARK: - Equatable
+}
+
+extension DirectionsOptions: Equatable {
     public static func == (lhs: DirectionsOptions, rhs: DirectionsOptions) -> Bool {
         return lhs.waypoints == rhs.waypoints &&
             lhs.profileIdentifier == rhs.profileIdentifier &&
@@ -387,7 +396,7 @@ open class DirectionsOptions: Codable, Equatable {
             lhs.shapeFormat == rhs.shapeFormat &&
             lhs.routeShapeResolution == rhs.routeShapeResolution &&
             lhs.attributeOptions == rhs.attributeOptions &&
-        lhs.locale.identifier == rhs.locale.identifier &&
+            lhs.locale.identifier == rhs.locale.identifier &&
             lhs.includesSpokenInstructions == rhs.includesSpokenInstructions &&
             lhs.distanceMeasurementSystem == rhs.distanceMeasurementSystem &&
             lhs.includesVisualInstructions == rhs.includesVisualInstructions

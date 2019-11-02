@@ -2,7 +2,7 @@ import Foundation
 import Polyline
 import struct Turf.LineString
 
-enum PolyLineString: Codable {
+enum PolyLineString {
     case lineString(_ lineString: LineString)
     case polyline(_ encodedPolyline: String, precision: Double)
     
@@ -16,7 +16,9 @@ enum PolyLineString: Codable {
             self = .polyline(encodedPolyline, precision: precision)
         }
     }
-    
+}
+
+extension PolyLineString: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let options = decoder.userInfo[.options] as? DirectionsOptions
