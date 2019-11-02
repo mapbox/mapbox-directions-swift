@@ -36,6 +36,8 @@ open class VisualInstructionBanner: Codable {
         tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
         if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
             drivingSide = directlyEncoded
+        } else {
+            drivingSide = .right
         }
     }
     
@@ -70,7 +72,7 @@ open class VisualInstructionBanner: Codable {
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
-    public var drivingSide: DrivingSide!
+    public var drivingSide: DrivingSide
 }
 
 extension VisualInstructionBanner: Equatable {
