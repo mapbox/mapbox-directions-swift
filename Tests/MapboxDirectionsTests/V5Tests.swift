@@ -147,7 +147,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(intersection?.usableApproachLanes, IndexSet([0, 1]))
         XCTAssertNotNil(intersection?.approachLanes)
         XCTAssertEqual(intersection?.approachLanes?.count, 3)
-        XCTAssertEqual(intersection?.approachLanes?[1].indications, [.slightLeft, .slightRight])
+        XCTAssertEqual(intersection?.approachLanes?[1], [.slightLeft, .slightRight])
         
         XCTAssertEqual(leg?.steps[58].names, ["Logan Circle Northwest"])
         XCTAssertNil(leg?.steps[58].exitNames)

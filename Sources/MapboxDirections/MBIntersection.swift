@@ -12,7 +12,7 @@ public struct Intersection {
                 approachIndex: Int,
                 outletIndex: Int,
                 outletIndexes: IndexSet,
-                approachLanes: [Lane]?,
+                approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
                 outletRoadClasses: RoadClasses?) {
         self.location = location
@@ -72,14 +72,14 @@ public struct Intersection {
     // MARK: Telling the User Which Lanes to Use
     
     /**
-     An array of `Lane` objects representing all the lanes of the road that the containing route step uses to approach the intersection.
+     All the lanes of the road that the containing route step uses to approach the intersection. Each item in the array represents a lane, which is represented by one or more `LaneIndication`s.
      
-     If no lane information is available for an intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
+     If no lane information is available for the intersection, this property’s value is `nil`. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.
      */
-    public let approachLanes: [Lane]?
+    public let approachLanes: [LaneIndication]?
     
     /**
-     The indices of the items in the `approachLanes` array that correspond to the roads that may be used to execute the maneuver.
+     The indices of the items in the `approachLanes` array that correspond to the lanes that may be used to execute the maneuver.
      
      If no lane information is available for an intersection, this property’s value is `nil`.
      */
@@ -113,7 +113,15 @@ extension Intersection: Codable {
         
         try container.encode(outletArray, forKey: .outletIndexes)
         
-        try container.encode(approachLanes, forKey: .lanes)
+        var lanes: [Lane]?
+        if let approachLanes = approachLanes,
+            let usableApproachLanes = usableApproachLanes {
+            lanes = approachLanes.map { Lane(indications: $0) }
+            for i in usableApproachLanes {
+                lanes![i].isValid = true
+            }
+        }
+        try container.encode(lanes, forKey: .lanes)
         
         if let classes = outletRoadClasses?.description.components(separatedBy: ",") {
             try container.encode(classes, forKey: .outletRoadClasses)
@@ -125,8 +133,13 @@ extension Intersection: Codable {
         location = try container.decode(CLLocationCoordinate2D.self, forKey: .location)
         headings = try container.decode([CLLocationDirection].self, forKey: .headings)
         
-        approachLanes = try container.decodeIfPresent([Lane].self, forKey: .lanes)
-        usableApproachLanes = approachLanes?.indices { $0.isValid }
+        if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
+            approachLanes = lanes.map { $0.indications }
+            usableApproachLanes = lanes.indices { $0.isValid }
+        } else {
+            approachLanes = nil
+            usableApproachLanes = nil
+        }
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
