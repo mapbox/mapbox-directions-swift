@@ -10,7 +10,7 @@ import struct Turf.LineString
  */
 open class DirectionsResult: Codable {
     private enum CodingKeys: String, CodingKey {
-        case geometry = "geometry"
+        case shape = "geometry"
         case legs
         case distance
         case expectedTravelTime = "duration"
@@ -31,7 +31,7 @@ open class DirectionsResult: Codable {
         
         _directionsOptions = decoder.userInfo[.options] as! DirectionsOptions
     
-        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .geometry) {
+        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
         } else {
             shape = nil
@@ -67,7 +67,7 @@ open class DirectionsResult: Codable {
         try container.encode(legs, forKey: .legs)
         if let shape = shape {
             let polyLineString = PolyLineString(lineString: shape, shapeFormat: directionsOptions.shapeFormat)
-            try container.encode(polyLineString, forKey: .geometry)
+            try container.encode(polyLineString, forKey: .shape)
         }
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
