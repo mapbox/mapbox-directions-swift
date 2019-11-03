@@ -163,18 +163,18 @@ public class Waypoint: Codable {
     }
     
     /**
-     A boolean value indicating whether arriving on opposite side is allowed.
+     A Boolean value indicating whether arriving on opposite side is allowed.
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
      This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    @objc open var allowsArrivingOnOppositeSide = true
+    open var allowsArrivingOnOppositeSide = true
     
     // MARK: Identifying the Waypoint
     
     /**
      The name of the waypoint.
      
-     This argument does not affect the route, but you can set the name of a waypoint you pass into a `RouteOptions` object to help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
+     This property does not affect the route, but the name is included in the arrival instruction, to help the user distinguish between multiple destinations. The name can also help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
     public var name: String?
     
