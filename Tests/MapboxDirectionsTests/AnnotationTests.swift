@@ -20,7 +20,7 @@ class AnnotationTests: XCTestCase {
             "continue_straight": "true",
             "access_token": BogusToken,
             "annotations": "distance,duration,speed,congestion"
-            ]
+        ]
         
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
@@ -31,7 +31,7 @@ class AnnotationTests: XCTestCase {
         let options = RouteOptions(coordinates: [
             CLLocationCoordinate2D(latitude: 37.780602, longitude: -122.431373),
             CLLocationCoordinate2D(latitude: 37.758859, longitude: -122.404058),
-            ], profileIdentifier: .automobileAvoidingTraffic)
+        ], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline
         options.includesSteps = false
         options.includesAlternativeRoutes = false
@@ -55,17 +55,23 @@ class AnnotationTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route!.shape)
-        XCTAssertEqual(route!.shape?.coordinates.count, 99)
-        XCTAssertEqual(route!.routeIdentifier, "cj725hpi30yp2ztm2ehbcipmh")
+        if let route = route {
+            XCTAssertNotNil(route.shape)
+            XCTAssertEqual(route.shape?.coordinates.count, 155)
+            XCTAssertEqual(route.routeIdentifier, "ck2l3ymrx18ws68qo1ukqt9p1")
+        }
         
-        let leg = route!.legs.first!
-        XCTAssertEqual(leg.segmentDistances!.count, 98)
-        XCTAssertEqual(leg.segmentSpeeds!.count, 98)
-        XCTAssertEqual(leg.expectedSegmentTravelTimes!.count, 98)
-        XCTAssertEqual(leg.segmentCongestionLevels!.count, 98)
-        XCTAssertEqual(leg.segmentCongestionLevels!.first!, .moderate)
-        XCTAssertEqual(leg.segmentCongestionLevels!.last!, .low)
+        if let leg = route?.legs.first {
+            XCTAssertEqual(leg.segmentDistances?.count, 154)
+            XCTAssertEqual(leg.segmentSpeeds?.count, 154)
+            XCTAssertEqual(leg.expectedSegmentTravelTimes?.count, 154)
+            XCTAssertEqual(leg.segmentCongestionLevels?.count, 154)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .unknown), 134)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .low), 0)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .moderate), 19)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .heavy), 29)
+            XCTAssertFalse(leg.segmentCongestionLevels?.contains(.severe) ?? true)
+        }
     }
 }
 #endif

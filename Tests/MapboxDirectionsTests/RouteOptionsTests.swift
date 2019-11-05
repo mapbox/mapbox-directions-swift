@@ -42,27 +42,42 @@ class RouteOptionsTests: XCTestCase {
     
     private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
         let testBundle = Bundle(for: type(of: self))
-        guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else { XCTFail(); return nil }
-        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {XCTFail(); return nil }
+        guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else {
+            XCTFail()
+            return nil
+        }
+        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {
+            XCTFail()
+            return nil
+        }
     
         let subject = RouteOptions(waypoints: waypoints)
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = subject
-        let response = try! decoder.decode(RouteResponse.self, from: fixtureData)
-
-        guard let waypoints = response.waypoints, let routes = response.routes else { XCTFail("Expected responses not returned from service"); return nil}
-        guard let primary = routes.first else {XCTFail("Expected a route in response"); return nil}
-        return (waypoints:waypoints, route:primary)
+        var response: RouteResponse?
+        XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
+        XCTAssertNotNil(response)
+        
+        if let response = response {
+            XCTAssertNotNil(response.waypoints)
+            XCTAssertNotNil(response.routes)
+        }
+        guard let waypoints = response?.waypoints, let route = response?.routes?.first else {
+            return nil
+        }
+        return (waypoints: waypoints, route: route)
     }
     
     func testResponseWithoutDestinationName() {
+        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.412115,39.272675.json?overview=false&steps=false&access_token=pk.feedcafedeadbeef
         let response = self.response(for: "noDestinationName")!
-        XCTAssert(response.route.legs.last!.destination!.name == nil, "API waypoint with no name (aka \"\") needs to be represented as `nil`.")
+        XCTAssertNil(response.route.legs.last?.destination?.name, "Empty-string waypoint name in API responds should be represented as nil.")
     }
     
     func testResponseWithDestinationName() {
+        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.41195,39.27260.json?overview=false&steps=false&access_token=pk.feedcafedeadbeef
         let response = self.response(for: "apiDestinationName")!
-        XCTAssert(response.route.legs.last!.destination!.name == "testpass", "Waypoint name in fixture response not parsed correctly.")
+        XCTAssertEqual(response.route.legs.last?.destination?.name, "Reading Road", "Waypoint name in fixture response not parsed correctly.")
     }
     
     func testResponseWithManuallySetDestinationName() {
@@ -70,7 +85,7 @@ class RouteOptionsTests: XCTestCase {
         manuallySet.last!.name = "manuallyset"
         
         let response = self.response(for: "apiDestinationName", waypoints: manuallySet)!
-        XCTAssert(response.route.legs.last!.destination!.name == "manuallyset", "Waypoint with manually set name should override any computed name.")
+        XCTAssertEqual(response.route.legs.last?.destination?.name, "manuallyset", "Waypoint with manually set name should override any computed name.")
     }
     
     func testApproachesURLQueryParams() {

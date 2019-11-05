@@ -53,7 +53,7 @@ class RoutableMatchTest: XCTestCase {
         
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)
-        XCTAssertEqual(route.shape!.coordinates.count, 8)
+        XCTAssertEqual(route.shape!.coordinates.count, 18)
         XCTAssertEqual(route.accessToken, BogusToken)
         XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier, nil)

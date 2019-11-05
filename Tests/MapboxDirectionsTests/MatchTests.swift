@@ -50,7 +50,7 @@ class MatchTests: XCTestCase {
         
         XCTAssertNotNil(match)
         XCTAssertNotNil(match.shape)
-        XCTAssertEqual(match.shape!.coordinates.count, 8)
+        XCTAssertEqual(match.shape!.coordinates.count, 18)
         XCTAssertEqual(match.accessToken, BogusToken)
         XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(match.routeIdentifier, nil)
@@ -65,7 +65,7 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(round(match!.shape!.coordinates.first!.latitude), 33)
         XCTAssertEqual(round(match!.shape!.coordinates.first!.longitude), -117)
         XCTAssertEqual(match!.legs.count, 6)
-        XCTAssertEqual(match!.confidence, 0.95)
+        XCTAssertEqual(match!.confidence, 0.95, accuracy: 1e-2)
 
         let leg = match!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
@@ -97,7 +97,7 @@ class MatchTests: XCTestCase {
     
     func testMatchWithNullTracepoints() {
         let expectation = self.expectation(description: "calculating directions should return results")
-        let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
+        let locations = [CLLocationCoordinate2D(latitude: 32.70949, longitude: -117.17747),
                          CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
                          CLLocationCoordinate2D(latitude: 32.712444, longitude: -117.17292),
                          CLLocationCoordinate2D(latitude: 32.71257, longitude: -117.172922),
