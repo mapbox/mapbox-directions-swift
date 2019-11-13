@@ -41,10 +41,9 @@ open class DirectionsResult: Codable {
         }
         
         // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        
-        let waypoints = directionsOptions.legSeparators //we don't want to name via points
+        // Create waypoints from waypoints in the options. Skip waypoints that don’t separate legs.
+        let waypoints = directionsOptions.legSeparators.map { Waypoint(coordinate: $0.coordinate, correction: 0, name: $0.name) }
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
-        
         for (endpoints, leg) in legInfo {
             leg.source = endpoints.0
             leg.destination = endpoints.1

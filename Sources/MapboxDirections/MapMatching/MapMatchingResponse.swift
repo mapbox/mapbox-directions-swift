@@ -3,7 +3,7 @@ import Foundation
 class MapMatchingResponse: Decodable {
     var code: String
     var routes : [Route]?
-    var waypoints: [Waypoint]
+    var waypoints: [Match.Waypoint]
     
     private enum CodingKeys: String, CodingKey {
         case code
@@ -17,17 +17,17 @@ class MapMatchingResponse: Decodable {
         routes = try container.decodeIfPresent([Route].self, forKey: .matches)
         
         // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
-        let decodedWaypoints = try container.decode([Waypoint].self, forKey: .tracepoints)
+        let decodedWaypoints = try container.decode([Match.Waypoint].self, forKey: .tracepoints)
         if let options = decoder.userInfo[.options] as? DirectionsOptions {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
-            waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Waypoint in
+            waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Match.Waypoint in
                 let (decodedWaypoint, waypointInOptions) = pair
-                let waypoint = Waypoint(coordinate: decodedWaypoint.coordinate, coordinateAccuracy: waypointInOptions.coordinateAccuracy, name: waypointInOptions.name?.nonEmptyString ?? decodedWaypoint.name)
-                waypoint.separatesLegs = waypointInOptions.separatesLegs
+                var waypoint = decodedWaypoint
+                if waypointInOptions.separatesLegs, let name = waypointInOptions.name?.nonEmptyString {
+                    waypoint.name = name
+                }
                 return waypoint
             }
-            waypoints.first?.separatesLegs = true
-            waypoints.last?.separatesLegs = true
         } else {
             waypoints = decodedWaypoints
         }
@@ -36,7 +36,8 @@ class MapMatchingResponse: Decodable {
             // Postprocess each route.
             for route in routes {
                 // Imbue each route’s legs with the leg-separating waypoints refined above.
-                route.legSeparators = waypoints.filter { $0.separatesLegs }
+                // TODO: Filter these waypoints by whether they separate legs, based on the options, if given.
+                route.legSeparators = waypoints
             }
             self.routes = routes
         } else {

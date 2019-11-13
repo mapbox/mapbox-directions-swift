@@ -27,14 +27,15 @@ class RoutableMatchTest: XCTestCase {
         }
         
         var route: Route!
-        var waypoints: [Waypoint]!
+        var waypoints: [Route.Waypoint]!
         
-        let matchOptions = MatchOptions(coordinates: locations)
+        let matchOptions = MatchOptions(waypoints: locations.map { (location) in
+            var waypoint = MatchOptions.Waypoint(coordinate: location)
+            waypoint.separatesLegs = false
+            return waypoint
+        })
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
-        for waypoint in matchOptions.waypoints[1..<(locations.count - 1)] {
-            waypoint.separatesLegs = false
-        }
         
         let task = Directions(accessToken: BogusToken).calculateRoutes(matching: matchOptions) { (wpoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!)")

@@ -8,6 +8,14 @@
 * Swift is now required to directly use public types and methods defined by this library. If your application is written in Objective-C or Cocoa-AppleScript, you need to implement your own wrapper in Swift that bridges to Objective-C. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * This library now depends on [Turf](https://github.com/mapbox/turf-swift/). ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 
+### Locations and geometry
+
+* Replaced the `Waypoint` and `Tracepoint` classes with separate classes for requests and responses. Now you create a `RouteOptions` or `MatchOptions` using a series of `DirectionsOptions.Waypoint` instances (also known as `RouteOptions.Waypoint` or `MatchOptions.Waypoint`). The `RouteCompletionHandler` and `MatchCompletionHandler` closures and the response types represent waypoints as `DirectionsResult.Waypoint` (also known as `RouteOptions.Waypoint`) and tracepoints as `Match.Tracepoint`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Replaced the `Route.coordinates` property with `Route.shape` and the `RouteStep.coordinates` property with `RouteStep.shape`. The `Route.coordinateCount` and `RouteStep.coordinateCount` properties have been removed, but you can use the `LineString.coordinates` property to get the array of `CLLocationCoordinate2D`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* `RouteLeg.source` and `RouteLeg.destination` are now optional. They can be `nil` when the `RouteLeg` object is decoded individually from JSON. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* The `
+* Renamed the `Tracepoint.alternateCount` property to `Tracepoint.countOfAlternatives`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+
 ### Error handling
 
 * The `RouteCompletionHandler` and `MatchCompletionHandler` closures’ `error` argument is now a `DirectionsError` instead of an `NSError`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
@@ -23,11 +31,8 @@
 
 * Removed support for [Mapbox Directions API v4](https://docs.mapbox.com/api/legacy/directions-v4/). ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Replaced the `MBDefaultWalkingSpeed`, `MBMinimumWalkingSpeed`, and `MBMaximumWalkingSpeed` constants with `CLLocationSpeed.normalWalking`, `CLLocationSpeed.minimumWalking`, and `CLLocationSpeed.maximumWalking`, respectively.
-* Replaced the `Route.coordinates` property with `Route.shape` and the `RouteStep.coordinates` property with `RouteStep.shape`. The `Route.coordinateCount` and `RouteStep.coordinateCount` properties have been removed, but you can use the `LineString.coordinates` property to get the array of `CLLocationCoordinate2D`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
-* `RouteLeg.source` and `RouteLeg.destination` are now optional. They can be `nil` when the `RouteLeg` object is decoded individually from JSON. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Removed `TransportType.none`, `ManeuverType.none`, and `ManeuverDirection.none`. Unrecognized `TransportType` and `ManeuverDirection` values now raise decoding errors. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * `RouteStep.maneuverType` is now optional. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
-* Renamed the `Tracepoint.alternateCount` property to `Tracepoint.countOfAlternatives`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 
 ## v0.30.0
 

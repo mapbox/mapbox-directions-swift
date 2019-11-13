@@ -58,7 +58,6 @@ class MatchTests: XCTestCase {
         let tracePoints = match.tracepoints
         XCTAssertNotNil(tracePoints)
         XCTAssertEqual(tracePoints.first!!.countOfAlternatives, 0)
-        XCTAssertEqual(tracePoints.last!!.name, "West G Street")
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding

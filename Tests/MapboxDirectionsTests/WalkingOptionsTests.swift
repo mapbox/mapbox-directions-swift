@@ -6,8 +6,8 @@ import CoreLocation
 class WalkingOptionsTests: XCTestCase {
     func testURLQueryParams() {
         let waypoints = [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
         ]
 
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: DirectionsProfileIdentifier.walking)

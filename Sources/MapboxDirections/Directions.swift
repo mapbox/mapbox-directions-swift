@@ -77,7 +77,7 @@ open class Directions: NSObject {
      If the request was canceled or there was an error obtaining the routes, this argument is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: DirectionsError?) -> Void
+    public typealias RouteCompletionHandler = (_ waypoints: [Route.Waypoint]?, _ routes: [Route]?, _ error: DirectionsError?) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
@@ -306,7 +306,7 @@ open class Directions: NSObject {
                     let decoder = DirectionsDecoder(options: options)
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     guard result.code == "Ok" else {
-                        let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
+                        let apiError = Directions.informativeError(code: result.code, message: nil, response: response, underlyingError: possibleError)
                         completionHandler(nil, nil, apiError)
                         return
                     }
@@ -464,9 +464,9 @@ public class DirectionsDecoder: JSONDecoder {
         }
     }
     
-    var tracepoints: [Tracepoint?]? {
+    var tracepoints: [Match.Tracepoint?]? {
         get {
-            return userInfo[.tracepoints] as? [Tracepoint?]
+            return userInfo[.tracepoints] as? [Match.Tracepoint?]
         } set {
             userInfo[.tracepoints] = newValue
         }
