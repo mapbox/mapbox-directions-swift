@@ -35,7 +35,7 @@ open class MatchOptions: DirectionsOptions {
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
-    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier?) {
+    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
     
