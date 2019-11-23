@@ -28,17 +28,28 @@ open class RouteLeg: Codable {
     
     // MARK: Creating a Leg
     
+    /**
+     Creates a route leg from a decoder.
+     
+     - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `RouteOptions` or `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
+     - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `RouteLeg` object.
+     */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let options = decoder.userInfo[.options] as? DirectionsOptions
-
         source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
         destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
         steps = try container.decode([RouteStep].self, forKey: .steps)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) ?? options!.profileIdentifier
+        
+        if let profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) {
+            self.profileIdentifier = profileIdentifier
+        } else if let options = decoder.userInfo[.options] as? DirectionsOptions {
+            profileIdentifier = options.profileIdentifier
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
         
         let annotation = try? container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
         segmentDistances = try annotation?.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
@@ -70,6 +81,8 @@ open class RouteLeg: Codable {
      The starting point of the route leg.
 
      Unless this is the first leg of the route, the source of this leg is the same as the destination of the previous leg.
+     
+     This property is set to `nil` if the leg was decoded from a JSON RouteLeg object.
      */
     public var source: Waypoint?
 
@@ -77,6 +90,8 @@ open class RouteLeg: Codable {
      The endpoint of the route leg.
 
      Unless this is the last leg of the route, the destination of this leg is the same as the source of the next leg.
+     
+     This property is set to `nil` if the leg was decoded from a JSON RouteLeg object.
      */
     public var destination: Waypoint?
     

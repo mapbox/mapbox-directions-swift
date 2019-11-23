@@ -16,11 +16,23 @@ open class Match: DirectionsResult {
         case tracepoints
         case matchOptions
     }
+    
+    /**
+     Creates a match from a decoder.
+     
+     - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
+     - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Match` object.
+     */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         confidence = try container.decode(Float.self, forKey: .confidence)
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints) ?? []
-        matchOptions = try container.decodeIfPresent(MatchOptions.self, forKey: .matchOptions) ?? decoder.userInfo[.options] as! MatchOptions
+        if let matchOptions = try container.decodeIfPresent(MatchOptions.self, forKey: .matchOptions)
+            ?? decoder.userInfo[.options] as? MatchOptions {
+            self.matchOptions = matchOptions
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
         try super.init(from: decoder)
     }
     

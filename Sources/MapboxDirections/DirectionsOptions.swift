@@ -32,6 +32,8 @@ public enum RouteShapeFormat: String, Codable {
      This format is an order of magnitude more precise than `polyline`.
      */
     case polyline6
+    
+    static let `default` = RouteShapeFormat.polyline
 }
 
 /**

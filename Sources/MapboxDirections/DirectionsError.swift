@@ -1,5 +1,8 @@
 import Foundation
 
+/**
+ An error that occurs when calculating directions.
+ */
 public enum DirectionsError: LocalizedError {
     /**
      The server returned an empty response.
@@ -168,4 +171,14 @@ extension DirectionsError: Equatable {
             return false
         }
     }
+}
+
+/**
+ An error that occurs when encoding or decoding a type defined by the MapboxDirections framework.
+ */
+public enum DirectionsCodingError: Error {
+    /**
+     Decoding this type requires the `Decoder.userInfo` dictionary to contain the `CodingUserInfoKey.options` key.
+     */
+    case missingOptions
 }

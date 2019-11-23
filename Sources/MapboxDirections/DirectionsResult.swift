@@ -29,7 +29,10 @@ open class DirectionsResult: Codable {
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        _directionsOptions = decoder.userInfo[.options] as! DirectionsOptions
+        guard let directionsOptions = decoder.userInfo[.options] as? DirectionsOptions else {
+            throw DirectionsCodingError.missingOptions
+        }
+        _directionsOptions = directionsOptions
     
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
@@ -53,8 +56,8 @@ open class DirectionsResult: Codable {
         
         do {
             speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
-        } catch let DecodingError.typeMismatch(mismatchedType, context){
-            guard mismatchedType == Dictionary<String, Any>.self else {
+        } catch let DecodingError.typeMismatch(mismatchedType, context) {
+            guard mismatchedType == [String: Any].self else {
                 throw DecodingError.typeMismatch(mismatchedType, context)
             }
             let identifier = try container.decode(String.self, forKey: .speechLocale)
@@ -98,6 +101,19 @@ open class DirectionsResult: Codable {
      To determine the name of the route, concatenate the names of the route’s legs.
      */
     public let legs: [RouteLeg]
+    
+    public var legSeparators: [Waypoint?] {
+        get {
+            return legs.isEmpty ? [] : ([legs[0].source] + legs.map { $0.destination })
+        }
+        set {
+            let endpointsByLeg = zip(newValue, newValue.suffix(from: 1))
+            for (leg, (source, destination)) in zip(legs, endpointsByLeg) {
+                leg.source = source
+                leg.destination = destination
+            }
+        }
+    }
     
     // MARK: Getting Statistics About the Route
     

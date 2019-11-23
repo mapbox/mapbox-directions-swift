@@ -12,22 +12,35 @@ class MapMatchingResponse: Decodable {
     }
     
     public required init(from decoder: Decoder) throws {
-        let options = decoder.userInfo[.options] as? MatchOptions
         let container = try decoder.container(keyedBy: CodingKeys.self)
         code = try container.decode(String.self, forKey: .code)
-        let waypoints = try container.decode([Waypoint].self, forKey: .tracepoints)
+        routes = try container.decodeIfPresent([Route].self, forKey: .matches)
         
-        if let optionsPoints = options?.waypoints {
-            let updatedPoints = zip(waypoints, optionsPoints).map { (arg) -> Waypoint in
-                let (local, api) = arg
-                
-                return Waypoint(coordinate: api.coordinate, coordinateAccuracy: local.coordinateAccuracy, name: local.name ?? api.name)
+        // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
+        let decodedWaypoints = try container.decode([Waypoint].self, forKey: .tracepoints)
+        if let options = decoder.userInfo[.options] as? DirectionsOptions {
+            // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
+            waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Waypoint in
+                let (decodedWaypoint, waypointInOptions) = pair
+                let waypoint = Waypoint(coordinate: decodedWaypoint.coordinate, coordinateAccuracy: waypointInOptions.coordinateAccuracy, name: waypointInOptions.name?.nonEmptyString ?? decodedWaypoint.name)
+                waypoint.separatesLegs = waypointInOptions.separatesLegs
+                return waypoint
             }
-            self.waypoints = updatedPoints
+            waypoints.first?.separatesLegs = true
+            waypoints.last?.separatesLegs = true
         } else {
-            self.waypoints = waypoints
+            waypoints = decodedWaypoints
         }
         
-        routes = try container.decodeIfPresent([Route].self, forKey: .matches)
+        if let routes = try container.decodeIfPresent([Route].self, forKey: .matches) {
+            // Postprocess each route.
+            for route in routes {
+                // Imbue each route’s legs with the leg-separating waypoints refined above.
+                route.legSeparators = waypoints.filter { $0.separatesLegs }
+            }
+            self.routes = routes
+        } else {
+            routes = nil
+        }
     }
 }

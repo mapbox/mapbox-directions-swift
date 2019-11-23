@@ -22,7 +22,7 @@ extension PolyLineString: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let options = decoder.userInfo[.options] as? DirectionsOptions
-        switch options?.shapeFormat ?? .polyline {
+        switch options?.shapeFormat ?? .default {
         case .geoJSON:
             self = .lineString(try container.decode(LineString.self))
         case .polyline, .polyline6:

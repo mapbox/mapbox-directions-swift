@@ -430,8 +430,9 @@ open class RouteStep: Codable {
         
         try container.encodeIfPresent(intersections, forKey: .intersections)
         try container.encode(drivingSide, forKey: .drivingSide)
-        if let shape = shape, let options = encoder.userInfo[.options] as? DirectionsOptions {
-            let shapeFormat = options.shapeFormat
+        if let shape = shape {
+            let options = encoder.userInfo[.options] as? DirectionsOptions
+            let shapeFormat = options?.shapeFormat ?? .default
             let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
             try container.encode(polyLineString, forKey: .shape)
         }

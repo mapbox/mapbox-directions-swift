@@ -8,11 +8,19 @@ open class Route: DirectionsResult {
         case routeOptions
     }
     
+    /**
+     Creates a route from a decoder.
+     
+     - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `RouteOptions` or `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
+     - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Route` object.
+     */
     public required init(from decoder: Decoder) throws {
         if let matchOptions = decoder.userInfo[.options] as? MatchOptions {
             routeOptions = RouteOptions(matchOptions: matchOptions)
+        } else if let routeOptions = decoder.userInfo[.options] as? RouteOptions {
+            self.routeOptions = routeOptions
         } else {
-            routeOptions = decoder.userInfo[.options] as! RouteOptions
+            throw DirectionsCodingError.missingOptions
         }
 
         try super.init(from: decoder)
