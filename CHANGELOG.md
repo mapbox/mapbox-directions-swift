@@ -24,6 +24,7 @@
 * Removed support for [Mapbox Directions API v4](https://docs.mapbox.com/api/legacy/directions-v4/). ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Replaced the `MBDefaultWalkingSpeed`, `MBMinimumWalkingSpeed`, and `MBMaximumWalkingSpeed` constants with `CLLocationSpeed.normalWalking`, `CLLocationSpeed.minimumWalking`, and `CLLocationSpeed.maximumWalking`, respectively.
 * Replaced the `Route.coordinates` property with `Route.shape` and the `RouteStep.coordinates` property with `RouteStep.shape`. The `Route.coordinateCount` and `RouteStep.coordinateCount` properties have been removed, but you can use the `LineString.coordinates` property to get the array of `CLLocationCoordinate2D`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* `RouteLeg.source` and `RouteLeg.destination` are now optional. They can be `nil` when the `RouteLeg` object is decoded individually from JSON. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 
 ## v0.30.0
 
