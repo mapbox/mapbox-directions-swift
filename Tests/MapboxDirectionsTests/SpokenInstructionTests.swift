@@ -1,0 +1,37 @@
+import XCTest
+@testable import MapboxDirections
+
+class SpokenInstructionTests: XCTestCase {
+    func testCoding() {
+        let instructionJSON: [String: Any] = [
+            "distanceAlongGeometry": 20.8,
+            "announcement": "Head east on Hageman Street, then turn right onto Reading Road",
+            "ssmlAnnouncement": "<speak><amazon:effect name=\"drc\"><prosody rate=\"1.08\">Head east on Hageman Street, then turn right onto <phoneme ph=\"ˈɹɛdɪŋ ˈɹoʊd\">Reading Road</phoneme></prosody></amazon:effect></speak>",
+        ]
+        let instructionData = try! JSONSerialization.data(withJSONObject: instructionJSON, options: [])
+        var instruction: SpokenInstruction?
+        XCTAssertNoThrow(instruction = try JSONDecoder().decode(SpokenInstruction.self, from: instructionData))
+        XCTAssertNotNil(instruction)
+        if let instruction = instruction {
+            XCTAssertEqual(instruction.distanceAlongStep, instructionJSON["distanceAlongGeometry"] as! CLLocationDistance)
+            XCTAssertEqual(instruction.text, instructionJSON["announcement"] as! String)
+            XCTAssertEqual(instruction.ssmlText, instructionJSON["ssmlAnnouncement"] as! String)
+        }
+        
+        instruction = SpokenInstruction(distanceAlongStep: instructionJSON["distanceAlongGeometry"] as! CLLocationDistance,
+                                        text: instructionJSON["announcement"] as! String,
+                                        ssmlText: instructionJSON["ssmlAnnouncement"] as! String)
+        let encoder = JSONEncoder()
+        var encodedData: Data?
+        XCTAssertNoThrow(encodedData = try encoder.encode(instruction))
+        XCTAssertNotNil(encodedData)
+        
+        if let encodedData = encodedData {
+            var encodedInstructionJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedInstructionJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedInstructionJSON)
+            
+            XCTAssert(JSONSerialization.objectsAreEqual(instructionJSON, encodedInstructionJSON, approximate: true))
+        }
+    }
+}

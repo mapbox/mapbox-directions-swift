@@ -3,7 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-class SpokenInstructionsTests: XCTestCase {
+class VisualInstructionsTests: XCTestCase {
     override func tearDown() {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
