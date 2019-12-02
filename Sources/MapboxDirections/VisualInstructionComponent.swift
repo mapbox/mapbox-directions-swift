@@ -204,7 +204,7 @@ extension VisualInstruction.Component: Codable {
         case .image(let image, let alternativeText):
             try container.encode(Kind.image, forKey: .kind)
             textRepresentation = alternativeText
-            try container.encodeIfPresent(image.imageBaseURL, forKey: .imageBaseURL)
+            try container.encodeIfPresent(image.imageBaseURL?.absoluteString, forKey: .imageBaseURL)
         case .exit(let text):
             try container.encode(Kind.exit, forKey: .kind)
             textRepresentation = text
