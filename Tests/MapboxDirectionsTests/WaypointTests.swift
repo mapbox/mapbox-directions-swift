@@ -4,33 +4,64 @@ import CoreLocation
 
 class WaypointTests: XCTestCase {
     func testCoding() {
-        let originalWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), coordinateAccuracy: 5, name: "White House")
-        originalWaypoint.targetCoordinate = CLLocationCoordinate2D(latitude: 38.8952261, longitude: -77.0327882)
-        originalWaypoint.heading = 90
-        originalWaypoint.headingAccuracy = 10
-        originalWaypoint.allowsArrivingOnOppositeSide = false
-  
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted]
+        let waypointJSON: [String: Any?] = [
+            "location": [-77.036500000000004, 38.8977],
+            "name": "White House",
+        ]
+        let waypointData = try! JSONSerialization.data(withJSONObject: waypointJSON, options: [])
+        var waypoint: Waypoint?
+        XCTAssertNoThrow(waypoint = try JSONDecoder().decode(Waypoint.self, from: waypointData))
+        XCTAssertNotNil(waypoint)
         
-        let encodedData = try! encoder.encode(originalWaypoint)
-        let encodedString = String(data: encodedData, encoding: .utf8)!
-        
-        XCTAssertEqual(encodedString, pass)
-        
-        let decoder = JSONDecoder()
-        
-        let decodedWaypoint = try! decoder.decode(Waypoint.self, from: encodedData)
-        
-        XCTAssertEqual(decodedWaypoint.coordinate.latitude, originalWaypoint.coordinate.latitude)
-        XCTAssertEqual(decodedWaypoint.coordinate.longitude, originalWaypoint.coordinate.longitude)
-        XCTAssertEqual(decodedWaypoint.coordinateAccuracy, originalWaypoint.coordinateAccuracy)
-        XCTAssert(decodedWaypoint.targetCoordinate == originalWaypoint.targetCoordinate)
+        if let waypoint = waypoint {
+            XCTAssertEqual(waypoint.coordinate.latitude, 38.8977, accuracy: 1e-5)
+            XCTAssertEqual(waypoint.coordinate.longitude, -77.03650, accuracy: 1e-5)
+            XCTAssertNil(waypoint.coordinateAccuracy)
+            XCTAssertNil(waypoint.targetCoordinate)
 
-        XCTAssertEqual(decodedWaypoint.heading, originalWaypoint.heading)
-        XCTAssertEqual(decodedWaypoint.headingAccuracy, originalWaypoint.headingAccuracy)
-        XCTAssertEqual(decodedWaypoint.allowsArrivingOnOppositeSide, originalWaypoint.allowsArrivingOnOppositeSide)
-        XCTAssertEqual(decodedWaypoint.separatesLegs, originalWaypoint.separatesLegs)
+            XCTAssertNil(waypoint.heading)
+            XCTAssertNil(waypoint.headingAccuracy)
+            XCTAssertTrue(waypoint.allowsArrivingOnOppositeSide)
+            XCTAssertTrue(waypoint.separatesLegs)
+        }
+        
+        waypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), coordinateAccuracy: 5, name: "White House")
+        waypoint?.targetCoordinate = CLLocationCoordinate2D(latitude: 38.8952261, longitude: -77.0327882)
+        waypoint?.heading = 90
+        waypoint?.headingAccuracy = 10
+        waypoint?.allowsArrivingOnOppositeSide = false
+        
+        let encoder = JSONEncoder()
+        var encodedData: Data?
+        XCTAssertNoThrow(encodedData = try encoder.encode(waypoint))
+        XCTAssertNotNil(encodedData)
+        
+        if let encodedData = encodedData {
+            var encodedWaypointJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedWaypointJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedWaypointJSON)
+            
+            // Verify then remove keys that wouldn’t be part of a Waypoint object in the Directions API response.
+            XCTAssertEqual(encodedWaypointJSON?["headingAccuracy"] as? CLLocationDirection, waypoint?.headingAccuracy)
+            encodedWaypointJSON?.removeValue(forKey: "headingAccuracy")
+            XCTAssertEqual(encodedWaypointJSON?["coordinateAccuracy"] as? CLLocationAccuracy, waypoint?.coordinateAccuracy)
+            encodedWaypointJSON?.removeValue(forKey: "coordinateAccuracy")
+            XCTAssertEqual(encodedWaypointJSON?["allowsArrivingOnOppositeSide"] as? Bool, waypoint?.allowsArrivingOnOppositeSide)
+            encodedWaypointJSON?.removeValue(forKey: "allowsArrivingOnOppositeSide")
+            XCTAssertEqual(encodedWaypointJSON?["heading"] as? CLLocationDirection, waypoint?.heading)
+            encodedWaypointJSON?.removeValue(forKey: "heading")
+            XCTAssertEqual(encodedWaypointJSON?["separatesLegs"] as? Bool, waypoint?.separatesLegs)
+            encodedWaypointJSON?.removeValue(forKey: "separatesLegs")
+           
+            let targetCoordinateJSON = encodedWaypointJSON?["targetCoordinate"] as? [CLLocationDegrees]
+            XCTAssertNotNil(targetCoordinateJSON)
+            XCTAssertEqual(targetCoordinateJSON?.count, 2)
+            XCTAssertEqual(targetCoordinateJSON?[0] ?? 0, waypoint?.targetCoordinate?.longitude ?? 0, accuracy: 1e-5)
+            XCTAssertEqual(targetCoordinateJSON?[1] ?? 0, waypoint?.targetCoordinate?.latitude ?? 0, accuracy: 1e-5)
+            encodedWaypointJSON?.removeValue(forKey: "targetCoordinate")
+            
+            XCTAssert(JSONSerialization.objectsAreEqual(waypointJSON, encodedWaypointJSON, approximate: true))
+        }
     }
     
     func testSeparatesLegs() {
@@ -56,22 +87,3 @@ class WaypointTests: XCTestCase {
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
 }
-
-fileprivate let pass = """
-{
-  \"headingAccuracy\" : 10,
-  \"location\" : [
-    -77.036500000000004,
-    38.8977
-  ],
-  \"targetCoordinate\" : [
-    -77.032788199999999,
-    38.895226100000002
-  ],
-  \"coordinateAccuracy\" : 5,
-  \"allowsArrivingOnOppositeSide\" : false,
-  \"heading\" : 90,
-  \"separatesLegs\" : true,
-  \"name\" : \"White House\"
-}
-"""
