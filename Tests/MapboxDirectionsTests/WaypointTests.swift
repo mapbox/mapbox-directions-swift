@@ -86,4 +86,21 @@ class WaypointTests: XCTestCase {
         
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
+    
+    func testHeading() {
+        let waypoint = Waypoint(coordinate: kCLLocationCoordinate2DInvalid)
+        XCTAssertEqual(waypoint.headingDescription, "")
+        
+        waypoint.heading = 0
+        XCTAssertEqual(waypoint.headingDescription, "")
+        
+        waypoint.headingAccuracy = 0
+        XCTAssertEqual(waypoint.headingDescription, "0.0,0.0")
+        
+        waypoint.heading = 810.5
+        XCTAssertEqual(waypoint.headingDescription, "90.5,0.0")
+        
+        waypoint.headingAccuracy = 720
+        XCTAssertEqual(waypoint.headingDescription, "90.5,180.0")
+    }
 }

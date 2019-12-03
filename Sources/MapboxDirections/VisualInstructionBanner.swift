@@ -19,6 +19,17 @@ open class VisualInstructionBanner: Codable {
     
     // MARK: Creating a Visual Instruction Banner
     
+    /**
+     Initializes a visual instruction banner with the given instructions.
+     */
+    public init(distanceAlongStep: CLLocationDistance, primary: VisualInstruction, secondary: VisualInstruction?, tertiary: VisualInstruction?, drivingSide: DrivingSide) {
+        self.distanceAlongStep = distanceAlongStep
+        primaryInstruction = primary
+        secondaryInstruction = secondary
+        tertiaryInstruction = tertiary
+        self.drivingSide = drivingSide
+    }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)

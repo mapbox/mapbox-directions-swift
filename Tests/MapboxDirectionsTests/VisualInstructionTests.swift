@@ -9,6 +9,59 @@ class VisualInstructionsTests: XCTestCase {
         super.tearDown()
     }
     
+    func testCoding() {
+        let bannerJSON: [String: Any?] = [
+            "distanceAlongGeometry": 393.3,
+            "primary": [
+                "text": "Weinstock Strasse",
+                "components": [
+                    [
+                        "text": "Weinstock Strasse",
+                        "type": "text",
+                    ],
+                ],
+                "type": "turn",
+                "modifier": "right",
+            ],
+            "secondary": nil,
+        ]
+        let bannerData = try! JSONSerialization.data(withJSONObject: bannerJSON, options: [])
+        var banner: VisualInstructionBanner?
+        XCTAssertNoThrow(banner = try JSONDecoder().decode(VisualInstructionBanner.self, from: bannerData))
+        XCTAssertNotNil(banner)
+        if let banner = banner {
+            XCTAssertEqual(banner.distanceAlongStep, 393.3, accuracy: 1e-1)
+            XCTAssertEqual(banner.primaryInstruction.text, "Weinstock Strasse")
+            XCTAssertEqual(banner.primaryInstruction.components.count, 1)
+            XCTAssertEqual(banner.primaryInstruction.maneuverType, .turn)
+            XCTAssertEqual(banner.primaryInstruction.maneuverDirection, .right)
+            XCTAssertNil(banner.secondaryInstruction)
+            XCTAssertEqual(banner.drivingSide, .default)
+        }
+        
+        let component = VisualInstruction.Component.text(text: .init(text: "Weinstock Strasse", abbreviation: nil, abbreviationPriority: nil))
+        let primaryInstruction = VisualInstruction(text: "Weinstock Strasse", maneuverType: .turn, maneuverDirection: .right, components: [component])
+        banner = VisualInstructionBanner(distanceAlongStep: 393.3, primary: primaryInstruction, secondary: nil, tertiary: nil, drivingSide: .right)
+        let encoder = JSONEncoder()
+        var encodedData: Data?
+        XCTAssertNoThrow(encodedData = try encoder.encode(banner))
+        XCTAssertNotNil(encodedData)
+        
+        if let encodedData = encodedData {
+            var encodedBannerJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedBannerJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedBannerJSON)
+            
+            // Verify then remove keys that wouldn’t necessarily be part of a BannerInstruction object in the Directions API response.
+            XCTAssertEqual(encodedBannerJSON?["drivingSide"] as? String, "right")
+            encodedBannerJSON?.removeValue(forKey: "drivingSide")
+            
+            encodedBannerJSON?.updateValue(nil, forKey: "secondary")
+            
+            XCTAssert(JSONSerialization.objectsAreEqual(bannerJSON, encodedBannerJSON, approximate: false))
+        }
+    }
+    
     func testPrimaryAndSecondaryInstructions() {
         let expectation = self.expectation(description: "calculating directions with primary and secondary instructions should return results")
         
