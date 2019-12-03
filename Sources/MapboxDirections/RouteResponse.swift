@@ -7,15 +7,6 @@ struct RouteResponse {
     let uuid: String?
     let routes: [Route]?
     let waypoints: [Waypoint]?
- 
-    init(code: String?, message: String?, error: String?) {
-        self.code = code
-        self.message = message
-        self.error = error
-        self.uuid = nil
-        self.routes = nil
-        self.waypoints = nil
-    }
 }
 
 extension RouteResponse: Codable {
