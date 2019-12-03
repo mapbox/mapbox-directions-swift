@@ -88,7 +88,7 @@ public extension VisualInstruction.Component {
         /**
          File formats of visual instruction component images.
          */
-        public enum Format {
+        public enum Format: String {
             /// Portable Network Graphics (PNG)
             case png
             /// Scalable Vector Graphics (SVG)
@@ -112,7 +112,7 @@ public extension VisualInstruction.Component {
                 var imageURLComponents = URLComponents(url: imageBaseURL, resolvingAgainstBaseURL: false) else {
                 return nil
             }
-            imageURLComponents.path += "@\(Int(scale ?? ImageRepresentation.currentScale))x.png"
+            imageURLComponents.path += "@\(Int(scale ?? ImageRepresentation.currentScale))x.\(format)"
             return imageURLComponents.url
         }
         
