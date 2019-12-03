@@ -13,4 +13,6 @@ public enum DrivingSide: String, Codable {
      Indicates driving occurs on the `right` side.
      */
     case right
+    
+    static let `default` = DrivingSide.right
 }

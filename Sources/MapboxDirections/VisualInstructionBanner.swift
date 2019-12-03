@@ -37,7 +37,7 @@ open class VisualInstructionBanner: Codable {
         if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
             drivingSide = directlyEncoded
         } else {
-            drivingSide = .right
+            drivingSide = .default
         }
     }
     
