@@ -450,12 +450,7 @@ open class RouteStep: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
-        if let coordinate = try? maneuver.decode(CLLocationCoordinate2D.self, forKey: .location) {
-            maneuverLocation = coordinate
-        } else {
-            maneuverLocation = CLLocationCoordinate2D()
-        }
-
+        maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
         maneuverType = try maneuver.decodeIfPresent(ManeuverType.self, forKey: .type) ?? .none
         maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction) ?? .none
         
