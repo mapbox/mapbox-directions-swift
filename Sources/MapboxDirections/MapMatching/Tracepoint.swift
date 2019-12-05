@@ -8,26 +8,26 @@ public class Tracepoint: Waypoint {
     /**
      Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.
      */
-    public let alternateCount: Int
+    public let countOfAlternatives: Int
     
     private enum CodingKeys: String, CodingKey {
-        case alternateCount = "alternatives_count"
+        case countOfAlternatives = "alternatives_count"
     }
     
-    init(coordinate: CLLocationCoordinate2D, alternateCount: Int?, name: String?) {
-        self.alternateCount = alternateCount ?? NSNotFound
+    init(coordinate: CLLocationCoordinate2D, countOfAlternatives: Int, name: String?) {
+        self.countOfAlternatives = countOfAlternatives
         super.init(coordinate: coordinate, name: name)
     }
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        alternateCount = try container.decode(Int.self, forKey: .alternateCount)
+        countOfAlternatives = try container.decode(Int.self, forKey: .countOfAlternatives)
         try super.init(from: decoder)
     }
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(alternateCount, forKey: .alternateCount)
+        try container.encode(countOfAlternatives, forKey: .countOfAlternatives)
         try super.encode(to: encoder)
     }
 }
@@ -35,6 +35,6 @@ public class Tracepoint: Waypoint {
 extension Tracepoint { //Equatable
     public static func ==(lhs: Tracepoint, rhs: Tracepoint) -> Bool {
         let superEquals = (lhs as Waypoint == rhs as Waypoint)
-        return superEquals && lhs.alternateCount == rhs.alternateCount
+        return superEquals && lhs.countOfAlternatives == rhs.countOfAlternatives
     }
 }

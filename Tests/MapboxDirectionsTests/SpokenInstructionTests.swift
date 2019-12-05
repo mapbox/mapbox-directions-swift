@@ -34,4 +34,21 @@ class SpokenInstructionTests: XCTestCase {
             XCTAssert(JSONSerialization.objectsAreEqual(instructionJSON, encodedInstructionJSON, approximate: true))
         }
     }
+    
+    func testEquality() {
+        let left = SpokenInstruction(distanceAlongStep: 0, text: "", ssmlText: "")
+        XCTAssertEqual(left, left)
+        
+        var right = SpokenInstruction(distanceAlongStep: 0, text: "", ssmlText: "")
+        XCTAssertEqual(left, right)
+        
+        right = SpokenInstruction(distanceAlongStep: 0.001, text: "", ssmlText: "")
+        XCTAssertNotEqual(left, right)
+        
+        right = SpokenInstruction(distanceAlongStep: 0, text: "Get lost", ssmlText: "")
+        XCTAssertNotEqual(left, right)
+        
+        right = SpokenInstruction(distanceAlongStep: 0, text: "", ssmlText: "<speak>Get <say-as interpret-as=\"expletive\"></say-as> lost</speak>")
+        XCTAssertNotEqual(left, right)
+    }
 }

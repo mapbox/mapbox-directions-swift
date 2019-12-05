@@ -103,4 +103,36 @@ class WaypointTests: XCTestCase {
         waypoint.headingAccuracy = 720
         XCTAssertEqual(waypoint.headingDescription, "90.5,180.0")
     }
+    
+    func testEquality() {
+        let left = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: nil)
+        XCTAssertEqual(left, left)
+        
+        var right = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), coordinateAccuracy: nil, name: nil)
+        XCTAssertNotEqual(left, right)
+        
+        right = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: 0, name: nil)
+        XCTAssertNotEqual(left, right)
+        
+        right = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: "")
+        XCTAssertNotEqual(left, right)
+    }
+    
+    func testTracepointEquality() {
+        let left = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: nil)
+        XCTAssertEqual(left, left)
+        
+        let right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: nil)
+        XCTAssertEqual(left, right)
+        
+        // FIXME: Only Waypoint.==(_:_:) ever gets called: <https://stackoverflow.com/a/28794214/4585461>. This will be moot once Tracepoint becomes a struct that doesn’t inherit from Waypoint: <https://github.com/mapbox/MapboxDirections.swift/pull/388>.
+//        right = Tracepoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), countOfAlternatives: 0, name: nil)
+//        XCTAssertNotEqual(left, right)
+//
+//        right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 1, name: nil)
+//        XCTAssertNotEqual(left, right)
+//
+//        right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: "")
+//        XCTAssertNotEqual(left, right)
+    }
 }
