@@ -10,13 +10,6 @@ public enum TransportType: String, Codable {
     // Possible transport types when the `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`
 
     /**
-     The step does not have a particular transport type associated with it.
-
-     This transport type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
-     */
-    case none
-
-    /**
      The route requires the user to drive or ride a car, truck, or motorcycle.
 
      This is the usual transport type when the `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
@@ -76,13 +69,6 @@ public enum TransportType: String, Codable {
  To avoid a complex series of if-else-if statements or switch statements, use pattern matching with a single switch statement on a tuple that consists of the maneuver type and maneuver direction.
  */
 public enum ManeuverType: String, Codable {
-    /**
-     The step does not have a particular maneuver type associated with it.
-
-     This maneuver type is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
-     */
-    case none
-
     /**
      The step requires the user to depart from a waypoint.
 
@@ -205,19 +191,16 @@ public enum ManeuverType: String, Codable {
      The distance and expected travel time for this step are set to zero, indicating that the route or route leg is complete. The maneuver direction indicates the side of the road on which the waypoint can be found (or whether it is straight ahead).
      */
     case arrive
+    
+    // Unrecognized maneuver types are interpreted as turns.
+    // http://project-osrm.org/docs/v5.5.1/api/#stepmaneuver-object
+    static let `default` = ManeuverType.turn
 }
 
 /**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
 public enum ManeuverDirection: String, Codable {
-    /**
-     The step does not have a particular maneuver direction associated with it.
-
-     This maneuver direction is used as a workaround for bridging to Objective-C which does not support nullable enumeration-typed values.
-     */
-    case none
-
     /**
      The maneuver requires a sharp turn to the right.
      */
@@ -408,10 +391,7 @@ open class RouteStep: Codable {
         try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
-        
-        if transportType != .none {
-            try container.encode(transportType, forKey: .transportType)
-        }
+        try container.encode(transportType, forKey: .transportType)
         
         let isRound = maneuverType == .takeRotary || maneuverType == .takeRoundabout
         let road = Road(names: isRound ? exitNames : names,
@@ -439,8 +419,8 @@ open class RouteStep: Codable {
         
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
-        try maneuver.encodeIfPresent(maneuverType, forKey: .type)
-        try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
+        try maneuver.encode(maneuverType, forKey: .type)
+        try maneuver.encode(maneuverDirection, forKey: .direction)
         try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
@@ -451,8 +431,8 @@ open class RouteStep: Codable {
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
         maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
-        maneuverType = try maneuver.decodeIfPresent(ManeuverType.self, forKey: .type) ?? .none
-        maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction) ?? .none
+        maneuverType = (try? maneuver.decode(ManeuverType.self, forKey: .type)) ?? .default
+        maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
         
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
@@ -465,14 +445,8 @@ open class RouteStep: Codable {
         
         if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
             instructions = instruction
-        } else if maneuverType != .none, maneuverDirection != .none {
-            instructions = "\(maneuverType) \(maneuverDirection)"
-        } else if maneuverType != .none {
-            instructions = String(describing: maneuverType)
-        } else if maneuverDirection != .none {
-            instructions = String(describing: maneuverDirection)
         } else {
-            instructions = ""
+            instructions = "\(maneuverType) \(maneuverDirection?.rawValue ?? "")"
         }
         drivingSide = try container.decode(DrivingSide.self, forKey: .drivingSide)
   
@@ -491,7 +465,7 @@ open class RouteStep: Codable {
         distance = try container.decode(CLLocationDirection.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        transportType = try container.decodeIfPresent(TransportType.self, forKey: .transportType) ?? .none
+        transportType = try container.decode(TransportType.self, forKey: .transportType)
         intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
         
         let road = try Road(from: decoder)
@@ -556,7 +530,7 @@ open class RouteStep: Codable {
     /**
      Additional directional information to clarify the maneuver type.
      */
-    public let maneuverDirection: ManeuverDirection
+    public let maneuverDirection: ManeuverDirection?
     
     /**
      Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
