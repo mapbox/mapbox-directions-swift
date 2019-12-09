@@ -238,6 +238,9 @@
 		DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
 		DACCFCAA2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
 		DACCFCAB2225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */ = {isa = PBXBuildFile; fileRef = DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */; };
+		DAD06E35239F0B19001A917D /* DirectionsErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */; };
+		DAD06E36239F0B19001A917D /* DirectionsErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */; };
+		DAD06E37239F0B19001A917D /* DirectionsErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */; };
 		DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */; };
 		DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B91E5AAAD800D31FAD /* ViewController.swift */; };
 		DADD27BF1E5AAAD800D31FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADD27BE1E5AAAD800D31FAD /* Assets.xcassets */; };
@@ -386,6 +389,7 @@
 		DAC05F191CFC077C00FA0071 /* RouteLeg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteLeg.swift; sourceTree = "<group>"; };
 		DAC05F1B1CFC1E5300FA0071 /* v5_driving_dc_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_polyline.json; sourceTree = "<group>"; };
 		DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_oldenburg_polyline.json; sourceTree = "<group>"; };
+		DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsErrorTests.swift; sourceTree = "<group>"; };
 		DADD27B51E5AAAD800D31FAD /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADD27B91E5AAAD800D31FAD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -615,6 +619,7 @@
 			children = (
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
+				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
 				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
 				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
 				DAABF7912395AE9800CEEB61 /* GeoJSONTests.swift */,
@@ -1187,6 +1192,7 @@
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				DAD06E36239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
@@ -1254,6 +1260,7 @@
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				DAD06E37239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
@@ -1364,6 +1371,7 @@
 				35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				DAD06E35239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
