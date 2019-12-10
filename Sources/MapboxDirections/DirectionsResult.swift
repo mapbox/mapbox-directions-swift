@@ -196,3 +196,9 @@ open class DirectionsResult: Codable {
      */
     open var responseEndDate: Date?
 }
+
+extension DirectionsResult: CustomStringConvertible {
+    public var description: String {
+        return legs.map { $0.name }.joined(separator: " – ")
+    }
+}

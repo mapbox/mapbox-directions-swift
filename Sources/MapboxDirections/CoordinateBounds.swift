@@ -50,10 +50,6 @@ public struct CoordinateBounds {
         
         self.init(southWest: southWest, northEast: northEast)
     }
-    
-    public var description: String {
-        return "\(southWest.longitude),\(southWest.latitude);\(northEast.longitude),\(northEast.latitude)"
-    }
 }
 
 extension CoordinateBounds: Codable {
@@ -65,5 +61,11 @@ extension CoordinateBounds: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         southWest = try container.decode(CLLocationCoordinate2D.self, forKey: .southWest)
         northEast = try container.decode(CLLocationCoordinate2D.self, forKey: .northEast)
+    }
+}
+
+extension CoordinateBounds: CustomStringConvertible {
+    public var description: String {
+        return "\(southWest.longitude),\(southWest.latitude);\(northEast.longitude),\(northEast.latitude)"
     }
 }

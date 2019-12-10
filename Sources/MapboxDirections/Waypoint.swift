@@ -190,14 +190,16 @@ public class Waypoint: Codable {
      This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     public var separatesLegs: Bool = true
-    
-    public var description: String {
-        return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
-    }
 }
 
 extension Waypoint: Equatable {
     public static func == (lhs: Waypoint, rhs: Waypoint) -> Bool {
         return lhs.coordinate == rhs.coordinate && lhs.name == rhs.name && lhs.coordinateAccuracy == rhs.coordinateAccuracy
+    }
+}
+
+extension Waypoint: CustomStringConvertible {
+    public var description: String {
+        return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
     }
 }

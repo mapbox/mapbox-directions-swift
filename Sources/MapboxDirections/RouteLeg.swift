@@ -196,3 +196,9 @@ extension RouteLeg: Equatable {
             lhs.profileIdentifier == rhs.profileIdentifier
     }
 }
+
+extension RouteLeg: CustomStringConvertible {
+    public var description: String {
+        return name
+    }
+}
