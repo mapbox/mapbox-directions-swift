@@ -707,3 +707,18 @@ extension RouteStep: Equatable {
             lhs.shape == rhs.shape
     }
 }
+
+extension RouteStep: CustomStringConvertible {
+    public var description: String {
+        return instructions
+    }
+}
+
+extension RouteStep: CustomQuickLookConvertible {
+    func debugQuickLookObject() -> Any? {
+        guard let shape = shape else {
+            return nil
+        }
+        return debugQuickLookURL(illustrating: shape)
+    }
+}

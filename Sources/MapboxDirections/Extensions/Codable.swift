@@ -2,6 +2,15 @@ import Foundation
 import Polyline
 import struct Turf.LineString
 
+extension LineString {
+    /**
+     Returns a string representation of the line string in [Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+     */
+    func polylineEncodedString(precision: Double = 1e5) -> String {
+        return encodeCoordinates(coordinates, precision: precision)
+    }
+}
+
 enum PolyLineString {
     case lineString(_ lineString: LineString)
     case polyline(_ encodedPolyline: String, precision: Double)
@@ -12,7 +21,7 @@ enum PolyLineString {
             self = .lineString(lineString)
         case .polyline, .polyline6:
             let precision = shapeFormat == .polyline6 ? 1e6 : 1e5
-            let encodedPolyline = encodeCoordinates(lineString.coordinates, precision: precision)
+            let encodedPolyline = lineString.polylineEncodedString(precision: precision)
             self = .polyline(encodedPolyline, precision: precision)
         }
     }

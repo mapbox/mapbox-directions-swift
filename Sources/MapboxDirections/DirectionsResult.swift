@@ -202,3 +202,12 @@ extension DirectionsResult: CustomStringConvertible {
         return legs.map { $0.name }.joined(separator: " – ")
     }
 }
+
+extension DirectionsResult: CustomQuickLookConvertible {
+    func debugQuickLookObject() -> Any? {
+        guard let shape = shape else {
+            return nil
+        }
+        return debugQuickLookURL(illustrating: shape, profileIdentifier: directionsOptions.profileIdentifier)
+    }
+}
