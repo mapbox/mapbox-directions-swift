@@ -1,3 +1,4 @@
+import Foundation
 import Polyline
 import struct Turf.LineString
 
