@@ -17,7 +17,7 @@ class V5Tests: XCTestCase {
         
         let queryParams: [String: String?] = [
             "alternatives": "true",
-            "geometries": String(describing: shapeFormat),
+            "geometries": shapeFormat.rawValue,
             "overview": "full",
             "steps": "true",
             "continue_straight": "true",
@@ -26,7 +26,7 @@ class V5Tests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat)", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat.rawValue)", ofType: "json")
                 let filePath = URL(fileURLWithPath: path!)
                 let data = try! Data(contentsOf: filePath, options: [])
                 let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
@@ -75,8 +75,8 @@ class V5Tests: XCTestCase {
             return
         }
         
-        XCTAssertNotNil(route.coordinates)
-        XCTAssertEqual(route.coordinates?.count, 30_097)
+        XCTAssertNotNil(route.shape)
+        XCTAssertEqual(route.shape!.coordinates.count, 30_097)
         XCTAssertEqual(route.accessToken, BogusToken)
         XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier?.count, 25)
@@ -85,8 +85,8 @@ class V5Tests: XCTestCase {
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(route.coordinates?.first?.latitude ?? 0, 38, accuracy: 1)
-        XCTAssertEqual(route.coordinates?.first?.longitude ?? 0, -122, accuracy: 1)
+        XCTAssertEqual(route.shape?.coordinates.first?.latitude ?? 0, 38, accuracy: 1)
+        XCTAssertEqual(route.shape?.coordinates.first?.longitude ?? 0, -122, accuracy: 1)
         XCTAssertEqual(route.legs.count, 1)
         
         let opts = route.routeOptions
@@ -119,13 +119,12 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(step?.initialHeading, 192)
         XCTAssertEqual(step?.finalHeading, 202)
         
-        XCTAssertNotNil(step?.coordinates)
-        XCTAssertEqual(step?.coordinates?.count, 13)
-        XCTAssertEqual(step?.coordinates?.count, Int(step?.coordinateCount ?? 0))
-        XCTAssertEqual(step?.coordinates?.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
-        XCTAssertEqual(step?.coordinates?.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
+        XCTAssertNotNil(step?.shape)
+            XCTAssertEqual(step?.shape?.coordinates.count, 13)
+            XCTAssertEqual(step?.shape?.coordinates.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
+            XCTAssertEqual(step?.shape?.coordinates.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
         
-        XCTAssertNil(leg?.steps[32].names)
+        XCTAssertEqual(leg?.steps[32].names, nil)
         XCTAssertEqual(leg?.steps[32].codes, ["I-80"])
         XCTAssertEqual(leg?.steps[32].destinationCodes, ["I-80 East", "I-90"])
         XCTAssertEqual(leg?.steps[32].destinations, ["Toll Road"])
@@ -148,7 +147,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(intersection?.usableApproachLanes, IndexSet([0, 1]))
         XCTAssertNotNil(intersection?.approachLanes)
         XCTAssertEqual(intersection?.approachLanes?.count, 3)
-        XCTAssertEqual(intersection?.approachLanes?[1].indications, [.slightLeft, .slightRight])
+        XCTAssertEqual(intersection?.approachLanes?[1], [.slightLeft, .slightRight])
         
         XCTAssertEqual(leg?.steps[58].names, ["Logan Circle Northwest"])
         XCTAssertNil(leg?.steps[58].exitNames)
@@ -158,17 +157,17 @@ class V5Tests: XCTestCase {
     }
     
     func testGeoJSON() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.geoJSON), "geojson")
+        XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
         test(shapeFormat: .geoJSON)
     }
     
     func testPolyline() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.polyline), "polyline")
+        XCTAssertEqual(RouteShapeFormat.polyline.rawValue, "polyline")
         test(shapeFormat: .polyline)
     }
     
     func testPolyline6() {
-        XCTAssertEqual(String(describing: RouteShapeFormat.polyline6), "polyline6")
+        XCTAssertEqual(RouteShapeFormat.polyline6.rawValue, "polyline6")
         
         // Transform polyline5 to polyline6
         let transformer: JSONTransformer = { json in
@@ -243,6 +242,7 @@ class V5Tests: XCTestCase {
         
         let options = RouteOptions(waypoints: waypoints)
         XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
+        
         options.shapeFormat = .polyline
         options.includesSteps = true
         options.routeShapeResolution = .full
@@ -270,46 +270,50 @@ class V5Tests: XCTestCase {
         
         XCTAssertEqual(route?.legs.count, 1)
         let leg = route?.legs.first
-        XCTAssertEqual(leg?.source.name, waypoints[0].name)
-        XCTAssertEqual(leg?.source.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.source.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination.name, waypoints[2].name)
-        XCTAssertEqual(leg?.destination.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source!.name, waypoints[0].name)
+        XCTAssertEqual(leg?.source?.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source?.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination!.name, waypoints[2].name)
+        XCTAssertEqual(leg?.destination?.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination?.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
         XCTAssertEqual(leg?.name, "Perlen Strasse, Haupt Strasse")
     }
     
     func testCoding() {
         let path = Bundle(for: type(of: self)).path(forResource: "v5_driving_dc_polyline", ofType: "json")
         let filePath = URL(fileURLWithPath: path!)
-        let data = try! Data(contentsOf: filePath, options: [])
-        let jsonResponse = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-        
+        let data = try! Data(contentsOf: filePath)
         let options = RouteOptions(coordinates: [
             CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
             CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
-        let routes = options.response(from: jsonResponse).1
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        let result = try! decoder.decode(RouteResponse.self, from: data)
+        
+        let routes = result.routes
         let route = routes!.first!
         route.accessToken = BogusToken
         route.apiEndpoint = URL(string: "https://api.mapbox.com")
-        route.routeIdentifier = jsonResponse["uuid"] as? String
+        route.routeIdentifier = result.uuid
         
         // Encode and decode the route securely.
-        // This may raise an Objective-C exception if an error occurs, which will fail the tests.
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(route, forKey: "route")
-        keyedArchiver.finishEncoding()
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        encoder.outputFormatting = [.prettyPrinted]
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedRoute = keyedUnarchiver.decodeObject(of: Route.self, forKey: "route")!
-        keyedUnarchiver.finishDecoding()
-        
-        test(unarchivedRoute, options: options)
+        var jsonData: Data?
+        XCTAssertNoThrow(jsonData = try encoder.encode(route))
+        XCTAssertNotNil(jsonData)
+    
+        if let jsonData = jsonData {
+            var newRoute: Route?
+            XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
+            XCTAssertNotNil(newRoute)
+            test(newRoute, options: options)
+        }
     }
 }
 #endif

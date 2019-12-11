@@ -36,7 +36,6 @@ class RoutableMatchTest: XCTestCase {
             waypoint.separatesLegs = false
         }
         
-        
         let task = Directions(accessToken: BogusToken).calculateRoutes(matching: matchOptions) { (wpoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
@@ -53,8 +52,8 @@ class RoutableMatchTest: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertNotNil(route.coordinates)
-        XCTAssertEqual(route.coordinates!.count, 8)
+        XCTAssertNotNil(route.shape)
+        XCTAssertEqual(route.shape!.coordinates.count, 18)
         XCTAssertEqual(route.accessToken, BogusToken)
         XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier, nil)
@@ -66,9 +65,9 @@ class RoutableMatchTest: XCTestCase {
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(route!.coordinates!.first!.latitude), 33)
-        XCTAssertEqual(round(route!.coordinates!.first!.longitude), -117)
-        XCTAssertEqual(route!.legs.count, 1)
+        XCTAssertEqual(round(route!.shape!.coordinates.first!.latitude), 33)
+        XCTAssertEqual(round(route!.shape!.coordinates.first!.longitude), -117)
+        XCTAssertEqual(route!.legs.count, 6)
         
         let leg = route!.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
@@ -91,10 +90,9 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertEqual(step.initialHeading, 0)
         XCTAssertEqual(step.finalHeading, 340)
         
-        XCTAssertNotNil(step.coordinates)
-        XCTAssertEqual(step.coordinates!.count, 4)
-        XCTAssertEqual(step.coordinates!.count, Int(step.coordinateCount))
-        let coordinate = step.coordinates!.first!
+        XCTAssertNotNil(step.shape)
+        XCTAssertEqual(step.shape!.coordinates.count, 4)
+        let coordinate = step.shape!.coordinates.first!
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)
     }

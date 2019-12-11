@@ -65,14 +65,12 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func setupDirections() {
         let wp1 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox")
         let wp2 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
-        wp1.allowsArrivingOnOppositeSide = false
-        wp2.allowsArrivingOnOppositeSide = false
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
         
         Directions.shared.calculate(options) { (waypoints, routes, error) in
-            guard error == nil else {
-                print("Error calculating directions: \(error!)")
+            if let error = error {
+                print("Error calculating directions: \(error)")
                 return
             }
             
@@ -96,14 +94,16 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                     }
                 }
                 
-                if route.coordinateCount > 0 {
+                if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
                     // Convert the route’s coordinates into a polyline.
-                    var routeCoordinates = route.coordinates!
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
-                    
-                    // Add the polyline to the map and fit the viewport to the polyline.
+                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: UInt(routeCoordinates.count))
+
+                    // Add the polyline to the map.
                     self.mapView.addAnnotation(routeLine)
-                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
+                    
+                    // Fit the viewport to the polyline.
+                    let camera = self.mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
+                    self.mapView.setCamera(camera, animated: true)
                 }
             }
         }
@@ -123,8 +123,16 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     }
     
     func drawingView(drawingView: MBDrawingView, didDrawWithPoints points: [CGPoint]) {
+        guard points.count > 0 else { return }
         
-        let coordinates = points.map {
+        let ratio: Double = Double(points.count) / 100.0
+        let keepEvery = Int(ratio.rounded(.up))
+        
+        let abridgedPoints = points.enumerated().compactMap { index, element -> CGPoint? in
+            guard index % keepEvery == 0 else { return nil }
+            return element
+        }
+        let coordinates = abridgedPoints.map {
             mapView.convert($0, toCoordinateFrom: mapView)
         }
         makeMatchRequest(locations: coordinates)
@@ -135,7 +143,14 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
 
         Directions.shared.calculate(matchOptions) { (matches, error) in
             if let error = error {
-                print(error.localizedDescription)
+                let errorString = """
+                ⚠️ Error Enountered. ⚠️
+                Failure Reason: \(error.failureReason ?? "")
+                Recovery Suggestion: \(error.recoverySuggestion ?? "")
+                
+                Technical Details: \(error)
+                """
+                print(errorString)
                 return
             }
             
@@ -145,8 +160,9 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 self.mapView.removeAnnotations(annotations)
             }
             
-            var routeCoordinates = match.coordinates!
-            let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: match.coordinateCount)
+            var routeCoordinates = match.shape!.coordinates
+            let coordCount = UInt(routeCoordinates.count)
+            let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
             self.mapView.addAnnotation(routeLine)
             self.drawingView?.reset()
         }

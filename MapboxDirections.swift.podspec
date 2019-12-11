@@ -37,8 +37,7 @@ Pod::Spec.new do |s|
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*", "Sources/CMapboxDirections", "Sources/CMapboxDirections/*/*"]
-  s.exclude_files = ["Sources/CMapboxDirections/CMapboxDirections.h"]
+  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*"]
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
@@ -47,5 +46,6 @@ Pod::Spec.new do |s|
   s.swift_version = "5.0"
 
   s.dependency "Polyline", "~> 4.2"
+  s.dependency "Turf", "~> 0.3"
 
 end

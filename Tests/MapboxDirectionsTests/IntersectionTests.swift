@@ -3,36 +3,66 @@ import XCTest
 
 class IntersectionTests: XCTestCase {
     func testCoding() {
-        let json: JSONDictionary = [
-            "classes": ["toll", "restricted"],
-            "out": 0,
-            "entry": [true],
-            "bearings": [80.0],
-            "location": [-122.420018, 37.78009],
+        let intersectionsJSON: [[String: Any?]] = [
+            [
+                "location": [13.426579, 52.508068],
+                "in": -1,
+                "classes": ["toll", "restricted"],
+                "bearings": [80],
+                "entry": [true],
+                "out": 0,
+                "lanes": nil,
+            ],
+            [
+                "location": [13.426688, 52.508022],
+                "in": 2,
+                "bearings": [30, 120, 300],
+                "entry": [false, true, true],
+                "out": 1,
+                "lanes": nil,
+            ],
         ]
-        let intersection = Intersection(json: json)
+        let intersectionsData = try! JSONSerialization.data(withJSONObject: intersectionsJSON, options: [])
+        var intersections: [Intersection]?
+        XCTAssertNoThrow(intersections = try JSONDecoder().decode([Intersection].self, from: intersectionsData))
+        XCTAssertEqual(intersections?.count, 2)
         
-        // Encode and decode the intersection securely.
-        // This may raise an Objective-C exception if an error is encountered which will fail the tests.
+        if let intersection = intersections?.first {
+            XCTAssert(intersection.outletRoadClasses == [.toll, .restricted])
+            XCTAssert(intersection.headings == [80.0])
+            XCTAssert(intersection.location == CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
+        }
         
-        let encodedData = NSMutableData()
-        let keyedArchiver = NSKeyedArchiver(forWritingWith: encodedData)
-        keyedArchiver.requiresSecureCoding = true
-        keyedArchiver.encode(intersection, forKey: "intersection")
-        keyedArchiver.finishEncoding()
+        intersections = [
+            Intersection(location: CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579),
+                         headings: [80.0],
+                         approachIndex: -1,
+                         outletIndex: 0,
+                         outletIndexes: IndexSet([0]),
+                         approachLanes: nil,
+                         usableApproachLanes: nil,
+                         outletRoadClasses: [.toll, .restricted]),
+            Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
+                         headings: [30.0, 120.0, 300.0],
+                         approachIndex: 2,
+                         outletIndex: 1,
+                         outletIndexes: IndexSet([1, 2]),
+                         approachLanes: nil,
+                         usableApproachLanes: nil,
+                         outletRoadClasses: nil)
+        ]
         
-        let keyedUnarchiver = NSKeyedUnarchiver(forReadingWith: encodedData as Data)
-        keyedUnarchiver.requiresSecureCoding = true
-        let unarchivedIntersection = keyedUnarchiver.decodeObject(of: Intersection.self, forKey: "intersection")!
-        keyedUnarchiver.finishDecoding()
+        let encoder = JSONEncoder()
+        var encodedData: Data?
+        XCTAssertNoThrow(encodedData = try encoder.encode(intersections))
+        XCTAssertNotNil(encodedData)
         
-        XCTAssertNotNil(unarchivedIntersection)
-        
-        XCTAssertEqual(unarchivedIntersection.location.latitude, unarchivedIntersection.location.latitude)
-        XCTAssertEqual(unarchivedIntersection.location.longitude, unarchivedIntersection.location.longitude)
-        XCTAssertEqual(unarchivedIntersection.headings, unarchivedIntersection.headings)
-        XCTAssertEqual(unarchivedIntersection.outletIndex, unarchivedIntersection.outletIndex)
-        XCTAssertEqual(unarchivedIntersection.outletIndexes, unarchivedIntersection.outletIndexes)
-        XCTAssertEqual(unarchivedIntersection.outletRoadClasses, unarchivedIntersection.outletRoadClasses)
+        if let encodedData = encodedData {
+            var encodedIntersectionsJSON: [[String: Any?]]?
+            XCTAssertNoThrow(encodedIntersectionsJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [[String: Any?]])
+            XCTAssertNotNil(encodedIntersectionsJSON)
+
+            XCTAssert(JSONSerialization.objectsAreEqual(intersectionsJSON, encodedIntersectionsJSON, approximate: true))
+        }
     }
 }
