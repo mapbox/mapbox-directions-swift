@@ -1,9 +1,12 @@
 import Foundation
 
+public protocol DirectionsError: LocalizedError { }
+
+
 /**
  An error that occurs when calculating directions.
  */
-public enum DirectionsError: LocalizedError {
+public enum DirectionsServiceError: DirectionsError {
     /**
      The server returned an empty response.
      */
@@ -131,8 +134,8 @@ public enum DirectionsError: LocalizedError {
     }
 }
 
-extension DirectionsError: Equatable {
-    public static func == (lhs: DirectionsError, rhs: DirectionsError) -> Bool {
+extension DirectionsServiceError: Equatable {
+    public static func == (lhs: DirectionsServiceError, rhs: DirectionsServiceError) -> Bool {
         switch (lhs, rhs) {
         case (.noData, .noData),
              (.invalidResponse, .invalidResponse),
