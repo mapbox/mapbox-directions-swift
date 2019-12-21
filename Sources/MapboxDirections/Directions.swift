@@ -1,4 +1,4 @@
-import Foundation
+import Mapbox
 
 typealias JSONDictionary = [String: Any]
 
@@ -113,7 +113,7 @@ open class Directions: NSObject {
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) endpoint is used by default.
      */
     public init(accessToken: String?, host: String?) {
-        let accessToken = accessToken ?? defaultAccessToken
+        let accessToken = accessToken ?? defaultAccessToken ?? MGLAccountManager.accessToken
         precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
         
         self.accessToken = accessToken!
