@@ -1,6 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
+import struct Turf.LineString
 
 extension CodingUserInfoKey {
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
@@ -8,13 +9,33 @@ extension CodingUserInfoKey {
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
  
- Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
+ Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` method.
  */
 open class Match: DirectionsResult {
     private enum CodingKeys: String, CodingKey {
         case confidence
         case tracepoints
         case matchOptions
+    }
+    
+    /**
+     Initializes a match.
+     
+     Typically, you do not create instances of this class directly. Instead, you receive match objects when you request matches using the `Directions.calculate(_:completionHandler:)` method.
+     
+     - parameter legs: The legs that are traversed in order.
+     - parameter shape: The matching roads or paths as a contiguous polyline.
+     - parameter distance: The matched path’s cumulative distance, measured in meters.
+     - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
+     - parameter confidence: A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
+     - parameter tracepoints: Tracepoints on the road network that match the tracepoints in `options`.
+     - parameter options: The criteria to match.
+     */
+    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, tracepoints: [Tracepoint?], options: MatchOptions) {
+        matchOptions = options
+        self.confidence = confidence
+        self.tracepoints = tracepoints
+        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime, options: options)
     }
     
     /**

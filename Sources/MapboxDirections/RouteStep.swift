@@ -384,6 +384,55 @@ open class RouteStep: Codable {
     
     // MARK: Creating a Step
     
+    /**
+     Initializes a step.
+     
+     - parameter transportType: The mode of transportation used for the step.
+     - parameter maneuverLocation: The location of the maneuver at the beginning of this step.
+     - parameter maneuverType: The type of maneuver required for beginning this step.
+     - parameter maneuverDirection: Additional directional information to clarify the maneuver type.
+     - parameter instructions: A string with instructions explaining how to perform the step’s maneuver.
+     - parameter initialHeading: The user’s heading immediately before performing the maneuver.
+     - parameter finalHeading: The user’s heading immediately after performing the maneuver.
+     - parameter drivingSide: Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
+     - parameter exitCodes: Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
+     - parameter exitNames: The names of the roundabout exit.
+     - parameter phoneticExitNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `exitNames` property.
+     - parameter distance: The step’s distance, measured in meters.
+     - parameter expectedTravelTime: expectedTravelTime
+     - parameter names: The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
+     - parameter phoneticNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
+     - parameter codes: Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
+     - parameter destinationCodes: Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
+     - parameter destinations: Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
+     - parameter intersections: An array of intersections along the step.
+     - parameter instructionsSpokenAlongStep: Instructions about the next step’s maneuver, optimized for speech synthesis.
+     - parameter instructionsDisplayedAlongStep: Instructions about the next step’s maneuver, optimized for display in real time.
+     */
+    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil) {
+        self.transportType = transportType
+        self.maneuverLocation = maneuverLocation
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
+        self.instructions = instructions
+        self.initialHeading = initialHeading
+        self.finalHeading = finalHeading
+        self.drivingSide = drivingSide
+        self.exitCodes = exitCodes
+        self.exitNames = exitNames
+        self.phoneticExitNames = phoneticExitNames
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.names = names
+        self.phoneticNames = phoneticNames
+        self.codes = codes
+        self.destinationCodes = destinationCodes
+        self.destinations = destinations
+        self.intersections = nil
+        self.instructionsSpokenAlongStep = nil
+        self.instructionsDisplayedAlongStep = nil
+    }
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
@@ -499,7 +548,31 @@ open class RouteStep: Codable {
      */
     public var shape: LineString?
     
+    // MARK: Getting the Mode of Transportation
+    
+    /**
+     The mode of transportation used for the step.
+     
+     This step may use a different mode of transportation than the overall route.
+     */
+    public let transportType: TransportType
+    
     // MARK: Getting Details About the Maneuver
+    
+    /**
+     The location of the maneuver at the beginning of this step.
+     */
+    public let maneuverLocation: CLLocationCoordinate2D
+    
+    /**
+     The type of maneuver required for beginning this step.
+     */
+    public let maneuverType: ManeuverType
+    
+    /**
+     Additional directional information to clarify the maneuver type.
+     */
+    public let maneuverDirection: ManeuverDirection?
     
     /**
      A string with instructions explaining how to perform the step’s maneuver.
@@ -523,24 +596,9 @@ open class RouteStep: Codable {
     public let finalHeading: CLLocationDirection?
     
     /**
-     The type of maneuver required for beginning this step.
-     */
-    public let maneuverType: ManeuverType
-    
-    /**
-     Additional directional information to clarify the maneuver type.
-     */
-    public let maneuverDirection: ManeuverDirection?
-    
-    /**
      Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
      */
     public let drivingSide: DrivingSide
-    
-    /**
-     The location of the maneuver at the beginning of this step.
-     */
-    public let maneuverLocation: CLLocationCoordinate2D
     
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
@@ -549,7 +607,7 @@ open class RouteStep: Codable {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    public let exitIndex: Int?
+    open var exitIndex: Int?
     
     /**
      Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
@@ -594,7 +652,7 @@ open class RouteStep: Codable {
      
      Do not assume that the user would travel along the step at a fixed speed. For the expected travel time on each individual segment along the leg, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -659,19 +717,12 @@ open class RouteStep: Codable {
     
      /**
      Instructions about the next step’s maneuver, optimized for display in real time.
+     
      As the user traverses this step, you can give them advance notice of the upcoming maneuver by displaying each item in this array in order as the user reaches the specified distances along this step. The text and images of the visual instructions refer to the details in the next step, but the distances are measured from the beginning of this step.
+     
      This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
     public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
-    
-    // MARK: Getting the Mode of Transportation
-    
-    /**
-     The mode of transportation used for the step.
-     
-     This step may use a different mode of transportation than the overall route.
-     */
-    public let transportType: TransportType
 }
 
 extension RouteStep: Equatable {
