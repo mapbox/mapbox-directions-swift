@@ -178,12 +178,16 @@ open class Directions: NSObject {
                     let result = try decoder.decode(RouteResponse.self, from: data)
                     guard (result.code == nil && result.message == nil) || result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
-                        completionHandler(nil, nil, apiError)
+                        DispatchQueue.main.async {
+                            completionHandler(nil, nil, apiError)
+                        }
                         return
                     }
                     
                     guard let routes = result.routes else {
-                        completionHandler(result.waypoints, nil, .unableToRoute)
+                        DispatchQueue.main.async {
+                            completionHandler(result.waypoints, nil, .unableToRoute)
+                        }
                         return
                     }
                     
@@ -243,12 +247,16 @@ open class Directions: NSObject {
                     let result = try decoder.decode(MatchResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
-                        completionHandler(nil, apiError)
+                        DispatchQueue.main.async {
+                            completionHandler(nil, apiError)
+                        }
                         return
                     }
                     
                     guard let matches = result.matches else {
-                        completionHandler(nil, .unableToRoute)
+                        DispatchQueue.main.async {
+                            completionHandler(nil, .unableToRoute)
+                        }
                         return
                     }
                     
@@ -307,12 +315,16 @@ open class Directions: NSObject {
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
-                        completionHandler(nil, nil, apiError)
+                        DispatchQueue.main.async {
+                            completionHandler(nil, nil, apiError)
+                        }
                         return
                     }
                     
                     guard let routes = result.routes else {
-                        completionHandler(result.waypoints, nil, .unableToRoute)
+                        DispatchQueue.main.async {
+                            completionHandler(result.waypoints, nil, .unableToRoute)
+                        }
                         return
                     }
                     
