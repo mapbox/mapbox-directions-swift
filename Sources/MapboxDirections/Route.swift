@@ -31,3 +31,14 @@ open class Route: DirectionsResult {
     }
     public var routeOptions: RouteOptions
 }
+
+extension Route: Equatable {
+    public static func ==(lhs: Route, rhs: Route) -> Bool {
+        return lhs.routeIdentifier == rhs.routeIdentifier &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.speechLocale == rhs.speechLocale &&
+            lhs.legs == rhs.legs &&
+            lhs.shape == rhs.shape
+    }
+}

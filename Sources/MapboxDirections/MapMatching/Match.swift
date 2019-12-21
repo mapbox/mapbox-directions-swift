@@ -65,3 +65,16 @@ open class Match: DirectionsResult {
      */
     public let matchOptions: MatchOptions
 }
+
+extension Match: Equatable {
+    public static func ==(lhs: Match, rhs: Match) -> Bool {
+        return lhs.routeIdentifier == rhs.routeIdentifier &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.speechLocale == rhs.speechLocale &&
+            lhs.confidence == rhs.confidence &&
+            lhs.tracepoints == rhs.tracepoints &&
+            lhs.legs == rhs.legs &&
+            lhs.shape == rhs.shape
+    }
+}
