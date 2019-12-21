@@ -141,7 +141,6 @@ open class Directions: NSObject {
     
     // MARK: Getting Directions
     
-    internal typealias RouteCompletionHandlerInteral = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: DirectionsServiceError?) -> Void
     /**
      Begins asynchronously calculating routes using the given options and delivers the results to a closure.
      
@@ -154,24 +153,22 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
-        
-        let complete = completionHandler as RouteCompletionHandlerInteral
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                complete(nil, nil, .invalidResponse)
+                completionHandler(nil, nil, .invalidResponse)
                 return
             }
             
             guard let data = possibleData else {
-                complete(nil, nil, .noData)
+                completionHandler(nil, nil, .noData)
                 return
             }
             
             if let error = possibleError {
-                complete(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -186,7 +183,7 @@ open class Directions: NSObject {
                     }
                     
                     guard let routes = result.routes else {
-                        complete(result.waypoints, nil, .unableToRoute)
+                        completionHandler(result.waypoints, nil, .unableToRoute)
                         return
                     }
                     
@@ -209,8 +206,6 @@ open class Directions: NSObject {
         return requestTask
     }
     
-    
-    internal typealias MatchCompletionHandlerInternal = (_ matches: [Match]?, _ error: DirectionsServiceError?) -> Void
     /**
      Begins asynchronously calculating matches using the given options and delivers the results to a closure.
      
@@ -223,24 +218,22 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matches, cancel this task.
      */
     @discardableResult open func calculate(_ options: MatchOptions, completionHandler: @escaping MatchCompletionHandler) -> URLSessionDataTask {
-        
-        let complete = completionHandler as MatchCompletionHandlerInternal
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                complete(nil, .invalidResponse)
+                completionHandler(nil, .invalidResponse)
                 return
             }
             
             guard let data = possibleData else {
-                complete(nil, .noData)
+                completionHandler(nil, .noData)
                 return
             }
             
             if let error = possibleError {
-                complete(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -255,7 +248,7 @@ open class Directions: NSObject {
                     }
                     
                     guard let matches = result.matches else {
-                        complete(nil, .unableToRoute)
+                        completionHandler(nil, .unableToRoute)
                         return
                     }
                     
@@ -266,7 +259,7 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        complete(nil, .unknown(response: response, underlying: error, code: nil, message: nil))
+                        completionHandler(nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
             }
@@ -289,24 +282,22 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
     @discardableResult open func calculateRoutes(matching options: MatchOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
-        
-        let complete = completionHandler as RouteCompletionHandlerInteral
         let fetchStart = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                complete(nil, nil, .invalidResponse)
+                completionHandler(nil, nil, .invalidResponse)
                 return
             }
             
             guard let data = possibleData else {
-                complete(nil, nil, .noData)
+                completionHandler(nil, nil, .noData)
                 return
             }
             
             if let error = possibleError {
-                complete(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
                 return
             }
             
@@ -321,7 +312,7 @@ open class Directions: NSObject {
                     }
                     
                     guard let routes = result.routes else {
-                        complete(result.waypoints, nil, .unableToRoute)
+                        completionHandler(result.waypoints, nil, .unableToRoute)
                         return
                     }
                     
@@ -332,7 +323,7 @@ open class Directions: NSObject {
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        complete(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
+                        completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
                     }
                 }
             }
@@ -411,7 +402,7 @@ open class Directions: NSObject {
     /**
      Returns an error that supplements the given underlying error with additional information from the an HTTP response’s body or headers.
      */
-    static func informativeError(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) -> DirectionsServiceError {
+    static func informativeError(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) -> DirectionsError {
         if let response = response as? HTTPURLResponse {
             switch (response.statusCode, code ?? "") {
             case (200, "NoRoute"):
