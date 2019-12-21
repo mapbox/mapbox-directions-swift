@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
 
   s.name         = "MapboxDirections.swift"
   s.version      = "0.30.0"
-  s.summary      = "Mapbox Directions API wrapper for Swift and Objective-C."
+  s.summary      = "Mapbox Directions API wrapper for Swift."
 
   s.description  = <<-DESC
   MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the Mapbox Directions API. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. The Mapbox Directions API is powered by the OSRM routing engine and open data from the OpenStreetMap project.
@@ -37,8 +37,7 @@ Pod::Spec.new do |s|
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*", "Sources/CMapboxDirections", "Sources/CMapboxDirections/*/*"]
-  s.exclude_files = ["Sources/CMapboxDirections/CMapboxDirections.h"]
+  s.source_files  = ["Sources/MapboxDirections", "Sources/MapboxDirections/*/*"]
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
@@ -47,5 +46,6 @@ Pod::Spec.new do |s|
   s.swift_version = "5.0"
 
   s.dependency "Polyline", "~> 4.2"
+  s.dependency "Turf", "~> 0.3"
 
 end

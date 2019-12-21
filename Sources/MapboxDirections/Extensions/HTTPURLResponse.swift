@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension HTTPURLResponse {
     var rateLimit: UInt? {
         guard let limit = allHeaderFields["X-Rate-Limit-Limit"] as? String else {

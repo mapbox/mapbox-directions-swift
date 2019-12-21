@@ -2,7 +2,32 @@
 
 ## master
 
+### Packaging
+
 * This library now requires a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 3.0 or above. Older operating system versions are no longer supported. ([#379](https://github.com/mapbox/MapboxDirections.swift/pull/379))
+* Swift is now required to directly use public types and methods defined by this library. If your application is written in Objective-C or Cocoa-AppleScript, you need to implement your own wrapper in Swift that bridges to Objective-C. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* This library now depends on [Turf](https://github.com/mapbox/turf-swift/). ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+
+### Error handling
+
+* The `RouteCompletionHandler` and `MatchCompletionHandler` closures’ `error` argument is now a `DirectionsError` instead of an `NSError`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Classes such as `Route`, `Match`, and `RouteStep` conform to the `Codable` protocol, so you can create instances of them from JSON-formatted `Data` using `JSONDecoder` and round-trip them back to JSON using `JSONEncoder`. Malformed input now throws decoding errors instead of crashing by unwrapping `nil`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+
+### Visual instructions
+
+* Removed the `Lane` class in favor of storing an array of `LaneIndication`s directly in the `Intersection.approachLanes` property. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Removed the `ComponentRepresentable` protocol, `VisualInstructionComponent` class, and `LaneIndicationComponent` class in favor of a `VisualInstruction.Component` enumeration that contains a `VisualInstruction.Component.TextRepresentation` and/or `VisualInstruction.Component.ImageRepresentation`, depending on the type of component. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Added the `VisualInstruction.Component.ImageRepresentation.imageURL(scale:format:)` method for fetching images with scales other than the current screen’s native scale or formats other than PNG. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+
+### Other changes
+
+* Removed support for [Mapbox Directions API v4](https://docs.mapbox.com/api/legacy/directions-v4/). ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Replaced the `MBDefaultWalkingSpeed`, `MBMinimumWalkingSpeed`, and `MBMaximumWalkingSpeed` constants with `CLLocationSpeed.normalWalking`, `CLLocationSpeed.minimumWalking`, and `CLLocationSpeed.maximumWalking`, respectively.
+* Replaced the `Route.coordinates` property with `Route.shape` and the `RouteStep.coordinates` property with `RouteStep.shape`. The `Route.coordinateCount` and `RouteStep.coordinateCount` properties have been removed, but you can use the `LineString.coordinates` property to get the array of `CLLocationCoordinate2D`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* `RouteLeg.source` and `RouteLeg.destination` are now optional. They can be `nil` when the `RouteLeg` object is decoded individually from JSON. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Removed `TransportType.none`, `ManeuverType.none`, and `ManeuverDirection.none`. Unrecognized `TransportType` and `ManeuverDirection` values now raise decoding errors. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* `RouteStep.maneuverType` is now optional. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* Renamed the `Tracepoint.alternateCount` property to `Tracepoint.countOfAlternatives`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Added `AttributeOptions.maximumSpeedLimit` for getting maximum posted speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
 
 ## v0.30.0

@@ -1,32 +1,92 @@
 import Foundation
 
-extension Measurement where UnitType: UnitSpeed {
-    /**
-     Initializes a new speed from a JSON dictionary.
-     */
-    init?(json: [String: Any]) {
-        let value: Double
-        if let speedNone = json["none"] as? Bool, speedNone {
-            value = .greatestFiniteMagnitude
-        } else if let speed = json["speed"] as? Double {
-            value = speed
+enum SpeedLimitDescriptor: Equatable {
+    enum UnitDescriptor: String, Codable {
+        case milesPerHour = "mph"
+        case kilometersPerHour = "km/h"
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case none
+        case speed
+        case unknown
+        case unit
+    }
+    
+    case none
+    case some(speed: Measurement<UnitSpeed>)
+    case unknown
+    
+    init(speed: Measurement<UnitSpeed>?) {
+        guard let speed = speed else {
+            self = .unknown
+            return
+        }
+        
+        if speed.value.isInfinite {
+            self = .none
         } else {
+            self = .some(speed: speed)
+        }
+    }
+}
+
+extension SpeedLimitDescriptor: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if (try container.decodeIfPresent(Bool.self, forKey: .none)) ?? false {
+            self = .none
+        } else if (try container.decodeIfPresent(Bool.self, forKey: .unknown)) ?? false {
+            self = .unknown
+        } else {
+            let unit: UnitSpeed
+            switch try container.decode(UnitDescriptor.self, forKey: .unit) {
+            case .milesPerHour:
+                unit = .milesPerHour
+            case .kilometersPerHour:
+                unit = .kilometersPerHour
+            }
+            
+            let value = try container.decode(Double.self, forKey: .speed)
+            self = .some(speed: .init(value: value, unit: unit))
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        switch self {
+        case .none:
+            try container.encode(true, forKey: .none)
+        case .some(var speed):
+            let unitDescriptor: UnitDescriptor
+            switch speed.unit {
+            case .milesPerHour:
+                unitDescriptor = .milesPerHour
+            case .kilometersPerHour:
+                unitDescriptor = .kilometersPerHour
+            default:
+                speed = speed.converted(to: .kilometersPerHour)
+                unitDescriptor = .kilometersPerHour
+            }
+            try container.encode(unitDescriptor, forKey: .unit)
+            try container.encode(speed.value, forKey: .speed)
+        case .unknown:
+            try container.encode(true, forKey: .unknown)
+        }
+    }
+}
+
+extension Measurement where UnitType == UnitSpeed {
+    init?(speedLimitDescriptor: SpeedLimitDescriptor) {
+        switch speedLimitDescriptor {
+        case .none:
+            self = .init(value: .infinity, unit: .kilometersPerHour)
+        case .some(let speed):
+            self = speed
+        case .unknown:
             return nil
         }
-        if let speedUnknown = json["unknown"] as? Bool, speedUnknown {
-            return nil
-        }
-        
-        let unit: UnitSpeed
-        switch json["unit"] as? String {
-        case "mph":
-            unit = .milesPerHour
-        case "km/h":
-            unit = .kilometersPerHour
-        default:
-            unit = .kilometersPerHour
-        }
-        
-        self.init(value: value, unit: unit as! UnitType)
     }
 }

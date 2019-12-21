@@ -3,9 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import MapboxDirections
 
-
 class OfflineDirectionsTests: XCTestCase {
-    
     let token = "foo"
     let host = "api.mapbox.com"
     
@@ -47,7 +45,6 @@ class OfflineDirectionsTests: XCTestCase {
     }
 
     func testDownloadTiles() {
-        
         let directions = Directions(accessToken: token, host: host)
 
         let bounds = CoordinateBounds(coordinates: [CLLocationCoordinate2D(latitude: 37.7890, longitude: -122.4337),

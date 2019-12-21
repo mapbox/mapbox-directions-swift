@@ -1,6 +1,6 @@
 ignore:
   - "Directions Example"
-  - "MapboxDirectionsTests"
+  - "Tests"
 
 coverage:
   status:
