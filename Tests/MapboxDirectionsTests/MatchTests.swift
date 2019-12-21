@@ -1,14 +1,18 @@
 import XCTest
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
+#endif
 @testable import MapboxDirections
 
 class MatchTests: XCTestCase {
     override func tearDown() {
+        #if !SWIFT_PACKAGE
         OHHTTPStubs.removeAllStubs()
+        #endif
         super.tearDown()
     }
     
+    #if !SWIFT_PACKAGE
     func testMatch() {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
@@ -148,5 +152,47 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(match.matchOptions, unarchivedMatch.matchOptions)
         XCTAssertEqual(match.tracepoints, unarchivedMatch.tracepoints)
     }
+    #endif
+    
+    func testCoding() {
+        // https://api.mapbox.com/matching/v5/mapbox/driving/-84.51200,39.09740;-84.51118,39.09638;-84.51021,39.09687.json?geometries=polyline&overview=false&tidy=false&access_token=…
+        let matchJSON: [String: Any?] = [
+            "confidence": 0.00007401405321383336,
+            "legs": [
+                [
+                    "summary": "",
+                    "weight": 46.7,
+                    "duration": 34.7,
+                    "steps": [],
+                    "distance": 169,
+                ],
+                [
+                    "summary": "",
+                    "weight": 31,
+                    "duration": 25.6,
+                    "steps": [],
+                    "distance": 128.1,
+                ],
+            ],
+            "weight_name": "routability",
+            "weight": 77.7,
+            "duration": 60.300000000000004,
+            "distance": 297.1,
+        ]
+        let matchData = try! JSONSerialization.data(withJSONObject: matchJSON, options: [])
+        
+        let options = MatchOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 39.09740, longitude: -84.51200),
+            CLLocationCoordinate2D(latitude: 39.09638, longitude: -84.51118),
+            CLLocationCoordinate2D(latitude: 39.09687, longitude: -84.51021),
+        ])
+        options.routeShapeResolution = .none
+        
+        let decoder = JSONDecoder()
+        var match: Match?
+        XCTAssertThrowsError(match = try decoder.decode(Match.self, from: matchData))
+        decoder.userInfo[.options] = options
+        XCTAssertNoThrow(match = try decoder.decode(Match.self, from: matchData))
+        XCTAssertNotNil(match)
+    }
 }
-#endif
