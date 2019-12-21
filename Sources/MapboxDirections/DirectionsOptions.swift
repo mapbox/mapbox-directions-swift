@@ -352,20 +352,20 @@ open class DirectionsOptions: Codable {
         return queryItems
     }
     
-    private var bearings: String? {
-        if waypoints.compactMap({ $0.heading }).isEmpty {
+    var bearings: String? {
+        guard waypoints.contains(where: { $0.heading ?? -1 >= 0 }) else {
             return nil
         }
         return waypoints.map({ $0.headingDescription }).joined(separator: ";")
     }
     
-    private var radiuses: String? {
-        guard !self.waypoints.filter({ $0.coordinateAccuracy != nil}).isEmpty else {
+    var radiuses: String? {
+        guard waypoints.contains(where: { $0.coordinateAccuracy ?? -1 >= 0 }) else {
             return nil
         }
         
-        let accuracies =  self.waypoints.map { (waypoint) -> String in
-            guard let accuracy = waypoint.coordinateAccuracy else {
+        let accuracies = self.waypoints.map { (waypoint) -> String in
+            guard let accuracy = waypoint.coordinateAccuracy, accuracy >= 0 else {
                 return "unlimited"
             }
             return String(accuracy)
