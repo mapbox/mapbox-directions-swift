@@ -62,4 +62,23 @@ class VisualInstructionComponentTests: XCTestCase {
             XCTAssert(JSONSerialization.objectsAreEqual(componentJSON, encodedComponentJSON, approximate: false))
         }
     }
+    
+    func testUnrecognizedComponent() {
+        let componentJSON = [
+            "type": "emoji",
+            "text": "👈",
+        ]
+        let componentData = try! JSONSerialization.data(withJSONObject: componentJSON, options: [])
+        var component: VisualInstruction.Component?
+        XCTAssertNoThrow(component = try JSONDecoder().decode(VisualInstruction.Component.self, from: componentData))
+        XCTAssertNotNil(component)
+        if let component = component {
+            switch component {
+            case .text(let text):
+                XCTAssertEqual(text.text, "👈")
+            default:
+                XCTFail("Component of unrecognized type should be decoded as text component.")
+            }
+        }
+    }
 }

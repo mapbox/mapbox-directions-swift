@@ -155,7 +155,7 @@ extension VisualInstruction.Component: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let kind = try container.decode(Kind.self, forKey: .kind)
+        let kind = (try? container.decode(Kind.self, forKey: .kind)) ?? .text
         
         if kind == .lane {
             let indications = try container.decode(LaneIndication.self, forKey: .directions)
