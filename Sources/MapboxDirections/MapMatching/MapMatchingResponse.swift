@@ -1,17 +1,19 @@
 import Foundation
 
-class MapMatchingResponse: Decodable {
-    var code: String
-    var routes : [Route]?
-    var waypoints: [Waypoint]
-    
+public struct MapMatchingResponse {
+    public var code: String
+    public var routes : [Route]?
+    public var waypoints: [Waypoint]
+}
+
+extension MapMatchingResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case code
         case matches = "matchings"
         case tracepoints
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         code = try container.decode(String.self, forKey: .code)
         routes = try container.decodeIfPresent([Route].self, forKey: .matches)
