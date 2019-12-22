@@ -90,11 +90,13 @@ open class RouteLeg: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        var annotation = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-        try annotation.encode(segmentDistances, forKey: .segmentDistances)
-        try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-        try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
-        try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil {
+            var annotationContainer = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+            try annotationContainer.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
+            try annotationContainer.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+            try annotationContainer.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
+            try annotationContainer.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        }
     }
 
     // MARK: Getting the Endpoints of the Leg

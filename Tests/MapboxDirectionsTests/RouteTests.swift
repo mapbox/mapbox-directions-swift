@@ -38,5 +38,40 @@ class RouteTests: XCTestCase {
         expectedLeg.destination = options.waypoints[1]
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, options: options)
         XCTAssertEqual(route, expectedRoute)
+        
+        if let route = route {
+            let encoder = JSONEncoder()
+            encoder.userInfo[.options] = options
+            var encodedRouteData: Data?
+            XCTAssertNoThrow(encodedRouteData = try encoder.encode(route))
+            XCTAssertNotNil(encodedRouteData)
+            
+            if let encodedRouteData = encodedRouteData {
+                var encodedRouteJSON: [String: Any?]?
+                XCTAssertNoThrow(encodedRouteJSON = try JSONSerialization.jsonObject(with: encodedRouteData, options: []) as? [String: Any?])
+                XCTAssertNotNil(encodedRouteJSON)
+                
+                // Remove keys not found in the original API response.
+                encodedRouteJSON?.removeValue(forKey: "source")
+                encodedRouteJSON?.removeValue(forKey: "destination")
+                encodedRouteJSON?.removeValue(forKey: "profileIdentifier")
+                if var encodedLegJSON = encodedRouteJSON?["legs"] as? [[String: Any?]] {
+                    encodedLegJSON[0].removeValue(forKey: "source")
+                    encodedLegJSON[0].removeValue(forKey: "destination")
+                    encodedLegJSON[0].removeValue(forKey: "profileIdentifier")
+                    encodedRouteJSON?["legs"] = encodedLegJSON
+                }
+
+                // https://github.com/mapbox/MapboxDirections.swift/issues/125
+                var referenceRouteJSON = routeJSON
+                referenceRouteJSON.removeValue(forKey: "weight")
+                referenceRouteJSON.removeValue(forKey: "weight_name")
+                var referenceLegJSON = referenceRouteJSON["legs"] as! [[String: Any?]]
+                referenceLegJSON[0].removeValue(forKey: "weight")
+                referenceRouteJSON["legs"] = referenceLegJSON
+                
+                XCTAssert(JSONSerialization.objectsAreEqual(referenceRouteJSON, encodedRouteJSON, approximate: true))
+            }
+        }
     }
 }

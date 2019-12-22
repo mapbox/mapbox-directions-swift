@@ -62,14 +62,10 @@ open class DirectionsResult: Codable {
         apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
-        do {
-            speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
-        } catch let DecodingError.typeMismatch(mismatchedType, context) {
-            guard mismatchedType == [String: Any].self else {
-                throw DecodingError.typeMismatch(mismatchedType, context)
-            }
-            let identifier = try container.decode(String.self, forKey: .speechLocale)
+        if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
             speechLocale = Locale(identifier: identifier)
+        } else {
+            speechLocale = nil
         }
     }
     
@@ -85,7 +81,7 @@ open class DirectionsResult: Codable {
         try container.encodeIfPresent(accessToken, forKey: .accessToken)
         try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
-        try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
+        try container.encodeIfPresent(speechLocale?.identifier, forKey: .speechLocale)
     }
     
     // MARK: Getting the Shape of the Route
