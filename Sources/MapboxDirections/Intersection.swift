@@ -126,7 +126,7 @@ extension Intersection: Codable {
         }
         try container.encodeIfPresent(lanes, forKey: .lanes)
         
-        if let classes = outletRoadClasses?.description.components(separatedBy: ",") {
+        if let classes = outletRoadClasses?.description.components(separatedBy: ",").filter({ !$0.isEmpty }) {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
     }
