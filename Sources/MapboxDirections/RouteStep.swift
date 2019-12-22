@@ -469,7 +469,7 @@ open class RouteStep: Codable {
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
         try maneuver.encode(maneuverType, forKey: .type)
-        try maneuver.encode(maneuverDirection, forKey: .direction)
+        try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
         try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
