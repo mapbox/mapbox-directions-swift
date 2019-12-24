@@ -229,7 +229,7 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = text
         case .lane(let indications, let isUsable):
             try container.encode(Kind.lane, forKey: .kind)
-            textRepresentation = nil
+            textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
         }

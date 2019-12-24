@@ -63,6 +63,41 @@ class VisualInstructionComponentTests: XCTestCase {
         }
     }
     
+    func testLaneComponent() {
+        let componentJSON: [String: Any?] = [
+            "text": "",
+            "type": "lane",
+            "active": true,
+            "directions": ["right", "straight"],
+        ]
+        let componentData = try! JSONSerialization.data(withJSONObject: componentJSON, options: [])
+        var component: VisualInstruction.Component?
+        XCTAssertNoThrow(component = try JSONDecoder().decode(VisualInstruction.Component.self, from: componentData))
+        XCTAssertNotNil(component)
+        if let component = component {
+            if case let .lane(indications, isUsable) = component {
+                XCTAssertEqual(indications, [.straightAhead, .right])
+                XCTAssertTrue(isUsable)
+            } else {
+                XCTFail("Lane component should not be decoded as any other kind of component.")
+            }
+        }
+        
+        component = .lane(indications: [.straightAhead, .right], isUsable: true)
+        let encoder = JSONEncoder()
+        var encodedData: Data?
+        XCTAssertNoThrow(encodedData = try encoder.encode(component))
+        XCTAssertNotNil(encodedData)
+        
+        if let encodedData = encodedData {
+            var encodedComponentJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedComponentJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedComponentJSON)
+            
+            XCTAssert(JSONSerialization.objectsAreEqual(componentJSON, encodedComponentJSON, approximate: false))
+        }
+    }
+    
     func testUnrecognizedComponent() {
         let componentJSON = [
             "type": "emoji",
