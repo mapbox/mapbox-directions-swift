@@ -1,11 +1,13 @@
 import Foundation
 
-class MatchResponse: Codable {
-    var code: String
-    var message: String?
-    var matches : [Match]?
-    var tracepoints: [Tracepoint?]?
-    
+public struct MatchResponse {
+    public var code: String
+    public var message: String?
+    public var matches : [Match]?
+    public var tracepoints: [Tracepoint?]?
+}
+
+extension MatchResponse: Codable {
     private enum CodingKeys: String, CodingKey {
         case code
         case message
@@ -13,7 +15,7 @@ class MatchResponse: Codable {
         case tracepoints
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         code = try container.decode(String.self, forKey: .code)
         message = try container.decodeIfPresent(String.self, forKey: .message)

@@ -64,6 +64,15 @@ public extension VisualInstruction.Component {
      */
     struct TextRepresentation: Equatable {
         /**
+         Initializes a text representation bearing the given abbreviatable text.
+         */
+        public init(text: String, abbreviation: String?, abbreviationPriority: Int?) {
+            self.text = text
+            self.abbreviation = abbreviation
+            self.abbreviationPriority = abbreviationPriority
+        }
+        
+        /**
          The plain text representation of this component.
          */
         public let text: String
@@ -93,6 +102,13 @@ public extension VisualInstruction.Component {
             case png
             /// Scalable Vector Graphics (SVG)
             case svg
+        }
+        
+        /**
+         Initializes an image representation bearing the image at the given base URL.
+         */
+        public init(imageBaseURL: URL?) {
+            self.imageBaseURL = imageBaseURL
         }
         
         /**
@@ -213,7 +229,7 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = text
         case .lane(let indications, let isUsable):
             try container.encode(Kind.lane, forKey: .kind)
-            textRepresentation = nil
+            textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
         }

@@ -251,6 +251,12 @@
 		DADD27C81E5AAE3100D31FAD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADD27C71E5AAE3100D31FAD /* Launch Screen.storyboard */; };
 		DADD27F31E5ABD4300D31FAD /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADD27F21E5ABD4300D31FAD /* Mapbox.framework */; };
 		DADD27F71E5AC8E900D31FAD /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
+		DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
+		DAE2DF6923AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
+		DAE2DF6A23AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
+		DAE2DF6C23AED2280065057A /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6B23AED2280065057A /* RouteTests.swift */; };
+		DAE2DF6D23AED2280065057A /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6B23AED2280065057A /* RouteTests.swift */; };
+		DAE2DF6E23AED2280065057A /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6B23AED2280065057A /* RouteTests.swift */; };
 		DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
@@ -402,6 +408,8 @@
 		DADD27C31E5AAAD800D31FAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DADD27C71E5AAE3100D31FAD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DADD27F21E5ABD4300D31FAD /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = Carthage/Build/iOS/Mapbox.framework; sourceTree = "<group>"; };
+		DAE2DF6723AECB120065057A /* QuickLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookTests.swift; sourceTree = "<group>"; };
+		DAE2DF6B23AED2280065057A /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntersectionTests.swift; sourceTree = "<group>"; };
 		DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteOptionsTests.swift; path = Tests/MapboxDirectionsTests/RouteOptionsTests.swift; sourceTree = SOURCE_ROOT; };
 		DD6254731AE70CB700017857 /* Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Directions.swift; sourceTree = "<group>"; };
@@ -635,7 +643,9 @@
 				3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */,
 				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
 				35DBF013217E199E0009D2AE /* OfflineDirectionsTests.swift */,
+				DAE2DF6723AECB120065057A /* QuickLookTests.swift */,
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
+				DAE2DF6B23AED2280065057A /* RouteTests.swift */,
 				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
 				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
 				DAABF78D2395ABA900CEEB61 /* SpokenInstructionTests.swift */,
@@ -1196,6 +1206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				DAE2DF6D23AED2280065057A /* RouteTests.swift in Sources */,
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
@@ -1205,6 +1216,7 @@
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
+				DAE2DF6923AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110C1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F31F6AFBD600A1C4F1 /* VisualInstructionTests.swift in Sources */,
 				DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */,
@@ -1265,6 +1277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				DAE2DF6E23AED2280065057A /* RouteTests.swift in Sources */,
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
@@ -1274,6 +1287,7 @@
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
+				DAE2DF6A23AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F41F6AFBD600A1C4F1 /* VisualInstructionTests.swift in Sources */,
 				DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */,
@@ -1378,6 +1392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
+				DAE2DF6C23AED2280065057A /* RouteTests.swift in Sources */,
 				35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
@@ -1387,6 +1402,7 @@
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
+				DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C52CE3931F6AF6E70069963D /* VisualInstructionTests.swift in Sources */,
 				DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */,

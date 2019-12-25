@@ -176,7 +176,7 @@ open class RouteOptions: DirectionsOptions {
         }
         
         if !roadClassesToAvoid.isEmpty {
-            let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",")
+            let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",").filter { !$0.isEmpty }
             precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
             if let firstRoadClass = allRoadClasses.first {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))

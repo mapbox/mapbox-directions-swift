@@ -5,32 +5,47 @@ class IntersectionTests: XCTestCase {
     func testCoding() {
         let intersectionsJSON: [[String: Any?]] = [
             [
-                "location": [13.426579, 52.508068],
-                "in": -1,
-                "classes": ["toll", "restricted"],
-                "bearings": [80],
-                "entry": [true],
                 "out": 0,
-                "lanes": nil,
+                "in": -1,
+                "entry": [true],
+                "bearings": [80],
+                "location": [13.426579, 52.508068],
+                "classes": ["toll", "restricted"],
             ],
             [
-                "location": [13.426688, 52.508022],
-                "in": 2,
-                "bearings": [30, 120, 300],
-                "entry": [false, true, true],
                 "out": 1,
-                "lanes": nil,
+                "in": 2,
+                "entry": [false, true, true],
+                "bearings": [30, 120, 300],
+                "location": [13.426688, 52.508022],
+            ],
+            [
+                "lanes": [
+                    [
+                        "valid": true,
+                        "indications": ["straight"],
+                    ],
+                    [
+                        "valid": true,
+                        "indications": ["right", "straight"],
+                    ],
+                ],
+                "out": 0,
+                "in": 2,
+                "entry": [true, true, false],
+                "bearings": [45, 135, 255],
+                "location": [-84.503956, 39.102483],
             ],
         ]
         let intersectionsData = try! JSONSerialization.data(withJSONObject: intersectionsJSON, options: [])
         var intersections: [Intersection]?
         XCTAssertNoThrow(intersections = try JSONDecoder().decode([Intersection].self, from: intersectionsData))
-        XCTAssertEqual(intersections?.count, 2)
+        XCTAssertEqual(intersections?.count, 3)
         
         if let intersection = intersections?.first {
-            XCTAssert(intersection.outletRoadClasses == [.toll, .restricted])
-            XCTAssert(intersection.headings == [80.0])
-            XCTAssert(intersection.location == CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
+            XCTAssertEqual(intersection.outletRoadClasses, [.toll, .restricted])
+            XCTAssertEqual(intersection.headings, [80.0])
+            XCTAssertEqual(intersection.location, CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
         }
         
         intersections = [
@@ -49,6 +64,14 @@ class IntersectionTests: XCTestCase {
                          outletIndexes: IndexSet([1, 2]),
                          approachLanes: nil,
                          usableApproachLanes: nil,
+                         outletRoadClasses: nil),
+            Intersection(location: CLLocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
+                         headings: [45, 135, 255],
+                         approachIndex: 2,
+                         outletIndex: 0,
+                         outletIndexes: IndexSet([0, 1]),
+                         approachLanes: [.straightAhead, [.straightAhead, .right]],
+                         usableApproachLanes: IndexSet([0, 1]),
                          outletRoadClasses: nil)
         ]
         
