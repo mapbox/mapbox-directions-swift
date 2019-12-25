@@ -28,6 +28,9 @@
 * Removed `TransportType.none`, `ManeuverType.none`, and `ManeuverDirection.none`. Unrecognized `TransportType` and `ManeuverDirection` values now raise decoding errors. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * `RouteStep.maneuverType` is now optional. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Renamed the `Tracepoint.alternateCount` property to `Tracepoint.countOfAlternatives`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
+* The `Intersection.approachIndex` and `Intersection.outletIndex` properties are now optional, not −1, in the case of a departure or arrival maneuver. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
+* Added initializers for `Route`, `Match`, `RouteLeg`, and `RouteStep`. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
+* Various properties of `Route`, `RouteLeg`, and `RouteStep` are now writable. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
 
 ## v0.30.0
 
