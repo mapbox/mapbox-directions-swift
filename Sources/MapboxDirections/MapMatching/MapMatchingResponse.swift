@@ -19,7 +19,8 @@ extension MapMatchingResponse: Decodable {
         routes = try container.decodeIfPresent([Route].self, forKey: .matches)
         
         // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
-        let decodedWaypoints = try container.decode([Waypoint].self, forKey: .tracepoints)
+        // Map Matching API responses can contain null tracepoints. Null tracepoints can’t correspond to waypoints, so they’re irrelevant to the decoded structure.
+        let decodedWaypoints = try container.decode([Waypoint?].self, forKey: .tracepoints).compactMap { $0 }
         if let options = decoder.userInfo[.options] as? DirectionsOptions {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
             waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Waypoint in
