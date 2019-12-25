@@ -17,7 +17,7 @@ Specify the following dependency in your [Carthage](https://github.com/Carthage/
 // Latest stable release
 github "mapbox/mapbox-directions-swift" ~> 0.30
 // Latest prerelease
-github "mapbox/mapbox-directions-swift" "v1.0.0-alpha.1"
+github "mapbox/mapbox-directions-swift" ~> 1.0.0-alpha.1
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
@@ -26,7 +26,7 @@ Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 # Latest stable release
 pod 'MapboxDirections.swift', '~> 0.30'
 # Latest prerelease
-pod 'MapboxDirections', :git => 'https://github.com/mapbox/mapbox-directions-swift.git', :tag => 'v1.0.0-alpha.1'
+pod 'MapboxDirections', '~> v1.0.0-alpha.1'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
@@ -40,7 +40,7 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 
 Then `import MapboxDirections`.
 
-This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_.
+This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_. v0.30.0 is also the last release that is compatible with Objective-C or AppleScript code.
 
 This repository contains an example application that demonstrates how to use the framework. To run it, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. Detailed documentation is available in the [Mapbox API Documentation](https://docs.mapbox.com/api/navigation/#directions).
 
