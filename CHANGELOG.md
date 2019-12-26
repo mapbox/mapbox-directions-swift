@@ -31,6 +31,8 @@
 * The `Intersection.approachIndex` and `Intersection.outletIndex` properties are now optional, not −1, in the case of a departure or arrival maneuver. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
 * Added initializers for `Route`, `Match`, `RouteLeg`, and `RouteStep`. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
 * Various properties of `Route`, `RouteLeg`, and `RouteStep` are now writable. ([#393](https://github.com/mapbox/MapboxDirections.swift/pull/393))
+* Added `AttributeOptions.maximumSpeedLimit` for getting maximum posted speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
+* Added the `RouteLeg.segmentRangesByStep` property for more easily associating `RouteStep`s with the values in segment-based arrays such as `RouteLeg.segmentCongestionLevels`. ([#367](https://github.com/mapbox/MapboxDirections.swift/pull/367))
 
 ## v0.30.0
 

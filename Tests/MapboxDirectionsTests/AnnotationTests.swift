@@ -19,7 +19,7 @@ class AnnotationTests: XCTestCase {
             "steps": "false",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,speed,congestion"
+            "annotations": "distance,duration,speed,congestion,maxspeed"
         ]
         
         stub(condition: isHost("api.mapbox.com")
@@ -36,7 +36,7 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = false
         options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel]
+        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .maximumSpeedLimit]
         var route: Route?
         let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
@@ -57,21 +57,71 @@ class AnnotationTests: XCTestCase {
         XCTAssertNotNil(route)
         if let route = route {
             XCTAssertNotNil(route.shape)
-            XCTAssertEqual(route.shape?.coordinates.count, 155)
-            XCTAssertEqual(route.routeIdentifier, "ck2l3ymrx18ws68qo1ukqt9p1")
+            XCTAssertEqual(route.shape?.coordinates.count, 154)
+            XCTAssertEqual(route.routeIdentifier, "ck4f22iso03fm78o2f96mt5e9")
         }
         
         if let leg = route?.legs.first {
-            XCTAssertEqual(leg.segmentDistances?.count, 154)
-            XCTAssertEqual(leg.segmentSpeeds?.count, 154)
-            XCTAssertEqual(leg.expectedSegmentTravelTimes?.count, 154)
-            XCTAssertEqual(leg.segmentCongestionLevels?.count, 154)
-            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .unknown), 134)
+            XCTAssertEqual(leg.segmentDistances?.count, 153)
+            XCTAssertEqual(leg.segmentSpeeds?.count, 153)
+            XCTAssertEqual(leg.expectedSegmentTravelTimes?.count, 153)
+            
+            XCTAssertEqual(leg.segmentCongestionLevels?.count, 153)
+            XCTAssertFalse(leg.segmentCongestionLevels?.contains(.unknown) ?? true)
             XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .low), 0)
-            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .moderate), 19)
-            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .heavy), 29)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .moderate), 21)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .heavy), 2)
             XCTAssertFalse(leg.segmentCongestionLevels?.contains(.severe) ?? true)
+            
+            XCTAssertEqual(leg.segmentMaximumSpeedLimits?.count, 153)
+            XCTAssertEqual(leg.segmentMaximumSpeedLimits?.first, Measurement(value: 48, unit: .kilometersPerHour))
+            XCTAssertEqual(leg.segmentMaximumSpeedLimits?.firstIndex(of: nil), 2)
+            XCTAssertFalse(leg.segmentMaximumSpeedLimits?.contains(Measurement(value: .infinity, unit: .kilometersPerHour)) ?? true)
         }
+    }
+    
+    func testSpeedLimits() {
+        func assert(_ speedLimitDescriptorJSON: [String: Any], roundTripsWith expectedSpeedLimitDescriptor: SpeedLimitDescriptor) {
+            let speedLimitDescriptorData = try! JSONSerialization.data(withJSONObject: speedLimitDescriptorJSON, options: [])
+            var speedLimitDescriptor: SpeedLimitDescriptor?
+            XCTAssertNoThrow(speedLimitDescriptor = try JSONDecoder().decode(SpeedLimitDescriptor.self, from: speedLimitDescriptorData))
+            XCTAssertEqual(speedLimitDescriptor, expectedSpeedLimitDescriptor)
+            
+            speedLimitDescriptor = expectedSpeedLimitDescriptor
+            
+            let encoder = JSONEncoder()
+            var encodedData: Data?
+            XCTAssertNoThrow(encodedData = try encoder.encode(speedLimitDescriptor))
+            XCTAssertNotNil(encodedData)
+            if let encodedData = encodedData {
+                var encodedSpeedLimitDescriptorJSON: [String: Any?]?
+                XCTAssertNoThrow(encodedSpeedLimitDescriptorJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
+                XCTAssertNotNil(encodedSpeedLimitDescriptorJSON)
+                
+                XCTAssert(JSONSerialization.objectsAreEqual(speedLimitDescriptorJSON, encodedSpeedLimitDescriptorJSON, approximate: true))
+            }
+        }
+        
+        XCTAssertEqual(SpeedLimitDescriptor(speed: Measurement(value: 55, unit: .milesPerHour)),
+                       .some(speed: Measurement(value: 55, unit: .milesPerHour)))
+        XCTAssertEqual(Measurement<UnitSpeed>(speedLimitDescriptor: .some(speed: Measurement(value: 55, unit: .milesPerHour))),
+                       Measurement(value: 55, unit: .milesPerHour))
+        assert(["speed": 55.0, "unit": "mph"], roundTripsWith: .some(speed: Measurement(value: 55, unit: .milesPerHour)))
+        
+        XCTAssertEqual(SpeedLimitDescriptor(speed: Measurement(value: 80, unit: .kilometersPerHour)),
+                       .some(speed: Measurement(value: 80, unit: .kilometersPerHour)))
+        XCTAssertEqual(Measurement<UnitSpeed>(speedLimitDescriptor: .some(speed: Measurement(value: 80, unit: .kilometersPerHour))),
+                       Measurement(value: 80, unit: .kilometersPerHour))
+        assert(["speed": 80.0, "unit": "km/h"], roundTripsWith: .some(speed: Measurement(value: 80, unit: .kilometersPerHour)))
+        
+        XCTAssertEqual(SpeedLimitDescriptor(speed: nil), .unknown)
+        XCTAssertNil(Measurement<UnitSpeed>(speedLimitDescriptor: .unknown))
+        assert(["unknown": true], roundTripsWith: .unknown)
+        
+        XCTAssertEqual(SpeedLimitDescriptor(speed: Measurement(value: .infinity, unit: .kilometersPerHour)), .none)
+        XCTAssertEqual(Measurement<UnitSpeed>(speedLimitDescriptor: .none),
+                       Measurement(value: .infinity, unit: .kilometersPerHour))
+        assert(["none": true], roundTripsWith: .none)
     }
 }
 #endif

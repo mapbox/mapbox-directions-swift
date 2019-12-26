@@ -43,6 +43,13 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
     public static let congestionLevel = AttributeOptions(rawValue: 1 << 4)
     
     /**
+     The maximum speed limit along the segment.
+     
+     When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry.
+     */
+    public static let maximumSpeedLimit = AttributeOptions(rawValue: 1 << 5)
+    
+    /**
      Creates an AttributeOptions from the given description strings.
      */
     public init?(descriptions: [String]) {
@@ -57,6 +64,8 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
                 attributeOptions.update(with: .speed)
             case "congestion":
                 attributeOptions.update(with: .congestionLevel)
+            case "maxspeed":
+                attributeOptions.update(with: .maximumSpeedLimit)
             case "":
                 continue
             default:
@@ -79,6 +88,9 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
         }
         if contains(.congestionLevel) {
             descriptions.append("congestion")
+        }
+        if contains(.maximumSpeedLimit) {
+            descriptions.append("maxspeed")
         }
         return descriptions.joined(separator: ",")
     }

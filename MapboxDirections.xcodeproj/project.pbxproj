@@ -217,6 +217,9 @@
 		DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
 		DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */ = {isa = PBXBuildFile; fileRef = DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */; };
+		DA8F3A7223B56D3B00B56786 /* RouteLegTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */; };
+		DA8F3A7323B56D3B00B56786 /* RouteLegTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */; };
+		DA8F3A7423B56D3B00B56786 /* RouteLegTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */; };
 		DA9E1B131E5A675F0081EDC7 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9E1B121E5A675F0081EDC7 /* Polyline.framework */; };
 		DAA76D681DD127CB0015EC78 /* LaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* LaneIndication.swift */; };
 		DAA76D691DD127CB0015EC78 /* LaneIndication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA76D671DD127CB0015EC78 /* LaneIndication.swift */; };
@@ -260,6 +263,10 @@
 		DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
 		DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */; };
+		DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
+		DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE7EA93230B5FD10003B211 /* Measurement.swift */; };
 		DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
@@ -271,6 +278,7 @@
 		F448F8401DDCC709000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
 		F448F8411DDCC70C000BC343 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */; };
 		F448F8421DDCC70D000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
+		F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
@@ -314,6 +322,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +398,7 @@
 		DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = V5Tests.swift; sourceTree = "<group>"; };
 		DA6C9DB11CAECA0E00094FBC /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
 		DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_geojson.json; sourceTree = "<group>"; };
+		DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegTests.swift; sourceTree = "<group>"; };
 		DA9E1B121E5A675F0081EDC7 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/watchOS/Polyline.framework; sourceTree = "<group>"; };
 		DAA76D671DD127CB0015EC78 /* LaneIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaneIndication.swift; sourceTree = "<group>"; };
 		DAABF78D2395ABA900CEEB61 /* SpokenInstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenInstructionTests.swift; sourceTree = "<group>"; };
@@ -411,6 +421,7 @@
 		DAE2DF6723AECB120065057A /* QuickLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookTests.swift; sourceTree = "<group>"; };
 		DAE2DF6B23AED2280065057A /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntersectionTests.swift; sourceTree = "<group>"; };
+		DAE7EA93230B5FD10003B211 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
 		DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteOptionsTests.swift; path = Tests/MapboxDirectionsTests/RouteOptionsTests.swift; sourceTree = SOURCE_ROOT; };
 		DD6254731AE70CB700017857 /* Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Directions.swift; sourceTree = "<group>"; };
 		F448F82A1DDCC5B6000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/iOS/Polyline.framework; sourceTree = "<group>"; };
@@ -540,6 +551,7 @@
 				8D434678219E1167008B7BF3 /* Double.swift */,
 				43208BAA2343F81900D8BD89 /* GeoJSON.swift */,
 				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
+				DAE7EA93230B5FD10003B211 /* Measurement.swift */,
 				8D381B691FDB101F008D5A58 /* String.swift */,
 			);
 			path = Extensions;
@@ -646,6 +658,7 @@
 				DAE2DF6723AECB120065057A /* QuickLookTests.swift */,
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
 				DAE2DF6B23AED2280065057A /* RouteTests.swift */,
+				DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */,
 				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
 				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
 				DAABF78D2395ABA900CEEB61 /* SpokenInstructionTests.swift */,
@@ -1170,6 +1183,7 @@
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
 				431E93C423466B0F00A71B44 /* GeoJSON.swift in Sources */,
@@ -1212,6 +1226,7 @@
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				DAD06E36239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
+				DA8F3A7323B56D3B00B56786 /* RouteLegTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
@@ -1241,6 +1256,7 @@
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
 				431E93C523466B1000A71B44 /* GeoJSON.swift in Sources */,
@@ -1283,6 +1299,7 @@
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				DAD06E37239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
+				DA8F3A7423B56D3B00B56786 /* RouteLegTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
@@ -1312,6 +1329,7 @@
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
 				431E93C623466B1100A71B44 /* GeoJSON.swift in Sources */,
@@ -1356,6 +1374,7 @@
 				43F89F98235778DE007B591E /* MapMatchingResponse.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
 				431E93C323466B0E00A71B44 /* GeoJSON.swift in Sources */,
@@ -1398,6 +1417,7 @@
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				DAD06E35239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
+				DA8F3A7223B56D3B00B56786 /* RouteLegTests.swift in Sources */,
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
