@@ -99,7 +99,7 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
 extension AttributeOptions: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(description.components(separatedBy: ","))
+        try container.encode(description.components(separatedBy: ",").filter { !$0.isEmpty })
     }
 
     public init(from decoder: Decoder) throws {

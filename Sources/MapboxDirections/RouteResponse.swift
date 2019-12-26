@@ -1,12 +1,12 @@
 import Foundation
 
-struct RouteResponse {
-    var code: String?
-    var message: String?
-    var error: String?
-    let uuid: String?
-    let routes: [Route]?
-    let waypoints: [Waypoint]?
+public struct RouteResponse {
+    public var code: String?
+    public var message: String?
+    public var error: String?
+    public let uuid: String?
+    public let routes: [Route]?
+    public let waypoints: [Waypoint]?
 }
 
 extension RouteResponse: Codable {
@@ -19,7 +19,7 @@ extension RouteResponse: Codable {
         case waypoints
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.code = try container.decodeIfPresent(String.self, forKey: .code)

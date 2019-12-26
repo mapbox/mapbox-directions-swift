@@ -145,12 +145,12 @@ open class DirectionsOptions: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(waypoints, forKey: .waypoints)
-        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
+        try container.encode(profileIdentifier, forKey: .profileIdentifier)
         try container.encode(includesSteps, forKey: .includesSteps)
         try container.encode(shapeFormat, forKey: .shapeFormat)
         try container.encode(routeShapeResolution, forKey: .routeShapeResolution)
         try container.encode(attributeOptions, forKey: .attributeOptions)
-        try container.encode(locale, forKey: .locale)
+        try container.encode(locale.identifier, forKey: .locale)
         try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
         try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
         try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
@@ -168,7 +168,8 @@ open class DirectionsOptions: Codable {
         shapeFormat = try container.decode(RouteShapeFormat.self, forKey: .shapeFormat)
         routeShapeResolution = try container.decode(RouteShapeResolution.self, forKey: .routeShapeResolution)
         attributeOptions = try container.decode(AttributeOptions.self, forKey: .attributeOptions)
-        locale = try container.decode(Locale.self, forKey: .locale)
+        let identifier = try container.decode(String.self, forKey: .locale)
+        locale = Locale(identifier: identifier)
         includesSpokenInstructions = try container.decode(Bool.self, forKey: .includesSpokenInstructions)
         distanceMeasurementSystem = try container.decode(MeasurementSystem.self, forKey: .distanceMeasurementSystem)
         includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
@@ -352,20 +353,20 @@ open class DirectionsOptions: Codable {
         return queryItems
     }
     
-    private var bearings: String? {
-        if waypoints.compactMap({ $0.heading }).isEmpty {
+    var bearings: String? {
+        guard waypoints.contains(where: { $0.heading ?? -1 >= 0 }) else {
             return nil
         }
         return waypoints.map({ $0.headingDescription }).joined(separator: ";")
     }
     
-    private var radiuses: String? {
-        guard !self.waypoints.filter({ $0.coordinateAccuracy != nil}).isEmpty else {
+    var radiuses: String? {
+        guard waypoints.contains(where: { $0.coordinateAccuracy ?? -1 >= 0 }) else {
             return nil
         }
         
-        let accuracies =  self.waypoints.map { (waypoint) -> String in
-            guard let accuracy = waypoint.coordinateAccuracy else {
+        let accuracies = self.waypoints.map { (waypoint) -> String in
+            guard let accuracy = waypoint.coordinateAccuracy, accuracy >= 0 else {
                 return "unlimited"
             }
             return String(accuracy)

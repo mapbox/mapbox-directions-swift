@@ -31,6 +31,27 @@ open class RouteLeg: Codable {
     // MARK: Creating a Leg
     
     /**
+     Initializes a route leg.
+     
+     - parameter steps: The steps that are traversed in order.
+     - parameter name: A name that describes the route leg.
+     - parameter expectedTravelTime: The route leg’s expected travel time, measured in seconds.
+     - parameter profileIdentifier: The primary mode of transportation for the route leg.
+     */
+    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, profileIdentifier: DirectionsProfileIdentifier) {
+        self.steps = steps
+        self.name = name
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.profileIdentifier = profileIdentifier
+        
+        segmentDistances = nil
+        expectedSegmentTravelTimes = nil
+        segmentSpeeds = nil
+        segmentCongestionLevels = nil
+    }
+    
+    /**
      Creates a route leg from a decoder.
      
      - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `RouteOptions` or `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
@@ -76,14 +97,16 @@ open class RouteLeg: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        var annotation = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-        try annotation.encode(segmentDistances, forKey: .segmentDistances)
-        try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-        try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
-        try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
-        
-        if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
-            try annotation.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
+        if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil || segmentMaximumSpeedLimits != nil {
+            var annotationContainer = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+            try annotationContainer.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
+            try annotationContainer.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+            try annotationContainer.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
+            try annotationContainer.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+            
+            if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
+                try annotationContainer.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
+            }
         }
     }
 
@@ -125,7 +148,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.distance`.
      */
-    public let segmentDistances: [CLLocationDistance]?
+    open var segmentDistances: [CLLocationDistance]?
 
     /**
      An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
@@ -134,7 +157,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.expectedTravelTime`.
      */
-    public let expectedSegmentTravelTimes: [TimeInterval]?
+    open var expectedSegmentTravelTimes: [TimeInterval]?
 
     /**
      An array containing the expected average speed (measured in meters per second) between each coordinate in the route leg geometry.
@@ -143,7 +166,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.speed`.
      */
-    public let segmentSpeeds: [CLLocationSpeed]?
+    open var segmentSpeeds: [CLLocationSpeed]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
@@ -154,7 +177,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.congestionLevel`.
      */
-    public let segmentCongestionLevels: [CongestionLevel]?
+    open var segmentCongestionLevels: [CongestionLevel]?
     
     /**
      An array containing the maximum speed limit along each road segment along the route leg’s shape.
@@ -165,8 +188,8 @@ open class RouteLeg: Codable {
      
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.maximumSpeedLimit`.
      */
-    public let segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
-
+    open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
+    
     // MARK: Getting Statistics About the Leg
 
     /**
@@ -192,12 +215,12 @@ open class RouteLeg: Codable {
 
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     // MARK: Reproducing the Route
     
     /**
-     A string specifying the primary mode of transportation for the route leg.
+     The primary mode of transportation for the route leg.
 
      The value of this property depends on the `RouteOptions.profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */

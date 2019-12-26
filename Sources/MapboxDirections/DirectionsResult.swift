@@ -23,6 +23,14 @@ open class DirectionsResult: Codable {
     
     // MARK: Creating a Directions Result
     
+    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, options: DirectionsOptions) {
+        self.legs = legs
+        self.shape = shape
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        _directionsOptions = options
+    }
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         legs = try container.decode([RouteLeg].self, forKey: .legs)
@@ -54,14 +62,10 @@ open class DirectionsResult: Codable {
         apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
-        do {
-            speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
-        } catch let DecodingError.typeMismatch(mismatchedType, context) {
-            guard mismatchedType == [String: Any].self else {
-                throw DecodingError.typeMismatch(mismatchedType, context)
-            }
-            let identifier = try container.decode(String.self, forKey: .speechLocale)
+        if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
             speechLocale = Locale(identifier: identifier)
+        } else {
+            speechLocale = nil
         }
     }
     
@@ -77,15 +81,15 @@ open class DirectionsResult: Codable {
         try container.encodeIfPresent(accessToken, forKey: .accessToken)
         try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
-        try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
+        try container.encodeIfPresent(speechLocale?.identifier, forKey: .speechLocale)
     }
     
     // MARK: Getting the Shape of the Route
     
     /**
-     An array of geographic coordinates defining the path of the route from start to finish.
+     The roads or paths taken as a contiguous polyline.
      
-     This array may be `nil` or simplified depending on the `DirectionsOptions.routeShapeResolution` property of the original `RouteOptions` or `MatchOptions` object.
+     The shape may be `nil` or simplified depending on the `DirectionsOptions.routeShapeResolution` property of the original `RouteOptions` or `MatchOptions` object.
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
@@ -94,7 +98,7 @@ open class DirectionsResult: Codable {
     // MARK: Getting the Legs Along the Route
     
     /**
-     An array of `RouteLeg` objects representing the legs of the route.
+     The legs that are traversed in order.
      
      The number of legs in this array depends on the number of waypoints. A route with two waypoints (the source and destination) has one leg, a route with three waypoints (the source, an intermediate waypoint, and the destination) has two legs, and so on.
      
@@ -131,7 +135,7 @@ open class DirectionsResult: Codable {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     // MARK: Configuring Speech Synthesis
     
@@ -145,7 +149,7 @@ open class DirectionsResult: Codable {
     // MARK: Reproducing the Route
     
     /**
-     `RouteOptions` used to create the directions request.
+     Criteria for reproducing this route.
      
      The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
      */

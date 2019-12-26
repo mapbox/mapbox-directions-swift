@@ -155,7 +155,8 @@ public class Waypoint: Codable {
     public var headingAccuracy: CLLocationDirection? = nil
     
     internal var headingDescription: String {
-        guard let heading = self.heading, let accuracy = self.headingAccuracy else {
+        guard let heading = heading, heading >= 0,
+            let accuracy = headingAccuracy, accuracy >= 0 else {
             return ""
         }
         

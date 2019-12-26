@@ -18,7 +18,7 @@ open class VisualInstruction: Codable {
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    public init(text: String?, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection, components: [Component], degrees: CLLocationDegrees? = nil) {
+    public init(text: String?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, components: [Component], degrees: CLLocationDegrees? = nil) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
