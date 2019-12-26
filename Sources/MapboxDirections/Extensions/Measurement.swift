@@ -4,6 +4,26 @@ enum SpeedLimitDescriptor: Equatable {
     enum UnitDescriptor: String, Codable {
         case milesPerHour = "mph"
         case kilometersPerHour = "km/h"
+        
+        init?(unit: UnitSpeed) {
+            switch unit {
+            case .milesPerHour:
+                self = .milesPerHour
+            case .kilometersPerHour:
+                self = .kilometersPerHour
+            default:
+                return nil
+            }
+        }
+        
+        var describedUnit: UnitSpeed {
+            switch self {
+            case .milesPerHour:
+                return .milesPerHour
+            case .kilometersPerHour:
+                return .kilometersPerHour
+            }
+        }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -40,14 +60,8 @@ extension SpeedLimitDescriptor: Codable {
         } else if (try container.decodeIfPresent(Bool.self, forKey: .unknown)) ?? false {
             self = .unknown
         } else {
-            let unit: UnitSpeed
-            switch try container.decode(UnitDescriptor.self, forKey: .unit) {
-            case .milesPerHour:
-                unit = .milesPerHour
-            case .kilometersPerHour:
-                unit = .kilometersPerHour
-            }
-            
+            let unitDescriptor = try container.decode(UnitDescriptor.self, forKey: .unit)
+            let unit = unitDescriptor.describedUnit
             let value = try container.decode(Double.self, forKey: .speed)
             self = .some(speed: .init(value: value, unit: unit))
         }
@@ -60,16 +74,10 @@ extension SpeedLimitDescriptor: Codable {
         case .none:
             try container.encode(true, forKey: .none)
         case .some(var speed):
-            let unitDescriptor: UnitDescriptor
-            switch speed.unit {
-            case .milesPerHour:
-                unitDescriptor = .milesPerHour
-            case .kilometersPerHour:
-                unitDescriptor = .kilometersPerHour
-            default:
+            let unitDescriptor = UnitDescriptor(unit: speed.unit) ?? {
                 speed = speed.converted(to: .kilometersPerHour)
-                unitDescriptor = .kilometersPerHour
-            }
+                return .kilometersPerHour
+            }()
             try container.encode(unitDescriptor, forKey: .unit)
             try container.encode(speed.value, forKey: .speed)
         case .unknown:
