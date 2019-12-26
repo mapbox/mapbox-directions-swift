@@ -137,9 +137,32 @@ open class RouteLeg: Codable {
 
      Each route step object corresponds to a distinct maneuver and the approach to the next maneuver.
 
-     This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
+     This array is empty if the original `RouteOptions` object’s `RouteOptions.includesSteps` property is set to `false`.
      */
     public let steps: [RouteStep]
+    
+    /**
+     The ranges of each step’s segments within the overall leg.
+     
+     Each range corresponds to an element of the `steps` property. Use this property to safely subscript segment-based properties such as `segmentCongestionLevels` and `segmentMaximumSpeedLimits`.
+     
+     This array is empty if the original `RouteOptions` object’s `RouteOptions.includesSteps` property is set to `false`.
+     */
+    public private(set) lazy var segmentRangesByStep: [Range<Int>] = {
+        var segmentRangesByStep: [Range<Int>] = []
+        var currentStepStartIndex = 0
+        for step in steps {
+            if let coordinates = step.shape?.coordinates {
+                let stepCoordinateCount = step.maneuverType == .arrive ? coordinates.count : coordinates.dropLast().count
+                let currentStepEndIndex = currentStepStartIndex.advanced(by: stepCoordinateCount)
+                segmentRangesByStep.append(currentStepStartIndex..<currentStepEndIndex)
+                currentStepStartIndex = currentStepEndIndex
+            } else {
+                segmentRangesByStep.append(currentStepStartIndex..<currentStepStartIndex)
+            }
+        }
+        return segmentRangesByStep
+    }()
     
     // MARK: Getting Per-Segment Attributes Along the Leg
     
