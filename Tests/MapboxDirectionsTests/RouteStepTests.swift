@@ -247,4 +247,26 @@ class RouteStepTests: XCTestCase {
             }
         }
     }
+    
+    func testEncodingPronunciations() {
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 0, longitude: 0),
+            CLLocationCoordinate2D(latitude: 1, longitude: 1),
+        ])
+        let step = RouteStep(transportType: .automobile, maneuverLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), maneuverType: .turn, maneuverDirection: .left, instructions: "", initialHeading: 0, finalHeading: 0, drivingSide: .right, distance: 10, expectedTravelTime: 10, names: ["iPhone X", "iPhone XS"], phoneticNames: ["ˈaɪˌfoʊ̯n ˈtɛn", "ˈaɪˌfoʊ̯n ˈtɛnz"])
+        
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        var encodedStepData: Data?
+        XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
+        XCTAssertNotNil(encodedStepData)
+        
+        if let encodedStepData = encodedStepData {
+            var encodedStepJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedStepJSON)
+            
+            XCTAssertEqual(encodedStepJSON?["pronunciation"] as? String, "ˈaɪˌfoʊ̯n ˈtɛn; ˈaɪˌfoʊ̯n ˈtɛnz")
+        }
+    }
 }

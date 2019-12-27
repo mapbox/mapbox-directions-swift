@@ -478,10 +478,10 @@ open class RouteStep: Codable {
                         rotaryNames: isRound ? names : nil)
         try road.encode(to: encoder)
         if isRound {
-            try container.encodeIfPresent(phoneticNames, forKey: .rotaryPronunciation)
-            try container.encodeIfPresent(phoneticExitNames, forKey: .pronunciation)
+            try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .rotaryPronunciation)
+            try container.encodeIfPresent(phoneticExitNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         } else {
-            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
+            try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         }
         
         try container.encodeIfPresent(intersections, forKey: .intersections)
