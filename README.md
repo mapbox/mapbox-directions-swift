@@ -29,7 +29,7 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 .package(url: "https://github.com/mapbox/MapboxDirections.swift.git", from: "0.30.0")
 ```
 
-Then `import MapboxDirections` or `@import MapboxDirections;`.
+Then `import MapboxDirections`.
 
 This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_.
 
