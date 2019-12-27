@@ -62,7 +62,7 @@ class RouteTests: XCTestCase {
                     encodedRouteJSON?["legs"] = encodedLegJSON
                 }
 
-                // https://github.com/mapbox/MapboxDirections.swift/issues/125
+                // https://github.com/mapbox/mapbox-directions-swift/issues/125
                 var referenceRouteJSON = routeJSON
                 referenceRouteJSON.removeValue(forKey: "weight")
                 referenceRouteJSON.removeValue(forKey: "weight_name")
