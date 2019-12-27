@@ -246,7 +246,7 @@ open class DirectionsOptions: Codable {
     /**
      The locale in which the route’s instructions are written.
 
-     If you use MapboxDirections.swift with the Mapbox Directions API or Map Matching API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
+     If you use the MapboxDirections framework with the Mapbox Directions API or Map Matching API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
 
      The Directions API can provide instructions in [a number of languages](https://docs.mapbox.com/api/navigation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
 

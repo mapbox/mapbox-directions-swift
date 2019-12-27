@@ -44,14 +44,14 @@ jazzy \
     --config docs/jazzy.yml \
     --sdk iphonesimulator \
     --module-version ${SHORT_VERSION} \
-    --github-file-prefix "https://github.com/mapbox/MapboxDirections.swift/tree/${BRANCH}" \
+    --github-file-prefix "https://github.com/mapbox/mapbox-directions-swift/tree/${BRANCH}" \
     --readme ${README} \
     --documentation="docs/guides/*.md" \
     --root-url "${BASE_URL}/directions/${RELEASE_VERSION}/" \
     --theme ${THEME} \
     --output ${OUTPUT}
 
-REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/MapboxDirections.swift $1/, '
+REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/Mapbox Directions for Swift $1/, '
 
 find ${OUTPUT} -name *.html -exec \
     perl -pi -e "$REPLACE_REGEXP" {} \;
