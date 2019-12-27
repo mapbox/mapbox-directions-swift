@@ -182,6 +182,8 @@ class RouteStepTests: XCTestCase {
             "weight": 59.1,
             "name": "Adalbertstraße",
             "mode": "driving",
+            "speedLimitSign": "vienna",
+            "speedLimitUnit": "km/h",
         ] as [String : Any?]
         var stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
         
@@ -190,6 +192,11 @@ class RouteStepTests: XCTestCase {
         var step: RouteStep?
         XCTAssertNoThrow(step = try decoder.decode(RouteStep.self, from: stepData))
         XCTAssertNotNil(step)
+        
+        if let step = step {
+            XCTAssertEqual(step.speedLimitSignStandard, SignStandard.viennaConvention)
+            XCTAssertEqual(step.speedLimitUnit, UnitSpeed.kilometersPerHour)
+        }
 
         let encoder = JSONEncoder()
         encoder.userInfo[.options] = options

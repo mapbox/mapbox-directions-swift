@@ -262,7 +262,7 @@ public enum SignStandard: String, Codable {
      
      This standard is prevalent in Europe and parts of Asia and Latin America. Countries in southern Africa and Central America have adopted similar regional standards.
      */
-    case viennaConvention
+    case viennaConvention = "vienna"
 }
 
 extension String {
