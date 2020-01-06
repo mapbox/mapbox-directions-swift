@@ -61,7 +61,7 @@ class V5Tests: XCTestCase {
         }
         XCTAssertNotNil(task)
         
-        waitForExpectations(timeout: 5) { (error) in
+        waitForExpectations(timeout: 10) { (error) in
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
