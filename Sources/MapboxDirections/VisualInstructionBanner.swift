@@ -14,6 +14,7 @@ open class VisualInstructionBanner: Codable {
         case primaryInstruction = "primary"
         case secondaryInstruction = "secondary"
         case tertiaryInstruction = "sub"
+        case quaternaryInstruction = "view"
         case drivingSide
     }
     
@@ -27,6 +28,7 @@ open class VisualInstructionBanner: Codable {
         primaryInstruction = primary
         secondaryInstruction = secondary
         tertiaryInstruction = tertiary
+        quaternaryInstruction = nil
         self.drivingSide = drivingSide
     }
     
@@ -45,6 +47,7 @@ open class VisualInstructionBanner: Codable {
         primaryInstruction = try container.decode(VisualInstruction.self, forKey: .primaryInstruction)
         secondaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .secondaryInstruction)
         tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
+        quaternaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .quaternaryInstruction)
         if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
             drivingSide = directlyEncoded
         } else {
@@ -77,6 +80,8 @@ open class VisualInstructionBanner: Codable {
      This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
      */
     public let tertiaryInstruction: VisualInstruction?
+
+    public let quaternaryInstruction: VisualInstruction?
     
     // MARK: Respecting Regional Driving Rules
     

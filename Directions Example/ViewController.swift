@@ -67,8 +67,6 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         let wp2 = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House")
         let options = RouteOptions(waypoints: [wp1, wp2])
         options.includesSteps = true
-        options.routeShapeResolution = .full
-        options.attributeOptions = [.congestionLevel, .maximumSpeedLimit]
         
         Directions.shared.calculate(options) { (waypoints, routes, error) in
             if let error = error {

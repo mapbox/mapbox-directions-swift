@@ -430,6 +430,7 @@
 		F448F83A1DDCC6EB000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/Mac/Polyline.framework; sourceTree = "<group>"; };
 		F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/tvOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		F448F83C1DDCC6F3000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/tvOS/Polyline.framework; sourceTree = "<group>"; };
+		F462F04523C4FBF200C64F57 /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -516,6 +517,7 @@
 		4025371970E36C6D8BF67116 /* iOS Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F462F04523C4FBF200C64F57 /* MapboxMobileEvents.framework */,
 				DADD27F21E5ABD4300D31FAD /* Mapbox.framework */,
 				F448F8381DDCC6D7000BC343 /* OHHTTPStubs.framework */,
 				F448F82A1DDCC5B6000BC343 /* Polyline.framework */,

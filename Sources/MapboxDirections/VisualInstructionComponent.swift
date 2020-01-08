@@ -33,6 +33,8 @@ public extension VisualInstruction {
          - parameter alternativeText: The component’s alternative text representation. Use this representation if the image representation is unavailable or unusable, but consider formatting the text in a special way to distinguish it from an ordinary `.text` component.
          */
         case image(image: ImageRepresentation, alternativeText: TextRepresentation)
+
+        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation)
         
         /**
          The compoment contains the localized word for “Exit”.
@@ -147,6 +149,22 @@ public extension VisualInstruction.Component {
             return scale
         }
     }
+
+    struct GuidanceViewImageRepresentation: Equatable {
+
+        /**
+         Initializes an image representation bearing the image at the given base URL.
+         */
+        public init(imageBaseURL: URL?) {
+            self.imageBaseURL = imageBaseURL
+        }
+
+        /**
+         Returns a remote URL to the image file that represents the component.
+         */
+        public let imageBaseURL: URL?
+    }
+
 }
 
 extension VisualInstruction.Component: Codable {
@@ -156,6 +174,7 @@ extension VisualInstruction.Component: Codable {
         case abbreviatedText = "abbr"
         case abbreviatedTextPriority = "abbr_priority"
         case imageBaseURL
+        case imageURL = "imageURL"
         case directions
         case isActive = "active"
     }
@@ -164,6 +183,7 @@ extension VisualInstruction.Component: Codable {
         case delimiter
         case text
         case image = "icon"
+        case guidanceView = "guidance-view"
         case exit
         case exitCode = "exit-number"
         case lane
@@ -203,7 +223,16 @@ extension VisualInstruction.Component: Codable {
             self = .exitCode(text: textRepresentation)
         case .lane:
             preconditionFailure("Lane component should have been initialized before decoding text")
+        case .guidanceView:
+            var imageBaseURL: URL?
+            if let imageBaseURLString = try container.decodeIfPresent(String.self, forKey: .imageURL) {
+                imageBaseURL = URL(string: imageBaseURLString)
+            }
+            let guidanceViewImageRepresentation = GuidanceViewImageRepresentation(imageBaseURL: imageBaseURL)
+            self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation)
         }
+
+        print(self)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -232,6 +261,10 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
+        case .guidanceView(let image, let alternativeText):
+            try container.encode(Kind.guidanceView, forKey: .kind)
+            textRepresentation = alternativeText
+            try container.encodeIfPresent(image.imageBaseURL?.absoluteString, forKey: .imageURL)
         }
         
         if let textRepresentation = textRepresentation {
@@ -254,6 +287,10 @@ extension VisualInstruction.Component: Equatable {
               let .image(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
+        case (let .guidanceView(lhsURL, lhsAlternativeText),
+              let .guidanceView(rhsURL, rhsAlternativeText)):
+            return lhsURL == rhsURL
+            && lhsAlternativeText == rhsAlternativeText
         case (let .lane(lhsIndications, lhsIsUsable),
               let .lane(rhsIndications, rhsIsUsable)):
             return lhsIndications == rhsIndications
@@ -263,6 +300,7 @@ extension VisualInstruction.Component: Equatable {
              (.image, _),
              (.exit, _),
              (.exitCode, _),
+             (.guidanceView, _),
              (.lane, _):
             return false
         }

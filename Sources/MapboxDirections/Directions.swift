@@ -115,9 +115,9 @@ open class Directions: NSObject {
     public init(accessToken: String?, host: String?) {
         let accessToken = accessToken ?? defaultAccessToken
         precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
-        
+
         self.accessToken = accessToken!
-        
+
         if let host = host, !host.isEmpty {
             var baseURLComponents = URLComponents()
             baseURLComponents.scheme = "https"
