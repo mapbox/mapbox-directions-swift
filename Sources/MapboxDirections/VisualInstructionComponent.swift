@@ -231,8 +231,6 @@ extension VisualInstruction.Component: Codable {
             let guidanceViewImageRepresentation = GuidanceViewImageRepresentation(imageBaseURL: imageBaseURL)
             self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation)
         }
-
-        print(self)
     }
     
     public func encode(to encoder: Encoder) throws {
