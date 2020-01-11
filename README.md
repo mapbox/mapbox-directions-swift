@@ -2,6 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/mapbox/mapbox-directions-swift.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-directions-swift)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](https://cocoapods.org/pods/MapboxDirections.swift/)
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.svg)](https://cocoapods.org/pods/MapboxDirections/)
 [![codecov](https://codecov.io/gh/mapbox/mapbox-directions-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/mapbox-directions-swift)
 
