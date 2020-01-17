@@ -17,6 +17,10 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
     
+    public init(error: DirectionsError) {
+        self.init(code: nil, message: nil, error: error, matches: nil, tracepoints: nil)
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         code = try container.decode(String.self, forKey: .code)

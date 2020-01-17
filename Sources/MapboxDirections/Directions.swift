@@ -158,20 +158,20 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                let response = RouteResponse(code: nil, message: nil, error: .invalidResponse(possibleResponse), uuid: nil, routes: nil, waypoints: nil)
+                let response = RouteResponse(error: .invalidResponse(possibleResponse))
                 completionHandler(response)
                 return
             }
             
             guard let data = possibleData else {
-                let response = RouteResponse(code: nil, message: nil, error: .noData, uuid: nil, routes: nil, waypoints: nil)
+                let response = RouteResponse(error: .noData)
                 completionHandler(response)
                 return
             }
             
             if let error = possibleError {
                 let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                let response = RouteResponse(code: nil, message: nil, error: unknownError , uuid: nil, routes: nil, waypoints: nil)
+                let response = RouteResponse(error: unknownError)
                 completionHandler(response)
                 return
             }
@@ -205,7 +205,7 @@ open class Directions: NSObject {
                 } catch {
                     DispatchQueue.main.async {
                         let bailError = Directions.informativeError(code: nil, message: nil, response: response, underlyingError: error)
-                        let response = RouteResponse(code: nil, message: nil, error: bailError, uuid: nil, routes: nil, waypoints: nil)
+                        let response = RouteResponse(error: bailError)
                         completionHandler(response)
                     }
                 }
@@ -240,13 +240,13 @@ open class Directions: NSObject {
             }
             
             guard let data = possibleData else {
-                let result = MapMatchingResponse(code: nil, message: nil, error: .noData, matches: nil, tracepoints: nil)
+                let result = MapMatchingResponse(error: .noData)
                 return completionHandler(result)
             }
             
             if let error = possibleError {
                 let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                let response = MapMatchingResponse(code: nil, message: nil, error: unknownError, matches: nil, tracepoints: nil)
+                let response = MapMatchingResponse(error: unknownError)
                 completionHandler(response)
                 return
             }
@@ -280,7 +280,7 @@ open class Directions: NSObject {
                 } catch {
                     DispatchQueue.main.async {
                         let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
-                        let result = MapMatchingResponse(code: nil, message: nil, error: caughtError, matches: nil, tracepoints: nil)
+                        let result = MapMatchingResponse( error: caughtError)
                         completionHandler(result)
                     }
                 }
@@ -310,20 +310,20 @@ open class Directions: NSObject {
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
                 let error = DirectionsError.invalidResponse(possibleResponse)
-                let result = RouteResponse(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil)
+                let result = RouteResponse(error: error)
                 completionHandler(result)
                 return
             }
             
             guard let data = possibleData else {
-                let result = RouteResponse(code: nil, message: nil, error: .noData, uuid: nil, routes: nil, waypoints: nil)
+                let result = RouteResponse(error: .noData)
                 completionHandler(result)
                 return
             }
             
             if let error = possibleError {
                 let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                let result = RouteResponse(code: nil, message: nil, error: unknownError, uuid: nil, routes: nil, waypoints: nil)
+                let result = RouteResponse(error: unknownError)
                 completionHandler(result)
                 return
             }
@@ -358,7 +358,7 @@ open class Directions: NSObject {
                 } catch {
                     DispatchQueue.main.async {
                         let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
-                        let result = RouteResponse(code: nil, message: nil, error: caughtError, uuid: nil, routes: nil, waypoints: nil)
+                        let result = RouteResponse(error: caughtError)
                         completionHandler(result)
                     }
                 }

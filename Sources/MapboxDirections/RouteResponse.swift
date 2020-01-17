@@ -22,6 +22,10 @@ extension RouteResponse: Codable {
         case matches = "matchings"
         case tracepoints
     }
+    public init(error: DirectionsError) {
+        self.init(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil)
+    }
+    
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
