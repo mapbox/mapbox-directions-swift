@@ -63,14 +63,10 @@
 		439255792344113D006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
 		4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
 		4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
-		43F89F932350F952007B591E /* MatchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MatchResponse.swift */; };
-		43F89F942350F952007B591E /* MatchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MatchResponse.swift */; };
-		43F89F952350F952007B591E /* MatchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MatchResponse.swift */; };
-		43F89F962350F952007B591E /* MatchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MatchResponse.swift */; };
-		43F89F98235778DE007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F97235778DE007B591E /* MapMatchingResponse.swift */; };
-		43F89F99235778DE007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F97235778DE007B591E /* MapMatchingResponse.swift */; };
-		43F89F9A235778DE007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F97235778DE007B591E /* MapMatchingResponse.swift */; };
-		43F89F9B235778DE007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F97235778DE007B591E /* MapMatchingResponse.swift */; };
+		43F89F932350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
+		43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
+		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
+		43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
 		8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
@@ -348,8 +344,7 @@
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
 		4392557523440EC2006EEE88 /* DirectionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsError.swift; sourceTree = "<group>"; };
-		43F89F922350F952007B591E /* MatchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResponse.swift; sourceTree = "<group>"; };
-		43F89F97235778DE007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
+		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -585,10 +580,9 @@
 		C5DAAC9E20191683001F9261 /* MapMatching */ = {
 			isa = PBXGroup;
 			children = (
-				43F89F97235778DE007B591E /* MapMatchingResponse.swift */,
 				C5DAAC9920191675001F9261 /* Match.swift */,
 				C5434B8B200695A50069E887 /* MatchOptions.swift */,
-				43F89F922350F952007B591E /* MatchResponse.swift */,
+				43F89F922350F952007B591E /* MapMatchingResponse.swift */,
 				C5434B89200693D00069E887 /* Tracepoint.swift */,
 			);
 			path = MapMatching;
@@ -1179,7 +1173,6 @@
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */,
-				43F89F99235778DE007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
@@ -1199,7 +1192,7 @@
 				431E93D023466D7500A71B44 /* Codable.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* DirectionsOptions.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* LaneIndication.swift in Sources */,
-				43F89F942350F952007B591E /* MatchResponse.swift in Sources */,
+				43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* RouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* Intersection.swift in Sources */,
 				C52CE38F1F6AF63C0069963D /* SpokenInstruction.swift in Sources */,
@@ -1252,7 +1245,6 @@
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */,
-				43F89F9A235778DE007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
@@ -1272,7 +1264,7 @@
 				431E93D123466D7600A71B44 /* Codable.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* DirectionsOptions.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
-				43F89F952350F952007B591E /* MatchResponse.swift in Sources */,
+				43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10F11D010247009F82FA /* RouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* Intersection.swift in Sources */,
 				C52CE3901F6AF63D0069963D /* SpokenInstruction.swift in Sources */,
@@ -1325,7 +1317,6 @@
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */,
-				43F89F9B235778DE007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
@@ -1345,7 +1336,7 @@
 				431E93D223466D7700A71B44 /* Codable.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* DirectionsOptions.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
-				43F89F962350F952007B591E /* MatchResponse.swift in Sources */,
+				43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* RouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* Intersection.swift in Sources */,
 				C52CE3911F6AF63E0069963D /* SpokenInstruction.swift in Sources */,
@@ -1371,7 +1362,6 @@
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
-				43F89F98235778DE007B591E /* MapMatchingResponse.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
@@ -1390,7 +1380,7 @@
 				431E93CF23466D7400A71B44 /* Codable.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* DirectionsResult.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* RouteLeg.swift in Sources */,
-				43F89F932350F952007B591E /* MatchResponse.swift in Sources */,
+				43F89F932350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				C5434B8A200693D00069E887 /* Tracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* Directions.swift in Sources */,
 				C55FB44B1F6AEBF6006BD1E9 /* SpokenInstruction.swift in Sources */,

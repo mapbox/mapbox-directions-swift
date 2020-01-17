@@ -3,9 +3,6 @@ import CoreLocation
 import Polyline
 import struct Turf.LineString
 
-extension CodingUserInfoKey {
-    static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
-}
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
  

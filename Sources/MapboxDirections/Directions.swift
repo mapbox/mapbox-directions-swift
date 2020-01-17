@@ -77,7 +77,7 @@ open class Directions: NSObject {
      If the request was canceled or there was an error obtaining the routes, this argument is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias RouteCompletionHandler = (_ waypoints: [Waypoint]?, _ routes: [Route]?, _ error: DirectionsError?) -> Void
+    public typealias RouteCompletionHandler = (_ response: RouteResponse) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
@@ -85,7 +85,7 @@ open class Directions: NSObject {
      If the request was canceled or there was an error obtaining the matches, this argument is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
      - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
      */
-    public typealias MatchCompletionHandler = (_ matches: [Match]?, _ error: DirectionsError?) -> Void
+    public typealias MatchCompletionHandler = (_ response: MapMatchingResponse) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -158,48 +158,55 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                completionHandler(nil, nil, .invalidResponse)
+                let response = RouteResponse(code: nil, message: nil, error: .invalidResponse(possibleResponse), uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(response)
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, nil, .noData)
+                let response = RouteResponse(code: nil, message: nil, error: .noData, uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(response)
                 return
             }
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
+                let response = RouteResponse(code: nil, message: nil, error: unknownError , uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(response)
                 return
             }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = DirectionsDecoder(options: options)
-                    let result = try decoder.decode(RouteResponse.self, from: data)
+                    var result = try decoder.decode(RouteResponse.self, from: data)
                     guard (result.code == nil && result.message == nil) || result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
+                        result.error = apiError
                         DispatchQueue.main.async {
-                            completionHandler(nil, nil, apiError)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    guard let routes = result.routes else {
+                    guard result.routes != nil else {
+                        result.error = .unableToRoute
                         DispatchQueue.main.async {
-                            completionHandler(result.waypoints, nil, .unableToRoute)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    self.postprocess(routes, fetchStartDate: fetchStart, responseEndDate: responseEndDate, uuid: result.uuid)
+                    result.postprocess(accessToken: self.accessToken, apiEndpoint: self.apiEndpoint, fetchStartDate: fetchStart, responseEndDate: responseEndDate)
                     
                     DispatchQueue.main.async {
-                        completionHandler(result.waypoints, routes, nil)
+                        completionHandler(result)
                     }
                 } catch {
                     DispatchQueue.main.async {
                         let bailError = Directions.informativeError(code: nil, message: nil, response: response, underlyingError: error)
-                        completionHandler(nil, nil, bailError)
+                        let response = RouteResponse(code: nil, message: nil, error: bailError, uuid: nil, routes: nil, waypoints: nil)
+                        completionHandler(response)
                     }
                 }
             }
@@ -227,47 +234,54 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                completionHandler(nil, .invalidResponse)
+                let result = MapMatchingResponse(code: nil, message: nil, error: .invalidResponse(possibleResponse), matches: nil, tracepoints: nil)
+                completionHandler(result)
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, .noData)
-                return
+                let result = MapMatchingResponse(code: nil, message: nil, error: .noData, matches: nil, tracepoints: nil)
+                return completionHandler(result)
             }
             
             if let error = possibleError {
-                completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
+                let response = MapMatchingResponse(code: nil, message: nil, error: unknownError, matches: nil, tracepoints: nil)
+                completionHandler(response)
                 return
             }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = DirectionsDecoder(options: options)
-                    let result = try decoder.decode(MatchResponse.self, from: data)
+                    var result = try decoder.decode(MapMatchingResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message: result.message, response: response, underlyingError: possibleError)
+                        result.error = apiError
                         DispatchQueue.main.async {
-                            completionHandler(nil, apiError)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    guard let matches = result.matches else {
+                    guard result.matches != nil else {
+                        result.error = .unableToRoute
                         DispatchQueue.main.async {
-                            completionHandler(nil, .unableToRoute)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    self.postprocess(matches, fetchStartDate: fetchStart, responseEndDate: responseEndDate, uuid: nil)
+                    result.postprocess(accessToken: self.accessToken, apiEndpoint: self.apiEndpoint, fetchStartDate: fetchStart, responseEndDate: responseEndDate)
                     
                     DispatchQueue.main.async {
-                        completionHandler(matches, nil)
+                        completionHandler(result)
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, .unknown(response: response, underlying: error, code: nil, message: nil))
+                        let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
+                        let result = MapMatchingResponse(code: nil, message: nil, error: caughtError, matches: nil, tracepoints: nil)
+                        completionHandler(result)
                     }
                 }
             }
@@ -295,47 +309,57 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                completionHandler(nil, nil, .invalidResponse)
+                let error = DirectionsError.invalidResponse(possibleResponse)
+                let result = RouteResponse(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(result)
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, nil, .noData)
+                let result = RouteResponse(code: nil, message: nil, error: .noData, uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(result)
                 return
             }
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
+                let result = RouteResponse(code: nil, message: nil, error: unknownError, uuid: nil, routes: nil, waypoints: nil)
+                completionHandler(result)
                 return
             }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
-                    let decoder = DirectionsDecoder(options: options)
-                    let result = try decoder.decode(MapMatchingResponse.self, from: data)
+                    let decoder = DirectionsDecoder(options: options, decodingRouteResponseFromMatchService: true)
+                    var result = try decoder.decode(RouteResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
+                        result.error = apiError
                         DispatchQueue.main.async {
-                            completionHandler(nil, nil, apiError)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    guard let routes = result.routes else {
+                    guard result.routes != nil else {
+                        result.error = .unableToRoute
                         DispatchQueue.main.async {
-                            completionHandler(result.waypoints, nil, .unableToRoute)
+                            completionHandler(result)
                         }
                         return
                     }
                     
-                    self.postprocess(routes, fetchStartDate: fetchStart, responseEndDate: responseEndDate, uuid: nil)
+                    result.postprocess(accessToken: self.accessToken, apiEndpoint: self.apiEndpoint, fetchStartDate: fetchStart, responseEndDate: responseEndDate)
+                    
                     
                     DispatchQueue.main.async {
-                        completionHandler(result.waypoints, routes, nil)
+                        completionHandler(result)
                     }
                 } catch {
                     DispatchQueue.main.async {
-                        completionHandler(nil, nil, .unknown(response: response, underlying: error, code: nil, message: nil))
+                        let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
+                        let result = RouteResponse(code: nil, message: nil, error: caughtError, uuid: nil, routes: nil, waypoints: nil)
+                        completionHandler(result)
                     }
                 }
             }
@@ -441,29 +465,21 @@ open class Directions: NSObject {
         return .unknown(response: response, underlying: error, code: code, message: message)
     }
     
-    /**
-     Adds request- or response-specific information to each result in a response.
-     */
-    func postprocess(_ results: [DirectionsResult], fetchStartDate: Date, responseEndDate: Date, uuid: String?) {
-        for result in results {
-            result.accessToken = self.accessToken
-            result.apiEndpoint = self.apiEndpoint
-            result.routeIdentifier = uuid
-            result.fetchStartDate = fetchStartDate
-            result.responseEndDate = responseEndDate
-        }
-    }
 }
 
 public extension CodingUserInfoKey {
     static let options = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeOptions")!
+    static let routesFromMatch = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routesFromMatch")!
+    static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
+
+
 }
 
 public class DirectionsDecoder: JSONDecoder {
     /**
      Initializes a `DirectionsDecoder` with a given `RouteOption`.
      */
-    public init(options: DirectionsOptions) {
+    public init(options: DirectionsOptions, decodingRouteResponseFromMatchService: Bool = false) {
         super.init()
         routeOptions = options
     }
@@ -476,9 +492,17 @@ public class DirectionsDecoder: JSONDecoder {
         }
     }
     
+    var decodingRouteResponseFromMatchService: Bool {
+        get {
+            return userInfo[.routesFromMatch] as? Bool ?? false
+            } set {
+                userInfo[.routesFromMatch] = newValue
+            }
+    }
+    
     var tracepoints: [Tracepoint?]? {
         get {
-            return userInfo[.tracepoints] as? [Tracepoint?]
+            return userInfo[.routesFromMatch] as? [Tracepoint?]
         } set {
             userInfo[.tracepoints] = newValue
         }

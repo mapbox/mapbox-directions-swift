@@ -3,7 +3,7 @@ import Foundation
 /**
  An error that occurs when calculating directions.
  */
-public enum DirectionsError: LocalizedError {
+public enum DirectionsError: LocalizedError, Codable {
     /**
      The server returned an empty response.
      */
@@ -14,7 +14,7 @@ public enum DirectionsError: LocalizedError {
     /**
      The server returned a response that isn’t correctly formatted.
      */
-    case invalidResponse
+    case invalidResponse(_: URLResponse?)
     
     /**
      No route could be found between the specified locations.
