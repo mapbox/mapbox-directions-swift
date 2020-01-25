@@ -5,15 +5,6 @@ typealias JSONDictionary = [String: Any]
 /// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
 
-/// The Mapbox access token specified in the main application bundle’s Info.plist.
-let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
-let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
-
-var skuToken: String? {
-    guard let mbx: AnyClass = NSClassFromString("MBXAccounts") else { return nil }
-    guard mbx.responds(to: Selector(("serviceSkuToken"))) else { return nil }
-    return mbx.value(forKeyPath: "serviceSkuToken") as? String
-}
 
 /// The user agent string for any HTTP requests performed directly within this library.
 let userAgent: String = {
@@ -96,15 +87,7 @@ open class Directions: NSObject {
      */
     public static let shared = Directions(accessToken: nil)
     
-    /**
-     The API endpoint to use when requesting directions.
-     */
-    public private(set) var apiEndpoint: URL
-    
-    /**
-     The Mapbox access token to associate with the request.
-     */
-    public let accessToken: String
+    public let credentials: DirectionsCredentials
     
     /**
      Initializes a newly created directions object with an optional access token and host.
@@ -112,20 +95,8 @@ open class Directions: NSObject {
      - parameter accessToken: A Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) endpoint is used by default.
      */
-    public init(accessToken: String?, host: String?) {
-        let accessToken = accessToken ?? defaultAccessToken
-        precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
-        
-        self.accessToken = accessToken!
-        
-        if let host = host, !host.isEmpty {
-            var baseURLComponents = URLComponents()
-            baseURLComponents.scheme = "https"
-            baseURLComponents.host = host
-            apiEndpoint = baseURLComponents.url!
-        } else {
-            apiEndpoint = URL(string:(defaultApiEndPointURLString ?? "https://api.mapbox.com"))!
-        }
+    public init(credentials: DirectionsCredentials) {
+        self.credentials = credentials
     }
     
     /**
@@ -153,10 +124,9 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
     @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
-        let fetchStart = Date()
+        options.fetchStartDate = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
-            let responseEndDate = Date()
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
                 let response = RouteResponse(error: .invalidResponse(possibleResponse))
                 completionHandler(response)
@@ -280,7 +250,7 @@ open class Directions: NSObject {
                 } catch {
                     DispatchQueue.main.async {
                         let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
-                        let result = MapMatchingResponse( error: caughtError)
+                        let result = MapMatchingResponse(error: caughtError)
                         completionHandler(result)
                     }
                 }
@@ -330,7 +300,10 @@ open class Directions: NSObject {
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
-                    let decoder = DirectionsDecoder(options: options, decodingRouteResponseFromMatchService: true)
+                    
+                    //FIXME: FIX TO USE MATCHING RESPONSE -> ROUTE RESPONSE
+                    let decoder = JSONDecoder()
+                    decoder.userInfo[.options] = options
                     var result = try decoder.decode(RouteResponse.self, from: data)
                     guard result.code == "Ok" else {
                         let apiError = Directions.informativeError(code: result.code, message:nil, response: response, underlyingError: possibleError)
@@ -473,38 +446,4 @@ public extension CodingUserInfoKey {
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
 
 
-}
-
-public class DirectionsDecoder: JSONDecoder {
-    /**
-     Initializes a `DirectionsDecoder` with a given `RouteOption`.
-     */
-    public init(options: DirectionsOptions, decodingRouteResponseFromMatchService: Bool = false) {
-        super.init()
-        routeOptions = options
-    }
-    
-    var routeOptions: DirectionsOptions? {
-        get {
-            return userInfo[.options] as? DirectionsOptions
-        } set {
-            userInfo[.options] = newValue
-        }
-    }
-    
-    var decodingRouteResponseFromMatchService: Bool {
-        get {
-            return userInfo[.routesFromMatch] as? Bool ?? false
-            } set {
-                userInfo[.routesFromMatch] = newValue
-            }
-    }
-    
-    var tracepoints: [Tracepoint?]? {
-        get {
-            return userInfo[.routesFromMatch] as? [Tracepoint?]
-        } set {
-            userInfo[.tracepoints] = newValue
-        }
-    }
 }

@@ -12,7 +12,6 @@ open class Match: DirectionsResult {
     private enum CodingKeys: String, CodingKey {
         case confidence
         case tracepoints
-        case matchOptions
     }
     
     /**
@@ -28,11 +27,10 @@ open class Match: DirectionsResult {
      - parameter tracepoints: Tracepoints on the road network that match the tracepoints in `options`.
      - parameter options: The criteria to match.
      */
-    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, tracepoints: [Tracepoint?], options: MatchOptions) {
-        matchOptions = options
+    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, tracepoints: [Tracepoint?]) {
         self.confidence = confidence
         self.tracepoints = tracepoints
-        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime, options: options)
+        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime)
     }
     
     /**
@@ -45,12 +43,6 @@ open class Match: DirectionsResult {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         confidence = try container.decode(Float.self, forKey: .confidence)
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints) ?? []
-        if let matchOptions = try container.decodeIfPresent(MatchOptions.self, forKey: .matchOptions)
-            ?? decoder.userInfo[.options] as? MatchOptions {
-            self.matchOptions = matchOptions
-        } else {
-            throw DirectionsCodingError.missingOptions
-        }
         try super.init(from: decoder)
     }
     
@@ -58,7 +50,6 @@ open class Match: DirectionsResult {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(confidence, forKey: .confidence)
         try container.encode(tracepoints, forKey: .tracepoints)
-        try container.encode(matchOptions, forKey: .matchOptions)
         try super.encode(to: encoder)
     }
     
@@ -74,14 +65,6 @@ open class Match: DirectionsResult {
      */
     open var tracepoints: [Tracepoint?]
     
-    public override var directionsOptions: DirectionsOptions {
-        return matchOptions
-    }
-    
-    /**
-     `MatchOptions` used to create the match request.
-     */
-    public let matchOptions: MatchOptions
 }
 
 extension Match: Equatable {

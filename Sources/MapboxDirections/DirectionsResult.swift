@@ -23,12 +23,11 @@ open class DirectionsResult: Codable {
     
     // MARK: Creating a Directions Result
     
-    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, options: DirectionsOptions) {
+    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval) {
         self.legs = legs
         self.shape = shape
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
-        _directionsOptions = options
     }
     
     public required init(from decoder: Decoder) throws {
@@ -36,30 +35,14 @@ open class DirectionsResult: Codable {
         legs = try container.decode([RouteLeg].self, forKey: .legs)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        
-        guard let directionsOptions = decoder.userInfo[.options] as? DirectionsOptions else {
-            throw DirectionsCodingError.missingOptions
-        }
-        _directionsOptions = directionsOptions
     
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
+            
         } else {
             shape = nil
         }
-        
-        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        
-        let waypoints = directionsOptions.legSeparators //we don't want to name via points
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
-        
-        for (endpoints, leg) in legInfo {
-            leg.source = endpoints.0
-            leg.destination = endpoints.1
-        }
-        
-        accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
-        apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
+     
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
         if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
@@ -69,17 +52,18 @@ open class DirectionsResult: Codable {
         }
     }
     
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
         if let shape = shape {
-            let polyLineString = PolyLineString(lineString: shape, shapeFormat: directionsOptions.shapeFormat)
+            let options = encoder.userInfo[.options] as? DirectionsOptions
+            let shapeFormat = options?.shapeFormat ?? .default
+            let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
             try container.encode(polyLineString, forKey: .shape)
         }
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
-        try container.encodeIfPresent(accessToken, forKey: .accessToken)
-        try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
         try container.encodeIfPresent(speechLocale?.identifier, forKey: .speechLocale)
     }
@@ -94,7 +78,7 @@ open class DirectionsResult: Codable {
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
     public let shape: LineString?
-    
+        
     // MARK: Getting the Legs Along the Route
     
     /**

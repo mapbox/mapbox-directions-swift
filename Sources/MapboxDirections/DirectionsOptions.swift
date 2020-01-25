@@ -281,6 +281,17 @@ open class DirectionsOptions: Codable {
      */
     open var includesVisualInstructions = false
     
+    /**
+     The time immediately before a `Directions` object fetched this result.
+     
+     If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.fetchStartDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.
+     
+     This property does not persist after encoding and decoding.
+     */
+    open var fetchStartDate: Date?
+    
+
+    
     // MARK: Getting the Request URL
     
     /**

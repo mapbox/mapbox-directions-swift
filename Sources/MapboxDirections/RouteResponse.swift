@@ -7,6 +7,20 @@ public struct RouteResponse {
     public let uuid: String?
     public let routes: [Route]?
     public let waypoints: [Waypoint]?
+    
+    public let request: RouteOptions
+    public let credentials: DirectionsCredentials
+//    public let accessToken: String
+//    public let endpoint: URL?
+    
+    /**
+     The time when this `RouteResponse` object was created, which is immediately upon recieving the raw URL response.
+     
+     If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.responseEndDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.
+     
+     This property does not persist after encoding and decoding.
+     */
+    public var created: Date = Date()
 }
 
 extension RouteResponse: Codable {
@@ -17,20 +31,24 @@ extension RouteResponse: Codable {
         case uuid
         case routes
         case waypoints
-        
-        // Matching-service specific keys. Used in decode only.
-        case matches = "matchings"
-        case tracepoints
     }
     public init(error: DirectionsError) {
         self.init(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil)
     }
     
+//    public init(matchResponse match: MapMatchingResponse) {
+//        self.code = match.code
+//        self.message = match.message
+//        self.error = match.error
+//        self.routes = match.matches
+//        self.waypoints = match.tracepoints
+//
+//    }
+    
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // Is this an edge-case, where we are creating a route response from the map matching service?
-        let fromMatchingService = (decoder as? DirectionsDecoder)?.decodingRouteResponseFromMatchService ?? false
         
         self.code = try container.decodeIfPresent(String.self, forKey: .code)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)
@@ -40,7 +58,7 @@ extension RouteResponse: Codable {
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         
         // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
-        let decodedWaypoints = try container.decodeIfPresent([Waypoint?].self, forKey: fromMatchingService ? .tracepoints : .waypoints)?.compactMap { $0 }
+        let decodedWaypoints = try container.decodeIfPresent([Waypoint?].self, forKey: .waypoints)
         if let decodedWaypoints = decodedWaypoints, let options = decoder.userInfo[.options] as? DirectionsOptions {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
             waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Waypoint in
@@ -55,7 +73,7 @@ extension RouteResponse: Codable {
             waypoints = decodedWaypoints
         }
         
-        if let routes = try container.decodeIfPresent([Route].self, forKey: fromMatchingService ? .matches : .routes) {
+        if let routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
             // Postprocess each route.
             for route in routes {
                 route.routeIdentifier = uuid
