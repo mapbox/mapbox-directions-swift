@@ -8,10 +8,8 @@ public struct RouteResponse {
     public let routes: [Route]?
     public let waypoints: [Waypoint]?
     
-    public let request: RouteOptions
+    public let options: RouteOptions
     public let credentials: DirectionsCredentials
-//    public let accessToken: String
-//    public let endpoint: URL?
     
     /**
      The time when this `RouteResponse` object was created, which is immediately upon recieving the raw URL response.
@@ -32,8 +30,8 @@ extension RouteResponse: Codable {
         case routes
         case waypoints
     }
-    public init(error: DirectionsError) {
-        self.init(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil)
+    public init(credentials: DirectionsCredentials, options: RouteOptions, error: DirectionsError) {
+        self.init(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil, options: options, credentials: credentials)
     }
     
 //    public init(matchResponse match: MapMatchingResponse) {

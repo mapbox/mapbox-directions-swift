@@ -6,6 +6,18 @@ public struct MapMatchingResponse {
     public var error: DirectionsError?
     public var matches : [Match]?
     public var tracepoints: [Tracepoint?]?
+    
+    public let options: MatchOptions
+    public let credentials: DirectionsCredentials
+    
+    /**
+     The time when this `MapMatchingResponse` object was created, which is immediately upon recieving the raw URL response.
+     
+     If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.responseEndDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.
+     
+     This property does not persist after encoding and decoding.
+     */
+    public var created: Date = Date()
 }
 
 extension MapMatchingResponse: Codable {
@@ -17,8 +29,8 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
     
-    public init(error: DirectionsError) {
-        self.init(code: nil, message: nil, error: error, matches: nil, tracepoints: nil)
+    public init(credentials: DirectionsCredentials, options: MatchOptions, error: DirectionsError) {
+        self.init(code: nil, message: nil, error: error, matches: nil, tracepoints: nil, options: options, credentials: credentials)
     }
     
     public init(from decoder: Decoder) throws {
