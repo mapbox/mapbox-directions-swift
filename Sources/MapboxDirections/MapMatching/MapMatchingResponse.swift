@@ -35,6 +35,17 @@ extension MapMatchingResponse: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        guard let options = decoder.userInfo[.options] as? MatchOptions else {
+            throw DirectionsCodingError.missingOptions
+        }
+        self.options = options
+        
+        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+            throw DirectionsCodingError.missingCredentials
+        }
+        self.credentials = credentials
+        
         code = try container.decode(String.self, forKey: .code)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
@@ -47,16 +58,16 @@ extension MapMatchingResponse: Codable {
         }
     }
     
-    func postprocess(accessToken: String, apiEndpoint: URL, fetchStartDate: Date, responseEndDate: Date) {
-        guard let matches = self.matches else {
-            return
-        }
-        
-        for result in matches {
-            result.accessToken = accessToken
-            result.apiEndpoint = apiEndpoint
-            result.fetchStartDate = fetchStartDate
-            result.responseEndDate = responseEndDate
-        }
-    }
+//    func postprocess(accessToken: String, apiEndpoint: URL, fetchStartDate: Date, responseEndDate: Date) {
+//        guard let matches = self.matches else {
+//            return
+//        }
+//        
+//        for result in matches {
+//            result.accessToken = accessToken
+//            result.apiEndpoint = apiEndpoint
+//            result.fetchStartDate = fetchStartDate
+//            result.responseEndDate = responseEndDate
+//        }
+//    }
 }

@@ -1,14 +1,19 @@
 import Foundation
 
+public enum RouteResponseOptions {
+    case route(RouteOptions)
+    case match(MatchOptions)
+}
+
 public struct RouteResponse {
-    public var code: String?
-    public var message: String?
+//    public var code: String?
+//    public var message: String?
     public var error: DirectionsError?
     public let uuid: String?
     public let routes: [Route]?
     public let waypoints: [Waypoint]?
     
-    public let options: RouteOptions
+    public let options: RouteResponseOptions
     public let credentials: DirectionsCredentials
     
     /**
@@ -30,7 +35,7 @@ extension RouteResponse: Codable {
         case routes
         case waypoints
     }
-    public init(credentials: DirectionsCredentials, options: RouteOptions, error: DirectionsError) {
+    public init(credentials: DirectionsCredentials, options: RouteResponseOptions, error: DirectionsError) {
         self.init(code: nil, message: nil, error: error, uuid: nil, routes: nil, waypoints: nil, options: options, credentials: credentials)
     }
     
@@ -46,7 +51,22 @@ extension RouteResponse: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        // Is this an edge-case, where we are creating a route response from the map matching service?
+
+        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
+        self.credentials = credentials
+        
+        if let routeOptions = decoder.userInfo[.options] as? RouteOptions {
+            self.options = .route(routeOptions)
+        } else if let matchOptions = decoder.userInfo[.options] as? MatchOptions {
+            self.options = .match(matchOptions)
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
+        
         
         self.code = try container.decodeIfPresent(String.self, forKey: .code)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)
@@ -56,10 +76,19 @@ extension RouteResponse: Codable {
         self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
         
         // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
-        let decodedWaypoints = try container.decodeIfPresent([Waypoint?].self, forKey: .waypoints)
-        if let decodedWaypoints = decodedWaypoints, let options = decoder.userInfo[.options] as? DirectionsOptions {
+        let decodedWaypoints = try container.decodeIfPresent([Waypoint?].self, forKey: .waypoints)?.compactMap{ $0 }
+        var optionsWaypoints: [Waypoint] = []
+        switch self.options {
+        case let .route(options):
+            optionsWaypoints = options.waypoints
+        case let .match(options):
+            optionsWaypoints = options.waypoints
+        }
+        
+        
+        if let decodedWaypoints = decodedWaypoints {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
-            waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Waypoint in
+            waypoints = zip(decodedWaypoints, optionsWaypoints).map { (pair) -> Waypoint in
                 let (decodedWaypoint, waypointInOptions) = pair
                 let waypoint = Waypoint(coordinate: decodedWaypoint.coordinate, coordinateAccuracy: waypointInOptions.coordinateAccuracy, name: waypointInOptions.name?.nonEmptyString ?? decodedWaypoint.name)
                 waypoint.separatesLegs = waypointInOptions.separatesLegs
@@ -88,29 +117,33 @@ extension RouteResponse: Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        
+        
         try container.encodeIfPresent(code, forKey: .code)
         try container.encodeIfPresent(message, forKey: .message)
-        try container.encodeIfPresent(error, forKey: .error)
+        //FIXME: Encode Error?
+//        try container.encodeIfPresent(error, forKey: .error)
         try container.encodeIfPresent(uuid, forKey: .uuid)
         try container.encodeIfPresent(routes, forKey: .routes)
         try container.encodeIfPresent(waypoints, forKey: .waypoints)
     }
     
-    /**
-     Adds request- or response-specific information to each result in a response.
-     */
-    func postprocess(accessToken: String, apiEndpoint: URL, fetchStartDate: Date, responseEndDate: Date) {
-        guard let routes = self.routes else {
-            return
-        }
-        
-        for result in routes {
-            result.accessToken = accessToken
-            result.apiEndpoint = apiEndpoint
-            result.routeIdentifier = uuid
-            result.fetchStartDate = fetchStartDate
-            result.responseEndDate = responseEndDate
-        }
-    }
+//    /**
+//     Adds request- or response-specific information to each result in a response.
+//     */
+//    func postprocess(accessToken: String, apiEndpoint: URL, fetchStartDate: Date, responseEndDate: Date) {
+//        guard let routes = self.routes else {
+//            return
+//        }
+//
+//        for result in routes {
+//            result.accessToken = accessToken
+//            result.apiEndpoint = apiEndpoint
+//            result.routeIdentifier = uuid
+//            result.fetchStartDate = fetchStartDate
+//            result.responseEndDate = responseEndDate
+//        }
+//    }
 
 }

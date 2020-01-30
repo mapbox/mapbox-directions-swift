@@ -15,8 +15,6 @@ open class DirectionsResult: Codable {
         case distance
         case expectedTravelTime = "duration"
         case directionsOptions
-        case accessToken
-        case apiEndpoint
         case routeIdentifier
         case speechLocale = "voiceLocale"
     }
@@ -130,33 +128,6 @@ open class DirectionsResult: Codable {
      */
     open var speechLocale: Locale?
     
-    // MARK: Reproducing the Route
-    
-    /**
-     Criteria for reproducing this route.
-     
-     The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
-     */
-    public var directionsOptions: DirectionsOptions {
-        return _directionsOptions
-    }
-    
-    private let _directionsOptions: DirectionsOptions
-    
-    /**
-     The [access token](https://docs.mapbox.com/help/glossary/access-token/) used to make the directions request.
-     
-     This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
-     */
-    open var accessToken: String?
-    
-    /**
-     The endpoint used to make the directions request.
-     
-     This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
-     */
-    open var apiEndpoint: URL?
-    
     // MARK: Auditing the Server Response
     
     /**
@@ -191,11 +162,11 @@ extension DirectionsResult: CustomStringConvertible {
     }
 }
 
-extension DirectionsResult: CustomQuickLookConvertible {
-    func debugQuickLookObject() -> Any? {
-        guard let shape = shape else {
-            return nil
-        }
-        return debugQuickLookURL(illustrating: shape, profileIdentifier: directionsOptions.profileIdentifier)
-    }
-}
+//extension DirectionsResult: CustomQuickLookConvertible {
+//    func debugQuickLookObject() -> Any? {
+//        guard let shape = shape else {
+//            return nil
+//        }
+//        return debugQuickLookURL(illustrating: shape, profileIdentifier: directionsOptions.profileIdentifier)
+//    }
+//}

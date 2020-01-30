@@ -429,6 +429,7 @@ open class DirectionsOptions: Codable {
         ]
         return components.percentEncodedQuery ?? ""
     }
+    
 }
 
 extension DirectionsOptions: Equatable {

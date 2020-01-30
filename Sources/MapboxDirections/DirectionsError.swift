@@ -3,7 +3,65 @@ import Foundation
 /**
  An error that occurs when calculating directions.
  */
-public enum DirectionsError: LocalizedError, Codable {
+public enum DirectionsError: LocalizedError {
+    
+    var code: String? {
+        switch self {
+        case .unableToRoute :
+            return "NoRoute"
+        case .unableToLocate:
+            return "NoSegment"
+        case .noMatches:
+            return "NoMatch"
+        case .tooManyCoordinates:
+            return "TooManyCoordinates"
+        case .profileNotFound:
+            return "ProfileNotFound"
+        case .invalidInput(_):
+            return "InvalidInput"
+        default:
+            return nil
+        }
+    }
+    
+    var message: String? {
+        switch self {
+        case let .invalidInput(message: message):
+            return message
+        case let .unkonw
+        default:
+            <#code#>
+        }
+    }
+    
+    
+    public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) {
+        if let response = response as? HTTPURLResponse {
+            switch (response.statusCode, code ?? "") {
+            case (200, "NoRoute"):
+                self = .unableToRoute
+            case (200, "NoSegment"):
+                self = .unableToLocate
+            case (200, "NoMatch"):
+                self = .noMatches
+            case (422, "TooManyCoordinates"):
+                self = .tooManyCoordinates
+            case (404, "ProfileNotFound"):
+                self = .profileNotFound
+                
+            case (413, _):
+                self = .requestTooLarge
+            case (422, "InvalidInput"):
+                self = .invalidInput(message: message)
+            case (429, _):
+                self = .rateLimited(rateLimitInterval: response.rateLimitInterval, rateLimit: response.rateLimit, resetTime: response.rateLimitResetTime)
+            default:
+                self = .unknown(response: response, underlying: error, code: code, message: message)
+            }
+        }
+        self = .unknown(response: response, underlying: error, code: code, message: message)
+    }
+
     /**
      The server returned an empty response.
      */
@@ -181,4 +239,10 @@ public enum DirectionsCodingError: Error {
      Decoding this type requires the `Decoder.userInfo` dictionary to contain the `CodingUserInfoKey.options` key.
      */
     case missingOptions
+    
+    
+    /**
+     Decoding this type requires the `Decoder.userInfo` dictionary to contain the `CodingUserInfoKey.credentials` key.
+     */
+    case missingCredentials
 }
