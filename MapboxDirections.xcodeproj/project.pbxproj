@@ -55,6 +55,10 @@
 		431E93D023466D7500A71B44 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BA62343F7C300D8BD89 /* Codable.swift */; };
 		431E93D123466D7600A71B44 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BA62343F7C300D8BD89 /* Codable.swift */; };
 		431E93D223466D7700A71B44 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43208BA62343F7C300D8BD89 /* Codable.swift */; };
+		43538E3823ED463100E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
+		43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
+		43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
+		43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
 		438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
@@ -348,6 +352,7 @@
 		43208BA82343F7E900D8BD89 /* CoreLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocation.swift; sourceTree = "<group>"; };
 		43208BAA2343F81900D8BD89 /* GeoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSON.swift; sourceTree = "<group>"; };
 		43208BAC2343FF5500D8BD89 /* RouteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponse.swift; sourceTree = "<group>"; };
+		43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDisposition.swift; sourceTree = "<group>"; };
 		438BFEBC233D7FA900457294 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
@@ -633,6 +638,7 @@
 				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
 				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
 				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
+				43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */,
 				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
 				C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */,
 				35EFD00A207DFACA00BF3873 /* VisualInstruction.swift */,
@@ -1178,6 +1184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C0234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9B2019167C001F9261 /* Match.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
@@ -1252,6 +1259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C1234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9C2019167D001F9261 /* Match.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
@@ -1326,6 +1334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C2234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9D2019167E001F9261 /* Match.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
@@ -1372,6 +1381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43538E3823ED463100E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93BF234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C51538CC1E807FF00093FF3E /* AttributeOptions.swift in Sources */,
 				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,

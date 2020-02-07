@@ -129,6 +129,7 @@ open class DirectionsOptions: Codable {
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
     
+    
     private enum CodingKeys: String, CodingKey {
         case waypoints
         case profileIdentifier

@@ -5,36 +5,6 @@ import Foundation
  */
 public enum DirectionsError: LocalizedError {
     
-    var code: String? {
-        switch self {
-        case .unableToRoute :
-            return "NoRoute"
-        case .unableToLocate:
-            return "NoSegment"
-        case .noMatches:
-            return "NoMatch"
-        case .tooManyCoordinates:
-            return "TooManyCoordinates"
-        case .profileNotFound:
-            return "ProfileNotFound"
-        case .invalidInput(_):
-            return "InvalidInput"
-        default:
-            return nil
-        }
-    }
-    
-    var message: String? {
-        switch self {
-        case let .invalidInput(message: message):
-            return message
-        case let .unkonw
-        default:
-            <#code#>
-        }
-    }
-    
-    
     public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) {
         if let response = response as? HTTPURLResponse {
             switch (response.statusCode, code ?? "") {

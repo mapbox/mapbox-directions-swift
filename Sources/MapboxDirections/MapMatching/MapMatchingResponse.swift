@@ -1,9 +1,8 @@
 import Foundation
 
 public struct MapMatchingResponse {
-    public var code: String?
-    public var message: String?
-    public var error: DirectionsError?
+    public let httpResponse: HTTPURLResponse?
+    
     public var matches : [Match]?
     public var tracepoints: [Tracepoint?]?
     
@@ -22,19 +21,18 @@ public struct MapMatchingResponse {
 
 extension MapMatchingResponse: Codable {
     private enum CodingKeys: String, CodingKey {
-        case code
-        case message
-        case error
         case matches = "matchings"
         case tracepoints
     }
-    
-    public init(credentials: DirectionsCredentials, options: MatchOptions, error: DirectionsError) {
-        self.init(code: nil, message: nil, error: error, matches: nil, tracepoints: nil, options: options, credentials: credentials)
+
+    public init(httpResponse: HTTPURLResponse, options: MatchOptions, credentials: DirectionsCredentials) {
+        self.init(httpResponse: httpResponse, matches: nil, tracepoints: nil, options: options, credentials: credentials)
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.httpResponse = decoder.userInfo[.httpResponse] as? HTTPURLResponse
         
         guard let options = decoder.userInfo[.options] as? MatchOptions else {
             throw DirectionsCodingError.missingOptions
@@ -46,8 +44,6 @@ extension MapMatchingResponse: Codable {
         }
         self.credentials = credentials
         
-        code = try container.decode(String.self, forKey: .code)
-        message = try container.decodeIfPresent(String.self, forKey: .message)
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
         
@@ -57,17 +53,4 @@ extension MapMatchingResponse: Codable {
             }
         }
     }
-    
-//    func postprocess(accessToken: String, apiEndpoint: URL, fetchStartDate: Date, responseEndDate: Date) {
-//        guard let matches = self.matches else {
-//            return
-//        }
-//        
-//        for result in matches {
-//            result.accessToken = accessToken
-//            result.apiEndpoint = apiEndpoint
-//            result.fetchStartDate = fetchStartDate
-//            result.responseEndDate = responseEndDate
-//        }
-//    }
 }

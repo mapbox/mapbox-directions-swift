@@ -70,13 +70,13 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         options.routeShapeResolution = .full
         options.attributeOptions = [.congestionLevel, .maximumSpeedLimit]
         
-        Directions.shared.calculate(options) { (waypoints, routes, error) in
+        Directions.shared.calculate(options) { (response, error) in
             if let error = error {
                 print("Error calculating directions: \(error)")
                 return
             }
             
-            if let route = routes?.first, let leg = route.legs.first {
+            if let route = response.routes?.first, let leg = route.legs.first {
                 print("Route via \(leg):")
                 
                 let distanceFormatter = LengthFormatter()
@@ -89,7 +89,8 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
                 
                 for step in leg.steps {
-                    print("\(step.instructions) [\(step.maneuverType) \(step.maneuverDirection)]")
+                    let direction = step.maneuverDirection?.rawValue ?? "none"
+                    print("\(step.instructions) [\(step.maneuverType) \(direction)]")
                     if step.distance > 0 {
                         let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
                         print("— \(step.transportType) for \(formattedDistance) —")
@@ -143,7 +144,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchOptions(coordinates: locations)
 
-        Directions.shared.calculate(matchOptions) { (matches, error) in
+        Directions.shared.calculate(matchOptions) { (response, error) in
             if let error = error {
                 let errorString = """
                 ⚠️ Error Enountered. ⚠️
@@ -156,7 +157,7 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 return
             }
             
-            guard let matches = matches, let match = matches.first else { return }
+            guard let matches = response.matches, let match = matches.first else { return }
             
             if let annotations = self.mapView.annotations {
                 self.mapView.removeAnnotations(annotations)
