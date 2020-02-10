@@ -95,13 +95,11 @@ class VisualInstructionsTests: XCTestCase {
         options.includesSpokenInstructions = true
         options.distanceMeasurementSystem = .imperial
         options.includesVisualInstructions = true
-        var route: Route?
-        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+        var response: RouteResponse!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             
-            XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 1)
-            route = routes!.first!
+            response = resp
             
             expectation.fulfill()
         }
@@ -112,10 +110,15 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cjgy4xps418g17mo7l2pdm734")
+        guard let route = response.routes?.first else {
+            XCTFail("No routes in response")
+            return
+        }
         
-        let leg = route!.legs.first!
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route.routeIdentifier, "cjgy4xps418g17mo7l2pdm734")
+        
+        let leg = route.legs.first!
         let step = leg.steps[1]
         
         XCTAssertEqual(step.instructionsSpokenAlongStep!.count, 3)
@@ -185,13 +188,11 @@ class VisualInstructionsTests: XCTestCase {
         options.includesAlternativeRoutes = false
         options.includesVisualInstructions = true
         
-        var route: Route?
-        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+        var response: RouteResponse!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             
-            XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 1)
-            route = routes!.first!
+            response = resp
             
             expectation.fulfill()
         }
@@ -202,10 +203,15 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cjikck25m00v279ms1knttdgc")
+        guard let route = response.routes?.first else {
+            XCTFail("No routes in response")
+            return
+        }
         
-        let step = route!.legs.first!.steps.first!
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route.routeIdentifier, "cjikck25m00v279ms1knttdgc")
+        
+        let step = route.legs.first!.steps.first!
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction
@@ -255,13 +261,11 @@ class VisualInstructionsTests: XCTestCase {
         options.includesAlternativeRoutes = false
         options.includesVisualInstructions = true
         
-        var route: Route?
-        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+        var response: RouteResponse!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             
-            XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 1)
-            route = routes!.first!
+            response = resp
             
             expectation.fulfill()
         }
@@ -272,10 +276,15 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        XCTAssertNotNil(route)
-        XCTAssertEqual(route!.routeIdentifier, "cjilrvx2200447omltwdayvm4")
+        guard let route = response.routes?.first else {
+            XCTFail("No routes in response")
+            return
+          }
         
-        let step = route!.legs.first!.steps.first!
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route.routeIdentifier, "cjilrvx2200447omltwdayvm4")
+        
+        let step = route.legs.first!.steps.first!
         let visualInstructions = step.instructionsDisplayedAlongStep
         
         let tertiaryInstruction = visualInstructions?.first?.tertiaryInstruction

@@ -54,6 +54,7 @@ class RouteOptionsTests: XCTestCase {
         let subject = RouteOptions(waypoints: waypoints)
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = subject
+        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "https://test.website")!)
         var response: RouteResponse?
         XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
         XCTAssertNotNil(response)

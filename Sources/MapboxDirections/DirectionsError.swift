@@ -101,7 +101,7 @@ public enum DirectionsError: LocalizedError {
             return "The server returned an empty response."
         case let .invalidInput(message):
             return message
-        case .invalidResponse:
+        case .invalidResponse(_):
             return "The server returned a response that isn’t correctly formatted."
         case .unableToRoute:
             return "No route could be found between the specified locations."
@@ -163,7 +163,6 @@ extension DirectionsError: Equatable {
     public static func == (lhs: DirectionsError, rhs: DirectionsError) -> Bool {
         switch (lhs, rhs) {
         case (.noData, .noData),
-             (.invalidResponse, .invalidResponse),
              (.unableToRoute, .unableToRoute),
              (.noMatches, .noMatches),
              (.tooManyCoordinates, .tooManyCoordinates),
@@ -171,6 +170,8 @@ extension DirectionsError: Equatable {
              (.profileNotFound, .profileNotFound),
              (.requestTooLarge, .requestTooLarge):
             return true
+        case let (.invalidResponse(lhsResponse), .invalidResponse(rhsResponse)):
+            return lhsResponse == rhsResponse
         case let (.invalidInput(lhsMessage), .invalidInput(rhsMessage)):
             return lhsMessage == rhsMessage
         case (.rateLimited(let lhsRateLimitInterval, let lhsRateLimit, let lhsResetTime),

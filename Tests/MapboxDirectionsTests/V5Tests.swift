@@ -47,15 +47,11 @@ class V5Tests: XCTestCase {
         options.includesSpokenInstructions = true
         options.locale = Locale(identifier: "en_US")
         options.includesExitRoundaboutManeuver = true
-        var route: Route?
-        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+        var response: RouteResponse!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
-            XCTAssertEqual(waypoints?.count, 2)
-            
-            XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 2)
-            route = routes!.first!
+            response = resp
             
             expectation.fulfill()
         }
@@ -66,10 +62,15 @@ class V5Tests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        test(route, options: options)
+        XCTAssertEqual(response.waypoints?.count, 2)
+        XCTAssertEqual(response.routes?.count, 2)
+        
+        
+        
+        test(response.routes!.first!)
     }
     
-    func test(_ route: Route?, options: RouteOptions) {
+    func test(_ route: Route?) {
         XCTAssertNotNil(route)
         guard let route = route else {
             return
@@ -77,8 +78,6 @@ class V5Tests: XCTestCase {
         
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 30_097)
-        XCTAssertEqual(route.accessToken, BogusToken)
-        XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier?.count, 25)
         XCTAssertTrue(route.routeIdentifier?.starts(with: "cjsb5x") ?? false)
         XCTAssertEqual(route.speechLocale?.identifier, "en-US")
@@ -88,9 +87,6 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(route.shape?.coordinates.first?.latitude ?? 0, 38, accuracy: 1)
         XCTAssertEqual(route.shape?.coordinates.first?.longitude ?? 0, -122, accuracy: 1)
         XCTAssertEqual(route.legs.count, 1)
-        
-        let opts = route.routeOptions
-        XCTAssertEqual(opts, options)
         
         XCTAssertEqual(route.legs.count, 1)
         let leg = route.legs.first
@@ -250,14 +246,14 @@ class V5Tests: XCTestCase {
         options.includesExitRoundaboutManeuver = true
         
         var route: Route?
-        let task = Directions(accessToken: BogusToken).calculate(options) { (waypoints, routes, error) in
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (response, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
-            XCTAssertEqual(waypoints?.count, 3)
+            XCTAssertEqual(response.waypoints?.count, 3)
             
-            XCTAssertNotNil(routes)
-            XCTAssertEqual(routes!.count, 1)
-            route = routes!.first!
+            XCTAssertNotNil(response.routes)
+            XCTAssertEqual(response.routes!.count, 1)
+            route = response.routes!.first!
             
             expectation.fulfill()
         }
@@ -290,13 +286,12 @@ class V5Tests: XCTestCase {
         
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "http://sample.website"))
         let result = try! decoder.decode(RouteResponse.self, from: data)
         
         let routes = result.routes
         let route = routes!.first!
-        route.accessToken = BogusToken
-        route.apiEndpoint = URL(string: "https://api.mapbox.com")
-        route.routeIdentifier = result.uuid
+
         
         // Encode and decode the route securely.
         
@@ -312,7 +307,7 @@ class V5Tests: XCTestCase {
             var newRoute: Route?
             XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
             XCTAssertNotNil(newRoute)
-            test(newRoute, options: options)
+            test(newRoute)
         }
     }
 }

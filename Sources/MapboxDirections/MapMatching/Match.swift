@@ -3,6 +3,38 @@ import CoreLocation
 import Polyline
 import struct Turf.LineString
 
+public enum Weight: Equatable {
+    case routability(value: Float)
+    case other(value: Float, metric: String)
+    
+    public init(value: Float, metric: String) {
+        switch metric {
+        case "routability":
+            self = .routability(value: value)
+        default:
+            self = .other(value: value, metric: metric)
+        }
+    }
+    
+    var metric: String {
+        switch self {
+        case .routability(value: _):
+            return "routability"
+        case let .other(value: _, metric: value):
+            return value
+        }
+    }
+    
+    var value: Float {
+        switch self {
+        case let .routability(value: weight):
+            return weight
+        case let .other(value: weight, metric: _):
+            return weight
+        }
+    }
+}
+
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
  
@@ -11,7 +43,8 @@ import struct Turf.LineString
 open class Match: DirectionsResult {
     private enum CodingKeys: String, CodingKey {
         case confidence
-        case tracepoints
+        case weight
+        case weightName = "weight_name"
     }
     
     /**
@@ -27,9 +60,9 @@ open class Match: DirectionsResult {
      - parameter tracepoints: Tracepoints on the road network that match the tracepoints in `options`.
      - parameter options: The criteria to match.
      */
-    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, tracepoints: [Tracepoint?]) {
+    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, weight: Weight) {
         self.confidence = confidence
-        self.tracepoints = tracepoints
+        self.weight = weight
         super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime)
     }
     
@@ -42,28 +75,29 @@ open class Match: DirectionsResult {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         confidence = try container.decode(Float.self, forKey: .confidence)
-        tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints) ?? []
+        let weightValue = try container.decode(Float.self, forKey: .weight)
+        let weightMetric = try container.decode(String.self, forKey: .weightName)
+        
+        weight = Weight(value: weightValue, metric: weightMetric)
+        
         try super.init(from: decoder)
     }
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(confidence, forKey: .confidence)
-        try container.encode(tracepoints, forKey: .tracepoints)
+        try container.encode(weight.value, forKey: .weight)
+        try container.encode(weight.metric, forKey: .weightName)
+        
         try super.encode(to: encoder)
     }
+    
+    open var weight: Weight
     
     /**
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
     open var confidence: Float
-    
-    /**
-     Tracepoints on the road network that match the tracepoints in the match options.
-     
-     Any outlier tracepoint is omitted from the match. This array represents an outlier tracepoint if the element is `nil`.
-     */
-    open var tracepoints: [Tracepoint?]
     
 }
 
@@ -74,7 +108,7 @@ extension Match: Equatable {
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
             lhs.speechLocale == rhs.speechLocale &&
             lhs.confidence == rhs.confidence &&
-            lhs.tracepoints == rhs.tracepoints &&
+            lhs.weight == rhs.weight &&
             lhs.legs == rhs.legs &&
             lhs.shape == rhs.shape
     }

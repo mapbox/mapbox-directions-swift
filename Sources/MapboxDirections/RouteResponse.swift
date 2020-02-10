@@ -30,13 +30,34 @@ extension RouteResponse: Codable {
         case code
         case message
         case error
-        case identifier
+        case identifier = "uuid"
         case routes
         case waypoints
     }
     
     public init(httpResponse: HTTPURLResponse?, options: ResponseOptions, credentials: DirectionsCredentials) {
         self.init(httpResponse: httpResponse, identifier: nil, routes: nil, waypoints: nil, options: options, credentials: credentials)
+    }
+    
+    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) {
+        let decoder = JSONDecoder()
+        let encoder = JSONEncoder()
+        
+        let routes: [Route]? = response.matches?.compactMap({ (match) -> Route? in
+            guard let json = try? encoder.encode(match) else { return nil }
+            guard let route = try? decoder.decode(Route.self, from: json) else { return nil }
+            return route
+        })
+        
+      // CONVERT WAYPOINTS
+        
+        let waypoints: [Waypoint]? = response.tracepoints?.compactMap({ (trace) -> Waypoint? in
+            guard let json = try? encoder.encode(trace) else { return nil }
+            guard let waypoint = try? decoder.decode(Waypoint.self, from: json) else { return nil }
+            return waypoint
+        })
+    
+        self.init(httpResponse: response.httpResponse, identifier: nil, routes: routes, waypoints: waypoints, options: .match(options), credentials: credentials)
     }
     
     public init(from decoder: Decoder) throws {

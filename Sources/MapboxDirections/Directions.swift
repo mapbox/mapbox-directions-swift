@@ -139,7 +139,8 @@ open class Directions: NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
-                    decoder.userInfo = [.options: options]
+                    decoder.userInfo = [.options: options,
+                                        .credentials: self.credentials]
                     
                     let disposition = try decoder.decode(ResponseDisposition.self, from: data)
                     let result = try decoder.decode(RouteResponse.self, from: data)
@@ -212,7 +213,8 @@ open class Directions: NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
-                    decoder.userInfo = [.options: options]
+                    decoder.userInfo = [.options: options,
+                                        .credentials: self.credentials]
                     
                     let disposition = try decoder.decode(ResponseDisposition.self, from: data)
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
@@ -286,27 +288,30 @@ open class Directions: NSObject {
                 DispatchQueue.global(qos: .userInitiated).async {
                     do {
                         let decoder = JSONDecoder()
-                        decoder.userInfo = [.options: options]
+                        decoder.userInfo = [.options: options,
+                                            .credentials: self.credentials]
                         
                         let disposition = try decoder.decode(ResponseDisposition.self, from: data)
-                        let result = try decoder.decode(RouteResponse.self, from: data)
+                        let result = try decoder.decode(MapMatchingResponse.self, from: data)
+                        
+                        let routeResponse = RouteResponse(matching: result, options: options, credentials: self.credentials)
                         guard disposition.code == "Ok" else {
                             let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
                             DispatchQueue.main.async {
-                                completionHandler(result, apiError)
+                                completionHandler(routeResponse, apiError)
                             }
                             return
                         }
                         
-                        guard result.routes != nil else {
+                        guard routeResponse.routes != nil else {
                             DispatchQueue.main.async {
-                                completionHandler(result, .unableToRoute)
+                                completionHandler(routeResponse, .unableToRoute)
                             }
                             return
                         }
                         
                         DispatchQueue.main.async {
-                            completionHandler(result, nil)
+                            completionHandler(routeResponse, nil)
                         }
                     } catch {
                         DispatchQueue.main.async {

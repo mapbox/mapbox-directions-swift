@@ -4,7 +4,7 @@ import Foundation
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
 let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
-public struct DirectionsCredentials {
+public struct DirectionsCredentials: Equatable {
     public let accessToken: String?
     public let host: URL
     public var skuToken: String? {

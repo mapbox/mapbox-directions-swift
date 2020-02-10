@@ -59,6 +59,9 @@
 		43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
 		43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
 		43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
+		43538E3D23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
+		43538E3E23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
+		43538E3F23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
 		438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
@@ -353,6 +356,7 @@
 		43208BAA2343F81900D8BD89 /* GeoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSON.swift; sourceTree = "<group>"; };
 		43208BAC2343FF5500D8BD89 /* RouteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponse.swift; sourceTree = "<group>"; };
 		43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDisposition.swift; sourceTree = "<group>"; };
+		43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsCredentialsTests.swift; sourceTree = "<group>"; };
 		438BFEBC233D7FA900457294 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
@@ -657,6 +661,7 @@
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
 				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
 				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
+				43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */,
 				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
 				DAABF7912395AE9800CEEB61 /* GeoJSONTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
@@ -1251,6 +1256,7 @@
 				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7932395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
+				43538E3E23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1326,6 +1332,7 @@
 				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7942395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
+				43538E3F23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1448,6 +1455,7 @@
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
+				43538E3D23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

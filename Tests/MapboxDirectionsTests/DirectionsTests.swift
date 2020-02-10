@@ -5,6 +5,7 @@ import CoreLocation
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
+let BogusCredentials = DirectionsCredentials(accessToken: BogusToken)
 let BadResponse = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML><HEAD><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -37,9 +38,8 @@ class DirectionsTests: XCTestCase {
     }
     
     func testConfiguration() {
-        let directions = Directions(accessToken: BogusToken)
-        XCTAssertEqual(directions.accessToken, BogusToken)
-        XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://api.mapbox.com")
+        let directions = Directions(credentials: BogusCredentials)
+        XCTAssertEqual(directions.credentials, BogusCredentials)
     }
     
     let maximumCoordinateCount = 795
@@ -49,7 +49,7 @@ class DirectionsTests: XCTestCase {
         let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount)
         let options = RouteOptions(coordinates: coordinates)
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let url = directions.url(forCalculating: options, httpMethod: "GET")
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
@@ -66,7 +66,7 @@ class DirectionsTests: XCTestCase {
         let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
         let options = RouteOptions(coordinates: coordinates)
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let request = directions.urlRequest(forCalculating: options)
         
         XCTAssertEqual(request.httpMethod, "POST")
@@ -89,11 +89,11 @@ class DirectionsTests: XCTestCase {
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
+        directions.calculate(opts, completionHandler: { (response, error) in
             expectation.fulfill()
-            XCTAssertNil(routes, "Unexpected route response")
+            XCTAssertNil(response.routes, "Unexpected route response")
             XCTAssertNotNil(error, "No error returned")
             XCTAssertEqual(error, .requestTooLarge)
         })
@@ -111,11 +111,11 @@ class DirectionsTests: XCTestCase {
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
+        directions.calculate(opts, completionHandler: { (response, error) in
             expectation.fulfill()
-            XCTAssertNil(routes, "Unexpected route response")
+            XCTAssertNil(response.routes, "Unexpected route response")
             XCTAssertNotNil(error, "No error returned")
             switch error {
             case .invalidResponse?:
@@ -132,7 +132,7 @@ class DirectionsTests: XCTestCase {
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
         let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
         
-        let resultError = Directions.informativeError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
+        let resultError = DirectionsError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
         if case let .rateLimited(rateLimitInterval, rateLimit, resetTime) = resultError {
             XCTAssertEqual(rateLimitInterval, 60.0)
             XCTAssertEqual(rateLimit, 600)
