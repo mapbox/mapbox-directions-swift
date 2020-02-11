@@ -158,17 +158,23 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                completionHandler(nil, nil, .invalidResponse)
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .invalidResponse)
+                }
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, nil, .noData)
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .noData)
+                }
                 return
             }
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                }
                 return
             }
             
@@ -227,17 +233,23 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                completionHandler(nil, .invalidResponse)
+                DispatchQueue.main.async {
+                    completionHandler(nil, .invalidResponse)
+                }
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, .noData)
+                DispatchQueue.main.async {
+                    completionHandler(nil, .noData)
+                }
                 return
             }
             
             if let error = possibleError {
-                completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                DispatchQueue.main.async {
+                    completionHandler(nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                }
                 return
             }
             
@@ -295,17 +307,23 @@ open class Directions: NSObject {
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             let responseEndDate = Date()
             guard let response = possibleResponse, response.mimeType == "application/json" else {
-                completionHandler(nil, nil, .invalidResponse)
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .invalidResponse)
+                }
                 return
             }
             
             guard let data = possibleData else {
-                completionHandler(nil, nil, .noData)
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .noData)
+                }
                 return
             }
             
             if let error = possibleError {
-                completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                DispatchQueue.main.async {
+                    completionHandler(nil, nil, .unknown(response: possibleResponse, underlying: error, code: nil, message: nil))
+                }
                 return
             }
             
