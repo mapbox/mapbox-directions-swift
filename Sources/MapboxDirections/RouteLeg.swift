@@ -282,3 +282,18 @@ extension RouteLeg: CustomQuickLookConvertible {
         return debugQuickLookURL(illustrating: LineString(coordinates))
     }
 }
+
+
+public extension Array where Element == RouteLeg {
+    /**
+     Populates source and destination information for each leg with waypoint information, typically gathered from DirectionsOptions.
+     */
+    func populate(waypoints: [Waypoint]) {
+        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), self)
+
+        for (endpoints, leg) in legInfo {
+            leg.source = endpoints.0
+            leg.destination = endpoints.1
+        }
+    }
+}

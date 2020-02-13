@@ -142,16 +142,27 @@ open class Directions: NSObject {
                     decoder.userInfo = [.options: options,
                                         .credentials: self.credentials]
                     
-                    let disposition = try decoder.decode(ResponseDisposition.self, from: data)
-                    let result = try decoder.decode(RouteResponse.self, from: data)
-                    guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
-                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                    guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
+                        let apiError = DirectionsError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
+                        let response = RouteResponse(httpResponse: httpResponse, options: .route(options), credentials: self.credentials)
+
                         DispatchQueue.main.async {
-                            completionHandler(result, apiError)
+                            completionHandler(response, apiError)
                         }
                         return
                     }
                     
+                    guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
+                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                        let response = RouteResponse(httpResponse: httpResponse, options: .route(options), credentials: self.credentials)
+
+                        DispatchQueue.main.async {
+                            completionHandler(response, apiError)
+                        }
+                        return
+                    }
+                    
+                    let result = try decoder.decode(RouteResponse.self, from: data)
                     guard result.routes != nil else {
                         DispatchQueue.main.async {
                             completionHandler(result, .unableToRoute)
@@ -215,16 +226,27 @@ open class Directions: NSObject {
                     let decoder = JSONDecoder()
                     decoder.userInfo = [.options: options,
                                         .credentials: self.credentials]
+                    guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
+                          let apiError = DirectionsError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
+                          let response = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
+
+                          DispatchQueue.main.async {
+                              completionHandler(response, apiError)
+                          }
+                          return
+                      }
+                      
+                      guard disposition.code == "Ok" else {
+                          let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                          let response = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
+
+                          DispatchQueue.main.async {
+                              completionHandler(response, apiError)
+                          }
+                          return
+                      }
                     
-                    let disposition = try decoder.decode(ResponseDisposition.self, from: data)
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
-                    guard disposition.code == "Ok" else {
-                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
-                        DispatchQueue.main.async {
-                            completionHandler(result, apiError)
-                        }
-                        return
-                    }
                     
                     guard result.matches != nil else {
                         DispatchQueue.main.async {
@@ -272,56 +294,76 @@ open class Directions: NSObject {
                 return
             }
             
-           guard let data = possibleData else {
-                  let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
-                  completionHandler(response, .noData)
-                  return
-              }
+            guard let data = possibleData else {
+                let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
+                completionHandler(response, .noData)
+                return
+            }
             
-             if let error = possibleError {
+            if let error = possibleError {
                 let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
                 let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
                 completionHandler(response, unknownError)
                 return
             }
             
-                DispatchQueue.global(qos: .userInitiated).async {
-                    do {
-                        let decoder = JSONDecoder()
-                        decoder.userInfo = [.options: options,
-                                            .credentials: self.credentials]
-                        
-                        let disposition = try decoder.decode(ResponseDisposition.self, from: data)
-                        let result = try decoder.decode(MapMatchingResponse.self, from: data)
-                        
-                        let routeResponse = RouteResponse(matching: result, options: options, credentials: self.credentials)
-                        guard disposition.code == "Ok" else {
-                            let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
-                            DispatchQueue.main.async {
-                                completionHandler(routeResponse, apiError)
-                            }
-                            return
-                        }
-                        
-                        guard routeResponse.routes != nil else {
-                            DispatchQueue.main.async {
-                                completionHandler(routeResponse, .unableToRoute)
-                            }
-                            return
-                        }
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.userInfo = [.options: options,
+                                        .credentials: self.credentials]
+                    
+                    
+                    guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
+                        let apiError = DirectionsError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
+                        let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
                         
                         DispatchQueue.main.async {
-                            completionHandler(routeResponse, nil)
+                            completionHandler(response, apiError)
                         }
-                    } catch {
+                        return
+                    }
+                    
+                    guard disposition.code == "Ok" else {
+                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                        let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
+                        
                         DispatchQueue.main.async {
-                            let bailError = DirectionsError(code: nil, message: nil, response: response, underlyingError: error)
-                            let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
-                            completionHandler(response, bailError)
+                            completionHandler(response, apiError)
                         }
+                        return
+                    }
+                    
+                    let result = try decoder.decode(MapMatchingResponse.self, from: data)
+                    
+                    let routeResponse = RouteResponse(matching: result, options: options, credentials: self.credentials)
+                    guard disposition.code == "Ok" else {
+                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                        DispatchQueue.main.async {
+                            completionHandler(routeResponse, apiError)
+                        }
+                        return
+                    }
+                    
+                    guard routeResponse.routes != nil else {
+                        DispatchQueue.main.async {
+                            completionHandler(routeResponse, .unableToRoute)
+                        }
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completionHandler(routeResponse, nil)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        let bailError = DirectionsError(code: nil, message: nil, response: response, underlyingError: error)
+                        let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
+                        completionHandler(response, bailError)
                     }
                 }
             }
+        }
         requestTask.priority = 1
         requestTask.resume()
         

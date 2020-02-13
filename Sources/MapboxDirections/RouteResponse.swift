@@ -43,6 +43,8 @@ extension RouteResponse: Codable {
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
         
+        decoder.userInfo[.options] = options
+        
         let routes: [Route]? = response.matches?.compactMap({ (match) -> Route? in
             guard let json = try? encoder.encode(match) else { return nil }
             guard let route = try? decoder.decode(Route.self, from: json) else { return nil }

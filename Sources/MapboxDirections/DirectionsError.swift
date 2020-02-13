@@ -28,8 +28,9 @@ public enum DirectionsError: LocalizedError {
             default:
                 self = .unknown(response: response, underlying: error, code: code, message: message)
             }
+        } else {
+            self = .unknown(response: response, underlying: error, code: code, message: message)            
         }
-        self = .unknown(response: response, underlying: error, code: code, message: message)
     }
 
     /**

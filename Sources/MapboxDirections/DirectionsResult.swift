@@ -30,7 +30,21 @@ open class DirectionsResult: Codable {
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        guard let options = decoder.userInfo[.options] else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
         legs = try container.decode([RouteLeg].self, forKey: .legs)
+        
+        //populate legs with origin and destination
+        if let options = options as? DirectionsOptions {
+            let waypoints = options.waypoints
+            legs.populate(waypoints: waypoints)
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
     

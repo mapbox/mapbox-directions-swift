@@ -83,7 +83,7 @@ class DirectionsTests: XCTestCase {
         OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
         }) { (_) -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "application/json"])
+            return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
         }
         let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
