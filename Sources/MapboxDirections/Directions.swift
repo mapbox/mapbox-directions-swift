@@ -337,14 +337,6 @@ open class Directions: NSObject {
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     
                     let routeResponse = RouteResponse(matching: result, options: options, credentials: self.credentials)
-                    guard disposition.code == "Ok" else {
-                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
-                        DispatchQueue.main.async {
-                            completionHandler(routeResponse, apiError)
-                        }
-                        return
-                    }
-                    
                     guard routeResponse.routes != nil else {
                         DispatchQueue.main.async {
                             completionHandler(routeResponse, .unableToRoute)
