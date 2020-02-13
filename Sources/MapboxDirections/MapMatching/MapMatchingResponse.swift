@@ -25,8 +25,12 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
 
-    public init(httpResponse: HTTPURLResponse, options: MatchOptions, credentials: DirectionsCredentials) {
-        self.init(httpResponse: httpResponse, matches: nil, tracepoints: nil, options: options, credentials: credentials)
+     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Tracepoint]? = nil, options: MatchOptions, credentials: DirectionsCredentials) {
+        self.httpResponse = httpResponse
+        self.matches = matches
+        self.tracepoints = tracepoints
+        self.options = options
+        self.credentials = credentials
     }
     
     public init(from decoder: Decoder) throws {
