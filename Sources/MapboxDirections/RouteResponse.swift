@@ -35,8 +35,13 @@ extension RouteResponse: Codable {
         case waypoints
     }
     
-    public init(httpResponse: HTTPURLResponse?, options: ResponseOptions, credentials: DirectionsCredentials) {
-        self.init(httpResponse: httpResponse, identifier: nil, routes: nil, waypoints: nil, options: options, credentials: credentials)
+    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: DirectionsCredentials) {
+        self.httpResponse = httpResponse
+        self.identifier = identifier
+        self.routes = routes
+        self.waypoints = waypoints
+        self.options = options
+        self.credentials = credentials
     }
     
     public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) {
