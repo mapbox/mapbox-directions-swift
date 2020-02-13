@@ -336,7 +336,7 @@ open class Directions: NSObject {
                     
                     let result = try decoder.decode(MapMatchingResponse.self, from: data)
                     
-                    let routeResponse = RouteResponse(matching: result, options: options, credentials: self.credentials)
+                    let routeResponse = try RouteResponse(matching: result, options: options, credentials: self.credentials)
                     guard routeResponse.routes != nil else {
                         DispatchQueue.main.async {
                             completionHandler(routeResponse, .unableToRoute)

@@ -44,23 +44,21 @@ extension RouteResponse: Codable {
         self.credentials = credentials
     }
     
-    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) {
+    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) throws {
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
         
         decoder.userInfo[.options] = options
         
-        let routes: [Route]? = response.matches?.compactMap({ (match) -> Route? in
-            guard let json = try? encoder.encode(match) else { return nil }
-            guard let route = try? decoder.decode(Route.self, from: json) else { return nil }
+        let routes: [Route]? = try response.matches?.compactMap({ (match) -> Route? in
+            let json = try encoder.encode(match)
+            let route = try decoder.decode(Route.self, from: json)
             return route
         })
-        
-      // CONVERT WAYPOINTS
-        
-        let waypoints: [Waypoint]? = response.tracepoints?.compactMap({ (trace) -> Waypoint? in
-            guard let json = try? encoder.encode(trace) else { return nil }
-            guard let waypoint = try? decoder.decode(Waypoint.self, from: json) else { return nil }
+                
+        let waypoints: [Waypoint]? = try response.tracepoints?.compactMap({ (trace) -> Waypoint? in
+            let json = try encoder.encode(trace)
+            let waypoint = try decoder.decode(Waypoint.self, from: json)
             return waypoint
         })
     
