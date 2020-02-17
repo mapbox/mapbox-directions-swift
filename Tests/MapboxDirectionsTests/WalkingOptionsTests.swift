@@ -13,7 +13,7 @@ class WalkingOptionsTests: XCTestCase {
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: DirectionsProfileIdentifier.walking)
         var queryItems = options.urlQueryItems
 
-        XCTAssertEqual(queryItems.first { $0.name == "alley_bias" }?.value, "0.0")
+         XCTAssertEqual(queryItems.first { $0.name == "alley_bias" }?.value, "0.0")
         XCTAssertEqual(queryItems.first { $0.name == "walkway_bias" }?.value, "0.0")
         XCTAssertEqual(queryItems.first { $0.name == "walking_speed" }?.value, "1.42")
         
