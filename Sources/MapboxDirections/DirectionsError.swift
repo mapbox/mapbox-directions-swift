@@ -34,10 +34,18 @@ public enum DirectionsError: LocalizedError {
     }
 
     /**
+     There is no network connection available to perform the network request.
+     */
+    case noConnection(underlying: URLError?)
+    
+    /**
      The server returned an empty response.
      */
     case noData
     
+    /**
+    The API recieved input that it didn't understand.
+     */
     case invalidInput(message: String?)
     
     /**
@@ -94,10 +102,17 @@ public enum DirectionsError: LocalizedError {
      */
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
+    
+    /**
+     Unknown error case. Look at associated values for more details.
+     */
+    
     case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
     
     public var failureReason: String? {
         switch self {
+        case .noConnection(_):
+            return "The client does not have a network connection to the server."
         case .noData:
             return "The server returned an empty response."
         case let .invalidInput(message):
@@ -134,7 +149,7 @@ public enum DirectionsError: LocalizedError {
     
     public var recoverySuggestion: String? {
         switch self {
-        case .noData, .invalidInput, .invalidResponse:
+        case .noConnection(underlying: _), .noData, .invalidInput, .invalidResponse:
             return nil
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
@@ -171,6 +186,8 @@ extension DirectionsError: Equatable {
              (.profileNotFound, .profileNotFound),
              (.requestTooLarge, .requestTooLarge):
             return true
+        case let (.noConnection(underlying: lhsError), .noConnection(underlying: rhsError)):
+            return lhsError == rhsError
         case let (.invalidResponse(lhsResponse), .invalidResponse(rhsResponse)):
             return lhsResponse == rhsResponse
         case let (.invalidInput(lhsMessage), .invalidInput(rhsMessage)):
@@ -187,17 +204,7 @@ extension DirectionsError: Equatable {
                 && lhsUnderlying?.localizedDescription == rhsUnderlying?.localizedDescription
                 && lhsCode == rhsCode
                 && lhsMessage == rhsMessage
-        case (.noData, _),
-             (.invalidResponse, _),
-             (.unableToRoute, _),
-             (.noMatches, _),
-             (.tooManyCoordinates, _),
-             (.unableToLocate, _),
-             (.profileNotFound, _),
-             (.requestTooLarge, _),
-             (.invalidInput, _),
-             (.rateLimited, _),
-             (.unknown, _):
+        default:
             return false
         }
     }

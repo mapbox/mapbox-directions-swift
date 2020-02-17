@@ -119,7 +119,7 @@ class DirectionsTests: XCTestCase {
             XCTAssertNotNil(error, "No error returned")
             switch error {
             case .invalidResponse?:
-                break // pass
+            break // pass
             default:
                 XCTFail("Wrong type of error.")
             }
@@ -140,6 +140,33 @@ class DirectionsTests: XCTestCase {
         } else {
             XCTFail("Code 429 should be interpreted as a rate limiting error.")
         }
+    }
+    
+    func testDownNetwork() {
+        let notConnected = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue) as! URLError
+        
+        OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+            return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
+        }) { (_) -> OHHTTPStubsResponse in
+            return OHHTTPStubsResponse(error: notConnected)
+        }
+        
+        let expectation = self.expectation(description: "Async callback")
+        let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
+        let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
+        
+        let directions = Directions(credentials: BogusCredentials)
+        let opts = RouteOptions(locations: [one, two])
+        directions.calculate(opts, completionHandler: { (response, error) in
+            expectation.fulfill()
+            XCTAssertNil(response.routes, "Unexpected route response")
+            if case let .noConnection(urlError) = error {
+                XCTAssertEqual(urlError, notConnected)
+            } else {
+                XCTFail("correct error not found")
+            }
+        })
+        wait(for: [expectation], timeout: 2.0)
     }
 }
 #endif

@@ -110,10 +110,20 @@ open class Directions: NSObject {
      - parameter completionHandler: The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.
      */
-    @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler /* FIXME: VARIENT TYPE */) -> URLSessionDataTask {
+    @discardableResult open func calculate(_ options: RouteOptions, completionHandler: @escaping RouteCompletionHandler) -> URLSessionDataTask {
         options.fetchStartDate = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+            
+            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
+            if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+                let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .route(options), credentials: self.credentials)
+                DispatchQueue.main.async {
+                    completionHandler(response, .noConnection(underlying: urlError))
+                }
+                return
+            }
+            
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType), let httpResponse = response as? HTTPURLResponse else {
                 let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .route(options), credentials: self.credentials)
                 DispatchQueue.main.async {
@@ -206,19 +216,29 @@ open class Directions: NSObject {
         options.fetchStartDate = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
-            guard let response = possibleResponse, response.mimeType == "application/json", let httpResponse = response as? HTTPURLResponse else {
-                let result = MapMatchingResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: options, credentials: self.credentials)
+            
+            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
+            if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+                let response = MapMatchingResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: options, credentials: self.credentials)
                 DispatchQueue.main.async {
-                    completionHandler(result, .invalidResponse(possibleResponse))
+                    completionHandler(response, .noConnection(underlying: urlError))
+                }
+                return
+            }
+            
+            guard let response = possibleResponse, response.mimeType == "application/json", let httpResponse = response as? HTTPURLResponse else {
+                let response = MapMatchingResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: options, credentials: self.credentials)
+                DispatchQueue.main.async {
+                    completionHandler(response, .invalidResponse(possibleResponse))
                     
                 }
                 return
             }
             
             guard let data = possibleData else {
-                let result = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
+                let response = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
                 DispatchQueue.main.async {
-                    completionHandler(result, .noData)
+                    completionHandler(response, .noData)
                 }
                 return
             }
@@ -257,23 +277,23 @@ open class Directions: NSObject {
                           return
                       }
                     
-                    let result = try decoder.decode(MapMatchingResponse.self, from: data)
+                    let response = try decoder.decode(MapMatchingResponse.self, from: data)
                     
-                    guard result.matches != nil else {
+                    guard response.matches != nil else {
                         DispatchQueue.main.async {
-                            completionHandler(result, .unableToRoute)
+                            completionHandler(response, .unableToRoute)
                         }
                         return
                     }
                                         
                     DispatchQueue.main.async {
-                        completionHandler(result, nil)
+                        completionHandler(response, nil)
                     }
                 } catch {
                     DispatchQueue.main.async {
                         let caughtError = DirectionsError.unknown(response: response, underlying: error, code: nil, message: nil)
-                        let result = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
-                        completionHandler(result, caughtError)
+                        let response = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
+                        completionHandler(response, caughtError)
                     }
                 }
             }
@@ -299,6 +319,16 @@ open class Directions: NSObject {
         options.fetchStartDate = Date()
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+            
+            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
+             if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+                 let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .match(options), credentials: self.credentials)
+                 DispatchQueue.main.async {
+                     completionHandler(response, .noConnection(underlying: urlError))
+                 }
+                 return
+             }
+            
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType), let httpResponse = response as? HTTPURLResponse else {
                 let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .match(options), credentials: self.credentials)
                 DispatchQueue.main.async {

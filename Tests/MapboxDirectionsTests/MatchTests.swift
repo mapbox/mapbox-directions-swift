@@ -49,7 +49,6 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        #warning("need tests for route response and match response")
         let match = response.matches!.first!
         let opts = response.options
         XCTAssert(matchOptions == opts)
@@ -59,10 +58,10 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(match.shape!.coordinates.count, 18)
         XCTAssertEqual(match.routeIdentifier, nil)
         
-//        let tracePoints = match.tracepoints
-//        XCTAssertNotNil(tracePoints)
-//        XCTAssertEqual(tracePoints.first!!.countOfAlternatives, 0)
-//        XCTAssertEqual(tracePoints.last!!.name, "West G Street")
+        let tracePoints = response.tracepoints
+        XCTAssertNotNil(tracePoints)
+        XCTAssertEqual(tracePoints!.first!!.countOfAlternatives, 0)
+        XCTAssertEqual(tracePoints!.last!!.name, "West G Street")
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
