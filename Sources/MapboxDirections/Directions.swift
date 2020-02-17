@@ -83,7 +83,12 @@ open class Directions: NSObject {
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
      */
     public static let shared = Directions()
-    
+
+    /**
+     The Authorization & Authentication credentials that are used for this service.
+     
+     If nothing is provided, the default behavior is to read credential values from the developer's Info.plist.
+     */
     public let credentials: DirectionsCredentials
     
     /**

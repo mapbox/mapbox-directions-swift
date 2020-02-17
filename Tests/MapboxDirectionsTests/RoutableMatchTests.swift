@@ -53,9 +53,6 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 18)
-        #warning("Add a test for DirectionsCredentials")
-//        XCTAssertEqual(route.accessToken, BogusToken)
-//        XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier, nil)
         
         let waypoints = routeResponse.waypoints!
