@@ -13,7 +13,7 @@ class DirectionsCredentialsTests: XCTestCase {
     
     func testCustomConfiguration() {
         let token = "deadbeefcafebebe"
-        let host = URL(string: "https://hello.world")!
+        let host = URL(string: "https://example.com")!
         let credentials = DirectionsCredentials(accessToken: token, host: host)
         XCTAssertEqual(credentials.accessToken, token)
         XCTAssertEqual(credentials.host, host)

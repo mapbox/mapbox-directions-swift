@@ -60,21 +60,18 @@ open class Directions: NSObject {
     /**
      A closure (block) to be called when a directions request is complete.
      
-     - parameter waypoints: An array of `Waypoint` objects. Each waypoint object corresponds to a `Waypoint` object in the original `RouteOptions` object. The locations and names of these waypoints are the result of conflating the original waypoints to known roads. The waypoints may include additional information that was not specified in the original waypoints.
+     - parameter response: A `RouteResponse` object that contains the entire payload of the Directions API solution. See `RouteResponse.swift` for more information.
      
-     If the request was canceled or there was an error obtaining the routes, this argument may be `nil`.
-     - parameter routes: An array of `Route` objects. The preferred route is first; any alternative routes come next if the `RouteOptions` object’s `includesAlternativeRoutes` property was set to `true`. The preferred route depends on the route options object’s `profileIdentifier` property.
-     
-     If the request was canceled or there was an error obtaining the routes, this argument is `nil`. This is not to be confused with the situation in which no results were found, in which case the array is present but empty.
-     - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
+     - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
      */
     public typealias RouteCompletionHandler = (_ response: RouteResponse, _ error: DirectionsError?) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
      
-     If the request was canceled or there was an error obtaining the matches, this argument is `nil`. This is not to be confused with the situation in which no matches were found, in which case the array is present but empty.
-     - parameter error: The error that occurred, or `nil` if the placemarks were obtained successfully.
+     - parameter response: A `MapMatching` object that contains the entire payload of the Directions Map Matching API solution. See `MapMatchingResponse.swift` for more information.
+
+     - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
      */
     public typealias MatchCompletionHandler = (_ response: MapMatchingResponse, _ error: DirectionsError?) -> Void
     
@@ -92,9 +89,9 @@ open class Directions: NSObject {
     /**
      Initializes a newly created directions object with an optional access token and host.
      
-     - parameter accessToken: A Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/). If an access token is not specified when initializing the directions object, it should be specified in the `MGLMapboxAccessToken` key in the main application bundle’s Info.plist.
-     - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) endpoint is used by default.
+     - parameter credentials: A `DirectionsCredentials` object that, optionally, contains customized Token and Endpoint information. If no credentials object is supplied, then defaults are used.
      */
+    
     public init(credentials:  DirectionsCredentials = .init()) {
         self.credentials = credentials
     }
@@ -426,11 +423,12 @@ open class Directions: NSObject {
     }
 }
 
+/**
+    Keys to pass to populate a `userInfo` dictionary, which is passed to the `JSONDecoder` upon trying to decode a `RouteResponse` or `MapMatchingResponse`.
+ */
 public extension CodingUserInfoKey {
     static let options = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeOptions")!
     static let httpResponse = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.httpResponse")!
     static let credentials = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.credentials")!
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
-
-
 }
