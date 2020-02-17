@@ -69,7 +69,7 @@ open class Directions: NSObject {
     /**
      A closure (block) to be called when a map matching request is complete.
      
-     - parameter response: A `MapMatching` object that contains the entire payload of the Directions Map Matching API solution. See `MapMatchingResponse.swift` for more information.
+     - parameter response: A `MapMatchingResponse` object that contains the entire payload of the Directions Map Matching API solution. See `MapMatchingResponse.swift` for more information.
 
      - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
      */
