@@ -134,9 +134,9 @@ class MatchTests: XCTestCase {
         
         let match = response.matches!.first!
         XCTAssertNotNil(match)
-//        let tracepoints = match.tracepoints
-//        XCTAssertEqual(tracepoints.count, 7)
-//        XCTAssertEqual(tracepoints.first!, nil)
+        let tracepoints = response.tracepoints!
+        XCTAssertEqual(tracepoints.count, 7)
+        XCTAssertEqual(tracepoints.first!, nil)
         
         // Encode and decode the match securely.
         // This may raise an Objective-C exception if an error is encountered which will fail the tests.
@@ -149,7 +149,6 @@ class MatchTests: XCTestCase {
         let unarchivedMatch = try! decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
         
         XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
-//        XCTAssertEqual(match.tracepoints, unarchivedMatch.tracepoints)
     }
     #endif
     

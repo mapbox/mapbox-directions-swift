@@ -12,7 +12,6 @@ class OfflineDirectionsTests: XCTestCase {
         let credentials = DirectionsCredentials(accessToken: token, host: hostURL)
         let directions = Directions(credentials: credentials)
         
-//        XCTAssertEqual(directions.accessToken, token)
         
         let versionsExpectation = expectation(description: "Fetching available versions should return results")
         
