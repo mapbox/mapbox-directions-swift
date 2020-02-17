@@ -120,11 +120,10 @@ open class Directions: NSObject {
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
-            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
-            if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+            if let urlError = possibleError as? URLError {
                 let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .route(options), credentials: self.credentials)
                 DispatchQueue.main.async {
-                    completionHandler(response, .noConnection(underlying: urlError))
+                    completionHandler(response, .network(urlError))
                 }
                 return
             }
@@ -222,11 +221,10 @@ open class Directions: NSObject {
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
-            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
-            if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+            if let urlError = possibleError as? URLError {
                 let response = MapMatchingResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: options, credentials: self.credentials)
                 DispatchQueue.main.async {
-                    completionHandler(response, .noConnection(underlying: urlError))
+                    completionHandler(response, .network(urlError))
                 }
                 return
             }
@@ -325,11 +323,10 @@ open class Directions: NSObject {
         let request = urlRequest(forCalculating: options)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
-            let offlineErrors: [URLError.Code] = [.cannotConnectToHost, .dataNotAllowed, .notConnectedToInternet]
-             if let urlError = possibleError as? URLError, offlineErrors.contains(urlError.code) {
+             if let urlError = possibleError as? URLError {
                  let response = RouteResponse(httpResponse: possibleResponse as? HTTPURLResponse, options: .match(options), credentials: self.credentials)
                  DispatchQueue.main.async {
-                     completionHandler(response, .noConnection(underlying: urlError))
+                    completionHandler(response, .network(urlError))
                  }
                  return
              }

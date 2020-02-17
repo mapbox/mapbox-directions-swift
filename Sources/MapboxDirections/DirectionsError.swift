@@ -36,7 +36,7 @@ public enum DirectionsError: LocalizedError {
     /**
      There is no network connection available to perform the network request.
      */
-    case noConnection(underlying: URLError?)
+    case network(_: URLError?)
     
     /**
      The server returned an empty response.
@@ -111,7 +111,7 @@ public enum DirectionsError: LocalizedError {
     
     public var failureReason: String? {
         switch self {
-        case .noConnection(_):
+        case .network(_):
             return "The client does not have a network connection to the server."
         case .noData:
             return "The server returned an empty response."
@@ -149,7 +149,7 @@ public enum DirectionsError: LocalizedError {
     
     public var recoverySuggestion: String? {
         switch self {
-        case .noConnection(underlying: _), .noData, .invalidInput, .invalidResponse:
+        case .network(underlying: _), .noData, .invalidInput, .invalidResponse:
             return nil
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
@@ -186,7 +186,7 @@ extension DirectionsError: Equatable {
              (.profileNotFound, .profileNotFound),
              (.requestTooLarge, .requestTooLarge):
             return true
-        case let (.noConnection(underlying: lhsError), .noConnection(underlying: rhsError)):
+        case let (.network(underlying: lhsError), .network(underlying: rhsError)):
             return lhsError == rhsError
         case let (.invalidResponse(lhsResponse), .invalidResponse(rhsResponse)):
             return lhsResponse == rhsResponse

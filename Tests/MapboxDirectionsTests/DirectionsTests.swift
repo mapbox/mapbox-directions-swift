@@ -160,7 +160,7 @@ class DirectionsTests: XCTestCase {
         directions.calculate(opts, completionHandler: { (response, error) in
             expectation.fulfill()
             XCTAssertNil(response.routes, "Unexpected route response")
-            if case let .noConnection(urlError) = error {
+            if case let .network(urlError) = error {
                 XCTAssertEqual(urlError, notConnected)
             } else {
                 XCTFail("correct error not found")
