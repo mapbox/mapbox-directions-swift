@@ -149,7 +149,7 @@ public enum DirectionsError: LocalizedError {
     
     public var recoverySuggestion: String? {
         switch self {
-        case .network(underlying: _), .noData, .invalidInput, .invalidResponse:
+        case .network(_), .noData, .invalidInput, .invalidResponse:
             return nil
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
@@ -186,7 +186,7 @@ extension DirectionsError: Equatable {
              (.profileNotFound, .profileNotFound),
              (.requestTooLarge, .requestTooLarge):
             return true
-        case let (.network(underlying: lhsError), .network(underlying: rhsError)):
+        case let (.network(lhsError), .network(rhsError)):
             return lhsError == rhsError
         case let (.invalidResponse(lhsResponse), .invalidResponse(rhsResponse)):
             return lhsResponse == rhsResponse
