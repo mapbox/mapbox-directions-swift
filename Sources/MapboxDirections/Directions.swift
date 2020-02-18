@@ -144,15 +144,6 @@ open class Directions: NSObject {
                 return
             }
             
-            if let error = possibleError {
-                let response = RouteResponse(httpResponse: httpResponse, options: .route(options), credentials: self.credentials)
-                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                DispatchQueue.main.async {
-                    completionHandler(response, unknownError)
-                }
-                return
-            }
-            
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
@@ -246,14 +237,6 @@ open class Directions: NSObject {
                 return
             }
             
-            if let error = possibleError {
-                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                let response = MapMatchingResponse(httpResponse: httpResponse, options: options, credentials: self.credentials)
-                DispatchQueue.main.async {
-                    completionHandler(response, unknownError)
-                }
-                return
-            }
             
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
@@ -343,15 +326,6 @@ open class Directions: NSObject {
                 let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
                 DispatchQueue.main.async {
                     completionHandler(response, .noData)
-                }
-                return
-            }
-            
-            if let error = possibleError {
-                let response = RouteResponse(httpResponse: httpResponse, options: .match(options), credentials: self.credentials)
-                let unknownError = DirectionsError.unknown(response: possibleResponse, underlying: error, code: nil, message: nil)
-                DispatchQueue.main.async {
-                    completionHandler(response, unknownError)
                 }
                 return
             }
