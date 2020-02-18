@@ -36,7 +36,7 @@ public enum DirectionsError: LocalizedError {
     /**
      There is no network connection available to perform the network request.
      */
-    case network(_: URLError?)
+    case network(_: URLError)
     
     /**
      The server returned an empty response.
