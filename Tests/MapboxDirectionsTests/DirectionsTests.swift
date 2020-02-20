@@ -42,7 +42,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://api.mapbox.com")
     }
     
-    let maximumCoordinateCount = 795
+    let maximumCoordinateCount = 794
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength
@@ -54,7 +54,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
         let components = URLComponents(string: url.absoluteString)
-        XCTAssertEqual(components?.queryItems?.count, 7)
+        XCTAssertEqual(components?.queryItems?.count, 8)
         XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.requestDescription }.joined(separator: ";")) ?? false)
         
         let request = directions.urlRequest(forCalculating: options)
@@ -74,7 +74,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertNotNil(request.httpBody)
         var components = URLComponents()
         components.query = String(data: request.httpBody ?? Data(), encoding: .utf8)
-        XCTAssertEqual(components.queryItems?.count, 7)
+        XCTAssertEqual(components.queryItems?.count, 8)
         XCTAssertEqual(components.queryItems?.first { $0.name == "coordinates" }?.value,
                        coordinates.compactMap { $0.requestDescription }.joined(separator: ";"))
     }
