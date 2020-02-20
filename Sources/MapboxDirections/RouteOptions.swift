@@ -110,7 +110,7 @@ open class RouteOptions: DirectionsOptions {
     /**
      A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.walking`.
+     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.walking`.
      
      The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. The default value of `DirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.default` avoids alleys, and a positive value between `DirectionsPriority.default` and `DirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
@@ -169,8 +169,10 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
 
-        if profileIdentifier == .walking {
+        if profileIdentifier == .automobile || profileIdentifier == .walking {
             params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
+        }
+        if profileIdentifier == .walking {
             params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
             params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
