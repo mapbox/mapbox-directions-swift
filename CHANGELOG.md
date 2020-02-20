@@ -34,6 +34,7 @@
 * Various properties of `Route`, `RouteLeg`, and `RouteStep` are now writable. ([#393](https://github.com/mapbox/mapbox-directions-swift/pull/393))
 * Added `AttributeOptions.maximumSpeedLimit` for getting maximum posted speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property. ([#367](https://github.com/mapbox/mapbox-directions-swift/pull/367))
 * Added the `RouteLeg.segmentRangesByStep` property for more easily associating `RouteStep`s with the values in segment-based arrays such as `RouteLeg.segmentCongestionLevels`. ([#367](https://github.com/mapbox/mapbox-directions-swift/pull/367))
+* The `RouteOptions.alleyPriority` property now works with `DirectionsProfileIdentifier.automobile`, allowing you to request routes that prefer or avoid alleys while driving. ([#416](https://github.com/mapbox/mapbox-directions-swift/pull/416))
 
 ## v0.30.0
 
