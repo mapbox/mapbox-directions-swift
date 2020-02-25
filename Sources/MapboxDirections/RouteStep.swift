@@ -61,6 +61,28 @@ public enum TransportType: String, Codable {
      The user should consult the train’s timetable. For cycling directions, the user should also verify that bicycles are permitted onboard the train.
      */
     case train // cycling
+
+    // Custom implementation of decoding is needed to circumvent issue reported in
+    // https://github.com/mapbox/mapbox-directions-swift/issues/413
+    public init(from decoder: Decoder) throws {
+        let valueContainer = try decoder.singleValueContainer()
+        let rawValue = try valueContainer.decode(String.self)
+
+        if rawValue == "pushing bike" {
+            self = .walking
+
+            return
+        }
+
+        guard let value = TransportType(rawValue: rawValue) else {
+            throw DecodingError.dataCorruptedError(
+                in: valueContainer,
+                debugDescription: "Cannot initialize TransportType from invalid String value \(rawValue)"
+            )
+        }
+        
+        self = value
+    }
 }
 
 /**

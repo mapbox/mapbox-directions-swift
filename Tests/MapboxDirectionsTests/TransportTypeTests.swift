@@ -17,6 +17,7 @@ class TransportTypeTests: XCTestCase {
             Example("movable bridge", .movableBridge),
             Example("unaccessible", .inaccessible),
             Example("walking", .walking),
+            Example("pushing bike", .walking),
             Example("cycling", .cycling),
             Example("train", .train)
         ]
