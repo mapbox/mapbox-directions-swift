@@ -27,7 +27,7 @@ class TransportTypeTests: XCTestCase {
     }
 
     private func jsonData(type: String) -> Data {
-        """
+        return """
         {
             "wrapped": "\(type)"
         }
