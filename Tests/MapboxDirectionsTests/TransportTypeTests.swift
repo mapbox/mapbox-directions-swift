@@ -1,11 +1,3 @@
-//
-//  TransportTypeTests.swift
-//  MapboxDirections
-//
-//  Created by Sebastian Osiński on 25/02/2020.
-//  Copyright © 2020 Mapbox. All rights reserved.
-//
-
 import XCTest
 @testable import MapboxDirections
 
