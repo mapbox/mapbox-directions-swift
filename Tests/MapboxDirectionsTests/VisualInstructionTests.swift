@@ -96,12 +96,16 @@ class VisualInstructionsTests: XCTestCase {
         options.distanceMeasurementSystem = .imperial
         options.includesVisualInstructions = true
         var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, disposition) in
             
-            response = resp
+            switch disposition {
+            case let .failure(error)
+                XCTFail("Error! \(error)")
+            case let .success(resp):
+                response = resp
+                expectation.fulfill()
+            }
             
-            expectation.fulfill()
         }
         XCTAssertNotNil(task)
         

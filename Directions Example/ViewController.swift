@@ -70,45 +70,49 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         options.routeShapeResolution = .full
         options.attributeOptions = [.congestionLevel, .maximumSpeedLimit]
         
-        Directions.shared.calculate(options) { (response, error) in
-            if let error = error {
+        Directions.shared.calculate(options) { (session, result) in
+            
+            switch (result) {
+            case let .failure(error):
                 print("Error calculating directions: \(error)")
                 return
-            }
-            
-            if let route = response.routes?.first, let leg = route.legs.first {
-                print("Route via \(leg):")
-                
-                let distanceFormatter = LengthFormatter()
-                let formattedDistance = distanceFormatter.string(fromMeters: route.distance)
-                
-                let travelTimeFormatter = DateComponentsFormatter()
-                travelTimeFormatter.unitsStyle = .short
-                let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
-                
-                print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
-                
-                for step in leg.steps {
-                    let direction = step.maneuverDirection?.rawValue ?? "none"
-                    print("\(step.instructions) [\(step.maneuverType) \(direction)]")
-                    if step.distance > 0 {
-                        let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
-                        print("— \(step.transportType) for \(formattedDistance) —")
+            case let .success(response):
+                if let route = response.routes?.first, let leg = route.legs.first {
+                    print("Route via \(leg):")
+                    
+                    let distanceFormatter = LengthFormatter()
+                    let formattedDistance = distanceFormatter.string(fromMeters: route.distance)
+                    
+                    let travelTimeFormatter = DateComponentsFormatter()
+                    travelTimeFormatter.unitsStyle = .short
+                    let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
+                    
+                    print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+                    
+                    for step in leg.steps {
+                        let direction = step.maneuverDirection?.rawValue ?? "none"
+                        print("\(step.instructions) [\(step.maneuverType) \(direction)]")
+                        if step.distance > 0 {
+                            let formattedDistance = distanceFormatter.string(fromMeters: step.distance)
+                            print("— \(step.transportType) for \(formattedDistance) —")
+                        }
+                    }
+                    
+                    if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
+                        // Convert the route’s coordinates into a polyline.
+                        let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: UInt(routeCoordinates.count))
+
+                        // Add the polyline to the map.
+                        self.mapView.addAnnotation(routeLine)
+                        
+                        // Fit the viewport to the polyline.
+                        let camera = self.mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
+                        self.mapView.setCamera(camera, animated: true)
                     }
                 }
-                
-                if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
-                    // Convert the route’s coordinates into a polyline.
-                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: UInt(routeCoordinates.count))
-
-                    // Add the polyline to the map.
-                    self.mapView.addAnnotation(routeLine)
-                    
-                    // Fit the viewport to the polyline.
-                    let camera = self.mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
-                    self.mapView.setCamera(camera, animated: true)
-                }
             }
+            
+            
         }
     }
     
@@ -144,8 +148,10 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
     func makeMatchRequest(locations: [CLLocationCoordinate2D]) {
         let matchOptions = MatchOptions(coordinates: locations)
 
-        Directions.shared.calculate(matchOptions) { (response, error) in
-            if let error = error {
+        Directions.shared.calculate(matchOptions) { (session, result) in
+            
+            switch result {
+            case let .failure(error):
                 let errorString = """
                 ⚠️ Error Enountered. ⚠️
                 Failure Reason: \(error.failureReason ?? "")
@@ -155,19 +161,19 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                 """
                 print(errorString)
                 return
+            case let .success(response):
+                guard let matches = response.matches, let match = matches.first else { return }
+                if let annotations = self.mapView.annotations {
+                    self.mapView.removeAnnotations(annotations)
+                }
+                
+                var routeCoordinates = match.shape!.coordinates
+                let coordCount = UInt(routeCoordinates.count)
+                let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
+                self.mapView.addAnnotation(routeLine)
+                self.drawingView?.reset()
             }
-            
-            guard let matches = response.matches, let match = matches.first else { return }
-            
-            if let annotations = self.mapView.annotations {
-                self.mapView.removeAnnotations(annotations)
-            }
-            
-            var routeCoordinates = match.shape!.coordinates
-            let coordCount = UInt(routeCoordinates.count)
-            let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: coordCount)
-            self.mapView.addAnnotation(routeLine)
-            self.drawingView?.reset()
+
         }
     }
 }

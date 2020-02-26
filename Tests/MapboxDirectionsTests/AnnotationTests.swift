@@ -38,14 +38,19 @@ class AnnotationTests: XCTestCase {
         options.routeShapeResolution = .full
         options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .maximumSpeedLimit]
         var route: Route?
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (response, error) in
-            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, disposition) in
             
-            XCTAssertNotNil(response.routes)
-            XCTAssertEqual(response.routes!.count, 1)
-            route = response.routes!.first!
-            
-            expectation.fulfill()
+            switch disposition {
+            case let .failure(error):
+                XCTFail("Error! \(error)")
+            case let .success(response):
+                XCTAssertNotNil(response.routes)
+                XCTAssertEqual(response.routes!.count, 1)
+                route = response.routes!.first!
+                
+                expectation.fulfill()
+            }
+
         }
         XCTAssertNotNil(task)
         
