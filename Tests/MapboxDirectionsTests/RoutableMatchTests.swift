@@ -35,12 +35,16 @@ class RoutableMatchTest: XCTestCase {
             waypoint.separatesLegs = false
         }
         
-        let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (response, error) in
-            XCTAssertNil(error, "Error: \(error!)")
+        let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (session, result) in
             
-            routeResponse = response
-            
-            expectation.fulfill()
+            switch (result) {
+            case let .failure(error):
+                XCTFail("Error: \(error)")
+            case let .success(response):
+                routeResponse = response
+                expectation.fulfill()
+            }
+                        
         }
         XCTAssertNotNil(task)
         

@@ -91,11 +91,15 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (response, error) in
-            expectation.fulfill()
-            XCTAssertNil(response.routes, "Unexpected route response")
-            XCTAssertNotNil(error, "No error returned")
+        directions.calculate(opts, completionHandler: { (session, result) in
+
+            guard case let .failure(error) = result else {
+                XCTFail("Expecting error, none returned.")
+                return
+            }
+            
             XCTAssertEqual(error, .requestTooLarge)
+            expectation.fulfill()
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -113,16 +117,19 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (response, error) in
+        directions.calculate(opts, completionHandler: { (session, result) in
             expectation.fulfill()
-            XCTAssertNil(response.routes, "Unexpected route response")
-            XCTAssertNotNil(error, "No error returned")
-            switch error {
-            case .invalidResponse?:
-            break // pass
-            default:
-                XCTFail("Wrong type of error.")
+            
+            guard case let .failure(error) = result else {
+                XCTFail("Expecting an error, none returned. \(result)")
+                return
             }
+            
+            guard case .invalidResponse(_) = error else {
+                XCTFail("Wrong error type returned.")
+                return
+            }
+                        
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -157,20 +164,20 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (response, error) in
+        directions.calculate(opts, completionHandler: { (session, result) in
             expectation.fulfill()
-            XCTAssertNil(response.routes, "Unexpected route response")
             
-            guard let error = error else {
-                XCTFail("Missing 'no connection' error.")
+            guard case let .failure(error) = result else {
+                XCTFail("Error expected, none returned. \(result)")
                 return
             }
             
-            if case DirectionsError.network(let urlError) = error {
-                XCTAssertEqual(urlError, notConnected)
-            } else {
-                XCTFail("correct error not found")
+            guard case let .network(err) = error else {
+                XCTFail("Wrong error type returned. \(error)")
+                return
             }
+            
+            XCTAssertEqual(err, notConnected)
         })
         wait(for: [expectation], timeout: 2.0)
     }
