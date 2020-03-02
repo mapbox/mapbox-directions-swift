@@ -60,9 +60,6 @@ open class Directions: NSObject {
     
     public typealias MapMatchingError = (response: MapMatchingResponse, error: DirectionsError)
     
-//    public typealias RouteError: Error = (result: RouteResponse, error: DirectionsError)
-//    public typealias MapMatchingError: Error = (result: MapMatchingResponse, error: DirectionsError)
-    
     public typealias DirectionsSession = (options: DirectionsOptions, credentials: DirectionsCredentials)
     
     /**
