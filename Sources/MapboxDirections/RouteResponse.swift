@@ -9,7 +9,7 @@ public struct RouteResponse {
     public let httpResponse: HTTPURLResponse?
     
     public let identifier: String?
-    public let routes: [Route]?
+    public var routes: [Route]?    
     public let waypoints: [Waypoint]?
     
     public let options: ResponseOptions
