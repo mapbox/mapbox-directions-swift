@@ -60,7 +60,7 @@ open class Directions: NSObject {
     
     public typealias MapMatchingError = (response: MapMatchingResponse, error: DirectionsError)
     
-    public typealias DirectionsSession = (options: DirectionsOptions, credentials: DirectionsCredentials)
+    public typealias Session = (options: DirectionsOptions, credentials: DirectionsCredentials)
     
     /**
      A closure (block) to be called when a directions request is complete.
@@ -69,7 +69,7 @@ open class Directions: NSObject {
      
      - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
      */
-    public typealias RouteCompletionHandler = (_ session: DirectionsSession, _ result: Result<RouteResponse, DirectionsError>) -> Void
+    public typealias RouteCompletionHandler = (_ session: Session, _ result: Result<RouteResponse, DirectionsError>) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
@@ -78,7 +78,7 @@ open class Directions: NSObject {
 
      - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
      */
-    public typealias MatchCompletionHandler = (_ session: DirectionsSession, _ result: Result<MapMatchingResponse, DirectionsError>) -> Void
+    public typealias MatchCompletionHandler = (_ session: Session, _ result: Result<MapMatchingResponse, DirectionsError>) -> Void
     
     // MARK: Creating a Directions Object
     
