@@ -72,7 +72,12 @@ open class RouteOptions: DirectionsOptions {
         try super.init(from: decoder)
     }
     
-    internal convenience init(matchOptions: MatchOptions) {
+    /**
+     Initializes an equivalent route options object from a match options object. Desirable for building a navigation experience from map matching.
+
+     - parameter matchOptions: The `MatchOptions` that is being used to convert to a `RouteOptions` object.
+     */
+    public convenience init(matchOptions: MatchOptions) {
         self.init(waypoints: matchOptions.waypoints, profileIdentifier: matchOptions.profileIdentifier)
         self.includesSteps = matchOptions.includesSteps
         self.shapeFormat = matchOptions.shapeFormat
