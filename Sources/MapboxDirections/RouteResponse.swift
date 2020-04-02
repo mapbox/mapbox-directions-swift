@@ -49,18 +49,21 @@ extension RouteResponse: Codable {
         let encoder = JSONEncoder()
         
         decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = credentials
         
-        let routes: [Route]? = try response.matches?.compactMap({ (match) -> Route? in
-            let json = try encoder.encode(match)
-            let route = try decoder.decode(Route.self, from: json)
-            return route
-        })
-                
-        let waypoints: [Waypoint]? = try response.tracepoints?.compactMap({ (trace) -> Waypoint? in
-            let json = try encoder.encode(trace)
-            let waypoint = try decoder.decode(Waypoint.self, from: json)
-            return waypoint
-        })
+        var routes: [Route]?
+        
+        if let matches = response.matches {
+            let matchesData = try encoder.encode(matches)
+            routes = try decoder.decode([Route].self, from: matchesData)
+        }
+        
+        var waypoints: [Waypoint]?
+        
+        if let tracepoints = response.tracepoints {
+            let tracepointsData = try encoder.encode(tracepoints)
+            waypoints = try decoder.decode([Waypoint].self, from: tracepointsData)
+        }
     
         self.init(httpResponse: response.httpResponse, identifier: nil, routes: routes, waypoints: waypoints, options: .match(options), credentials: credentials)
     }
