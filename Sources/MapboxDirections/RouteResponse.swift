@@ -61,7 +61,8 @@ extension RouteResponse: Codable {
         var waypoints: [Waypoint]?
         
         if let tracepoints = response.tracepoints {
-            let tracepointsData = try encoder.encode(tracepoints)
+            let filtered = tracepoints.compactMap { $0 }
+            let tracepointsData = try encoder.encode(filtered)
             waypoints = try decoder.decode([Waypoint].self, from: tracepointsData)
         }
     
