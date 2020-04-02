@@ -57,9 +57,7 @@ let userAgent: String = {
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
 open class Directions: NSObject {
-    
-    public typealias MapMatchingError = (response: MapMatchingResponse, error: DirectionsError)
-    
+        
     public typealias Session = (options: DirectionsOptions, credentials: DirectionsCredentials)
     
     /**
