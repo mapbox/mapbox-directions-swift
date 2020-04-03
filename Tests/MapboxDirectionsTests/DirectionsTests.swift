@@ -118,7 +118,7 @@ class DirectionsTests: XCTestCase {
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
         directions.calculate(opts, completionHandler: { (session, result) in
-            expectation.fulfill()
+            defer { expectation.fulfill() }
             
             guard case let .failure(error) = result else {
                 XCTFail("Expecting an error, none returned. \(result)")
@@ -165,7 +165,7 @@ class DirectionsTests: XCTestCase {
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
         directions.calculate(opts, completionHandler: { (session, result) in
-            expectation.fulfill()
+            defer { expectation.fulfill() }
             
             guard case let .failure(error) = result else {
                 XCTFail("Error expected, none returned. \(result)")
