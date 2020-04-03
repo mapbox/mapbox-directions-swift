@@ -77,6 +77,9 @@
 		43D6617123DBA58E0062BFFE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		43D6617223DBA58E0062BFFE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		43D6617323DBA58E0062BFFE /* (null) in Sources */ = {isa = PBXBuildFile; };
+		43D992FD2437B93E008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
+		43D992FE2437B93F008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
+		43D992FF2437B940008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
 		43EBD3AD23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
 		43EBD3AE23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
 		43EBD3AF23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
@@ -365,6 +368,7 @@
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
 		4392557523440EC2006EEE88 /* DirectionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsError.swift; sourceTree = "<group>"; };
+		43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsTests.swift; sourceTree = "<group>"; };
 		43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsCredentials.swift; sourceTree = "<group>"; };
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
@@ -663,6 +667,7 @@
 			children = (
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
+				43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */,
 				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
 				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
 				43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */,
@@ -1243,6 +1248,7 @@
 			files = (
 				DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				DAE2DF6D23AED2280065057A /* RouteTests.swift in Sources */,
+				43D992FE2437B93F008A2D74 /* CredentialsTests.swift in Sources */,
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				4376A52823FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
@@ -1320,6 +1326,7 @@
 			files = (
 				DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				DAE2DF6E23AED2280065057A /* RouteTests.swift in Sources */,
+				43D992FF2437B940008A2D74 /* CredentialsTests.swift in Sources */,
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				4376A52923FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
@@ -1444,6 +1451,7 @@
 			files = (
 				DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */,
 				DAE2DF6C23AED2280065057A /* RouteTests.swift in Sources */,
+				43D992FD2437B93E008A2D74 /* CredentialsTests.swift in Sources */,
 				35DBF014217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				4376A52723FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
