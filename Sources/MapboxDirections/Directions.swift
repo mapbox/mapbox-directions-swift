@@ -57,24 +57,31 @@ let userAgent: String = {
  Each result produced by the directions object is stored in a `Route` object. Depending on the `RouteOptions` object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.
  */
 open class Directions: NSObject {
-        
+    
+    /**
+     A tuple type representing the direction session that was generated from the request.
+     
+     - parameter options: A `DirectionsOptions ` object representing the request parameter options.
+     
+     - parameter credentials: A object containing the credentials used to make the request.
+     */
     public typealias Session = (options: DirectionsOptions, credentials: DirectionsCredentials)
     
     /**
      A closure (block) to be called when a directions request is complete.
      
-     - parameter response: A `RouteResponse` object that contains the entire payload of the Directions API solution. See `RouteResponse.swift` for more information.
+     - parameter session: A `Directions.Session` object containing session information
      
-     - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
+     - parameter  result: A `Result` enum that represents the `RouteResponse` if the request returned successfully, or the error if it did not.
      */
     public typealias RouteCompletionHandler = (_ session: Session, _ result: Result<RouteResponse, DirectionsError>) -> Void
     
     /**
      A closure (block) to be called when a map matching request is complete.
      
-     - parameter response: A `MapMatchingResponse` object that contains the entire payload of the Directions Map Matching API solution. See `MapMatchingResponse.swift` for more information.
-
-     - parameter error: The error that occurred, or `nil` if the solution was obtained successfully.
+     - parameter session: A `Directions.Session` object containing session information
+     
+     - parameter  result: A `Result` enum that represents the `MapMatchingResponse` if the request returned successfully, or the error if it did not.
      */
     public typealias MatchCompletionHandler = (_ session: Session, _ result: Result<MapMatchingResponse, DirectionsError>) -> Void
     
