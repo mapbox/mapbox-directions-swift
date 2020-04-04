@@ -7,48 +7,6 @@ import Turf
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can use `JSONDecoder` to convert the HTTP response into a `RouteResponse` or `MapMatchingResponse` object and access the `RouteResponse.routes` or `MapMatchingResponse.routes` property.
  */
 open class Route: DirectionsResult {
-    private enum CodingKeys: String, CodingKey {
-        case routeOptions
-    }
-    
-    /**
-     Initializes a route.
-     
-     Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
-     
-     - parameter legs: The legs that are traversed in order.
-     - parameter shape: The roads or paths taken as a contiguous polyline.
-     - parameter distance: The route’s distance, measured in meters.
-     - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
-     - parameter options: The criteria for producing a route with these parameters.
-     */
-    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, options: RouteOptions) {
-        routeOptions = options
-        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime, options: options)
-    }
-    
-    /**
-     Creates a route from a decoder.
-     
-     - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `RouteOptions` or `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
-     - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Route` object.
-     */
-    public required init(from decoder: Decoder) throws {
-        if let matchOptions = decoder.userInfo[.options] as? MatchOptions {
-            routeOptions = RouteOptions(matchOptions: matchOptions)
-        } else if let routeOptions = decoder.userInfo[.options] as? RouteOptions {
-            self.routeOptions = routeOptions
-        } else {
-            throw DirectionsCodingError.missingOptions
-        }
-
-        try super.init(from: decoder)
-    }
-    
-    public override var directionsOptions: DirectionsOptions {
-        return routeOptions as DirectionsOptions
-    }
-    public var routeOptions: RouteOptions
 }
 
 extension Route: Equatable {

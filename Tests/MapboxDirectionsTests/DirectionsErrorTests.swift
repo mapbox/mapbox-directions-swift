@@ -4,7 +4,7 @@ import XCTest
 class DirectionsErrorTests: XCTestCase {
     func testFailureReasons() {
         XCTAssertNotNil(DirectionsError.noData.failureReason)
-        XCTAssertNotNil(DirectionsError.invalidResponse.failureReason)
+        XCTAssertNotNil(DirectionsError.invalidResponse(nil).failureReason)
         XCTAssertNotNil(DirectionsError.unableToRoute.failureReason)
         XCTAssertNotNil(DirectionsError.noMatches.failureReason)
         XCTAssertNotNil(DirectionsError.tooManyCoordinates.failureReason)
@@ -19,7 +19,7 @@ class DirectionsErrorTests: XCTestCase {
     
     func testRecoverySuggestions() {
         XCTAssertNil(DirectionsError.noData.recoverySuggestion)
-        XCTAssertNil(DirectionsError.invalidResponse.recoverySuggestion)
+        XCTAssertNil(DirectionsError.invalidResponse(nil).recoverySuggestion)
         XCTAssertNotNil(DirectionsError.unableToRoute.recoverySuggestion)
         XCTAssertNotNil(DirectionsError.noMatches.recoverySuggestion)
         XCTAssertNotNil(DirectionsError.tooManyCoordinates.recoverySuggestion)
@@ -41,7 +41,9 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertEqual(DirectionsError.invalidInput(message: nil), .invalidInput(message: nil))
         XCTAssertNotEqual(DirectionsError.invalidInput(message: nil), .invalidInput(message: ""))
         
-        XCTAssertEqual(DirectionsError.invalidResponse, .invalidResponse)
+        XCTAssertEqual(DirectionsError.invalidResponse(nil), .invalidResponse(nil))
+        XCTAssertNotEqual(DirectionsError.invalidResponse(nil), .invalidResponse(HTTPURLResponse()))
+        
         XCTAssertEqual(DirectionsError.unableToRoute, .unableToRoute)
         XCTAssertEqual(DirectionsError.noMatches, .noMatches)
         XCTAssertEqual(DirectionsError.tooManyCoordinates, .tooManyCoordinates)
@@ -73,7 +75,7 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertNotEqual(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil),
                           .unknown(response: nil, underlying: nil, code: nil, message: ""))
         
-        XCTAssertNotEqual(DirectionsError.noData, .invalidResponse)
+        XCTAssertNotEqual(DirectionsError.noData, .invalidResponse(nil))
         XCTAssertNotEqual(DirectionsError.noData, .unableToRoute)
         XCTAssertNotEqual(DirectionsError.noData, .noMatches)
         XCTAssertNotEqual(DirectionsError.noData, .tooManyCoordinates)

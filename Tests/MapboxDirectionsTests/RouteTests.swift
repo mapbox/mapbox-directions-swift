@@ -36,7 +36,7 @@ class RouteTests: XCTestCase {
         let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, profileIdentifier: .automobileAvoidingTraffic)
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
-        let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, options: options)
+        let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4)
         XCTAssertEqual(route, expectedRoute)
         
         if let route = route {

@@ -4,17 +4,54 @@ import Foundation
  An error that occurs when calculating directions.
  */
 public enum DirectionsError: LocalizedError {
+    
+    public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) {
+        if let response = response as? HTTPURLResponse {
+            switch (response.statusCode, code ?? "") {
+            case (200, "NoRoute"):
+                self = .unableToRoute
+            case (200, "NoSegment"):
+                self = .unableToLocate
+            case (200, "NoMatch"):
+                self = .noMatches
+            case (422, "TooManyCoordinates"):
+                self = .tooManyCoordinates
+            case (404, "ProfileNotFound"):
+                self = .profileNotFound
+                
+            case (413, _):
+                self = .requestTooLarge
+            case (422, "InvalidInput"):
+                self = .invalidInput(message: message)
+            case (429, _):
+                self = .rateLimited(rateLimitInterval: response.rateLimitInterval, rateLimit: response.rateLimit, resetTime: response.rateLimitResetTime)
+            default:
+                self = .unknown(response: response, underlying: error, code: code, message: message)
+            }
+        } else {
+            self = .unknown(response: response, underlying: error, code: code, message: message)            
+        }
+    }
+
+    /**
+     There is no network connection available to perform the network request.
+     */
+    case network(_: URLError)
+    
     /**
      The server returned an empty response.
      */
     case noData
     
+    /**
+    The API recieved input that it didn't understand.
+     */
     case invalidInput(message: String?)
     
     /**
      The server returned a response that isn’t correctly formatted.
      */
-    case invalidResponse
+    case invalidResponse(_: URLResponse?)
     
     /**
      No route could be found between the specified locations.
@@ -65,15 +102,22 @@ public enum DirectionsError: LocalizedError {
      */
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
+    
+    /**
+     Unknown error case. Look at associated values for more details.
+     */
+    
     case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
     
     public var failureReason: String? {
         switch self {
+        case .network(_):
+            return "The client does not have a network connection to the server."
         case .noData:
             return "The server returned an empty response."
         case let .invalidInput(message):
             return message
-        case .invalidResponse:
+        case .invalidResponse(_):
             return "The server returned a response that isn’t correctly formatted."
         case .unableToRoute:
             return "No route could be found between the specified locations."
@@ -105,7 +149,7 @@ public enum DirectionsError: LocalizedError {
     
     public var recoverySuggestion: String? {
         switch self {
-        case .noData, .invalidInput, .invalidResponse:
+        case .network(_), .noData, .invalidInput, .invalidResponse:
             return nil
         case .unableToRoute:
             return "Make sure it is possible to travel between the locations with the mode of transportation implied by the profileIdentifier option. For example, it is impossible to travel by car from one continent to another without either a land bridge or a ferry connection."
@@ -135,7 +179,6 @@ extension DirectionsError: Equatable {
     public static func == (lhs: DirectionsError, rhs: DirectionsError) -> Bool {
         switch (lhs, rhs) {
         case (.noData, .noData),
-             (.invalidResponse, .invalidResponse),
              (.unableToRoute, .unableToRoute),
              (.noMatches, .noMatches),
              (.tooManyCoordinates, .tooManyCoordinates),
@@ -143,6 +186,10 @@ extension DirectionsError: Equatable {
              (.profileNotFound, .profileNotFound),
              (.requestTooLarge, .requestTooLarge):
             return true
+        case let (.network(lhsError), .network(rhsError)):
+            return lhsError == rhsError
+        case let (.invalidResponse(lhsResponse), .invalidResponse(rhsResponse)):
+            return lhsResponse == rhsResponse
         case let (.invalidInput(lhsMessage), .invalidInput(rhsMessage)):
             return lhsMessage == rhsMessage
         case (.rateLimited(let lhsRateLimitInterval, let lhsRateLimit, let lhsResetTime),
@@ -157,17 +204,7 @@ extension DirectionsError: Equatable {
                 && lhsUnderlying?.localizedDescription == rhsUnderlying?.localizedDescription
                 && lhsCode == rhsCode
                 && lhsMessage == rhsMessage
-        case (.noData, _),
-             (.invalidResponse, _),
-             (.unableToRoute, _),
-             (.noMatches, _),
-             (.tooManyCoordinates, _),
-             (.unableToLocate, _),
-             (.profileNotFound, _),
-             (.requestTooLarge, _),
-             (.invalidInput, _),
-             (.rateLimited, _),
-             (.unknown, _):
+        default:
             return false
         }
     }
@@ -181,4 +218,10 @@ public enum DirectionsCodingError: Error {
      Decoding this type requires the `Decoder.userInfo` dictionary to contain the `CodingUserInfoKey.options` key.
      */
     case missingOptions
+    
+    
+    /**
+     Decoding this type requires the `Decoder.userInfo` dictionary to contain the `CodingUserInfoKey.credentials` key.
+     */
+    case missingCredentials
 }

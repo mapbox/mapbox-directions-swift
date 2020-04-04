@@ -30,15 +30,15 @@ class MatchTests: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var match: Match!
+        var response: MapMatchingResponse!
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(accessToken: BogusToken).calculate(matchOptions) { (matches, error) in
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!)")
             
-            match = matches!.first!
+            response = resp
             
             expectation.fulfill()
         }
@@ -49,29 +49,28 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
-        let opts = match.matchOptions
+        let match = response.matches!.first!
+        let opts = response.options
         XCTAssert(matchOptions == opts)
         
         XCTAssertNotNil(match)
         XCTAssertNotNil(match.shape)
         XCTAssertEqual(match.shape!.coordinates.count, 18)
-        XCTAssertEqual(match.accessToken, BogusToken)
-        XCTAssertEqual(match.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(match.routeIdentifier, nil)
         
-        let tracePoints = match.tracepoints
+        let tracePoints = response.tracepoints
         XCTAssertNotNil(tracePoints)
-        XCTAssertEqual(tracePoints.first!!.countOfAlternatives, 0)
-        XCTAssertEqual(tracePoints.last!!.name, "West G Street")
+        XCTAssertEqual(tracePoints!.first!!.countOfAlternatives, 0)
+        XCTAssertEqual(tracePoints!.last!!.name, "West G Street")
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(match!.shape!.coordinates.first!.latitude), 33)
-        XCTAssertEqual(round(match!.shape!.coordinates.first!.longitude), -117)
-        XCTAssertEqual(match!.legs.count, 6)
-        XCTAssertEqual(match!.confidence, 0.95, accuracy: 1e-2)
+        XCTAssertEqual(round(match.shape!.coordinates.first!.latitude), 33)
+        XCTAssertEqual(round(match.shape!.coordinates.first!.longitude), -117)
+        XCTAssertEqual(match.legs.count, 6)
+        XCTAssertEqual(match.confidence, 0.95, accuracy: 1e-2)
 
-        let leg = match!.legs.first!
+        let leg = match.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
         XCTAssertEqual(leg.steps.count, 2)
 
@@ -116,14 +115,14 @@ class MatchTests: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var match: Match!
+        var response: MapMatchingResponse!
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(accessToken: BogusToken).calculate(matchOptions) { (matches, error) in
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (resp, error) in
             XCTAssertNil(error, "Error: \(error!)")
-            match = matches!.first!
+            response = resp
             expectation.fulfill()
         }
         XCTAssertNotNil(task)
@@ -133,8 +132,9 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
         
+        let match = response.matches!.first!
         XCTAssertNotNil(match)
-        let tracepoints = match.tracepoints
+        let tracepoints = response.tracepoints!
         XCTAssertEqual(tracepoints.count, 7)
         XCTAssertEqual(tracepoints.first!, nil)
         
@@ -149,8 +149,6 @@ class MatchTests: XCTestCase {
         let unarchivedMatch = try! decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
         
         XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
-        XCTAssertEqual(match.matchOptions, unarchivedMatch.matchOptions)
-        XCTAssertEqual(match.tracepoints, unarchivedMatch.tracepoints)
     }
     #endif
     
