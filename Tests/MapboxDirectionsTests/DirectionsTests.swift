@@ -42,7 +42,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://api.mapbox.com")
     }
     
-    let maximumCoordinateCount = 795
+    let maximumCoordinateCount = 796
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength

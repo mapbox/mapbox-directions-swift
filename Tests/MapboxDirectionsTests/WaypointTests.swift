@@ -21,7 +21,7 @@ class WaypointTests: XCTestCase {
 
             XCTAssertNil(waypoint.heading)
             XCTAssertNil(waypoint.headingAccuracy)
-            XCTAssertFalse(waypoint.allowsArrivingOnOppositeSide)
+            XCTAssertTrue(waypoint.allowsArrivingOnOppositeSide)
             XCTAssertTrue(waypoint.separatesLegs)
         }
         
@@ -66,7 +66,7 @@ class WaypointTests: XCTestCase {
     
     func testSeparatesLegs() {
         let one = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1))
-        var two = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 2))
+        let two = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 2))
         let three = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 3, longitude: 3))
         let four = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 4, longitude: 4))
         
@@ -76,12 +76,12 @@ class WaypointTests: XCTestCase {
         XCTAssertNil(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         XCTAssertNil(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         
-        two.separatesLegs = false
+        routeOptions.waypoints[1].separatesLegs = false
+        matchOptions.waypoints[1].separatesLegs = false
         
         XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         
-        two.separatesLegs = true
         matchOptions.waypointIndices = [0, 2, 3]
         
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
