@@ -48,12 +48,15 @@ class V5Tests: XCTestCase {
         options.locale = Locale(identifier: "en_US")
         options.includesExitRoundaboutManeuver = true
         var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!)")
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
             
-            response = resp
-            
-            expectation.fulfill()
+            switch result {
+            case let .failure(error):
+                XCTFail("Error: \(error)")
+            case let .success(resp):
+                response = resp
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         
@@ -246,9 +249,11 @@ class V5Tests: XCTestCase {
         options.includesExitRoundaboutManeuver = true
         
         var route: Route?
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (response, error) in
-            XCTAssertNil(error, "Error: \(error!)")
-            
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+            guard case let .success(response) = result else {
+                XCTFail("Encountered unexpected error. \(result)")
+                return
+            }
             XCTAssertEqual(response.waypoints?.count, 3)
             
             XCTAssertNotNil(response.routes)

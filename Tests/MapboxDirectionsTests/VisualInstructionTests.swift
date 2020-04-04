@@ -96,12 +96,16 @@ class VisualInstructionsTests: XCTestCase {
         options.distanceMeasurementSystem = .imperial
         options.includesVisualInstructions = true
         var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
             
-            response = resp
+            switch result {
+            case let .failure(error):
+                XCTFail("Error! \(error)")
+            case let .success(resp):
+                response = resp
+                expectation.fulfill()
+            }
             
-            expectation.fulfill()
         }
         XCTAssertNotNil(task)
         
@@ -189,12 +193,14 @@ class VisualInstructionsTests: XCTestCase {
         options.includesVisualInstructions = true
         
         var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
-            
-            response = resp
-            
-            expectation.fulfill()
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+             switch result {
+            case let .failure(error):
+                XCTFail("Error! \(error)")
+            case let .success(resp):
+                response = resp
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         
@@ -262,8 +268,12 @@ class VisualInstructionsTests: XCTestCase {
         options.includesVisualInstructions = true
         
         var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!.localizedDescription)")
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+            
+            guard case let .success(resp) = result else {
+                XCTFail("Encountered unexpected error. \(result)")
+                return
+            }
             
             response = resp
             

@@ -35,9 +35,13 @@ class MatchTests: XCTestCase {
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!)")
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (session, result) in
             
+            guard case let .success(resp) = result else {
+                XCTFail("Encountered unexpected error. \(result)")
+                return
+            }
+                    
             response = resp
             
             expectation.fulfill()
@@ -120,8 +124,12 @@ class MatchTests: XCTestCase {
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (resp, error) in
-            XCTAssertNil(error, "Error: \(error!)")
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (session, result) in
+            guard case let .success(resp) = result else {
+                XCTFail("Encountered unexpected error. \(result)")
+                return
+            }
+            
             response = resp
             expectation.fulfill()
         }

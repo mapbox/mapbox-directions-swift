@@ -31,11 +31,11 @@ public struct DirectionsCredentials: Equatable {
      - parameter accessToken: Optional. An access token to provide. If this value is nil, the SDK will attempt to find a token from your app's `info.plist`.
      - parameter host: Optional. A parameter to pass a custom host. If `nil` is provided, the SDK will attempt to find a host from your app's `info.plist`, and barring that will default to  `https://api.mapbox.com`.
      */
-    public init(accessToken: String? = nil, host: URL? = nil) {
-        self.accessToken = accessToken ?? defaultAccessToken
+    public init(accessToken token: String? = nil, host: URL? = nil) {
+        let accessToken = token ?? defaultAccessToken
         
         precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
-        
+        self.accessToken = accessToken
         if let host = host {
             self.host = host
         } else if let defaultHostString = defaultApiEndPointURLString, let defaultHost = URL(string: defaultHostString) {
