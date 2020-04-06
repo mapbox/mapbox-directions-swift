@@ -32,12 +32,11 @@ extension RouteResponse: Codable {
         if let decodedWaypoints = decodedWaypoints, let options = decoder.userInfo[.options] as? DirectionsOptions {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
             waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Route.Waypoint in
-                let (decodedWaypoint, waypointInOptions) = pair
-                var waypoint = decodedWaypoint
-                if waypointInOptions.separatesLegs, let name = waypointInOptions.name?.nonEmptyString {
-                    waypoint.name = name
+                var (decodedWaypoint, waypointInOptions) = pair
+                if /*waypointInOptions.separatesLegs, */let name = waypointInOptions.name?.nonEmptyString {
+                    decodedWaypoint.name = name
                 }
-                return waypoint
+                return decodedWaypoint
             }
         } else {
             waypoints = decodedWaypoints
@@ -45,12 +44,31 @@ extension RouteResponse: Codable {
         
         if let routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
             // Postprocess each route.
+            var legSeparators = waypoints?.compactMap { $0 }
+            if let options = decoder.userInfo[.options] as? DirectionsOptions, let waypoints = waypoints {
+                // select first, last and all other waypoints which separate legs.
+                var optionsLegSeparators = options.legSeparators
+                legSeparators = zip(waypoints, options.waypoints).compactMap { (pair) -> Route.Waypoint? in
+                    let (decodedWaypoint, waypointInOptions) = pair
+                    if decodedWaypoint == waypoints.last! ||
+                        decodedWaypoint == waypoints.first! {
+                        return decodedWaypoint
+                    }
+                    
+                    guard let index = optionsLegSeparators.firstIndex(of: waypointInOptions) else {
+                        return nil
+                    }
+                    optionsLegSeparators.remove(at: index)
+                    return decodedWaypoint
+                }
+            }
+            
             for route in routes {
                 route.routeIdentifier = uuid
                 // Imbue each route’s legs with the waypoints refined above.
                 // TODO: Filter these waypoints by whether they separate legs, based on the options, if given.
-                if let waypoints = waypoints {
-                    route.legSeparators = waypoints
+                if let legSeparators = legSeparators {
+                    route.legSeparators = legSeparators//waypoints
                 }
             }
             self.routes = routes

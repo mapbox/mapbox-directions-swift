@@ -2,6 +2,8 @@ import XCTest
 import CoreLocation
 @testable import MapboxDirections
 
+// TODO: make more tests for all new "Waypoints"
+
 class WaypointTests: XCTestCase {
     func testCoding() {
         let waypointJSON: [String: Any?] = [
