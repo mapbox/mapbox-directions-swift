@@ -32,9 +32,9 @@ extension Directions: OfflineDirectionsProtocol {
      The URL to a list of available versions.
      */
     public var availableVersionsURL: URL {
-        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent("versions")
+        let url = credentials.host.appendingPathComponent("route-tiles/v1").appendingPathComponent("versions")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        components?.queryItems = [URLQueryItem(name: "access_token", value: accessToken)]
+        components?.queryItems = [URLQueryItem(name: "access_token", value: credentials.accessToken)]
         return components!.url!
     }
     
@@ -46,10 +46,10 @@ extension Directions: OfflineDirectionsProtocol {
      - returns: The URL to generate and download the tile pack that covers the coordinate bounds.
      */
     public func tilesURL(for coordinateBounds: CoordinateBounds, version: OfflineVersion) -> URL {
-        let url = apiEndpoint.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.description)
+        let url = credentials.host.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.description)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
-                                  URLQueryItem(name: "access_token", value: accessToken)]
+                                  URLQueryItem(name: "access_token", value: credentials.accessToken)]
         return components!.url!
     }
 

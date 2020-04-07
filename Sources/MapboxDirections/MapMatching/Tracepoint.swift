@@ -26,6 +26,8 @@ public extension Match {
          Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.
          */
         public var countOfAlternatives: Int
+        
+        public var name: String? // ??? matching response otherwise won't be able to decode waypoints names.
     }
 }
 
@@ -34,6 +36,7 @@ extension Match.Tracepoint: Codable {
         case coordinate = "location"
         case correction = "distance"
         case countOfAlternatives = "alternatives_count"
+        case name
     }
 }
 

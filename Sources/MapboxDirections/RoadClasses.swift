@@ -60,8 +60,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
                 roadClasses.insert(.ferry)
             case "tunnel":
                 roadClasses.insert(.tunnel)
-            case "none":
-                break
+            case "":
+                continue
             default:
                 return nil
             }
@@ -70,10 +70,6 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     }
     
     public var description: String {
-        if isEmpty {
-            return ""
-        }
-        
         var descriptions: [String] = []
         if contains(.toll) {
             descriptions.append("toll")
@@ -97,7 +93,7 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
 extension RoadClasses: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(description.components(separatedBy: ","))
+        try container.encode(description.components(separatedBy: ",").filter { !$0.isEmpty })
     }
 
     public init(from decoder: Decoder) throws {

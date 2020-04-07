@@ -146,7 +146,13 @@ class RouteStepTests: XCTestCase {
     }
     
     func testCoding() {
-        let stepJSON = [
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 52.50881, longitude: 13.42467),
+            CLLocationCoordinate2D(latitude: 52.506794, longitude: 13.42326),
+        ])
+        options.shapeFormat = .polyline
+        
+        var stepJSON = [
             "intersections": [
                 [
                     "out": 1,
@@ -176,22 +182,26 @@ class RouteStepTests: XCTestCase {
             "weight": 59.1,
             "name": "Adalbertstraße",
             "mode": "driving",
+            "speedLimitSign": "vienna",
+            "speedLimitUnit": "km/h",
         ] as [String : Any?]
-        let stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
+        var stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
         var step: RouteStep?
-        XCTAssertNoThrow(step = try JSONDecoder().decode(RouteStep.self, from: stepData))
+        XCTAssertNoThrow(step = try decoder.decode(RouteStep.self, from: stepData))
         XCTAssertNotNil(step)
         
         if let step = step {
-            let options = RouteOptions(coordinates: [
-                CLLocationCoordinate2D(latitude: 0, longitude: 0),
-                CLLocationCoordinate2D(latitude: 1, longitude: 1),
-            ])
-            options.shapeFormat = .polyline
-            
-            let encoder = JSONEncoder()
-            encoder.userInfo[.options] = options
-            var encodedStepData: Data?
+            XCTAssertEqual(step.speedLimitSignStandard, SignStandard.viennaConvention)
+            XCTAssertEqual(step.speedLimitUnit, UnitSpeed.kilometersPerHour)
+        }
+
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        var encodedStepData: Data?
+        if let step = step {
             XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
             XCTAssertNotNil(encodedStepData)
             
@@ -200,12 +210,63 @@ class RouteStepTests: XCTestCase {
                 XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []))
                 XCTAssertNotNil(encodedStepJSON)
 
-                // https://github.com/mapbox/MapboxDirections.swift/issues/125
+                // https://github.com/mapbox/mapbox-directions-swift/issues/125
                 var referenceStepJSON = stepJSON
                 referenceStepJSON.removeValue(forKey: "weight")
                 
                 XCTAssert(JSONSerialization.objectsAreEqual(referenceStepJSON, encodedStepJSON, approximate: true))
             }
+        }
+        
+        options.shapeFormat = .polyline6
+        stepJSON["geometry"] = "sg{ccB{`krXzxBbwAvB?"
+        stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
+        XCTAssertNoThrow(step = try decoder.decode(RouteStep.self, from: stepData))
+        XCTAssertNotNil(step)
+        
+        if let step = step {
+            XCTAssertEqual(step.shape?.coordinates.count, 3)
+            XCTAssertEqual(step.shape?.coordinates.first?.latitude ?? 0, 52.50881, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.first?.longitude ?? 0, 13.42467, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.last?.latitude ?? 0, 52.506794, accuracy: 1e-5)
+            XCTAssertEqual(step.shape?.coordinates.last?.longitude ?? 0, 13.42326, accuracy: 1e-5)
+            
+            XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
+            XCTAssertNotNil(encodedStepData)
+            
+            if let encodedStepData = encodedStepData {
+                var encodedStepJSON: Any?
+                XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []))
+                XCTAssertNotNil(encodedStepJSON)
+
+                // https://github.com/mapbox/mapbox-directions-swift/issues/125
+                var referenceStepJSON = stepJSON
+                referenceStepJSON.removeValue(forKey: "weight")
+                
+                XCTAssert(JSONSerialization.objectsAreEqual(referenceStepJSON, encodedStepJSON, approximate: true))
+            }
+        }
+    }
+    
+    func testEncodingPronunciations() {
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 0, longitude: 0),
+            CLLocationCoordinate2D(latitude: 1, longitude: 1),
+        ])
+        let step = RouteStep(transportType: .automobile, maneuverLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), maneuverType: .turn, maneuverDirection: .left, instructions: "", initialHeading: 0, finalHeading: 0, drivingSide: .right, distance: 10, expectedTravelTime: 10, names: ["iPhone X", "iPhone XS"], phoneticNames: ["ˈaɪˌfoʊ̯n ˈtɛn", "ˈaɪˌfoʊ̯n ˈtɛnz"])
+        
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        var encodedStepData: Data?
+        XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
+        XCTAssertNotNil(encodedStepData)
+        
+        if let encodedStepData = encodedStepData {
+            var encodedStepJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedStepJSON)
+            
+            XCTAssertEqual(encodedStepJSON?["pronunciation"] as? String, "ˈaɪˌfoʊ̯n ˈtɛn; ˈaɪˌfoʊ̯n ˈtɛnz")
         }
     }
 }

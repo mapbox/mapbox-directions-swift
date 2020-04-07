@@ -5,6 +5,7 @@ import CoreLocation
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
+let BogusCredentials = DirectionsCredentials(accessToken: BogusToken)
 let BadResponse = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML><HEAD><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -37,24 +38,23 @@ class DirectionsTests: XCTestCase {
     }
     
     func testConfiguration() {
-        let directions = Directions(accessToken: BogusToken)
-        XCTAssertEqual(directions.accessToken, BogusToken)
-        XCTAssertEqual(directions.apiEndpoint.absoluteString, "https://api.mapbox.com")
+        let directions = Directions(credentials: BogusCredentials)
+        XCTAssertEqual(directions.credentials, BogusCredentials)
     }
     
-    let maximumCoordinateCount = 796
+    let maximumCoordinateCount = 794
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength
         let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount)
         let options = RouteOptions(coordinates: coordinates)
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let url = directions.url(forCalculating: options, httpMethod: "GET")
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
         let components = URLComponents(string: url.absoluteString)
-        XCTAssertEqual(components?.queryItems?.count, 7)
+        XCTAssertEqual(components?.queryItems?.count, 8)
         XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.requestDescription }.joined(separator: ";")) ?? false)
         
         let request = directions.urlRequest(forCalculating: options)
@@ -66,7 +66,7 @@ class DirectionsTests: XCTestCase {
         let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
         let options = RouteOptions(coordinates: coordinates)
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let request = directions.urlRequest(forCalculating: options)
         
         XCTAssertEqual(request.httpMethod, "POST")
@@ -74,7 +74,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertNotNil(request.httpBody)
         var components = URLComponents()
         components.query = String(data: request.httpBody ?? Data(), encoding: .utf8)
-        XCTAssertEqual(components.queryItems?.count, 7)
+        XCTAssertEqual(components.queryItems?.count, 8)
         XCTAssertEqual(components.queryItems?.first { $0.name == "coordinates" }?.value,
                        coordinates.compactMap { $0.requestDescription }.joined(separator: ";"))
     }
@@ -83,19 +83,23 @@ class DirectionsTests: XCTestCase {
         OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
         }) { (_) -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "application/json"])
+            return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
         }
         let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
-            expectation.fulfill()
-            XCTAssertNil(routes, "Unexpected route response")
-            XCTAssertNotNil(error, "No error returned")
+        directions.calculate(opts, completionHandler: { (session, result) in
+
+            guard case let .failure(error) = result else {
+                XCTFail("Expecting error, none returned.")
+                return
+            }
+            
             XCTAssertEqual(error, .requestTooLarge)
+            expectation.fulfill()
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -111,18 +115,21 @@ class DirectionsTests: XCTestCase {
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
         
-        let directions = Directions(accessToken: BogusToken)
+        let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (waypoints, routes, error) in
-            expectation.fulfill()
-            XCTAssertNil(routes, "Unexpected route response")
-            XCTAssertNotNil(error, "No error returned")
-            switch error {
-            case .invalidResponse?:
-                break // pass
-            default:
-                XCTFail("Wrong type of error.")
+        directions.calculate(opts, completionHandler: { (session, result) in
+            defer { expectation.fulfill() }
+            
+            guard case let .failure(error) = result else {
+                XCTFail("Expecting an error, none returned. \(result)")
+                return
             }
+            
+            guard case .invalidResponse(_) = error else {
+                XCTFail("Wrong error type returned.")
+                return
+            }
+                        
         })
         wait(for: [expectation], timeout: 2.0)
     }
@@ -132,7 +139,7 @@ class DirectionsTests: XCTestCase {
         let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
         let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
         
-        let resultError = Directions.informativeError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
+        let resultError = DirectionsError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
         if case let .rateLimited(rateLimitInterval, rateLimit, resetTime) = resultError {
             XCTAssertEqual(rateLimitInterval, 60.0)
             XCTAssertEqual(rateLimit, 600)
@@ -140,6 +147,39 @@ class DirectionsTests: XCTestCase {
         } else {
             XCTFail("Code 429 should be interpreted as a rate limiting error.")
         }
+    }
+    
+    func testDownNetwork() {
+        let notConnected = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue) as! URLError
+        
+        OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+            return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
+        }) { (_) -> OHHTTPStubsResponse in
+            return OHHTTPStubsResponse(error: notConnected)
+        }
+        
+        let expectation = self.expectation(description: "Async callback")
+        let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
+        let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
+        
+        let directions = Directions(credentials: BogusCredentials)
+        let opts = RouteOptions(locations: [one, two])
+        directions.calculate(opts, completionHandler: { (session, result) in
+            defer { expectation.fulfill() }
+            
+            guard case let .failure(error) = result else {
+                XCTFail("Error expected, none returned. \(result)")
+                return
+            }
+            
+            guard case let .network(err) = error else {
+                XCTFail("Wrong error type returned. \(error)")
+                return
+            }
+            
+            XCTAssertEqual(err, notConnected)
+        })
+        wait(for: [expectation], timeout: 2.0)
     }
 }
 #endif

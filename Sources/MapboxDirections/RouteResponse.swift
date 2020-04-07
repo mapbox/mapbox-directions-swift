@@ -1,39 +1,119 @@
 import Foundation
 
-struct RouteResponse {
-    var code: String?
-    var message: String?
-    var error: String?
-    let uuid: String?
-    let routes: [Route]?
-    let waypoints: [Route.Waypoint]?
+public enum ResponseOptions {
+    case route(RouteOptions)
+    case match(MatchOptions)
+}
+
+public struct RouteResponse {
+    public let httpResponse: HTTPURLResponse?
+    
+    public let identifier: String?
+    public var routes: [Route]?    
+    public let waypoints: [Route.Waypoint]?
+    
+    public let options: ResponseOptions
+    public let credentials: DirectionsCredentials
+    
+    /**
+     The time when this `RouteResponse` object was created, which is immediately upon recieving the raw URL response.
+     
+     If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.responseEndDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.
+     
+     This property does not persist after encoding and decoding.
+     */
+    public var created: Date = Date()
 }
 
 extension RouteResponse: Codable {
     enum CodingKeys: String, CodingKey {
-        case code
-        case message
-        case error
-        case uuid
+        case code // << do we need these?
+        case message // <<
+        case error // <<
+        case identifier = "uuid"
         case routes
         case waypoints
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Route.Waypoint]? = nil, options: ResponseOptions, credentials: DirectionsCredentials) {
+        self.httpResponse = httpResponse
+        self.identifier = identifier
+        self.routes = routes
+        self.waypoints = waypoints
+        self.options = options
+        self.credentials = credentials
+    }
+    
+    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) throws {
+        let decoder = JSONDecoder()
+        let encoder = JSONEncoder()
         
-        self.code = try container.decodeIfPresent(String.self, forKey: .code)
-        self.message = try container.decodeIfPresent(String.self, forKey: .message)
-        self.error = try container.decodeIfPresent(String.self, forKey: .error)
-        self.uuid = try container.decodeIfPresent(String.self, forKey: .uuid)
+        decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = credentials
+        
+        var routes: [Route]?
+        
+        if let matches = response.matches {
+            let matchesData = try encoder.encode(matches)
+            routes = try decoder.decode([Route].self, from: matchesData)
+        }
+        
+        var waypoints: [Route.Waypoint]?
+        
+        if let tracepoints = response.tracepoints {
+            let filtered = tracepoints.compactMap { $0 }
+            let tracepointsData = try encoder.encode(filtered)
+            waypoints = try decoder.decode([Route.Waypoint].self, from: tracepointsData)
+        }
+    
+        self.init(httpResponse: response.httpResponse, identifier: nil, routes: routes, waypoints: waypoints, options: .match(options), credentials: credentials)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.httpResponse = decoder.userInfo[.httpResponse] as? HTTPURLResponse
+        
+        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+            throw DirectionsCodingError.missingCredentials
+        }
+        
+        self.credentials = credentials
+        
+        if let options = decoder.userInfo[.options] as? RouteOptions {
+            self.options = .route(options)
+        } else if let options = decoder.userInfo[.options] as? MatchOptions {
+            self.options = .match(options)
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
+        self.identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         
         // Decode waypoints from the response and update their names according to the waypoints from DirectionsOptions.waypoints.
-        let decodedWaypoints = try container.decodeIfPresent([Route.Waypoint].self, forKey: .waypoints)
-        if let decodedWaypoints = decodedWaypoints, let options = decoder.userInfo[.options] as? DirectionsOptions {
+        let decodedWaypoints = try container.decodeIfPresent([Route.Waypoint?].self, forKey: .waypoints)?.compactMap{ $0 }
+        var optionsWaypoints: [Route.Waypoint] = []
+        
+        switch options {
+        case let .match(options: matchOpts):
+            optionsWaypoints = matchOpts.waypoints.map {
+                Route.Waypoint(coordinate: $0.coordinate,
+                               correction: 0,
+                               name: $0.name)
+            }
+        case let .route(options: routeOpts):
+            optionsWaypoints = routeOpts.waypoints.map {
+                Route.Waypoint(coordinate: $0.coordinate,
+                               correction: 0,
+                               name: $0.name)
+            }
+        }
+                
+        if let decodedWaypoints = decodedWaypoints {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
-            waypoints = zip(decodedWaypoints, options.waypoints).map { (pair) -> Route.Waypoint in
+            waypoints = zip(decodedWaypoints, optionsWaypoints).map { (pair) -> Route.Waypoint in
                 var (decodedWaypoint, waypointInOptions) = pair
-                if /*waypointInOptions.separatesLegs, */let name = waypointInOptions.name?.nonEmptyString {
+                if let name = waypointInOptions.name?.nonEmptyString {
                     decodedWaypoint.name = name
                 }
                 return decodedWaypoint
@@ -46,7 +126,7 @@ extension RouteResponse: Codable {
             // Postprocess each route.
             var legSeparators = waypoints?.compactMap { $0 }
             if let options = decoder.userInfo[.options] as? DirectionsOptions, let waypoints = waypoints {
-                // select first, last and all other waypoints which separate legs.
+                // Select first, last and all other waypoints which separate legs.
                 var optionsLegSeparators = options.legSeparators
                 legSeparators = zip(waypoints, options.waypoints).compactMap { (pair) -> Route.Waypoint? in
                     let (decodedWaypoint, waypointInOptions) = pair
@@ -64,11 +144,10 @@ extension RouteResponse: Codable {
             }
             
             for route in routes {
-                route.routeIdentifier = uuid
+                route.routeIdentifier = identifier
                 // Imbue each route’s legs with the waypoints refined above.
-                // TODO: Filter these waypoints by whether they separate legs, based on the options, if given.
                 if let legSeparators = legSeparators {
-                    route.legSeparators = legSeparators//waypoints
+                    route.legSeparators = legSeparators
                 }
             }
             self.routes = routes
@@ -76,4 +155,12 @@ extension RouteResponse: Codable {
             routes = nil
         }
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(identifier, forKey: .identifier)
+        try container.encodeIfPresent(routes, forKey: .routes)
+        try container.encodeIfPresent(waypoints, forKey: .waypoints)
+    }
+
 }

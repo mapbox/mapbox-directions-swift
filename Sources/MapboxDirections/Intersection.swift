@@ -54,13 +54,17 @@ public struct Intersection {
     
     /**
      The index of the item in the `headings` array that corresponds to the road that the containing route step uses to approach the intersection.
+     
+     This property is set to `nil` for a departure maneuver.
      */
-    public let approachIndex: Int
+    public let approachIndex: Int?
     
     /**
      The index of the item in the `headings` array that corresponds to the road that the containing route step uses to leave the intersection.
+     
+     This property is set to `nil` for an arrival maneuver.
      */
-    public let outletIndex: Int
+    public let outletIndex: Int?
     
     /**
      The road classes of the road that the containing step uses to leave the intersection.
@@ -102,11 +106,10 @@ extension Intersection: Codable {
         try container.encode(location, forKey: .location)
         try container.encode(headings, forKey: .headings)
         
-        try container.encode(approachIndex, forKey: .approachIndex)
-        try container.encode(outletIndex, forKey: .outletIndex)
+        try container.encodeIfPresent(approachIndex, forKey: .approachIndex)
+        try container.encodeIfPresent(outletIndex, forKey: .outletIndex)
         
-        var outletArray: [Bool] = Array<Bool>.init(repeating: false, count: (outletIndexes.max()! + 1))
-    
+        var outletArray = headings.map { _ in false }
         for index in outletIndexes {
             outletArray[index] = true
         }
@@ -121,9 +124,9 @@ extension Intersection: Codable {
                 lanes![i].isValid = true
             }
         }
-        try container.encode(lanes, forKey: .lanes)
+        try container.encodeIfPresent(lanes, forKey: .lanes)
         
-        if let classes = outletRoadClasses?.description.components(separatedBy: ",") {
+        if let classes = outletRoadClasses?.description.components(separatedBy: ",").filter({ !$0.isEmpty }) {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
     }
@@ -145,8 +148,8 @@ extension Intersection: Codable {
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
         outletIndexes = outletsArray.indices { $0 }
         
-        outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex) ?? -1
-        approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex) ?? -1
+        outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex)
+        approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex)
     }
 }
 

@@ -222,9 +222,7 @@ public extension DirectionsResult {
     /**
      A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You receive waypoints in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
      */
-    struct Waypoint: Matchpoint, Equatable {
-        // MARK: Positioning the Waypoint
-        
+    struct Waypoint: Matchpoint, Equatable { 
         /**
          The geographic coordinate of the waypoint, snapped to the road network.
          */

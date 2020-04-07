@@ -129,6 +129,7 @@ open class DirectionsOptions: Codable {
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
     
+    
     private enum CodingKeys: String, CodingKey {
         case waypoints
         case profileIdentifier
@@ -145,12 +146,12 @@ open class DirectionsOptions: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(waypoints, forKey: .waypoints)
-        try container.encode(profileIdentifier.rawValue, forKey: .profileIdentifier)
+        try container.encode(profileIdentifier, forKey: .profileIdentifier)
         try container.encode(includesSteps, forKey: .includesSteps)
         try container.encode(shapeFormat, forKey: .shapeFormat)
         try container.encode(routeShapeResolution, forKey: .routeShapeResolution)
         try container.encode(attributeOptions, forKey: .attributeOptions)
-        try container.encode(locale, forKey: .locale)
+        try container.encode(locale.identifier, forKey: .locale)
         try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
         try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
         try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
@@ -168,7 +169,8 @@ open class DirectionsOptions: Codable {
         shapeFormat = try container.decode(RouteShapeFormat.self, forKey: .shapeFormat)
         routeShapeResolution = try container.decode(RouteShapeResolution.self, forKey: .routeShapeResolution)
         attributeOptions = try container.decode(AttributeOptions.self, forKey: .attributeOptions)
-        locale = try container.decode(Locale.self, forKey: .locale)
+        let identifier = try container.decode(String.self, forKey: .locale)
+        locale = Locale(identifier: identifier)
         includesSpokenInstructions = try container.decode(Bool.self, forKey: .includesSpokenInstructions)
         distanceMeasurementSystem = try container.decode(MeasurementSystem.self, forKey: .distanceMeasurementSystem)
         includesVisualInstructions = try container.decode(Bool.self, forKey: .includesVisualInstructions)
@@ -245,7 +247,7 @@ open class DirectionsOptions: Codable {
     /**
      The locale in which the route’s instructions are written.
 
-     If you use MapboxDirections.swift with the Mapbox Directions API or Map Matching API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
+     If you use the MapboxDirections framework with the Mapbox Directions API or Map Matching API, this property affects the sentence contained within the `RouteStep.instructions` property, but it does not affect any road names contained in that property or other properties such as `RouteStep.name`.
 
      The Directions API can provide instructions in [a number of languages](https://docs.mapbox.com/api/navigation/#instructions-languages). Set this property to `Bundle.main.preferredLocalizations.first` or `Locale.autoupdatingCurrent` to match the application’s language or the system language, respectively.
 
@@ -279,6 +281,17 @@ open class DirectionsOptions: Codable {
      `visualInstructionsAlongStep` contains an array of `VisualInstruction` objects used for visually conveying information about a given `RouteStep`.
      */
     open var includesVisualInstructions = false
+    
+    /**
+     The time immediately before a `Directions` object fetched this result.
+     
+     If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.fetchStartDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.
+     
+     This property does not persist after encoding and decoding.
+     */
+    open var fetchStartDate: Date?
+    
+
     
     // MARK: Getting the Request URL
     
@@ -352,20 +365,20 @@ open class DirectionsOptions: Codable {
         return queryItems
     }
     
-    private var bearings: String? {
-        if waypoints.compactMap({ $0.heading }).isEmpty {
+    var bearings: String? {
+        guard waypoints.contains(where: { $0.heading ?? -1 >= 0 }) else {
             return nil
         }
         return waypoints.map({ $0.headingDescription }).joined(separator: ";")
     }
     
-    private var radiuses: String? {
-        guard !self.waypoints.filter({ $0.coordinateAccuracy != nil}).isEmpty else {
+    var radiuses: String? {
+        guard waypoints.contains(where: { $0.coordinateAccuracy ?? -1 >= 0 }) else {
             return nil
         }
         
-        let accuracies =  self.waypoints.map { (waypoint) -> String in
-            guard let accuracy = waypoint.coordinateAccuracy else {
+        let accuracies = self.waypoints.map { (waypoint) -> String in
+            guard let accuracy = waypoint.coordinateAccuracy, accuracy >= 0 else {
                 return "unlimited"
             }
             return String(accuracy)
@@ -417,6 +430,7 @@ open class DirectionsOptions: Codable {
         ]
         return components.percentEncodedQuery ?? ""
     }
+    
 }
 
 extension DirectionsOptions: Equatable {

@@ -54,6 +54,7 @@ class RouteOptionsTests: XCTestCase {
         let subject = RouteOptions(waypoints: waypoints)
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = subject
+        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "https://test.website")!)
         var response: RouteResponse?
         XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
         XCTAssertNotNil(response)
@@ -140,7 +141,7 @@ class RouteOptionsTests: XCTestCase {
     }
 }
 
-let testCoordinates = [
+fileprivate let testCoordinates = [
     CLLocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
     CLLocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
     CLLocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
@@ -158,6 +159,6 @@ var testRouteOptions: RouteOptions {
     opts.distanceMeasurementSystem = .metric
     opts.includesVisualInstructions = true
     opts.roadClassesToAvoid = .toll
-    
+
     return opts
 }

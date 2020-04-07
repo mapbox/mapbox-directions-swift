@@ -1,29 +1,41 @@
 version: 2.1
 
-step-library:
-  - &restore-cache
-      restore_cache:
-        keys:
-          - carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
-          - carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }} # used if checksum fails
+commands:
+    install-mapbox-token:
+         steps:
+             - run:
+                 name: Install Mapbox Access Token
+                 command: echo "foo" > ~/.mapbox
 
-  - &save-cache
-      save_cache:
-        key: carthage-cache-mbdirections-v3-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
-        paths:
-          - Carthage
+    restore-cache:
+         steps:
+             - restore_cache:
+                 name: Restore cache
+                 keys:
+                    - carthage-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+                    - carthage-v1-{{ .Environment.CIRCLE_JOB }} # used if checksum fails 
 
-  - &prepare
-      run:
-        name: Prepare
-        command: |
-          if [ $(carthage outdated | grep -cF "latest Carthage version") -eq 0 ]; then brew update && brew upgrade carthage || true; fi
-          echo "foo" > ~/.mapbox
+    save-cache:
+        steps:
+             - save_cache:
+                 key: carthage-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
+                 paths:
+                     - Carthage
+                     - Cartfile.resolved
 
-  - &publish-codecov
-      run:
-        name: Publish code coverage
-        command: bash <(curl -s https://codecov.io/bash)
+    install-carthage:
+        steps:
+            - run:
+                name: Install Carthage
+                command: |
+                    curl -OL "https://github.com/Carthage/Carthage/releases/download/0.34.0/Carthage.pkg"
+                    sudo installer -pkg Carthage.pkg -target /
+
+    publish-codecov:
+        steps:
+            - run:
+                name: Publish Code Coverage
+                command: bash <(curl -s https://codecov.io/bash)
 
 jobs:
   spm-job:
@@ -66,8 +78,9 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - checkout
-      - *prepare
-      - *restore-cache
+      - install-mapbox-token
+      - install-carthage
+      - restore-cache
       - run:
           name: Install prerequisites
           command: |
@@ -79,27 +92,27 @@ jobs:
             carthage bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
             carthage bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
             carthage bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
-      - *save-cache
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
       - when:
           condition: << parameters.codecoverage >>
           steps:
-            - *publish-codecov
+            - publish-codecov
       - run:
           name: tvOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
       - when:
           condition: << parameters.codecoverage >>
           steps:
-            - *publish-codecov
+            - publish-codecov
       - run:
           name: macOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
       - run:
           name: watchOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 4 - 44mm,OS=<< parameters.watchOS >>' clean build
+      - save-cache
 
 workflows:
   workflow:

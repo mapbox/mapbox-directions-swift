@@ -1,37 +1,48 @@
-# MapboxDirections
+# Mapbox Directions for Swift
 
-[![CircleCI](https://circleci.com/gh/mapbox/MapboxDirections.swift.svg?style=svg)](https://circleci.com/gh/mapbox/MapboxDirections.swift)
+[![CircleCI](https://circleci.com/gh/mapbox/mapbox-directions-swift.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-directions-swift)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
-[![codecov](https://codecov.io/gh/mapbox/MapboxDirections.swift/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/MapboxDirections.swift)
+[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](https://cocoapods.org/pods/MapboxDirections.swift/)
+[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.svg)](https://cocoapods.org/pods/MapboxDirections/)
+[![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/)
+[![codecov](https://codecov.io/gh/mapbox/mapbox-directions-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/mapbox-directions-swift)
 
-MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions](https://docs.mapbox.com/api/navigation/) and [Map Matching](https://docs.mapbox.com/api/navigation/#map-matching) APIs. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine. For more information, see the [Mapbox Navigation](https://www.mapbox.com/navigation/) homepage.
+Mapbox Directions for Swift (formerly MapboxDirections.swift) makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions](https://docs.mapbox.com/api/navigation/) and [Map Matching](https://docs.mapbox.com/api/navigation/#map-matching) APIs. Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) and [Valhalla](https://github.com/valhalla/valhalla/) routing engines. For more information, see the [Mapbox Navigation](https://www.mapbox.com/navigation/) homepage.
 
-MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/), and the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/).
+Mapbox Directions pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/), and the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/).
 
 ## Getting started
 
 Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-github "mapbox/MapboxDirections.swift" ~> 0.30
+// Latest stable release
+github "mapbox/mapbox-directions-swift" ~> 0.30
+// Latest prerelease
+github "mapbox/mapbox-directions-swift" ~> 1.0.0-alpha.1
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
+# Latest stable release
 pod 'MapboxDirections.swift', '~> 0.30'
+# Latest prerelease
+pod 'MapboxDirections', '~> v1.0.0-alpha.1'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
 
 ```swift
-.package(url: "https://github.com/mapbox/MapboxDirections.swift.git", from: "0.30.0")
+# Latest stable release
+.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "0.30.0")
+# Latest prerelease
+.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.0.0-alpha.1")
 ```
 
-Then `import MapboxDirections` or `@import MapboxDirections;`.
+Then `import MapboxDirections`.
 
-This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_.
+This library supports a minimum deployment target of iOS 10.0 or above, macOS 10.12.0 or above, tvOS 10.0 or above, or watchOS 2.0 or above. v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_. v0.30.0 is also the last release that is compatible with Objective-C or AppleScript code.
 
 This repository contains an example application that demonstrates how to use the framework. To run it, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. Detailed documentation is available in the [Mapbox API Documentation](https://docs.mapbox.com/api/navigation/#directions).
 
@@ -39,9 +50,9 @@ This repository contains an example application that demonstrates how to use the
 
 **[API reference](https://docs.mapbox.com/ios/api/directions/)**
 
-You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), MapboxDirections.swift automatically recognizes your access token, as long as you’ve placed it in the `MGLMapboxAccessToken` key of your application’s Info.plist file.
+You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), Mapbox Directions automatically recognizes your access token, as long as you’ve placed it in the `MGLMapboxAccessToken` key of your application’s Info.plist file.
 
-The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [MapboxDirections.swift API reference](https://docs.mapbox.com/ios/api/directions/).
+The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [Mapbox Directions for Swift API reference](https://docs.mapbox.com/ios/api/directions/).
 
 ### Calculating directions between locations
 

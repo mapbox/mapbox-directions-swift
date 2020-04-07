@@ -136,4 +136,23 @@ class WaypointTests: XCTestCase {
         right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 1)
         XCTAssertNotEqual(left, right)
     }
+    
+    func testAccuracies() {
+        let from = RouteOptions.Waypoint(location: CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                                                              altitude: -1,
+                                                              horizontalAccuracy: -1,
+                                                              verticalAccuracy: -1,
+                                                              timestamp: Date()))
+        let to = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0))
+        let options = RouteOptions(waypoints: [from, to])
+        XCTAssertNil(options.bearings)
+        XCTAssertNil(options.radiuses)
+        
+        options.waypoints[0].heading = 90
+        options.waypoints[0].headingAccuracy = 45
+        XCTAssertEqual(options.bearings, "90.0,45.0;")
+        
+        options.waypoints[0].coordinateAccuracy = 5
+        XCTAssertEqual(options.radiuses, "5.0;unlimited")
+    }
 }

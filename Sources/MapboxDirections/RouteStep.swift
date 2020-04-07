@@ -61,6 +61,28 @@ public enum TransportType: String, Codable {
      The user should consult the train’s timetable. For cycling directions, the user should also verify that bicycles are permitted onboard the train.
      */
     case train // cycling
+
+    // Custom implementation of decoding is needed to circumvent issue reported in
+    // https://github.com/mapbox/mapbox-directions-swift/issues/413
+    public init(from decoder: Decoder) throws {
+        let valueContainer = try decoder.singleValueContainer()
+        let rawValue = try valueContainer.decode(String.self)
+
+        if rawValue == "pushing bike" {
+            self = .walking
+
+            return
+        }
+
+        guard let value = TransportType(rawValue: rawValue) else {
+            throw DecodingError.dataCorruptedError(
+                in: valueContainer,
+                debugDescription: "Cannot initialize TransportType from invalid String value \(rawValue)"
+            )
+        }
+        
+        self = value
+    }
 }
 
 /**
@@ -244,6 +266,27 @@ public enum ManeuverDirection: String, Codable {
     case uTurn = "uturn"
 }
 
+/**
+ A road sign design standard.
+ 
+ A sign standard can affect how a user interface should display information related to the road. For example, a speed limit from the `RouteLeg.segmentMaximumSpeedLimits` property may appear in a different-looking view depending on the `RouteStep.speedLimitSign` property.
+ */
+public enum SignStandard: String, Codable {
+    /**
+     The [Manual on Uniform Traffic Control Devices](https://en.wikipedia.org/wiki/Manual_on_Uniform_Traffic_Control_Devices).
+     
+     This standard has been adopted by the United States and Canada, and several other countries have adopted parts of the standard as well.
+     */
+    case mutcd
+    
+    /**
+     The [Vienna Convention on Road Signs and Signals](https://en.wikipedia.org/wiki/Vienna_Convention_on_Road_Signs_and_Signals).
+     
+     This standard is prevalent in Europe and parts of Asia and Latin America. Countries in southern Africa and Central America have adopted similar regional standards.
+     */
+    case viennaConvention = "vienna"
+}
+
 extension String {
     internal func tagValues(separatedBy separator: String) -> [String] {
         return components(separatedBy: separator).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
@@ -370,6 +413,8 @@ open class RouteStep: Codable {
         case maneuver
         case pronunciation
         case rotaryPronunciation = "rotary_pronunciation"
+        case speedLimitSignStandard = "speedLimitSign"
+        case speedLimitUnit
         case transportType = "mode"
     }
     
@@ -383,6 +428,59 @@ open class RouteStep: Codable {
     }
     
     // MARK: Creating a Step
+    
+    /**
+     Initializes a step.
+     
+     - parameter transportType: The mode of transportation used for the step.
+     - parameter maneuverLocation: The location of the maneuver at the beginning of this step.
+     - parameter maneuverType: The type of maneuver required for beginning this step.
+     - parameter maneuverDirection: Additional directional information to clarify the maneuver type.
+     - parameter instructions: A string with instructions explaining how to perform the step’s maneuver.
+     - parameter initialHeading: The user’s heading immediately before performing the maneuver.
+     - parameter finalHeading: The user’s heading immediately after performing the maneuver.
+     - parameter drivingSide: Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
+     - parameter exitCodes: Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
+     - parameter exitNames: The names of the roundabout exit.
+     - parameter phoneticExitNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `exitNames` property.
+     - parameter distance: The step’s distance, measured in meters.
+     - parameter expectedTravelTime: expectedTravelTime
+     - parameter names: The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
+     - parameter phoneticNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
+     - parameter codes: Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
+     - parameter destinationCodes: Any route reference codes that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
+     - parameter destinations: Destinations, such as [control cities](https://en.wikipedia.org/wiki/Control_city), that appear on guide signage for the road leading from this step’s maneuver to the next step’s maneuver.
+     - parameter intersections: An array of intersections along the step.
+     - parameter speedLimitSignStandard: The sign design standard used for speed limit signs along the step.
+     - parameter speedLimitUnit: The unit of speed limits on speed limit signs along the step.
+     - parameter instructionsSpokenAlongStep: Instructions about the next step’s maneuver, optimized for speech synthesis.
+     - parameter instructionsDisplayedAlongStep: Instructions about the next step’s maneuver, optimized for display in real time.
+     */
+    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil) {
+        self.transportType = transportType
+        self.maneuverLocation = maneuverLocation
+        self.maneuverType = maneuverType
+        self.maneuverDirection = maneuverDirection
+        self.instructions = instructions
+        self.initialHeading = initialHeading
+        self.finalHeading = finalHeading
+        self.drivingSide = drivingSide
+        self.exitCodes = exitCodes
+        self.exitNames = exitNames
+        self.phoneticExitNames = phoneticExitNames
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.names = names
+        self.phoneticNames = phoneticNames
+        self.codes = codes
+        self.destinationCodes = destinationCodes
+        self.destinations = destinations
+        self.intersections = nil
+        self.speedLimitSignStandard = speedLimitSignStandard
+        self.speedLimitUnit = speedLimitUnit
+        self.instructionsSpokenAlongStep = nil
+        self.instructionsDisplayedAlongStep = nil
+    }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -402,10 +500,10 @@ open class RouteStep: Codable {
                         rotaryNames: isRound ? names : nil)
         try road.encode(to: encoder)
         if isRound {
-            try container.encodeIfPresent(phoneticNames, forKey: .rotaryPronunciation)
-            try container.encodeIfPresent(phoneticExitNames, forKey: .pronunciation)
+            try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .rotaryPronunciation)
+            try container.encodeIfPresent(phoneticExitNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         } else {
-            try container.encodeIfPresent(phoneticNames, forKey: .pronunciation)
+            try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         }
         
         try container.encodeIfPresent(intersections, forKey: .intersections)
@@ -420,10 +518,16 @@ open class RouteStep: Codable {
         var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         try maneuver.encode(instructions, forKey: .instruction)
         try maneuver.encode(maneuverType, forKey: .type)
-        try maneuver.encode(maneuverDirection, forKey: .direction)
+        try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
         try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
+        
+        try container.encodeIfPresent(speedLimitSignStandard, forKey: .speedLimitSignStandard)
+        if let speedLimitUnit = speedLimitUnit,
+            let unit = SpeedLimitDescriptor.UnitDescriptor(unit: speedLimitUnit) {
+            try container.encode(unit, forKey: .speedLimitUnit)
+        }
     }
     
     public required init(from decoder: Decoder) throws {
@@ -474,6 +578,9 @@ open class RouteStep: Codable {
         destinations = road.destinations
         destinationCodes = road.destinationCodes
         
+        speedLimitSignStandard = try container.decodeIfPresent(SignStandard.self, forKey: .speedLimitSignStandard)
+        speedLimitUnit = (try container.decodeIfPresent(SpeedLimitDescriptor.UnitDescriptor.self, forKey: .speedLimitUnit))?.describedUnit
+        
         let type = maneuverType
         if type == .takeRotary || type == .takeRoundabout {
             names = road.rotaryNames
@@ -499,14 +606,38 @@ open class RouteStep: Codable {
      */
     public var shape: LineString?
     
+    // MARK: Getting the Mode of Transportation
+    
+    /**
+     The mode of transportation used for the step.
+     
+     This step may use a different mode of transportation than the overall route.
+     */
+    public let transportType: TransportType
+    
     // MARK: Getting Details About the Maneuver
+    
+    /**
+     The location of the maneuver at the beginning of this step.
+     */
+    public let maneuverLocation: CLLocationCoordinate2D
+    
+    /**
+     The type of maneuver required for beginning this step.
+     */
+    public let maneuverType: ManeuverType
+    
+    /**
+     Additional directional information to clarify the maneuver type.
+     */
+    public let maneuverDirection: ManeuverDirection?
     
     /**
      A string with instructions explaining how to perform the step’s maneuver.
      
      You can display this string or read it aloud to the user. The string does not include the distance to or from the maneuver. For instructions optimized for real-time delivery during turn-by-turn navigation, set the `RouteOptions.includesSpokenInstructions` option and use the `instructionsSpokenAlongStep` property. If you need customized instructions, you can construct them yourself from the step’s other properties or use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/).
      
-     - note: If you use MapboxDirections.swift with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
+     - note: If you use the MapboxDirections framework with the Mapbox Directions API, this property is formatted and localized for display to the user. If you use OSRM directly, this property contains a basic string that only includes the maneuver type and direction. Use [OSRM Text Instructions](https://github.com/Project-OSRM/osrm-text-instructions.swift/) to construct a complete, localized instruction string for display.
      */
     public let instructions: String
     
@@ -523,24 +654,9 @@ open class RouteStep: Codable {
     public let finalHeading: CLLocationDirection?
     
     /**
-     The type of maneuver required for beginning this step.
-     */
-    public let maneuverType: ManeuverType
-    
-    /**
-     Additional directional information to clarify the maneuver type.
-     */
-    public let maneuverDirection: ManeuverDirection?
-    
-    /**
      Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
      */
     public let drivingSide: DrivingSide
-    
-    /**
-     The location of the maneuver at the beginning of this step.
-     */
-    public let maneuverLocation: CLLocationCoordinate2D
     
     /**
      The number of exits from the previous maneuver up to and including this step’s maneuver.
@@ -549,7 +665,7 @@ open class RouteStep: Codable {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    public let exitIndex: Int?
+    open var exitIndex: Int?
     
     /**
      Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
@@ -594,7 +710,7 @@ open class RouteStep: Codable {
      
      Do not assume that the user would travel along the step at a fixed speed. For the expected travel time on each individual segment along the leg, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -646,6 +762,20 @@ open class RouteStep: Codable {
     */
     public let intersections: [Intersection]?
     
+    /**
+     The sign design standard used for speed limit signs along the step.
+     
+     This standard affects how corresponding speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property should be displayed.
+     */
+    public let speedLimitSignStandard: SignStandard?
+    
+    /**
+     The unit of speed limits on speed limit signs along the step.
+     
+     This standard affects how corresponding speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property should be displayed.
+     */
+    public let speedLimitUnit: UnitSpeed?
+    
     // MARK: Getting Details About the Next Maneuver
     
     /**
@@ -659,19 +789,12 @@ open class RouteStep: Codable {
     
      /**
      Instructions about the next step’s maneuver, optimized for display in real time.
+     
      As the user traverses this step, you can give them advance notice of the upcoming maneuver by displaying each item in this array in order as the user reaches the specified distances along this step. The text and images of the visual instructions refer to the details in the next step, but the distances are measured from the beginning of this step.
+     
      This property is non-`nil` if the `RouteOptions.includesVisualInstructions` option is set to `true`. For instructions designed for speech synthesis, use the `instructionsSpokenAlongStep` property. For instructions designed for display in a static list, use the `instructions` property.
      */
     public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
-    
-    // MARK: Getting the Mode of Transportation
-    
-    /**
-     The mode of transportation used for the step.
-     
-     This step may use a different mode of transportation than the overall route.
-     */
-    public let transportType: TransportType
 }
 
 extension RouteStep: Equatable {
@@ -699,6 +822,9 @@ extension RouteStep: Equatable {
             lhs.codes == rhs.codes &&
             lhs.destinationCodes == rhs.destinationCodes &&
             lhs.destinations == rhs.destinations &&
+            
+            lhs.speedLimitSignStandard == rhs.speedLimitSignStandard &&
+            lhs.speedLimitUnit == rhs.speedLimitUnit &&
             
             lhs.intersections == rhs.intersections &&
             lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&

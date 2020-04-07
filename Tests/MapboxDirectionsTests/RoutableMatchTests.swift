@@ -26,8 +26,7 @@ class RoutableMatchTest: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var route: Route!
-        var waypoints: [Route.Waypoint]!
+        var routeResponse: RouteResponse!
         
         let matchOptions = MatchOptions(waypoints: locations.map { (location) in
             var waypoint = MatchOptions.Waypoint(coordinate: location)
@@ -37,28 +36,31 @@ class RoutableMatchTest: XCTestCase {
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(accessToken: BogusToken).calculateRoutes(matching: matchOptions) { (wpoints, routes, error) in
-            XCTAssertNil(error, "Error: \(error!)")
+        let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (session, result) in
             
-            route = routes!.first!
-            waypoints = wpoints
-            
-            expectation.fulfill()
+            switch (result) {
+            case let .failure(error):
+                XCTFail("Error: \(error)")
+            case let .success(response):
+                routeResponse = response
+                expectation.fulfill()
+            }
+                        
         }
         XCTAssertNotNil(task)
         
-        waitForExpectations(timeout: 2) { (error) in
+        waitForExpectations(timeout: 200000) { (error) in
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
         
+        let route = routeResponse.routes!.first!
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 18)
-        XCTAssertEqual(route.accessToken, BogusToken)
-        XCTAssertEqual(route.apiEndpoint, URL(string: "https://api.mapbox.com"))
         XCTAssertEqual(route.routeIdentifier, nil)
         
+        let waypoints = routeResponse.waypoints!
         XCTAssertNotNil(waypoints)
         XCTAssertEqual(waypoints.first!.name, "North Harbor Drive")
         XCTAssertEqual(waypoints.last!.name, "West G Street")
@@ -66,11 +68,11 @@ class RoutableMatchTest: XCTestCase {
         
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
-        XCTAssertEqual(round(route!.shape!.coordinates.first!.latitude), 33)
-        XCTAssertEqual(round(route!.shape!.coordinates.first!.longitude), -117)
-        XCTAssertEqual(route!.legs.count, 6)
+        XCTAssertEqual(round(route.shape!.coordinates.first!.latitude), 33)
+        XCTAssertEqual(round(route.shape!.coordinates.first!.longitude), -117)
+        XCTAssertEqual(route.legs.count, 6)
         
-        let leg = route!.legs.first!
+        let leg = route.legs.first!
         XCTAssertEqual(leg.name, "North Harbor Drive")
         XCTAssertEqual(leg.steps.count, 2)
         

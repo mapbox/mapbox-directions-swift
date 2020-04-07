@@ -25,9 +25,31 @@ open class RouteLeg: Codable {
         case expectedSegmentTravelTimes = "duration"
         case segmentSpeeds = "speed"
         case segmentCongestionLevels = "congestion"
+        case segmentMaximumSpeedLimits = "maxspeed"
     }
     
     // MARK: Creating a Leg
+    
+    /**
+     Initializes a route leg.
+     
+     - parameter steps: The steps that are traversed in order.
+     - parameter name: A name that describes the route leg.
+     - parameter expectedTravelTime: The route leg’s expected travel time, measured in seconds.
+     - parameter profileIdentifier: The primary mode of transportation for the route leg.
+     */
+    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, profileIdentifier: DirectionsProfileIdentifier) {
+        self.steps = steps
+        self.name = name
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.profileIdentifier = profileIdentifier
+        
+        segmentDistances = nil
+        expectedSegmentTravelTimes = nil
+        segmentSpeeds = nil
+        segmentCongestionLevels = nil
+    }
     
     /**
      Creates a route leg from a decoder.
@@ -58,6 +80,12 @@ open class RouteLeg: Codable {
         expectedSegmentTravelTimes = try annotation?.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
         segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try annotation?.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
+        
+        if let speedLimitDescriptors = try annotation?.decodeIfPresent([SpeedLimitDescriptor].self, forKey: .segmentMaximumSpeedLimits) {
+            segmentMaximumSpeedLimits = speedLimitDescriptors.map { Measurement<UnitSpeed>(speedLimitDescriptor: $0) }
+        } else {
+            segmentMaximumSpeedLimits = nil
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -70,11 +98,17 @@ open class RouteLeg: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        var annotation = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-        try annotation.encode(segmentDistances, forKey: .segmentDistances)
-        try annotation.encode(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-        try annotation.encode(segmentSpeeds, forKey: .segmentSpeeds)
-        try annotation.encode(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil || segmentMaximumSpeedLimits != nil {
+            var annotationContainer = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
+            try annotationContainer.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
+            try annotationContainer.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
+            try annotationContainer.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
+            try annotationContainer.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+            
+            if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
+                try annotationContainer.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
+            }
+        }
     }
 
     // MARK: Getting the Endpoints of the Leg
@@ -104,36 +138,59 @@ open class RouteLeg: Codable {
 
      Each route step object corresponds to a distinct maneuver and the approach to the next maneuver.
 
-     This array is empty if the `includesSteps` property of the original `RouteOptions` object is set to `false`.
+     This array is empty if the original `RouteOptions` object’s `RouteOptions.includesSteps` property is set to `false`.
      */
     public let steps: [RouteStep]
+    
+    /**
+     The ranges of each step’s segments within the overall leg.
+     
+     Each range corresponds to an element of the `steps` property. Use this property to safely subscript segment-based properties such as `segmentCongestionLevels` and `segmentMaximumSpeedLimits`.
+     
+     This array is empty if the original `RouteOptions` object’s `RouteOptions.includesSteps` property is set to `false`.
+     */
+    public private(set) lazy var segmentRangesByStep: [Range<Int>] = {
+        var segmentRangesByStep: [Range<Int>] = []
+        var currentStepStartIndex = 0
+        for step in steps {
+            if let coordinates = step.shape?.coordinates {
+                let stepCoordinateCount = step.maneuverType == .arrive ? coordinates.count : coordinates.dropLast().count
+                let currentStepEndIndex = currentStepStartIndex.advanced(by: stepCoordinateCount)
+                segmentRangesByStep.append(currentStepStartIndex..<currentStepEndIndex)
+                currentStepStartIndex = currentStepEndIndex
+            } else {
+                segmentRangesByStep.append(currentStepStartIndex..<currentStepStartIndex)
+            }
+        }
+        return segmentRangesByStep
+    }()
     
     // MARK: Getting Per-Segment Attributes Along the Leg
     
     /**
      An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
 
-     This property is set if the `RouteOptions.attributeOptions` property contains `.distance`.
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.distance`.
      */
-    public let segmentDistances: [CLLocationDistance]?
+    open var segmentDistances: [CLLocationDistance]?
 
     /**
      An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
 
      These values are dynamic, accounting for any conditions that may change along a segment, such as traffic congestion if the profile identifier is set to `.automobileAvoidingTraffic`.
 
-     This property is set if the `RouteOptions.attributeOptions` property contains `.expectedTravelTime`.
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.expectedTravelTime`.
      */
-    public let expectedSegmentTravelTimes: [TimeInterval]?
+    open var expectedSegmentTravelTimes: [TimeInterval]?
 
     /**
      An array containing the expected average speed (measured in meters per second) between each coordinate in the route leg geometry.
 
      These values are dynamic; rather than speed limits, they account for the road’s classification and/or any traffic congestion (if the profile identifier is set to `.automobileAvoidingTraffic`).
 
-     This property is set if the `RouteOptions.attributeOptions` property contains `.speed`.
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.speed`.
      */
-    public let segmentSpeeds: [CLLocationSpeed]?
+    open var segmentSpeeds: [CLLocationSpeed]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
@@ -142,10 +199,21 @@ open class RouteLeg: Codable {
 
      You can color-code a route line according to the congestion level along each segment of the route.
 
-     This property is set if the `RouteOptions.attributeOptions` property contains `.congestionLevel`.
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.congestionLevel`.
      */
-    public let segmentCongestionLevels: [CongestionLevel]?
-
+    open var segmentCongestionLevels: [CongestionLevel]?
+    
+    /**
+     An array containing the maximum speed limit along each road segment along the route leg’s shape.
+     
+     The maximum speed may be an advisory speed limit for segments where legal limits are not posted, such as highway entrance and exit ramps. If the speed limit along a particular segment is unknown, it is represented in the array by a measurement whose value is negative. If the speed is unregulated along the segment, such as on the German _Autobahn_ system, it is represented by a measurement whose value is `Double.infinity`.
+     
+     Speed limit data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/).
+     
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.maximumSpeedLimit`.
+     */
+    open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
+    
     // MARK: Getting Statistics About the Leg
 
     /**
@@ -171,12 +239,12 @@ open class RouteLeg: Codable {
 
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     // MARK: Reproducing the Route
     
     /**
-     A string specifying the primary mode of transportation for the route leg.
+     The primary mode of transportation for the route leg.
 
      The value of this property depends on the `RouteOptions.profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
@@ -192,6 +260,7 @@ extension RouteLeg: Equatable {
             lhs.expectedSegmentTravelTimes == rhs.expectedSegmentTravelTimes &&
             lhs.segmentSpeeds == rhs.segmentSpeeds &&
             lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
+            lhs.segmentMaximumSpeedLimits == rhs.segmentMaximumSpeedLimits &&
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
@@ -212,5 +281,23 @@ extension RouteLeg: CustomQuickLookConvertible {
             return nil
         }
         return debugQuickLookURL(illustrating: LineString(coordinates))
+    }
+}
+
+
+public extension Array where Element == RouteLeg {
+    /**
+     Populates source and destination information for each leg with waypoint information, typically gathered from DirectionsOptions.
+     */
+    func populate(waypoints: [RouteOptions.Waypoint]) {
+        let routeWaypoints = waypoints.map { Route.Waypoint(coordinate: $0.coordinate,
+                                                            correction: 0,
+                                                            name: $0.name) }
+        let legInfo = zip(zip(routeWaypoints.prefix(upTo: routeWaypoints.endIndex - 1), routeWaypoints.suffix(from: 1)), self)
+
+        for (endpoints, leg) in legInfo {
+            leg.source = endpoints.0
+            leg.destination = endpoints.1
+        }
     }
 }

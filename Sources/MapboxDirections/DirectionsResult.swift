@@ -15,85 +15,86 @@ open class DirectionsResult: Codable {
         case distance
         case expectedTravelTime = "duration"
         case directionsOptions
-        case accessToken
-        case apiEndpoint
         case routeIdentifier
         case speechLocale = "voiceLocale"
     }
     
     // MARK: Creating a Directions Result
     
+    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval) {
+        self.legs = legs
+        self.shape = shape
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+    }
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        legs = try container.decode([RouteLeg].self, forKey: .legs)
-        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
-        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         
-        guard let directionsOptions = decoder.userInfo[.options] as? DirectionsOptions else {
+        guard let options = decoder.userInfo[.options] else {
             throw DirectionsCodingError.missingOptions
         }
-        _directionsOptions = directionsOptions
+        
+        legs = try container.decode([RouteLeg].self, forKey: .legs)
+        
+        //populate legs with origin and destination
+        if let options = options as? DirectionsOptions {
+            let waypoints = options.waypoints
+            legs.populate(waypoints: waypoints)
+        } else {
+            throw DirectionsCodingError.missingOptions
+        }
+        
+        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
     
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
+            
         } else {
             shape = nil
         }
         
-        // Associate each leg JSON with a source and destination. The sequence of destinations is offset by one from the sequence of sources.
-        // Create waypoints from waypoints in the options. Skip waypoints that don’t separate legs.
-        let waypoints = directionsOptions.legSeparators.map { Waypoint(coordinate: $0.coordinate, correction: 0, name: $0.name) }
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), legs)
-        for (endpoints, leg) in legInfo {
-            leg.source = endpoints.0
-            leg.destination = endpoints.1
-        }
-        
-        accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
-        apiEndpoint = try container.decodeIfPresent(URL.self, forKey: .apiEndpoint)
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
-        do {
-            speechLocale = try container.decodeIfPresent(Locale.self, forKey: .speechLocale)
-        } catch let DecodingError.typeMismatch(mismatchedType, context) {
-            guard mismatchedType == [String: Any].self else {
-                throw DecodingError.typeMismatch(mismatchedType, context)
-            }
-            let identifier = try container.decode(String.self, forKey: .speechLocale)
+        if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
             speechLocale = Locale(identifier: identifier)
+        } else {
+            speechLocale = nil
         }
     }
+    
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
         if let shape = shape {
-            let polyLineString = PolyLineString(lineString: shape, shapeFormat: directionsOptions.shapeFormat)
+            let options = encoder.userInfo[.options] as? DirectionsOptions
+            let shapeFormat = options?.shapeFormat ?? .default
+            let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
             try container.encode(polyLineString, forKey: .shape)
         }
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
-        try container.encodeIfPresent(accessToken, forKey: .accessToken)
-        try container.encodeIfPresent(apiEndpoint, forKey: .apiEndpoint)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
-        try container.encodeIfPresent(speechLocale, forKey: .speechLocale)
+        try container.encodeIfPresent(speechLocale?.identifier, forKey: .speechLocale)
     }
     
     // MARK: Getting the Shape of the Route
     
     /**
-     An array of geographic coordinates defining the path of the route from start to finish.
+     The roads or paths taken as a contiguous polyline.
      
-     This array may be `nil` or simplified depending on the `DirectionsOptions.routeShapeResolution` property of the original `RouteOptions` or `MatchOptions` object.
+     The shape may be `nil` or simplified depending on the `DirectionsOptions.routeShapeResolution` property of the original `RouteOptions` or `MatchOptions` object.
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
     public let shape: LineString?
-    
+        
     // MARK: Getting the Legs Along the Route
     
     /**
-     An array of `RouteLeg` objects representing the legs of the route.
+     The legs that are traversed in order.
      
      The number of legs in this array depends on the number of waypoints. A route with two waypoints (the source and destination) has one leg, a route with three waypoints (the source, an intermediate waypoint, and the destination) has two legs, and so on.
      
@@ -130,7 +131,7 @@ open class DirectionsResult: Codable {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    public let expectedTravelTime: TimeInterval
+    open var expectedTravelTime: TimeInterval
     
     // MARK: Configuring Speech Synthesis
     
@@ -140,33 +141,6 @@ open class DirectionsResult: Codable {
      This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
      */
     open var speechLocale: Locale?
-    
-    // MARK: Reproducing the Route
-    
-    /**
-     `RouteOptions` used to create the directions request.
-     
-     The route options object’s profileIdentifier property reflects the primary mode of transportation used for the route. Individual steps along the route might use different modes of transportation as necessary.
-     */
-    public var directionsOptions: DirectionsOptions {
-        return _directionsOptions
-    }
-    
-    private let _directionsOptions: DirectionsOptions
-    
-    /**
-     The [access token](https://docs.mapbox.com/help/glossary/access-token/) used to make the directions request.
-     
-     This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
-     */
-    open var accessToken: String?
-    
-    /**
-     The endpoint used to make the directions request.
-     
-     This property is set automatically if a request is made via `Directions.calculate(_:completionHandler:)`.
-     */
-    open var apiEndpoint: URL?
     
     // MARK: Auditing the Server Response
     
@@ -201,12 +175,11 @@ extension DirectionsResult: CustomStringConvertible {
         return legs.map { $0.name }.joined(separator: " – ")
     }
 }
-
 extension DirectionsResult: CustomQuickLookConvertible {
     func debugQuickLookObject() -> Any? {
         guard let shape = shape else {
             return nil
         }
-        return debugQuickLookURL(illustrating: shape, profileIdentifier: directionsOptions.profileIdentifier)
+        return debugQuickLookURL(illustrating: shape, profileIdentifier: .automobile)
     }
 }
