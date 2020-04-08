@@ -2,9 +2,7 @@ import XCTest
 import CoreLocation
 @testable import MapboxDirections
 
-// TODO: make more tests for all new "Waypoints"
-
-class WaypointTests: XCTestCase {
+class RouteOptionsWaypointTests: XCTestCase {
     func testCoding() {
         let waypointJSON: [String: Any?] = [
             "location": [-77.036500000000004, 38.8977],
@@ -43,26 +41,23 @@ class WaypointTests: XCTestCase {
             XCTAssertNoThrow(encodedWaypointJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
             XCTAssertNotNil(encodedWaypointJSON)
             
-            // Verify then remove keys that wouldn’t be part of a Waypoint object in the Directions API response.
             XCTAssertEqual(encodedWaypointJSON?["headingAccuracy"] as? CLLocationDirection, waypoint?.headingAccuracy)
-            encodedWaypointJSON?.removeValue(forKey: "headingAccuracy")
             XCTAssertEqual(encodedWaypointJSON?["coordinateAccuracy"] as? CLLocationAccuracy, waypoint?.coordinateAccuracy)
-            encodedWaypointJSON?.removeValue(forKey: "coordinateAccuracy")
             XCTAssertEqual(encodedWaypointJSON?["allowsArrivingOnOppositeSide"] as? Bool, waypoint?.allowsArrivingOnOppositeSide)
-            encodedWaypointJSON?.removeValue(forKey: "allowsArrivingOnOppositeSide")
             XCTAssertEqual(encodedWaypointJSON?["heading"] as? CLLocationDirection, waypoint?.heading)
-            encodedWaypointJSON?.removeValue(forKey: "heading")
             XCTAssertEqual(encodedWaypointJSON?["separatesLegs"] as? Bool, waypoint?.separatesLegs)
-            encodedWaypointJSON?.removeValue(forKey: "separatesLegs")
            
             let targetCoordinateJSON = encodedWaypointJSON?["targetCoordinate"] as? [CLLocationDegrees]
             XCTAssertNotNil(targetCoordinateJSON)
             XCTAssertEqual(targetCoordinateJSON?.count, 2)
             XCTAssertEqual(targetCoordinateJSON?[0] ?? 0, waypoint?.targetCoordinate?.longitude ?? 0, accuracy: 1e-5)
             XCTAssertEqual(targetCoordinateJSON?[1] ?? 0, waypoint?.targetCoordinate?.latitude ?? 0, accuracy: 1e-5)
-            encodedWaypointJSON?.removeValue(forKey: "targetCoordinate")
             
-            XCTAssert(JSONSerialization.objectsAreEqual(waypointJSON, encodedWaypointJSON, approximate: true))
+            let encodedWaypointData = try! JSONSerialization.data(withJSONObject: encodedWaypointJSON!, options: [])
+            var decodedWaypoint: RouteOptions.Waypoint?
+            
+            XCTAssertNoThrow(decodedWaypoint = try JSONDecoder().decode(RouteOptions.Waypoint.self, from: encodedWaypointData))
+            XCTAssertEqual(waypoint, decodedWaypoint)
         }
     }
     
