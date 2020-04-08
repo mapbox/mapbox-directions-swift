@@ -61,8 +61,7 @@ open class Match: DirectionsResult {
      - parameter distance: The matched path’s cumulative distance, measured in meters.
      - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
      - parameter confidence: A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
-     - parameter tracepoints: Tracepoints on the road network that match the tracepoints in `options`.
-     - parameter options: The criteria to match.
+     - parameter weight:  A `Weight` used to determine units and weight type used for matching
      */
     public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, weight: Weight) {
         self.confidence = confidence
@@ -102,7 +101,6 @@ open class Match: DirectionsResult {
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
     open var confidence: Float
-    
 }
 
 extension Match: Equatable {

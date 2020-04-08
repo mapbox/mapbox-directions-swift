@@ -6,8 +6,6 @@ public extension Match {
      A tracepoint represents a location matched to the road network.
      */
     struct Tracepoint: Matchpoint, Equatable {
-        // MARK: Positioning the Waypoint
-        
         /**
          The geographic coordinate of the waypoint, snapped to the road network.
          */
@@ -18,16 +16,27 @@ public extension Match {
          
          The requested waypoint is snapped to the road network. This property contains the straight-line distance from the original requested waypoint’s `DirectionsOptions.Waypoint.coordinate` property to the `coordinate` property.
          */
-        public var correction: CLLocationDistance
-        
-        // MARK: Determining the Degree of Confidence
+        public var correction: CLLocationDistance // <-- not in a doc (just for conformance to `Matchpoint`?)
         
         /**
          Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.
          */
         public var countOfAlternatives: Int
         
-        public var name: String? // ??? matching response otherwise won't be able to decode waypoints names.
+        /**
+         The name of the road or path the coordinate snapped to.
+         */
+        public var name: String?
+        
+        /***
+         The index of the match object in matchings that the sub-trace was matched to.
+         */
+        public var matchingIndex: Int = 0 // TODO: not sure about default value
+        
+        /***
+         The index of the waypoint inside the matched route.
+         */
+        public var waypointIndex: Int = 0 // TODO: not sure about default value
     }
 }
 
@@ -37,6 +46,8 @@ extension Match.Tracepoint: Codable {
         case correction = "distance"
         case countOfAlternatives = "alternatives_count"
         case name
+        case matchingIndex = "matchings_index"
+        case waypointIndex = "waypoint_index"
     }
 }
 
