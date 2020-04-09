@@ -27,9 +27,6 @@ public struct RouteResponse {
 
 extension RouteResponse: Codable {
     enum CodingKeys: String, CodingKey {
-//        case code // << do we need these?
-//        case message // <<
-//        case error // << TODO: remove?
         case identifier = "uuid"
         case routes
         case waypoints
@@ -64,22 +61,6 @@ extension RouteResponse: Codable {
             let filtered = tracepoints.compactMap { $0 }
             let tracepointsData = try encoder.encode(filtered)
             waypoints = try decoder.decode([Route.Waypoint].self, from: tracepointsData)
-            
-            // Push tracepoints down to individual legs to reflect waypoint_index.
-            if let routes = routes {
-                let sorted = zip(filtered, waypoints!).sorted {
-                    $0.0.waypointIndex < $1.0.waypointIndex
-                }
-                for (index, route) in routes.enumerated() {
-                    let legSeparators = sorted.filter {
-                        return $0.0.matchingIndex == index
-                    }.map { $0.1 }
-                    
-                    assert(legSeparators.count == route.legs.count + 1)
-                    
-                    route.legSeparators = legSeparators
-                }
-            }
         }
     
         self.init(httpResponse: response.httpResponse, identifier: nil, routes: routes, waypoints: waypoints, options: .match(options), credentials: credentials)

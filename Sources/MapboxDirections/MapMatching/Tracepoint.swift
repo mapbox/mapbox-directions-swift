@@ -31,12 +31,12 @@ public extension Match {
         /***
          The index of the match object in matchings that the sub-trace was matched to.
          */
-        public var matchingIndex: Int = 0 // TODO: not sure about default value
+        public var matchingIndex: Int
         
         /***
          The index of the waypoint inside the matched route.
          */
-        public var waypointIndex: Int = 0 // TODO: not sure about default value
+        public var waypointIndex: Int
     }
 }
 

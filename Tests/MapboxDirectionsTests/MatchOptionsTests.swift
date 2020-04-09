@@ -32,7 +32,7 @@ class MatchOptionsTests: XCTestCase {
         let one = CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)
         let two = CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)
         return [one, two].map {
-            Match.Tracepoint(coordinate: $0, correction: 0, countOfAlternatives: 0)
+            Match.Tracepoint(coordinate: $0, correction: 0, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 0)
         }
     }
 

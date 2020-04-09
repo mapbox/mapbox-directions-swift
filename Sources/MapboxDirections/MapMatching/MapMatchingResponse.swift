@@ -52,5 +52,15 @@ extension MapMatchingResponse: Codable {
         
         tracepoints = try container.decodeIfPresent([Match.Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
+        
+        if let sortedTracepoints = self.tracepoints?.sorted(by: {
+            ($0?.waypointIndex ?? -1) < ($1?.waypointIndex ?? -1)
+        }) {
+            matches?.enumerated().forEach { (index, element) in
+                element.tracepoints = sortedTracepoints.filter {
+                    $0?.matchingIndex == index
+                }
+            }
+        }
     }
 }

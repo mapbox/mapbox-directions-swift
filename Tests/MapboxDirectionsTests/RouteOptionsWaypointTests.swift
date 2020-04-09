@@ -116,19 +116,25 @@ class RouteOptionsWaypointTests: XCTestCase {
     }
     
     func testTracepointEquality() {
-        let left = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0)
+        let left = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 0)
         XCTAssertEqual(left, left)
         
-        var right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0)
+        var right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 0)
         XCTAssertEqual(left, right)
         
-        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), correction: 0, countOfAlternatives: 0)
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), correction: 0, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 0)
         XCTAssertNotEqual(left, right)
 
-        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 1, countOfAlternatives: 0)
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 1, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 0)
         XCTAssertNotEqual(left, right)
 
-        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 1)
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 1, matchingIndex: 0, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+        
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, matchingIndex: 1, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+        
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, matchingIndex: 0, waypointIndex: 1)
         XCTAssertNotEqual(left, right)
     }
     
