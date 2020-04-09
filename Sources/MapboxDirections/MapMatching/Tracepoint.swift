@@ -16,7 +16,7 @@ public extension Match {
          
          The requested waypoint is snapped to the road network. This property contains the straight-line distance from the original requested waypoint’s `DirectionsOptions.Waypoint.coordinate` property to the `coordinate` property.
          */
-        public var correction: CLLocationDistance // <-- not in a doc (just for conformance to `Matchpoint`?)
+        public var correction: CLLocationDistance
         
         /**
          Number of probable alternative matchings for this tracepoint. A value of zero indicates that this point was matched unambiguously.

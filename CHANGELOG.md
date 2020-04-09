@@ -11,10 +11,10 @@
 
 ### Locations and geometry
 
+* Added `matchings_index` and `waypoint_index` to the `Tracepoint` structure to correctly reflect Map Matching response data.
 * Replaced the `Waypoint` and `Tracepoint` classes with separate classes for requests and responses. Now you create a `RouteOptions` or `MatchOptions` using a series of `DirectionsOptions.Waypoint` instances (also known as `RouteOptions.Waypoint` or `MatchOptions.Waypoint`). The `RouteCompletionHandler` and `MatchCompletionHandler` closures and the response types represent waypoints as `DirectionsResult.Waypoint` (also known as `RouteOptions.Waypoint`) and tracepoints as `Match.Tracepoint`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * Replaced the `Route.coordinates` property with `Route.shape` and the `RouteStep.coordinates` property with `RouteStep.shape`. The `Route.coordinateCount` and `RouteStep.coordinateCount` properties have been removed, but you can use the `LineString.coordinates` property to get the array of `CLLocationCoordinate2D`s. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 * `RouteLeg.source` and `RouteLeg.destination` are now optional. They can be `nil` when the `RouteLeg` object is decoded individually from JSON. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
-* The `
 * Renamed the `Tracepoint.alternateCount` property to `Tracepoint.countOfAlternatives`. ([#382](https://github.com/mapbox/MapboxDirections.swift/pull/382))
 
 ### Error handling
