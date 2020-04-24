@@ -20,14 +20,6 @@ open class RouteLeg: Codable {
         case annotation
     }
     
-    private enum AnnotationCodingKeys: String, CodingKey {
-        case segmentDistances = "distance"
-        case expectedSegmentTravelTimes = "duration"
-        case segmentSpeeds = "speed"
-        case segmentCongestionLevels = "congestion"
-        case segmentMaximumSpeedLimits = "maxspeed"
-    }
-    
     // MARK: Creating a Leg
     
     /**
@@ -74,17 +66,9 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        let annotation = try? container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-        segmentDistances = try annotation?.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
-        expectedSegmentTravelTimes = try annotation?.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
-        segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
-        segmentCongestionLevels = try annotation?.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
+        let annotation = try container.decodeIfPresent(RouteLegAnnotation.self, forKey: .annotation)
         
-        if let speedLimitDescriptors = try annotation?.decodeIfPresent([SpeedLimitDescriptor].self, forKey: .segmentMaximumSpeedLimits) {
-            segmentMaximumSpeedLimits = speedLimitDescriptors.map { Measurement<UnitSpeed>(speedLimitDescriptor: $0) }
-        } else {
-            segmentMaximumSpeedLimits = nil
-        }
+        updateAnnotationData(from: annotation)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -98,18 +82,24 @@ open class RouteLeg: Codable {
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
         if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil || segmentMaximumSpeedLimits != nil {
-            var annotationContainer = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-            try annotationContainer.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
-            try annotationContainer.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-            try annotationContainer.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
-            try annotationContainer.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
             
-            if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
-                try annotationContainer.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
-            }
+            let annotation = RouteLegAnnotation(segmentDistances: segmentDistances,
+                                                expectedSegmentTravelTimes: expectedSegmentTravelTimes,
+                                                segmentSpeeds: segmentSpeeds,
+                                                segmentCongestionLevels: segmentCongestionLevels,
+                                                segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
+            try container.encode(annotation, forKey: .annotation)
         }
     }
 
+    func updateAnnotationData(from annotation: RouteLegAnnotation?) {
+        segmentDistances = annotation?.segmentDistances
+        expectedSegmentTravelTimes = annotation?.expectedSegmentTravelTimes
+        segmentSpeeds = annotation?.segmentSpeeds
+        segmentCongestionLevels = annotation?.segmentCongestionLevels
+        segmentMaximumSpeedLimits = annotation?.segmentMaximumSpeedLimits
+    }
+    
     // MARK: Getting the Endpoints of the Leg
 
     /**

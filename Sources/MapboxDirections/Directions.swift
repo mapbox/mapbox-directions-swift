@@ -72,7 +72,7 @@ open class Directions: NSObject {
      
      - parameter session: A `Directions.Session` object containing session information
      
-     - parameter  result: A `Result` enum that represents the `RouteResponse` if the request returned successfully, or the error if it did not.
+     - parameter result: A `Result` enum that represents the `RouteResponse` if the request returned successfully, or the error if it did not.
      */
     public typealias RouteCompletionHandler = (_ session: Session, _ result: Result<RouteResponse, DirectionsError>) -> Void
     
@@ -81,9 +81,18 @@ open class Directions: NSObject {
      
      - parameter session: A `Directions.Session` object containing session information
      
-     - parameter  result: A `Result` enum that represents the `MapMatchingResponse` if the request returned successfully, or the error if it did not.
+     - parameter result: A `Result` enum that represents the `MapMatchingResponse` if the request returned successfully, or the error if it did not.
      */
     public typealias MatchCompletionHandler = (_ session: Session, _ result: Result<MapMatchingResponse, DirectionsError>) -> Void
+    
+    /**
+     A closure (block) to be called when a directions route refresh request is complete.
+     
+     - parameter credentials: A object containing the credentials used to make the request.
+     
+     - parameter result: A `Result` enum that represents the `RouteRefreshResponse` if the request returned successfully, or the error if it did not.
+     */
+    public typealias RouteRefreshCompletionHandler = (_ credentials: DirectionsCredentials, _ result: Result<RouteRefreshResponse, DirectionsError>) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -375,6 +384,102 @@ open class Directions: NSObject {
         return requestTask
     }
     
+    @discardableResult open func refresh(route: Route, currentLegIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+        
+        guard let routeIdentifier = route.routeIdentifier, let routeIndex = route.routeIndex else {
+            completionHandler(credentials, .failure(.invalidInput(message: "Route must have an Identifier and Index.")))
+            return nil
+        }
+        
+        let request = urlRequest(forRefreshing: routeIdentifier, routeIndex: routeIndex, currentLegIndex: currentLegIndex)
+        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+            if let urlError = possibleError as? URLError {
+                DispatchQueue.main.async {
+                    completionHandler(self.credentials, .failure(.network(urlError)))
+                }
+                return
+            }
+            
+            guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
+                DispatchQueue.main.async {
+                    completionHandler(self.credentials, .failure(.invalidResponse(possibleResponse)))
+                }
+                return
+            }
+            
+            guard let data = possibleData else {
+                DispatchQueue.main.async {
+                    completionHandler(self.credentials, .failure(.noData))
+                }
+                return
+            }
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.userInfo = [.routeIndex: routeIndex,
+                                        .legIndex: currentLegIndex,
+                                        .credentials: self.credentials]
+                    
+                    guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
+                        let apiError = DirectionsError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
+
+                        DispatchQueue.main.async {
+                            completionHandler(self.credentials, .failure(apiError))
+                        }
+                        return
+                    }
+                    
+                    guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
+                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                        DispatchQueue.main.async {
+                            completionHandler(self.credentials, .failure(apiError))
+                        }
+                        return
+                    }
+                    
+                    var result = try decoder.decode(RouteRefreshResponse.self, from: data)
+                    result.updateRoute(route)
+                    guard result.route != nil else {
+                        DispatchQueue.main.async {
+                            completionHandler(self.credentials, .failure(.unableToRefresh))
+                        }
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completionHandler(self.credentials, .success(result))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        let bailError = DirectionsError(code: nil, message: nil, response: response, underlyingError: error)
+                        completionHandler(self.credentials, .failure(bailError))
+                    }
+                }
+            }
+        }
+        requestTask.priority = 1
+        requestTask.resume()
+        return requestTask
+    }
+    
+    open func urlRequest(forRefreshing routeId: String, routeIndex: Int, currentLegIndex: Int) -> URLRequest {
+        var params: [URLQueryItem] = []
+        // directions-refresh/v1/mapbox/driving-traffic/{request_id}/{route_index}/{leg_index}
+        params += [URLQueryItem(name: "access_token", value: credentials.accessToken)]
+        
+        var unparameterizedURL = URL(string: "directions-refresh/v1/\(DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
+        unparameterizedURL.appendPathComponent(routeId)
+        unparameterizedURL.appendPathComponent(String(routeIndex))
+        unparameterizedURL.appendPathComponent(String(currentLegIndex))
+        var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
+        components.queryItems = params
+        
+        let getURL = components.url!
+        var request = URLRequest(url: getURL)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        return request
+    }
     /**
      The GET HTTP URL used to fetch the routes from the API.
      
@@ -440,11 +545,14 @@ open class Directions: NSObject {
 }
 
 /**
-    Keys to pass to populate a `userInfo` dictionary, which is passed to the `JSONDecoder` upon trying to decode a `RouteResponse` or `MapMatchingResponse`.
+    Keys to pass to populate a `userInfo` dictionary, which is passed to the `JSONDecoder` upon trying to decode a `RouteResponse`, `MapMatchingResponse`or `RouteRefreshResponse`.
  */
 public extension CodingUserInfoKey {
     static let options = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeOptions")!
     static let httpResponse = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.httpResponse")!
     static let credentials = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.credentials")!
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
+    
+    static let routeIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeIndex")!
+    static let legIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.legIndex")!
 }
