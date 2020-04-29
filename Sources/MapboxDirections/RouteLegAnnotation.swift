@@ -1,5 +1,6 @@
 
 import Foundation
+import CoreLocation
 
 struct RouteLegAnnotation {
     var segmentDistances: [CLLocationDistance]?

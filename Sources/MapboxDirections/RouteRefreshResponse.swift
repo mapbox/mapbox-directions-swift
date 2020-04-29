@@ -30,12 +30,12 @@ extension RouteRefreshResponse: Codable {
     }
     
     mutating func updateRoute(_ route: Route) {
-
-        var updatedLegs = route.legs  // make copy
-        // check equal counts?
-        updatedLegs = zip(legAnnotations, updatedLegs).map { (pair) -> RouteLeg in
-            let (annotation, leg) = pair
-            leg.updateAnnotationData(from: annotation) // update only legs after 'currentLegIndex'?
+        let updatedLegs = zip(legAnnotations, route.legs.enumerated()).map { (pair) -> RouteLeg in
+            let (annotation, legEnum) = pair
+            let leg = legEnum.element.copy() as! RouteLeg
+            if legEnum.offset >= legIndex {
+                leg.updateAnnotationData(from: annotation)
+            }
             return leg
         }
         

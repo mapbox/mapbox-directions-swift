@@ -273,6 +273,25 @@ extension RouteLeg: CustomQuickLookConvertible {
     }
 }
 
+extension RouteLeg: NSCopying {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let copy = RouteLeg(steps: steps,
+                            name: name,
+                            distance: distance,
+                            expectedTravelTime: expectedTravelTime,
+                            profileIdentifier: profileIdentifier)
+        copy.source = source
+        copy.destination = destination
+        copy.segmentDistances = segmentDistances
+        copy.expectedSegmentTravelTimes = expectedSegmentTravelTimes
+        copy.segmentSpeeds = segmentSpeeds
+        copy.segmentCongestionLevels = segmentCongestionLevels
+        copy.segmentMaximumSpeedLimits = segmentMaximumSpeedLimits
+        
+        return copy
+    }
+}
+
 
 public extension Array where Element == RouteLeg {
     /**
