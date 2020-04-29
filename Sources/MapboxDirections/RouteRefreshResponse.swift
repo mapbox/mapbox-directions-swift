@@ -29,7 +29,7 @@ extension RouteRefreshResponse: Codable {
         case route
     }
     
-    mutating func updateRoute(_ route: Route) {
+    private func applyRefreshingTo(route: Route) -> Route{
         let updatedLegs = zip(legAnnotations, route.legs.enumerated()).map { (pair) -> RouteLeg in
             let (annotation, legEnum) = pair
             let leg = legEnum.element.copy() as! RouteLeg
@@ -39,12 +39,14 @@ extension RouteRefreshResponse: Codable {
             return leg
         }
         
-        self.route = Route(legs: updatedLegs,
+        let route = Route(legs: updatedLegs,
                            shape: route.shape,
                            distance: route.distance,
                            expectedTravelTime: route.expectedTravelTime)
-        self.route?.routeIdentifier = route.routeIdentifier
-        self.route?.routeIndex = route.routeIndex
+        route.routeIdentifier = route.routeIdentifier
+        route.routeIndex = route.routeIndex
+        
+        return route
     }
     
     public init(from decoder: Decoder) throws {
@@ -58,13 +60,16 @@ extension RouteRefreshResponse: Codable {
         
         self.credentials = credentials
         
-        self.routeIndex = decoder.userInfo[.routeIndex] as! Int
-        self.legIndex = decoder.userInfo[.legIndex] as! Int
-        
         self.identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         
         let refreshedRoute = try container.decode(RefreshedRoute.self, forKey: .route)
         self.legAnnotations = refreshedRoute.legAnnotations
+        
+        self.routeIndex = decoder.userInfo[.routeIndex] as! Int
+        self.legIndex = decoder.userInfo[.legIndex] as! Int
+        let refreshingRoute = decoder.userInfo[.refreshingRoute] as! Route
+        
+        self.route = applyRefreshingTo(route: refreshingRoute)
     }
     
     public func encode(to encoder: Encoder) throws {

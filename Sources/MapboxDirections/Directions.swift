@@ -417,7 +417,8 @@ open class Directions: NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
-                    decoder.userInfo = [.routeIndex: routeIndex,
+                    decoder.userInfo = [.refreshingRoute: route,
+                                        .routeIndex: routeIndex,
                                         .legIndex: currentLegIndex,
                                         .credentials: self.credentials]
                     
@@ -438,8 +439,7 @@ open class Directions: NSObject {
                         return
                     }
                     
-                    var result = try decoder.decode(RouteRefreshResponse.self, from: data)
-                    result.updateRoute(route)
+                    let result = try decoder.decode(RouteRefreshResponse.self, from: data)
                     guard result.route != nil else {
                         DispatchQueue.main.async {
                             completionHandler(self.credentials, .failure(.unableToRefresh))
@@ -553,6 +553,7 @@ public extension CodingUserInfoKey {
     static let credentials = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.credentials")!
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
     
+    static let refreshingRoute = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.refreshedRoute")!
     static let routeIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeIndex")!
     static let legIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.legIndex")!
 }
