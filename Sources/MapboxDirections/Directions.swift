@@ -465,7 +465,6 @@ open class Directions: NSObject {
     
     open func urlRequest(forRefreshing routeId: String, routeIndex: Int, currentLegIndex: Int) -> URLRequest {
         var params: [URLQueryItem] = []
-        // directions-refresh/v1/mapbox/driving-traffic/{request_id}/{route_index}/{leg_index}
         params += [URLQueryItem(name: "access_token", value: credentials.accessToken)]
         
         var unparameterizedURL = URL(string: "directions-refresh/v1/\(DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
