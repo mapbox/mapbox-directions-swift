@@ -2,7 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/mapbox/mapbox-directions-swift.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-directions-swift)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](https://cocoapods.org/pods/MapboxDirections.swift/)
 [![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.svg)](https://cocoapods.org/pods/MapboxDirections/)
 [![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/)
 [![codecov](https://codecov.io/gh/mapbox/mapbox-directions-swift/branch/master/graph/badge.svg)](https://codecov.io/gh/mapbox/mapbox-directions-swift)
@@ -16,28 +15,19 @@ Mapbox Directions pairs well with [MapboxGeocoder.swift](https://github.com/mapb
 Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
 ```cartfile
-// Latest stable release
-github "mapbox/mapbox-directions-swift" ~> 0.30
-// Latest prerelease
-github "mapbox/mapbox-directions-swift" ~> 1.0.0-alpha.1
+github "mapbox/mapbox-directions-swift" ~> 0.31
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
-# Latest stable release
-pod 'MapboxDirections.swift', '~> 0.30'
-# Latest prerelease
-pod 'MapboxDirections', '~> 1.0.0-alpha.1'
+pod 'MapboxDirections', '~> 0.31'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
 
 ```swift
-# Latest stable release
-.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "0.30.0")
-# Latest prerelease
-.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.0.0-alpha.1")
+.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "0.31.0")
 ```
 
 Then `import MapboxDirections`.

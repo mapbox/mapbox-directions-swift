@@ -1,6 +1,6 @@
 # Changes to Mapbox Directions for Swift
 
-## v1.0.0
+## v0.31.0
 
 ### Packaging
 
