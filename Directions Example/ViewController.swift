@@ -71,11 +71,9 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
         options.attributeOptions = [.congestionLevel, .maximumSpeedLimit]
         
         Directions.shared.calculate(options) { (session, result) in
-            
-            switch (result) {
+            switch result {
             case let .failure(error):
                 print("Error calculating directions: \(error)")
-                return
             case let .success(response):
                 if let route = response.routes?.first, let leg = route.legs.first {
                     print("Route via \(leg):")
@@ -111,8 +109,6 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                     }
                 }
             }
-            
-            
         }
     }
     

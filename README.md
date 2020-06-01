@@ -52,7 +52,7 @@ The main directions class is `Directions`. Create a directions object using your
 // main.swift
 import MapboxDirections
 
-let directions = Directions(accessToken: "<#your access token#>")
+let directions = Directions(credentials: DirectionsCredentials(accessToken: "<#your access token#>"))
 ```
 
 Alternatively, you can place your access token in the `MGLMapboxAccessToken` key of your application’s Info.plist file, then use the shared directions object:
@@ -74,13 +74,15 @@ let waypoints = [
 let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
 options.includesSteps = true
 
-let task = directions.calculate(options) { (waypoints, routes, error) in
-    guard error == nil else {
-        print("Error calculating directions: \(error!)")
-        return
-    }
-
-    if let route = routes?.first, let leg = route.legs.first {
+let task = directions.calculate(options) { (session, result) in
+    switch result {
+    case .failure(let error):
+        print("Error calculating directions: \(error)")
+    case .success(let response):
+        guard let route = response.routes?.first, let leg = route.legs.first else {
+            return
+        }
+        
         print("Route via \(leg):")
 
         let distanceFormatter = LengthFormatter()
@@ -123,13 +125,15 @@ let coordinates = [
 let options = MatchOptions(coordinates: coordinates)
 options.includesSteps = true
 
-let task = directions.calculate(options) { (matches, error) in
-    guard error == nil else {
-        print("Error matching coordinates: \(error!)")
-        return
-    }
-
-    if let match = matches?.first, let leg = match.legs.first {
+let task = directions.calculate(options) { (session, result) in
+    switch result {
+    case .failure(let error):
+        print("Error matching coordinates: \(error)")
+    case .success(let response):
+        guard let match = response.matches?.first, let leg = match.legs.first else {
+            return
+        }
+        
         print("Match via \(leg):")
 
         let distanceFormatter = LengthFormatter()
