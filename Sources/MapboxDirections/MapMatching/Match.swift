@@ -111,6 +111,7 @@ extension Match: Equatable {
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
             lhs.speechLocale == rhs.speechLocale &&
+            lhs.speechLocaleIsSupported == rhs.speechLocaleIsSupported &&
             lhs.confidence == rhs.confidence &&
             lhs.weight == rhs.weight &&
             lhs.legs == rhs.legs &&

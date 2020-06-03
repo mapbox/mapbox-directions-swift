@@ -26,6 +26,7 @@ open class DirectionsResult: Codable {
         self.shape = shape
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
+        self.speechLocaleIsSupported = false
     }
     
     public required init(from decoder: Decoder) throws {
@@ -62,6 +63,8 @@ open class DirectionsResult: Codable {
         } else {
             speechLocale = nil
         }
+
+        speechLocaleIsSupported = container.contains(.speechLocale)
     }
     
     
@@ -77,7 +80,10 @@ open class DirectionsResult: Codable {
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
-        try container.encode(speechLocale?.identifier, forKey: .speechLocale)
+
+        if speechLocaleIsSupported {
+            try container.encode(speechLocale?.identifier, forKey: .speechLocale)
+        }
     }
     
     // MARK: Getting the Shape of the Route
@@ -168,6 +174,8 @@ open class DirectionsResult: Codable {
      This property does not persist after encoding and decoding.
      */
     open var responseEndDate: Date?
+
+    internal let speechLocaleIsSupported: Bool
 }
 
 extension DirectionsResult: CustomStringConvertible {
