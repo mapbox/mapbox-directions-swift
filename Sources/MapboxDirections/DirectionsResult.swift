@@ -77,7 +77,7 @@ open class DirectionsResult: Codable {
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
-        try container.encodeIfPresent(speechLocale?.identifier, forKey: .speechLocale)
+        try container.encode(speechLocale?.identifier, forKey: .speechLocale)
     }
     
     // MARK: Getting the Shape of the Route
