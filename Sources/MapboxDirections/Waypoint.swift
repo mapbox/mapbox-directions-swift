@@ -20,11 +20,11 @@ public class Waypoint: Codable {
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        coordinate = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinate)
+        coordinate = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .coordinate).decodedCoordinates
         
         coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy)
         
-        targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2D.self, forKey: .targetCoordinate)
+        targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2DCodable.self, forKey: .targetCoordinate)?.decodedCoordinates
         
         heading = try container.decodeIfPresent(CLLocationDirection.self, forKey: .heading)
         
@@ -44,6 +44,20 @@ public class Waypoint: Codable {
         } else {
             name = nil
         }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(CLLocationCoordinate2DCodable(coordinate), forKey: .coordinate)
+        try container.encode(coordinateAccuracy, forKey: .coordinateAccuracy)
+        let targetCoordinateCodable = targetCoordinate != nil ? CLLocationCoordinate2DCodable(targetCoordinate!) : nil
+        try container.encode(targetCoordinateCodable, forKey: .targetCoordinate)
+        try container.encodeIfPresent(heading, forKey: .heading)
+        try container.encodeIfPresent(headingAccuracy, forKey: .headingAccuracy)
+        try container.encodeIfPresent(separatesLegs, forKey: .separatesLegs)
+        try container.encodeIfPresent(allowsArrivingOnOppositeSide, forKey: .allowsArrivingOnOppositeSide)
+        try container.encodeIfPresent(name, forKey: .name)
     }
     
     /**

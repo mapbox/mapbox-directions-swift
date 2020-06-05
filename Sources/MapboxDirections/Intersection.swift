@@ -103,7 +103,7 @@ extension Intersection: Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(location, forKey: .location)
+        try container.encode(CLLocationCoordinate2DCodable(location), forKey: .location)
         try container.encode(headings, forKey: .headings)
         
         try container.encodeIfPresent(approachIndex, forKey: .approachIndex)
@@ -133,7 +133,7 @@ extension Intersection: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        location = try container.decode(CLLocationCoordinate2D.self, forKey: .location)
+        location = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
         headings = try container.decode([CLLocationDirection].self, forKey: .headings)
         
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
