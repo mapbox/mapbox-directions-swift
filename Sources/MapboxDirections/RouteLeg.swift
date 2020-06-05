@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 /**
  A `RouteLeg` object defines a single leg of a route between two waypoints. If the overall route has only two waypoints, it has a single `RouteLeg` object that covers the entire route. The route leg object includes information about the leg, such as its name, distance, and expected travel time. Depending on the criteria used to calculate the route, the route leg object may also include detailed turn-by-turn instructions.

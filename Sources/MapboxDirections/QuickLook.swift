@@ -1,6 +1,6 @@
 import Foundation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 /**
  A type with a customized Quick Look representation in the Xcode debugger.

@@ -1,7 +1,7 @@
 import Foundation
-import struct Polyline.Polyline
+import Polyline
 import CoreLocation
-import struct Turf.LineString
+import Turf
 
 /**
  A `DirectionsResult` represents a result returned from either the Mapbox Directions service.

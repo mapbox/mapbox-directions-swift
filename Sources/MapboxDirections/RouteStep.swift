@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.

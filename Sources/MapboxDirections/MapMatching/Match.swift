@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 /**
  A `Weight` enum represents the weight given to a specific match by the Directions API. The default metric is a compound index called "routability",  which is duration-based with additional penalties for less desirable maneuvers.
