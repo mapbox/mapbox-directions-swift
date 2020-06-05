@@ -24,6 +24,18 @@ class VisualInstructionsTests: XCTestCase {
                 "modifier": "right",
             ],
             "secondary": nil,
+            "view": [
+              "text": "CA01610_1_E",
+              "components": [
+                [
+                  "text": "CA01610_1_E",
+                  "type": "guidance-view",
+                  "url": "https://www.mapbox.com/navigation"
+                    ],
+              ],
+              "type": "fork",
+              "modifier": "right"
+            ],
         ]
         let bannerData = try! JSONSerialization.data(withJSONObject: bannerJSON, options: [])
         var banner: VisualInstructionBanner?
@@ -36,12 +48,17 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(banner.primaryInstruction.maneuverType, .turn)
             XCTAssertEqual(banner.primaryInstruction.maneuverDirection, .right)
             XCTAssertNil(banner.secondaryInstruction)
+            XCTAssertNotNil(banner.quaternaryInstruction)
             XCTAssertEqual(banner.drivingSide, .default)
         }
         
         let component = VisualInstruction.Component.text(text: .init(text: "Weinstock Strasse", abbreviation: nil, abbreviationPriority: nil))
         let primaryInstruction = VisualInstruction(text: "Weinstock Strasse", maneuverType: .turn, maneuverDirection: .right, components: [component])
-        banner = VisualInstructionBanner(distanceAlongStep: 393.3, primary: primaryInstruction, secondary: nil, tertiary: nil, drivingSide: .right)
+        
+        let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")), alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil))
+        let quaternaryInstruction = VisualInstruction(text: "CA01610_1_E", maneuverType: .reachFork, maneuverDirection: .right, components: [guideViewComponent])
+        
+        banner = VisualInstructionBanner(distanceAlongStep: 393.3, primary: primaryInstruction, secondary: nil, tertiary: nil, quaternary: quaternaryInstruction, drivingSide: .right)
         let encoder = JSONEncoder()
         var encodedData: Data?
         XCTAssertNoThrow(encodedData = try encoder.encode(banner))

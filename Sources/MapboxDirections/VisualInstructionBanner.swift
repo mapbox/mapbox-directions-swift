@@ -14,6 +14,7 @@ open class VisualInstructionBanner: Codable {
         case primaryInstruction = "primary"
         case secondaryInstruction = "secondary"
         case tertiaryInstruction = "sub"
+        case quaternaryInstruction = "view"
         case drivingSide
     }
     
@@ -22,11 +23,12 @@ open class VisualInstructionBanner: Codable {
     /**
      Initializes a visual instruction banner with the given instructions.
      */
-    public init(distanceAlongStep: CLLocationDistance, primary: VisualInstruction, secondary: VisualInstruction?, tertiary: VisualInstruction?, drivingSide: DrivingSide) {
+    public init(distanceAlongStep: CLLocationDistance, primary: VisualInstruction, secondary: VisualInstruction?, tertiary: VisualInstruction?, quaternary: VisualInstruction?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         primaryInstruction = primary
         secondaryInstruction = secondary
         tertiaryInstruction = tertiary
+        quaternaryInstruction = quaternary
         self.drivingSide = drivingSide
     }
     
@@ -36,6 +38,7 @@ open class VisualInstructionBanner: Codable {
         try container.encode(primaryInstruction, forKey: .primaryInstruction)
         try container.encodeIfPresent(secondaryInstruction, forKey: .secondaryInstruction)
         try container.encodeIfPresent(tertiaryInstruction, forKey: .tertiaryInstruction)
+        try container.encodeIfPresent(quaternaryInstruction, forKey: .quaternaryInstruction)
         try container.encode(drivingSide, forKey: .drivingSide)
     }
     
@@ -45,6 +48,7 @@ open class VisualInstructionBanner: Codable {
         primaryInstruction = try container.decode(VisualInstruction.self, forKey: .primaryInstruction)
         secondaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .secondaryInstruction)
         tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
+        quaternaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .quaternaryInstruction)
         if let directlyEncoded = try container.decodeIfPresent(DrivingSide.self, forKey: .drivingSide) {
             drivingSide = directlyEncoded
         } else {
@@ -78,6 +82,12 @@ open class VisualInstructionBanner: Codable {
      */
     public let tertiaryInstruction: VisualInstruction?
     
+    /**
+     A visual instruction that is presented to provide information about the incoming junction.
+     This instruction displays a zoomed image of incoming junction.
+     */
+    public let quaternaryInstruction: VisualInstruction?
+    
     // MARK: Respecting Regional Driving Rules
     
     /**
@@ -92,6 +102,7 @@ extension VisualInstructionBanner: Equatable {
             lhs.primaryInstruction == rhs.primaryInstruction &&
             lhs.secondaryInstruction == rhs.secondaryInstruction &&
             lhs.tertiaryInstruction == rhs.tertiaryInstruction &&
+            lhs.quaternaryInstruction == rhs .quaternaryInstruction &&
             lhs.drivingSide == rhs.drivingSide
     }
 }
