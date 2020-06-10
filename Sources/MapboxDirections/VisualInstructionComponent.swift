@@ -154,6 +154,7 @@ public extension VisualInstruction.Component {
     }
 }
 
+/// A guidance view image representation of a visual instruction component.
 public struct GuidanceViewImageRepresentation: Equatable {
     /**
      Initializes an image representation bearing the image at the given URL.
