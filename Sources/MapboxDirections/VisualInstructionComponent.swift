@@ -34,10 +34,13 @@ public extension VisualInstruction {
          */
         case image(image: ImageRepresentation, alternativeText: TextRepresentation)
         
+        /**
+         The component is an image of a zoomed junction, with a fallback text representation.
+         */
         case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation)
         
         /**
-         The compoment contains the localized word for “Exit”.
+         The component contains the localized word for “Exit”.
          
          This component may appear before or after an `.exitCode` component, depending on the language. You can hide this component if the adjacent `.exitCode` component has an obvious exit-number appearance, for example with an accompanying [motorway exit icon](https://commons.wikimedia.org/wiki/File:Sinnbild_Autobahnausfahrt.svg).
          */
