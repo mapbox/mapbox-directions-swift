@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 extension LineString {
     init(polyLineString: PolyLineString) throws {

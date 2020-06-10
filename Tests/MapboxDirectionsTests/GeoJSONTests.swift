@@ -1,6 +1,6 @@
 import XCTest
 @testable import MapboxDirections
-import struct Turf.LineString
+import Turf
 
 class GeoJSONTests: XCTestCase {
     func testInitialization() {

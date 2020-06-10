@@ -1,6 +1,6 @@
 import Foundation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 extension LineString {
     /**
@@ -28,12 +28,18 @@ enum PolyLineString {
 }
 
 extension PolyLineString: Codable {
+    private enum LineStringCodingKeys: String, CodingKey {
+        case coordinates
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let options = decoder.userInfo[.options] as? DirectionsOptions
         switch options?.shapeFormat ?? .default {
         case .geoJSON:
-            self = .lineString(try container.decode(LineString.self))
+            let lineStringContainer = try decoder.container(keyedBy: LineStringCodingKeys.self)
+            let coordinates = try lineStringContainer.decode([CLLocationCoordinate2DCodable].self, forKey: .coordinates).map { $0.decodedCoordinates }
+            self = .lineString(LineString(coordinates))
         case .polyline, .polyline6:
             let precision = options?.shapeFormat == .polyline6 ? 1e6 : 1e5
             let encodedPolyline = try container.decode(String.self)
@@ -45,7 +51,8 @@ extension PolyLineString: Codable {
         var container = encoder.singleValueContainer()
         switch self {
         case let .lineString(lineString):
-            try container.encode(lineString)
+            var lineStringContainer = encoder.container(keyedBy: LineStringCodingKeys.self)
+            try lineStringContainer.encode(lineString.coordinates.map { CLLocationCoordinate2DCodable($0) }, forKey: .coordinates)
         case let .polyline(encodedPolyline, precision: _):
             try container.encode(encodedPolyline)
         }

@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 import Polyline
-import struct Turf.LineString
+import Turf
 
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
@@ -519,7 +519,7 @@ open class RouteStep: Codable {
         try maneuver.encode(instructions, forKey: .instruction)
         try maneuver.encode(maneuverType, forKey: .type)
         try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
-        try maneuver.encodeIfPresent(maneuverLocation, forKey: .location)
+        try maneuver.encode(CLLocationCoordinate2DCodable(maneuverLocation), forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
         
@@ -534,7 +534,7 @@ open class RouteStep: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
-        maneuverLocation = try maneuver.decode(CLLocationCoordinate2D.self, forKey: .location)
+        maneuverLocation = try maneuver.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
         maneuverType = (try? maneuver.decode(ManeuverType.self, forKey: .type)) ?? .default
         maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
         
