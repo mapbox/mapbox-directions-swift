@@ -1,6 +1,7 @@
 import Foundation
 import Polyline
 import Turf
+import CoreLocation
 
 extension LineString {
     /**
