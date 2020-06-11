@@ -58,3 +58,35 @@ extension PolyLineString: Codable {
         }
     }
 }
+
+struct CLLocationCoordinate2DCodable: Codable {
+    var latitude: CLLocationDegrees
+    var longitude: CLLocationDegrees
+    var decodedCoordinates: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude,
+                                      longitude: longitude)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        try container.encode(longitude)
+        try container.encode(latitude)
+    }
+    
+    init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        longitude = try container.decode(CLLocationDegrees.self)
+        latitude = try container.decode(CLLocationDegrees.self)
+    }
+    
+    init(_ coordinate: CLLocationCoordinate2D) {
+        latitude = coordinate.latitude
+        longitude = coordinate.longitude
+    }
+}
+
+extension CLLocationCoordinate2D {
+    var codableCoordinates: CLLocationCoordinate2DCodable {
+        return CLLocationCoordinate2DCodable(self)
+    }
+}
