@@ -3,6 +3,12 @@ import CoreLocation
 import Polyline
 import Turf
 
+extension BoundingBox: CustomStringConvertible {
+    public var description: String {
+        return "\(southWest.longitude),\(southWest.latitude);\(northEast.longitude),\(northEast.latitude)"
+    }
+}
+
 extension LineString {
     init(polyLineString: PolyLineString) throws {
         switch polyLineString {

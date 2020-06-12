@@ -1,4 +1,5 @@
 import Foundation
+import Turf
 
 public typealias OfflineVersion = String
 public typealias OfflineDownloaderCompletionHandler = (_ location: URL?,_ response: URLResponse?, _ error: Error?) -> Void
@@ -24,7 +25,7 @@ public protocol OfflineDirectionsProtocol {
      - parameter version: The version to download. Version is represented as a String (yyyy-MM-dd-x)
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
-    func downloadTiles(in coordinateBounds: CoordinateBounds, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
+    func downloadTiles(in coordinateBounds: BoundingBox, version: OfflineVersion, completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask
 }
 
 extension Directions: OfflineDirectionsProtocol {
@@ -45,7 +46,7 @@ extension Directions: OfflineDirectionsProtocol {
      - parameter version: A version obtained from `availableVersionsURL`.
      - returns: The URL to generate and download the tile pack that covers the coordinate bounds.
      */
-    public func tilesURL(for coordinateBounds: CoordinateBounds, version: OfflineVersion) -> URL {
+    public func tilesURL(for coordinateBounds: BoundingBox, version: OfflineVersion) -> URL {
         let url = credentials.host.appendingPathComponent("route-tiles/v1").appendingPathComponent(coordinateBounds.description)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "version", value: version),
@@ -91,7 +92,7 @@ extension Directions: OfflineDirectionsProtocol {
      - parameter completionHandler: A closure of type `OfflineDownloaderCompletionHandler` which will be called when the request completes
      */
     @discardableResult
-    public func downloadTiles(in coordinateBounds: CoordinateBounds,
+    public func downloadTiles(in coordinateBounds: BoundingBox,
                               version: OfflineVersion,
                               completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         let url = tilesURL(for: coordinateBounds, version: version)
