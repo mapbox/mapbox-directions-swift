@@ -13,7 +13,6 @@ commands:
                  name: Restore cache
                  keys:
                     - carthage-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Cartfile.resolved" }}
-                    - carthage-v1-{{ .Environment.CIRCLE_JOB }} # used if checksum fails 
 
     save-cache:
         steps:
