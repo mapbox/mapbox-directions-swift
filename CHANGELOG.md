@@ -2,8 +2,7 @@
 
 ## v0.32.0
 
-### Visual instructions
-
+* Removed the `CoordinateBounds` struct in favor of `BoundingBox` from Turf. ([#427](https://github.com/mapbox/mapbox-directions-swift/pull/427))
 * Added the `VisualInstructionBanner.quaternaryInstruction` property and `VisualInstruction.Component.guidanceView(image:alternativeText:)` enumeration case to represent a detailed image of an upcoming junction. ([#425](https://github.com/mapbox/mapbox-directions-swift/pull/425))
 
 ## v0.31.0
