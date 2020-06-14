@@ -475,11 +475,11 @@ open class RouteStep: Codable {
         self.codes = codes
         self.destinationCodes = destinationCodes
         self.destinations = destinations
-        self.intersections = nil
+        self.intersections = intersections
         self.speedLimitSignStandard = speedLimitSignStandard
         self.speedLimitUnit = speedLimitUnit
-        self.instructionsSpokenAlongStep = nil
-        self.instructionsDisplayedAlongStep = nil
+        self.instructionsSpokenAlongStep = instructionsSpokenAlongStep
+        self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep
     }
     
     public func encode(to encoder: Encoder) throws {
