@@ -26,7 +26,7 @@ open class DirectionsResult: Codable {
         self.shape = shape
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
-        self.speechLocaleIsSupported = false
+        self.responseContainsSpeechLocale = false
     }
     
     public required init(from decoder: Decoder) throws {
@@ -64,7 +64,7 @@ open class DirectionsResult: Codable {
             speechLocale = nil
         }
 
-        speechLocaleIsSupported = container.contains(.speechLocale)
+        responseContainsSpeechLocale = container.contains(.speechLocale)
     }
     
     
@@ -81,7 +81,7 @@ open class DirectionsResult: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
 
-        if speechLocaleIsSupported {
+        if responseContainsSpeechLocale {
             try container.encode(speechLocale?.identifier, forKey: .speechLocale)
         }
     }
@@ -175,7 +175,14 @@ open class DirectionsResult: Codable {
      */
     open var responseEndDate: Date?
 
-    internal let speechLocaleIsSupported: Bool
+    /**
+     Internal indicator of whether response contained the `voiceLocale` entry.
+
+     Directions API includes `voiceLocale` if `voice_instructions=true` option was specified in the request.
+
+     This property persists after encoding and decoding.
+     */
+    internal let responseContainsSpeechLocale: Bool
 }
 
 extension DirectionsResult: CustomStringConvertible {
