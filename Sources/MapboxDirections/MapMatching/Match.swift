@@ -4,7 +4,7 @@ import Polyline
 import Turf
 
 /**
- A `Weight` enum represents the weight given to a specific match by the Directions API. The default metric is a compound index called "routability",  which is duration-based with additional penalties for less desirable maneuvers.
+ A `Weight` enum represents the weight given to a specific `Match` by the Directions API. The default metric is a compound index called "routability", which is duration-based with additional penalties for less desirable maneuvers.
  */
 public enum Weight: Equatable {
     
@@ -61,8 +61,7 @@ open class Match: DirectionsResult {
      - parameter distance: The matched path’s cumulative distance, measured in meters.
      - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
      - parameter confidence: A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
-     - parameter tracepoints: Tracepoints on the road network that match the tracepoints in `options`.
-     - parameter options: The criteria to match.
+     - parameter weight: A `Weight` enum, which represents the weight given to a specific `Match`.
      */
     public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, weight: Weight) {
         self.confidence = confidence
@@ -96,6 +95,9 @@ open class Match: DirectionsResult {
         try super.encode(to: encoder)
     }
     
+    /**
+     A `Weight` enum, which represents the weight given to a specific `Match`.
+     */
     open var weight: Weight
     
     /**
