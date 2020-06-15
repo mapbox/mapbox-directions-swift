@@ -20,6 +20,7 @@ open class DirectionsResult: Codable {
     }
     
     // MARK: Creating a Directions Result
+    
     init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval) {
         self.legs = legs
         self.shape = shape
