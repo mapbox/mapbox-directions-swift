@@ -74,4 +74,71 @@ class RouteTests: XCTestCase {
             }
         }
     }
+
+    func testNullVoiceLocaleRoundtrip() {
+
+        // Given
+
+        // Request for the route
+        // Key arguments:
+        // - voice_instructions=true - makes the API to include "voiceLocale" in the response
+        // - language=he - one of the unsupported languages by the API, which makes API to return `nil` for "voiceLocale"
+        // https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-105.081986,39.73843;-104.954255,39.662569.json?overview=false&language=he&voice_instructions=true&access_token=...
+
+        let routeJSON: [String: Any?] = [
+            "legs": [
+                [
+                    "summary": "",
+                    "weight": 1132.7,
+                    "duration": 890.3,
+                    "steps": [],
+                    "distance": 17037.1
+                ]
+            ],
+            "weight_name": "routability",
+            "weight": 1132.7,
+            "duration": 890.3,
+            "distance": 17037.1,
+            "voiceLocale": nil
+        ]
+
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 39.73843, longitude: -105.081986),
+            CLLocationCoordinate2D(latitude: 39.662569, longitude: -104.954255),
+        ])
+
+        options.locale = Locale(identifier: "he")
+        options.includesSpokenInstructions = true
+
+        // When - JSON response is decoded into Route object (trip to)
+
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+
+        guard
+            let routeData = try? JSONSerialization.data(withJSONObject: routeJSON),
+            let route = try? decoder.decode(Route.self, from: routeData)
+        else {
+            XCTFail("Response JSON can't be decoded as Route")
+            return
+        }
+
+        // Then - speechLocale is decoded as nil
+
+        XCTAssertNil(route.speechLocale)
+
+        // When - The route is encoded to JSON (trip from)
+
+        guard
+            let jsonData = try? JSONEncoder().encode(route),
+            let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any?]
+        else {
+            XCTFail("Route can't be encoded into JSON")
+            return
+        }
+
+        // Then - voiceLocale key is present and its value is nil
+
+        XCTAssertTrue(json.contains { (key, value) in key == "voiceLocale" && value == nil })
+    }
 }

@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## master
+
+* Fixed an issue where decoding and reencoding a JSON-formatted response from the Mapbox Directions API would cause the `voiceLocale` property to be omitted from route objects. ([#424](https://github.com/mapbox/mapbox-directions-swift/pull/424))
+
 ## v0.32.0
 
 * Removed the `CoordinateBounds` struct in favor of `BoundingBox` from Turf. ([#427](https://github.com/mapbox/mapbox-directions-swift/pull/427))
