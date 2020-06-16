@@ -3,6 +3,7 @@
 ## master
 
 * Fixed an issue where decoding and reencoding a JSON-formatted response from the Mapbox Directions API would cause the `voiceLocale` property to be omitted from route objects. ([#424](https://github.com/mapbox/mapbox-directions-swift/pull/424))
+* Added the `Route(legs:shape:distance:expectedTravelTime:)` and `Route(from:)` initializers. ([#430](https://github.com/mapbox/mapbox-directions-swift/pull/430))
 
 ## v0.32.0
 
