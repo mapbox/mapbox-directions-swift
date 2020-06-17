@@ -177,7 +177,7 @@ extension VisualInstruction.Component: Codable {
         case abbreviatedText = "abbr"
         case abbreviatedTextPriority = "abbr_priority"
         case imageBaseURL
-        case imageURL = "url"
+        case imageURL
         case directions
         case isActive = "active"
     }
