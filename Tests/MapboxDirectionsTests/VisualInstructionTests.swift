@@ -30,7 +30,7 @@ class VisualInstructionsTests: XCTestCase {
                 [
                   "text": "CA01610_1_E",
                   "type": "guidance-view",
-                  "url": "https://www.mapbox.com/navigation"
+                  "imageURL": "https://www.mapbox.com/navigation"
                     ],
               ],
               "type": "fork",
@@ -49,13 +49,19 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(banner.primaryInstruction.maneuverDirection, .right)
             XCTAssertNil(banner.secondaryInstruction)
             XCTAssertNotNil(banner.quaternaryInstruction)
+            XCTAssertEqual(banner.quaternaryInstruction?.components.count, 1)
             XCTAssertEqual(banner.drivingSide, .default)
         }
+        
+        let componentGuidanceViewImage = banner?.quaternaryInstruction?.components.first
+        XCTAssertNotNil(componentGuidanceViewImage)
+        
         
         let component = VisualInstruction.Component.text(text: .init(text: "Weinstock Strasse", abbreviation: nil, abbreviationPriority: nil))
         let primaryInstruction = VisualInstruction(text: "Weinstock Strasse", maneuverType: .turn, maneuverDirection: .right, components: [component])
         
         let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")), alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil))
+        XCTAssert(componentGuidanceViewImage == guideViewComponent)
         let quaternaryInstruction = VisualInstruction(text: "CA01610_1_E", maneuverType: .reachFork, maneuverDirection: .right, components: [guideViewComponent])
         
         banner = VisualInstructionBanner(distanceAlongStep: 393.3, primary: primaryInstruction, secondary: nil, tertiary: nil, quaternary: quaternaryInstruction, drivingSide: .right)
