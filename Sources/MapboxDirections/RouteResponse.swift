@@ -51,6 +51,8 @@ extension RouteResponse: Codable {
         decoder.userInfo[.options] = options
         decoder.userInfo[.credentials] = credentials
         
+        encoder.userInfo[.options] = options
+        
         var routes: [Route]?
         
         if let matches = response.matches {
