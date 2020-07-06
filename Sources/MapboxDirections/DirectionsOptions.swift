@@ -155,10 +155,6 @@ open class DirectionsOptions: Codable {
         try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
         try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
         try container.encode(includesVisualInstructions, forKey: .includesVisualInstructions)
-        try container.encode(includesSpokenInstructions, forKey: .includesSpokenInstructions)
-        if includesSpokenInstructions {
-            try container.encode(distanceMeasurementSystem, forKey: .distanceMeasurementSystem)
-        }
     }
     
     public required init(from decoder: Decoder) throws {
