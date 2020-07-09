@@ -1,3 +1,2 @@
 github "raphaelmor/Polyline" ~> 4.2
 github "mapbox/turf-swift" ~> 0.5
-github "mapbox/mapbox-events-ios" ~> 0.10
