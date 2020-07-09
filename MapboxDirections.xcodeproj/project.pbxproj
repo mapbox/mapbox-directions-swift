@@ -84,6 +84,8 @@
 		43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
+		8AF87EA5249AF671004AC2AB /* MapboxMobileEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF87EA4249AF671004AC2AB /* MapboxMobileEvents.framework */; };
+		8AF87EA6249AF671004AC2AB /* MapboxMobileEvents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF87EA4249AF671004AC2AB /* MapboxMobileEvents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
 		8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
@@ -338,6 +340,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8AF87EA6249AF671004AC2AB /* MapboxMobileEvents.framework in Embed Frameworks */,
 				F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -369,6 +372,7 @@
 		43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsTests.swift; sourceTree = "<group>"; };
 		43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsCredentials.swift; sourceTree = "<group>"; };
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
+		8AF87EA4249AF671004AC2AB /* MapboxMobileEvents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapboxMobileEvents.framework; path = Carthage/Build/iOS/MapboxMobileEvents.framework; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -508,6 +512,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AF87EA5249AF671004AC2AB /* MapboxMobileEvents.framework in Frameworks */,
 				DADD27F71E5AC8E900D31FAD /* MapboxDirections.framework in Frameworks */,
 				DADD27F31E5ABD4300D31FAD /* Mapbox.framework in Frameworks */,
 			);
@@ -588,6 +593,7 @@
 		C5AD8656202E24F400BF47D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AF87EA4249AF671004AC2AB /* MapboxMobileEvents.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
