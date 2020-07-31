@@ -266,6 +266,9 @@
 		DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E3823A008EB001A917D /* QuickLook.swift */; };
 		DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E3823A008EB001A917D /* QuickLook.swift */; };
 		DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD06E3823A008EB001A917D /* QuickLook.swift */; };
+		DAD31BC324D4ADBF00A1654D /* match-polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = DAD31BC224D4A8D100A1654D /* match-polyline6.json */; };
+		DAD31BC424D4ADBF00A1654D /* match-polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = DAD31BC224D4A8D100A1654D /* match-polyline6.json */; };
+		DAD31BC524D4ADC000A1654D /* match-polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = DAD31BC224D4A8D100A1654D /* match-polyline6.json */; };
 		DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */; };
 		DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B91E5AAAD800D31FAD /* ViewController.swift */; };
 		DADD27BF1E5AAAD800D31FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADD27BE1E5AAAD800D31FAD /* Assets.xcassets */; };
@@ -435,6 +438,7 @@
 		DACCFCA82225359500110FC9 /* v5_driving_oldenburg_polyline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_oldenburg_polyline.json; sourceTree = "<group>"; };
 		DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsErrorTests.swift; sourceTree = "<group>"; };
 		DAD06E3823A008EB001A917D /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
+		DAD31BC224D4A8D100A1654D /* match-polyline6.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "match-polyline6.json"; sourceTree = "<group>"; };
 		DADD27B51E5AAAD800D31FAD /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADD27B91E5AAAD800D31FAD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -623,6 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				C5DAACB3201AA9A7001F9261 /* match.json */,
+				DAD31BC224D4A8D100A1654D /* match-polyline6.json */,
 				C5C0D6332058523E003A3B1D /* null-tracepoint.json */,
 			);
 			path = Match;
@@ -1076,6 +1081,7 @@
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */,
+				DAD31BC424D4ADBF00A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */,
@@ -1103,6 +1109,7 @@
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */,
+				DAD31BC524D4ADC000A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
 				8D381B651FDB0899008D5A58 /* noDestinationName.json in Resources */,
@@ -1137,6 +1144,7 @@
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */,
+				DAD31BC324D4ADBF00A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
 				35DBF019217F38A30009D2AE /* versions.json in Resources */,

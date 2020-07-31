@@ -50,8 +50,8 @@ extension RouteResponse: Codable {
         
         decoder.userInfo[.options] = options
         decoder.userInfo[.credentials] = credentials
-        
         encoder.userInfo[.options] = options
+        encoder.userInfo[.credentials] = credentials
         
         var routes: [Route]?
         

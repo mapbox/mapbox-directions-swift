@@ -22,13 +22,14 @@ class RoutableMatchTest: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "match", ofType: "json")
+                let path = Bundle(for: type(of: self)).path(forResource: "match-polyline6", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         var routeResponse: RouteResponse!
         
         let matchOptions = MatchOptions(coordinates: locations)
+        matchOptions.shapeFormat = .polyline6
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         for waypoint in matchOptions.waypoints[1..<(locations.count - 1)] {
@@ -56,7 +57,7 @@ class RoutableMatchTest: XCTestCase {
         let route = routeResponse.routes!.first!
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)
-        XCTAssertEqual(route.shape!.coordinates.count, 18)
+        XCTAssertEqual(route.shape!.coordinates.count, 19)
         XCTAssertEqual(route.routeIdentifier, nil)
         
         let waypoints = routeResponse.waypoints!
@@ -93,7 +94,7 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertEqual(step.finalHeading, 340)
         
         XCTAssertNotNil(step.shape)
-        XCTAssertEqual(step.shape!.coordinates.count, 4)
+        XCTAssertEqual(step.shape!.coordinates.count, 5)
         let coordinate = step.shape!.coordinates.first!
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)
