@@ -1,6 +1,6 @@
 # Changes to Mapbox Directions for Swift
 
-## master
+## v0.33.1
 
 * Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437)) 
 
