@@ -36,7 +36,7 @@ class RouteResponseTests: XCTestCase {
             let decodedRouteResponse = try decoder.decode(RouteResponse.self, from: encodedRouteResponse)
             
             guard let waypoint = decodedRouteResponse.waypoints?.first else {
-                XCTFail("Decode response should contain one waypoint.")
+                XCTFail("Decoded route response should contain one waypoint.")
                 return
             }
             
@@ -51,7 +51,7 @@ class RouteResponseTests: XCTestCase {
             
             XCTAssertEqual(originWaypoint.coordinate, decodedCoordinate, "Original and decoded coordinates should be equal.")
             XCTAssertEqual(originWaypoint.name, decodedName, "Original and decoded names should be equal.")
-            XCTAssertEqual(originWaypoint.targetCoordinate, decodedTargetCoordinate, "Decoded and original targetCoordinates should be equal.")
+            XCTAssertEqual(originWaypoint.targetCoordinate, decodedTargetCoordinate, "Original and decoded targetCoordinates should be equal.")
             XCTAssertEqual(originWaypoint.coordinateAccuracy, decodedCoordinateAccuracy, "Original and decoded coordinateAccuracies should be equal.")
             XCTAssertEqual(originWaypoint.heading, decodedHeading, "Original and decoded headings should be equal.")
             XCTAssertEqual(originWaypoint.headingAccuracy, decodedHeadingAccuracy, "Original and decoded headingAccuracies should be equal.")
