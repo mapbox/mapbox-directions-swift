@@ -215,7 +215,13 @@ extension Waypoint: Equatable {
 
 extension Waypoint: CustomStringConvertible {
     public var description: String {
-        return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
+        return Mirror(reflecting: self).children.compactMap({
+            if let label = $0.label {
+                return "\(label): \($0.value)"
+            }
+            
+            return ""
+        }).joined(separator: "\n")
     }
 }
 
