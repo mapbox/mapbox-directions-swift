@@ -1,6 +1,6 @@
 # Changes to Mapbox Directions for Swift
 
-## master
+## v0.33.2
 
 * Fixed an issue where waypoints in a `RouteResponse` did not persist the `Waypoint.targetCoordinate`, `Waypoint.heading`, `Waypoint.headingAccuracy`, and `Waypoint.allowsArrivingOnOppositeSide` properties from the initial `RouteOptions` object.
 
