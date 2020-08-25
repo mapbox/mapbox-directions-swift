@@ -215,12 +215,23 @@ extension Waypoint: Equatable {
 
 extension Waypoint: CustomStringConvertible {
     public var description: String {
-        return name ?? "<latitude: \(coordinate.latitude); longitude: \(coordinate.longitude)>"
+        return Mirror(reflecting: self).children.compactMap({
+            if let label = $0.label {
+                return "\(label): \($0.value)"
+            }
+            
+            return ""
+        }).joined(separator: "\n")
     }
 }
 
 extension Waypoint: CustomQuickLookConvertible {
     func debugQuickLookObject() -> Any? {
-        return CLLocation(coordinate: coordinate, altitude: 0, horizontalAccuracy: coordinateAccuracy ?? -1, verticalAccuracy: -1, course: heading ?? -1, speed: -1, timestamp: Date())
+        return CLLocation(coordinate: targetCoordinate ?? coordinate,
+                          altitude: 0,
+                          horizontalAccuracy: coordinateAccuracy ?? -1,
+                          verticalAccuracy: -1,
+                          course: heading ?? -1,
+                          speed: -1, timestamp: Date())
     }
 }
