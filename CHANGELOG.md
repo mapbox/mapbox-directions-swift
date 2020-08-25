@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## master
+
+* Fixed an issue where waypoints in a `RouteResponse` did not persist the `Waypoint.targetCoordinate`, `Waypoint.heading`, `Waypoint.headingAccuracy`, and `Waypoint.allowsArrivingOnOppositeSide` properties from the initial `RouteOptions` object.
+
 ## v0.33.1
 
 * Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437)) 
