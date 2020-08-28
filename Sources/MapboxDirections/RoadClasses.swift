@@ -99,6 +99,11 @@ extension RoadClasses: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let descriptions = try container.decode([String].self)
-        self = RoadClasses(descriptions: descriptions)!
+        if let roadClasses = RoadClasses(descriptions: descriptions){
+            self = roadClasses
+        }
+        else{
+            throw DirectionsError.invalidResponse(nil)
+        }
     }
 }
