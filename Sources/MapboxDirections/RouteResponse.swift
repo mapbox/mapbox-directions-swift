@@ -58,9 +58,6 @@ extension RouteResponse: Codable {
         if let matches = response.matches {
             let matchesData = try encoder.encode(matches)
             routes = try decoder.decode([Route].self, from: matchesData)
-            routes?.enumerated().forEach {
-                $0.element.routeIndex = $0.offset
-            }
         }
         
         var waypoints: [Waypoint]?
@@ -130,9 +127,8 @@ extension RouteResponse: Codable {
         
         if let routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
             // Postprocess each route.
-            for (index, route) in routes.enumerated() {
+            for route in routes {
                 route.routeIdentifier = identifier
-                route.routeIndex = index
                 // Imbue each route’s legs with the waypoints refined above.
                 if let waypoints = waypoints {
                     route.legSeparators = waypoints.filter { $0.separatesLegs }

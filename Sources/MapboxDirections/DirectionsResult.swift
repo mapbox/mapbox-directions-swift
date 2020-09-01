@@ -158,13 +158,6 @@ open class DirectionsResult: Codable {
     open var routeIdentifier: String?
     
     /**
-     Route index position as was provided by corresponding directions response.
-     
-     `Directions.calculate` methods may produce multiple alternative routes. `routeIndex` displays order of appearance in the response. This parameter might be useful for route refreshing.
-     */
-    open var routeIndex: Int?
-    
-    /**
      The time immediately before a `Directions` object fetched this result.
      
      If you manually start fetching a task returned by `Directions.url(forCalculating:)`, this property is set to `nil`; use the `URLSessionTaskTransactionMetrics.fetchStartDate` property instead. This property may also be set to `nil` if you create this result from a JSON object or encoded object.

@@ -50,8 +50,5 @@ extension MapMatchingResponse: Codable {
         
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
-        matches?.enumerated().forEach {
-            $0.element.routeIndex = $0.offset
-        }
     }
 }

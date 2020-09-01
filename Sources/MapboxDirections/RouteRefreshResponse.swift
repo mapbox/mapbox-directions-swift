@@ -44,8 +44,7 @@ extension RouteRefreshResponse: Codable {
                            distance: route.distance,
                            expectedTravelTime: route.expectedTravelTime)
         route.routeIdentifier = route.routeIdentifier
-        route.routeIndex = route.routeIndex
-        
+
         return route
     }
     

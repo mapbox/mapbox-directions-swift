@@ -384,10 +384,12 @@ open class Directions: NSObject {
         return requestTask
     }
     
-    @discardableResult open func refresh(route: Route, currentLegIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
-        
-        guard let routeIdentifier = route.routeIdentifier, let routeIndex = route.routeIndex else {
-            completionHandler(credentials, .failure(.invalidInput(message: "Route must have an Identifier and Index.")))
+    @discardableResult open func refresh(routeResponse: RouteResponse, routeIndex: Int, currentLegIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+
+        guard let routes = routeResponse.routes,
+            routes.indices.contains(routeIndex),
+            let routeIdentifier = routes[routeIndex].routeIdentifier else {
+            completionHandler(credentials, .failure(.invalidInput(message: "RouteResponse should contain a route at specified index with an identifier.")))
             return nil
         }
         
@@ -417,7 +419,7 @@ open class Directions: NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
-                    decoder.userInfo = [.refreshingRoute: route,
+                    decoder.userInfo = [.refreshingRoute: routes[routeIndex],
                                         .routeIndex: routeIndex,
                                         .legIndex: currentLegIndex,
                                         .credentials: self.credentials]
