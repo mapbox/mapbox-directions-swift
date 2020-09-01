@@ -164,7 +164,9 @@ open class RouteOptions: DirectionsOptions {
     open var includesExitRoundaboutManeuver = false
     
     /**
-     A Boolean value indicating wether route can be refreshed during turn-by-turn navigation. This includes ETA and route congestion data.
+     A Boolean value indicating whether `Directions` can refresh time-dependent properties of the `RouteLeg`s of the resulting `Route`s.
+     
+     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refresh(routeResponse:routeIndex:currentLegIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
      */
     open var refreshingEnabled = true
     

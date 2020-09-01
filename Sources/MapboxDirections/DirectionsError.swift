@@ -105,7 +105,7 @@ public enum DirectionsError: LocalizedError {
     /**
      Could not refresh the route with given parameters.
      
-     Try validating Route UID, Route Index and Leg Index.
+     Make sure `DirectionsResult.routeIdentifier`, `CodingUserInfoKey.routeIndex`, and `CodingUserInfoKey.legIndex` are set to the right values.
      */
     case unableToRefresh
     
@@ -178,7 +178,7 @@ public enum DirectionsError: LocalizedError {
             let formattedDate: String = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .long)
             return "Wait until \(formattedDate) before retrying."
         case .unableToRefresh:
-            return "Try checking Route UID, Index and Leg index passed for refreshing."
+            return "Make sure DirectionsResult.routeIdentifier, CodingUserInfoKey.routeIndex, and CodingUserInfoKey.legIndex are set to the right values when refreshing."
         case let .unknown(_, underlying: error, _, _):
             return (error as NSError?)?.userInfo[NSLocalizedRecoverySuggestionErrorKey] as? String
         }
