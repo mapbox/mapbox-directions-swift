@@ -103,7 +103,7 @@ let task = directions.calculate(options) { (session, result) in
 }
 ```
 
-This library uses version 5 of the Mapbox Directions API by default. To use version 4 instead, replace RouteOptions with RouteOptionsV4.
+This library uses version 5 of the Mapbox Directions API by default.
 
 ### Matching a trace to the road network
 
