@@ -7,7 +7,7 @@ public struct RouteRefreshResponse {
     public var routeIndex: Int
     public var legIndex: Int
     
-    public var route: Route? // pass it in a user info? and then consturct new route during decoding?
+    public var route: Route? // pass it in a user info? and then construct new route during decoding?
     
     public let credentials: DirectionsCredentials
     
@@ -20,7 +20,7 @@ public struct RouteRefreshResponse {
      
      This property does not persist after encoding and decoding.
      */
-    public var created: Date = Date()
+    public var created = Date()
 }
 
 extension RouteRefreshResponse: Codable {
@@ -29,8 +29,8 @@ extension RouteRefreshResponse: Codable {
         case route
     }
     
-    private func applyRefreshingTo(route: Route) -> Route{
-        let updatedLegs = zip(legAnnotations, route.legs.enumerated()).map { (pair) -> RouteLeg in
+    private func applyRefreshing(to staleRoute: Route) -> Route{
+        let updatedLegs = zip(legAnnotations, staleRoute.legs.enumerated()).map { (pair) -> RouteLeg in
             let (annotation, legEnum) = pair
             let leg = legEnum.element.copy() as! RouteLeg
             if legEnum.offset >= legIndex {
@@ -39,13 +39,13 @@ extension RouteRefreshResponse: Codable {
             return leg
         }
         
-        let route = Route(legs: updatedLegs,
-                           shape: route.shape,
-                           distance: route.distance,
-                           expectedTravelTime: route.expectedTravelTime)
-        route.routeIdentifier = route.routeIdentifier
+        let freshRoute = Route(legs: updatedLegs,
+                               shape: staleRoute.shape,
+                               distance: staleRoute.distance,
+                               expectedTravelTime: staleRoute.expectedTravelTime)
+        freshRoute.routeIdentifier = staleRoute.routeIdentifier
 
-        return route
+        return freshRoute
     }
     
     public init(from decoder: Decoder) throws {
@@ -68,7 +68,7 @@ extension RouteRefreshResponse: Codable {
         self.legIndex = decoder.userInfo[.legIndex] as! Int
         let refreshingRoute = decoder.userInfo[.refreshingRoute] as! Route
         
-        self.route = applyRefreshingTo(route: refreshingRoute)
+        self.route = applyRefreshing(to: refreshingRoute)
     }
     
     public func encode(to encoder: Encoder) throws {
