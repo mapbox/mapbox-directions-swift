@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## master
+
+* Fixed a crash that could occur if the Mapbox Directions API includes unrecognized `RoadClasses` values in its response. ([#450](https://github.com/mapbox/mapbox-directions-swift/pull/450))
+
 ## v0.33.2
 
 * Fixed an issue where waypoints in a `RouteResponse` did not persist the `Waypoint.targetCoordinate`, `Waypoint.heading`, `Waypoint.headingAccuracy`, and `Waypoint.allowsArrivingOnOppositeSide` properties from the initial `RouteOptions` object.
