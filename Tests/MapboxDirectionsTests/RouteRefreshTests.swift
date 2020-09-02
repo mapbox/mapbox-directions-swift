@@ -1,11 +1,9 @@
-
 import XCTest
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
 @testable import MapboxDirections
 
 class RouteRefreshTests: XCTestCase {
-
     override func setUp() {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
@@ -53,19 +51,14 @@ class RouteRefreshTests: XCTestCase {
         let refreshResponseExpectation = expectation(description: "Refresh responce failed.")
         
         fetchStubbedRoute { routeResponse in
-            Directions(credentials: BogusCredentials).refresh(routeResponse: routeResponse,
-                                                              routeIndex: 0,
-                                                              currentLegIndex: 0) {
-                                                                guard case let .success(refresh) = $1 else {
-                                                                    XCTFail("Refresh failed with unexpected error.")
-                                                                    return
-                                                                }
-                                                                
-                                                                if refresh.route != nil {
-                                                                    refreshResponseExpectation.fulfill()
-                                                                } else {
-                                                                    XCTFail("Route Legs are not refreshed")
-                                                                }
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!, routeIndex: 0) {
+                guard case let .success(refresh) = $1 else {
+                    XCTFail("Refresh failed with unexpected error.")
+                    return
+                }
+                
+                XCTAssertNotNil(refresh.route, "Route legs are not refreshed")
+                refreshResponseExpectation.fulfill()
             }
         }
         
@@ -77,19 +70,17 @@ class RouteRefreshTests: XCTestCase {
         
         fetchStubbedRoute { routeResponse in
 
-            Directions(credentials: BogusCredentials).refresh(routeResponse: routeResponse,
-                                                              routeIndex: 10,
-                                                              currentLegIndex: 3) {
-                                                                guard case let .failure(error) = $1 else {
-                                                                    XCTFail("Refresh failed with unexpected error.")
-                                                                    return
-                                                                }
-                                                                
-                                                                if case .invalidInput(_) = error {
-                                                                    refreshResponseExpectation.fulfill()
-                                                                } else {
-                                                                    XCTFail("Wrong error returned.")
-                                                                }
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!, routeIndex: 10, fromLegAtIndex: 3) {
+                guard case let .failure(error) = $1 else {
+                    XCTFail("Refresh failed with unexpected error.")
+                    return
+                }
+                
+                if case .invalidInput(_) = error {
+                    refreshResponseExpectation.fulfill()
+                } else {
+                    XCTFail("Wrong error returned.")
+                }
             }
         }
         
@@ -101,20 +92,17 @@ class RouteRefreshTests: XCTestCase {
         let routeIndex = 0
         
         fetchStubbedRoute { routeResponse in
-            Directions(credentials: BogusCredentials).refresh(routeResponse: routeResponse,
-                                                              routeIndex: routeIndex,
-                                                              currentLegIndex: 0) {
-                                                                guard case let .success(refresh) = $1 else {
-                                                                    XCTFail("Refresh failed with unexpected error.")
-                                                                    return
-                                                                }
-
-                                                                let route = routeResponse.routes?[routeIndex]
-                                                                if refresh.route?.legs != route?.legs {
-                                                                    routeUpdatedExpectation.fulfill()
-                                                                } else {
-                                                                    XCTFail("Route Legs are not refreshed")
-                                                                }
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!, routeIndex: routeIndex) {
+                guard case let .success(refresh) = $1 else {
+                    XCTFail("Refresh failed with unexpected error.")
+                    return
+                }
+                
+                let route = routeResponse.routes?[routeIndex]
+                route?.refreshLegAttributes(from: refresh.route)
+                
+                XCTAssertEqual(refresh.route.legs[0].attributes, route?.legs[0].attributes, "Route legs are not refreshed")
+                routeUpdatedExpectation.fulfill()
             }
         }
         
@@ -126,21 +114,19 @@ class RouteRefreshTests: XCTestCase {
         let routeIndex = 0
 
         fetchStubbedRoute { routeResponse in
-            Directions(credentials: BogusCredentials).refresh(routeResponse: routeResponse,
-                                                              routeIndex: routeIndex,
-                                                              currentLegIndex: 1) {
-                                                                guard case let .success(refresh) = $1 else {
-                                                                    XCTFail("Refresh failed with unexpected error.")
-                                                                    return
-                                                                }
-
-                                                                let route = routeResponse.routes?[routeIndex]
-                                                                if refresh.route?.legs[0] == route?.legs[0] &&
-                                                                    refresh.route?.legs[1] != route?.legs[1]  {
-                                                                    routeUpdatedExpectation.fulfill()
-                                                                } else {
-                                                                    XCTFail("Route Legs are not refreshed correctly")
-                                                                }
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!, routeIndex: routeIndex) {
+                switch $1 {
+                case let .success(response):
+                    XCTAssertNotNil(response.route)
+                    XCTAssertEqual(response.route.legs.count, 2)
+                    let route = routeResponse.routes?[routeIndex]
+                    route?.refreshLegAttributes(from: response.route)
+                    XCTAssertEqual(route?.legs[0].attributes, response.route.legs[0].attributes, "Route legs are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[1].attributes, response.route.legs[1].attributes, "Route legs are not refreshed correctly")
+                    routeUpdatedExpectation.fulfill()
+                case let .failure(error):
+                    XCTFail("Refresh failed with unexpected error: \(error).")
+                }
             }
         }
         

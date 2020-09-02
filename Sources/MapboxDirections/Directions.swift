@@ -86,11 +86,12 @@ open class Directions: NSObject {
     public typealias MatchCompletionHandler = (_ session: Session, _ result: Result<MapMatchingResponse, DirectionsError>) -> Void
     
     /**
-     A closure (block) to be called when a directions route refresh request is complete.
+     A closure (block) to be called when a directions refresh request is complete.
      
-     - parameter credentials: A object containing the credentials used to make the request.
-     
+     - parameter credentials: An object containing the credentials used to make the request.
      - parameter result: A `Result` enum that represents the `RouteRefreshResponse` if the request returned successfully, or the error if it did not.
+     
+     - postcondition: To update the original route, pass `RouteRefreshResponse.route` into the `Route.refreshLegAttributes(from:)` method.
      */
     public typealias RouteRefreshCompletionHandler = (_ credentials: DirectionsCredentials, _ result: Result<RouteRefreshResponse, DirectionsError>) -> Void
     
@@ -384,16 +385,20 @@ open class Directions: NSObject {
         return requestTask
     }
     
-    @discardableResult open func refresh(routeResponse: RouteResponse, routeIndex: Int, currentLegIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+    /**
+     Begins asynchronously refreshing the route with the given identifier, optionally starting from an arbitrary leg along the route.
+     
+     This method retrieves skeleton route data asynchronously from the Mapbox Directions Refresh API over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     - parameter responseIdentifier: The `RouteResponse.identifier` value of the `RouteResponse` that contains the route to refresh. You can alternatively use the value of `Route.routeIdentifier`.
+     - parameter routeIndex: The index of the route to refresh in the original `RouteResponse.routes` array.
+     - parameter startLegIndex: The index of the leg in the route at which to begin refreshing. The response will omit any leg before this index and refresh any leg from this index to the end of the route. If this argument is omitted, the entire route is refreshed.
+     - parameter completionHandler: The closure (block) to call with the resulting skeleton route data. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting skeleton routes, cancel this task.
+     */
+    @discardableResult open func refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int = 0, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
 
-        guard let routes = routeResponse.routes,
-            routes.indices.contains(routeIndex),
-            let routeIdentifier = routes[routeIndex].routeIdentifier else {
-            completionHandler(credentials, .failure(.invalidInput(message: "RouteResponse should contain a route at specified index with an identifier.")))
-            return nil
-        }
-        
-        let request = urlRequest(forRefreshing: routeIdentifier, routeIndex: routeIndex, currentLegIndex: currentLegIndex)
+        let request = urlRequest(forRefreshing: responseIdentifier, routeIndex: routeIndex, fromLegAtIndex: startLegIndex)
         let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             if let urlError = possibleError as? URLError {
                 DispatchQueue.main.async {
@@ -419,10 +424,12 @@ open class Directions: NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let decoder = JSONDecoder()
-                    decoder.userInfo = [.refreshingRoute: routes[routeIndex],
-                                        .routeIndex: routeIndex,
-                                        .legIndex: currentLegIndex,
-                                        .credentials: self.credentials]
+                    decoder.userInfo = [
+                        .responseIdentifier: responseIdentifier,
+                        .routeIndex: routeIndex,
+                        .startLegIndex: startLegIndex,
+                        .credentials: self.credentials,
+                    ]
                     
                     guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
                         let apiError = DirectionsError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
@@ -442,12 +449,6 @@ open class Directions: NSObject {
                     }
                     
                     let result = try decoder.decode(RouteRefreshResponse.self, from: data)
-                    guard result.route != nil else {
-                        DispatchQueue.main.async {
-                            completionHandler(self.credentials, .failure(.unableToRefresh))
-                        }
-                        return
-                    }
                     
                     DispatchQueue.main.async {
                         completionHandler(self.credentials, .success(result))
@@ -465,14 +466,14 @@ open class Directions: NSObject {
         return requestTask
     }
     
-    open func urlRequest(forRefreshing routeId: String, routeIndex: Int, currentLegIndex: Int) -> URLRequest {
+    open func urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int) -> URLRequest {
         var params: [URLQueryItem] = []
         params += [URLQueryItem(name: "access_token", value: credentials.accessToken)]
         
         var unparameterizedURL = URL(string: "directions-refresh/v1/\(DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
-        unparameterizedURL.appendPathComponent(routeId)
+        unparameterizedURL.appendPathComponent(responseIdentifier)
         unparameterizedURL.appendPathComponent(String(routeIndex))
-        unparameterizedURL.appendPathComponent(String(currentLegIndex))
+        unparameterizedURL.appendPathComponent(String(startLegIndex))
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         
@@ -554,7 +555,7 @@ public extension CodingUserInfoKey {
     static let credentials = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.credentials")!
     static let tracepoints = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.tracepoints")!
     
-    static let refreshingRoute = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.refreshedRoute")!
+    static let responseIdentifier = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.responseIdentifier")!
     static let routeIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.routeIndex")!
-    static let legIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.legIndex")!
+    static let startLegIndex = CodingUserInfoKey(rawValue: "com.mapbox.directions.coding.startLegIndex")!
 }

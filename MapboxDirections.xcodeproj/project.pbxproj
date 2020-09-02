@@ -15,10 +15,10 @@
 		2B5407F32452FA8C006C820B /* RefreshedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F12452FA8C006C820B /* RefreshedRoute.swift */; };
 		2B5407F42452FA8C006C820B /* RefreshedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F12452FA8C006C820B /* RefreshedRoute.swift */; };
 		2B5407F52452FA8C006C820B /* RefreshedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F12452FA8C006C820B /* RefreshedRoute.swift */; };
-		2B5407F7245302AB006C820B /* RouteLegAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */; };
-		2B5407F8245302AB006C820B /* RouteLegAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */; };
-		2B5407F9245302AB006C820B /* RouteLegAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */; };
-		2B5407FA245302AB006C820B /* RouteLegAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */; };
+		2B5407F7245302AB006C820B /* RouteLegAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAttributes.swift */; };
+		2B5407F8245302AB006C820B /* RouteLegAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAttributes.swift */; };
+		2B5407F9245302AB006C820B /* RouteLegAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAttributes.swift */; };
+		2B5407FA245302AB006C820B /* RouteLegAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407F6245302AB006C820B /* RouteLegAttributes.swift */; };
 		2B5407FC245B070A006C820B /* RouteRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407FB245B070A006C820B /* RouteRefreshTests.swift */; };
 		2B5407FD245B070A006C820B /* RouteRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407FB245B070A006C820B /* RouteRefreshTests.swift */; };
 		2B5407FE245B070A006C820B /* RouteRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407FB245B070A006C820B /* RouteRefreshTests.swift */; };
@@ -379,7 +379,7 @@
 /* Begin PBXFileReference section */
 		2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshResponse.swift; sourceTree = "<group>"; };
 		2B5407F12452FA8C006C820B /* RefreshedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshedRoute.swift; sourceTree = "<group>"; };
-		2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegAnnotation.swift; sourceTree = "<group>"; };
+		2B5407F6245302AB006C820B /* RouteLegAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegAttributes.swift; sourceTree = "<group>"; };
 		2B5407FB245B070A006C820B /* RouteRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshTests.swift; sourceTree = "<group>"; };
 		2B5407FF245B097D006C820B /* routeRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshResponse.json; sourceTree = "<group>"; };
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
@@ -702,7 +702,7 @@
 				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
 				DAC05F171CFC075300FA0071 /* Route.swift */,
 				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
-				2B5407F6245302AB006C820B /* RouteLegAnnotation.swift */,
+				2B5407F6245302AB006C820B /* RouteLegAttributes.swift */,
 				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
 				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
 				2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */,
@@ -1291,7 +1291,7 @@
 				C584E3F71F201C7B00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617123DBA58E0062BFFE /* (null) in Sources */,
-				2B5407F8245302AB006C820B /* RouteLegAnnotation.swift in Sources */,
+				2B5407F8245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* RouteOptions.swift in Sources */,
@@ -1373,7 +1373,7 @@
 				C584E3F81F201C7C00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617223DBA58E0062BFFE /* (null) in Sources */,
-				2B5407F9245302AB006C820B /* RouteLegAnnotation.swift in Sources */,
+				2B5407F9245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
 				DA1A10F01D010247009F82FA /* RouteOptions.swift in Sources */,
@@ -1455,7 +1455,7 @@
 				C584E3F91F201C7D00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MatchOptions.swift in Sources */,
 				43D6617323DBA58E0062BFFE /* (null) in Sources */,
-				2B5407FA245302AB006C820B /* RouteLegAnnotation.swift in Sources */,
+				2B5407FA245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* RouteOptions.swift in Sources */,
@@ -1504,7 +1504,7 @@
 				C57D55081DB58C0200B94B74 /* Lane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* Route.swift in Sources */,
 				43D6617023DBA58E0062BFFE /* (null) in Sources */,
-				2B5407F7245302AB006C820B /* RouteLegAnnotation.swift in Sources */,
+				2B5407F7245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,
 				C5434B8C200695A50069E887 /* MatchOptions.swift in Sources */,

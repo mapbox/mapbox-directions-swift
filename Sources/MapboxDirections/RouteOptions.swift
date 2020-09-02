@@ -166,7 +166,7 @@ open class RouteOptions: DirectionsOptions {
     /**
      A Boolean value indicating whether `Directions` can refresh time-dependent properties of the `RouteLeg`s of the resulting `Route`s.
      
-     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refresh(routeResponse:routeIndex:currentLegIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
      */
     open var refreshingEnabled = true
     

@@ -103,13 +103,6 @@ public enum DirectionsError: LocalizedError {
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
     /**
-     Could not refresh the route with given parameters.
-     
-     Make sure `DirectionsResult.routeIdentifier`, `CodingUserInfoKey.routeIndex`, and `CodingUserInfoKey.legIndex` are set to the right values.
-     */
-    case unableToRefresh
-    
-    /**
      Unknown error case. Look at associated values for more details.
      */
     
@@ -146,8 +139,6 @@ public enum DirectionsError: LocalizedError {
             let formattedInterval = intervalFormatter.string(from: interval) ?? "\(interval) seconds"
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
-        case .unableToRefresh:
-            return "Unable to refresh the route with given parameters."
         case let .unknown(_, underlying: error, _, message):
             return message
                 ?? (error as NSError?)?.userInfo[NSLocalizedFailureReasonErrorKey] as? String
@@ -177,8 +168,6 @@ public enum DirectionsError: LocalizedError {
             }
             let formattedDate: String = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .long)
             return "Wait until \(formattedDate) before retrying."
-        case .unableToRefresh:
-            return "Make sure DirectionsResult.routeIdentifier, CodingUserInfoKey.routeIndex, and CodingUserInfoKey.legIndex are set to the right values when refreshing."
         case let .unknown(_, underlying: error, _, _):
             return (error as NSError?)?.userInfo[NSLocalizedRecoverySuggestionErrorKey] as? String
         }

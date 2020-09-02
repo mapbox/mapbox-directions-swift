@@ -66,9 +66,9 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        let annotation = try container.decodeIfPresent(RouteLegAnnotation.self, forKey: .annotation)
-        
-        updateAnnotationData(from: annotation)
+        if let attributes = try container.decodeIfPresent(RouteLegAttributes.self, forKey: .annotation) {
+            self.attributes = attributes
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -81,23 +81,10 @@ open class RouteLeg: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil || segmentMaximumSpeedLimits != nil {
-            
-            let annotation = RouteLegAnnotation(segmentDistances: segmentDistances,
-                                                expectedSegmentTravelTimes: expectedSegmentTravelTimes,
-                                                segmentSpeeds: segmentSpeeds,
-                                                segmentCongestionLevels: segmentCongestionLevels,
-                                                segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
-            try container.encode(annotation, forKey: .annotation)
+        let attributes = self.attributes
+        if !attributes.isEmpty {
+            try container.encode(attributes, forKey: .annotation)
         }
-    }
-
-    func updateAnnotationData(from annotation: RouteLegAnnotation?) {
-        segmentDistances = annotation?.segmentDistances
-        expectedSegmentTravelTimes = annotation?.expectedSegmentTravelTimes
-        segmentSpeeds = annotation?.segmentSpeeds
-        segmentCongestionLevels = annotation?.segmentCongestionLevels
-        segmentMaximumSpeedLimits = annotation?.segmentMaximumSpeedLimits
     }
     
     // MARK: Getting the Endpoints of the Leg
@@ -202,6 +189,26 @@ open class RouteLeg: Codable {
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.maximumSpeedLimit`.
      */
     open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
+    
+    /**
+     The full collection of attributes along the leg.
+     */
+    var attributes: RouteLegAttributes {
+        get {
+            return RouteLegAttributes(segmentDistances: segmentDistances,
+                                      expectedSegmentTravelTimes: expectedSegmentTravelTimes,
+                                      segmentSpeeds: segmentSpeeds,
+                                      segmentCongestionLevels: segmentCongestionLevels,
+                                      segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
+        }
+        set {
+            segmentDistances = newValue.segmentDistances
+            expectedSegmentTravelTimes = newValue.expectedSegmentTravelTimes
+            segmentSpeeds = newValue.segmentSpeeds
+            segmentCongestionLevels = newValue.segmentCongestionLevels
+            segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
+        }
+    }
     
     // MARK: Getting Statistics About the Leg
 
