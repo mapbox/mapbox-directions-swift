@@ -66,7 +66,7 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        if let attributes = try container.decodeIfPresent(RouteLegAttributes.self, forKey: .annotation) {
+        if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
         }
     }
@@ -193,13 +193,13 @@ open class RouteLeg: Codable {
     /**
      The full collection of attributes along the leg.
      */
-    var attributes: RouteLegAttributes {
+    var attributes: Attributes {
         get {
-            return RouteLegAttributes(segmentDistances: segmentDistances,
-                                      expectedSegmentTravelTimes: expectedSegmentTravelTimes,
-                                      segmentSpeeds: segmentSpeeds,
-                                      segmentCongestionLevels: segmentCongestionLevels,
-                                      segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
+            return Attributes(segmentDistances: segmentDistances,
+                              expectedSegmentTravelTimes: expectedSegmentTravelTimes,
+                              segmentSpeeds: segmentSpeeds,
+                              segmentCongestionLevels: segmentCongestionLevels,
+                              segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
         }
         set {
             segmentDistances = newValue.segmentDistances

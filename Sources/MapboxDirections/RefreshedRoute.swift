@@ -30,7 +30,7 @@ extension RefreshedRoute: Codable {
  A skeletal route leg containing only the information about the route leg that has been refreshed.
  */
 public struct RefreshedRouteLeg {
-    public var attributes: RouteLegAttributes
+    public var attributes: RouteLeg.Attributes
 }
 
 extension RefreshedRouteLeg: Codable {
@@ -40,7 +40,7 @@ extension RefreshedRouteLeg: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        attributes = try container.decode(RouteLegAttributes.self, forKey: .attributes)
+        attributes = try container.decode(RouteLeg.Attributes.self, forKey: .attributes)
     }
     
     public func encode(to encoder: Encoder) throws {
