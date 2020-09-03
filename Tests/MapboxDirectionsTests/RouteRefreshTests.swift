@@ -175,7 +175,7 @@ class RouteRefreshTests: XCTestCase {
     
     func testEncoding() {
         let leg = RefreshedRouteLeg(attributes:
-            .init(segmentDistances: [0], expectedSegmentTravelTimes: [0], segmentSpeeds: [0], segmentCongestionLevels: [.severe], segmentMaximumSpeedLimits: [Measurement(value: 1, unit: .milesPerHour)]))
+            .init(segmentDistances: [0], expectedSegmentTravelTimes: [0], segmentSpeeds: [0], segmentCongestionLevels: [CongestionLevel.severe], segmentMaximumSpeedLimits: [Measurement(value: 1, unit: UnitSpeed.milesPerHour)]))
         let route = RefreshedRoute(legs: [leg])
         
         var encodedRouteData: Data?
