@@ -390,6 +390,8 @@ open class Directions: NSObject {
      
      This method retrieves skeleton route data asynchronously from the Mapbox Directions Refresh API over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
      
+     - precondition: Set `RouteOptions.refreshingEnabled` to `true` when calculating the original route.
+     
      - parameter responseIdentifier: The `RouteResponse.identifier` value of the `RouteResponse` that contains the route to refresh. You can alternatively use the value of `Route.routeIdentifier`.
      - parameter routeIndex: The index of the route to refresh in the original `RouteResponse.routes` array.
      - parameter startLegIndex: The index of the leg in the route at which to begin refreshing. The response will omit any leg before this index and refresh any leg from this index to the end of the route. If this argument is omitted, the entire route is refreshed.
