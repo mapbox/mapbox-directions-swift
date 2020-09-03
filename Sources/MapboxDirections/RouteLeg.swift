@@ -20,14 +20,6 @@ open class RouteLeg: Codable {
         case annotation
     }
     
-    private enum AnnotationCodingKeys: String, CodingKey {
-        case segmentDistances = "distance"
-        case expectedSegmentTravelTimes = "duration"
-        case segmentSpeeds = "speed"
-        case segmentCongestionLevels = "congestion"
-        case segmentMaximumSpeedLimits = "maxspeed"
-    }
-    
     // MARK: Creating a Leg
     
     /**
@@ -74,16 +66,8 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        let annotation = try? container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-        segmentDistances = try annotation?.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
-        expectedSegmentTravelTimes = try annotation?.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
-        segmentSpeeds = try annotation?.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
-        segmentCongestionLevels = try annotation?.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
-        
-        if let speedLimitDescriptors = try annotation?.decodeIfPresent([SpeedLimitDescriptor].self, forKey: .segmentMaximumSpeedLimits) {
-            segmentMaximumSpeedLimits = speedLimitDescriptors.map { Measurement<UnitSpeed>(speedLimitDescriptor: $0) }
-        } else {
-            segmentMaximumSpeedLimits = nil
+        if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
+            self.attributes = attributes
         }
     }
     
@@ -97,19 +81,12 @@ open class RouteLeg: Codable {
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        if segmentDistances != nil || expectedSegmentTravelTimes != nil || segmentSpeeds != nil || segmentCongestionLevels != nil || segmentMaximumSpeedLimits != nil {
-            var annotationContainer = container.nestedContainer(keyedBy: AnnotationCodingKeys.self, forKey: .annotation)
-            try annotationContainer.encodeIfPresent(segmentDistances, forKey: .segmentDistances)
-            try annotationContainer.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
-            try annotationContainer.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
-            try annotationContainer.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
-            
-            if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
-                try annotationContainer.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
-            }
+        let attributes = self.attributes
+        if !attributes.isEmpty {
+            try container.encode(attributes, forKey: .annotation)
         }
     }
-
+    
     // MARK: Getting the Endpoints of the Leg
 
     /**
@@ -213,6 +190,26 @@ open class RouteLeg: Codable {
      */
     open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
     
+    /**
+     The full collection of attributes along the leg.
+     */
+    var attributes: Attributes {
+        get {
+            return Attributes(segmentDistances: segmentDistances,
+                              expectedSegmentTravelTimes: expectedSegmentTravelTimes,
+                              segmentSpeeds: segmentSpeeds,
+                              segmentCongestionLevels: segmentCongestionLevels,
+                              segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
+        }
+        set {
+            segmentDistances = newValue.segmentDistances
+            expectedSegmentTravelTimes = newValue.expectedSegmentTravelTimes
+            segmentSpeeds = newValue.segmentSpeeds
+            segmentCongestionLevels = newValue.segmentCongestionLevels
+            segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
+        }
+    }
+    
     // MARK: Getting Statistics About the Leg
 
     /**
@@ -283,10 +280,9 @@ extension RouteLeg: CustomQuickLookConvertible {
     }
 }
 
-
 public extension Array where Element == RouteLeg {
     /**
-     Populates source and destination information for each leg with waypoint information, typically gathered from DirectionsOptions.
+     Populates source and destination information for each leg with waypoint information, typically gathered from `DirectionsOptions`.
      */
     func populate(waypoints: [Waypoint]) {
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), self)

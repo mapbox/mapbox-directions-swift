@@ -49,6 +49,7 @@ open class RouteOptions: DirectionsOptions {
         case includesAlternativeRoutes
         case includesExitRoundaboutManeuver
         case roadClassesToAvoid
+        case refreshingEnabled
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -58,6 +59,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(includesAlternativeRoutes, forKey: .includesAlternativeRoutes)
         try container.encode(includesExitRoundaboutManeuver, forKey: .includesExitRoundaboutManeuver)
         try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
+        try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -69,6 +71,8 @@ open class RouteOptions: DirectionsOptions {
         includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
     
         roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
+        
+        refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         try super.init(from: decoder)
     }
     
@@ -159,6 +163,13 @@ open class RouteOptions: DirectionsOptions {
      */
     open var includesExitRoundaboutManeuver = false
     
+    /**
+     A Boolean value indicating whether `Directions` can refresh time-dependent properties of the `RouteLeg`s of the resulting `Route`s.
+     
+     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`. This option is set to `false` by default.
+     */
+    open var refreshingEnabled = false
+    
     // MARK: Getting the Request URL
     
     /**
@@ -188,6 +199,10 @@ open class RouteOptions: DirectionsOptions {
             if let firstRoadClass = allRoadClasses.first {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
             }
+        }
+        
+        if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {
+            params.append(URLQueryItem(name: "enable_refresh", value: String(refreshingEnabled)))
         }
         
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {

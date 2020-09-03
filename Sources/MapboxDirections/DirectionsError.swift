@@ -102,7 +102,6 @@ public enum DirectionsError: LocalizedError {
      */
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
-    
     /**
      Unknown error case. Look at associated values for more details.
      */

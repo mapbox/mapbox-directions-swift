@@ -50,6 +50,5 @@ extension MapMatchingResponse: Codable {
         
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
-
     }
 }
