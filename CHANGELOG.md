@@ -1,6 +1,6 @@
 # Changes to Mapbox Directions for Swift
 
-## master
+## 1.0.0
 
 * Fixed a crash that could occur if the Mapbox Directions API includes unrecognized `RoadClasses` values in its response. ([#450](https://github.com/mapbox/mapbox-directions-swift/pull/450))
 
