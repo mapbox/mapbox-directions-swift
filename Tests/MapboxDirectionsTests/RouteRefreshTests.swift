@@ -1,9 +1,11 @@
 import XCTest
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
+#endif
 @testable import MapboxDirections
 
 class RouteRefreshTests: XCTestCase {
+    #if !SWIFT_PACKAGE
     override func setUp() {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
@@ -66,7 +68,7 @@ class RouteRefreshTests: XCTestCase {
     }
     
     func testIncorrectRefreshParameters() {
-        let refreshResponseExpectation = expectation(description: "Refresh responce with incorrect parameters failed.")
+        let refreshResponseExpectation = expectation(description: "Refresh response with incorrect parameters failed.")
         
         fetchStubbedRoute { routeResponse in
 
@@ -132,5 +134,79 @@ class RouteRefreshTests: XCTestCase {
         
         wait(for: [routeUpdatedExpectation], timeout: 3)
     }
+    #endif
+    
+    func testDecoding() {
+        let routeJSON = [
+            "legs": [
+                [
+                    "annotation": [
+                        "distance": [
+                            0,
+                        ],
+                        "duration": [
+                            0,
+                        ],
+                        "speed": [
+                            0,
+                        ],
+                        "congestion": [
+                            "severe",
+                        ],
+                    ],
+                ],
+            ],
+        ] as [String : Any?]
+        let routeData = try! JSONSerialization.data(withJSONObject: routeJSON, options: [])
+        
+        var route: RefreshedRoute?
+        XCTAssertNoThrow(route = try JSONDecoder().decode(RefreshedRoute.self, from: routeData))
+        XCTAssertNotNil(route)
+        XCTAssertEqual(route?.legs.count, 1)
+        
+        if let leg = route?.legs.first {
+            XCTAssertEqual(leg.attributes.segmentDistances, [0])
+            XCTAssertEqual(leg.attributes.expectedSegmentTravelTimes, [0])
+            XCTAssertEqual(leg.attributes.segmentSpeeds, [0])
+            XCTAssertEqual(leg.attributes.segmentCongestionLevels, [.severe])
+            XCTAssertNil(leg.attributes.segmentMaximumSpeedLimits)
+        }
+    }
+    
+    func testEncoding() {
+        let leg = RefreshedRouteLeg(attributes:
+            .init(segmentDistances: [0], expectedSegmentTravelTimes: [0], segmentSpeeds: [0], segmentCongestionLevels: [.severe], segmentMaximumSpeedLimits: [Measurement(value: 1, unit: .milesPerHour)]))
+        let route = RefreshedRoute(legs: [leg])
+        
+        var encodedRouteData: Data?
+        XCTAssertNoThrow(encodedRouteData = try JSONEncoder().encode(route))
+        XCTAssertNotNil(encodedRouteData)
+        
+        if let encodedRouteData = encodedRouteData {
+            var encodedRouteJSON: [String: Any?]?
+            XCTAssertNoThrow(encodedRouteJSON = try JSONSerialization.jsonObject(with: encodedRouteData, options: []) as? [String: Any?])
+            XCTAssertNotNil(encodedRouteJSON)
+            
+            let legsJSON = encodedRouteJSON?["legs"] as? [[String: Any?]]
+            XCTAssertNotNil(legsJSON)
+            XCTAssertEqual(legsJSON?.count, 1)
+            if let legJSON = legsJSON?.first {
+                let annotationJSON = legJSON["annotation"] as? [String: Any]
+                XCTAssertNotNil(annotationJSON)
+                if let annotationJSON = annotationJSON {
+                    XCTAssertEqual(annotationJSON["distance"] as? [CLLocationDistance], [0])
+                    XCTAssertEqual(annotationJSON["duration"] as? [TimeInterval], [0])
+                    XCTAssertEqual(annotationJSON["speed"] as? [CLLocationSpeed], [0])
+                    XCTAssertEqual(annotationJSON["congestion"] as? [String], ["severe"])
+                    
+                    let maxspeedsJSON = annotationJSON["maxspeed"] as? [[String: Any?]]
+                    XCTAssertNotNil(maxspeedsJSON)
+                    if let maxspeedJSON = maxspeedsJSON?.first {
+                        XCTAssertEqual(maxspeedJSON["speed"] as? Double, 1)
+                        XCTAssertEqual(maxspeedJSON["unit"] as? String, "mph")
+                    }
+                }
+            }
+        }
+    }
 }
-#endif
