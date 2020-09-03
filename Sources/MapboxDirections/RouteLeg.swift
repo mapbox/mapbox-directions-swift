@@ -280,29 +280,9 @@ extension RouteLeg: CustomQuickLookConvertible {
     }
 }
 
-extension RouteLeg: NSCopying {
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let copy = RouteLeg(steps: steps,
-                            name: name,
-                            distance: distance,
-                            expectedTravelTime: expectedTravelTime,
-                            profileIdentifier: profileIdentifier)
-        copy.source = source
-        copy.destination = destination
-        copy.segmentDistances = segmentDistances
-        copy.expectedSegmentTravelTimes = expectedSegmentTravelTimes
-        copy.segmentSpeeds = segmentSpeeds
-        copy.segmentCongestionLevels = segmentCongestionLevels
-        copy.segmentMaximumSpeedLimits = segmentMaximumSpeedLimits
-        
-        return copy
-    }
-}
-
-
 public extension Array where Element == RouteLeg {
     /**
-     Populates source and destination information for each leg with waypoint information, typically gathered from DirectionsOptions.
+     Populates source and destination information for each leg with waypoint information, typically gathered from `DirectionsOptions`.
      */
     func populate(waypoints: [Waypoint]) {
         let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), self)
