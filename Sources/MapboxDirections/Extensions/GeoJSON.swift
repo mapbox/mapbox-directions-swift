@@ -20,8 +20,14 @@ extension LineString {
     }
     
     init(encodedPolyline: String, precision: Double) throws {
-        guard let coordinates = decodePolyline(encodedPolyline, precision: precision) as [CLLocationCoordinate2D]? else {
+        guard var coordinates = decodePolyline(encodedPolyline, precision: precision) as [CLLocationCoordinate2D]? else {
             throw GeometryError.cannotDecodePolyline(precision: precision)
+        }
+        // If the polyline has zero length with both endpoints at the same coordinate, Polyline drops one of the coordinates.
+        // https://github.com/raphaelmor/Polyline/issues/59
+        // Duplicate the coordinate to ensure a valid GeoJSON geometry.
+        if coordinates.count == 1 {
+            coordinates.append(coordinates[0])
         }
         self.init(coordinates)
     }
