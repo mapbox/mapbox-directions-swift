@@ -312,7 +312,12 @@ open class DirectionsOptions: Codable {
         return "\(abridgedPath)/\(coordinates).json"
     }
     
-    var urlQueryItems: [URLQueryItem] {
+    /**
+     An array of URL query items (parameters) to include in an HTTP request.
+     
+     The query items are included in the URL of a GET request or the body of a POST request.
+     */
+    open var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: shapeFormat.rawValue),
             URLQueryItem(name: "overview", value: routeShapeResolution.rawValue),
