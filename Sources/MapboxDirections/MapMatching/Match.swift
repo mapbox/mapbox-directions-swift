@@ -60,14 +60,13 @@ open class Match: DirectionsResult {
      - parameter shape: The matching roads or paths as a contiguous polyline.
      - parameter distance: The matched path’s cumulative distance, measured in meters.
      - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
-     - parameter typicalTravelTime: The route’s typical travel time, measured in seconds.
      - parameter confidence: A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      - parameter weight: A `Weight` enum, which represents the weight given to a specific `Match`.
      */
-    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, confidence: Float, weight: Weight) {
+    public init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, confidence: Float, weight: Weight) {
         self.confidence = confidence
         self.weight = weight
-        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime, typicalTravelTime: typicalTravelTime)
+        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime)
     }
     
     /**
@@ -113,7 +112,6 @@ extension Match: Equatable {
         return lhs.routeIdentifier == rhs.routeIdentifier &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
-            lhs.typicalTravelTime == rhs.typicalTravelTime &&
             lhs.speechLocale == rhs.speechLocale &&
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
             lhs.confidence == rhs.confidence &&
