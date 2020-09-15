@@ -172,10 +172,7 @@ open class RouteOptions: DirectionsOptions {
     
     // MARK: Getting the Request URL
     
-    /**
-     An array of URL parameters to include in the request URL.
-     */
-    override var urlQueryItems: [URLQueryItem] {
+    override open var urlQueryItems: [URLQueryItem] {
         var params: [URLQueryItem] = [
             URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
             URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),

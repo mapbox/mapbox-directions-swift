@@ -5,6 +5,7 @@
 * Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method for refreshing attributes along the legs of a route and the `Route.refreshLegAttributes(from:)` method for merging the refreshed attributes into an existing route. To enable route refreshing for the routes in a particular route response, set `RouteOptions.refreshingEnabled` to `true` before passing the `RouteOptions` object into `Directions.calculate(_:completionHandler:)`. ([#420](https://github.com/mapbox/mapbox-directions-swift/pull/420))
 * Fixed a crash that could occur if the Mapbox Directions API includes unrecognized `RoadClasses` values in its response. ([#450](https://github.com/mapbox/mapbox-directions-swift/pull/450))
 * Fixed malformed `RouteStep.shape` values that could occur when `RouteStep.maneuverType` is `ManeuverType.arrive`, `DirectionsOptions.shapeFormat` is `RouteShapeFormat.polyline6`, and the Mapbox Directions API returns certain encoded Polyline strings. ([#456](https://github.com/mapbox/mapbox-directions-swift/pull/456))
+* Restored the `DirectionsOptions.urlQueryItems` property so that subclasses of `RouteOptions` and `MatchOptions` can add any additional URL query parameters that are supported by the Mapbox Directions and Map Matching APIs. ([#461](https://github.com/mapbox/mapbox-directions-swift/pull/461))
 
 ## v0.33.2
 
