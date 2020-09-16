@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## 1.1.0
+
+* Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime`, `RouteStep.typicalTravelTime` properties. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
+
 ## 1.0.0
 
 * Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method for refreshing attributes along the legs of a route and the `Route.refreshLegAttributes(from:)` method for merging the refreshed attributes into an existing route. To enable route refreshing for the routes in a particular route response, set `RouteOptions.refreshingEnabled` to `true` before passing the `RouteOptions` object into `Directions.calculate(_:completionHandler:)`. ([#420](https://github.com/mapbox/mapbox-directions-swift/pull/420))
