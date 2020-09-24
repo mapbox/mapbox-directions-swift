@@ -1,2 +1,2 @@
 github "raphaelmor/Polyline" ~> 4.2
-github "mapbox/turf-swift" ~> 0.5.0
+github "mapbox/turf-swift" ~> 1.0
