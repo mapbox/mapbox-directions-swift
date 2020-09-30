@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Directions Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    <link rel='shortcut icon' href='https://www.mapbox.com/img/favicon.ico' type='image/x-icon' />
+
+    <style type="text/css">
+      .nav-group-name[data-name="Directions"] > .small-heading,
+      .nav-group-task[data-name="Directions"] {
+        background-color: #f5f8fc;
+        font-family: "Open Sans Bold";
+        border-left: 3px solid #3a68d8;
+        padding-left: 5px
+      }
+    </style>
+    <script src="https://docs.mapbox.com/analytics.js"></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/Directions" class="dashAnchor"></a>
+
+    <a title="Directions Class Reference"></a>
+
+    <header class="header-container">
+      <div class="limiter">
+        <div class="header">
+        <p class="header-col header-col--primary">
+          <a class="header-link" href="../index.html">
+            <img style="height: 25px;"  class="header-icon" src="../img/mapbox.svg" alt="Mapbox Directions for Swift Docs"/>
+            <span class='header-tag'>Directions.swift Reference (1.0.0-rc.2)</span>
+          </a>
+          
+        </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link space-right2" href="https://github.com/mapbox/mapbox-directions-swift">
+              <svg style="margin-bottom: 1px;" class="header-icon" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		      <path stroke="none" stroke-width="1" fill="white" fill-rule="evenodd" d="M16.6,0.4 C7.6,0.4 0.3,7.7 0.3,16.7 C0.3,23.9 5,30 11.4,32.2 C12.2,32.3 12.5,31.8 12.5,31.4 L12.5,28.6 C8,29.6 7,26.4 7,26.4 C6.3,24.5 5.2,24 5.2,24 C3.7,23 5.3,23 5.3,23 C6.9,23.1 7.8,24.7 7.8,24.7 C9.3,27.2 11.6,26.5 12.5,26.1 C12.6,25 13.1,24.3 13.5,23.9 C9.9,23.5 6.1,22.1 6.1,15.8 C6.1,14 6.7,12.6 7.8,11.4 C7.6,11 7.1,9.3 8,7.1 C8,7.1 9.4,6.7 12.5,8.8 C13.8,8.4 15.2,8.3 16.6,8.3 C18,8.3 19.4,8.5 20.7,8.8 C23.8,6.7 25.2,7.1 25.2,7.1 C26.1,9.3 25.5,11 25.4,11.4 C26.4,12.5 27.1,14 27.1,15.8 C27.1,22.1 23.3,23.4 19.7,23.8 C20.3,24.3 20.8,25.3 20.8,26.8 L20.8,31.3 C20.8,31.7 21.1,32.2 21.9,32.1 C28.4,29.9 33,23.8 33,16.6 C32.9,7.7 25.6,0.4 16.6,0.4 L16.6,0.4 Z"></path>
+              </svg>
+              View on GitHub
+            </a>
+          </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link bold" href="dash-feed://https%3A%2F%2Fdocs.mapbox.com%2Fios%2Fdocsets%2FMapboxDirections.xml">
+              <img style="margin-bottom: 1px;" class="header-icon" src="../img/dash.png"/>
+              Install in Dash
+            </a>
+          </p>
+      </div>
+      </div>
+    </header>
+
+    <div class="breadcrumbs">
+      <div class="limiter">
+        <a class="breadcrumb" href="../index.html">Mapbox Directions for Swift Reference</a>
+        <img class="carat" src="../img/carat.png" />
+        Directions Class Reference
+      </div>
+    </div>
+
+    <div class="content-wrapper limiter">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name" data-name="Guides">
+            <a class="small-heading" href="../Guides.html">Guides<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Navigation SDK" data-url="navigation-sdk.html">
+                <a title="Navigation SDK" class="nav-group-task-link" href="../navigation-sdk.html">Navigation SDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Getting Directions">
+            <a class="small-heading" href="../Getting Directions.html">Getting Directions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Directions" data-url="Classes/Directions.html">
+                <a title="Directions" class="nav-group-task-link" href="../Classes/Directions.html">Directions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteOptions" data-url="Classes/RouteOptions.html">
+                <a title="RouteOptions" class="nav-group-task-link" href="../Classes/RouteOptions.html">RouteOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Waypoint" data-url="Classes/Waypoint.html">
+                <a title="Waypoint" class="nav-group-task-link" href="../Classes/Waypoint.html">Waypoint</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Map Matching">
+            <a class="small-heading" href="../Map Matching.html">Map Matching<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MatchOptions" data-url="Classes/MatchOptions.html">
+                <a title="MatchOptions" class="nav-group-task-link" href="../Classes/MatchOptions.html">MatchOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Tracepoint" data-url="Classes/Tracepoint.html">
+                <a title="Tracepoint" class="nav-group-task-link" href="../Classes/Tracepoint.html">Tracepoint</a>
+              </li>
+              <li class="nav-group-task" data-name="Match" data-url="Classes/Match.html">
+                <a title="Match" class="nav-group-task-link" href="../Classes/Match.html">Match</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Results">
+            <a class="small-heading" href="../Results.html">Results<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Route" data-url="Classes/Route.html">
+                <a title="Route" class="nav-group-task-link" href="../Classes/Route.html">Route</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLeg" data-url="Classes/RouteLeg.html">
+                <a title="RouteLeg" class="nav-group-task-link" href="../Classes/RouteLeg.html">RouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="– Attributes" data-url="Classes/RouteLeg/Attributes.html">
+                <a title="– Attributes" class="nav-group-task-link" href="../Classes/RouteLeg/Attributes.html">– Attributes</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteStep" data-url="Classes/RouteStep.html">
+                <a title="RouteStep" class="nav-group-task-link" href="../Classes/RouteStep.html">RouteStep</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Classes">
+            <a class="small-heading" href="../Other Classes.html">Other Classes<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsOptions" data-url="Classes/DirectionsOptions.html">
+                <a title="DirectionsOptions" class="nav-group-task-link" href="../Classes/DirectionsOptions.html">DirectionsOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsResult" data-url="Classes/DirectionsResult.html">
+                <a title="DirectionsResult" class="nav-group-task-link" href="../Classes/DirectionsResult.html">DirectionsResult</a>
+              </li>
+              <li class="nav-group-task" data-name="SpokenInstruction" data-url="Classes/SpokenInstruction.html">
+                <a title="SpokenInstruction" class="nav-group-task-link" href="../Classes/SpokenInstruction.html">SpokenInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstruction" data-url="Classes/VisualInstruction.html">
+                <a title="VisualInstruction" class="nav-group-task-link" href="../Classes/VisualInstruction.html">VisualInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="– Component" data-url="Classes/VisualInstruction/Component.html">
+                <a title="– Component" class="nav-group-task-link" href="../Classes/VisualInstruction/Component.html">– Component</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstructionBanner" data-url="Classes/VisualInstructionBanner.html">
+                <a title="VisualInstructionBanner" class="nav-group-task-link" href="../Classes/VisualInstructionBanner.html">VisualInstructionBanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Global Variables">
+            <a class="small-heading" href="../Other Global Variables.html">Other Global Variables<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MBDirectionsErrorDomain" data-url="Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">
+                <a title="MBDirectionsErrorDomain" class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">MBDirectionsErrorDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Enumerations">
+            <a class="small-heading" href="../Other Enumerations.html">Other Enumerations<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CongestionLevel" data-url="Enums/CongestionLevel.html">
+                <a title="CongestionLevel" class="nav-group-task-link" href="../Enums/CongestionLevel.html">CongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsCodingError" data-url="Enums/DirectionsCodingError.html">
+                <a title="DirectionsCodingError" class="nav-group-task-link" href="../Enums/DirectionsCodingError.html">DirectionsCodingError</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsError" data-url="Enums/DirectionsError.html">
+                <a title="DirectionsError" class="nav-group-task-link" href="../Enums/DirectionsError.html">DirectionsError</a>
+              </li>
+              <li class="nav-group-task" data-name="DrivingSide" data-url="Enums/DrivingSide.html">
+                <a title="DrivingSide" class="nav-group-task-link" href="../Enums/DrivingSide.html">DrivingSide</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverDirection" data-url="Enums/ManeuverDirection.html">
+                <a title="ManeuverDirection" class="nav-group-task-link" href="../Enums/ManeuverDirection.html">ManeuverDirection</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverType" data-url="Enums/ManeuverType.html">
+                <a title="ManeuverType" class="nav-group-task-link" href="../Enums/ManeuverType.html">ManeuverType</a>
+              </li>
+              <li class="nav-group-task" data-name="MeasurementSystem" data-url="Enums/MeasurementSystem.html">
+                <a title="MeasurementSystem" class="nav-group-task-link" href="../Enums/MeasurementSystem.html">MeasurementSystem</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeFormat" data-url="Enums/RouteShapeFormat.html">
+                <a title="RouteShapeFormat" class="nav-group-task-link" href="../Enums/RouteShapeFormat.html">RouteShapeFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeResolution" data-url="Enums/RouteShapeResolution.html">
+                <a title="RouteShapeResolution" class="nav-group-task-link" href="../Enums/RouteShapeResolution.html">RouteShapeResolution</a>
+              </li>
+              <li class="nav-group-task" data-name="SignStandard" data-url="Enums/SignStandard.html">
+                <a title="SignStandard" class="nav-group-task-link" href="../Enums/SignStandard.html">SignStandard</a>
+              </li>
+              <li class="nav-group-task" data-name="TransportType" data-url="Enums/TransportType.html">
+                <a title="TransportType" class="nav-group-task-link" href="../Enums/TransportType.html">TransportType</a>
+              </li>
+              <li class="nav-group-task" data-name="Weight" data-url="Other%20Enums.html#/s:16MapboxDirections6WeightO">
+                <a title="Weight" class="nav-group-task-link" href="../Other%20Enums.html#/s:16MapboxDirections6WeightO">Weight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Extensions">
+            <a class="small-heading" href="../Other Extensions.html">Other Extensions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Array" data-url="Extensions/Array.html">
+                <a title="Array" class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task" data-name="BoundingBox" data-url="Extensions/BoundingBox.html">
+                <a title="BoundingBox" class="nav-group-task-link" href="../Extensions/BoundingBox.html">BoundingBox</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Structures">
+            <a class="small-heading" href="../Other Structures.html">Other Structures<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="AttributeOptions" data-url="Structs/AttributeOptions.html">
+                <a title="AttributeOptions" class="nav-group-task-link" href="../Structs/AttributeOptions.html">AttributeOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsPriority" data-url="Structs/DirectionsPriority.html">
+                <a title="DirectionsPriority" class="nav-group-task-link" href="../Structs/DirectionsPriority.html">DirectionsPriority</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsProfileIdentifier" data-url="Structs/DirectionsProfileIdentifier.html">
+                <a title="DirectionsProfileIdentifier" class="nav-group-task-link" href="../Structs/DirectionsProfileIdentifier.html">DirectionsProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="GuidanceViewImageRepresentation" data-url="Structs/GuidanceViewImageRepresentation.html">
+                <a title="GuidanceViewImageRepresentation" class="nav-group-task-link" href="../Structs/GuidanceViewImageRepresentation.html">GuidanceViewImageRepresentation</a>
+              </li>
+              <li class="nav-group-task" data-name="Intersection" data-url="Structs/Intersection.html">
+                <a title="Intersection" class="nav-group-task-link" href="../Structs/Intersection.html">Intersection</a>
+              </li>
+              <li class="nav-group-task" data-name="LaneIndication" data-url="Structs/LaneIndication.html">
+                <a title="LaneIndication" class="nav-group-task-link" href="../Structs/LaneIndication.html">LaneIndication</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRoute" data-url="Structs/RefreshedRoute.html">
+                <a title="RefreshedRoute" class="nav-group-task-link" href="../Structs/RefreshedRoute.html">RefreshedRoute</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRouteLeg" data-url="Structs/RefreshedRouteLeg.html">
+                <a title="RefreshedRouteLeg" class="nav-group-task-link" href="../Structs/RefreshedRouteLeg.html">RefreshedRouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClasses" data-url="Structs/RoadClasses.html">
+                <a title="RoadClasses" class="nav-group-task-link" href="../Structs/RoadClasses.html">RoadClasses</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshResponse" data-url="Structs/RouteRefreshResponse.html">
+                <a title="RouteRefreshResponse" class="nav-group-task-link" href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <a href="#/Directions"><h1 id="Directions">Directions<span class="anchor-icon" /></h1></a>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">Directions</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Directions</span><span class="p">:</span> <span class="kt">OfflineDirectionsProtocol</span></code></pre>
+
+                </div>
+              </div>
+            <p>A <code>Directions</code> object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the <a href="https://docs.mapbox.com/api/navigation/#directions">Mapbox Directions API</a> and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.</p>
+
+<p>Each result produced by the directions object is stored in a <code><a href="../Classes/Route.html">Route</a></code> object. Depending on the <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object you provide, each route may include detailed information suitable for turn-by-turn directions, or it may include only high-level information such as the distance, estimated travel time, and name of each leg of the trip. The waypoints that form the request may be conflated with nearby locations, as appropriate; the resulting waypoints are provided to the closure.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C7Sessiona"></a>
+                    <a name="//apple_ref/swift/Alias/Session" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C7Sessiona"><span class="token-name">Session</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A tuple type representing the direction session that was generated from the request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Session</span> <span class="o">=</span> <span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">DirectionsCredentials</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></code> object representing the request parameter options.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  credentials
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A object containing the credentials used to make the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L68">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C22RouteCompletionHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/RouteCompletionHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C22RouteCompletionHandlera"><span class="token-name">RouteCompletionHandler</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A closure (block) to be called when a directions request is complete.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">RouteCompletionHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C7Sessiona">Session</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">result</span><span class="p">:</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">RouteResponse</span><span class="p">,</span> <span class="kt"><a href="../Enums/DirectionsError.html">DirectionsError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  session
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C7Sessiona">Directions.Session</a></code> object containing session information</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  result
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>Result</code> enum that represents the <code>RouteResponse</code> if the request returned successfully, or the error if it did not.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L77">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C22MatchCompletionHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/MatchCompletionHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C22MatchCompletionHandlera"><span class="token-name">MatchCompletionHandler</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A closure (block) to be called when a map matching request is complete.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">MatchCompletionHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C7Sessiona">Session</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">result</span><span class="p">:</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">MapMatchingResponse</span><span class="p">,</span> <span class="kt"><a href="../Enums/DirectionsError.html">DirectionsError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  session
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C7Sessiona">Directions.Session</a></code> object containing session information</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  result
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>Result</code> enum that represents the <code>MapMatchingResponse</code> if the request returned successfully, or the error if it did not.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L86">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C29RouteRefreshCompletionHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/RouteRefreshCompletionHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C29RouteRefreshCompletionHandlera"><span class="token-name">RouteRefreshCompletionHandler</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A closure (block) to be called when a directions refresh request is complete.</p>
+<div class="aside aside-postcondition">
+    <p class="aside-title">Postcondition</p>
+    <p>To update the original route, pass <code><a href="../Structs/RouteRefreshResponse.html#/s:16MapboxDirections20RouteRefreshResponseV5routeAA09RefreshedC0Vvp">RouteRefreshResponse.route</a></code> into the <code><a href="../Classes/Route.html#/s:16MapboxDirections5RouteC20refreshLegAttributes4fromyAA09RefreshedC0V_tF">Route.refreshLegAttributes(from:)</a></code> method.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">RouteRefreshCompletionHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">DirectionsCredentials</span><span class="p">,</span> <span class="n">_</span> <span class="nv">result</span><span class="p">:</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/DirectionsError.html">DirectionsError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  credentials
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object containing the credentials used to make the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  result
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>Result</code> enum that represents the <code><a href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a></code> if the request returned successfully, or the error if it did not.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L96">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Creating%20a%20Directions%20Object"></a>
+                <a name="//apple_ref/swift/Section/Creating a Directions Object" class="dashAnchor"></a>
+                <a href="#/Creating%20a%20Directions%20Object">
+                  <h3 id="Creating%20a%20Directions%20Object" class="section-name">Creating a Directions Object<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C6sharedACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C6sharedACvpZ"><span class="token-name">shared</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The shared directions object.</p>
+
+<p>To use this object, a Mapbox <a href="https://docs.mapbox.com/help/glossary/access-token/">access token</a> should be specified in the <code>MGLMapboxAccessToken</code> key in the main application bundle’s Info.plist.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span><span class="p">:</span> <span class="kt">Directions</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L105">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C11credentialsAA0B11CredentialsVvp"></a>
+                    <a name="//apple_ref/swift/Property/credentials" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C11credentialsAA0B11CredentialsVvp"><span class="token-name">credentials</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The Authorization &amp; Authentication credentials that are used for this service.</p>
+
+<p>If nothing is provided, the default behavior is to read credential values from the developer&rsquo;s Info.plist.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">DirectionsCredentials</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L112">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C11credentialsAcA0B11CredentialsV_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(credentials:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C11credentialsAcA0B11CredentialsV_tcfc"><span class="token-name">init(credentials:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a newly created directions object with an optional access token and host.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="kt">DirectionsCredentials</span> <span class="o">=</span> <span class="o">.</span><span class="nf">init</span><span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  credentials
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>DirectionsCredentials</code> object that, optionally, contains customized Token and Endpoint information. If no credentials object is supplied, then defaults are used.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L120-L122">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20Directions"></a>
+                <a name="//apple_ref/swift/Section/Getting Directions" class="dashAnchor"></a>
+                <a href="#/Getting%20Directions">
+                  <h3 id="Getting%20Directions" class="section-name">Getting Directions<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12RouteOptionsC_yAA0bJ0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA0I8ResponseVAA0B5ErrorOGtctF"></a>
+                    <a name="//apple_ref/swift/Method/calculate(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12RouteOptionsC_yAA0bJ0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA0I8ResponseVAA0B5ErrorOGtctF"><span class="token-name">calculate(_:completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Begins asynchronously calculating routes using the given options and delivers the results to a closure.</p>
+
+<p>This method retrieves the routes asynchronously from the <a href="https://www.mapbox.com/api-documentation/navigation/#directions">Mapbox Directions API</a> over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.</p>
+
+<p>Routes may be displayed atop a <a href="https://www.mapbox.com/maps/">Mapbox map</a>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">_</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/RouteOptions.html">RouteOptions</a></span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C22RouteCompletionHandlera">RouteCompletionHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object specifying the requirements for the resulting routes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L138-L211">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12MatchOptionsC_yAA0bJ0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA19MapMatchingResponseVAA0B5ErrorOGtctF"></a>
+                    <a name="//apple_ref/swift/Method/calculate(_:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12MatchOptionsC_yAA0bJ0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA19MapMatchingResponseVAA0B5ErrorOGtctF"><span class="token-name">calculate(_:completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Begins asynchronously calculating matches using the given options and delivers the results to a closure.</p>
+
+<p>This method retrieves the matches asynchronously from the <a href="https://docs.mapbox.com/api/navigation/#map-matching">Mapbox Map Matching API</a> over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.</p>
+
+<p>To get <code><a href="../Classes/Route.html">Route</a></code>s based on these matches, use the <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C15calculateRoutes8matching17completionHandlerSo20NSURLSessionDataTaskCAA12MatchOptionsC_yAA0bL0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA13RouteResponseVAA0B5ErrorOGtctF">calculateRoutes(matching:completionHandler:)</a></code> method instead.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">_</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/MatchOptions.html">MatchOptions</a></span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C22MatchCompletionHandlera">MatchCompletionHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/MatchOptions.html">MatchOptions</a></code> object specifying the requirements for the resulting matches.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure (block) to call with the resulting matches. This closure is executed on the application’s main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matches, cancel this task.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L224-L298">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C15calculateRoutes8matching17completionHandlerSo20NSURLSessionDataTaskCAA12MatchOptionsC_yAA0bL0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA13RouteResponseVAA0B5ErrorOGtctF"></a>
+                    <a name="//apple_ref/swift/Method/calculateRoutes(matching:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C15calculateRoutes8matching17completionHandlerSo20NSURLSessionDataTaskCAA12MatchOptionsC_yAA0bL0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA13RouteResponseVAA0B5ErrorOGtctF"><span class="token-name">calculateRoutes(matching:completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Begins asynchronously calculating routes that match the given options and delivers the results to a closure.</p>
+
+<p>This method retrieves the routes asynchronously from the <a href="https://docs.mapbox.com/api/navigation/#map-matching">Mapbox Map Matching API</a> over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.</p>
+
+<p>To get the <code><a href="../Classes/Match.html">Match</a></code>es that these routes are based on, use the <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12RouteOptionsC_yAA0bJ0C7options_AA0B11CredentialsV11credentialst_s6ResultOyAA0I8ResponseVAA0B5ErrorOGtctF">calculate(_:completionHandler:)</a></code> method instead.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">calculateRoutes</span><span class="p">(</span><span class="n">matching</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/MatchOptions.html">MatchOptions</a></span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C22RouteCompletionHandlera">RouteCompletionHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/MatchOptions.html">MatchOptions</a></code> object specifying the requirements for the resulting match.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure (block) to call with the resulting routes. This closure is executed on the application’s main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting routes, cancel this task.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L311-L386">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C12refreshRoute18responseIdentifier10routeIndex09fromLegAtH017completionHandlerSo20NSURLSessionDataTaskCSgSS_S2iyAA0B11CredentialsV_s6ResultOyAA0D15RefreshResponseVAA0B5ErrorOGtctF"></a>
+                    <a name="//apple_ref/swift/Method/refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C12refreshRoute18responseIdentifier10routeIndex09fromLegAtH017completionHandlerSo20NSURLSessionDataTaskCSgSS_S2iyAA0B11CredentialsV_s6ResultOyAA0D15RefreshResponseVAA0B5ErrorOGtctF"><span class="token-name">refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Begins asynchronously refreshing the route with the given identifier, optionally starting from an arbitrary leg along the route.</p>
+
+<p>This method retrieves skeleton route data asynchronously from the Mapbox Directions Refresh API over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.</p>
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    <p>Set <code><a href="../Classes/RouteOptions.html#/s:16MapboxDirections12RouteOptionsC17refreshingEnabledSbvp">RouteOptions.refreshingEnabled</a></code> to <code>true</code> when calculating the original route.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">refreshRoute</span><span class="p">(</span><span class="nv">responseIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">routeIndex</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">fromLegAtIndex</span> <span class="nv">startLegIndex</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C29RouteRefreshCompletionHandlera">RouteRefreshCompletionHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  responseIdentifier
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>RouteResponse.identifier</code> value of the <code>RouteResponse</code> that contains the route to refresh. You can alternatively use the value of <code>Route.routeIdentifier</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  routeIndex
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the route to refresh in the original <code>RouteResponse.routes</code> array.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  startLegIndex
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the leg in the route at which to begin refreshing. The response will omit any leg before this index and refresh any leg from this index to the end of the route. If this argument is omitted, the entire route is refreshed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure (block) to call with the resulting skeleton route data. This closure is executed on the application’s main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting skeleton routes, cancel this task.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L401-L469">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C3url14forCalculating10Foundation3URLVAA0B7OptionsC_tF"></a>
+                    <a name="//apple_ref/swift/Method/url(forCalculating:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C3url14forCalculating10Foundation3URLVAA0B7OptionsC_tF"><span class="token-name">url(forCalculating:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The GET HTTP URL used to fetch the routes from the API.</p>
+
+<p>After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the <code>Route.init(json:waypoints:profileIdentifier:)</code> initializer. Alternatively, you can use the <code>calculate(_:options:)</code> method, which automatically sends the request and parses the response.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">url</span><span class="p">(</span><span class="n">forCalculating</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></code> object specifying the requirements for the resulting routes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The URL to send the request to.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L495-L497">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C3url14forCalculating10httpMethod10Foundation3URLVAA0B7OptionsC_SStF"></a>
+                    <a name="//apple_ref/swift/Method/url(forCalculating:httpMethod:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C3url14forCalculating10httpMethod10Foundation3URLVAA0B7OptionsC_SStF"><span class="token-name">url(forCalculating:httpMethod:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The HTTP URL used to fetch the routes from the API using the specified HTTP method.</p>
+
+<p>The query part of the URL is generally suitable for GET requests. However, if the URL is exceptionally long, it may be more appropriate to send a POST request to a URL without the query part, relegating the query to the body of the HTTP request. Use the <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C10urlRequest14forCalculating10Foundation10URLRequestVAA0B7OptionsC_tF">urlRequest(forCalculating:)</a></code> method to get an HTTP request that is a GET or POST request as necessary.</p>
+
+<p>After requesting the URL returned by this method, you can parse the JSON data in the response and pass it into the <code>Route.init(json:waypoints:profileIdentifier:)</code> initializer. Alternatively, you can use the <code>calculate(_:options:)</code> method, which automatically sends the request and parses the response.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">url</span><span class="p">(</span><span class="n">forCalculating</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></span><span class="p">,</span> <span class="nv">httpMethod</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></code> object specifying the requirements for the resulting routes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  httpMethod
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The HTTP method to use. The value of this argument should match the <code>URLRequest.httpMethod</code> of the request you send. Currently, only GET and POST requests are supported by the API.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The URL to send the request to.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L510-L523">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C10urlRequest14forCalculating10Foundation10URLRequestVAA0B7OptionsC_tF"></a>
+                    <a name="//apple_ref/swift/Method/urlRequest(forCalculating:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C10urlRequest14forCalculating10Foundation10URLRequestVAA0B7OptionsC_tF"><span class="token-name">urlRequest(forCalculating:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The HTTP request used to fetch the routes from the API.</p>
+
+<p>The returned request is a GET or POST request as necessary to accommodate URL length limits.</p>
+
+<p>After sending the request returned by this method, you can parse the JSON data in the response and pass it into the <code>Route.init(json:waypoints:profileIdentifier:)</code> initializer. Alternatively, you can use the <code>calculate(_:options:)</code> method, which automatically sends the request and parses the response.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">urlRequest</span><span class="p">(</span><span class="n">forCalculating</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLRequest</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  options
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Classes/DirectionsOptions.html">DirectionsOptions</a></code> object specifying the requirements for the resulting routes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A GET or POST HTTP request to calculate the specified options.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/Directions.swift#L535-L548">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C20availableVersionsURL10Foundation0E0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/availableVersionsURL" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C20availableVersionsURL10Foundation0E0Vvp"><span class="token-name">availableVersionsURL</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The URL to a list of available versions.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">availableVersionsURL</span><span class="p">:</span> <span class="kt">URL</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/OfflineDirections.swift#L35-L40">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C8tilesURL3for7version10Foundation0D0V4Turf11BoundingBoxV_SStF"></a>
+                    <a name="//apple_ref/swift/Method/tilesURL(for:version:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C8tilesURL3for7version10Foundation0D0V4Turf11BoundingBoxV_SStF"><span class="token-name">tilesURL(for:version:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns the URL to generate and download a tile pack from the Route Tiles API.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tilesURL</span><span class="p">(</span><span class="k">for</span> <span class="nv">coordinateBounds</span><span class="p">:</span> <span class="kt">BoundingBox</span><span class="p">,</span> <span class="nv">version</span><span class="p">:</span> <span class="kt">OfflineVersion</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URL</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  coordinateBounds
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The coordinate bounds that the tiles should cover.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  version
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A version obtained from <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C20availableVersionsURL10Foundation0E0Vvp">availableVersionsURL</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The URL to generate and download the tile pack that covers the coordinate bounds.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/OfflineDirections.swift#L49-L55">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C29fetchAvailableOfflineVersions17completionHandlerSo20NSURLSessionDataTaskCySaySSGSg_s5Error_pSgtc_tF"></a>
+                    <a name="//apple_ref/swift/Method/fetchAvailableOfflineVersions(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C29fetchAvailableOfflineVersions17completionHandlerSo20NSURLSessionDataTaskCySaySSGSg_s5Error_pSgtc_tF"><span class="token-name">fetchAvailableOfflineVersions(completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Fetches the available offline routing tile versions and returns them in descending chronological order. The most recent version should typically be passed into <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C13downloadTiles2in7version17completionHandlerSo24NSURLSessionDownloadTaskC4Turf11BoundingBoxV_SSy10Foundation3URLVSg_So13NSURLResponseCSgs5Error_pSgtctF">downloadTiles(in:version:completionHandler:)</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">fetchAvailableOfflineVersions</span><span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">OfflineVersionsHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure of type <code>OfflineVersionsHandler</code> which will be called when the request completes</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/OfflineDirections.swift#L63-L85">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections0B0C13downloadTiles2in7version17completionHandlerSo24NSURLSessionDownloadTaskC4Turf11BoundingBoxV_SSy10Foundation3URLVSg_So13NSURLResponseCSgs5Error_pSgtctF"></a>
+                    <a name="//apple_ref/swift/Method/downloadTiles(in:version:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections0B0C13downloadTiles2in7version17completionHandlerSo24NSURLSessionDownloadTaskC4Turf11BoundingBoxV_SSy10Foundation3URLVSg_So13NSURLResponseCSgs5Error_pSgtctF"><span class="token-name">downloadTiles(in:version:completionHandler:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Downloads offline routing tiles of the given version within the given coordinate bounds using the shared URLSession. The tiles are written to disk at the location passed into the <code>completionHandler</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">downloadTiles</span><span class="p">(</span><span class="k">in</span> <span class="nv">coordinateBounds</span><span class="p">:</span> <span class="kt">BoundingBox</span><span class="p">,</span>
+                          <span class="nv">version</span><span class="p">:</span> <span class="kt">OfflineVersion</span><span class="p">,</span>
+                          <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">OfflineDownloaderCompletionHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDownloadTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  coordinateBounds
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The bounding box</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  version
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The version to download. Version is represented as a String (yyyy-MM-dd-x)</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  completionHandler
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure of type <code>OfflineDownloaderCompletionHandler</code> which will be called when the request completes</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v1.0.0-rc.2/Sources/MapboxDirections/OfflineDirections.swift#L95-L102">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer limiter">
+      <p>© 2014–2020 <a class="link" href="https://www.mapbox.com/" target="_blank" rel="external">Mapbox</a>. See <a class="link" href="https://github.com/mapbox/mapbox-directions-swift/blob/master/LICENSE.md" target="_blank" rel="external">license</a> for more details.</p> Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.
+    </section>
+  </body>
+</div>
+</html>
