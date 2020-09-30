@@ -3,4 +3,4 @@ This branch publishes the generated documentation for the most recent releases a
 
 To learn how to add documentation see: [CONTRIBUTING.md](https://github.com/mapbox/mapbox-navigation-android/blob/master/CONTRIBUTING.md)
 
-To learn more about how generated docs work, see: https://github.com/mapbox/documentation/blob/hey-pages/docs/generated-docs.md.
+In addition to deploying documentation from this repo, you may also need to update version constants in https://github.com/mapbox/ios-sdk/ and https://github.com/mapbox/help/. To learn more about how generated docs work, see: https://github.com/mapbox/documentation/blob/hey-pages/docs/generated-docs.md.
