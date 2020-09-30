@@ -20,6 +20,6 @@ public struct RestStop: Codable, Equatable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(stopType.rawValue, forKey: .type)
+        try container.encode(stopType, forKey: .type)
     }
 }

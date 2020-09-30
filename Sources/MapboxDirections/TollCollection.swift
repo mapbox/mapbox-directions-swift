@@ -20,6 +20,6 @@ public struct TollCollection: Codable, Equatable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(collectionType.rawValue, forKey: .type)
+        try container.encode(collectionType, forKey: .type)
     }
 }
