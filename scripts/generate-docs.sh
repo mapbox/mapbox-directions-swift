@@ -36,7 +36,7 @@ mv -v $OUTPUT/* "./$VERSION"
 step "Switching branch to publisher-production"
 git checkout origin/publisher-production
 step "Committing API docs for $VERSION"
-git add "./api/directions/$VERSION"
-git commit -m "[directions] Add Mapbox Directions for Swift API docs for $VERSION" --no-verify
+git add "./$VERSION"
+git commit -m "[directions] Add Mapbox Directions for Swift API docs for $VERSION [ci skip]" --no-verify
 
 step "Finished updating documentation"
