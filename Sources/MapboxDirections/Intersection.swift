@@ -14,7 +14,12 @@ public struct Intersection {
                 outletIndexes: IndexSet,
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
-                outletRoadClasses: RoadClasses?) {
+                outletRoadClasses: RoadClasses?,
+                tollCollection: TollCollection?,
+                tunnelName: String?,
+                restStop: RestStop?,
+                isUrban: Bool?,
+                administrationRegionIndex: Int?) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -23,6 +28,11 @@ public struct Intersection {
         self.outletIndexes = outletIndexes
         self.usableApproachLanes = usableApproachLanes
         self.outletRoadClasses = outletRoadClasses
+        self.tollCollection = tollCollection
+        self.tunnelName = tunnelName
+        self.isUrban = isUrban
+        self.restStop = restStop
+        self.administrationRegionIndex = administrationRegionIndex
     }
     
     // MARK: Getting the Location of the Intersection
@@ -72,6 +82,16 @@ public struct Intersection {
      If road class information is unavailable, this property is set to `nil`.
      */
     public let outletRoadClasses: RoadClasses?
+
+    public let tunnelName: String?
+
+    public let tollCollection: TollCollection?
+
+    public let restStop: RestStop?
+
+    public let isUrban: Bool?
+
+    public let administrationRegionIndex: Int?
     
     // MARK: Telling the User Which Lanes to Use
     
@@ -99,6 +119,11 @@ extension Intersection: Codable {
         case outletIndex = "out"
         case lanes
         case outletRoadClasses = "classes"
+        case tollCollection = "toll_collection"
+        case tunnelName = "tunnelName"
+        case isUrban = "is_urban"
+        case restStop = "rest_stop"
+        case administrationRegionIndex = "admin_index"
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -129,6 +154,26 @@ extension Intersection: Codable {
         if let classes = outletRoadClasses?.description.components(separatedBy: ",").filter({ !$0.isEmpty }) {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
+
+        if let tolls = tollCollection?.collectionType {
+            try container.encode(tolls, forKey: .tollCollection)
+        }
+
+        if let isUrban = isUrban {
+            try container.encode(isUrban, forKey: .isUrban)
+        }
+
+        if let restStop = restStop {
+            try container.encode(restStop, forKey: .restStop)
+        }
+
+        if let tunnelName = tunnelName {
+            try container.encode(tunnelName, forKey: .tunnelName)
+        }
+
+        if let adminIndex = administrationRegionIndex {
+            try container.encode(adminIndex, forKey: .administrationRegionIndex)
+        }
     }
     
     public init(from decoder: Decoder) throws {
@@ -150,6 +195,16 @@ extension Intersection: Codable {
         
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex)
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex)
+
+        tollCollection = try container.decodeIfPresent(TollCollection.self, forKey: .tollCollection)
+
+        tunnelName = try container.decodeIfPresent(String.self, forKey: .tunnelName)
+
+        isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
+
+        restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
+
+        administrationRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrationRegionIndex)
     }
 }
 
@@ -162,6 +217,10 @@ extension Intersection: Equatable {
             lhs.outletIndex == rhs.outletIndex &&
             lhs.approachLanes == rhs.approachLanes &&
             lhs.usableApproachLanes == rhs.usableApproachLanes &&
-            lhs.outletRoadClasses == rhs.outletRoadClasses
+            lhs.outletRoadClasses == rhs.outletRoadClasses &&
+            lhs.tollCollection == rhs.tollCollection &&
+            lhs.tunnelName == rhs.tunnelName &&
+            lhs.isUrban == rhs.isUrban &&
+            lhs.administrationRegionIndex == rhs.administrationRegionIndex
     }
 }

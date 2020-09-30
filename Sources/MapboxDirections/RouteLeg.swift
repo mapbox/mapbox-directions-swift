@@ -18,6 +18,7 @@ open class RouteLeg: Codable {
         case expectedTravelTime = "duration"
         case profileIdentifier
         case annotation
+        case administrationRegions = "admins"
     }
     
     // MARK: Creating a Leg
@@ -69,6 +70,10 @@ open class RouteLeg: Codable {
         if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
         }
+
+        if let admins = try container.decodeIfPresent([AdministrationRegion].self, forKey: .administrationRegions) {
+            self.administrationRegions = admins
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -84,6 +89,10 @@ open class RouteLeg: Codable {
         let attributes = self.attributes
         if !attributes.isEmpty {
             try container.encode(attributes, forKey: .annotation)
+        }
+
+        if let admins = administrationRegions {
+            try container.encode(admins, forKey: .administrationRegions)
         }
     }
     
@@ -236,6 +245,8 @@ open class RouteLeg: Codable {
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
     open var expectedTravelTime: TimeInterval
+
+    open var administrationRegions: [AdministrationRegion]?
     
     // MARK: Reproducing the Route
     
