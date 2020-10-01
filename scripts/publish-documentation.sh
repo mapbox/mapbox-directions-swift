@@ -39,7 +39,7 @@ git checkout origin/publisher-production
 
 step "Committing API docs for $VERSION"
 git add "./$FOLDER"
-git commit -m "[directions] Add Mapbox Directions for Swift API docs for $VERSION [ci skip]" --no-verify
+git commit -m "Add $VERSION docs [ci skip]" --no-verify
 
 step "Creating new branch docs-${VERSION}"
 git checkout -b "docs-${VERSION}"
