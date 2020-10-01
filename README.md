@@ -195,11 +195,11 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 After a release, follow these steps to generate and publish documentation and update the iOS site with the latest version number:
 
 1. Generate and publish the documentation.
-  - Run `./scripts/publish-documetnation.sh v#.#.#` replacing `v#.#.#` with the release version number. 
-  - This script will checkout the release branch, install dependencies, generate the documentation, and commit the generated documentation to a new branch.
-  - Create a pull request and set the base branch to `publisher-production`.
+    - Run `./scripts/publish-documetnation.sh v#.#.#` replacing `v#.#.#` with the release version number. 
+    - This script will checkout the release branch, install dependencies, generate the documentation, and commit the generated documentation to a new branch.
+    - Create a pull request and set the base branch to `publisher-production`.
 2. Wait for new documentation to be live. 
-  - Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. 
-  - You can check the #publisher channel in Slack for a notification of when your commit has been published.
+    - Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. 
+    - You can check the #publisher channel in Slack for a notification of when your commit has been published.
 3. Update the ios-sdk repository constants. 
-  - Complete the [MapboxDirections.swift instructions](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) in the ios-sdk repository.
+    - Complete the [MapboxDirections.swift instructions](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) in the ios-sdk repository.
