@@ -189,3 +189,11 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcodeproj`
 1. Go to Product ‣ Test.
+
+## Publish documentation
+
+After a release, run `./scripts/publish-documetnation.sh v#.#.#` replacing `v#.#.#` with the release version number. This script will generate checkout the release branch, install dependencies, generate documentation, switch to the `publisher-production` branch and commit the generated documentation.
+
+Once you merge the new documentation into `publisher-production`, the new version will be available within 10 minutes. You can check #publisher channel in Slack for a notification of when your commit has been published.
+
+Once the new documentation is live, you must complete the [MapboxDirections.swift instructions](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) in the ios-sdk repository.
