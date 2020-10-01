@@ -11,7 +11,7 @@ trap finish EXIT
 OUTPUT="/tmp/`uuidgen`"
 RELEASE_BRANCH=${1:-master}
 VERSION=${1}
-FOLDER=${VERSION:1} # remove first character from VERSION (v)
+FOLDER=${VERSION:1} # removes first character from VERSION (v)
 
 step "Updating mapbox-directions-swift repository…"
 git fetch --depth=1 --prune
@@ -36,8 +36,12 @@ mv -v $OUTPUT/* "./$FOLDER"
 
 step "Switching branch to publisher-production"
 git checkout origin/publisher-production
+
 step "Committing API docs for $VERSION"
 git add "./$FOLDER"
 git commit -m "[directions] Add Mapbox Directions for Swift API docs for $VERSION [ci skip]" --no-verify
+
+step "Creating new branch docs-${VERSION}"
+git checkout -b "docs-${VERSION}"
 
 step "Finished updating documentation"
