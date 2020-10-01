@@ -1,3 +1,4 @@
+
 # Mapbox Directions for Swift
 
 [![CircleCI](https://circleci.com/gh/mapbox/mapbox-directions-swift.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-directions-swift)
@@ -195,7 +196,7 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 After a release, follow these steps to generate and publish documentation and update the iOS site with the latest version number:
 
 1. Generate and publish the documentation.
-    - Run `./scripts/publish-documetnation.sh v#.#.#` replacing `v#.#.#` with the release version number. 
+    - Run `./scripts/publish-documentation.sh v#.#.#` replacing `v#.#.#` with the release version number. 
     - This script will checkout the release branch, install dependencies, generate the documentation, and commit the generated documentation to a new branch.
     - Create a pull request and set the base branch to `publisher-production`.
 2. Wait for new documentation to be live. 
