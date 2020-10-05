@@ -19,6 +19,7 @@ open class RouteLeg: Codable {
         case profileIdentifier
         case annotation
         case administrationRegions = "admins"
+        case incidents
     }
     
     // MARK: Creating a Leg
@@ -74,6 +75,10 @@ open class RouteLeg: Codable {
         if let admins = try container.decodeIfPresent([AdministrationRegion].self, forKey: .administrationRegions) {
             self.administrationRegions = admins
         }
+
+        if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
+            self.incidents = incidents
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -93,6 +98,10 @@ open class RouteLeg: Codable {
 
         if let admins = administrationRegions {
             try container.encode(admins, forKey: .administrationRegions)
+        }
+
+        if let incidents = incidents {
+            try container.encode(incidents, forKey: .incidents)
         }
     }
     
@@ -247,6 +256,8 @@ open class RouteLeg: Codable {
     open var expectedTravelTime: TimeInterval
 
     open var administrationRegions: [AdministrationRegion]?
+
+    open var incidents: [Incident]?
     
     // MARK: Reproducing the Route
     
