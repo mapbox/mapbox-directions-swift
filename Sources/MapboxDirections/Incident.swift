@@ -18,7 +18,7 @@ public struct Incident: Codable, Equatable {
         case geometryIndexEnd = "geometry_index_end"
     }
 
-    var identifier: UInt
+    var identifier: String
     var type: String
     var description: String
     var creationTime: String
@@ -35,7 +35,7 @@ public struct Incident: Codable, Equatable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(String.self, forKey: .type)
-        self.identifier = try container.decode(UInt.self, forKey: .identifier)
+        self.identifier = try container.decode(String.self, forKey: .identifier)
         self.description = try container.decode(String.self, forKey: .description)
         self.creationTime = try container.decode(String.self, forKey: .creationTime)
         self.startTime = try container.decode(String.self, forKey: .startTime)
