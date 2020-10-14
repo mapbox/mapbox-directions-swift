@@ -1,5 +1,8 @@
 import Foundation
 
+/**
+ `RestStop` describes corresponding object on the route.
+ */
 public struct RestStop: Codable, Equatable {
 
     public enum StopType: String, Codable {
@@ -7,19 +10,13 @@ public struct RestStop: Codable, Equatable {
         case restArea = "rest_area"
     }
 
-    let stopType: StopType
+    let type: StopType
 
     private enum CodingKeys: String, CodingKey {
         case type
     }
-
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        stopType = try values.decode(StopType.self, forKey: .type)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(stopType, forKey: .type)
+    
+    public init(type: StopType) {
+        self.type = type
     }
 }
