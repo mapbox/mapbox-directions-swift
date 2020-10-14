@@ -1,4 +1,7 @@
 # Changes to Mapbox Directions for Swift
+## 1.2.0
+
+* Added support for encoding and decoding `Route Alerts` data coming from `Directions API`. Includes `TollCollection`, `RestStop` and `AdministrationRegion`. Also added `Incident` struct for reflecting incoming incidents along the route ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466))
 
 ## 1.0.0
 
