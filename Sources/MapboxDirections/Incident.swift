@@ -1,5 +1,8 @@
 import Foundation
 
+/**
+ `Incident` describes any corresponding event, used for annotating the route.
+ */
 public struct Incident: Codable, Equatable {
 
     private enum CodingKeys: String, CodingKey {
@@ -31,37 +34,32 @@ public struct Incident: Codable, Equatable {
     var lanesBlocked: [Int]
     var geometryIndexStart: Int
     var geometryIndexEnd: Int
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(String.self, forKey: .type)
-        self.identifier = try container.decode(String.self, forKey: .identifier)
-        self.description = try container.decode(String.self, forKey: .description)
-        self.creationTime = try container.decode(String.self, forKey: .creationTime)
-        self.startTime = try container.decode(String.self, forKey: .startTime)
-        self.endTime = try container.decode(String.self, forKey: .endTime)
-        self.impact = try container.decode(String.self, forKey: .impact)
-        self.subtype = try container.decodeIfPresent(String.self, forKey: .subtype)
-        self.subtypeDescription = try container.decodeIfPresent(String.self, forKey: .subtypeDescription)
-        self.alertCodes = try container.decode([Int].self, forKey: .alertCodes)
-        self.lanesBlocked = try container.decode([Int].self, forKey: .lanesBlocked)
-        self.geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
-        self.geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
-        try container.encode(identifier, forKey: .identifier)
-        try container.encode(description, forKey: .description)
-        try container.encode(creationTime, forKey: .creationTime)
-        try container.encode(startTime, forKey: .startTime)
-        try container.encode(endTime, forKey: .endTime)
-        try container.encodeIfPresent(subtype, forKey: .subtype)
-        try container.encodeIfPresent(subtypeDescription, forKey: .subtypeDescription)
-        try container.encode(alertCodes, forKey: .alertCodes)
-        try container.encode(lanesBlocked, forKey: .lanesBlocked)
-        try container.encode(geometryIndexStart, forKey: .geometryIndexStart)
-        try container.encode(geometryIndexEnd, forKey: .geometryIndexEnd)
+    
+    public init(identifier: String,
+                type: String,
+                description: String,
+                creationTime: String,
+                startTime: String,
+                endTime: String,
+                impact: String,
+                subtype: String?,
+                subtypeDescription: String?,
+                alertCodes: [Int],
+                lanesBlocked: [Int],
+                geometryIndexStart: Int,
+                geometryIndexEnd: Int) {
+        self.identifier = identifier
+        self.type = type
+        self.description = description
+        self.creationTime = creationTime
+        self.startTime = startTime
+        self.endTime = endTime
+        self.impact = impact
+        self.subtype = subtype
+        self.subtypeDescription = subtypeDescription
+        self.alertCodes = alertCodes
+        self.lanesBlocked = lanesBlocked
+        self.geometryIndexStart = geometryIndexStart
+        self.geometryIndexEnd = geometryIndexEnd
     }
 }

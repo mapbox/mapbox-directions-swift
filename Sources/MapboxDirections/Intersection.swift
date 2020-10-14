@@ -19,7 +19,8 @@ public struct Intersection {
                 tunnelName: String?,
                 restStop: RestStop?,
                 isUrban: Bool?,
-                administrationRegionIndex: Int?) {
+                administrationRegionIndex: Int?,
+                geometryIndex: Int? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -33,6 +34,7 @@ public struct Intersection {
         self.isUrban = isUrban
         self.restStop = restStop
         self.administrationRegionIndex = administrationRegionIndex
+        self.geometryIndex = geometryIndex
     }
     
     // MARK: Getting the Location of the Intersection
@@ -93,6 +95,8 @@ public struct Intersection {
 
     public let administrationRegionIndex: Int?
     
+    let geometryIndex: Int?
+    
     // MARK: Telling the User Which Lanes to Use
     
     /**
@@ -124,6 +128,7 @@ extension Intersection: Codable {
         case isUrban = "is_urban"
         case restStop = "rest_stop"
         case administrationRegionIndex = "admin_index"
+        case geometryIndex = "geometry_index"
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -155,7 +160,7 @@ extension Intersection: Codable {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
 
-        if let tolls = tollCollection?.collectionType {
+        if let tolls = tollCollection?.type {
             try container.encode(tolls, forKey: .tollCollection)
         }
 
@@ -173,6 +178,10 @@ extension Intersection: Codable {
 
         if let adminIndex = administrationRegionIndex {
             try container.encode(adminIndex, forKey: .administrationRegionIndex)
+        }
+        
+        if let geoIndex = geometryIndex {
+            try container.encode(geoIndex, forKey: .geometryIndex)
         }
     }
     
@@ -205,6 +214,8 @@ extension Intersection: Codable {
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
 
         administrationRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrationRegionIndex)
+        
+        geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
     }
 }
 
@@ -221,6 +232,7 @@ extension Intersection: Equatable {
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
             lhs.isUrban == rhs.isUrban &&
-            lhs.administrationRegionIndex == rhs.administrationRegionIndex
+            lhs.administrationRegionIndex == rhs.administrationRegionIndex &&
+            lhs.geometryIndex == rhs.geometryIndex
     }
 }
