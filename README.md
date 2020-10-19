@@ -1,4 +1,3 @@
-
 # Mapbox Directions for Swift
 
 [![CircleCI](https://circleci.com/gh/mapbox/mapbox-directions-swift.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-directions-swift)
