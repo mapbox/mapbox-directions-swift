@@ -3,7 +3,7 @@
 ## 1.2.0
 
 * Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime` and `RouteStep.typicalTravelTime` properties that indicate the typical travel time, as opposed to the current expected travel time. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
-* Added DIrections CLI executable to ...
+* Added Directions CLI tool for testing and automating processing API responses by providing a way to run it through `MapboxDirections` encoding/decoding pipeline. ([#469](https://github.com/mapbox/mapbox-directions-swift/pull/469))
 
 ## 1.0.0
 

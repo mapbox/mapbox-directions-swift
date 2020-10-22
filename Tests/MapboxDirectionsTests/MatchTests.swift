@@ -35,9 +35,6 @@ class MatchTests: XCTestCase {
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let encoded: Data = try! JSONEncoder().encode(matchOptions)
-        let optionsString: String = String(data: encoded, encoding: .utf8)!
-        
         let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (session, result) in
             
             guard case let .success(resp) = result else {
