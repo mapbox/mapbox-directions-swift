@@ -9,22 +9,25 @@ import SwiftCLI
 // decode/encode it into objects
 // output JSON
 
-let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
-let BogusCredentials = DirectionsCredentials(accessToken: BogusToken)
+private let BogusCredentials = DirectionsCredentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
-class ProcessCommand: Command {
-    let name = "process"
+class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > : Command {
+    var name = "process"
     
-    @Key("-i", "--input", description: "Filepath to the input JSON. Could be Directions or Map Matching.")
+    @Key("-i", "--input", description: "Filepath to the input JSON.")
     var inputPath: String?
     
-    @Key("-c", "--config", description: "Filepath to the options JSON. Could be `RouteOptions` or `MatchOptions`, depending on the `--input` type. Mismatching types will produce an error.")
+    @Key("-c", "--config", description: "Filepath to the JSON, containing serialized Options data.")
     var configPath: String?
     
     @Key("-o", "--output", description: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
     var outputPath: String?
     
-    private var isMatch = false
+    var customShortDescription: String = ""
+    var shortDescription: String {
+        return customShortDescription
+    }
+    
     
     private func processResponse<T>(_ decoder: JSONDecoder, type: T.Type, from data: Data) throws -> Data where T : Codable {
         let result = try decoder.decode(type, from: data)
@@ -46,49 +49,50 @@ class ProcessCommand: Command {
                    relativeTo: homeDirectory) ?? homeDirectory
     }
     
+    init(name: String, shortDescription: String = "") {
+        self.name = name
+        self.customShortDescription = shortDescription
+    }
+    
     func execute() throws {
         guard let inputPath = inputPath else { exit(1) }
         guard let configPath = configPath else { exit(1) }
         
-        let unwrappedInput = absURL(inputPath).path
-        let unwrappedConfig = absURL(configPath).path
-        // /Users/viktorkononov/CaS
-        let input = FileManager.default.contents(atPath: unwrappedInput)!//unwrappedInput)!
-        let config = FileManager.default.contents(atPath: unwrappedConfig)!
+        let input = FileManager.default.contents(atPath: absURL(inputPath).path)!
+        let config = FileManager.default.contents(atPath: absURL(configPath).path)!
         
         let decoder = JSONDecoder()
         
-        var options: DirectionsOptions? = try? decoder.decode(RouteOptions.self, from: config)
-        if options == nil {
-            isMatch = true
-            options = try? decoder.decode(MatchOptions.self, from: config)
-        }
-        
-        guard let directionsOptions = options else {
+        var directionsOptions: OptionsType!
+        do {
+            directionsOptions = try decoder.decode(OptionsType.self, from: config)
+        } catch {
+            print("Failed to decode input Options file.")
+            print(error)
             exit(1)
         }
         
-        decoder.userInfo = [.options: directionsOptions,
+        decoder.userInfo = [.options: directionsOptions!,
                             .credentials: BogusCredentials]
-        var data: Data?
+        var data: Data!
         do {
-            if isMatch {
-                data = try processResponse(decoder, type: MapMatchingResponse.self, from: input)
-            } else {
-                data = try processResponse(decoder, type: RouteResponse.self, from: input)
-            }
+            data = try processResponse(decoder, type: ResponceType.self, from: input)
         } catch {
+            print("Failed to decode input JSON file.")
             print(error)
+            exit(1)
         }
         
         if let outputPath = outputPath {
-            try data?.write(to: URL(fileURLWithPath: outputPath))
-        } else {
-            if let data = data {
-                print(String(data: data, encoding: .utf8)!)
-            } else {
+            do {
+                try data.write(to: absURL(outputPath))
+            } catch {
+                print("Failed to save results to output file.")
+                print(error)
                 exit(1)
             }
+        } else {
+            print(String(data: data, encoding: .utf8)!)
         }
     }
 }
