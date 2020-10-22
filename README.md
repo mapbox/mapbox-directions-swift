@@ -194,4 +194,15 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 
 ## Directions CLI
 
-TODO: add 
+`MaboxDirectionsCLI` is a command line tool, designed to round-trip an arbitrary, JSON-formatted Directions or Map Matching API response through model objects and back to JSON. This is useful for various scenarios including testing purposes and desiging more sophisticated API responce processing pipelines. It is also supplied as a swift package.
+
+To build `MaboxDirectionsCLI` using Carthage pipeline:
+
+1. `carthage build --platform macos`
+1. `open MapboxDirections.xcodeproj`
+1. Select `MaboxDirectionsCLI` target.
+
+To build `MaboxDirectionsCLI` using SPM:
+
+1. `swift build`
+1. `swift run MaboxDirectionsCLI -h` to see usage.
