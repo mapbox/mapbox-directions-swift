@@ -13,12 +13,16 @@ let package = Package(
         .library(
             name: "MapboxDirections",
             targets: ["MapboxDirections"]
-        )
+        ),
+        .executable(
+            name: "MapboxDirectionsCLI",
+            targets: ["MapboxDirectionsCLI"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/raphaelmor/Polyline.git", from: "4.2.1"),
-        .package(url: "https://github.com/mapbox/turf-swift.git", from: "1.0.0")
+        .package(url: "https://github.com/mapbox/turf-swift.git", from: "1.0.0"),
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "6.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -29,5 +33,8 @@ let package = Package(
         .testTarget(
             name: "MapboxDirectionsTests",
             dependencies: ["MapboxDirections"]),
+        .target(
+            name: "MapboxDirectionsCLI",
+            dependencies: ["MapboxDirections", "SwiftCLI"])
     ]
 )

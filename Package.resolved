@@ -11,12 +11,21 @@
         }
       },
       {
+        "package": "SwiftCLI",
+        "repositoryURL": "https://github.com/jakeheis/SwiftCLI",
+        "state": {
+          "branch": null,
+          "revision": "2816678bcc37f4833d32abeddbdf5e757fa891d8",
+          "version": "6.0.2"
+        }
+      },
+      {
         "package": "Turf",
         "repositoryURL": "https://github.com/mapbox/turf-swift.git",
         "state": {
           "branch": null,
-          "revision": "985b4bdb7256c2f8adad10353b3338a466391469",
-          "version": "0.5.0"
+          "revision": "19d184102927cfc6dba49647850c6fd3e1f5f336",
+          "version": "1.0.0"
         }
       }
     ]
