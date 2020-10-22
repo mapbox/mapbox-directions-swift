@@ -1,5 +1,5 @@
 binary "https://www.mapbox.com/ios-sdk/Mapbox-iOS-SDK.json" "5.9.0"
-github "jakeheis/SwiftCLI" "6.0.2"
+github "Udumft/SwiftCLI" "da19d2a16cd5aa838d8fb7256e28c171bc67dd82"
 github "linksmt/OHHTTPStubs" "563f48d3fab84ef04639649c770b00f4fa502cca"
 github "mapbox/mapbox-events-ios" "v0.10.5"
 github "mapbox/turf-swift" "v1.0.0"
