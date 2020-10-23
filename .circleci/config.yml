@@ -87,10 +87,10 @@ jobs:
       - run:
           name: Dependencies
           command: |
-            carthage bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
-            carthage bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
-            carthage bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
-            carthage bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
@@ -117,18 +117,18 @@ workflows:
   workflow:
     jobs:
       - build-job:
+          name: "Xcode_12.1"
+          xcode: "12.0.0"
+          iOS: "14.0"
+          tvOS: "14.0"
+          watchOS: "7.0"
+      - build-job:
           name: "Xcode_11.1"
           xcode: "11.1.0"
           iOS: "13.1"
           tvOS: "13.0"
           watchOS: "6.0"
-      - build-job:
-          name: "Xcode_10.2"
-          xcode: "10.2.0"
-          iOS: "12.2"
-          tvOS: "12.2"
-          watchOS: "5.2"
           codecoverage: true
       - spm-job:
           name: "SPM_build"
-          xcode: "10.2.0"
+          xcode: "12.0.0"
