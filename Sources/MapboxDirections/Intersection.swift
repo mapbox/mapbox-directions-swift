@@ -85,16 +85,46 @@ public struct Intersection {
      */
     public let outletRoadClasses: RoadClasses?
 
+    /**
+     The name of the tunnel that this intersection is a part of.
+
+     If this Intersection is not a tunnel entrance or exit, or if information is unavailable then this property is set to `nil`.
+     */
     public let tunnelName: String?
 
+    /**
+     The type of toll collection mechanism.
+
+     If this Intersection is not a toll collection intersection, or if this information is unavailable then this property is set to `nil`.
+     */
     public let tollCollection: TollCollection?
 
+    /**
+     The type of rest stop.
+
+     If this Intersection is not a rest stop, or if this information is unavailable then this property is set to `nil`.
+     */
     public let restStop: RestStop?
 
+    /**
+     The Intersection lays within the bounds of an urban zone.
+
+     If this information is unavailable then this property is set to `nil`.
+     */
     public let isUrban: Bool?
 
+    /**
+     The index of the item in the `administrationRegions` array that corresponds to the country code of the country that this intersection lies in.
+
+     If the information is unavailable, this property is set to `nil`.
+     */
     public let administrationRegionIndex: Int?
-    
+
+    /**
+     The index of the RouteStep within a RouteLeg that contains this Intersection.
+
+     This property is set to `nil` if unavailable.
+     */
     let geometryIndex: Int?
     
     // MARK: Telling the User Which Lanes to Use
