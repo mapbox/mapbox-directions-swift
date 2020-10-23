@@ -87,10 +87,10 @@ jobs:
       - run:
           name: Dependencies
           command: |
-            ./scripts/wcarthage bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage.sh bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage.sh bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage.sh bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
+            ./scripts/wcarthage.sh bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
