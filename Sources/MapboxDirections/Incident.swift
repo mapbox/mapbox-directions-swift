@@ -27,7 +27,7 @@ public struct Incident: Codable, Equatable {
     var creationTime: String
     var startTime: String
     var endTime: String
-    var impact: String
+    var impact: String?
     var subtype: String?
     var subtypeDescription: String?
     var alertCodes: [Int]
@@ -41,7 +41,7 @@ public struct Incident: Codable, Equatable {
                 creationTime: String,
                 startTime: String,
                 endTime: String,
-                impact: String,
+                impact: String?,
                 subtype: String?,
                 subtypeDescription: String?,
                 alertCodes: [Int],
