@@ -14,6 +14,7 @@ open class DirectionsResult: Codable {
         case legs
         case distance
         case expectedTravelTime = "duration"
+        case typicalTravelTime = "duration_typical"
         case directionsOptions
         case routeIdentifier
         case speechLocale = "voiceLocale"
@@ -21,11 +22,12 @@ open class DirectionsResult: Codable {
     
     // MARK: Creating a Directions Result
     
-    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval) {
+    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
         self.legs = legs
         self.shape = shape
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
+        self.typicalTravelTime = typicalTravelTime
         self.responseContainsSpeechLocale = false
     }
     
@@ -48,6 +50,7 @@ open class DirectionsResult: Codable {
         
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
     
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
@@ -79,6 +82,7 @@ open class DirectionsResult: Codable {
         }
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
         try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
 
         if responseContainsSpeechLocale {
@@ -139,6 +143,15 @@ open class DirectionsResult: Codable {
      */
     open var expectedTravelTime: TimeInterval
     
+    /**
+     The route’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to traverse the entire route. It is the sum of the `typicalTravelTime` properties of the route’s legs. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin the route. If the route makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteLeg.typicalTravelTime` or `RouteStep.typicalTravelTime`.
+     */
+    open var typicalTravelTime: TimeInterval?
+    
     // MARK: Configuring Speech Synthesis
     
     /**
@@ -190,6 +203,7 @@ extension DirectionsResult: CustomStringConvertible {
         return legs.map { $0.name }.joined(separator: " – ")
     }
 }
+
 extension DirectionsResult: CustomQuickLookConvertible {
     func debugQuickLookObject() -> Any? {
         guard let shape = shape else {

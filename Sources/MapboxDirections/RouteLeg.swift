@@ -16,6 +16,7 @@ open class RouteLeg: Codable {
         case name = "summary"
         case distance
         case expectedTravelTime = "duration"
+        case typicalTravelTime = "duration_typical"
         case profileIdentifier
         case annotation
     }
@@ -28,13 +29,15 @@ open class RouteLeg: Codable {
      - parameter steps: The steps that are traversed in order.
      - parameter name: A name that describes the route leg.
      - parameter expectedTravelTime: The route leg’s expected travel time, measured in seconds.
+     - parameter typicalTravelTime: The route leg’s typical travel time, measured in seconds.
      - parameter profileIdentifier: The primary mode of transportation for the route leg.
      */
-    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, profileIdentifier: DirectionsProfileIdentifier) {
+    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: DirectionsProfileIdentifier) {
         self.steps = steps
         self.name = name
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
+        self.typicalTravelTime = typicalTravelTime
         self.profileIdentifier = profileIdentifier
         
         segmentDistances = nil
@@ -57,6 +60,7 @@ open class RouteLeg: Codable {
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
         if let profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) {
             self.profileIdentifier = profileIdentifier
@@ -79,6 +83,7 @@ open class RouteLeg: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
         let attributes = self.attributes
@@ -237,6 +242,15 @@ open class RouteLeg: Codable {
      */
     open var expectedTravelTime: TimeInterval
     
+    /**
+     The route leg’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to traverse the route leg. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this leg. If the leg makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteStep.typicalTravelTime` property.
+     */
+    open var typicalTravelTime: TimeInterval?
+    
     // MARK: Reproducing the Route
     
     /**
@@ -260,6 +274,7 @@ extension RouteLeg: Equatable {
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.typicalTravelTime == rhs.typicalTravelTime &&
             lhs.profileIdentifier == rhs.profileIdentifier
     }
 }

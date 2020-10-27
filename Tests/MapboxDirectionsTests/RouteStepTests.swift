@@ -113,6 +113,7 @@ class RouteStepTests: XCTestCase {
             "ref": "CA 24",
             "weight": 2.5,
             "duration": 2.5,
+            "duration_typical": 2.369,
             "name": "Grove Shafter Freeway (CA 24)",
             "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
             "distance": 24.5,
@@ -139,6 +140,7 @@ class RouteStepTests: XCTestCase {
             XCTAssertEqual(step.instructions, "Keep right onto CA 24")
             XCTAssertEqual(step.codes, ["CA 24"])
             XCTAssertEqual(step.expectedTravelTime, 2.5)
+            XCTAssertEqual(step.typicalTravelTime, 2.369)
             XCTAssertEqual(step.names, ["Grove Shafter Freeway"])
             XCTAssertEqual(step.phoneticNames, ["ˈaɪˌfoʊ̯n ˈtɛn"])
             XCTAssertEqual(step.distance, 24.5)
@@ -177,6 +179,7 @@ class RouteStepTests: XCTestCase {
                 "instruction": "Turn left onto Adalbertstraße",
             ],
             "duration": 59.1,
+            "duration_typical": 45.0,
             "distance": 236.9,
             "driving_side": "right",
             "weight": 59.1,
@@ -231,6 +234,9 @@ class RouteStepTests: XCTestCase {
             XCTAssertEqual(step.shape?.coordinates.last?.latitude ?? 0, 52.506794, accuracy: 1e-5)
             XCTAssertEqual(step.shape?.coordinates.last?.longitude ?? 0, 13.42326, accuracy: 1e-5)
             
+            XCTAssertEqual(step.expectedTravelTime, 59.1)
+            XCTAssertEqual(step.typicalTravelTime, 45.0)
+            
             XCTAssertNoThrow(encodedStepData = try encoder.encode(step))
             XCTAssertNotNil(encodedStepData)
             
@@ -268,5 +274,20 @@ class RouteStepTests: XCTestCase {
             
             XCTAssertEqual(encodedStepJSON?["pronunciation"] as? String, "ˈaɪˌfoʊ̯n ˈtɛn; ˈaɪˌfoʊ̯n ˈtɛnz")
         }
+    }
+    
+    func testRouteStepTypicalTravelTime() {
+        let typicalTravelTime = 2.5
+        
+        let route = RouteStep(transportType: .automobile,
+                              maneuverLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                              maneuverType: .turn,
+                              instructions: "",
+                              drivingSide: .left,
+                              distance: 2.0,
+                              expectedTravelTime: 2.0,
+                              typicalTravelTime: typicalTravelTime)
+
+        XCTAssertEqual(route.typicalTravelTime, typicalTravelTime)
     }
 }
