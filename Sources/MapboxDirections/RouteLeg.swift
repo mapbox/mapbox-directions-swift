@@ -243,7 +243,11 @@ open class RouteLeg: Codable {
     open var expectedTravelTime: TimeInterval
     
     /**
-     The route’s typical travel time, measured in seconds.
+     The route leg’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to traverse the route leg. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this leg. If the leg makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteStep.typicalTravelTime` property.
      */
     open var typicalTravelTime: TimeInterval?
     

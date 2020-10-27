@@ -719,6 +719,10 @@ open class RouteStep: Codable {
     
     /**
      The step’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to go from this step’s maneuver location to the next step’s maneuver location. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this step. If the step makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the step at a fixed speed.
      */
     open var typicalTravelTime: TimeInterval?
     

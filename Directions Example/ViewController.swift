@@ -83,9 +83,13 @@ class ViewController: UIViewController, MBDrawingViewDelegate {
                     
                     let travelTimeFormatter = DateComponentsFormatter()
                     travelTimeFormatter.unitsStyle = .short
-                    let formattedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
+                    let formattedExpectedTravelTime = travelTimeFormatter.string(from: route.expectedTravelTime)
+                    var validTypicalTravelTime = "Not available"
+                    if let typicalTravelTime = route.typicalTravelTime, let formattedTypicalTravelTime = travelTimeFormatter.string(from: typicalTravelTime) {
+                        validTypicalTravelTime = formattedTypicalTravelTime
+                    }
                     
-                    print("Distance: \(formattedDistance); ETA: \(formattedTravelTime!)")
+                    print("Distance: \(formattedDistance); ETA: \(formattedExpectedTravelTime!); Typical travel time: \(validTypicalTravelTime)")
                     
                     for step in leg.steps {
                         let direction = step.maneuverDirection?.rawValue ?? "none"

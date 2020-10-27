@@ -1,8 +1,8 @@
 # Changes to Mapbox Directions for Swift
 
-## 1.1.0
+## 1.2.0
 
-* Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime`, `RouteStep.typicalTravelTime` properties. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
+* Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime` and `RouteStep.typicalTravelTime` properties that indicate the typical travel time, as opposed to the current expected travel time. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
 
 ## 1.0.0
 

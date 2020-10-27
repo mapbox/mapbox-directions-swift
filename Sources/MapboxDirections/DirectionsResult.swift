@@ -145,6 +145,10 @@ open class DirectionsResult: Codable {
     
     /**
      The route’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to traverse the entire route. It is the sum of the `typicalTravelTime` properties of the route’s legs. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin the route. If the route makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteLeg.typicalTravelTime` or `RouteStep.typicalTravelTime`.
      */
     open var typicalTravelTime: TimeInterval?
     
