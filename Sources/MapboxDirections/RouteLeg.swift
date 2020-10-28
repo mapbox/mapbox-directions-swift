@@ -19,6 +19,8 @@ open class RouteLeg: Codable {
         case typicalTravelTime = "duration_typical"
         case profileIdentifier
         case annotation
+        case administrationRegions = "admins"
+        case incidents
     }
     
     // MARK: Creating a Leg
@@ -73,6 +75,14 @@ open class RouteLeg: Codable {
         if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
         }
+
+        if let admins = try container.decodeIfPresent([AdministrationRegion].self, forKey: .administrationRegions) {
+            self.administrationRegions = admins
+        }
+
+        if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
+            self.incidents = incidents
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -89,6 +99,14 @@ open class RouteLeg: Codable {
         let attributes = self.attributes
         if !attributes.isEmpty {
             try container.encode(attributes, forKey: .annotation)
+        }
+
+        if let admins = administrationRegions {
+            try container.encode(admins, forKey: .administrationRegions)
+        }
+
+        if let incidents = incidents {
+            try container.encode(incidents, forKey: .incidents)
         }
     }
     
@@ -144,6 +162,19 @@ open class RouteLeg: Codable {
             }
         }
         return segmentRangesByStep
+    }()
+    
+    /**
+     Segments for each Intersection along the route.
+     
+     Ordered by `steps`, inside one `step` - ordered by `Intersection`.  `nil` value means no index was provided. Index values correspond to `route`'s `shape` elements.
+     */
+    public private(set) lazy var intersectionsIndexesByStep: [[Int?]?] = {
+        var intersectionsIndexesByStep: [[Int?]?] = []
+        for step in steps {
+            intersectionsIndexesByStep.append(step.intersections?.map { $0.geometryIndex })
+        }
+        return intersectionsIndexesByStep
     }()
     
     // MARK: Getting Per-Segment Attributes Along the Leg
@@ -241,6 +272,10 @@ open class RouteLeg: Codable {
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
     open var expectedTravelTime: TimeInterval
+
+    open var administrationRegions: [AdministrationRegion]?
+
+    open var incidents: [Incident]?
     
     /**
      The route leg’s typical travel time, measured in seconds.

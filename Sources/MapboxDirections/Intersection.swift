@@ -14,7 +14,13 @@ public struct Intersection {
                 outletIndexes: IndexSet,
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
-                outletRoadClasses: RoadClasses?) {
+                outletRoadClasses: RoadClasses?,
+                tollCollection: TollCollection?,
+                tunnelName: String?,
+                restStop: RestStop?,
+                isUrban: Bool?,
+                administrationRegionIndex: Int?,
+                geometryIndex: Int? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -23,6 +29,12 @@ public struct Intersection {
         self.outletIndexes = outletIndexes
         self.usableApproachLanes = usableApproachLanes
         self.outletRoadClasses = outletRoadClasses
+        self.tollCollection = tollCollection
+        self.tunnelName = tunnelName
+        self.isUrban = isUrban
+        self.restStop = restStop
+        self.administrationRegionIndex = administrationRegionIndex
+        self.geometryIndex = geometryIndex
     }
     
     // MARK: Getting the Location of the Intersection
@@ -72,6 +84,48 @@ public struct Intersection {
      If road class information is unavailable, this property is set to `nil`.
      */
     public let outletRoadClasses: RoadClasses?
+
+    /**
+     The name of the tunnel that this intersection is a part of.
+
+     If this Intersection is not a tunnel entrance or exit, or if information is unavailable then this property is set to `nil`.
+     */
+    public let tunnelName: String?
+
+    /**
+     The type of toll collection mechanism.
+
+     If this Intersection is not a toll collection intersection, or if this information is unavailable then this property is set to `nil`.
+     */
+    public let tollCollection: TollCollection?
+
+    /**
+     The type of rest stop.
+
+     If this Intersection is not a rest stop, or if this information is unavailable then this property is set to `nil`.
+     */
+    public let restStop: RestStop?
+
+    /**
+     The Intersection lays within the bounds of an urban zone.
+
+     If this information is unavailable then this property is set to `nil`.
+     */
+    public let isUrban: Bool?
+
+    /**
+     The index of the item in the `administrationRegions` array that corresponds to the country code of the country that this intersection lies in.
+
+     If the information is unavailable, this property is set to `nil`.
+     */
+    public let administrationRegionIndex: Int?
+
+    /**
+     The index of the RouteStep within a RouteLeg that contains this Intersection.
+
+     This property is set to `nil` if unavailable.
+     */
+    let geometryIndex: Int?
     
     // MARK: Telling the User Which Lanes to Use
     
@@ -99,6 +153,12 @@ extension Intersection: Codable {
         case outletIndex = "out"
         case lanes
         case outletRoadClasses = "classes"
+        case tollCollection = "toll_collection"
+        case tunnelName = "tunnelName"
+        case isUrban = "is_urban"
+        case restStop = "rest_stop"
+        case administrationRegionIndex = "admin_index"
+        case geometryIndex = "geometry_index"
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -129,6 +189,30 @@ extension Intersection: Codable {
         if let classes = outletRoadClasses?.description.components(separatedBy: ",").filter({ !$0.isEmpty }) {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
+
+        if let tolls = tollCollection?.type {
+            try container.encode(tolls, forKey: .tollCollection)
+        }
+
+        if let isUrban = isUrban {
+            try container.encode(isUrban, forKey: .isUrban)
+        }
+
+        if let restStop = restStop {
+            try container.encode(restStop, forKey: .restStop)
+        }
+
+        if let tunnelName = tunnelName {
+            try container.encode(tunnelName, forKey: .tunnelName)
+        }
+
+        if let adminIndex = administrationRegionIndex {
+            try container.encode(adminIndex, forKey: .administrationRegionIndex)
+        }
+        
+        if let geoIndex = geometryIndex {
+            try container.encode(geoIndex, forKey: .geometryIndex)
+        }
     }
     
     public init(from decoder: Decoder) throws {
@@ -150,6 +234,18 @@ extension Intersection: Codable {
         
         outletIndex = try container.decodeIfPresent(Int.self, forKey: .outletIndex)
         approachIndex = try container.decodeIfPresent(Int.self, forKey: .approachIndex)
+
+        tollCollection = try container.decodeIfPresent(TollCollection.self, forKey: .tollCollection)
+
+        tunnelName = try container.decodeIfPresent(String.self, forKey: .tunnelName)
+
+        isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
+
+        restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
+
+        administrationRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrationRegionIndex)
+        
+        geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
     }
 }
 
@@ -162,6 +258,11 @@ extension Intersection: Equatable {
             lhs.outletIndex == rhs.outletIndex &&
             lhs.approachLanes == rhs.approachLanes &&
             lhs.usableApproachLanes == rhs.usableApproachLanes &&
-            lhs.outletRoadClasses == rhs.outletRoadClasses
+            lhs.outletRoadClasses == rhs.outletRoadClasses &&
+            lhs.tollCollection == rhs.tollCollection &&
+            lhs.tunnelName == rhs.tunnelName &&
+            lhs.isUrban == rhs.isUrban &&
+            lhs.administrationRegionIndex == rhs.administrationRegionIndex &&
+            lhs.geometryIndex == rhs.geometryIndex
     }
 }
