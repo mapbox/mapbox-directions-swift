@@ -47,6 +47,5 @@ Pod::Spec.new do |s|
 
   s.dependency "Polyline", "~> 4.2"
   s.dependency "Turf", "~> 1.0"
-  s.dependency "SwiftCLI", "~> 6.0.0"
 
 end
