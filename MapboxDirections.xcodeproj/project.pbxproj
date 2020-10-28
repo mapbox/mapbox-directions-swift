@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		2B1BB29D2541B4FA00A18CF1 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; };
 		2B1BB29E2541B4FA00A18CF1 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		2B32BA2C2541CA570085B300 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32BA2A2541CA570085B300 /* main.swift */; };
-		2B32BA2D2541CA570085B300 /* ProcessCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B32BA2B2541CA570085B300 /* ProcessCommand.swift */; };
+		2B4383022549C22700A3E38B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383002549C22700A3E38B /* main.swift */; };
+		2B4383032549C22700A3E38B /* ProcessCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383012549C22700A3E38B /* ProcessCommand.swift */; };
 		2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
 		2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
 		2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
@@ -424,8 +424,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2B32BA2A2541CA570085B300 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = SOURCE_ROOT; };
-		2B32BA2B2541CA570085B300 /* ProcessCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProcessCommand.swift; path = Sources/MapboxDirectionsCLI/ProcessCommand.swift; sourceTree = SOURCE_ROOT; };
+		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
+		2B4383012549C22700A3E38B /* ProcessCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProcessCommand.swift; path = Sources/MapboxDirectionsCLI/ProcessCommand.swift; sourceTree = "<group>"; };
 		2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshResponse.swift; sourceTree = "<group>"; };
 		2B5407F12452FA8C006C820B /* RefreshedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshedRoute.swift; sourceTree = "<group>"; };
 		2B5407F6245302AB006C820B /* RouteLegAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegAttributes.swift; sourceTree = "<group>"; };
@@ -434,7 +434,7 @@
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
 		2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = incorrectRouteRefreshResponse.json; sourceTree = "<group>"; };
 		2B674DCA2541AF410026CE4B /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/Mac/Turf.framework; sourceTree = "<group>"; };
-		2BA98970253F007600B643F6 /* MapboxDirectionsCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MapboxDirectionsCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BFD4D962540604000D0E14D /* SwiftCLI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCLI.framework; path = Carthage/Build/Mac/SwiftCLI.framework; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
@@ -630,6 +630,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B4382FF2549C1D200A3E38B /* MapboxDirectionsCLI */ = {
+			isa = PBXGroup;
+			children = (
+				2B4383002549C22700A3E38B /* main.swift */,
+				2B4383012549C22700A3E38B /* ProcessCommand.swift */,
+			);
+			name = MapboxDirectionsCLI;
+			sourceTree = "<group>";
+		};
 		2B540803245B09B2006C820B /* RouteRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -639,15 +648,6 @@
 			);
 			path = RouteRefresh;
 			sourceTree = "<group>";
-		};
-		2BFD4D7925405F0800D0E14D /* MapboxDirectionsCLI */ = {
-			isa = PBXGroup;
-			children = (
-				2B32BA2A2541CA570085B300 /* main.swift */,
-				2B32BA2B2541CA570085B300 /* ProcessCommand.swift */,
-			);
-			path = MapboxDirectionsCLI;
-			sourceTree = SOURCE_ROOT;
 		};
 		35DBF017217F387F0009D2AE /* Offline */ = {
 			isa = PBXGroup;
@@ -891,7 +891,7 @@
 				438BFEBF233D804600457294 /* Documents */,
 				DADD27B61E5AAAD800D31FAD /* Directions Example */,
 				DA6C9D891CAE442B00094FBC /* MapboxDirections */,
-				2BFD4D7925405F0800D0E14D /* MapboxDirectionsCLI */,
+				2B4382FF2549C1D200A3E38B /* MapboxDirectionsCLI */,
 				DA6C9D971CAE442B00094FBC /* MapboxDirectionsTests */,
 				DD62544F1AE70C1700017857 /* Products */,
 				4025371970E36C6D8BF67116 /* iOS Frameworks */,
@@ -913,7 +913,7 @@
 				DA1A10DE1D0101ED009F82FA /* MapboxDirectionsTests.xctest */,
 				DA1A10FB1D010361009F82FA /* MapboxDirections.framework */,
 				DADD27B51E5AAAD800D31FAD /* Example.app */,
-				2BA98970253F007600B643F6 /* MapboxDirectionsCLI */,
+				2BA98970253F007600B643F6 /* mapbox-directions-swift */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -991,7 +991,7 @@
 			);
 			name = MapboxDirectionsCLI;
 			productName = MapboxDirectionsCLI;
-			productReference = 2BA98970253F007600B643F6 /* MapboxDirectionsCLI */;
+			productReference = 2BA98970253F007600B643F6 /* mapbox-directions-swift */;
 			productType = "com.apple.product-type.tool";
 		};
 		DA1A10AE1D00F8FF009F82FA /* MapboxDirectionsMac */ = {
@@ -1374,8 +1374,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B32BA2D2541CA570085B300 /* ProcessCommand.swift in Sources */,
-				2B32BA2C2541CA570085B300 /* main.swift in Sources */,
+				2B4383022549C22700A3E38B /* main.swift in Sources */,
+				2B4383032549C22700A3E38B /* ProcessCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1747,7 +1747,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "mapbox-directions-swift";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1779,7 +1779,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "mapbox-directions-swift";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};

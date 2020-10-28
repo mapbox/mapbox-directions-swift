@@ -15,7 +15,7 @@ let package = Package(
             targets: ["MapboxDirections"]
         ),
         .executable(
-            name: "MapboxDirectionsCLI",
+            name: "mapbox-directions-swift",
             targets: ["MapboxDirectionsCLI"]),
     ],
     dependencies: [
