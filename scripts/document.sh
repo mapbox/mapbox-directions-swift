@@ -49,7 +49,8 @@ jazzy \
     --documentation="docs/guides/*.md" \
     --root-url "${BASE_URL}/directions/${RELEASE_VERSION}/" \
     --theme ${THEME} \
-    --output ${OUTPUT}
+    --output ${OUTPUT} \
+    --build-tool-arguments CODE_SIGN_IDENTITY=,CODE_SIGNING_REQUIRED=NO,CODE_SIGNING_ALLOWED=NO
 
 REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/Mapbox Directions for Swift $1/, '
 
