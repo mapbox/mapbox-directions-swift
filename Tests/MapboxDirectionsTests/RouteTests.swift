@@ -10,6 +10,7 @@ class RouteTests: XCTestCase {
                     "summary": "West 6th Avenue Freeway, South University Boulevard",
                     "weight": 1346.3,
                     "duration": 1083.4,
+                    "duration_typical": 1483.262,
                     "steps": [],
                     "distance": 17036.8,
                 ],
@@ -17,6 +18,7 @@ class RouteTests: XCTestCase {
             "weight_name": "routability",
             "weight": 1346.3,
             "duration": 1083.4,
+            "duration_typical": 1483.262,
             "distance": 17036.8,
         ]
         let routeData = try! JSONSerialization.data(withJSONObject: routeJSON, options: [])
@@ -33,10 +35,10 @@ class RouteTests: XCTestCase {
         decoder.userInfo[.options] = options
         XCTAssertNoThrow(route = try decoder.decode(Route.self, from: routeData))
         
-        let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, profileIdentifier: .automobileAvoidingTraffic)
+        let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262, profileIdentifier: .automobileAvoidingTraffic)
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
-        let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4)
+        let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
         XCTAssertEqual(route, expectedRoute)
         
         if let route = route {
@@ -140,5 +142,11 @@ class RouteTests: XCTestCase {
         // Then - voiceLocale key is present and its value is nil
 
         XCTAssertTrue(json.contains { (key, value) in key == "voiceLocale" && value == nil })
+    }
+    
+    func testRouteTypicalTravelTime() {
+        let typicalTravelTime = 2.5
+        let route = Route(legs: [], shape: nil, distance: 2.0, expectedTravelTime: 3.0, typicalTravelTime: typicalTravelTime)
+        XCTAssertEqual(route.typicalTravelTime, typicalTravelTime)
     }
 }

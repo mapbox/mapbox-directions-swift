@@ -177,7 +177,9 @@ class DirectionsTests: XCTestCase {
                 return
             }
             
-            XCTAssertEqual(err, notConnected)
+            // Comparing just the code and domain to avoid comparing unessential `UserInfo` that might be added.
+            XCTAssertEqual(type(of: err).errorDomain, type(of: notConnected).errorDomain)
+            XCTAssertEqual(err.code, notConnected.code)
         })
         wait(for: [expectation], timeout: 2.0)
     }

@@ -406,6 +406,7 @@ open class RouteStep: Codable {
         case drivingSide = "driving_side"
         case exitIndex = "exit"
         case expectedTravelTime = "duration"
+        case typicalTravelTime = "duration_typical"
         case instructions
         case instructionsDisplayedAlongStep = "bannerInstructions"
         case instructionsSpokenAlongStep = "voiceInstructions"
@@ -444,7 +445,8 @@ open class RouteStep: Codable {
      - parameter exitNames: The names of the roundabout exit.
      - parameter phoneticExitNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `exitNames` property.
      - parameter distance: The step’s distance, measured in meters.
-     - parameter expectedTravelTime: expectedTravelTime
+     - parameter expectedTravelTime: The step's expected travel time, measured in seconds.
+     - parameter typicalTravelTime: The step's typical travel time, measured in seconds.
      - parameter names: The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
      - parameter phoneticNames: A phonetic or phonemic transcription indicating how to pronounce the names in the `names` property.
      - parameter codes: Any route reference codes assigned to the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -456,7 +458,7 @@ open class RouteStep: Codable {
      - parameter instructionsSpokenAlongStep: Instructions about the next step’s maneuver, optimized for speech synthesis.
      - parameter instructionsDisplayedAlongStep: Instructions about the next step’s maneuver, optimized for display in real time.
      */
-    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil) {
+    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil) {
         self.transportType = transportType
         self.maneuverLocation = maneuverLocation
         self.maneuverType = maneuverType
@@ -470,6 +472,7 @@ open class RouteStep: Codable {
         self.phoneticExitNames = phoneticExitNames
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
+        self.typicalTravelTime = typicalTravelTime
         self.names = names
         self.phoneticNames = phoneticNames
         self.codes = codes
@@ -489,6 +492,7 @@ open class RouteStep: Codable {
         try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
+        try container.encodeIfPresent(typicalTravelTime?.rounded(to: 1e1), forKey: .typicalTravelTime)
         try container.encode(transportType, forKey: .transportType)
         
         let isRound = maneuverType == .takeRotary || maneuverType == .takeRoundabout
@@ -568,6 +572,7 @@ open class RouteStep: Codable {
         exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
         distance = try container.decode(CLLocationDirection.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
         transportType = try container.decode(TransportType.self, forKey: .transportType)
         intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
@@ -713,6 +718,15 @@ open class RouteStep: Codable {
     open var expectedTravelTime: TimeInterval
     
     /**
+     The step’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to go from this step’s maneuver location to the next step’s maneuver location. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this step. If the step makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the step at a fixed speed.
+     */
+    open var typicalTravelTime: TimeInterval?
+    
+    /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
      
      If the maneuver is a turning maneuver, the step’s names are the name of the road or path onto which the user turns. If you display a name to the user, you may need to abbreviate common words like “East” or “Boulevard” to ensure that it fits in the allotted space.
@@ -806,6 +820,7 @@ extension RouteStep: Equatable {
             lhs.exitIndex == rhs.exitIndex &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.typicalTravelTime == rhs.typicalTravelTime &&
             
             lhs.maneuverType == rhs.maneuverType &&
             lhs.maneuverDirection == rhs.maneuverDirection &&

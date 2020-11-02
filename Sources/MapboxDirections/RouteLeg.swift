@@ -16,8 +16,11 @@ open class RouteLeg: Codable {
         case name = "summary"
         case distance
         case expectedTravelTime = "duration"
+        case typicalTravelTime = "duration_typical"
         case profileIdentifier
         case annotation
+        case administrationRegions = "admins"
+        case incidents
     }
     
     // MARK: Creating a Leg
@@ -28,13 +31,15 @@ open class RouteLeg: Codable {
      - parameter steps: The steps that are traversed in order.
      - parameter name: A name that describes the route leg.
      - parameter expectedTravelTime: The route leg’s expected travel time, measured in seconds.
+     - parameter typicalTravelTime: The route leg’s typical travel time, measured in seconds.
      - parameter profileIdentifier: The primary mode of transportation for the route leg.
      */
-    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, profileIdentifier: DirectionsProfileIdentifier) {
+    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: DirectionsProfileIdentifier) {
         self.steps = steps
         self.name = name
         self.distance = distance
         self.expectedTravelTime = expectedTravelTime
+        self.typicalTravelTime = typicalTravelTime
         self.profileIdentifier = profileIdentifier
         
         segmentDistances = nil
@@ -57,6 +62,7 @@ open class RouteLeg: Codable {
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
+        typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
         if let profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) {
             self.profileIdentifier = profileIdentifier
@@ -69,6 +75,14 @@ open class RouteLeg: Codable {
         if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
         }
+
+        if let admins = try container.decodeIfPresent([AdministrationRegion].self, forKey: .administrationRegions) {
+            self.administrationRegions = admins
+        }
+
+        if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
+            self.incidents = incidents
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -79,11 +93,20 @@ open class RouteLeg: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
         let attributes = self.attributes
         if !attributes.isEmpty {
             try container.encode(attributes, forKey: .annotation)
+        }
+
+        if let admins = administrationRegions {
+            try container.encode(admins, forKey: .administrationRegions)
+        }
+
+        if let incidents = incidents {
+            try container.encode(incidents, forKey: .incidents)
         }
     }
     
@@ -139,6 +162,19 @@ open class RouteLeg: Codable {
             }
         }
         return segmentRangesByStep
+    }()
+    
+    /**
+     Segments for each Intersection along the route.
+     
+     Ordered by `steps`, inside one `step` - ordered by `Intersection`.  `nil` value means no index was provided. Index values correspond to `route`'s `shape` elements.
+     */
+    public private(set) lazy var intersectionsIndexesByStep: [[Int?]?] = {
+        var intersectionsIndexesByStep: [[Int?]?] = []
+        for step in steps {
+            intersectionsIndexesByStep.append(step.intersections?.map { $0.geometryIndex })
+        }
+        return intersectionsIndexesByStep
     }()
     
     // MARK: Getting Per-Segment Attributes Along the Leg
@@ -236,6 +272,19 @@ open class RouteLeg: Codable {
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
     open var expectedTravelTime: TimeInterval
+
+    open var administrationRegions: [AdministrationRegion]?
+
+    open var incidents: [Incident]?
+    
+    /**
+     The route leg’s typical travel time, measured in seconds.
+     
+     The value of this property reflects the typical time it takes to traverse the route leg. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this leg. If the leg makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     
+     Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteStep.typicalTravelTime` property.
+     */
+    open var typicalTravelTime: TimeInterval?
     
     // MARK: Reproducing the Route
     
@@ -260,6 +309,7 @@ extension RouteLeg: Equatable {
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.typicalTravelTime == rhs.typicalTravelTime &&
             lhs.profileIdentifier == rhs.profileIdentifier
     }
 }
