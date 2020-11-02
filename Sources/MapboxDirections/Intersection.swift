@@ -14,12 +14,12 @@ public struct Intersection {
                 outletIndexes: IndexSet,
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
-                outletRoadClasses: RoadClasses?,
-                tollCollection: TollCollection?,
-                tunnelName: String?,
-                restStop: RestStop?,
-                isUrban: Bool?,
-                administrationRegionIndex: Int?,
+                outletRoadClasses: RoadClasses? = nil,
+                tollCollection: TollCollection? = nil,
+                tunnelName: String? = nil,
+                restStop: RestStop? = nil,
+                isUrban: Bool? = nil,
+                administrationRegionIndex: Int? = nil,
                 geometryIndex: Int? = nil) {
         self.location = location
         self.headings = headings
@@ -86,6 +86,7 @@ public struct Intersection {
     public let outletRoadClasses: RoadClasses?
 
     /**
+     :nodoc:
      The name of the tunnel that this intersection is a part of.
 
      If this Intersection is not a tunnel entrance or exit, or if information is unavailable then this property is set to `nil`.
@@ -93,6 +94,7 @@ public struct Intersection {
     public let tunnelName: String?
 
     /**
+     :nodoc:
      The type of toll collection mechanism.
 
      If this Intersection is not a toll collection intersection, or if this information is unavailable then this property is set to `nil`.
@@ -100,6 +102,7 @@ public struct Intersection {
     public let tollCollection: TollCollection?
 
     /**
+     :nodoc:
      The type of rest stop.
 
      If this Intersection is not a rest stop, or if this information is unavailable then this property is set to `nil`.
@@ -107,13 +110,15 @@ public struct Intersection {
     public let restStop: RestStop?
 
     /**
-     The Intersection lays within the bounds of an urban zone.
+     :nodoc:
+     Whether the intersection lays within the bounds of an urban zone.
 
-     If this information is unavailable then this property is set to `nil`.
+     If this information is unavailable, then this property is set to `nil`.
      */
     public let isUrban: Bool?
 
     /**
+     :nodoc:
      The index of the item in the `administrationRegions` array that corresponds to the country code of the country that this intersection lies in.
 
      If the information is unavailable, this property is set to `nil`.
