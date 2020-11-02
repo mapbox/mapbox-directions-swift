@@ -1,12 +1,9 @@
 # Changes to Mapbox Directions for Swift
-## 1.2.0
-
-* Added support for encoding and decoding `Route Alerts` data coming from `Directions API`. Includes `TollCollection`, `RestStop` and `AdministrationRegion`. Also added `Incident` struct for reflecting incoming incidents along the route ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466))
-* Fixed an error that occurred when setting the Waypoint.separatesLegs property to true and setting the Waypoint.targetCoordinate property. ([#480](https://github.com/mapbox/mapbox-directions-swift/pull/480))
 
 ## 1.2.0
 
 * Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime` and `RouteStep.typicalTravelTime` properties that indicate the typical travel time, as opposed to the current expected travel time. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
+* Fixed an error that occurred when setting the Waypoint.separatesLegs property to true and setting the Waypoint.targetCoordinate property. ([#480](https://github.com/mapbox/mapbox-directions-swift/pull/480))
 
 ## 1.0.0
 

@@ -165,6 +165,7 @@ open class RouteLeg: Codable {
     }()
     
     /**
+     :nodoc:
      Segments for each Intersection along the route.
      
      Ordered by `steps`, inside one `step` - ordered by `Intersection`.  `nil` value means no index was provided. Index values correspond to `route`'s `shape` elements.

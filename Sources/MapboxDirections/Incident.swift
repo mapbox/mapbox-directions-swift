@@ -1,6 +1,7 @@
 import Foundation
 
 /**
+ :nodoc:
  `Incident` describes any corresponding event, used for annotating the route.
  */
 public struct Incident: Codable, Equatable {

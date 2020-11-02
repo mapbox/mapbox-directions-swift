@@ -1,6 +1,7 @@
 import Foundation
 
 /**
+ :nodoc:
  `AdministrationRegion` describes corresponding object on the route.
  */
 public struct AdministrationRegion: Codable, Equatable {
