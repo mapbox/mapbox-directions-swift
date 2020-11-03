@@ -23,8 +23,9 @@ public struct Intersection {
                 tunnelName: String? = nil,
                 restStop: RestStop? = nil,
                 isUrban: Bool? = nil,
-                administrationRegionIndex: Int? = nil,
-                geometryIndex: Int? = nil) {
+                administrativeRegionIndex: Int? = nil,
+                geometryIndex: Int? = nil,
+                regionCode: String? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -37,8 +38,9 @@ public struct Intersection {
         self.tunnelName = tunnelName
         self.isUrban = isUrban
         self.restStop = restStop
-        self.administrationRegionIndex = administrationRegionIndex
+        self.administrativeRegionIndex = administrativeRegionIndex
         self.geometryIndex = geometryIndex
+        self.regionCode = regionCode
     }
     
     // MARK: Getting the Location of the Intersection
@@ -122,12 +124,18 @@ public struct Intersection {
     public let isUrban: Bool?
 
     /**
-     :nodoc:
-     The index of the item in the `administrationRegions` array that corresponds to the country code of the country that this intersection lies in.
+     The index of the item in the `administrativeRegions` array that corresponds to the country code of the country that this intersection lies in.
 
      If the information is unavailable, this property is set to `nil`.
      */
-    public let administrationRegionIndex: Int?
+    let administrativeRegionIndex: Int?
+    
+    /**
+     A 2-letter region code to identify corresponding country that this intersection lies in.
+     
+     Automatically populated during decoding a `RouteLeg` object, since this is the source of all `AdministrativeRegion`s. Value is `nil` if such information is unavailable.
+     */
+    public internal(set) var regionCode: String?
 
     /**
      The index of the RouteStep within a RouteLeg that contains this Intersection.
@@ -166,7 +174,7 @@ extension Intersection: Codable {
         case tunnelName = "tunnelName"
         case isUrban = "is_urban"
         case restStop = "rest_stop"
-        case administrationRegionIndex = "admin_index"
+        case administrativeRegionIndex = "admin_index"
         case geometryIndex = "geometry_index"
     }
     
@@ -215,8 +223,8 @@ extension Intersection: Codable {
             try container.encode(tunnelName, forKey: .tunnelName)
         }
 
-        if let adminIndex = administrationRegionIndex {
-            try container.encode(adminIndex, forKey: .administrationRegionIndex)
+        if let adminIndex = administrativeRegionIndex {
+            try container.encode(adminIndex, forKey: .administrativeRegionIndex)
         }
         
         if let geoIndex = geometryIndex {
@@ -252,7 +260,7 @@ extension Intersection: Codable {
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
 
-        administrationRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrationRegionIndex)
+        administrativeRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrativeRegionIndex)
         
         geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
     }
@@ -271,7 +279,7 @@ extension Intersection: Equatable {
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
             lhs.isUrban == rhs.isUrban &&
-            lhs.administrationRegionIndex == rhs.administrationRegionIndex &&
+            lhs.administrativeRegionIndex == rhs.administrativeRegionIndex &&
             lhs.geometryIndex == rhs.geometryIndex
     }
 }
