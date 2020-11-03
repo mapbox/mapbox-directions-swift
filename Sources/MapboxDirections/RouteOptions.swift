@@ -203,7 +203,7 @@ open class RouteOptions: DirectionsOptions {
         }
         
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
-            let targetCoordinates = waypoints.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
+            let targetCoordinates = waypoints.filter { $0.separatesLegs }.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
         }
 
