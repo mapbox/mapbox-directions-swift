@@ -350,10 +350,10 @@
 		F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
 		F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
 		F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
-		F4F5084B2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
-		F4F5084C2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
-		F4F5084D2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
-		F4F5084E2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
+		F4F5084B2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
+		F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
+		F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
+		F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -564,7 +564,7 @@
 		F4CF2C562523B66300A6D0B6 /* TollCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TollCollection.swift; sourceTree = "<group>"; };
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
 		F4F508372524D6F10044F2D0 /* RestStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStop.swift; sourceTree = "<group>"; };
-		F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrationRegion.swift; sourceTree = "<group>"; };
+		F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrativeRegion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -810,7 +810,7 @@
 				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
 				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
 				F4F508372524D6F10044F2D0 /* RestStop.swift */,
-				F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */,
+				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
 			);
 			name = MapboxDirections;
@@ -1443,7 +1443,7 @@
 				C58EA7AB1E9D7F73008F98CE /* Congestion.swift in Sources */,
 				8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */,
 				F457FA7B252B9E29007DAEB1 /* Incident.swift in Sources */,
-				F4F5084C2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
+				F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1529,7 +1529,7 @@
 				C58EA7AC1E9D7F74008F98CE /* Congestion.swift in Sources */,
 				8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */,
 				F457FA7C252B9E29007DAEB1 /* Incident.swift in Sources */,
-				F4F5084D2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
+				F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1615,7 +1615,7 @@
 				C58EA7AD1E9D7F75008F98CE /* Congestion.swift in Sources */,
 				8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */,
 				F457FA7D252B9E29007DAEB1 /* Incident.swift in Sources */,
-				F4F5084E2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
+				F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1668,7 +1668,7 @@
 				C5DAAC9A20191675001F9261 /* Match.swift in Sources */,
 				C58EA7AA1E9D7EAD008F98CE /* Congestion.swift in Sources */,
 				F457FA7A252B9E29007DAEB1 /* Incident.swift in Sources */,
-				F4F5084B2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
+				F4F5084B2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,

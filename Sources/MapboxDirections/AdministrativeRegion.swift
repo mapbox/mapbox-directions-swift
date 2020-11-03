@@ -2,9 +2,9 @@ import Foundation
 
 /**
  :nodoc:
- `AdministrationRegion` describes corresponding object on the route.
+ `AdministrativeRegion` describes corresponding object on the route.
  */
-public struct AdministrationRegion: Codable, Equatable {
+public struct AdministrativeRegion: Codable, Equatable {
 
     private enum CodingKeys: String, CodingKey {
         case countryCodeAlpha3 = "iso_3166_1_alpha3"

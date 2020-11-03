@@ -779,6 +779,14 @@ open class RouteStep: Codable {
     public let intersections: [Intersection]?
     
     /**
+     An array of `Administrative Regions` indicies for each `intersection` along current step.
+     
+     Array may be `nil` in case `intersections` data is not available. Array element may be `nil` if corresponding `intersection` has no `Administrative Region` assigned.
+     */
+    public var administrativeRegionIndicesByIntersection: [Int?]? {
+        return intersections?.map { $0.administrativeRegionIndex }
+    }
+    /**
      The sign design standard used for speed limit signs along the step.
      
      This standard affects how corresponding speed limits in the `RouteLeg.segmentMaximumSpeedLimits` property should be displayed.
