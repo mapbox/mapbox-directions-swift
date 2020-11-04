@@ -21,30 +21,37 @@ let userAgent: String = {
         components.append("\(libraryName)/\(version)")
     }
     
+    // `ProcessInfo().operatingSystemVersionString` can replace this when swift-corelibs-foundaton is next released:
+    // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/ProcessInfo.swift#L104-L202
     let system: String
-    #if os(OSX)
-    system = "macOS"
+    #if os(macOS)
+        system = "macOS"
     #elseif os(iOS)
-    system = "iOS"
+        system = "iOS"
     #elseif os(watchOS)
-    system = "watchOS"
+        system = "watchOS"
     #elseif os(tvOS)
-    system = "tvOS"
+        system = "tvOS"
     #elseif os(Linux)
-    system = "Linux"
+        system = "Linux"
+    #else
+        system = "unknown"
     #endif
     let systemVersion = ProcessInfo().operatingSystemVersion
     components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
     
     let chip: String
     #if arch(x86_64)
-    chip = "x86_64"
+        chip = "x86_64"
     #elseif arch(arm)
-    chip = "arm"
+        chip = "arm"
     #elseif arch(arm64)
-    chip = "arm64"
+        chip = "arm64"
     #elseif arch(i386)
-    chip = "i386"
+        chip = "i386"
+    #else
+        // Maybe fall back on `uname(2).machine`?
+        chip = "unrecognized"
     #endif
     components.append("(\(chip))")
     
