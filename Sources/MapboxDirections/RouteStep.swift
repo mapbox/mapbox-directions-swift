@@ -512,7 +512,17 @@ open class RouteStep: Codable {
             try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         }
         
-        try container.encodeIfPresent(intersections, forKey: .intersections)
+        if let intersections = intersections, let administrativeRegionIndicesByIntersection = administrativeRegionIndicesByIntersection {
+            let intersectionsToEncode = zip(intersections, administrativeRegionIndicesByIntersection).map { (intersection, adminIndex) -> Intersection in
+                var newIntersection = intersection
+                newIntersection.updateAdministrativeRegionIndex(adminIndex)
+                return newIntersection
+            }
+            try container.encodeIfPresent(intersectionsToEncode, forKey: .intersections)
+        } else {
+            try container.encodeIfPresent(intersections, forKey: .intersections)
+        }
+        
         try container.encode(drivingSide, forKey: .drivingSide)
         if let shape = shape {
             let options = encoder.userInfo[.options] as? DirectionsOptions
@@ -536,7 +546,24 @@ open class RouteStep: Codable {
         }
     }
     
-    public required init(from decoder: Decoder) throws {
+    static func decode(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]) throws -> [RouteStep] {
+        var container = try decoder.unkeyedContainer()
+        
+        var steps = Array<RouteStep>()
+        while !container.isAtEnd {
+            let step = try RouteStep(from: container.superDecoder(), administrativeRegions: administrativeRegions)
+            
+            steps.append(step)
+        }
+        
+        return steps
+    }
+    
+    public required convenience init(from decoder: Decoder) throws {
+        try self.init(from: decoder, administrativeRegions: nil)
+    }
+    
+    init(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]?) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
@@ -577,7 +604,23 @@ open class RouteStep: Codable {
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
         transportType = try container.decode(TransportType.self, forKey: .transportType)
-        intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
+        
+        var rawIntersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
+        if rawIntersections != nil {
+            // Here we are populating `administrativeRegionIndicesByIntersection`, updating `Intersection.regionCode` and `Intersection.administrativeRegionIndex`
+            administrativeRegionIndicesByIntersection = []
+            for index in 0..<rawIntersections!.count {
+                administrativeRegionIndicesByIntersection?.append(rawIntersections![index].administrativeRegionIndex)
+                if let administrativeRegions = administrativeRegions,
+                   let regionIndex = administrativeRegionIndicesByIntersection?.last,
+                   regionIndex != nil && administrativeRegions.count > regionIndex! {
+                    rawIntersections![index].updateRegionCode(administrativeRegions[regionIndex!].countryCode)
+                }
+                rawIntersections![index].updateAdministrativeRegionIndex(nil)
+            }
+        }
+        
+        intersections = rawIntersections
         
         let road = try Road(from: decoder)
         codes = road.codes
@@ -783,9 +826,8 @@ open class RouteStep: Codable {
      
      Array may be `nil` in case `intersections` data is not available. Array element may be `nil` if corresponding `intersection` has no `Administrative Region` assigned.
      */
-    public var administrativeRegionIndicesByIntersection: [Int?]? {
-        return intersections?.map { $0.administrativeRegionIndex }
-    }
+    public var administrativeRegionIndicesByIntersection: [Int?]?
+
     /**
      The sign design standard used for speed limit signs along the step.
      

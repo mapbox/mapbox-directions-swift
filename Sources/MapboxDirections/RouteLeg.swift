@@ -60,7 +60,6 @@ open class RouteLeg: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
         destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
-        steps = try container.decode([RouteStep].self, forKey: .steps)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
@@ -74,20 +73,15 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
-            self.attributes = attributes
-        }
-
-        
         if let admins = try container.decodeIfPresent([AdministrativeRegion].self, forKey: .administrativeRegions) {
             self.administrativeRegions = admins
-            steps.forEach { step in
-                guard let intersections = step.intersections, let adminIndicies = step.administrativeRegionIndicesByIntersection else { return }
-                for (i, var intersection) in intersections.enumerated() {
-                    guard let administrationIndex = adminIndicies[i] else { return }
-                    intersection.regionCode = administrativeRegions![administrationIndex].countryCode
-                }
-            }
+            steps = try RouteStep.decode(from: container.superDecoder(forKey: .steps), administrativeRegions: self.administrativeRegions!)
+        } else {
+            steps = try container.decode([RouteStep].self, forKey: .steps)
+        }
+        
+        if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
+            self.attributes = attributes
         }
 
         if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
