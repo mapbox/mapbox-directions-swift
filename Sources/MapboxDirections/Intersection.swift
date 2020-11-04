@@ -128,14 +128,22 @@ public struct Intersection {
 
      If the information is unavailable, this property is set to `nil`.
      */
-    let administrativeRegionIndex: Int?
+    var administrativeRegionIndex: Int?
+    
+    mutating func updateAdministrativeRegionIndex(_ adminIndex: Int?) {
+        self.administrativeRegionIndex = adminIndex
+    }
     
     /**
      A 2-letter region code to identify corresponding country that this intersection lies in.
      
      Automatically populated during decoding a `RouteLeg` object, since this is the source of all `AdministrativeRegion`s. Value is `nil` if such information is unavailable.
      */
-    public internal(set) var regionCode: String?
+    public private(set) var regionCode: String?
+    
+    mutating func updateRegionCode(_ regionCode: String?) {
+        self.regionCode = regionCode
+    }
 
     /**
      The index of the RouteStep within a RouteLeg that contains this Intersection.
