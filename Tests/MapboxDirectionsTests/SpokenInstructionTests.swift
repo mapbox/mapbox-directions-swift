@@ -1,4 +1,5 @@
 import XCTest
+import CoreLocation
 @testable import MapboxDirections
 
 class SpokenInstructionTests: XCTestCase {

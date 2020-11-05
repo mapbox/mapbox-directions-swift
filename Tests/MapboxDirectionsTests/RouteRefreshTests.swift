@@ -1,4 +1,5 @@
 import XCTest
+import CoreLocation
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
 #endif

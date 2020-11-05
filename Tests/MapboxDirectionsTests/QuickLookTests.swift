@@ -1,4 +1,5 @@
 import XCTest
+import CoreLocation
 import Turf
 @testable import MapboxDirections
 
