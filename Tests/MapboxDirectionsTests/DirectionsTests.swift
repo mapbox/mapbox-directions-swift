@@ -2,7 +2,11 @@ import XCTest
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
 #endif
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"

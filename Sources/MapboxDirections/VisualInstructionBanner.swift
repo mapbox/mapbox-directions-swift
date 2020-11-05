@@ -1,5 +1,9 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 internal extension CodingUserInfoKey {
     static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!

@@ -1,5 +1,9 @@
 import XCTest
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 #if !SWIFT_PACKAGE
 import OHHTTPStubs
 #endif

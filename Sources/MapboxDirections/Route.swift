@@ -1,4 +1,6 @@
+#if canImport(CoreLocation)
 import CoreLocation
+#endif
 import Turf
 
 /**

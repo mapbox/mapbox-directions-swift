@@ -1,4 +1,8 @@
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 /**
  A `RouteOptions` object is a structure that specifies the criteria for results returned by the Mapbox Directions API.
@@ -20,6 +24,7 @@ open class RouteOptions: DirectionsOptions {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
 
+    #if canImport(CoreLocation)
     /**
      Initializes a route options object for routes between the given locations and an optional profile identifier.
 
@@ -32,6 +37,7 @@ open class RouteOptions: DirectionsOptions {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
+    #endif
 
     /**
      Initializes a route options object for routes between the given geographic coordinates and an optional profile identifier.
@@ -141,7 +147,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. The default value is `CLLocationSpeed.normalWalking`.
      */
-    open var speed: CLLocationSpeed = .normalWalking
+    open var speed: LocationSpeed = .normalWalking
     
     // MARK: Specifying the Response Format
 
@@ -211,19 +217,19 @@ open class RouteOptions: DirectionsOptions {
     }
 }
 
-extension CLLocationSpeed {
+extension LocationSpeed {
     /**
      By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
      */
-    static let normalWalking: CLLocationSpeed = 1.42
+    static let normalWalking: LocationSpeed = 1.42
     
     /**
      Pedestrians are assumed to walk no slower than 0.14 meters per second (0.50 kilometers per hour or 0.31 miles per hour) on average.
      */
-    static let minimumWalking: CLLocationSpeed = 0.14
+    static let minimumWalking: LocationSpeed = 0.14
     
     /**
      Pedestrians are assumed to walk no faster than 6.94 meters per second (25.0 kilometers per hour or 15.5 miles per hour) on average.
      */
-    static let maximumWalking: CLLocationSpeed = 6.94
+    static let maximumWalking: LocationSpeed = 6.94
 }

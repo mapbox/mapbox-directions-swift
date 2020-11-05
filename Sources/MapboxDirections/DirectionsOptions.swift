@@ -1,6 +1,5 @@
 import Foundation
 import Polyline
-import CoreLocation
 
 /**
  Maximum length of an HTTP request URL for the purposes of switching from GET to

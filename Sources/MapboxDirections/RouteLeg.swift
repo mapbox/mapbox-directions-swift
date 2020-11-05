@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#endif
 import Polyline
 import Turf
 
@@ -203,7 +205,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.speed`.
      */
-    open var segmentSpeeds: [CLLocationSpeed]?
+    open var segmentSpeeds: [LocationSpeed]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
