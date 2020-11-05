@@ -20,9 +20,13 @@ public struct DirectionsCredentials: Equatable {
      The SKU Token associated with the request. Used for billing.
      */
     public var skuToken: String? {
+        #if os(iOS)
         guard let mbx: AnyClass = NSClassFromString("MBXAccounts") else { return nil }
         guard mbx.responds(to: Selector(("serviceSkuToken"))) else { return nil }
         return mbx.value(forKeyPath: "serviceSkuToken") as? String
+        #else
+        return nil
+        #endif
     }
     
     /**
