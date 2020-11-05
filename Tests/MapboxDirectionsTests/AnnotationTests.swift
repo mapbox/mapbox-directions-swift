@@ -23,9 +23,9 @@ class AnnotationTests: XCTestCase {
         ]
         
         stub(condition: isHost("api.mapbox.com")
-            && containsQueryParams(queryParams)) { _ in 
-                let path = Bundle(for: type(of: self)).path(forResource: "annotation", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                && containsQueryParams(queryParams)) { _ in
+            let path = Bundle.module.path(forResource: "annotation", ofType: "json")
+            return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let options = RouteOptions(coordinates: [

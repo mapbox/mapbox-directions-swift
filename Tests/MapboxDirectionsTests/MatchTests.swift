@@ -27,7 +27,7 @@ class MatchTests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "match", ofType: "json")
+                let path = Bundle.module.path(forResource: "match", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -116,7 +116,7 @@ class MatchTests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "null-tracepoint", ofType: "json")
+                let path = Bundle.module.path(forResource: "null-tracepoint", ofType: "json")
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         

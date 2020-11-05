@@ -41,7 +41,7 @@ class RouteOptionsTests: XCTestCase {
     }
     
     private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
-        let testBundle = Bundle(for: type(of: self))
+        let testBundle = Bundle.module
         guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else {
             XCTFail()
             return nil
