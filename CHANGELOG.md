@@ -1,11 +1,12 @@
 # Changes to Mapbox Directions for Swift
 
-## 1.2.0
+## v1.2.0
 
 * Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime` and `RouteStep.typicalTravelTime` properties that indicate the typical travel time, as opposed to the current expected travel time. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
 * Fixed an error that occurred when setting the Waypoint.separatesLegs property to true and setting the Waypoint.targetCoordinate property. ([#480](https://github.com/mapbox/mapbox-directions-swift/pull/480))
+* `Directions.fetchAvailableOfflineVersions(completionHandler:)` now calls its completion handler on the main queue consistently. ([#475](https://github.com/mapbox/mapbox-directions-swift/pull/475))
 
-## 1.0.0
+## v1.0.0
 
 * Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method for refreshing attributes along the legs of a route and the `Route.refreshLegAttributes(from:)` method for merging the refreshed attributes into an existing route. To enable route refreshing for the routes in a particular route response, set `RouteOptions.refreshingEnabled` to `true` before passing the `RouteOptions` object into `Directions.calculate(_:completionHandler:)`. ([#420](https://github.com/mapbox/mapbox-directions-swift/pull/420))
 * Fixed a crash that could occur if the Mapbox Directions API includes unrecognized `RoadClasses` values in its response. ([#450](https://github.com/mapbox/mapbox-directions-swift/pull/450))
