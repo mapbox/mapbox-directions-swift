@@ -1,4 +1,8 @@
 import XCTest
+import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 @testable import MapboxDirections
 
 class DirectionsErrorTests: XCTestCase {
