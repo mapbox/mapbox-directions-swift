@@ -516,7 +516,7 @@ open class RouteStep: Codable {
         if let intersectionsToEncode = intersections {
             var intersectionsContainer = container.nestedUnkeyedContainer(forKey: .intersections)
             try Intersection.encode(intersections: intersectionsToEncode,
-                                    to: intersectionsContainer.superEncoder(),
+                                    to: &intersectionsContainer,
                                     administrativeRegionIndices: administrativeRegionIndicesByIntersection)
         }
         
