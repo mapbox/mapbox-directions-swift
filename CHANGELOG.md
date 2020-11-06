@@ -13,6 +13,7 @@
 * `Directions.fetchAvailableOfflineVersions(completionHandler:)` now calls its completion handler on the main queue consistently. ([#475](https://github.com/mapbox/mapbox-directions-swift/pull/475))
 * Upgraded to Polyline v5.0.0. ([#487](https://github.com/mapbox/mapbox-directions-swift/pull/487))
 * Added `Intersection.regionCode` and `RouteStep.administrativeRegionIndicesByIntersection` for more convenient region data usage. `Intersection.administrativeRegionIndex` is now internal. ([#485](https://github.com/mapbox/mapbox-directions-swift/pull/485))
+* Added `Intersection.regionCode` and `RouteStep.administrativeRegionIndicesByIntersection` for more convenient region data usage. `Intersection.administrativeRegionIndex` is removed in favor of the above, depending on needs in a string representation or index value. ([#485](https://github.com/mapbox/mapbox-directions-swift/pull/485))
 
 ## v1.0.0
 
