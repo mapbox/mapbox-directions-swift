@@ -168,20 +168,6 @@ open class RouteLeg: Codable {
         return segmentRangesByStep
     }()
     
-    /**
-     :nodoc:
-     Segments for each Intersection along the route.
-     
-     Ordered by `steps`, inside one `step` - ordered by `Intersection`.  `nil` value means no index was provided. Index values correspond to `route`'s `shape` elements.
-     */
-    public private(set) lazy var intersectionsIndexesByStep: [[Int?]?] = {
-        var intersectionsIndexesByStep: [[Int?]?] = []
-        for step in steps {
-            intersectionsIndexesByStep.append(step.intersections?.map { $0.geometryIndex })
-        }
-        return intersectionsIndexesByStep
-    }()
-    
     // MARK: Getting Per-Segment Attributes Along the Leg
     
     /**
