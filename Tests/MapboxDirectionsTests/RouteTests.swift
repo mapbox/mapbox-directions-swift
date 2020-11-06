@@ -1,4 +1,5 @@
 import XCTest
+import Foundation
 #if canImport(CoreLocation)
 import CoreLocation
 #else
@@ -145,8 +146,8 @@ class RouteTests: XCTestCase {
         }
 
         // Then - voiceLocale key is present and its value is nil
-
-        XCTAssertTrue(json.contains { (key, value) in key == "voiceLocale" && value == nil })
+        // swift-corelibs-foundation’s implementation of JSONSerialization uses NSNull to represent a JSON null value.
+        XCTAssertTrue(json.contains { (key, value) in key == "voiceLocale" && (value == nil || value is NSNull) })
     }
     
     func testRouteTypicalTravelTime() {
