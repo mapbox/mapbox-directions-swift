@@ -173,9 +173,9 @@ extension Intersection: Codable {
         case geometryIndex = "geometry_index"
     }
     
-    static func encode(intersections: [Intersection], to encoder: Encoder, administrativeRegionIndices: [Int?]?) throws {
+    static func encode(intersections: [Intersection], to parentContainer: inout UnkeyedEncodingContainer, administrativeRegionIndices: [Int?]?) throws {
         guard administrativeRegionIndices == nil || administrativeRegionIndices?.count == intersections.count else {
-            let error = EncodingError.Context(codingPath: encoder.codingPath,
+            let error = EncodingError.Context(codingPath: parentContainer.codingPath,
                                               debugDescription: "`administrativeRegionIndices` should be `nil` or match provided `intersections` to encode")
             throw EncodingError.invalidValue(administrativeRegionIndices as Any, error)
         }
@@ -186,7 +186,7 @@ extension Intersection: Codable {
                 adminIndex = administrativeRegionIndices?[index]
             }
             
-            try intersection.encode(to: encoder, administrativeRegionIndex: adminIndex)
+            try intersection.encode(to: parentContainer.superEncoder(), administrativeRegionIndex: adminIndex)
         }
     }
 
