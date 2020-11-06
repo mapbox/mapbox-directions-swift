@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 typealias JSONDictionary = [String: Any]
 
@@ -37,7 +40,7 @@ let userAgent: String = {
     #else
         system = "unknown"
     #endif
-    let systemVersion = ProcessInfo().operatingSystemVersion
+    let systemVersion = ProcessInfo.processInfo.operatingSystemVersion
     components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
     
     let chip: String

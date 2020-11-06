@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /**
  An error that occurs when calculating directions.
@@ -131,12 +134,16 @@ public enum DirectionsError: LocalizedError {
         case .requestTooLarge:
             return "The request is too large."
         case let .rateLimited(rateLimitInterval: interval, rateLimit: limit, _):
-            let intervalFormatter = DateComponentsFormatter()
-            intervalFormatter.unitsStyle = .full
             guard let interval = interval, let limit = limit else {
                 return "Too many requests."
             }
+            #if os(Linux)
+            let formattedInterval = "\(interval) seconds"
+            #else
+            let intervalFormatter = DateComponentsFormatter()
+            intervalFormatter.unitsStyle = .full
             let formattedInterval = intervalFormatter.string(from: interval) ?? "\(interval) seconds"
+            #endif
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
         case let .unknown(_, underlying: error, _, message):

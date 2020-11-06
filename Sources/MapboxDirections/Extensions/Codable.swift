@@ -1,14 +1,20 @@
 import Foundation
 import Polyline
 import Turf
+#if canImport(CoreLocation)
 import CoreLocation
+#endif
 
 extension LineString {
     /**
      Returns a string representation of the line string in [Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
      */
     func polylineEncodedString(precision: Double = 1e5) -> String {
+        #if canImport(CoreLocation)
         return encodeCoordinates(coordinates, precision: precision)
+        #else
+        return encodeCoordinates(coordinates.map { LocationCoordinate2D($0) }, precision: precision)
+        #endif
     }
 }
 

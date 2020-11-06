@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#endif
 import Polyline
 import Turf
 
@@ -20,7 +22,7 @@ extension LineString {
     }
     
     init(encodedPolyline: String, precision: Double) throws {
-        guard var coordinates = decodePolyline(encodedPolyline, precision: precision) as [CLLocationCoordinate2D]? else {
+        guard var coordinates = decodePolyline(encodedPolyline, precision: precision) as [LocationCoordinate2D]? else {
             throw GeometryError.cannotDecodePolyline(precision: precision)
         }
         // If the polyline has zero length with both endpoints at the same coordinate, Polyline drops one of the coordinates.
@@ -29,7 +31,11 @@ extension LineString {
         if coordinates.count == 1 {
             coordinates.append(coordinates[0])
         }
+        #if canImport(CoreLocation)
         self.init(coordinates)
+        #else
+        self.init(coordinates.map { CLLocationCoordinate2D($0) })
+        #endif
     }
 }
 

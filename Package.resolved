@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/raphaelmor/Polyline.git",
         "state": {
           "branch": null,
-          "revision": "cf0e3a1a0c91b9ad82f97a004fee13a89cc5981c",
-          "version": "5.0.0"
+          "revision": "36f7b1222aaf8fa741d0d179c12e186998d97f42",
+          "version": "5.0.2"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/mapbox/turf-swift.git",
         "state": {
           "branch": null,
-          "revision": "19d184102927cfc6dba49647850c6fd3e1f5f336",
-          "version": "1.0.0"
+          "revision": "ee24a33eb9f02bf2715d3e0d3bcebbf302376af6",
+          "version": "1.1.0"
         }
       }
     ]

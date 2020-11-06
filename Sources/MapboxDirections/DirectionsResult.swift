@@ -1,6 +1,8 @@
 import Foundation
 import Polyline
+#if canImport(CoreLocation)
 import CoreLocation
+#endif
 import Turf
 
 /**

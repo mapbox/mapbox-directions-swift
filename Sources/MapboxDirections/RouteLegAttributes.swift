@@ -1,5 +1,9 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 extension RouteLeg {
     /**
@@ -29,7 +33,7 @@ extension RouteLeg {
          
          This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.speed`.
          */
-        public var segmentSpeeds: [CLLocationSpeed]?
+        public var segmentSpeeds: [LocationSpeed]?
         
         /**
          An array containing the traffic congestion level along each road segment in the route leg geometry.
@@ -69,7 +73,7 @@ extension RouteLeg.Attributes: Codable {
         
         segmentDistances = try container.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
         expectedSegmentTravelTimes = try container.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
-        segmentSpeeds = try container.decodeIfPresent([CLLocationSpeed].self, forKey: .segmentSpeeds)
+        segmentSpeeds = try container.decodeIfPresent([LocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
         
         if let speedLimitDescriptors = try container.decodeIfPresent([SpeedLimitDescriptor].self, forKey: .segmentMaximumSpeedLimits) {

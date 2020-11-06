@@ -1,5 +1,9 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 /**
  A single cross street along a step.

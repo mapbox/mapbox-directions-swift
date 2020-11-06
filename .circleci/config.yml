@@ -37,6 +37,14 @@ commands:
                 command: bash <(curl -s https://codecov.io/bash)
 
 jobs:
+  spm-linux-job:
+    docker:
+      - image: swift:5.3
+    steps:
+      - checkout
+      - run: swift build
+      - run: swift test
+
   spm-job:
     parameters:
       xcode:
@@ -132,3 +140,5 @@ workflows:
       - spm-job:
           name: "SPM_build"
           xcode: "12.0.0"
+      - spm-linux-job:
+          name: "SPM_Ubuntu_build"
