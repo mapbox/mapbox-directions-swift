@@ -46,7 +46,6 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertNotEqual(DirectionsError.invalidInput(message: nil), .invalidInput(message: ""))
         
         XCTAssertEqual(DirectionsError.invalidResponse(nil), .invalidResponse(nil))
-        XCTAssertNotEqual(DirectionsError.invalidResponse(nil), .invalidResponse(HTTPURLResponse()))
         
         XCTAssertEqual(DirectionsError.unableToRoute, .unableToRoute)
         XCTAssertEqual(DirectionsError.noMatches, .noMatches)
@@ -70,8 +69,6 @@ class DirectionsErrorTests: XCTestCase {
         
         XCTAssertEqual(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil),
                        .unknown(response: nil, underlying: nil, code: nil, message: nil))
-        XCTAssertNotEqual(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil),
-                          .unknown(response: URLResponse(), underlying: nil, code: nil, message: nil))
         XCTAssertNotEqual(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil),
                           .unknown(response: nil, underlying: BogusError.bug, code: nil, message: nil))
         XCTAssertNotEqual(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil),
