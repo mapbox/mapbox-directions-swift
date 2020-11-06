@@ -513,15 +513,11 @@ open class RouteStep: Codable {
             try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         }
         
-        if let intersections = intersections, let administrativeRegionIndicesByIntersection = administrativeRegionIndicesByIntersection {
-            let intersectionsToEncode = zip(intersections, administrativeRegionIndicesByIntersection).map { (intersection, adminIndex) -> Intersection in
-                var newIntersection = intersection
-                newIntersection.updateAdministrativeRegionIndex(adminIndex)
-                return newIntersection
-            }
-            try container.encodeIfPresent(intersectionsToEncode, forKey: .intersections)
-        } else {
-            try container.encodeIfPresent(intersections, forKey: .intersections)
+        if let intersectionsToEncode = intersections {
+            var intersectionsContainer = container.nestedUnkeyedContainer(forKey: .intersections)
+            try Intersection.encode(intersections: intersectionsToEncode,
+                                    to: intersectionsContainer.superEncoder(),
+                                    administrativeRegionIndices: administrativeRegionIndicesByIntersection)
         }
         
         try container.encode(drivingSide, forKey: .drivingSide)
@@ -559,6 +555,17 @@ open class RouteStep: Codable {
         
         return steps
     }
+    
+    
+    /// Used to Decode `Intersection.admin_index`
+    private struct AdministrativeAreaIndex: Codable {
+        private enum CodingKeys: String, CodingKey {
+            case administrativeRegionIndex = "admin_index"
+        }
+        
+        var administrativeRegionIndex: Int?
+    }
+
     
     public required convenience init(from decoder: Decoder) throws {
         try self.init(from: decoder, administrativeRegions: nil)
@@ -606,22 +613,22 @@ open class RouteStep: Codable {
         
         transportType = try container.decode(TransportType.self, forKey: .transportType)
         
-        var administrativeRegionIndices: [Int?]?
+        administrativeRegionIndicesByIntersection = try container.decodeIfPresent([AdministrativeAreaIndex].self,
+                                                                                  forKey: .intersections)?.map { $0.administrativeRegionIndex }
         var rawIntersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
-        if rawIntersections != nil {
-            // Here we are populating `administrativeRegionIndicesByIntersection`, updating `Intersection.regionCode` and `Intersection.administrativeRegionIndex`
-            administrativeRegionIndices = []
+        
+        // Updating `Intersection.regionCode` since we removed it's `admin_index` for convenience
+        if let administrativeRegions = administrativeRegions,
+           rawIntersections != nil,
+           let rawAdminIndicies = administrativeRegionIndicesByIntersection {
             for index in 0..<rawIntersections!.count {
-                administrativeRegionIndices?.append(rawIntersections![index].administrativeRegionIndex)
-                if let administrativeRegions = administrativeRegions,
-                   let regionIndex = administrativeRegionIndices?.last,
-                   regionIndex != nil && administrativeRegions.count > regionIndex! {
-                    rawIntersections![index].updateRegionCode(administrativeRegions[regionIndex!].countryCode)
+                if let regionIndex = rawAdminIndicies[index],
+                   administrativeRegions.count > regionIndex {
+                    rawIntersections![index].updateRegionCode(administrativeRegions[regionIndex].countryCode)
                 }
-                rawIntersections![index].updateAdministrativeRegionIndex(nil)
             }
         }
-        administrativeRegionIndicesByIntersection = administrativeRegionIndices
+        
         intersections = rawIntersections
         
         let road = try Road(from: decoder)
