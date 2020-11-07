@@ -75,3 +75,18 @@ Go to Product ‣ Test in Xcode, or run `swift test` on the command line.
 Pull requests are appreciated. If your PR includes any changes that would impact developers or end users, please mention those changes in the “main” section of [CHANGELOG.md](CHANGELOG.md), noting the PR number. Examples of noteworthy changes include new features, fixes for user-visible bugs, and renamed or deleted public symbols.
 
 Before we can merge your PR, it must pass automated continuous integration checks on each of the supported platforms, as well as a check to ensure that code coverage has not decreased significantly.
+
+## Releasing a new version
+
+To release a new version of the MapboxDirections package:
+
+1. Run `./scripts/update-version.sh v#.#.#`, where _#.#.#_ is a new version number conforming to [Semantic Versioning](https://semver.org/). Commit the changes with a commit message like `v#.#.#` and open a pull request to get it reviewed and merged.
+1. Tag the merged changes as `v#.#.#`. Push the tag by running `git pull && git push origin v#.#.#`.
+1. [Create a new release](https://github.com/mapbox/mapbox-directions-swift/releases/new/). Add release notes based on the release’s section in the changelog. (Unlike the changelog, release notes accept `#123` syntax for linking to PRs.) Title the release `v#.#.#`. Check “This is a pre-release” if applicable, then click “Publish release”.
+1. Run `pod repo update && pod trunk push` to publish the release on CocoaPods trunk.
+
+After the release, follow these steps to generate and publish documentation and update the iOS site with the latest version number:
+
+1. Run `./scripts/publish-documentation.sh v#.#.#` to generate and publish the documentation. Create a pull request and set the base branch to `publisher-production`.
+2. Wait for new documentation to be live. Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. (Mapbox employees can check the #publisher channel in Slack for a notification of when the commit has been published.)
+3. _(Mapbox employees only.)_ Complete the [MapboxDirections.swift instructions](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) in the ios-sdk repository to update various links to the current docset.
