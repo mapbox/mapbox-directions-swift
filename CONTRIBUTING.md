@@ -1,4 +1,4 @@
-# Contributing to the Mapbox Directions for Swift
+# Contributing to Mapbox Directions for Swift
 
 ## Reporting an issue
 
