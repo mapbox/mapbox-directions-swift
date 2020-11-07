@@ -84,9 +84,8 @@ To release a new version of the MapboxDirections package:
 1. Tag the merged changes as `v#.#.#`. Push the tag by running `git pull && git push origin v#.#.#`.
 1. [Create a new release](https://github.com/mapbox/mapbox-directions-swift/releases/new/). Add release notes based on the release’s section in the changelog. (Unlike the changelog, release notes accept `#123` syntax for linking to PRs.) Title the release `v#.#.#`. Check “This is a pre-release” if applicable, then click “Publish release”.
 1. Run `pod repo update && pod trunk push` to publish the release on CocoaPods trunk.
-
-After the release, follow these steps to generate and publish documentation and update the iOS site with the latest version number:
-
 1. Run `./scripts/publish-documentation.sh v#.#.#` to generate and publish the documentation. Create a pull request and set the base branch to `publisher-production`.
-2. Wait for new documentation to be live. Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. (Mapbox employees can check the #publisher channel in Slack for a notification of when the commit has been published.)
-3. _(Mapbox employees only.)_ Complete the [MapboxDirections.swift instructions](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) in the ios-sdk repository to update various links to the current docset.
+1. Wait for new documentation to be live. Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. (Mapbox employees can check the #publisher channel in Slack for a notification of when the commit has been published.)
+1. _(Mapbox employees only.)_ [Update various links](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) to the current docset in the [iOS documentation] site.
+1. _(Mapbox employees only.)_ [Update various links](https://github.com/mapbox/help/blob/publisher-production/docs/upgrading-versions.md) to the current docset in the [help](https://docs.mapbox.com/help/) site.
+1. For a new major version, upgrade the [iOS navigation SDK](https://github.com/mapbox/mapbox-navigation-ios/)’s Cartfile, podspecs, and Package.swift to the new version. 
