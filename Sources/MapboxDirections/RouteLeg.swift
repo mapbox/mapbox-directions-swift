@@ -278,6 +278,9 @@ open class RouteLeg: Codable {
      */
     open var expectedTravelTime: TimeInterval
 
+    /**
+     Containts a list of `AdministrativeRegion`'s on the current leg. `nil` value means that such data is not available.
+     */
     open var administrativeRegions: [AdministrativeRegion]?
 
     open var incidents: [Incident]?
