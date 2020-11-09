@@ -18,4 +18,18 @@ public struct AdministrativeRegion: Codable, Equatable {
         self.countryCode = countryCode
         self.countryCodeAlpha3 = countryCodeAlpha3
     }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        countryCode = try container.decode(String.self, forKey: .countryCode)
+        countryCodeAlpha3 = try container.decode(String.self, forKey: .countryCodeAlpha3)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(countryCode, forKey: .countryCode)
+        try container.encode(countryCodeAlpha3, forKey: .countryCodeAlpha3)
+    }
 }
