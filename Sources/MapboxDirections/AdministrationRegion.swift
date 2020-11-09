@@ -11,7 +11,7 @@ public struct AdministrationRegion: Codable, Equatable {
         case countryCode = "iso_3166_1"
     }
 
-    public var countryCodeAlpha3: String
+    public var countryCodeAlpha3: String?
     public var countryCode: String
 
     public init(countryCode: String, countryCodeAlpha3: String) {
