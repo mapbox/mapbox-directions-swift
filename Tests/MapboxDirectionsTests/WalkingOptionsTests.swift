@@ -1,6 +1,10 @@
 import XCTest
 import MapboxDirections
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 @testable import MapboxDirections
 
 class WalkingOptionsTests: XCTestCase {

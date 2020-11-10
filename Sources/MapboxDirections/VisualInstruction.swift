@@ -1,5 +1,9 @@
 import Foundation
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.

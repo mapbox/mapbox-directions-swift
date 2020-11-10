@@ -1,4 +1,8 @@
+#if canImport(CoreLocation)
 import CoreLocation
+#else
+import Turf
+#endif
 
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
@@ -22,7 +26,7 @@ public class Waypoint: Codable {
         
         coordinate = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .coordinate).decodedCoordinates
         
-        coordinateAccuracy = try container.decodeIfPresent(CLLocationAccuracy.self, forKey: .coordinateAccuracy)
+        coordinateAccuracy = try container.decodeIfPresent(LocationAccuracy.self, forKey: .coordinateAccuracy)
         
         targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2DCodable.self, forKey: .targetCoordinate)?.decodedCoordinates
         
@@ -69,12 +73,13 @@ public class Waypoint: Codable {
         It is recommended that the value of this argument be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: CLLocationAccuracy? = nil, name: String? = nil) {
+    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: LocationAccuracy? = nil, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
     }
     
+    #if canImport(CoreLocation)
     #if os(tvOS) || os(watchOS)
     /**
      Initializes a new waypoint object with the given `CLLocation` object and an optional heading value and name.
@@ -112,6 +117,7 @@ public class Waypoint: Codable {
         self.name = name
     }
     #endif
+    #endif
     
     // MARK: Positioning the Waypoint
     
@@ -127,7 +133,7 @@ public class Waypoint: Codable {
      
      By default, the value of this property is `nil`.
      */
-    public var coordinateAccuracy: CLLocationAccuracy?
+    public var coordinateAccuracy: LocationAccuracy?
     
     /**
      The geographic coordinate of the waypoint’s target.
@@ -225,6 +231,7 @@ extension Waypoint: CustomStringConvertible {
     }
 }
 
+#if canImport(CoreLocation)
 extension Waypoint: CustomQuickLookConvertible {
     func debugQuickLookObject() -> Any? {
         return CLLocation(coordinate: targetCoordinate ?? coordinate,
@@ -235,3 +242,4 @@ extension Waypoint: CustomQuickLookConvertible {
                           speed: -1, timestamp: Date())
     }
 }
+#endif

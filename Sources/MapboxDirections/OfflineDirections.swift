@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Turf
 
 public typealias OfflineVersion = String
@@ -63,19 +66,29 @@ extension Directions: OfflineDirectionsProtocol {
     public func fetchAvailableOfflineVersions(completionHandler: @escaping OfflineVersionsHandler) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: availableVersionsURL) { (data, response, error) in
             if let error = error {
-                return completionHandler(nil, error)
+                DispatchQueue.main.async {
+                    completionHandler(nil, error)
+                }
+                return
             }
             
             guard let data = data else {
-                return completionHandler(nil, error)
+                DispatchQueue.main.async {
+                    completionHandler(nil, error)
+                }
+                return
             }
             
             do {
                 let versionResponse = try JSONDecoder().decode(AvailableVersionsResponse.self, from: data)
                 let availableVersions = versionResponse.availableVersions.sorted(by: >)
-                completionHandler(availableVersions, error)
+                DispatchQueue.main.async {
+                    completionHandler(availableVersions, error)
+                }
             } catch {
-                completionHandler(nil, error)
+                DispatchQueue.main.async {
+                    completionHandler(nil, error)
+                }
             }
         }
         
@@ -96,7 +109,9 @@ extension Directions: OfflineDirectionsProtocol {
                               version: OfflineVersion,
                               completionHandler: @escaping OfflineDownloaderCompletionHandler) -> URLSessionDownloadTask {
         let url = tilesURL(for: coordinateBounds, version: version)
-        let task: URLSessionDownloadTask = URLSession.shared.downloadTask(with: url, completionHandler: completionHandler)
+        let task: URLSessionDownloadTask = URLSession.shared.downloadTask(with: url) {
+                completionHandler($0, $1, $2)
+            }
         task.resume()
         return task
     }

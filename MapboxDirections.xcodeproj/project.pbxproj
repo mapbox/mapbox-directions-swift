@@ -334,10 +334,26 @@
 		F448F8401DDCC709000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
 		F448F8411DDCC70C000BC343 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */; };
 		F448F8421DDCC70D000BC343 /* Polyline.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83C1DDCC6F3000BC343 /* Polyline.framework */; };
+		F457FA7A252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
+		F457FA7B252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
+		F457FA7C252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
+		F457FA7D252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
 		F4B0022A22650A9F00CF44FF /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CF2C562523B66300A6D0B6 /* TollCollection.swift */; };
+		F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CF2C562523B66300A6D0B6 /* TollCollection.swift */; };
+		F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CF2C562523B66300A6D0B6 /* TollCollection.swift */; };
+		F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CF2C562523B66300A6D0B6 /* TollCollection.swift */; };
 		F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
 		F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */; };
+		F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
+		F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
+		F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
+		F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F508372524D6F10044F2D0 /* RestStop.swift */; };
+		F4F5084B2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
+		F4F5084C2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
+		F4F5084D2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
+		F4F5084E2524DC280044F2D0 /* AdministrationRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -544,7 +560,11 @@
 		F448F83A1DDCC6EB000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/Mac/Polyline.framework; sourceTree = "<group>"; };
 		F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/tvOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		F448F83C1DDCC6F3000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/tvOS/Polyline.framework; sourceTree = "<group>"; };
+		F457FA79252B9E29007DAEB1 /* Incident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incident.swift; sourceTree = "<group>"; };
+		F4CF2C562523B66300A6D0B6 /* TollCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TollCollection.swift; sourceTree = "<group>"; };
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
+		F4F508372524D6F10044F2D0 /* RestStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStop.swift; sourceTree = "<group>"; };
+		F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrationRegion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -788,6 +808,10 @@
 				C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */,
 				AEDC211C20B6104A0052DED8 /* VisualInstructionComponent.swift */,
 				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
+				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
+				F4F508372524D6F10044F2D0 /* RestStop.swift */,
+				F4F5084A2524DC280044F2D0 /* AdministrationRegion.swift */,
+				F457FA79252B9E29007DAEB1 /* Incident.swift */,
 			);
 			name = MapboxDirections;
 			path = Sources/MapboxDirections;
@@ -1418,7 +1442,11 @@
 				C52CE38F1F6AF63C0069963D /* SpokenInstruction.swift in Sources */,
 				C58EA7AB1E9D7F73008F98CE /* Congestion.swift in Sources */,
 				8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */,
+				F457FA7B252B9E29007DAEB1 /* Incident.swift in Sources */,
+				F4F5084C2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
 				438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
+				F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */,
+				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* Lane.swift in Sources */,
 				431E93C823466B4000A71B44 /* CoreLocation.swift in Sources */,
@@ -1500,7 +1528,11 @@
 				C52CE3901F6AF63D0069963D /* SpokenInstruction.swift in Sources */,
 				C58EA7AC1E9D7F74008F98CE /* Congestion.swift in Sources */,
 				8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */,
+				F457FA7C252B9E29007DAEB1 /* Incident.swift in Sources */,
+				F4F5084D2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
 				438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
+				F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */,
+				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* Lane.swift in Sources */,
 				431E93C923466B4100A71B44 /* CoreLocation.swift in Sources */,
@@ -1582,7 +1614,11 @@
 				C52CE3911F6AF63E0069963D /* SpokenInstruction.swift in Sources */,
 				C58EA7AD1E9D7F75008F98CE /* Congestion.swift in Sources */,
 				8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */,
+				F457FA7D252B9E29007DAEB1 /* Incident.swift in Sources */,
+				F4F5084E2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
 				438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
+				F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */,
+				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* Lane.swift in Sources */,
 				431E93CA23466B4200A71B44 /* CoreLocation.swift in Sources */,
@@ -1631,7 +1667,11 @@
 				C55FB44B1F6AEBF6006BD1E9 /* SpokenInstruction.swift in Sources */,
 				C5DAAC9A20191675001F9261 /* Match.swift in Sources */,
 				C58EA7AA1E9D7EAD008F98CE /* Congestion.swift in Sources */,
+				F457FA7A252B9E29007DAEB1 /* Incident.swift in Sources */,
+				F4F5084B2524DC280044F2D0 /* AdministrationRegion.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
+				F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */,
+				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,
 				438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				C57D55011DB5669600B94B74 /* Intersection.swift in Sources */,
 				431E93C723466B3F00A71B44 /* CoreLocation.swift in Sources */,
@@ -1791,11 +1831,11 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1820,10 +1860,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1889,11 +1929,11 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1918,10 +1958,10 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1989,11 +2029,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2019,10 +2059,10 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2047,12 +2087,12 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2075,11 +2115,11 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 53;
+				DYLIB_CURRENT_VERSION = 55;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

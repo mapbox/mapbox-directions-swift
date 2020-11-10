@@ -1,4 +1,9 @@
 import XCTest
+#if canImport(CoreLocation)
+import CoreLocation
+#else
+import Turf
+#endif
 @testable import MapboxDirections
 
 class IntersectionTests: XCTestCase {
@@ -56,7 +61,12 @@ class IntersectionTests: XCTestCase {
                          outletIndexes: IndexSet([0]),
                          approachLanes: nil,
                          usableApproachLanes: nil,
-                         outletRoadClasses: [.toll, .restricted]),
+                         outletRoadClasses: [.toll, .restricted],
+                         tollCollection: nil,
+                         tunnelName: nil,
+                         restStop: nil,
+                         isUrban: nil,
+                         administrationRegionIndex: nil),
             Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
@@ -64,7 +74,12 @@ class IntersectionTests: XCTestCase {
                          outletIndexes: IndexSet([1, 2]),
                          approachLanes: nil,
                          usableApproachLanes: nil,
-                         outletRoadClasses: nil),
+                         outletRoadClasses: nil,
+                         tollCollection: nil,
+                         tunnelName: nil,
+                         restStop: nil,
+                         isUrban: nil,
+                         administrationRegionIndex: nil),
             Intersection(location: CLLocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
                          headings: [45, 135, 255],
                          approachIndex: 2,
@@ -72,7 +87,12 @@ class IntersectionTests: XCTestCase {
                          outletIndexes: IndexSet([0, 1]),
                          approachLanes: [.straightAhead, [.straightAhead, .right]],
                          usableApproachLanes: IndexSet([0, 1]),
-                         outletRoadClasses: nil)
+                         outletRoadClasses: nil,
+                         tollCollection: nil,
+                         tunnelName: nil,
+                         restStop: nil,
+                         isUrban: nil,
+                         administrationRegionIndex: nil)
         ]
         
         let encoder = JSONEncoder()

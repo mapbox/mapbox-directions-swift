@@ -1,12 +1,26 @@
 import Foundation
-import CoreGraphics
 
+#if canImport(CoreGraphics)
+import CoreGraphics
 #if os(macOS)
 import Cocoa
 #elseif os(watchOS)
 import WatchKit
 #else
 import UIKit
+#endif
+#endif
+
+#if canImport(CoreGraphics)
+/**
+ An image scale factor.
+ */
+public typealias Scale = CGFloat
+#else
+/**
+ An image scale factor.
+ */
+public typealias Scale = Double
 #endif
 
 public extension VisualInstruction {
@@ -128,7 +142,7 @@ public extension VisualInstruction.Component {
          - parameter format: The file format of the image. If this argument is unspecified, PNG is used.
          - returns: A remote URL to the image.
          */
-        public func imageURL(scale: CGFloat? = nil, format: Format = .png) -> URL? {
+        public func imageURL(scale: Scale? = nil, format: Format = .png) -> URL? {
             guard let imageBaseURL = imageBaseURL,
                 var imageURLComponents = URLComponents(url: imageBaseURL, resolvingAgainstBaseURL: false) else {
                 return nil
@@ -140,14 +154,16 @@ public extension VisualInstruction.Component {
         /**
          Returns the current screen’s native scale factor.
          */
-        static var currentScale: CGFloat {
-            let scale: CGFloat
-            #if os(macOS)
+        static var currentScale: Scale {
+            let scale: Scale
+            #if os(iOS) || os(tvOS)
+            scale = UIScreen.main.scale
+            #elseif os(macOS)
             scale = NSScreen.main?.backingScaleFactor ?? 1
             #elseif os(watchOS)
             scale = WKInterfaceDevice.current().screenScale
-            #else
-            scale = UIScreen.main.scale
+            #elseif os(Linux)
+            scale = 1
             #endif
             return scale
         }

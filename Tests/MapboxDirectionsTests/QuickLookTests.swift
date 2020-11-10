@@ -1,4 +1,7 @@
 import XCTest
+#if canImport(CoreLocation)
+import CoreLocation
+#endif
 import Turf
 @testable import MapboxDirections
 
