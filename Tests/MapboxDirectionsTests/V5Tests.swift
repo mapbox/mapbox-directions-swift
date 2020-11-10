@@ -6,7 +6,7 @@ import Polyline
 
 class V5Tests: XCTestCase {
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -31,7 +31,7 @@ class V5Tests: XCTestCase {
                 let data = try! Data(contentsOf: filePath, options: [])
                 let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
                 let transformedData = transformer?(jsonObject as! JSONDictionary) ?? jsonObject
-                return OHHTTPStubsResponse(jsonObject: transformedData, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(jsonObject: transformedData, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let options = RouteOptions(coordinates: [
@@ -227,7 +227,7 @@ class V5Tests: XCTestCase {
                 let filePath = URL(fileURLWithPath: path!)
                 let data = try! Data(contentsOf: filePath, options: [])
                 let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
-                return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let waypoints = [

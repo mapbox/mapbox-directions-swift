@@ -39,7 +39,7 @@ class DirectionsTests: XCTestCase {
         NSTimeZone.default = TimeZone(secondsFromGMT: 0)!
     }
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -86,10 +86,10 @@ class DirectionsTests: XCTestCase {
     }
     
     func testKnownBadResponse() {
-        OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+        HTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
-        }) { (_) -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
+        }) { (_) -> HTTPStubsResponse in
+            return HTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
         }
         let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
@@ -112,10 +112,10 @@ class DirectionsTests: XCTestCase {
     
     func testUnknownBadResponse() {
         let message = "Enhance your calm, John Spartan."
-        OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+        HTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
-        }) { (_) -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(data: message.data(using: .utf8)!, statusCode: 420, headers: ["Content-Type" : "text/plain"])
+        }) { (_) -> HTTPStubsResponse in
+            return HTTPStubsResponse(data: message.data(using: .utf8)!, statusCode: 420, headers: ["Content-Type" : "text/plain"])
         }
         let expectation = self.expectation(description: "Async callback")
         let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
@@ -158,10 +158,10 @@ class DirectionsTests: XCTestCase {
     func testDownNetwork() {
         let notConnected = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue) as! URLError
         
-        OHHTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+        HTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
-        }) { (_) -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(error: notConnected)
+        }) { (_) -> HTTPStubsResponse in
+            return HTTPStubsResponse(error: notConnected)
         }
         
         let expectation = self.expectation(description: "Async callback")

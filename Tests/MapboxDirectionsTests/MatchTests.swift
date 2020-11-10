@@ -12,7 +12,7 @@ import OHHTTPStubs
 class MatchTests: XCTestCase {
     override func tearDown() {
         #if !SWIFT_PACKAGE
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         #endif
         super.tearDown()
     }
@@ -32,7 +32,7 @@ class MatchTests: XCTestCase {
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
                 let path = Bundle.module.path(forResource: "match", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         var response: MapMatchingResponse!
@@ -121,7 +121,7 @@ class MatchTests: XCTestCase {
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
                 let path = Bundle.module.path(forResource: "null-tracepoint", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         var response: MapMatchingResponse!
