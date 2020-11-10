@@ -16,7 +16,7 @@ class RouteRefreshTests: XCTestCase {
             && isMethodGET()
             && pathStartsWith("/directions/v5/mapbox/driving-traffic")) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "routeRefreshRoute", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         stub(condition: isHost("api.mapbox.com")
@@ -25,16 +25,16 @@ class RouteRefreshTests: XCTestCase {
                 switch Int($0.url!.lastPathComponent)! {
                 case 0...1:
                     let path = Bundle(for: type(of: self)).path(forResource: "routeRefreshResponse", ofType: "json")
-                    return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                    return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
                 default:
                     let path = Bundle(for: type(of: self)).path(forResource: "incorrectRouteRefreshResponse", ofType: "json")
-                    return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 422, headers: ["Content-Type": "application/json"])
+                    return HTTPStubsResponse(fileAtPath: path!, statusCode: 422, headers: ["Content-Type": "application/json"])
                 }
         }
     }
 
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     

@@ -1,3 +1,3 @@
 binary "https://www.mapbox.com/ios-sdk/Mapbox-iOS-SDK.json" ~> 5.5
-github "linksmt/OHHTTPStubs" "563f48d3fab84ef04639649c770b00f4fa502cca"
+github "AliSoftware/OHHTTPStubs" ~> 9.0
 github "mapbox/mapbox-events-ios" ~> 0.10
