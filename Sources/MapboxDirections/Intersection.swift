@@ -125,6 +125,8 @@ public struct Intersection {
      A 2-letter region code to identify corresponding country that this intersection lies in.
      
      Automatically populated during decoding a `RouteLeg` object, since this is the source of all `AdministrativeRegion`s. Value is `nil` if such information is unavailable.
+     
+     - seealso: `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
      */
     public private(set) var regionCode: String?
     

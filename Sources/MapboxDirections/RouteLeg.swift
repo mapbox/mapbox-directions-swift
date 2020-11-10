@@ -251,6 +251,22 @@ open class RouteLeg: Codable {
         }
     }
     
+    /**
+     Return corresponding `iso_3166_1` encoded region code, if such information is available.
+     
+     - seealso: `Intersection.regionCode`
+     */
+    public func regionCode(atStepIndex stepIndex: Int, intersectionIndex: Int) -> String? {
+        // check index ranges
+        guard let administrativeRegions = administrativeRegions,
+              stepIndex < steps.count,
+              intersectionIndex < steps[stepIndex].administrativeAreaContainerByIntersection?.count ?? -1,
+              let adminIndex = steps[stepIndex].administrativeAreaContainerByIntersection?[intersectionIndex] else {
+            return nil
+        }
+        return administrativeRegions[adminIndex].countryCode
+    }
+    
     // MARK: Getting Statistics About the Leg
 
     /**
