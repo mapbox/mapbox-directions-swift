@@ -834,7 +834,7 @@ open class RouteStep: Codable {
      
      Array may be `nil` in case `intersections` data is not available. Array element may be `nil` if corresponding `intersection` has no `Administrative Region` assigned.
      
-    - seealso: `Intersection.regionCode`
+    - seealso: `Intersection.regionCode`, `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
     */
     public let administrativeAreaContainerByIntersection: [Int?]?
 
