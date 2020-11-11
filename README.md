@@ -203,17 +203,7 @@ if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
 
 ### Displaying a turn-by-turn navigation interface
 
-See the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/#usage) documentation for usage examples.
-
 The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/) provides a full-fledged user interface for turn-by-turn navigation along routes supplied by MapboxDirections.
-
-## Tests
-
-To run the included unit tests, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies.
-
-1. `carthage build --platform iOS`
-1. `open MapboxDirections.xcodeproj`
-1. Go to Product ‣ Test.
 
 
 ## Directions CLI
