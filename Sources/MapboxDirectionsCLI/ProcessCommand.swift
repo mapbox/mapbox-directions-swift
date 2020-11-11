@@ -21,27 +21,18 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
     @Key("-o", "--output", description: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
     var outputPath: String?
     
-    @Flag("-t", "--text", description: "Output as a plain text. Does not work together with '--json' flag")
-    var textOutput: Bool
+    @Key("-f", "--format", description: "Output format. Supports `text` and `json` formats. Defaults to `text`")
+    var outputFormat: OutputFormat?
     
-    @Flag("-j", "--json", description: "Output as a JSON text. Does not work together with '--text' flag")
-    var jsonOutput: Bool
-    
-    var optionGroups: [OptionGroup] {
-        return [.atMostOne($textOutput, $jsonOutput)]
+    enum OutputFormat: String, ConvertibleFromString {
+        case text
+        case json
     }
     
     var customShortDescription: String = ""
     var shortDescription: String {
         return customShortDescription
     }
-    
-    private enum OutputType {
-        case text
-        case json
-    }
-    
-    private var outputType: OutputType = .text
     
     // MARK: - Helper methods
     
@@ -54,8 +45,8 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
     private func processOutput(_ data: Data) {
         var outputText: String = ""
         
-        switch outputType {
-        case .text:
+        switch outputFormat {
+        case .text, .none:
             outputText = String(data: data, encoding: .utf8)!
         case .json:
             if let object = try? JSONSerialization.jsonObject(with: data, options: []),
@@ -89,12 +80,6 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
     func execute() throws {
         guard let inputPath = inputPath else { exit(1) }
         guard let configPath = configPath else { exit(1) }
-        
-        if textOutput {
-            outputType = .text
-        } else if jsonOutput {
-            outputType = .json
-        }
         
         let input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
         let config = FileManager.default.contents(atPath: NSString(string: configPath).expandingTildeInPath)!
