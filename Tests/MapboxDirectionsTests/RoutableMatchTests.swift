@@ -5,7 +5,7 @@ import OHHTTPStubs
 
 class RoutableMatchTest: XCTestCase {
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -23,7 +23,7 @@ class RoutableMatchTest: XCTestCase {
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "match-polyline6", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         var routeResponse: RouteResponse!

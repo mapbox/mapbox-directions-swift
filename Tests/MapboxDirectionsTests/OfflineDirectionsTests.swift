@@ -22,7 +22,7 @@ class OfflineDirectionsTests: XCTestCase {
             let filePath = URL(fileURLWithPath: path!)
             let data = try! Data(contentsOf: filePath)
             let jsonObject = try! JSONSerialization.jsonObject(with: data, options: [])
-            return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
+            return HTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         directions.fetchAvailableOfflineVersions { (versions, error) in
@@ -30,7 +30,7 @@ class OfflineDirectionsTests: XCTestCase {
             XCTAssertEqual(versions!.first!, "2018-10-16")
             
             versionsExpectation.fulfill()
-            OHHTTPStubs.removeStub(apiStub)
+            HTTPStubs.removeStub(apiStub)
         }
         
         wait(for: [versionsExpectation], timeout: 2)
@@ -57,7 +57,7 @@ class OfflineDirectionsTests: XCTestCase {
             headers["Accept-Ranges"] = "bytes"
             headers["Content-Disposition"] = "attachment; filename=\"\(version).tar\""
             
-            return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
+            return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: headers)
         }
         
         directions.downloadTiles(in: bounds, version: version, completionHandler: { (url, response, error) in
@@ -66,7 +66,7 @@ class OfflineDirectionsTests: XCTestCase {
             XCTAssertNil(error)
             
             downloadExpectation.fulfill()
-            OHHTTPStubs.removeStub(apiStub)
+            HTTPStubs.removeStub(apiStub)
         })
         
         wait(for: [downloadExpectation], timeout: 60)
