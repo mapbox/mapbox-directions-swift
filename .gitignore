@@ -1,1 +1,4 @@
 .jekyll-cache
+.build
+Carthage
+build
