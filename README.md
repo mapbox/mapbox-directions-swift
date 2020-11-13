@@ -204,3 +204,19 @@ if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
 ### Displaying a turn-by-turn navigation interface
 
 The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/) provides a full-fledged user interface for turn-by-turn navigation along routes supplied by MapboxDirections.
+
+
+## Directions CLI
+
+`MapboxDirectionsCLI` is a command line tool, designed to round-trip an arbitrary, JSON-formatted Directions or Map Matching API response through model objects and back to JSON. This is useful for various scenarios including testing purposes and designing more sophisticated API response processing pipelines. It is also supplied as a Swift package.
+
+To build `MapboxDirectionsCLI` using Carthage pipeline:
+
+1. `carthage build --platform macos`
+1. `open MapboxDirections.xcodeproj`
+1. Select `MapboxDirectionsCLI` target.
+
+To build `MapboxDirectionsCLI` using SPM:
+
+1. `swift build`
+1. `swift run MapboxDirectionsCLI -h` to see usage.
