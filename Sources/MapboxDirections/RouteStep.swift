@@ -569,7 +569,7 @@ open class RouteStep: Codable {
     }
     
     /// Used to Decode `Intersection.geometry_index`
-    private struct IntersectionIndex: Codable {
+    private struct IntersectionShapeIndex: Codable {
         private enum CodingKeys: String, CodingKey {
             case geometryIndex = "geometry_index"
         }
@@ -641,7 +641,7 @@ open class RouteStep: Codable {
         
         intersections = rawIntersections
         
-        segmentIndicesByIntersection = try container.decodeIfPresent([IntersectionIndex].self,
+        segmentIndicesByIntersection = try container.decodeIfPresent([IntersectionShapeIndex].self,
                                                                      forKey: .intersections)?.map { $0.geometryIndex }
         
         let road = try Road(from: decoder)
