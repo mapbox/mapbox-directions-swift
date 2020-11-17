@@ -246,8 +246,8 @@ open class RouteLeg: Codable {
         // check index ranges
         guard let administrativeRegions = administrativeRegions,
               stepIndex < steps.count,
-              intersectionIndex < steps[stepIndex].administrativeAreaContainerByIntersection?.count ?? -1,
-              let adminIndex = steps[stepIndex].administrativeAreaContainerByIntersection?[intersectionIndex] else {
+              intersectionIndex < steps[stepIndex].administrativeRegionIndicesByIntersection?.count ?? -1,
+              let adminIndex = steps[stepIndex].administrativeRegionIndicesByIntersection?[intersectionIndex] else {
             return nil
         }
         return administrativeRegions[adminIndex].countryCode
