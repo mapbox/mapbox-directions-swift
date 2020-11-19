@@ -36,7 +36,7 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 // Latest stable release
 .package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.1.0")
 // Latest prerelease
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.1.0")
+.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0-alpha.1")
 ```
 
 Then `import MapboxDirections`.
