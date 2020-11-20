@@ -4,6 +4,7 @@
 
 * Added support for building and running on any Linux distribution supported by Swift. ([#488](https://github.com/mapbox/mapbox-directions-swift/pull/488))
 * Added the `MapboxDirectionsCLI` command line tool that round-trips Mapbox Directions API responses between JSON format and Swift model objects. ([#469](https://github.com/mapbox/mapbox-directions-swift/pull/469))
+* The `CongestionLevel` enumeration now conforms to the `CaseIterable` protocol. ([#500](https://github.com/mapbox/mapbox-directions-swift/pull/500))
 
 ## v1.1.0
 
