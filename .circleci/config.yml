@@ -42,7 +42,7 @@ jobs:
       - image: swift:5.3
     steps:
       - checkout
-      - run: swift build
+      - run: swift build --jobs=1
       - run: swift test
 
   spm-job:
