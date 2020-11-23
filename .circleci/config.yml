@@ -42,7 +42,8 @@ jobs:
       - image: swift:5.3
     steps:
       - checkout
-      - run: swift build
+      # Limiting number of parallel jobs to avoid build crash bug.
+      - run: swift build --jobs=1
       - run: swift test
 
   spm-job:
