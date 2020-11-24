@@ -238,7 +238,7 @@ open class RouteLeg: Codable {
     }
     
     /**
-     Return corresponding `iso_3166_1` encoded region code, if such information is available.
+     Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
      
      - seealso: `Intersection.regionCode`
      */
@@ -246,8 +246,8 @@ open class RouteLeg: Codable {
         // check index ranges
         guard let administrativeRegions = administrativeRegions,
               stepIndex < steps.count,
-              intersectionIndex < steps[stepIndex].administrativeRegionIndicesByIntersection?.count ?? -1,
-              let adminIndex = steps[stepIndex].administrativeRegionIndicesByIntersection?[intersectionIndex] else {
+              intersectionIndex < steps[stepIndex].administrativeAreaContainerByIntersection?.count ?? -1,
+              let adminIndex = steps[stepIndex].administrativeAreaContainerByIntersection?[intersectionIndex] else {
             return nil
         }
         return administrativeRegions[adminIndex].countryCode
@@ -281,7 +281,10 @@ open class RouteLeg: Codable {
     open var expectedTravelTime: TimeInterval
 
     /**
-     Containts a list of `AdministrativeRegion`'s on the current leg. `nil` value means that such data is not available.
+     :nodoc:
+     The administrative regions through which the leg passes.
+          
+     This property is set to `nil` if no administrative region data is available.
      */
     open var administrativeRegions: [AdministrativeRegion]?
 

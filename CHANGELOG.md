@@ -3,11 +3,15 @@
 ## v1.2.0
 
 * Added support for building and running on any Linux distribution supported by Swift. ([#488](https://github.com/mapbox/mapbox-directions-swift/pull/488))
+* Added the `MapboxDirectionsCLI` command line tool that round-trips Mapbox Directions API responses between JSON format and Swift model objects. ([#469](https://github.com/mapbox/mapbox-directions-swift/pull/469))
+* The `CongestionLevel` enumeration now conforms to the `CaseIterable` protocol. ([#500](https://github.com/mapbox/mapbox-directions-swift/pull/500))
+* Refined encoding/decoding logic for `AdministrativeRegions` by `Leg` and `Intersection` ([#485](https://github.com/mapbox/mapbox-directions-swift/pull/485)). Added few properties for convenience access:
+    * `Intersection.regionCode` - A 2-letter region code to identify corresponding country that this intersection lies in.
+    * `RouteLeg.regionCode(atStepIndex:, intersectionIndex:)` - Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes.
 
 ## v1.1.0
 
 * Added the `DirectionsResult.typicalTravelTime`, `RouteLeg.typicalTravelTime` and `RouteStep.typicalTravelTime` properties that indicate the typical travel time, as opposed to the current expected travel time. ([#462](https://github.com/mapbox/mapbox-directions-swift/pull/462))
-* Added the `MapboxDirectionsCLI` command line tool that round-trips Mapbox Directions API responses between JSON format and Swift model objects. ([#469](https://github.com/mapbox/mapbox-directions-swift/pull/469))
 * Fixed an error that occurred when setting the `Waypoint.separatesLegs` property to `true` and setting the `Waypoint.targetCoordinate` property. ([#480](https://github.com/mapbox/mapbox-directions-swift/pull/480))
 * `Directions.fetchAvailableOfflineVersions(completionHandler:)` now calls its completion handler on the main queue consistently. ([#475](https://github.com/mapbox/mapbox-directions-swift/pull/475))
 * Upgraded to Polyline v5.0.0. ([#487](https://github.com/mapbox/mapbox-directions-swift/pull/487))
