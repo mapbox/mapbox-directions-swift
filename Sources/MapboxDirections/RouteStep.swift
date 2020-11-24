@@ -460,7 +460,7 @@ open class RouteStep: Codable {
      - parameter instructionsSpokenAlongStep: Instructions about the next step’s maneuver, optimized for speech synthesis.
      - parameter instructionsDisplayedAlongStep: Instructions about the next step’s maneuver, optimized for display in real time.
      */
-    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil) {
+    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil, administrativeAreaContainerByIntersection: [Int?]? = nil) {
         self.transportType = transportType
         self.maneuverLocation = maneuverLocation
         self.maneuverType = maneuverType
@@ -485,6 +485,7 @@ open class RouteStep: Codable {
         self.speedLimitUnit = speedLimitUnit
         self.instructionsSpokenAlongStep = instructionsSpokenAlongStep
         self.instructionsDisplayedAlongStep = instructionsDisplayedAlongStep
+        self.administrativeAreaContainerByIntersection = administrativeAreaContainerByIntersection
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -512,7 +513,13 @@ open class RouteStep: Codable {
             try container.encodeIfPresent(phoneticNames?.tagValues(joinedBy: ";"), forKey: .pronunciation)
         }
         
-        try container.encodeIfPresent(intersections, forKey: .intersections)
+        if let intersectionsToEncode = intersections {
+            var intersectionsContainer = container.nestedUnkeyedContainer(forKey: .intersections)
+            try Intersection.encode(intersections: intersectionsToEncode,
+                                    to: &intersectionsContainer,
+                                    administrativeRegionIndices: administrativeAreaContainerByIntersection)
+        }
+        
         try container.encode(drivingSide, forKey: .drivingSide)
         if let shape = shape {
             let options = encoder.userInfo[.options] as? DirectionsOptions
@@ -536,7 +543,35 @@ open class RouteStep: Codable {
         }
     }
     
-    public required init(from decoder: Decoder) throws {
+    static func decode(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]) throws -> [RouteStep] {
+        var container = try decoder.unkeyedContainer()
+        
+        var steps = Array<RouteStep>()
+        while !container.isAtEnd {
+            let step = try RouteStep(from: container.superDecoder(), administrativeRegions: administrativeRegions)
+            
+            steps.append(step)
+        }
+        
+        return steps
+    }
+    
+    
+    /// Used to Decode `Intersection.admin_index`
+    private struct AdministrativeAreaIndex: Codable {
+        private enum CodingKeys: String, CodingKey {
+            case administrativeRegionIndex = "admin_index"
+        }
+        
+        var administrativeRegionIndex: Int?
+    }
+
+    
+    public required convenience init(from decoder: Decoder) throws {
+        try self.init(from: decoder, administrativeRegions: nil)
+    }
+    
+    init(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]?) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
@@ -577,7 +612,23 @@ open class RouteStep: Codable {
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
         transportType = try container.decode(TransportType.self, forKey: .transportType)
-        intersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
+        administrativeAreaContainerByIntersection = try container.decodeIfPresent([AdministrativeAreaIndex].self,
+                                                                                  forKey: .intersections)?.map { $0.administrativeRegionIndex }
+        var rawIntersections = try container.decodeIfPresent([Intersection].self, forKey: .intersections)
+        
+        // Updating `Intersection.regionCode` since we removed it's `admin_index` for convenience
+        if let administrativeRegions = administrativeRegions,
+           rawIntersections != nil,
+           let rawAdminIndicies = administrativeAreaContainerByIntersection {
+            for index in 0..<rawIntersections!.count {
+                if let regionIndex = rawAdminIndicies[index],
+                   administrativeRegions.count > regionIndex {
+                    rawIntersections![index].updateRegionCode(administrativeRegions[regionIndex].countryCode)
+                }
+            }
+        }
+        
+        intersections = rawIntersections
         
         let road = try Road(from: decoder)
         codes = road.codes
@@ -778,6 +829,15 @@ open class RouteStep: Codable {
     */
     public let intersections: [Intersection]?
     
+    /**
+     Each intersection’s administrative region index.
+          
+     This property is set to `nil` if the `intersections` property is `nil`. An individual array element may be `nil` if the corresponding `Intersection` instance has no administrative region assigned.
+     
+    - seealso: `Intersection.regionCode`, `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
+    */
+    public let administrativeAreaContainerByIntersection: [Int?]?
+
     /**
      The sign design standard used for speed limit signs along the step.
      

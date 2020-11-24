@@ -65,8 +65,7 @@ class IntersectionTests: XCTestCase {
                          tollCollection: nil,
                          tunnelName: nil,
                          restStop: nil,
-                         isUrban: nil,
-                         administrationRegionIndex: nil),
+                         isUrban: nil),
             Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
@@ -78,8 +77,7 @@ class IntersectionTests: XCTestCase {
                          tollCollection: nil,
                          tunnelName: nil,
                          restStop: nil,
-                         isUrban: nil,
-                         administrationRegionIndex: nil),
+                         isUrban: nil),
             Intersection(location: CLLocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
                          headings: [45, 135, 255],
                          approachIndex: 2,
@@ -91,8 +89,7 @@ class IntersectionTests: XCTestCase {
                          tollCollection: nil,
                          tunnelName: nil,
                          restStop: nil,
-                         isUrban: nil,
-                         administrationRegionIndex: nil)
+                         isUrban: nil)
         ]
         
         let encoder = JSONEncoder()

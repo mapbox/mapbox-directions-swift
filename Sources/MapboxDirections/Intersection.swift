@@ -23,8 +23,8 @@ public struct Intersection {
                 tunnelName: String? = nil,
                 restStop: RestStop? = nil,
                 isUrban: Bool? = nil,
-                administrationRegionIndex: Int? = nil,
-                geometryIndex: Int? = nil) {
+                geometryIndex: Int? = nil,
+                regionCode: String? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -37,8 +37,8 @@ public struct Intersection {
         self.tunnelName = tunnelName
         self.isUrban = isUrban
         self.restStop = restStop
-        self.administrationRegionIndex = administrationRegionIndex
         self.geometryIndex = geometryIndex
+        self.regionCode = regionCode
     }
     
     // MARK: Getting the Location of the Intersection
@@ -120,14 +120,19 @@ public struct Intersection {
      If this information is unavailable, then this property is set to `nil`.
      */
     public let isUrban: Bool?
-
+    
     /**
-     :nodoc:
-     The index of the item in the `administrationRegions` array that corresponds to the country code of the country that this intersection lies in.
-
-     If the information is unavailable, this property is set to `nil`.
+     A 2-letter region code to identify corresponding country that this intersection lies in.
+     
+     Automatically populated during decoding a `RouteLeg` object, since this is the source of all `AdministrativeRegion`s. Value is `nil` if such information is unavailable.
+     
+     - seealso: `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
      */
-    public let administrationRegionIndex: Int?
+    public private(set) var regionCode: String?
+    
+    mutating func updateRegionCode(_ regionCode: String?) {
+        self.regionCode = regionCode
+    }
 
     /**
      The index of the RouteStep within a RouteLeg that contains this Intersection.
@@ -166,11 +171,33 @@ extension Intersection: Codable {
         case tunnelName = "tunnelName"
         case isUrban = "is_urban"
         case restStop = "rest_stop"
-        case administrationRegionIndex = "admin_index"
+        case administrativeRegionIndex = "admin_index"
         case geometryIndex = "geometry_index"
     }
     
+    static func encode(intersections: [Intersection], to parentContainer: inout UnkeyedEncodingContainer, administrativeRegionIndices: [Int?]?) throws {
+        guard administrativeRegionIndices == nil || administrativeRegionIndices?.count == intersections.count else {
+            let error = EncodingError.Context(codingPath: parentContainer.codingPath,
+                                              debugDescription: "`administrativeRegionIndices` should be `nil` or match provided `intersections` to encode")
+            throw EncodingError.invalidValue(administrativeRegionIndices as Any, error)
+        }
+        
+        for (index, intersection) in intersections.enumerated() {
+            var adminIndex: Int?
+            if index < administrativeRegionIndices?.count ?? -1 {
+                adminIndex = administrativeRegionIndices?[index]
+            }
+            
+            try intersection.encode(to: parentContainer.superEncoder(), administrativeRegionIndex: adminIndex)
+        }
+    }
+
+    
     public func encode(to encoder: Encoder) throws {
+        try encode(to: encoder, administrativeRegionIndex: nil)
+    }
+    
+    func encode(to encoder: Encoder, administrativeRegionIndex: Int?) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(CLLocationCoordinate2DCodable(location), forKey: .location)
         try container.encode(headings, forKey: .headings)
@@ -215,8 +242,8 @@ extension Intersection: Codable {
             try container.encode(tunnelName, forKey: .tunnelName)
         }
 
-        if let adminIndex = administrationRegionIndex {
-            try container.encode(adminIndex, forKey: .administrationRegionIndex)
+        if let adminIndex = administrativeRegionIndex {
+            try container.encode(adminIndex, forKey: .administrativeRegionIndex)
         }
         
         if let geoIndex = geometryIndex {
@@ -251,8 +278,6 @@ extension Intersection: Codable {
         isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
-
-        administrationRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrationRegionIndex)
         
         geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
     }
@@ -271,7 +296,6 @@ extension Intersection: Equatable {
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
             lhs.isUrban == rhs.isUrban &&
-            lhs.administrationRegionIndex == rhs.administrationRegionIndex &&
             lhs.geometryIndex == rhs.geometryIndex
     }
 }

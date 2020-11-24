@@ -21,7 +21,7 @@ open class RouteLeg: Codable {
         case typicalTravelTime = "duration_typical"
         case profileIdentifier
         case annotation
-        case administrationRegions = "admins"
+        case administrativeRegions = "admins"
         case incidents
     }
     
@@ -60,7 +60,6 @@ open class RouteLeg: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
         destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
-        steps = try container.decode([RouteStep].self, forKey: .steps)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
@@ -74,12 +73,15 @@ open class RouteLeg: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
+        if let admins = try container.decodeIfPresent([AdministrativeRegion].self, forKey: .administrativeRegions) {
+            self.administrativeRegions = admins
+            steps = try RouteStep.decode(from: container.superDecoder(forKey: .steps), administrativeRegions: self.administrativeRegions!)
+        } else {
+            steps = try container.decode([RouteStep].self, forKey: .steps)
+        }
+        
         if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
-        }
-
-        if let admins = try container.decodeIfPresent([AdministrationRegion].self, forKey: .administrationRegions) {
-            self.administrationRegions = admins
         }
 
         if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
@@ -103,8 +105,8 @@ open class RouteLeg: Codable {
             try container.encode(attributes, forKey: .annotation)
         }
 
-        if let admins = administrationRegions {
-            try container.encode(admins, forKey: .administrationRegions)
+        if let admins = administrativeRegions {
+            try container.encode(admins, forKey: .administrativeRegions)
         }
 
         if let incidents = incidents {
@@ -249,6 +251,22 @@ open class RouteLeg: Codable {
         }
     }
     
+    /**
+     Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
+     
+     - seealso: `Intersection.regionCode`
+     */
+    public func regionCode(atStepIndex stepIndex: Int, intersectionIndex: Int) -> String? {
+        // check index ranges
+        guard let administrativeRegions = administrativeRegions,
+              stepIndex < steps.count,
+              intersectionIndex < steps[stepIndex].administrativeAreaContainerByIntersection?.count ?? -1,
+              let adminIndex = steps[stepIndex].administrativeAreaContainerByIntersection?[intersectionIndex] else {
+            return nil
+        }
+        return administrativeRegions[adminIndex].countryCode
+    }
+    
     // MARK: Getting Statistics About the Leg
 
     /**
@@ -276,7 +294,13 @@ open class RouteLeg: Codable {
      */
     open var expectedTravelTime: TimeInterval
 
-    open var administrationRegions: [AdministrationRegion]?
+    /**
+     :nodoc:
+     The administrative regions through which the leg passes.
+          
+     This property is set to `nil` if no administrative region data is available.
+     */
+    open var administrativeRegions: [AdministrativeRegion]?
 
     open var incidents: [Incident]?
     
