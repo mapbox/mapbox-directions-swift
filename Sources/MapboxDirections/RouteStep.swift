@@ -830,9 +830,9 @@ open class RouteStep: Codable {
     public let intersections: [Intersection]?
     
     /**
-     An array of `Administrative Regions` indicies for each `intersection` along current step.
-     
-     Array may be `nil` in case `intersections` data is not available. Array element may be `nil` if corresponding `intersection` has no `Administrative Region` assigned.
+     Each intersection’s administrative region index.
+          
+     This property is set to `nil` if the `intersections` property is `nil`. An individual array element may be `nil` if the corresponding `Intersection` instance has no administrative region assigned.
      
     - seealso: `Intersection.regionCode`, `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
     */
