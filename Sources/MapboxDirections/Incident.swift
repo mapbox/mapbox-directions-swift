@@ -10,9 +10,9 @@ public struct Incident: Codable, Equatable {
         case identifier = "id"
         case type
         case description = "description"
-        case creationTime = "creation_time"
-        case startTime = "start_time"
-        case endTime = "end_time"
+        case creationDate = "creation_time"
+        case startDate = "start_time"
+        case endDate = "end_time"
         case impact = "impact"
         case subtype = "sub_type"
         case subtypeDescription = "sub_type_description"
@@ -47,11 +47,11 @@ public struct Incident: Codable, Equatable {
     /// Short description of an incident. May be used as an additional info.
     public var description: String
     /// Date when incident item was created. Uses ISO8601 format
-    public var creationTime: Date
+    public var creationDate: Date
     /// Date when incident happened. Uses ISO8601 format
-    public var startTime: Date
+    public var startDate: Date
     /// Date when incident shall end. Uses ISO8601 format
-    public var endTime: Date
+    public var endDate: Date
     /// Shows severity of an incident. May be not available for all incident types.
     public var impact: String?
     /// Provides additional classification of an incident. May be not available for all incident types.
@@ -70,9 +70,9 @@ public struct Incident: Codable, Equatable {
     public init(identifier: String,
                 type: IncidentType,
                 description: String,
-                creationTime: Date,
-                startTime: Date,
-                endTime: Date,
+                creationDate: Date,
+                startDate: Date,
+                endDate: Date,
                 impact: String?,
                 subtype: String?,
                 subtypeDescription: String?,
@@ -83,9 +83,9 @@ public struct Incident: Codable, Equatable {
         self.type = type
         self.rawType = type.rawValue
         self.description = description
-        self.creationTime = creationTime
-        self.startTime = startTime
-        self.endTime = endTime
+        self.creationDate = creationDate
+        self.startDate = startDate
+        self.endDate = endDate
         self.impact = impact
         self.subtype = subtype
         self.subtypeDescription = subtypeDescription
@@ -107,24 +107,24 @@ public struct Incident: Codable, Equatable {
         }
         description = try container.decode(String.self, forKey: .description)
         
-        if let date = formatter.date(from: try container.decode(String.self, forKey: .creationTime)) {
-            creationTime = date
+        if let date = formatter.date(from: try container.decode(String.self, forKey: .creationDate)) {
+            creationDate = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .creationTime,
+            throw DecodingError.dataCorruptedError(forKey: .creationDate,
                                                    in: container,
                                                    debugDescription: "`Intersection.creationTime` is encoded with invalid format.")
         }
-        if let date = formatter.date(from: try container.decode(String.self, forKey: .startTime)) {
-            startTime = date
+        if let date = formatter.date(from: try container.decode(String.self, forKey: .startDate)) {
+            startDate = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .startTime,
+            throw DecodingError.dataCorruptedError(forKey: .startDate,
                                                    in: container,
                                                    debugDescription: "`Intersection.startTime` is encoded with invalid format.")
         }
-        if let date = formatter.date(from: try container.decode(String.self, forKey: .endTime)) {
-            endTime = date
+        if let date = formatter.date(from: try container.decode(String.self, forKey: .endDate)) {
+            endDate = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .endTime,
+            throw DecodingError.dataCorruptedError(forKey: .endDate,
                                                    in: container,
                                                    debugDescription: "`Intersection.endTime` is encoded with invalid format.")
         }
@@ -147,9 +147,9 @@ public struct Incident: Codable, Equatable {
         try container.encode(identifier, forKey: .identifier)
         try container.encode(rawType, forKey: .type)
         try container.encode(description, forKey: .description)
-        try container.encode(formatter.string(from: creationTime), forKey: .creationTime)
-        try container.encode(formatter.string(from: startTime), forKey: .startTime)
-        try container.encode(formatter.string(from: endTime), forKey: .endTime)
+        try container.encode(formatter.string(from: creationDate), forKey: .creationDate)
+        try container.encode(formatter.string(from: startDate), forKey: .startDate)
+        try container.encode(formatter.string(from: endDate), forKey: .endDate)
         try container.encodeIfPresent(impact, forKey: .impact)
         try container.encodeIfPresent(subtype, forKey: .subtype)
         try container.encodeIfPresent(subtypeDescription, forKey: .subtypeDescription)
