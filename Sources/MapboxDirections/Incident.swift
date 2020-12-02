@@ -1,7 +1,6 @@
 import Foundation
 
 /**
- :nodoc:
  `Incident` describes any corresponding event, used for annotating the route.
  */
 public struct Incident: Codable, Equatable {
@@ -22,6 +21,9 @@ public struct Incident: Codable, Equatable {
         case geometryIndexEnd = "geometry_index_end"
     }
     
+    /// Defines known types of incidents.
+    ///
+    /// Each incident may or may not have specific set of data, depending on it's `type`
     public enum IncidentType: String {
         case Accident = "accident"
         case Congestion = "congestion"

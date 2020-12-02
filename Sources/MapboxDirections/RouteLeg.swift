@@ -281,7 +281,6 @@ open class RouteLeg: Codable {
     open var expectedTravelTime: TimeInterval
 
     /**
-     :nodoc:
      The administrative regions through which the leg passes.
      
      Items are ordered by appearance, most recent one is at the beginning.
@@ -290,7 +289,6 @@ open class RouteLeg: Codable {
     open var administrativeRegions: [AdministrativeRegion]?
 
     /**
-     :nodoc:
      Contains `Incident`s data which occur during current `RouteLeg`.
      
      Items are ordered by appearance, most recent one is at the beginning.

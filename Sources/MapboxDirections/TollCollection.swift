@@ -1,7 +1,6 @@
 import Foundation
 
 /**
- :nodoc:
  `TollCollection` describes corresponding object on the route.
  */
 public struct TollCollection: Codable, Equatable {
@@ -11,9 +10,7 @@ public struct TollCollection: Codable, Equatable {
         case gantry = "toll_gantry"
     }
 
-    
     /**
-     :nodoc:
      The type of the toll collection point.
      */
     public let type: CollectionType

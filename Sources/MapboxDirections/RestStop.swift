@@ -1,7 +1,6 @@
 import Foundation
 
 /**
- :nodoc:
  `RestStop` describes corresponding object on the route.
  */
 public struct RestStop: Codable, Equatable {
@@ -12,7 +11,6 @@ public struct RestStop: Codable, Equatable {
     }
 
     /**
-     :nodoc:
      The kind of the rest stop.
      */
     public let type: StopType
