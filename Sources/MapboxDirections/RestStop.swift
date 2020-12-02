@@ -11,7 +11,11 @@ public struct RestStop: Codable, Equatable {
         case restArea = "rest_area"
     }
 
-    let type: StopType
+    /**
+     :nodoc:
+     The kind of the rest stop.
+     */
+    public let type: StopType
 
     private enum CodingKeys: String, CodingKey {
         case type

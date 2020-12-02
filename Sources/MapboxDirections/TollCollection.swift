@@ -11,7 +11,12 @@ public struct TollCollection: Codable, Equatable {
         case gantry = "toll_gantry"
     }
 
-    let type: CollectionType
+    
+    /**
+     :nodoc:
+     The type of the toll collection point.
+     */
+    public let type: CollectionType
 
     private enum CodingKeys: String, CodingKey {
         case type
