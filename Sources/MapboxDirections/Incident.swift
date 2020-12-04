@@ -23,8 +23,8 @@ public struct Incident: Codable, Equatable {
     
     /// Defines known types of incidents.
     ///
-    /// Each incident may or may not have specific set of data, depending on it's `type`
-    public enum IncidentType: String {
+    /// Each incident may or may not have specific set of data, depending on it's `kind`
+    public enum Kind: String {
         case Accident = "accident"
         case Congestion = "congestion"
         case Construction = "construction"
@@ -37,22 +37,49 @@ public struct Incident: Codable, Equatable {
         case RoadClosure = "road_closure"
         case RoadHazard = "road_hazard"
         case Weather = "weather"
-        
-        case Unknown = "<<unknown type>>"
+    }
+    
+    /// Defines a lane affected by the `Incident`
+    ///
+    /// Each `Incident` may have arbitrary of affected lanes
+    public enum BlockedLane: String, Codable {
+        case Left = "LEFT"
+        case LeftCenter = "LEFT CENTER"
+        case LeftTurnLane = "LEFT TURN LANE"
+        case Center = "CENTER"
+        case Right = "RIGHT"
+        case RightCenter = "RIGHT CENTER"
+        case RightTurnLane = "RIGHT TURN LANE"
+        case Hov = "HOV"
+        case Side = "SIDE"
+        case Shoulder = "SHOULDER"
+        case Median = "MEDIAN"
+        case Lane1 = "1"
+        case Lane2 = "2"
+        case Lane3 = "3"
+        case Lane4 = "4"
+        case Lane5 = "5"
+        case Lane6 = "6"
+        case Lane7 = "7"
+        case Lane8 = "8"
+        case Lane9 = "9"
+        case Lane10 = "10"
     }
     
     /// Incident identifier
     public var identifier: String
     /// The kind of an incident
-    public var type: IncidentType
-    var rawType: String
+    ///
+    /// This value is set to `nil` if `kind` value is not supported.
+    public var kind: Kind?
+    var rawKind: String
     /// Short description of an incident. May be used as an additional info.
     public var description: String
-    /// Date when incident item was created. Uses ISO8601 format
+    /// Date when incident item was created.
     public var creationDate: Date
-    /// Date when incident happened. Uses ISO8601 format
+    /// Date when incident happened.
     public var startDate: Date
-    /// Date when incident shall end. Uses ISO8601 format
+    /// Date when incident shall end.
     public var endDate: Date
     /// Shows severity of an incident. May be not available for all incident types.
     public var impact: String?
@@ -63,14 +90,17 @@ public struct Incident: Codable, Equatable {
     /// Contains list of ISO 14819-2:2013 codes
     ///
     /// See https://www.iso.org/standard/59231.html for details
-    public var alertCodes: [Int]
-    /// A list of lane indices, affected by the incident
-    public var lanesBlocked: [Int]
+    public var alertCodes: Set<Int>
+    /// A list of lanes indices, affected by the incident
+    ///
+    /// `nil` value indicates that such lane identifier is not supported
+    public var lanesBlocked: Set<BlockedLane?>
+    var rawLanesBlocked: Set<String>
     /// The range of segments within the overall leg, where the incident spans.
     public var shapeIndexRange: Range<Int>
     
     public init(identifier: String,
-                type: IncidentType,
+                type: Kind,
                 description: String,
                 creationDate: Date,
                 startDate: Date,
@@ -78,12 +108,12 @@ public struct Incident: Codable, Equatable {
                 impact: String?,
                 subtype: String?,
                 subtypeDescription: String?,
-                alertCodes: [Int],
-                lanesBlocked: [Int],
+                alertCodes: Set<Int>,
+                lanesBlocked: Set<BlockedLane>,
                 shapeIndexRange: Range<Int>) {
         self.identifier = identifier
-        self.type = type
-        self.rawType = type.rawValue
+        self.kind = type
+        self.rawKind = type.rawValue
         self.description = description
         self.creationDate = creationDate
         self.startDate = startDate
@@ -93,6 +123,7 @@ public struct Incident: Codable, Equatable {
         self.subtypeDescription = subtypeDescription
         self.alertCodes = alertCodes
         self.lanesBlocked = lanesBlocked
+        self.rawLanesBlocked = Set(lanesBlocked.map { $0.rawValue })
         self.shapeIndexRange = shapeIndexRange
     }
     
@@ -101,12 +132,9 @@ public struct Incident: Codable, Equatable {
         let formatter = ISO8601DateFormatter()
         
         identifier = try container.decode(String.self, forKey: .identifier)
-        rawType = try container.decode(String.self, forKey: .type)
-        if let incidentType = IncidentType(rawValue: rawType) {
-            type = incidentType
-        } else {
-            type = .Unknown
-        }
+        rawKind = try container.decode(String.self, forKey: .type)
+        kind = Kind(rawValue: rawKind)
+        
         description = try container.decode(String.self, forKey: .description)
         
         if let date = formatter.date(from: try container.decode(String.self, forKey: .creationDate)) {
@@ -134,8 +162,10 @@ public struct Incident: Codable, Equatable {
         impact = try container.decodeIfPresent(String.self, forKey: .impact)
         subtype = try container.decodeIfPresent(String.self, forKey: .subtype)
         subtypeDescription = try container.decodeIfPresent(String.self, forKey: .subtypeDescription)
-        alertCodes = try container.decode([Int].self, forKey: .alertCodes)
-        lanesBlocked = try container.decode([Int].self, forKey: .lanesBlocked)
+        alertCodes = try container.decode(Set<Int>.self, forKey: .alertCodes)
+        
+        rawLanesBlocked = try container.decode(Set<String>.self, forKey: .type)
+        lanesBlocked = rawLanesBlocked.reduce(into: Set<BlockedLane>()) { $0.insert(BlockedLane(rawValue: $1)) }
         
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
@@ -147,7 +177,7 @@ public struct Incident: Codable, Equatable {
         let formatter = ISO8601DateFormatter()
         
         try container.encode(identifier, forKey: .identifier)
-        try container.encode(rawType, forKey: .type)
+        try container.encode(rawKind, forKey: .type)
         try container.encode(description, forKey: .description)
         try container.encode(formatter.string(from: creationDate), forKey: .creationDate)
         try container.encode(formatter.string(from: startDate), forKey: .startDate)
@@ -156,7 +186,7 @@ public struct Incident: Codable, Equatable {
         try container.encodeIfPresent(subtype, forKey: .subtype)
         try container.encodeIfPresent(subtypeDescription, forKey: .subtypeDescription)
         try container.encode(alertCodes, forKey: .alertCodes)
-        try container.encode(lanesBlocked, forKey: .lanesBlocked)
+        try container.encode(rawLanesBlocked, forKey: .lanesBlocked)
         try container.encode(shapeIndexRange.lowerBound, forKey: .geometryIndexStart)
         try container.encode(shapeIndexRange.upperBound, forKey: .geometryIndexEnd)
     }

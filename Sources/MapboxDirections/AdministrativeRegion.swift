@@ -2,6 +2,10 @@ import Foundation
 
 /**
  `AdministrativeRegion` describes corresponding object on the route.
+ 
+ You can also use `Intersection.regionCode` or `RouteStep.regionCode(atStepIndex:, intersectionIndex:)` to retrieve ISO 3166-1 country code
+ 
+ - seealso: `Intersection.regionCode`, `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
  */
 public struct AdministrativeRegion: Codable, Equatable {
 
