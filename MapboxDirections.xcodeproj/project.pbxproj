@@ -41,6 +41,9 @@
 		2B674DC22541AF2E0026CE4B /* Polyline.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83A1DDCC6EB000BC343 /* Polyline.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2B674DCB2541AF410026CE4B /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B674DCA2541AF410026CE4B /* Turf.framework */; };
 		2B674DCC2541AF410026CE4B /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B674DCA2541AF410026CE4B /* Turf.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BA2E746257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
+		2BA2E747257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
+		2BA2E748257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -450,6 +453,7 @@
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
 		2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = incorrectRouteRefreshResponse.json; sourceTree = "<group>"; };
 		2B674DCA2541AF410026CE4B /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/Mac/Turf.framework; sourceTree = "<group>"; };
+		2BA2E745257A667500D7AFC6 /* incidents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = incidents.json; sourceTree = "<group>"; };
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BFD4D962540604000D0E14D /* SwiftCLI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCLI.framework; path = Carthage/Build/Mac/SwiftCLI.framework; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -858,6 +862,7 @@
 		DA6C9DAD1CAEC93800094FBC /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				2BA2E745257A667500D7AFC6 /* incidents.json */,
 				2B540803245B09B2006C820B /* RouteRefresh */,
 				35DBF017217F387F0009D2AE /* Offline */,
 				C5DAACB2201AA97D001F9261 /* Match */,
@@ -1255,6 +1260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
+				2BA2E747257A667500D7AFC6 /* incidents.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080A245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
@@ -1286,6 +1292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
+				2BA2E748257A667500D7AFC6 /* incidents.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080B245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
@@ -1324,6 +1331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
+				2BA2E746257A667500D7AFC6 /* incidents.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				2B540809245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,

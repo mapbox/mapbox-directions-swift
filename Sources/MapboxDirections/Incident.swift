@@ -164,8 +164,8 @@ public struct Incident: Codable, Equatable {
         subtypeDescription = try container.decodeIfPresent(String.self, forKey: .subtypeDescription)
         alertCodes = try container.decode(Set<Int>.self, forKey: .alertCodes)
         
-        rawLanesBlocked = try container.decode(Set<String>.self, forKey: .type)
-        lanesBlocked = rawLanesBlocked.reduce(into: Set<BlockedLane>()) { $0.insert(BlockedLane(rawValue: $1)) }
+        rawLanesBlocked = try container.decode(Set<String>.self, forKey: .lanesBlocked)
+        lanesBlocked = rawLanesBlocked.reduce(into: Set<BlockedLane?>()) { $0.insert(BlockedLane(rawValue: $1)) }
         
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
