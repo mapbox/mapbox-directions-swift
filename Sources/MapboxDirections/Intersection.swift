@@ -114,7 +114,9 @@ public struct Intersection {
     public let restStop: RestStop?
 
     /**
+     Street class according to Mapbox Streets V8 classification.
      
+     This value is set to `nil` of such info is not available.
      */
     public let streetClass: MapboxStreetClass?
     /**
