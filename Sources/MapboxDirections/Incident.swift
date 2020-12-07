@@ -170,7 +170,7 @@ public struct Incident: Codable, Equatable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let formatter = ISO8601DateFormatter()
+        let formatter = Date.ISO8601Formatter
         
         identifier = try container.decode(String.self, forKey: .identifier)
         rawKind = try container.decode(String.self, forKey: .type)
@@ -215,7 +215,7 @@ public struct Incident: Codable, Equatable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        let formatter = ISO8601DateFormatter()
+        let formatter = Date.ISO8601Formatter
         
         try container.encode(identifier, forKey: .identifier)
         try container.encode(rawKind, forKey: .type)
