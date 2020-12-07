@@ -9,6 +9,7 @@
     * `Intersection.regionCode` - A 2-letter region code to identify corresponding country that this intersection lies in.
     * `RouteLeg.regionCode(atStepIndex:, intersectionIndex:)` - Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes.
 * Added `RouteStep.segmentIndicesByIntersection` for navigating `Intersection`s segments along the step;  ([#490](https://github.com/mapbox/mapbox-directions-swift/pull/490))
+* Added Mapbox Streets V8 Road Classification info to `Intersection.roadClass` property. See [Mapbox Streets V8 Road classification doc](https://docs.mapbox.com/vector-tiles/reference/mapbox-streets-v8/#road) for more info on the classes ([#507](https://github.com/mapbox/mapbox-directions-swift/pull/507)).
 
 ## v1.1.0
 
