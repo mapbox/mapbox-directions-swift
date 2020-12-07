@@ -41,10 +41,10 @@
 		2B674DC22541AF2E0026CE4B /* Polyline.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F448F83A1DDCC6EB000BC343 /* Polyline.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2B674DCB2541AF410026CE4B /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B674DCA2541AF410026CE4B /* Turf.framework */; };
 		2B674DCC2541AF410026CE4B /* Turf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B674DCA2541AF410026CE4B /* Turf.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2BA2E766257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */; };
-		2BA2E767257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */; };
-		2BA2E768257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */; };
-		2BA2E769257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */; };
+		2BBBD05E257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */; };
+		2BBBD05F257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */; };
+		2BBBD060257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */; };
+		2BBBD061257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -454,8 +454,8 @@
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
 		2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = incorrectRouteRefreshResponse.json; sourceTree = "<group>"; };
 		2B674DCA2541AF410026CE4B /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/Mac/Turf.framework; sourceTree = "<group>"; };
-		2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetClasses.swift; sourceTree = "<group>"; };
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetClass.swift; sourceTree = "<group>"; };
 		2BFD4D962540604000D0E14D /* SwiftCLI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCLI.framework; path = Carthage/Build/Mac/SwiftCLI.framework; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
@@ -799,7 +799,7 @@
 				35828C9D217A003F00ED546E /* OfflineDirections.swift */,
 				DAD06E3823A008EB001A917D /* QuickLook.swift */,
 				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
-				2BA2E765257A6ED800D7AFC6 /* MapboxStreetClasses.swift */,
+				2BBBD05D257E61ED004EB3D6 /* MapboxStreetClass.swift */,
 				DAC05F171CFC075300FA0071 /* Route.swift */,
 				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
 				2B5407F6245302AB006C820B /* RouteLegAttributes.swift */,
@@ -1434,7 +1434,6 @@
 				43D6617123DBA58E0062BFFE /* (null) in Sources */,
 				2B5407F8245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
-				2BA2E767257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* Route.swift in Sources */,
@@ -1451,6 +1450,7 @@
 				8D381B6B1FDB3D8A008D5A58 /* String.swift in Sources */,
 				F457FA7B252B9E29007DAEB1 /* Incident.swift in Sources */,
 				F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
+				2BBBD05F257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */,
 				438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1521,7 +1521,6 @@
 				43D6617223DBA58E0062BFFE /* (null) in Sources */,
 				2B5407F9245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
-				2BA2E768257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
 				DA1A10F01D010247009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* Route.swift in Sources */,
@@ -1538,6 +1537,7 @@
 				8D381B6C1FDB3D8B008D5A58 /* String.swift in Sources */,
 				F457FA7C252B9E29007DAEB1 /* Incident.swift in Sources */,
 				F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
+				2BBBD060257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */,
 				438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1608,7 +1608,6 @@
 				43D6617323DBA58E0062BFFE /* (null) in Sources */,
 				2B5407FA245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
-				2BA2E769257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* RouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* Route.swift in Sources */,
@@ -1625,6 +1624,7 @@
 				8D381B6D1FDB3D8B008D5A58 /* String.swift in Sources */,
 				F457FA7D252B9E29007DAEB1 /* Incident.swift in Sources */,
 				F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
+				2BBBD061257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */,
 				438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
@@ -1662,7 +1662,6 @@
 				43D6617023DBA58E0062BFFE /* (null) in Sources */,
 				2B5407F7245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
-				2BA2E766257A6ED800D7AFC6 /* MapboxStreetClasses.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,
 				C5434B8C200695A50069E887 /* MatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* LaneIndication.swift in Sources */,
@@ -1679,6 +1678,7 @@
 				C58EA7AA1E9D7EAD008F98CE /* Congestion.swift in Sources */,
 				F457FA7A252B9E29007DAEB1 /* Incident.swift in Sources */,
 				F4F5084B2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
+				2BBBD05E257E61ED004EB3D6 /* MapboxStreetClass.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,

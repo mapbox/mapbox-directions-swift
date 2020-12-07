@@ -23,7 +23,8 @@ public struct Intersection {
                 tunnelName: String? = nil,
                 restStop: RestStop? = nil,
                 isUrban: Bool? = nil,
-                regionCode: String? = nil) {
+                regionCode: String? = nil,
+                streetClass: MapboxStreetClass? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -37,6 +38,7 @@ public struct Intersection {
         self.isUrban = isUrban
         self.restStop = restStop
         self.regionCode = regionCode
+        self.streetClass = streetClass
     }
     
     // MARK: Getting the Location of the Intersection
@@ -112,6 +114,10 @@ public struct Intersection {
     public let restStop: RestStop?
 
     /**
+     
+     */
+    public let streetClass: MapboxStreetClass?
+    /**
      :nodoc:
      Whether the intersection lays within the bounds of an urban zone.
 
@@ -160,12 +166,21 @@ extension Intersection: Codable {
         case outletRoadClasses = "classes"
         case tollCollection = "toll_collection"
         case tunnelName = "tunnelName"
+        case mapboxStreets = "mapbox_streets_v8"
         case isUrban = "is_urban"
         case restStop = "rest_stop"
         case administrativeRegionIndex = "admin_index"
         case geometryIndex = "geometry_index"
     }
     
+    /// Used to code `Intersection.streetClass`
+    private struct MapboxStreetClassCodable: Codable {
+        private enum CodingKeys: String, CodingKey {
+            case streetClass = "class"
+        }
+        
+        let streetClass: MapboxStreetClass?
+    }
 
     static func encode(intersections: [Intersection],
                        to parentContainer: inout UnkeyedEncodingContainer,
@@ -234,6 +249,10 @@ extension Intersection: Codable {
             try container.encode(tolls, forKey: .tollCollection)
         }
 
+        if let streetClasses = streetClass {
+            try container.encode(MapboxStreetClassCodable(streetClass: streetClasses), forKey: .mapboxStreets)
+        }
+        
         if let isUrban = isUrban {
             try container.encode(isUrban, forKey: .isUrban)
         }
@@ -279,6 +298,8 @@ extension Intersection: Codable {
 
         tunnelName = try container.decodeIfPresent(String.self, forKey: .tunnelName)
 
+        streetClass = try container.decodeIfPresent(MapboxStreetClassCodable.self, forKey: .mapboxStreets)?.streetClass
+        
         isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
