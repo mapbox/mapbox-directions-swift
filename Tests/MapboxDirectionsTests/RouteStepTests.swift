@@ -329,7 +329,7 @@ class RouteStepTests: XCTestCase {
             XCTAssertNotNil(newRoute)
             
             XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.Miscellaneous)
-            XCTAssert(newRoute!.legs.first!.incidents![1].lanesBlocked.first! == Incident.BlockedLane.Lane1)
+            XCTAssert(newRoute!.legs.first!.incidents![1].lanesBlocked.first! == Incident.BlockedLane.lane1)
             XCTAssertNil(newRoute!.legs.first!.incidents![2].lanesBlocked.first!)
             XCTAssert(newRoute!.legs.first!.incidents![2].shapeIndexRange == 810..<900)
             XCTAssert(newRoute!.legs.first!.incidents!.first! == route.legs.first!.incidents!.first!)
