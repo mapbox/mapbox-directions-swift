@@ -43,27 +43,68 @@ public struct Incident: Codable, Equatable {
     ///
     /// Each `Incident` may have arbitrary of affected lanes
     public enum BlockedLane: String, Codable {
-        case Left = "LEFT"
-        case LeftCenter = "LEFT CENTER"
-        case LeftTurnLane = "LEFT TURN LANE"
-        case Center = "CENTER"
-        case Right = "RIGHT"
-        case RightCenter = "RIGHT CENTER"
-        case RightTurnLane = "RIGHT TURN LANE"
-        case Hov = "HOV"
-        case Side = "SIDE"
-        case Shoulder = "SHOULDER"
-        case Median = "MEDIAN"
-        case Lane1 = "1"
-        case Lane2 = "2"
-        case Lane3 = "3"
-        case Lane4 = "4"
-        case Lane5 = "5"
-        case Lane6 = "6"
-        case Lane7 = "7"
-        case Lane8 = "8"
-        case Lane9 = "9"
-        case Lane10 = "10"
+        /// Left lane
+        case left = "LEFT"
+        /// Left and center lanes
+        case leftCenter = "LEFT CENTER"
+        /// Left turn lane
+        case leftTurnLane = "LEFT TURN LANE"
+        /// Center lane
+        case center = "CENTER"
+        /// Right lane
+        case right = "RIGHT"
+        /// Right and center lanes
+        case rightCenter = "RIGHT CENTER"
+        /// Right turn lane
+        case rightTurnLane = "RIGHT TURN LANE"
+        /// High occupancy vehicle lane
+        case highOccupancyVehicle = "HOV"
+        /// Side lane
+        case side = "SIDE"
+        /// Shoulder lane
+        case shoulder = "SHOULDER"
+        /// Median lane
+        case median = "MEDIAN"
+        /// 1st Lane.
+        ///
+        /// Mind the driving side.
+        case lane1 = "1"
+        /// 2nd Lane.
+        ///
+        /// Mind the driving side.
+        case lane2 = "2"
+        /// 3rd Lane.
+        ///
+        /// Mind the driving side.
+        case lane3 = "3"
+        /// 4th Lane.
+        ///
+        /// Mind the driving side.
+        case lane4 = "4"
+        /// 5th Lane.
+        ///
+        /// Mind the driving side.
+        case lane5 = "5"
+        /// 6th Lane.
+        ///
+        /// Mind the driving side.
+        case lane6 = "6"
+        /// 7th Lane.
+        ///
+        /// Mind the driving side.
+        case lane7 = "7"
+        /// 8th Lane.
+        ///
+        /// Mind the driving side.
+        case lane8 = "8"
+        /// 9th Lane.
+        ///
+        /// Mind the driving side.
+        case lane9 = "9"
+        /// 10th Lane.
+        ///
+        /// Mind the driving side.
+        case lane10 = "10"
     }
     
     /// Incident identifier
