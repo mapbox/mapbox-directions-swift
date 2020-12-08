@@ -25,18 +25,18 @@ public struct Incident: Codable, Equatable {
     ///
     /// Each incident may or may not have specific set of data, depending on it's `kind`
     public enum Kind: String {
-        case Accident = "accident"
-        case Congestion = "congestion"
-        case Construction = "construction"
-        case DisabledVehicle = "disabled_vehicle"
-        case LaneRestriction = "lane_restriction"
-        case MassTransit = "mass_transit"
-        case Miscellaneous = "miscellaneous"
-        case OtherNews = "other_news"
-        case PlannedEvent = "planned_event"
-        case RoadClosure = "road_closure"
-        case RoadHazard = "road_hazard"
-        case Weather = "weather"
+        case accident = "accident"
+        case congestion = "congestion"
+        case construction = "construction"
+        case disabledVehicle = "disabled_vehicle"
+        case laneRestriction = "lane_restriction"
+        case massTransit = "mass_transit"
+        case miscellaneous = "miscellaneous"
+        case otherNews = "other_news"
+        case plannedEvent = "planned_event"
+        case roadClosure = "road_closure"
+        case roadHazard = "road_hazard"
+        case weather = "weather"
     }
     
     /// Defines a lane affected by the `Incident`
@@ -45,7 +45,9 @@ public struct Incident: Codable, Equatable {
     public enum BlockedLane: String, Codable {
         /// Left lane
         case left = "LEFT"
-        /// Left and center lanes
+        /// Left center lane
+        ///
+        /// Usually refers to the second lane from left on a four-lane highway
         case leftCenter = "LEFT CENTER"
         /// Left turn lane
         case leftTurnLane = "LEFT TURN LANE"
@@ -53,7 +55,9 @@ public struct Incident: Codable, Equatable {
         case center = "CENTER"
         /// Right lane
         case right = "RIGHT"
-        /// Right and center lanes
+        /// Right center lane
+        ///
+        /// Usually refers to the second lane from right on a four-lane highway
         case rightCenter = "RIGHT CENTER"
         /// Right turn lane
         case rightTurnLane = "RIGHT TURN LANE"
@@ -66,44 +70,24 @@ public struct Incident: Codable, Equatable {
         /// Median lane
         case median = "MEDIAN"
         /// 1st Lane.
-        ///
-        /// Mind the driving side.
         case lane1 = "1"
         /// 2nd Lane.
-        ///
-        /// Mind the driving side.
         case lane2 = "2"
         /// 3rd Lane.
-        ///
-        /// Mind the driving side.
         case lane3 = "3"
         /// 4th Lane.
-        ///
-        /// Mind the driving side.
         case lane4 = "4"
         /// 5th Lane.
-        ///
-        /// Mind the driving side.
         case lane5 = "5"
         /// 6th Lane.
-        ///
-        /// Mind the driving side.
         case lane6 = "6"
         /// 7th Lane.
-        ///
-        /// Mind the driving side.
         case lane7 = "7"
         /// 8th Lane.
-        ///
-        /// Mind the driving side.
         case lane8 = "8"
         /// 9th Lane.
-        ///
-        /// Mind the driving side.
         case lane9 = "9"
         /// 10th Lane.
-        ///
-        /// Mind the driving side.
         case lane10 = "10"
     }
     
@@ -112,7 +96,9 @@ public struct Incident: Codable, Equatable {
     /// The kind of an incident
     ///
     /// This value is set to `nil` if `kind` value is not supported.
-    public var kind: Kind?
+    public var kind: Kind? {
+        return Kind(rawValue: rawKind)
+    }
     var rawKind: String
     /// Short description of an incident. May be used as an additional info.
     public var description: String
@@ -135,7 +121,9 @@ public struct Incident: Codable, Equatable {
     /// A list of lanes indices, affected by the incident
     ///
     /// `nil` value indicates that such lane identifier is not supported
-    public var lanesBlocked: Set<BlockedLane?>
+    public var lanesBlocked: Set<BlockedLane?> {
+        return Set(rawLanesBlocked.map { BlockedLane(rawValue: $0) })
+    }
     var rawLanesBlocked: Set<String>
     /// The range of segments within the overall leg, where the incident spans.
     public var shapeIndexRange: Range<Int>
@@ -153,7 +141,6 @@ public struct Incident: Codable, Equatable {
                 lanesBlocked: Set<BlockedLane>,
                 shapeIndexRange: Range<Int>) {
         self.identifier = identifier
-        self.kind = type
         self.rawKind = type.rawValue
         self.description = description
         self.creationDate = creationDate
@@ -163,7 +150,6 @@ public struct Incident: Codable, Equatable {
         self.subtype = subtype
         self.subtypeDescription = subtypeDescription
         self.alertCodes = alertCodes
-        self.lanesBlocked = lanesBlocked
         self.rawLanesBlocked = Set(lanesBlocked.map { $0.rawValue })
         self.shapeIndexRange = shapeIndexRange
     }
@@ -174,7 +160,6 @@ public struct Incident: Codable, Equatable {
         
         identifier = try container.decode(String.self, forKey: .identifier)
         rawKind = try container.decode(String.self, forKey: .type)
-        kind = Kind(rawValue: rawKind)
         
         description = try container.decode(String.self, forKey: .description)
         
@@ -206,7 +191,6 @@ public struct Incident: Codable, Equatable {
         alertCodes = try container.decode(Set<Int>.self, forKey: .alertCodes)
         
         rawLanesBlocked = try container.decode(Set<String>.self, forKey: .lanesBlocked)
-        lanesBlocked = rawLanesBlocked.reduce(into: Set<BlockedLane?>()) { $0.insert(BlockedLane(rawValue: $1)) }
         
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
