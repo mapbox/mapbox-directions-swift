@@ -39,58 +39,6 @@ public struct Incident: Codable, Equatable {
         case weather = "weather"
     }
     
-    /// Defines a lane affected by the `Incident`
-    ///
-    /// Each `Incident` may have arbitrary of affected lanes
-    public enum BlockedLane: String, Codable {
-        /// Left lane
-        case left = "LEFT"
-        /// Left center lane
-        ///
-        /// Usually refers to the second lane from left on a four-lane highway
-        case leftCenter = "LEFT CENTER"
-        /// Left turn lane
-        case leftTurnLane = "LEFT TURN LANE"
-        /// Center lane
-        case center = "CENTER"
-        /// Right lane
-        case right = "RIGHT"
-        /// Right center lane
-        ///
-        /// Usually refers to the second lane from right on a four-lane highway
-        case rightCenter = "RIGHT CENTER"
-        /// Right turn lane
-        case rightTurnLane = "RIGHT TURN LANE"
-        /// High occupancy vehicle lane
-        case highOccupancyVehicle = "HOV"
-        /// Side lane
-        case side = "SIDE"
-        /// Shoulder lane
-        case shoulder = "SHOULDER"
-        /// Median lane
-        case median = "MEDIAN"
-        /// 1st Lane.
-        case lane1 = "1"
-        /// 2nd Lane.
-        case lane2 = "2"
-        /// 3rd Lane.
-        case lane3 = "3"
-        /// 4th Lane.
-        case lane4 = "4"
-        /// 5th Lane.
-        case lane5 = "5"
-        /// 6th Lane.
-        case lane6 = "6"
-        /// 7th Lane.
-        case lane7 = "7"
-        /// 8th Lane.
-        case lane8 = "8"
-        /// 9th Lane.
-        case lane9 = "9"
-        /// 10th Lane.
-        case lane10 = "10"
-    }
-    
     /// Incident identifier
     public var identifier: String
     /// The kind of an incident
@@ -118,13 +66,10 @@ public struct Incident: Codable, Equatable {
     ///
     /// See https://www.iso.org/standard/59231.html for details
     public var alertCodes: Set<Int>
-    /// A list of lanes indices, affected by the incident
+    /// A list of lanes, affected by the incident
     ///
-    /// `nil` value indicates that such lane identifier is not supported
-    public var lanesBlocked: Set<BlockedLane?> {
-        return Set(rawLanesBlocked.map { BlockedLane(rawValue: $0) })
-    }
-    var rawLanesBlocked: Set<String>
+    /// `nil` value indicates that lanes data is not available
+    public var lanesBlocked: BlockedLanes?
     /// The range of segments within the overall leg, where the incident spans.
     public var shapeIndexRange: Range<Int>
     
@@ -138,7 +83,7 @@ public struct Incident: Codable, Equatable {
                 subtype: String?,
                 subtypeDescription: String?,
                 alertCodes: Set<Int>,
-                lanesBlocked: Set<BlockedLane>,
+                lanesBlocked: BlockedLanes?,
                 shapeIndexRange: Range<Int>) {
         self.identifier = identifier
         self.rawKind = type.rawValue
@@ -150,7 +95,7 @@ public struct Incident: Codable, Equatable {
         self.subtype = subtype
         self.subtypeDescription = subtypeDescription
         self.alertCodes = alertCodes
-        self.rawLanesBlocked = Set(lanesBlocked.map { $0.rawValue })
+        self.lanesBlocked = lanesBlocked
         self.shapeIndexRange = shapeIndexRange
     }
     
@@ -190,7 +135,7 @@ public struct Incident: Codable, Equatable {
         subtypeDescription = try container.decodeIfPresent(String.self, forKey: .subtypeDescription)
         alertCodes = try container.decode(Set<Int>.self, forKey: .alertCodes)
         
-        rawLanesBlocked = try container.decode(Set<String>.self, forKey: .lanesBlocked)
+        lanesBlocked = try container.decodeIfPresent(BlockedLanes.self, forKey: .lanesBlocked)
         
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
@@ -211,7 +156,7 @@ public struct Incident: Codable, Equatable {
         try container.encodeIfPresent(subtype, forKey: .subtype)
         try container.encodeIfPresent(subtypeDescription, forKey: .subtypeDescription)
         try container.encode(alertCodes, forKey: .alertCodes)
-        try container.encode(rawLanesBlocked, forKey: .lanesBlocked)
+        try container.encodeIfPresent(lanesBlocked, forKey: .lanesBlocked)
         try container.encode(shapeIndexRange.lowerBound, forKey: .geometryIndexStart)
         try container.encode(shapeIndexRange.upperBound, forKey: .geometryIndexEnd)
     }

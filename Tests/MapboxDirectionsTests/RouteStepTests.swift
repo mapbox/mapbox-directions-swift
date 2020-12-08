@@ -328,9 +328,10 @@ class RouteStepTests: XCTestCase {
             XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
             XCTAssertNotNil(newRoute)
             
-            XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.Miscellaneous)
-            XCTAssert(newRoute!.legs.first!.incidents![1].lanesBlocked.first! == Incident.BlockedLane.lane1)
-            XCTAssertNil(newRoute!.legs.first!.incidents![2].lanesBlocked.first!)
+            XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.miscellaneous)
+            XCTAssert(newRoute!.legs.first!.incidents![0].lanesBlocked!.contains(.right))
+            XCTAssertNil(newRoute!.legs.first!.incidents![1].lanesBlocked)
+            XCTAssert(newRoute!.legs.first!.incidents![2].lanesBlocked!.isEmpty)
             XCTAssert(newRoute!.legs.first!.incidents![2].shapeIndexRange == 810..<900)
             XCTAssert(newRoute!.legs.first!.incidents!.first! == route.legs.first!.incidents!.first!)
         }
