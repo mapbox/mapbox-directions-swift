@@ -285,6 +285,7 @@ open class RouteLeg: Codable {
      
      Items are ordered by appearance, most recent one is at the beginning.
      This property is set to `nil` if no administrative region data is available.
+     You can alse refer to `Incident.regionCode` to get corresponding region string code.
      */
     open var administrativeRegions: [AdministrativeRegion]?
 

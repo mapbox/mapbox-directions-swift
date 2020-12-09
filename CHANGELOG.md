@@ -9,7 +9,9 @@
     * `Intersection.regionCode` - A 2-letter region code to identify corresponding country that this intersection lies in.
     * `RouteLeg.regionCode(atStepIndex:, intersectionIndex:)` - Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes.
 * Added `RouteStep.segmentIndicesByIntersection` for navigating `Intersection`s segments along the step;  ([#490](https://github.com/mapbox/mapbox-directions-swift/pull/490))
-* Added support for encoding and decoding `Route Alerts` data coming from `Directions API`. Includes `TollCollection`, `RestStop` and `AdministrationRegion`. Also added `Incident` struct for reflecting incoming incidents along the route ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466), [#506](https://github.com/mapbox/mapbox-directions-swift/pull/506))
+* Added the `RouteLeg.incidents` property that indicates known traffic incidents, toll collection points, rest areas, and border crossings along the route leg. ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466), [#506](https://github.com/mapbox/mapbox-directions-swift/pull/506))
+* Added the `RouteLeg.administrativeRegions` property that indicates the administrative regions traversed by the route leg. ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466), [#506](https://github.com/mapbox/mapbox-directions-swift/pull/506))
+* Added the `Intersection.tunnelName`, `Intersection.tollCollection, `Intersection.restStop`, and `Intersection.isUrban` properties. ([#466](https://github.com/mapbox/mapbox-directions-swift/pull/466), [#506](https://github.com/mapbox/mapbox-directions-swift/pull/506))
 
 ## v1.1.0
 

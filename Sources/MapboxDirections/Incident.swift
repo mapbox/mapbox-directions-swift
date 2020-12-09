@@ -25,17 +25,29 @@ public struct Incident: Codable, Equatable {
     ///
     /// Each incident may or may not have specific set of data, depending on it's `kind`
     public enum Kind: String {
+        /// Accident
         case accident = "accident"
+        /// Congestion
         case congestion = "congestion"
+        /// Construction
         case construction = "construction"
+        /// Disabled vehicle
         case disabledVehicle = "disabled_vehicle"
+        /// Lane restriction
         case laneRestriction = "lane_restriction"
+        /// Mass transit
         case massTransit = "mass_transit"
+        /// Miscellaneous
         case miscellaneous = "miscellaneous"
+        /// Other news
         case otherNews = "other_news"
+        /// Planned event
         case plannedEvent = "planned_event"
+        /// Road closure
         case roadClosure = "road_closure"
+        /// Road hazard
         case roadHazard = "road_hazard"
+        /// Weather
         case weather = "weather"
     }
     
