@@ -54,7 +54,7 @@ class IntersectionTests: XCTestCase {
             XCTAssertEqual(intersection.outletRoadClasses, [.toll, .restricted])
             XCTAssertEqual(intersection.headings, [80.0])
             XCTAssertEqual(intersection.location, CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
-            XCTAssertEqual(intersection.streetClass, MapboxStreetClass.streetLimited)
+            XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
         }
         
         intersections = [
@@ -70,7 +70,7 @@ class IntersectionTests: XCTestCase {
                          tunnelName: nil,
                          restStop: nil,
                          isUrban: nil,
-                         streetClass: .streetLimited),
+                         outletMapboxStreetsRoadClass: .streetLimited),
             Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,

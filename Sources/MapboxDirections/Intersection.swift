@@ -24,7 +24,7 @@ public struct Intersection {
                 restStop: RestStop? = nil,
                 isUrban: Bool? = nil,
                 regionCode: String? = nil,
-                streetClass: MapboxStreetClass? = nil) {
+                outletMapboxStreetsRoadClass: MapboxStreetsRoadClass? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -38,7 +38,7 @@ public struct Intersection {
         self.isUrban = isUrban
         self.restStop = restStop
         self.regionCode = regionCode
-        self.streetClass = streetClass
+        self.outletMapboxStreetsRoadClass = outletMapboxStreetsRoadClass
     }
     
     // MARK: Getting the Location of the Intersection
@@ -90,6 +90,13 @@ public struct Intersection {
     public let outletRoadClasses: RoadClasses?
 
     /**
+     The road classes of the road that the containing step uses to leave the intersection, according to the [Mapbox Streets source](https://docs.mapbox.com/vector-tiles/reference/mapbox-streets-v8/#road) , version 8.
+          
+     If detailed road class information is unavailable, this property is set to `nil`. This property only indicates the road classification; for other aspects of the road, use the `outletRoadClasses` property.
+     */
+    public let outletMapboxStreetsRoadClass: MapboxStreetsRoadClass?
+    
+    /**
      :nodoc:
      The name of the tunnel that this intersection is a part of.
 
@@ -113,12 +120,6 @@ public struct Intersection {
      */
     public let restStop: RestStop?
 
-    /**
-     Street class according to Mapbox Streets V8 classification.
-     
-     This value is set to `nil` of such info is not available.
-     */
-    public let streetClass: MapboxStreetClass?
     /**
      :nodoc:
      Whether the intersection lays within the bounds of an urban zone.
@@ -175,13 +176,13 @@ extension Intersection: Codable {
         case geometryIndex = "geometry_index"
     }
     
-    /// Used to code `Intersection.streetClass`
+    /// Used to code `Intersection.outletMapboxStreetsRoadClass`
     private struct MapboxStreetClassCodable: Codable {
         private enum CodingKeys: String, CodingKey {
             case streetClass = "class"
         }
         
-        let streetClass: MapboxStreetClass?
+        let streetClass: MapboxStreetsRoadClass?
     }
 
     static func encode(intersections: [Intersection],
@@ -251,8 +252,8 @@ extension Intersection: Codable {
             try container.encode(tolls, forKey: .tollCollection)
         }
 
-        if let streetClasses = streetClass {
-            try container.encode(MapboxStreetClassCodable(streetClass: streetClasses), forKey: .mapboxStreets)
+        if let outletMapboxStreetsRoadClass = outletMapboxStreetsRoadClass {
+            try container.encode(MapboxStreetClassCodable(streetClass: outletMapboxStreetsRoadClass), forKey: .mapboxStreets)
         }
         
         if let isUrban = isUrban {
@@ -300,7 +301,7 @@ extension Intersection: Codable {
 
         tunnelName = try container.decodeIfPresent(String.self, forKey: .tunnelName)
 
-        streetClass = try container.decodeIfPresent(MapboxStreetClassCodable.self, forKey: .mapboxStreets)?.streetClass
+        outletMapboxStreetsRoadClass = try container.decodeIfPresent(MapboxStreetClassCodable.self, forKey: .mapboxStreets)?.streetClass
         
         isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
 
