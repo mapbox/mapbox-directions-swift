@@ -49,18 +49,4 @@ public enum MapboxStreetsRoadClass: String, Codable {
     case aerialway = "aerialway"
     /// The approximate centerline of a golf course hole
     case golf = "golf"
-    /// Circular continuous-flow intersection
-    case roundabout = "roundabout"
-    /// Smaller variation of a roundabout with no center island or obstacle
-    case miniRoundabout = "mini_roundabout"
-    /// Widened section at the end of a cul-de-sac for turning around a vehicle. (point) 
-    case turningCircle = "turning_circle"
-    /// Similar to a turning circle but with an island or other obstruction at the centerpoint. (point)
-    case turningLoop = "turning_loop"
-    /// Lights or other signal controlling traffic flow at an intersection. (point)
-    case trafficSignals = "traffic_signals"
-    /// A point indication for road junctions. (point)
-    case junction = "junction"
-    /// Indicating the class and type of roads meeting at an intersection. Intersections are only available in Japan. (point)
-    case intersection = "intersection"
 }
