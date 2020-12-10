@@ -1,7 +1,6 @@
 import Foundation
 
 /**
- :nodoc:
  `RestStop` describes corresponding object on the route.
  */
 public struct RestStop: Codable, Equatable {
@@ -11,7 +10,10 @@ public struct RestStop: Codable, Equatable {
         case restArea = "rest_area"
     }
 
-    let type: StopType
+    /**
+     The kind of the rest stop.
+     */
+    public let type: StopType
 
     private enum CodingKeys: String, CodingKey {
         case type

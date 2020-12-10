@@ -281,13 +281,20 @@ open class RouteLeg: Codable {
     open var expectedTravelTime: TimeInterval
 
     /**
-     :nodoc:
      The administrative regions through which the leg passes.
-          
+     
+     Items are ordered by appearance, most recent one is at the beginning.
      This property is set to `nil` if no administrative region data is available.
+     You can alse refer to `Incident.regionCode` to get corresponding region string code.
      */
     open var administrativeRegions: [AdministrativeRegion]?
 
+    /**
+     Contains `Incident`s data which occur during current `RouteLeg`.
+     
+     Items are ordered by appearance, most recent one is at the beginning.
+     This property is set to `nil` if incidents data is not available.
+     */
     open var incidents: [Incident]?
     
     /**
