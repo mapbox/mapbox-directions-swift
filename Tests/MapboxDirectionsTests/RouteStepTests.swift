@@ -294,4 +294,46 @@ class RouteStepTests: XCTestCase {
 
         XCTAssertEqual(route.typicalTravelTime, typicalTravelTime)
     }
+    
+    func testIncidentsCoding() {
+        let path = Bundle(for: type(of: self)).path(forResource: "incidents", ofType: "json")
+        let filePath = URL(fileURLWithPath: path!)
+        let data = try! Data(contentsOf: filePath)
+        let options = RouteOptions(coordinates: [
+            CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+        ])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "http://sample.website"))
+        let result = try! decoder.decode(RouteResponse.self, from: data)
+        
+        let routes = result.routes
+        let route = routes!.first!
+
+        
+        // Encode and decode the route securely.
+        
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        encoder.outputFormatting = [.prettyPrinted]
+        
+        var jsonData: Data?
+        XCTAssertNoThrow(jsonData = try encoder.encode(route))
+        XCTAssertNotNil(jsonData)
+    
+        if let jsonData = jsonData {
+            var newRoute: Route?
+            XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
+            XCTAssertNotNil(newRoute)
+            
+            XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.miscellaneous)
+            XCTAssert(newRoute!.legs.first!.incidents![0].lanesBlocked!.contains(.right))
+            XCTAssertNil(newRoute!.legs.first!.incidents![1].lanesBlocked)
+            XCTAssert(newRoute!.legs.first!.incidents![2].lanesBlocked!.isEmpty)
+            XCTAssert(newRoute!.legs.first!.incidents![2].shapeIndexRange == 810..<900)
+            XCTAssert(newRoute!.legs.first!.incidents!.first! == route.legs.first!.incidents!.first!)
+        }
+    }
 }

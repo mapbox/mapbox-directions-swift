@@ -88,7 +88,6 @@ public struct Intersection {
     public let outletRoadClasses: RoadClasses?
 
     /**
-     :nodoc:
      The name of the tunnel that this intersection is a part of.
 
      If this Intersection is not a tunnel entrance or exit, or if information is unavailable then this property is set to `nil`.
@@ -96,23 +95,20 @@ public struct Intersection {
     public let tunnelName: String?
 
     /**
-     :nodoc:
-     The type of toll collection mechanism.
+     A toll collection point.
 
      If this Intersection is not a toll collection intersection, or if this information is unavailable then this property is set to `nil`.
      */
     public let tollCollection: TollCollection?
 
     /**
-     :nodoc:
-     The type of rest stop.
+     Corresponding rest stop.
 
      If this Intersection is not a rest stop, or if this information is unavailable then this property is set to `nil`.
      */
     public let restStop: RestStop?
 
     /**
-     :nodoc:
      Whether the intersection lays within the bounds of an urban zone.
 
      If this information is unavailable, then this property is set to `nil`.
