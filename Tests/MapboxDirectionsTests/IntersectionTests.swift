@@ -16,6 +16,9 @@ class IntersectionTests: XCTestCase {
                 "bearings": [80],
                 "location": [13.426579, 52.508068],
                 "classes": ["toll", "restricted"],
+                "mapbox_streets_v8": [
+                    "class": "street_limited"
+                ],
             ],
             [
                 "out": 1,
@@ -51,6 +54,7 @@ class IntersectionTests: XCTestCase {
             XCTAssertEqual(intersection.outletRoadClasses, [.toll, .restricted])
             XCTAssertEqual(intersection.headings, [80.0])
             XCTAssertEqual(intersection.location, CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
+            XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
         }
         
         intersections = [
@@ -65,7 +69,8 @@ class IntersectionTests: XCTestCase {
                          tollCollection: nil,
                          tunnelName: nil,
                          restStop: nil,
-                         isUrban: nil),
+                         isUrban: nil,
+                         outletMapboxStreetsRoadClass: .streetLimited),
             Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
