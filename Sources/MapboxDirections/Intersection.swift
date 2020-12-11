@@ -179,6 +179,21 @@ extension Intersection: Codable {
         }
         
         let streetClass: MapboxStreetsRoadClass?
+        
+        init(streetClass: MapboxStreetsRoadClass?) {
+            self.streetClass = streetClass
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            if let classString = try container.decodeIfPresent(String.self, forKey: .streetClass) {
+                streetClass = MapboxStreetsRoadClass(rawValue: classString)
+            } else {
+                streetClass = nil
+            }
+            
+        }
     }
 
     static func encode(intersections: [Intersection],
