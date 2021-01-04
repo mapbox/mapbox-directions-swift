@@ -259,7 +259,7 @@ extension Intersection: Codable {
             try container.encode(classes, forKey: .outletRoadClasses)
         }
 
-        if let tolls = tollCollection?.type {
+        if let tolls = tollCollection {
             try container.encode(tolls, forKey: .tollCollection)
         }
 
