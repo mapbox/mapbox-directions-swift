@@ -24,7 +24,7 @@ MINOR_VERSION=$( echo ${SHORT_VERSION} | grep -Eo '^\d+\.\d+' )
 DEFAULT_THEME="docs/theme"
 THEME=${JAZZY_THEME:-$DEFAULT_THEME}
 
-BASE_URL="https://docs.mapbox.com/ios/api"
+BASE_URL="https://docs.mapbox.com/ios"
 
 rm -rf ${OUTPUT}
 mkdir -p ${OUTPUT}
@@ -47,7 +47,7 @@ jazzy \
     --github-file-prefix "https://github.com/mapbox/mapbox-directions-swift/tree/${BRANCH}" \
     --readme ${README} \
     --documentation="docs/guides/*.md" \
-    --root-url "${BASE_URL}/directions/${RELEASE_VERSION}/" \
+    --root-url "${BASE_URL}/directions/api/${RELEASE_VERSION}/" \
     --theme ${THEME} \
     --output ${OUTPUT} \
     --build-tool-arguments CODE_SIGN_IDENTITY=,CODE_SIGNING_REQUIRED=NO,CODE_SIGNING_ALLOWED=NO
