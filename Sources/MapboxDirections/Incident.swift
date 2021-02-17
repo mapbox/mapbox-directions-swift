@@ -50,6 +50,20 @@ public struct Incident: Codable, Equatable {
         /// Weather
         case weather = "weather"
     }
+
+    /// Represents the impact of the incident on local traffic.
+    public enum IncidentImpact: String {
+        /// Unknown impact
+        case unknown = "unknown"
+        /// Critical impact
+        case critical = "critical"
+        /// Major impact
+        case major = "major"
+        /// Minor impact
+        case minor = "minor"
+        /// Low impact
+        case low = "low"
+    }
     
     /// Incident identifier
     public var identifier: String
