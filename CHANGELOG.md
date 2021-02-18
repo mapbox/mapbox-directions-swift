@@ -1,5 +1,11 @@
 # Changes to Mapbox Directions for Swift
 
+## main
+
+* This library requires Turf v2.0.0-alpha.2. ([#517](https://github.com/mapbox/mapbox-directions-swift/pull/517))
+* This library does not support tvOS, watchOS, or Linux. Support for these platforms will be restored before the final release. ([#517](https://github.com/mapbox/mapbox-directions-swift/pull/517))
+* The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
+
 ## v1.2.0
 
 ### Packaging
