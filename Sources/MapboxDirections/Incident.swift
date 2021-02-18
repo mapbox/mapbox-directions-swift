@@ -52,19 +52,19 @@ public struct Incident: Codable, Equatable {
     }
 
     /// Represents the impact of the incident on local traffic.
-    public enum IncidentImpact: String {
+    public enum Impact: String, Codable {
         /// Unknown impact
-        case unknown = "unknown"
+        case unknown
         /// Critical impact
-        case critical = "critical"
+        case critical
         /// Major impact
-        case major = "major"
+        case major
         /// Minor impact
-        case minor = "minor"
+        case minor
         /// Low impact
-        case low = "low"
+        case low
     }
-    
+
     /// Incident identifier
     public var identifier: String
     /// The kind of an incident
@@ -83,7 +83,7 @@ public struct Incident: Codable, Equatable {
     /// Date when incident shall end.
     public var endDate: Date
     /// Shows severity of an incident. May be not available for all incident types.
-    public var impact: String?
+    public var impact: Impact?
     /// Provides additional classification of an incident. May be not available for all incident types.
     public var subtype: String?
     /// Breif description of the subtype. May be not available for all incident types and is not available if `subtype` is `nil`
@@ -105,7 +105,7 @@ public struct Incident: Codable, Equatable {
                 creationDate: Date,
                 startDate: Date,
                 endDate: Date,
-                impact: String?,
+                impact: Impact?,
                 subtype: String?,
                 subtypeDescription: String?,
                 alertCodes: Set<Int>,
@@ -156,7 +156,7 @@ public struct Incident: Codable, Equatable {
                                                    debugDescription: "`Intersection.endTime` is encoded with invalid format.")
         }
         
-        impact = try container.decodeIfPresent(String.self, forKey: .impact)
+        impact = try container.decodeIfPresent(Impact.self, forKey: .impact)
         subtype = try container.decodeIfPresent(String.self, forKey: .subtype)
         subtypeDescription = try container.decodeIfPresent(String.self, forKey: .subtypeDescription)
         alertCodes = try container.decode(Set<Int>.self, forKey: .alertCodes)
