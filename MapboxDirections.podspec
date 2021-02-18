@@ -27,8 +27,6 @@ Pod::Spec.new do |s|
   #  When using multiple platforms
   s.ios.deployment_target = "10.0"
   s.osx.deployment_target = "10.12"
-  s.watchos.deployment_target = "3.0"
-  s.tvos.deployment_target = "10.0"
 
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -46,6 +44,6 @@ Pod::Spec.new do |s|
   s.swift_version = "5.0"
 
   s.dependency "Polyline", "~> 5.0"
-  s.dependency "Turf", "~> 1.0"
+  s.dependency "Turf", "~> 2.0.0-alpha.2"
 
 end
