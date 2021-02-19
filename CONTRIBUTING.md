@@ -83,7 +83,7 @@ To release a new version of the MapboxDirections package:
 1. Run `./scripts/update-version.sh v#.#.#`, where _#.#.#_ is a new version number conforming to [Semantic Versioning](https://semver.org/). Commit the changes with a commit message like `v#.#.#` and open a pull request to get it reviewed and merged.
 1. Tag the merged changes as `v#.#.#`. Push the tag by running `git pull && git push origin v#.#.#`.
 1. [Create a new release](https://github.com/mapbox/mapbox-directions-swift/releases/new/). Add release notes based on the release’s section in the changelog. (Unlike the changelog, release notes accept `#123` syntax for linking to PRs.) Title the release `v#.#.#`. Check “This is a pre-release” if applicable, then click “Publish release”.
-1. Run `pod repo update && pod trunk push` to publish the release on CocoaPods trunk.
+1. Run `pod repo update && pod trunk push MapboxDirections.podspec` (or `pod trunk push MapboxDirections-pre.podspec` for a prerelease) to publish the release on CocoaPods trunk.
 1. Run `./scripts/publish-documentation.sh v#.#.#` to generate and publish the documentation. Create a pull request and set the base branch to `publisher-production`.
 1. Wait for new documentation to be live. Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. (Mapbox employees can check the #publisher channel in Slack for a notification of when the commit has been published.)
 1. _(Mapbox employees only.)_ [Update various links](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) to the current docset in the [iOS documentation] site.
