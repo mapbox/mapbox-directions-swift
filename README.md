@@ -27,7 +27,7 @@ Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 # Latest stable release
 pod 'MapboxDirections', '~> 1.2'
 # Latest prerelease
-pod 'MapboxDirections', :git => 'https://github.com/mapbox/mapbox-directions-swift.git', :tag => 'v2.0.0-alpha.1'
+pod 'MapboxDirections-pre', '2.0.0-alpha.1'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
