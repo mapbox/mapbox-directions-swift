@@ -2,6 +2,7 @@
 
 ## main
 
+* To gain access to the Mapbox Directions and Map Matching APIs, set `MBXAccessToken` in your Info.plist. `MGLMapboxAccessToken` is still supported but is now deprecated. ([#522](https://github.com/mapbox/mapbox-directions-swift/pull/522))
 * This library requires Turf v2.0.0-alpha.2. ([#517](https://github.com/mapbox/mapbox-directions-swift/pull/517))
 * This library does not support tvOS, watchOS, or Linux. Support for these platforms will be restored before the final release. ([#517](https://github.com/mapbox/mapbox-directions-swift/pull/517))
 * The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))

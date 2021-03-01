@@ -1,8 +1,9 @@
 import Foundation
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
-let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MBXAccessToken") as? String
-let fallbackAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
+let defaultAccessToken =
+    Bundle.main.object(forInfoDictionaryKey: "MBXAccessToken") as? String ??
+    Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
 let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
 public struct DirectionsCredentials: Equatable {
@@ -37,9 +38,9 @@ public struct DirectionsCredentials: Equatable {
      - parameter host: Optional. A parameter to pass a custom host. If `nil` is provided, the SDK will attempt to find a host from your app's `info.plist`, and barring that will default to  `https://api.mapbox.com`.
      */
     public init(accessToken token: String? = nil, host: URL? = nil) {
-        let accessToken = token ?? defaultAccessToken ?? fallbackAccessToken
+        let accessToken = token ?? defaultAccessToken
         
-        precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
+        precondition(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>. In Info.plist, set the MBXAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
         self.accessToken = accessToken
         if let host = host {
             self.host = host
