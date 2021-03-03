@@ -68,6 +68,12 @@ jobs:
       iOS:
         type: string
         default: "12.1"
+      watchOS:
+        type: string
+        default: "5.0"
+      tvOS:
+        type: string
+        default: "12.0"
       test:
         type: boolean
         default: true
@@ -102,8 +108,18 @@ jobs:
           steps:
             - publish-codecov
       - run:
+          name: tvOS
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV 4K (at 1080p),OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+      - when:
+          condition: << parameters.codecoverage >>
+          steps:
+            - publish-codecov
+      - run:
           name: macOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
+      - run:
+          name: watchOS
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 5 - 44mm,OS=<< parameters.watchOS >>' clean build
       - save-cache
 
 workflows:
@@ -113,11 +129,17 @@ workflows:
           name: "Xcode_12.1"
           xcode: "12.0.0"
           iOS: "14.0"
+          tvOS: "14.0"
+          watchOS: "7.0"
       - build-job:
           name: "Xcode_11.1"
           xcode: "11.1.0"
           iOS: "13.1"
+          tvOS: "13.0"
+          watchOS: "6.0"
           codecoverage: true
       - spm-job:
           name: "SPM_build"
           xcode: "12.0.0"
+      - spm-linux-job:
+          name: "SPM_Ubuntu_build"
