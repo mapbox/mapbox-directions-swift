@@ -44,6 +44,6 @@ Pod::Spec.new do |s|
   s.swift_version = "5.0"
 
   s.dependency "Polyline", "~> 5.0"
-  s.dependency "Turf", "~> 2.0.0-alpha.2"
+  s.dependency "Turf", "~> 2.0.0-alpha.3"
 
 end
