@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 /**
  A `Tracepoint` represents a location matched to the road network.
@@ -18,7 +14,7 @@ public class Tracepoint: Waypoint {
         case countOfAlternatives = "alternatives_count"
     }
     
-    init(coordinate: CLLocationCoordinate2D, countOfAlternatives: Int, name: String?) {
+    init(coordinate: LocationCoordinate2D, countOfAlternatives: Int, name: String?) {
         self.countOfAlternatives = countOfAlternatives
         super.init(coordinate: coordinate, name: name)
     }

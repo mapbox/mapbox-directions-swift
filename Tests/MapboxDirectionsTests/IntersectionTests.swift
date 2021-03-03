@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class IntersectionTests: XCTestCase {
@@ -54,12 +50,12 @@ class IntersectionTests: XCTestCase {
         if let intersection = intersections?.first {
             XCTAssertEqual(intersection.outletRoadClasses, [.toll, .restricted])
             XCTAssertEqual(intersection.headings, [80.0])
-            XCTAssertEqual(intersection.location, CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
+            XCTAssertEqual(intersection.location, LocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
             XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
         }
         
         intersections = [
-            Intersection(location: CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579),
+            Intersection(location: LocationCoordinate2D(latitude: 52.508068, longitude: 13.426579),
                          headings: [80.0],
                          approachIndex: -1,
                          outletIndex: 0,
@@ -72,7 +68,7 @@ class IntersectionTests: XCTestCase {
                          restStop: nil,
                          isUrban: nil,
                          outletMapboxStreetsRoadClass: .streetLimited),
-            Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
+            Intersection(location: LocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
                          outletIndex: 1,
@@ -84,7 +80,7 @@ class IntersectionTests: XCTestCase {
                          tunnelName: nil,
                          restStop: nil,
                          isUrban: nil),
-            Intersection(location: CLLocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
+            Intersection(location: LocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
                          headings: [45, 135, 255],
                          approachIndex: 2,
                          outletIndex: 0,

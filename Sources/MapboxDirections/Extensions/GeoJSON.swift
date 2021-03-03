@@ -1,8 +1,10 @@
 import Foundation
+import func Polyline.decodePolyline
 #if canImport(CoreLocation)
-import CoreLocation
+import typealias Polyline.LocationCoordinate2D
+#else
+import struct Polyline.LocationCoordinate2D
 #endif
-import Polyline
 import Turf
 
 extension BoundingBox: CustomStringConvertible {
@@ -22,7 +24,7 @@ extension LineString {
     }
     
     init(encodedPolyline: String, precision: Double) throws {
-        guard var coordinates = decodePolyline(encodedPolyline, precision: precision) as [LocationCoordinate2D]? else {
+        guard var coordinates = decodePolyline(encodedPolyline, precision: precision) as [Polyline.LocationCoordinate2D]? else {
             throw GeometryError.cannotDecodePolyline(precision: precision)
         }
         // If the polyline has zero length with both endpoints at the same coordinate, Polyline drops one of the coordinates.
@@ -34,7 +36,7 @@ extension LineString {
         #if canImport(CoreLocation)
         self.init(coordinates)
         #else
-        self.init(coordinates.map { CLLocationCoordinate2D($0) })
+        self.init(coordinates.map { Turf.LocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) })
         #endif
     }
 }

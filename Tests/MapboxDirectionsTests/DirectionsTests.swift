@@ -4,9 +4,8 @@ import OHHTTPStubs
 #endif
 #if canImport(CoreLocation)
 import CoreLocation
-#else
-import Turf
 #endif
+import Turf
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
@@ -52,7 +51,7 @@ class DirectionsTests: XCTestCase {
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength
-        let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount)
+        let coordinates = Array(repeating: LocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount)
         let options = RouteOptions(coordinates: coordinates)
         
         let directions = Directions(credentials: BogusCredentials)
@@ -69,7 +68,7 @@ class DirectionsTests: XCTestCase {
     }
     
     func testPOSTRequest() {
-        let coordinates = Array(repeating: CLLocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
+        let coordinates = Array(repeating: LocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
         let options = RouteOptions(coordinates: coordinates)
         
         let directions = Directions(credentials: BogusCredentials)
@@ -92,8 +91,8 @@ class DirectionsTests: XCTestCase {
             return HTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
         }
         let expectation = self.expectation(description: "Async callback")
-        let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
-        let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
+        let one = CLLocation(latitude: 0.0, longitude: 0.0)
+        let two = CLLocation(latitude: 2.0, longitude: 2.0)
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
@@ -118,8 +117,8 @@ class DirectionsTests: XCTestCase {
             return HTTPStubsResponse(data: message.data(using: .utf8)!, statusCode: 420, headers: ["Content-Type" : "text/plain"])
         }
         let expectation = self.expectation(description: "Async callback")
-        let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
-        let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
+        let one = CLLocation(latitude: 0.0, longitude: 0.0)
+        let two = CLLocation(latitude: 2.0, longitude: 2.0)
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
@@ -165,8 +164,8 @@ class DirectionsTests: XCTestCase {
         }
         
         let expectation = self.expectation(description: "Async callback")
-        let one = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
-        let two = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 2.0, longitude: 2.0))
+        let one = CLLocation(latitude: 0.0, longitude: 0.0)
+        let two = CLLocation(latitude: 2.0, longitude: 2.0)
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])

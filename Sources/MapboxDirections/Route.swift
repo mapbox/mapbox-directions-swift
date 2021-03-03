@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#endif
 import Turf
 
 /**
@@ -20,7 +17,7 @@ open class Route: DirectionsResult {
      - parameter expectedTravelTime: The route’s expected travel time, measured in seconds.
      - parameter typicalTravelTime: The route’s typical travel time, measured in seconds.
      */
-    public override init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
+    public override init(legs: [RouteLeg], shape: LineString?, distance: LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
         super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime, typicalTravelTime: typicalTravelTime)
     }
     

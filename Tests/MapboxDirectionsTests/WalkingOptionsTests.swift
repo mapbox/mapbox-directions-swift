@@ -1,17 +1,13 @@
 import XCTest
 import MapboxDirections
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class WalkingOptionsTests: XCTestCase {
     func testURLQueryParams() {
         let waypoints = [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 1)),
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 2, longitude: 3))
         ]
 
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: DirectionsProfileIdentifier.walking)

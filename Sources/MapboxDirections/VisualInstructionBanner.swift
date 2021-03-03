@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 internal extension CodingUserInfoKey {
     static let drivingSide = CodingUserInfoKey(rawValue: "drivingSide")!
@@ -27,7 +23,7 @@ open class VisualInstructionBanner: Codable {
     /**
      Initializes a visual instruction banner with the given instructions.
      */
-    public init(distanceAlongStep: CLLocationDistance, primary: VisualInstruction, secondary: VisualInstruction?, tertiary: VisualInstruction?, quaternary: VisualInstruction?, drivingSide: DrivingSide) {
+    public init(distanceAlongStep: LocationDistance, primary: VisualInstruction, secondary: VisualInstruction?, tertiary: VisualInstruction?, quaternary: VisualInstruction?, drivingSide: DrivingSide) {
         self.distanceAlongStep = distanceAlongStep
         primaryInstruction = primary
         secondaryInstruction = secondary
@@ -48,7 +44,7 @@ open class VisualInstructionBanner: Codable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        distanceAlongStep = try container.decode(CLLocationDistance.self, forKey: .distanceAlongStep)
+        distanceAlongStep = try container.decode(LocationDistance.self, forKey: .distanceAlongStep)
         primaryInstruction = try container.decode(VisualInstruction.self, forKey: .primaryInstruction)
         secondaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .secondaryInstruction)
         tertiaryInstruction = try container.decodeIfPresent(VisualInstruction.self, forKey: .tertiaryInstruction)
@@ -65,7 +61,7 @@ open class VisualInstructionBanner: Codable {
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
      */
-    public let distanceAlongStep: CLLocationDistance
+    public let distanceAlongStep: LocationDistance
     
     // MARK: Getting the Instructions to Display
     

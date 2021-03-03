@@ -1,15 +1,12 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#endif
 import Turf
 @testable import MapboxDirections
 
 class QuickLookTests: XCTestCase {
     func testQuickLookURL() {
         let lineString = LineString([
-            CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            CLLocationCoordinate2D(latitude: 1, longitude: 1),
+            LocationCoordinate2D(latitude: 0, longitude: 0),
+            LocationCoordinate2D(latitude: 1, longitude: 1),
         ])
         XCTAssertNil(debugQuickLookURL(illustrating: lineString))
         XCTAssertEqual(debugQuickLookURL(illustrating: lineString, accessToken: BogusToken), URL(string: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/path-10+3802DA-0.6(%3F%3F_ibE_ibE)/auto/680x360@2x?before_layer=building-number-label&access_token=\(BogusToken)"))

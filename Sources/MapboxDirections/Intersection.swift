@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 /**
  A single cross street along a step.
@@ -11,8 +7,8 @@ import Turf
 public struct Intersection {
     // MARK: Creating an Intersection
     
-    public init(location: CLLocationCoordinate2D,
-                headings: [CLLocationDirection],
+    public init(location: LocationCoordinate2D,
+                headings: [LocationDirection],
                 approachIndex: Int,
                 outletIndex: Int,
                 outletIndexes: IndexSet,
@@ -46,18 +42,18 @@ public struct Intersection {
     /**
      The geographic coordinates at the center of the intersection.
      */
-    public let location: CLLocationCoordinate2D
+    public let location: LocationCoordinate2D
     
     // MARK: Getting the Roads that Meet at the Intersection
     
     /**
-     An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
+     An array of `LocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
      
      A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
      
      A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
      */
-    public let headings: [CLLocationDirection]
+    public let headings: [LocationDirection]
     
     /**
      The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
@@ -232,7 +228,7 @@ extension Intersection: Codable {
     
     func encode(to encoder: Encoder, administrativeRegionIndex: Int?, geometryIndex: Int?) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(CLLocationCoordinate2DCodable(location), forKey: .location)
+        try container.encode(LocationCoordinate2DCodable(location), forKey: .location)
         try container.encode(headings, forKey: .headings)
         
         try container.encodeIfPresent(approachIndex, forKey: .approachIndex)
@@ -290,8 +286,8 @@ extension Intersection: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        location = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
-        headings = try container.decode([CLLocationDirection].self, forKey: .headings)
+        location = try container.decode(LocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
+        headings = try container.decode([LocationDirection].self, forKey: .headings)
         
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
             approachLanes = lanes.map { $0.indications }

@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#endif
 import Polyline
 import Turf
 
@@ -460,7 +457,7 @@ open class RouteStep: Codable {
      - parameter instructionsSpokenAlongStep: Instructions about the next step’s maneuver, optimized for speech synthesis.
      - parameter instructionsDisplayedAlongStep: Instructions about the next step’s maneuver, optimized for display in real time.
      */
-    public init(transportType: TransportType, maneuverLocation: CLLocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: CLLocationDirection? = nil, finalHeading: CLLocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil, administrativeAreaContainerByIntersection: [Int?]? = nil, segmentIndicesByIntersection: [Int?]? = nil) {
+    public init(transportType: TransportType, maneuverLocation: Turf.LocationCoordinate2D, maneuverType: ManeuverType, maneuverDirection: ManeuverDirection? = nil, instructions: String, initialHeading: Turf.LocationDirection? = nil, finalHeading: Turf.LocationDirection? = nil, drivingSide: DrivingSide, exitCodes: [String]? = nil, exitNames: [String]? = nil, phoneticExitNames: [String]? = nil, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, names: [String]? = nil, phoneticNames: [String]? = nil, codes: [String]? = nil, destinationCodes: [String]? = nil, destinations: [String]? = nil, intersections: [Intersection]? = nil, speedLimitSignStandard: SignStandard? = nil, speedLimitUnit: UnitSpeed? = nil, instructionsSpokenAlongStep: [SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [VisualInstructionBanner]? = nil, administrativeAreaContainerByIntersection: [Int?]? = nil, segmentIndicesByIntersection: [Int?]? = nil) {
         self.transportType = transportType
         self.maneuverLocation = maneuverLocation
         self.maneuverType = maneuverType
@@ -534,7 +531,7 @@ open class RouteStep: Codable {
         try maneuver.encode(instructions, forKey: .instruction)
         try maneuver.encode(maneuverType, forKey: .type)
         try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
-        try maneuver.encode(CLLocationCoordinate2DCodable(maneuverLocation), forKey: .location)
+        try maneuver.encode(LocationCoordinate2DCodable(maneuverLocation), forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
         
@@ -586,12 +583,12 @@ open class RouteStep: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
-        maneuverLocation = try maneuver.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
+        maneuverLocation = try maneuver.decode(LocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
         maneuverType = (try? maneuver.decode(ManeuverType.self, forKey: .type)) ?? .default
         maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
         
-        initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
-        finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
+        initialHeading = try maneuver.decodeIfPresent(Turf.LocationDirection.self, forKey: .initialHeading)
+        finalHeading = try maneuver.decodeIfPresent(Turf.LocationDirection.self, forKey: .finalHeading)
         
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
@@ -618,7 +615,7 @@ open class RouteStep: Codable {
         }
         
         exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
-        distance = try container.decode(CLLocationDirection.self, forKey: .distance)
+        distance = try container.decode(Turf.LocationDirection.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
@@ -692,7 +689,7 @@ open class RouteStep: Codable {
     /**
      The location of the maneuver at the beginning of this step.
      */
-    public let maneuverLocation: CLLocationCoordinate2D
+    public let maneuverLocation: Turf.LocationCoordinate2D
     
     /**
      The type of maneuver required for beginning this step.
@@ -716,14 +713,14 @@ open class RouteStep: Codable {
     /**
      The user’s heading immediately before performing the maneuver.
      */
-    public let initialHeading: CLLocationDirection?
+    public let initialHeading: Turf.LocationDirection?
     
     /**
      The user’s heading immediately after performing the maneuver.
      
      The value of this property may differ from the user’s heading after traveling along the road past the maneuver.
      */
-    public let finalHeading: CLLocationDirection?
+    public let finalHeading: Turf.LocationDirection?
     
     /**
      Indicates what side of a bidirectional road the driver must be driving on. Also referred to as the rule of the road.
@@ -773,7 +770,7 @@ open class RouteStep: Codable {
      
      The value of this property accounts for the distance that the user must travel to go from this step’s maneuver location to the next step’s maneuver location. It is not the sum of the direct distances between the route’s waypoints, nor should you assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: CLLocationDistance
+    public let distance: Turf.LocationDistance
     
     /**
      The step’s expected travel time, measured in seconds.

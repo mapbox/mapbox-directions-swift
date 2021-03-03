@@ -1,8 +1,7 @@
 #if canImport(CoreLocation)
 import CoreLocation
-#else
-import Turf
 #endif
+import Turf
 
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
@@ -24,15 +23,15 @@ public class Waypoint: Codable {
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        coordinate = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .coordinate).decodedCoordinates
+        coordinate = try container.decode(LocationCoordinate2DCodable.self, forKey: .coordinate).decodedCoordinates
         
         coordinateAccuracy = try container.decodeIfPresent(LocationAccuracy.self, forKey: .coordinateAccuracy)
         
-        targetCoordinate = try container.decodeIfPresent(CLLocationCoordinate2DCodable.self, forKey: .targetCoordinate)?.decodedCoordinates
+        targetCoordinate = try container.decodeIfPresent(LocationCoordinate2DCodable.self, forKey: .targetCoordinate)?.decodedCoordinates
         
-        heading = try container.decodeIfPresent(CLLocationDirection.self, forKey: .heading)
+        heading = try container.decodeIfPresent(LocationDirection.self, forKey: .heading)
         
-        headingAccuracy = try container.decodeIfPresent(CLLocationDirection.self, forKey: .headingAccuracy)
+        headingAccuracy = try container.decodeIfPresent(LocationDirection.self, forKey: .headingAccuracy)
         
         if let separates = try container.decodeIfPresent(Bool.self, forKey: .separatesLegs) {
             separatesLegs = separates
@@ -53,9 +52,9 @@ public class Waypoint: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(CLLocationCoordinate2DCodable(coordinate), forKey: .coordinate)
+        try container.encode(LocationCoordinate2DCodable(coordinate), forKey: .coordinate)
         try container.encode(coordinateAccuracy, forKey: .coordinateAccuracy)
-        let targetCoordinateCodable = targetCoordinate != nil ? CLLocationCoordinate2DCodable(targetCoordinate!) : nil
+        let targetCoordinateCodable = targetCoordinate != nil ? LocationCoordinate2DCodable(targetCoordinate!) : nil
         try container.encode(targetCoordinateCodable, forKey: .targetCoordinate)
         try container.encodeIfPresent(heading, forKey: .heading)
         try container.encodeIfPresent(headingAccuracy, forKey: .headingAccuracy)
@@ -73,7 +72,7 @@ public class Waypoint: Codable {
         It is recommended that the value of this argument be greater than the `horizontalAccuracy` property of a `CLLocation` object obtained from a `CLLocationManager` object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.
      - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(coordinate: CLLocationCoordinate2D, coordinateAccuracy: LocationAccuracy? = nil, name: String? = nil) {
+    public init(coordinate: LocationCoordinate2D, coordinateAccuracy: LocationAccuracy? = nil, name: String? = nil) {
         self.coordinate = coordinate
         self.coordinateAccuracy = coordinateAccuracy
         self.name = name
@@ -84,13 +83,13 @@ public class Waypoint: Codable {
     /**
      Initializes a new waypoint object with the given `CLLocation` object and an optional heading value and name.
      
-     - note: This initializer is intended for `CLLocation` objects created using the `CLLocation.init(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.
+     - note: This initializer is intended for `CLLocation` objects created using the `CLLocation(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.
      
      - parameter location: A `CLLocation` object representing the waypoint’s location. This initializer respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `coordinate` and `coordinateAccuracy` properties, respectively.
-     - parameter heading: A `CLLocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
+     - parameter heading: A `LocationDirection` value representing the direction from which the route must approach the waypoint in order to be considered viable. This value is stored in the `headingAccuracy` property.
      - parameter name: The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.
      */
-    public init(location: CLLocation, heading: CLLocationDirection? = nil, name: String? = nil) {
+    public init(location: CLLocation, heading: LocationDirection? = nil, name: String? = nil) {
         coordinate = location.coordinate
         coordinateAccuracy = location.horizontalAccuracy
         if let heading = heading , heading >= 0 {
@@ -102,7 +101,7 @@ public class Waypoint: Codable {
     /**
      Initializes a new waypoint object with the given `CLLocation` object and an optional `CLHeading` object and name.
      
-     - note: This initializer is intended for `CLLocation` objects created using the `CLLocation.init(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.
+     - note: This initializer is intended for `CLLocation` objects created using the `CLLocation(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.
      
      - parameter location: A `CLLocation` object representing the waypoint’s location. This initializer respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter heading: A `CLHeading` object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the `CLHeading` class’s `trueHeading` property or `magneticHeading` property, converting it into the `headingAccuracy` property.
@@ -124,7 +123,7 @@ public class Waypoint: Codable {
     /**
      The geographic coordinate of the waypoint.
      */
-    public let coordinate: CLLocationCoordinate2D
+    public let coordinate: LocationCoordinate2D
     
     /**
      The radius of uncertainty for the waypoint, measured in meters.
@@ -144,7 +143,7 @@ public class Waypoint: Codable {
 
      This property corresponds to the [`waypoint_targets`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    public var targetCoordinate: CLLocationCoordinate2D?
+    public var targetCoordinate: LocationCoordinate2D?
     
     // MARK: Getting the Direction of Approach
     
@@ -161,7 +160,7 @@ public class Waypoint: Codable {
      
      By default, the value of this property is `nil`, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var heading: CLLocationDirection? = nil
+    public var heading: LocationDirection? = nil
     
     /**
      The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from `heading` in either direction in order to be considered viable.
@@ -172,7 +171,7 @@ public class Waypoint: Codable {
      
      By default, the value of this property is `nil`, meaning that a route is considered viable regardless of the direction of approach.
      */
-    public var headingAccuracy: CLLocationDirection? = nil
+    public var headingAccuracy: LocationDirection? = nil
     
     internal var headingDescription: String {
         guard let heading = heading, heading >= 0,
