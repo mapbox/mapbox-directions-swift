@@ -15,7 +15,7 @@ public struct Intersection {
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
                 preferredApproachLanes: IndexSet?,
-                usableLaneIndication: LaneIndication?,
+//                usableLaneIndication: LaneIndication?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,

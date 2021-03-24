@@ -197,7 +197,7 @@ extension VisualInstruction.Component: Codable {
         case imageURL
         case directions
         case isActive = "active"
-        case activeDirection
+        case activeDirection = "active_direction"
     }
     
     enum Kind: String, Codable {

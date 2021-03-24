@@ -25,7 +25,7 @@ struct Lane: Equatable {
      */
     let validIndication: LaneIndication?
     
-    init(indications: LaneIndication, valid: Bool = false, active: Bool?, preferred: LaneIndication?) {
+    init(indications: LaneIndication, valid: Bool = false, active: Bool? = false, preferred: LaneIndication? = nil) {
         self.indications = indications
         self.isValid = valid
         self.isActive = active

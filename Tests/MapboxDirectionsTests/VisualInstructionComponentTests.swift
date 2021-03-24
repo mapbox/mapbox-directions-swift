@@ -69,21 +69,23 @@ class VisualInstructionComponentTests: XCTestCase {
             "type": "lane",
             "active": true,
             "directions": ["right", "straight"],
+            "active_direction": ["right"],
         ]
         let componentData = try! JSONSerialization.data(withJSONObject: componentJSON, options: [])
         var component: VisualInstruction.Component?
         XCTAssertNoThrow(component = try JSONDecoder().decode(VisualInstruction.Component.self, from: componentData))
         XCTAssertNotNil(component)
         if let component = component {
-            if case let .lane(indications, isUsable) = component {
+            if case let .lane(indications, isUsable, preferredDirection) = component {
                 XCTAssertEqual(indications, [.straightAhead, .right])
                 XCTAssertTrue(isUsable)
+                XCTAssertEqual(preferredDirection, .right)
             } else {
                 XCTFail("Lane component should not be decoded as any other kind of component.")
             }
         }
         
-        component = .lane(indications: [.straightAhead, .right], isUsable: true)
+        component = .lane(indications: [.straightAhead, .right], isUsable: true, preferredDirection: .right)
         let encoder = JSONEncoder()
         var encodedData: Data?
         XCTAssertNoThrow(encodedData = try encoder.encode(component))
