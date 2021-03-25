@@ -3,6 +3,15 @@
 
 import PackageDescription
 
+// Tests that use OHHTTPStubs don't support Linux
+#if !os(Linux)
+let optionalPackageDependencies = [Package.Dependency.package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0")]
+let optionalTestTargetDependecies = [Target.Dependency.product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")]
+#else
+let optionalPackageDependencies = [Package.Dependency]()
+let optionalTestTargetDependecies = [Target.Dependency]()
+#endif
+
 let package = Package(
     name: "MapboxDirections",
     platforms: [
@@ -22,8 +31,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
         .package(name: "Turf", url: "https://github.com/mapbox/turf-swift.git", from: "1.1.0"),
-        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "6.0.0")
-    ],
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "6.0.0"),
+    ] + optionalPackageDependencies,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
@@ -33,7 +42,7 @@ let package = Package(
             exclude: ["Info.plist"]),
         .testTarget(
             name: "MapboxDirectionsTests",
-            dependencies: ["MapboxDirections"],
+            dependencies: ["MapboxDirections"] + optionalTestTargetDependecies,
             exclude: ["Info.plist"],
             resources: [
                 .process("Fixtures"),

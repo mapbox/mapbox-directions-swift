@@ -4,18 +4,21 @@ import CoreLocation
 #else
 import Turf
 #endif
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 #endif
 @testable import MapboxDirections
 
 class RouteRefreshTests: XCTestCase {
-    #if !SWIFT_PACKAGE
+    #if !os(Linux)
     override func setUp() {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
             && pathStartsWith("/directions/v5/mapbox/driving-traffic")) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "routeRefreshRoute", ofType: "json")
+                let path = Bundle.module.path(forResource: "routeRefreshRoute", ofType: "json")
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -24,10 +27,10 @@ class RouteRefreshTests: XCTestCase {
             && pathStartsWith("/directions-refresh/v1/mapbox/driving-traffic")) {
                 switch Int($0.url!.lastPathComponent)! {
                 case 0...1:
-                    let path = Bundle(for: type(of: self)).path(forResource: "routeRefreshResponse", ofType: "json")
+                    let path = Bundle.module.path(forResource: "routeRefreshResponse", ofType: "json")
                     return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
                 default:
-                    let path = Bundle(for: type(of: self)).path(forResource: "incorrectRouteRefreshResponse", ofType: "json")
+                    let path = Bundle.module.path(forResource: "incorrectRouteRefreshResponse", ofType: "json")
                     return HTTPStubsResponse(fileAtPath: path!, statusCode: 422, headers: ["Content-Type": "application/json"])
                 }
         }

@@ -1,6 +1,9 @@
 import XCTest
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 @testable import MapboxDirections
 
 class VisualInstructionsTests: XCTestCase {
@@ -103,7 +106,7 @@ class VisualInstructionsTests: XCTestCase {
         
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "instructions", ofType: "json")
+                let path = Bundle.module.path(forResource: "instructions", ofType: "json")
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -202,7 +205,7 @@ class VisualInstructionsTests: XCTestCase {
         ]
         
         stub(condition: isHost("api.mapbox.com") && containsQueryParams(queryParams)) { _ in
-            let path = Bundle(for: type(of: self)).path(forResource: "subLaneInstructions", ofType: "json")
+            let path = Bundle.module.path(forResource: "subLaneInstructions", ofType: "json")
             return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
@@ -277,7 +280,7 @@ class VisualInstructionsTests: XCTestCase {
         ]
         
         stub(condition: isHost("api.mapbox.com") && containsQueryParams(queryParams)) { _ in
-            let path = Bundle(for: type(of: self)).path(forResource: "subVisualInstructions", ofType: "json")
+            let path = Bundle.module.path(forResource: "subVisualInstructions", ofType: "json")
             return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         

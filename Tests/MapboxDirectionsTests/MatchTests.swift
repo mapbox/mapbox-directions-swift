@@ -4,20 +4,23 @@ import CoreLocation
 #else
 import Turf
 #endif
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 #endif
 @testable import MapboxDirections
 
 class MatchTests: XCTestCase {
     override func tearDown() {
-        #if !SWIFT_PACKAGE
+        #if !os(Linux)
         HTTPStubs.removeAllStubs()
         #endif
         super.tearDown()
     }
     
-    #if !SWIFT_PACKAGE
+    #if !os(Linux)
     func testMatch() {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
