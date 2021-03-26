@@ -1,6 +1,9 @@
 import XCTest
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 import Turf
 @testable import MapboxDirections
 
@@ -17,7 +20,7 @@ class OfflineDirectionsTests: XCTestCase {
         let versionsExpectation = expectation(description: "Fetching available versions should return results")
         
         let apiStub = stub(condition: isHost(host)) { _ in
-            let bundle = Bundle(for: type(of: self))
+            let bundle = Bundle.module
             let path = bundle.path(forResource: "versions", ofType: "json")
             let filePath = URL(fileURLWithPath: path!)
             let data = try! Data(contentsOf: filePath)
@@ -45,7 +48,7 @@ class OfflineDirectionsTests: XCTestCase {
         let downloadExpectation = self.expectation(description: "Download tile expectation")
         
         let apiStub = stub(condition: isHost(host)) { _ in
-            let bundle = Bundle(for: type(of: self))
+            let bundle = Bundle.module
             let path = bundle.path(forResource: "2018-10-16-Liechtenstein", ofType: "tar")
 
             let attributes = try! FileManager.default.attributesOfItem(atPath: path!)

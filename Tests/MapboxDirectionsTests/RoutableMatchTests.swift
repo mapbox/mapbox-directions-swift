@@ -1,6 +1,9 @@
 import XCTest
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 @testable import MapboxDirections
 
 class RoutableMatchTest: XCTestCase {
@@ -22,7 +25,7 @@ class RoutableMatchTest: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && isMethodGET()
             && pathStartsWith("/matching/v5/mapbox/driving")) { _ in
-                let path = Bundle(for: type(of: self)).path(forResource: "match-polyline6", ofType: "json")
+                let path = Bundle.module.path(forResource: "match-polyline6", ofType: "json")
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         

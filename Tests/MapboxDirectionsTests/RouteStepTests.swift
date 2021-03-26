@@ -296,7 +296,7 @@ class RouteStepTests: XCTestCase {
     }
     
     func testIncidentsCoding() {
-        let path = Bundle(for: type(of: self)).path(forResource: "incidents", ofType: "json")
+        let path = Bundle.module.path(forResource: "incidents", ofType: "json")
         let filePath = URL(fileURLWithPath: path!)
         let data = try! Data(contentsOf: filePath)
         let options = RouteOptions(coordinates: [
