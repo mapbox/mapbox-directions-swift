@@ -23,7 +23,7 @@ struct Lane: Equatable {
     /**
      Which of the `indications` is applicable to the current route, when there is more than one
      */
-    let validIndication: LaneIndication?
+    var validIndication: LaneIndication?
     
     init(indications: LaneIndication, valid: Bool = false, active: Bool? = false, preferred: LaneIndication? = nil) {
         self.indications = indications

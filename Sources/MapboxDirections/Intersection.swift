@@ -15,7 +15,7 @@ public struct Intersection {
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
                 preferredApproachLanes: IndexSet?,
-//                usableLaneIndication: LaneIndication?,
+                usableLaneIndication: LaneIndication?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,
@@ -161,9 +161,8 @@ public struct Intersection {
     public let preferredApproachLanes: IndexSet?
     
     /**
-     A lane that represents which of the `LaneIndication`s is applicable to the current route when there is more than one.
+     Which of the `LaneIndication`s is applicable to the current route when there is more than one.
      
-     // TODO: check if this is actually true
      If no lane information is available for the intersection, this property’s value is `nil`
      */
     public let usableLaneIndication: LaneIndication?
@@ -259,17 +258,20 @@ extension Intersection: Codable {
         }
         
         try container.encode(outletArray, forKey: .outletIndexes)
-        // add valid indication
+        
         var lanes: [Lane]?
         if let approachLanes = approachLanes,
             let usableApproachLanes = usableApproachLanes,
-            let preferredApproachLanes = preferredApproachLanes {
+            let preferredApproachLanes = preferredApproachLanes,
+            let usableLaneIndication = usableLaneIndication {
             lanes = approachLanes.map { Lane(indications: $0) }
+            // document assumptions and call them out in PR
             for i in usableApproachLanes {
                 lanes![i].isValid = true
+                lanes![i].validIndication = usableLaneIndication
             }
             for j in preferredApproachLanes {
-                lanes![j].preferredDirection = true
+                lanes![j].isActive = true
             }
         }
         try container.encodeIfPresent(lanes, forKey: .lanes)
@@ -315,14 +317,22 @@ extension Intersection: Codable {
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
-            preferredApproachLanes = lanes.indices { $0.preferredDirection}
+            preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
+            
+            let temp = LaneIndication(rawValue: 0)
+            var usableIndications = [LaneIndication]()
+            lanes.forEach { lane in
+                if lane.validIndication != nil {
+                    usableIndications.append(lane.validIndication!)
+                }
+            }
+            usableLaneIndication = usableIndications.reduce(temp) { return ($0).union($1) }
         } else {
             approachLanes = nil
             usableApproachLanes = nil
             preferredApproachLanes = nil
+            usableLaneIndication = nil
         }
-        // TODO: add valid indication
-        usableLaneIndication = try container.decodeIfPresent(LaneIndication.self, forKey: .usableLaneIndication)
         
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
