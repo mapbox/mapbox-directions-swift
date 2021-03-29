@@ -6,6 +6,9 @@
 * This library requires Turf v2.0.0-alpha.3. ([#525](https://github.com/mapbox/mapbox-directions-swift/pull/525))
 * The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
 
+## v2.0.0
+* Added the `Intersection.preferredApproachLanes`, `Intersection.usableLaneIndication`, `Lane.isActive`, and `Lane.validIndication` properties that indicate preferred lane usage. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
+
 ## v1.2.0
 
 ### Packaging
