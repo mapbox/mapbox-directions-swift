@@ -259,13 +259,15 @@ class VisualInstructionsTests: XCTestCase {
         XCTAssertEqual(laneIndicationComponents?.count, 2)
         
         if let laneIndicationComponents = laneIndicationComponents, laneIndicationComponents.count > 1 {
-            if case let VisualInstruction.Component.lane(indications, isUsable) = laneIndicationComponents[0] {
+            if case let VisualInstruction.Component.lane(indications, isUsable, preferredDirection) = laneIndicationComponents[0] {
                 XCTAssertEqual(indications, .straightAhead)
                 XCTAssertFalse(isUsable)
+                XCTAssertEqual(preferredDirection, nil)
             }
-            if case let VisualInstruction.Component.lane(indications, isUsable) = laneIndicationComponents[1] {
+            if case let VisualInstruction.Component.lane(indications, isUsable, preferredDirection) = laneIndicationComponents[1] {
                 XCTAssertEqual(indications, .right)
                 XCTAssertTrue(isUsable)
+                XCTAssertEqual(preferredDirection, nil)
             }
         }
     }

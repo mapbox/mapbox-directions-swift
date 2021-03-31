@@ -326,7 +326,7 @@ extension Intersection: Codable {
                     usableIndications.append(lane.validIndication!)
                 }
             }
-            usableLaneIndication = usableIndications.reduce(temp) { return ($0).union($1) }
+            usableLaneIndication = usableIndications.reduce(temp) { return $0.union($1) }
         } else {
             approachLanes = nil
             usableApproachLanes = nil

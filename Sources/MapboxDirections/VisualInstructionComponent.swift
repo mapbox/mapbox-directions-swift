@@ -281,7 +281,7 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
-            try container.encode(preferredDirection, forKey: .activeDirection)
+            try container.encodeIfPresent(preferredDirection, forKey: .activeDirection)
         case .guidanceView(let image, let alternativeText):
             try container.encode(Kind.guidanceView, forKey: .kind)
             textRepresentation = alternativeText
