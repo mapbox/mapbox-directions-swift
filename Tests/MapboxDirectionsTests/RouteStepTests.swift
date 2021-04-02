@@ -163,9 +163,22 @@ class RouteStepTests: XCTestCase {
                     "entry": [false, true, true],
                     "in": 0,
                     "lanes": [
-                        ["valid": true, "indications": ["left"]],
-                        ["valid": true, "indications": ["straight"]],
-                        ["valid": false, "indications": ["right"]],
+                        [
+                            "valid": true,
+                            "active": true,
+                            "valid_indication": "left",
+                            "indications": ["left"]
+                        ],
+                        [
+                            "valid": false,
+                            "active": false,
+                            "indications": ["straight"]
+                        ],
+                        [
+                            "valid": false,
+                            "active": false,
+                            "indications": ["right"]
+                        ],
                     ],
                 ],
             ],

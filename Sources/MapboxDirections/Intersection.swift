@@ -14,6 +14,8 @@ public struct Intersection {
                 outletIndexes: IndexSet,
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
+                preferredApproachLanes: IndexSet?,
+                usableLaneIndication: LaneIndication?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,
@@ -28,6 +30,8 @@ public struct Intersection {
         self.outletIndex = outletIndex
         self.outletIndexes = outletIndexes
         self.usableApproachLanes = usableApproachLanes
+        self.preferredApproachLanes = preferredApproachLanes
+        self.usableLaneIndication = usableLaneIndication
         self.outletRoadClasses = outletRoadClasses
         self.tollCollection = tollCollection
         self.tunnelName = tunnelName
@@ -148,6 +152,20 @@ public struct Intersection {
      If no lane information is available for an intersection, this property’s value is `nil`.
      */
     public let usableApproachLanes: IndexSet?
+    
+    /**
+     The indices of the items in the `approachLanes` array that correspond to the lanes that are preferred to execute the maneuver.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`.
+     */
+    public let preferredApproachLanes: IndexSet?
+    
+    /**
+     Which of the `LaneIndication`s is applicable to the current route when there is more than one.
+     
+     If no lane information is available for the intersection, this property’s value is `nil`
+     */
+    public let usableLaneIndication: LaneIndication?
 }
 
 extension Intersection: Codable {
@@ -243,10 +261,18 @@ extension Intersection: Codable {
         
         var lanes: [Lane]?
         if let approachLanes = approachLanes,
-            let usableApproachLanes = usableApproachLanes {
+            let usableApproachLanes = usableApproachLanes,
+            let preferredApproachLanes = preferredApproachLanes,
+            let usableLaneIndication = usableLaneIndication {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
                 lanes![i].isValid = true
+                if lanes![i].indications.contains(usableLaneIndication){
+                    lanes![i].validIndication = usableLaneIndication
+                }
+            }
+            for j in preferredApproachLanes {
+                lanes![j].isActive = true
             }
         }
         try container.encodeIfPresent(lanes, forKey: .lanes)
@@ -292,10 +318,16 @@ extension Intersection: Codable {
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
+            preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
+            let usableIndications = lanes.compactMap { $0.validIndication }
+            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
         } else {
             approachLanes = nil
             usableApproachLanes = nil
+            preferredApproachLanes = nil
+            usableLaneIndication = nil
         }
+        
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
@@ -325,6 +357,11 @@ extension Intersection: Equatable {
             lhs.outletIndex == rhs.outletIndex &&
             lhs.approachLanes == rhs.approachLanes &&
             lhs.usableApproachLanes == rhs.usableApproachLanes &&
+            lhs.preferredApproachLanes == rhs.preferredApproachLanes &&
+            lhs.usableLaneIndication == rhs.usableLaneIndication &&
+            lhs.restStop == rhs.restStop &&
+            lhs.regionCode == rhs.regionCode &&
+            lhs.outletMapboxStreetsRoadClass == rhs.outletMapboxStreetsRoadClass &&
             lhs.outletRoadClasses == rhs.outletRoadClasses &&
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
