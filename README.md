@@ -220,7 +220,3 @@ To build `MapboxDirectionsCLI` using SPM:
 
 1. `swift build`
 1. `swift run MapboxDirectionsCLI -h` to see usage.
-
-## Pricing
-
-API calls made to the Directions API are individually billed by request. Review the [pricing information](https://docs.mapbox.com/api/navigation/directions/#directions-api-pricing) and the [pricing page](https://www.mapbox.com/pricing/#directions) for current rates.
