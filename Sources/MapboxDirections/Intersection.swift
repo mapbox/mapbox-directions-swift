@@ -319,12 +319,7 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            var usableIndications = [LaneIndication]()
-            lanes.forEach { lane in
-                if lane.validIndication != nil {
-                    usableIndications.append(lane.validIndication!)
-                }
-            }
+            let usableIndications = lanes.compactMap { $0.validIndication }
             usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
         } else {
             approachLanes = nil

@@ -46,8 +46,7 @@ extension Lane: Codable {
         try container.encode(indications, forKey: .indications)
         try container.encode(isValid, forKey: .valid)
         try container.encodeIfPresent(isActive, forKey: .active)
-        let str = validIndication?.descriptions.first
-        try container.encodeIfPresent(str, forKey: .preferred)
+        try container.encodeIfPresent(validIndication?.descriptions.first, forKey: .preferred)
     }
     
     init(from decoder: Decoder) throws {
@@ -55,8 +54,8 @@ extension Lane: Codable {
         indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
         isActive = try container.decodeIfPresent(Bool.self, forKey: .active)
-        if let str = try container.decodeIfPresent(String.self, forKey: .preferred) {
-            validIndication = LaneIndication(descriptions: [str])
+        if let validIndicationDescription = try container.decodeIfPresent(String.self, forKey: .preferred) {
+            validIndication = LaneIndication(descriptions: [validIndicationDescription])
         }
     }
 }
