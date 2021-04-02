@@ -1,6 +1,9 @@
 import XCTest
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 #endif
 #if canImport(CoreLocation)
 import CoreLocation
@@ -31,7 +34,7 @@ Request ID: RAf2XH13mMVxQ96Z1cVQMPrd-hJoVA6LfaWVFDbdN2j-J1VkzaPvZg==
 </BODY></HTML>
 """
 
-#if !SWIFT_PACKAGE
+#if !os(Linux)
 class DirectionsTests: XCTestCase {
     override func setUp() {
         // Make sure tests run in all time zones

@@ -1,5 +1,8 @@
 import XCTest
-#if !SWIFT_PACKAGE
+#if !os(Linux)
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
 import OHHTTPStubs
 @testable import MapboxDirections
 
