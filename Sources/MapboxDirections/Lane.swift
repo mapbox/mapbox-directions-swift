@@ -38,7 +38,7 @@ extension Lane: Codable {
         case indications
         case valid
         case active
-        case preferred
+        case preferred = "valid_indication"
     }
     
     func encode(to encoder: Encoder) throws {
@@ -46,7 +46,8 @@ extension Lane: Codable {
         try container.encode(indications, forKey: .indications)
         try container.encode(isValid, forKey: .valid)
         try container.encodeIfPresent(isActive, forKey: .active)
-        try container.encodeIfPresent(validIndication, forKey: .preferred)
+        let str = validIndication?.descriptions.first
+        try container.encodeIfPresent(str, forKey: .preferred)
     }
     
     init(from decoder: Decoder) throws {
@@ -54,6 +55,8 @@ extension Lane: Codable {
         indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
         isActive = try container.decodeIfPresent(Bool.self, forKey: .active)
-        validIndication = try container.decodeIfPresent(LaneIndication.self, forKey: .preferred)
+        if let str = try container.decodeIfPresent(String.self, forKey: .preferred) {
+            validIndication = LaneIndication(descriptions: [str])
+        }
     }
 }

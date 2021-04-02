@@ -265,10 +265,11 @@ extension Intersection: Codable {
             let preferredApproachLanes = preferredApproachLanes,
             let usableLaneIndication = usableLaneIndication {
             lanes = approachLanes.map { Lane(indications: $0) }
-            // document assumptions and call them out in PR
             for i in usableApproachLanes {
                 lanes![i].isValid = true
-                lanes![i].validIndication = usableLaneIndication
+                if lanes![i].indications.contains(usableLaneIndication){
+                    lanes![i].validIndication = usableLaneIndication
+                }
             }
             for j in preferredApproachLanes {
                 lanes![j].isActive = true
@@ -318,15 +319,13 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            
-            let temp = LaneIndication(rawValue: 0)
             var usableIndications = [LaneIndication]()
             lanes.forEach { lane in
                 if lane.validIndication != nil {
                     usableIndications.append(lane.validIndication!)
                 }
             }
-            usableLaneIndication = usableIndications.reduce(temp) { return $0.union($1) }
+            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
         } else {
             approachLanes = nil
             usableApproachLanes = nil

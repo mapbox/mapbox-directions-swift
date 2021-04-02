@@ -7,7 +7,7 @@
 * The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
 
 ## v2.0.0
-* Added the `Intersection.preferredApproachLanes`, `Intersection.usableLaneIndication`, `Lane.isActive`, and `Lane.validIndication` properties that indicate preferred lane usage. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
+* Added the `Intersection.preferredApproachLanes` and `Intersection.usableLaneIndication` properties that indicate preferred lane usage. `VisualInstruction.Component.lane(indications:isUsable:)` has been renamed to `VisualInstruction.Component.lane(indications:isUsable:preferredDirection:)`. Note that comparison for `Intersection`s is now stricter around road classes, regions, and rest stops. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
 
 ## v1.2.0
 

@@ -29,13 +29,13 @@ class IntersectionTests: XCTestCase {
                     [
                         "valid": true,
                         "active": false,
-                        "valid_indication": ["straight"],
+                        "valid_indication": "straight",
                         "indications": ["straight"],
                     ],
                     [
                         "valid": true,
                         "active": true,
-                        "valid_indication": ["straight"],
+                        "valid_indication": "straight",
                         "indications": ["right", "straight"],
                     ],
                 ],

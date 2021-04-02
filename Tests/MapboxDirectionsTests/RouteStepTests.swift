@@ -166,13 +166,12 @@ class RouteStepTests: XCTestCase {
                         [
                             "valid": true,
                             "active": true,
-                            "valid_indication": ["left"],
+                            "valid_indication": "left",
                             "indications": ["left"]
                         ],
                         [
-                            "valid": true,
+                            "valid": false,
                             "active": false,
-                            "valid_indication": ["straight"],
                             "indications": ["straight"]
                         ],
                         [
