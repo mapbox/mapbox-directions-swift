@@ -197,7 +197,7 @@ extension VisualInstruction.Component: Codable {
         case imageURL
         case directions
         case isActive = "active"
-        case activeDirection = "active_direction"
+        case active_direction
     }
     
     enum Kind: String, Codable {
@@ -217,7 +217,10 @@ extension VisualInstruction.Component: Codable {
         if kind == .lane {
             let indications = try container.decode(LaneIndication.self, forKey: .directions)
             let isUsable = try container.decode(Bool.self, forKey: .isActive)
-            let preferredDirection = try container.decodeIfPresent(LaneIndication.self, forKey: .activeDirection)
+            var preferredDirection: LaneIndication? = nil
+            if let preferredDirectionDescription = try container.decodeIfPresent(String.self, forKey: .active_direction) {
+                preferredDirection = LaneIndication(descriptions: [preferredDirectionDescription])
+            }
             self = .lane(indications: indications, isUsable: isUsable, preferredDirection: preferredDirection)
             return
         }
@@ -281,7 +284,7 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
-            try container.encodeIfPresent(preferredDirection, forKey: .activeDirection)
+            try container.encodeIfPresent(preferredDirection?.descriptions.first, forKey: .active_direction)
         case .guidanceView(let image, let alternativeText):
             try container.encode(Kind.guidanceView, forKey: .kind)
             textRepresentation = alternativeText

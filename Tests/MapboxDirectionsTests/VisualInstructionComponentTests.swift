@@ -69,7 +69,7 @@ class VisualInstructionComponentTests: XCTestCase {
             "type": "lane",
             "active": true,
             "directions": ["right", "straight"],
-            "active_direction": ["right"],
+            "active_direction": "right",
         ]
         let componentData = try! JSONSerialization.data(withJSONObject: componentJSON, options: [])
         var component: VisualInstruction.Component?
