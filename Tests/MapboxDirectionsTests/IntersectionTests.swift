@@ -96,7 +96,7 @@ class IntersectionTests: XCTestCase {
                          approachLanes: [.straightAhead, [.straightAhead, .right]],
                          usableApproachLanes: IndexSet([0, 1]),
                          preferredApproachLanes: IndexSet([1]),
-                         usableLaneIndication: [.straightAhead],
+                         usableLaneIndication: .straightAhead,
                          outletRoadClasses: nil,
                          tollCollection: nil,
                          tunnelName: nil,

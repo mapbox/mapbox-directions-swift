@@ -74,7 +74,7 @@ public extension VisualInstruction {
          - parameter isUsable: Whether the user can use this lane to continue along the current route.
          - parameter preferredDirection: Which of the `indications` is applicable to the current route when there is more than one
          */
-        case lane(indications: LaneIndication, isUsable: Bool, preferredDirection: LaneIndication?)
+        case lane(indications: LaneIndication, isUsable: Bool, preferredDirection: ManeuverDirection?)
     }
 }
 
@@ -217,10 +217,11 @@ extension VisualInstruction.Component: Codable {
         if kind == .lane {
             let indications = try container.decode(LaneIndication.self, forKey: .directions)
             let isUsable = try container.decode(Bool.self, forKey: .isActive)
-            var preferredDirection: LaneIndication? = nil
-            if let preferredDirectionDescription = try container.decodeIfPresent(String.self, forKey: .activeDirection) {
-                preferredDirection = LaneIndication(descriptions: [preferredDirectionDescription])
-            }
+//            var preferredDirection: ManeuverDirection? = nil
+//            if let preferredDirectionDescription = try container.decodeIfPresent(ManeuverDirection.self, forKey: .activeDirection) {
+//                preferredDirection = ManeuverDirection(rawValue: preferredDirectionDescription)
+//            }
+            let preferredDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .activeDirection)
             self = .lane(indications: indications, isUsable: isUsable, preferredDirection: preferredDirection)
             return
         }
@@ -284,7 +285,7 @@ extension VisualInstruction.Component: Codable {
             textRepresentation = .init(text: "", abbreviation: nil, abbreviationPriority: nil)
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
-            try container.encodeIfPresent(preferredDirection?.descriptions.first, forKey: .activeDirection)
+            try container.encodeIfPresent(preferredDirection, forKey: .activeDirection)
         case .guidanceView(let image, let alternativeText):
             try container.encode(Kind.guidanceView, forKey: .kind)
             textRepresentation = alternativeText

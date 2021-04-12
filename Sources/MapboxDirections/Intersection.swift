@@ -15,7 +15,7 @@ public struct Intersection {
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
                 preferredApproachLanes: IndexSet?,
-                usableLaneIndication: LaneIndication?,
+                usableLaneIndication: ManeuverDirection?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,
@@ -165,7 +165,7 @@ public struct Intersection {
      
      If no lane information is available for the intersection, this property’s value is `nil`
      */
-    public let usableLaneIndication: LaneIndication?
+    public let usableLaneIndication: ManeuverDirection?
 }
 
 extension Intersection: Codable {
@@ -267,7 +267,11 @@ extension Intersection: Codable {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
                 lanes![i].isValid = true
-                if lanes![i].indications.contains(usableLaneIndication){
+//                if lanes![i].indications.contains(usableLaneIndication){
+//                    lanes![i].validIndication = usableLaneIndication
+//                }
+//                let usable = LaneIndication(descriptions: [usableLaneIndication.rawValue])
+                if lanes![i].indications.contains(LaneIndication(descriptions: [usableLaneIndication.rawValue])!) {
                     lanes![i].validIndication = usableLaneIndication
                 }
             }
@@ -319,8 +323,9 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            let usableIndications = lanes.compactMap { $0.validIndication }
-            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
+            usableLaneIndication = lanes.compactMap { $0.validIndication }[0]
+//            let usableIndications = lanes.compactMap { $0.validIndication }
+//            usableLaneIndication = usableIndications.reduce(ManeuverDirection(rawValue: "none")) { $0.union($1) }
         } else {
             approachLanes = nil
             usableApproachLanes = nil
