@@ -54,9 +54,6 @@ extension Lane: Codable {
         indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
         isActive = try container.decodeIfPresent(Bool.self, forKey: .active)
-//        if let validIndicationDescription = try container.decodeIfPresent(String.self, forKey: .preferred) {
-//            validIndication = LaneIndication(descriptions: [validIndicationDescription])
-//        }
         validIndication = try container.decodeIfPresent(ManeuverDirection.self, forKey: .preferred)
     }
 }

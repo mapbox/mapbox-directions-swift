@@ -267,11 +267,7 @@ extension Intersection: Codable {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
                 lanes![i].isValid = true
-//                if lanes![i].indications.contains(usableLaneIndication){
-//                    lanes![i].validIndication = usableLaneIndication
-//                }
-//                let usable = LaneIndication(descriptions: [usableLaneIndication.rawValue])
-                if lanes![i].indications.contains(LaneIndication(descriptions: [usableLaneIndication.rawValue])!) {
+                if lanes![i].indications.descriptions.contains(usableLaneIndication.rawValue) {
                     lanes![i].validIndication = usableLaneIndication
                 }
             }
@@ -323,9 +319,11 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            usableLaneIndication = lanes.compactMap { $0.validIndication }[0]
-//            let usableIndications = lanes.compactMap { $0.validIndication }
-//            usableLaneIndication = usableIndications.reduce(ManeuverDirection(rawValue: "none")) { $0.union($1) }
+            if Set(lanes.compactMap { $0.validIndication}).count > 1 {
+                let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
+                throw EncodingError.invalidValue(Set(lanes.compactMap { $0.validIndication}).count, context)
+            }
+            usableLaneIndication = lanes.compactMap { $0.validIndication }.first ?? ManeuverDirection.none
         } else {
             approachLanes = nil
             usableApproachLanes = nil
