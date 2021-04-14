@@ -23,9 +23,9 @@ struct Lane: Equatable {
     /**
      Which of the `indications` is applicable to the current route, when there is more than one
      */
-    var validIndication: LaneIndication?
+    var validIndication: ManeuverDirection?
     
-    init(indications: LaneIndication, valid: Bool = false, active: Bool? = false, preferred: LaneIndication? = nil) {
+    init(indications: LaneIndication, valid: Bool = false, active: Bool? = false, preferred: ManeuverDirection? = nil) {
         self.indications = indications
         self.isValid = valid
         self.isActive = active
@@ -46,7 +46,7 @@ extension Lane: Codable {
         try container.encode(indications, forKey: .indications)
         try container.encode(isValid, forKey: .valid)
         try container.encodeIfPresent(isActive, forKey: .active)
-        try container.encodeIfPresent(validIndication?.descriptions.first, forKey: .preferred)
+        try container.encodeIfPresent(validIndication, forKey: .preferred)
     }
     
     init(from decoder: Decoder) throws {
@@ -54,8 +54,6 @@ extension Lane: Codable {
         indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
         isActive = try container.decodeIfPresent(Bool.self, forKey: .active)
-        if let validIndicationDescription = try container.decodeIfPresent(String.self, forKey: .preferred) {
-            validIndication = LaneIndication(descriptions: [validIndicationDescription])
-        }
+        validIndication = try container.decodeIfPresent(ManeuverDirection.self, forKey: .preferred)
     }
 }

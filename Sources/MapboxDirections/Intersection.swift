@@ -15,7 +15,7 @@ public struct Intersection {
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
                 preferredApproachLanes: IndexSet?,
-                usableLaneIndication: LaneIndication?,
+                usableLaneIndication: ManeuverDirection?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,
@@ -165,7 +165,7 @@ public struct Intersection {
      
      If no lane information is available for the intersection, this property’s value is `nil`
      */
-    public let usableLaneIndication: LaneIndication?
+    public let usableLaneIndication: ManeuverDirection?
 }
 
 extension Intersection: Codable {
@@ -260,15 +260,16 @@ extension Intersection: Codable {
         try container.encode(outletArray, forKey: .outletIndexes)
         
         var lanes: [Lane]?
+        print("lanes: \(String(describing: lanes))")
         if let approachLanes = approachLanes,
             let usableApproachLanes = usableApproachLanes,
-            let preferredApproachLanes = preferredApproachLanes,
-            let usableLaneIndication = usableLaneIndication {
+            let preferredApproachLanes = preferredApproachLanes
+        {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
                 lanes![i].isValid = true
-                if lanes![i].indications.contains(usableLaneIndication){
-                    lanes![i].validIndication = usableLaneIndication
+                if usableLaneIndication != nil && lanes![i].indications.descriptions.contains(usableLaneIndication!.rawValue) {
+                        lanes![i].validIndication = usableLaneIndication
                 }
             }
             for j in preferredApproachLanes {
@@ -319,8 +320,12 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            let usableIndications = lanes.compactMap { $0.validIndication }
-            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
+            let validIndications = lanes.compactMap { $0.validIndication}
+            if Set(validIndications).count > 1 {
+                let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
+                throw EncodingError.invalidValue(validIndications, context)
+            }
+            usableLaneIndication = validIndications.first
         } else {
             approachLanes = nil
             usableApproachLanes = nil
