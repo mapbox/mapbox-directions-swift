@@ -264,7 +264,6 @@ extension Intersection: Codable {
         if let approachLanes = approachLanes,
             let usableApproachLanes = usableApproachLanes,
             let preferredApproachLanes = preferredApproachLanes
-//            let usableLaneIndication = usableLaneIndication
         {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
@@ -326,10 +325,7 @@ extension Intersection: Codable {
                 let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
                 throw EncodingError.invalidValue(validIndications, context)
             }
-//            let usableIndications = lanes.compactMap { $0.validIndication }
-//            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
-//            let blah = validIndications.reduce(ManeuverDirection(rawValue: "none")) { $0 }
-            usableLaneIndication = lanes.compactMap { $0.validIndication }.first ?? ManeuverDirection(rawValue: "none")
+            usableLaneIndication = lanes.compactMap { $0.validIndication }.first
         } else {
             approachLanes = nil
             usableApproachLanes = nil
