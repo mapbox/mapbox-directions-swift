@@ -217,10 +217,6 @@ extension VisualInstruction.Component: Codable {
         if kind == .lane {
             let indications = try container.decode(LaneIndication.self, forKey: .directions)
             let isUsable = try container.decode(Bool.self, forKey: .isActive)
-//            var preferredDirection: ManeuverDirection? = nil
-//            if let preferredDirectionDescription = try container.decodeIfPresent(ManeuverDirection.self, forKey: .activeDirection) {
-//                preferredDirection = ManeuverDirection(rawValue: preferredDirectionDescription)
-//            }
             let preferredDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .activeDirection)
             self = .lane(indications: indications, isUsable: isUsable, preferredDirection: preferredDirection)
             return

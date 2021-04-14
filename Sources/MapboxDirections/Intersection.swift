@@ -325,7 +325,7 @@ extension Intersection: Codable {
                 let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
                 throw EncodingError.invalidValue(validIndications, context)
             }
-            usableLaneIndication = lanes.compactMap { $0.validIndication }.first
+            usableLaneIndication = validIndications.first
         } else {
             approachLanes = nil
             usableApproachLanes = nil
