@@ -263,11 +263,6 @@ public enum ManeuverDirection: String, Codable {
      Use the difference between the step’s initial and final headings to distinguish between a U-turn to the left (typical in countries that drive on the right) and a U-turn on the right (typical in countries that drive on the left). If the difference in headings is greater than 180 degrees, the maneuver requires a U-turn to the left. If the difference in headings is less than 180 degrees, the maneuver requires a U-turn to the right.
      */
     case uTurn = "uturn"
-    
-    /**
-     The maneuver has no direction.
-     */
-    case none
 }
 
 /**

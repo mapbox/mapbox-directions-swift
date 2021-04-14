@@ -69,6 +69,10 @@ public struct LaneIndication: OptionSet, CustomStringConvertible {
         self.init(rawValue: laneIndication.rawValue)
     }
     
+    public init?(from direction: ManeuverDirection) {
+        self.init(descriptions: [direction.rawValue])
+    }
+    
     public var descriptions: [String] {
         if isEmpty {
             return []

@@ -260,15 +260,17 @@ extension Intersection: Codable {
         try container.encode(outletArray, forKey: .outletIndexes)
         
         var lanes: [Lane]?
+        print("lanes: \(String(describing: lanes))")
         if let approachLanes = approachLanes,
             let usableApproachLanes = usableApproachLanes,
-            let preferredApproachLanes = preferredApproachLanes,
-            let usableLaneIndication = usableLaneIndication {
+            let preferredApproachLanes = preferredApproachLanes
+//            let usableLaneIndication = usableLaneIndication
+        {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
                 lanes![i].isValid = true
-                if lanes![i].indications.descriptions.contains(usableLaneIndication.rawValue) {
-                    lanes![i].validIndication = usableLaneIndication
+                if usableLaneIndication != nil && lanes![i].indications.descriptions.contains(usableLaneIndication!.rawValue) {
+                        lanes![i].validIndication = usableLaneIndication
                 }
             }
             for j in preferredApproachLanes {
@@ -319,11 +321,15 @@ extension Intersection: Codable {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
-            if Set(lanes.compactMap { $0.validIndication}).count > 1 {
+            let validIndications = lanes.compactMap { $0.validIndication}
+            if Set(validIndications).count > 1 {
                 let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
-                throw EncodingError.invalidValue(Set(lanes.compactMap { $0.validIndication}).count, context)
+                throw EncodingError.invalidValue(validIndications, context)
             }
-            usableLaneIndication = lanes.compactMap { $0.validIndication }.first ?? ManeuverDirection.none
+//            let usableIndications = lanes.compactMap { $0.validIndication }
+//            usableLaneIndication = usableIndications.reduce(LaneIndication(rawValue: 0)) { $0.union($1) }
+//            let blah = validIndications.reduce(ManeuverDirection(rawValue: "none")) { $0 }
+            usableLaneIndication = lanes.compactMap { $0.validIndication }.first ?? ManeuverDirection(rawValue: "none")
         } else {
             approachLanes = nil
             usableApproachLanes = nil
