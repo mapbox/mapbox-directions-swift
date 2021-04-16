@@ -137,7 +137,7 @@ workflows:
           iOS: "13.1"
           tvOS: "13.0"
           watchOS: "6.0"
-          codecoverage: true
+          codecoverage: false
       - spm-job:
           name: "SPM_build"
           xcode: "12.0.0"
