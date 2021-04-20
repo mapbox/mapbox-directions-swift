@@ -260,20 +260,22 @@ extension Intersection: Codable {
         try container.encode(outletArray, forKey: .outletIndexes)
         
         var lanes: [Lane]?
-        print("lanes: \(String(describing: lanes))")
         if let approachLanes = approachLanes,
             let usableApproachLanes = usableApproachLanes,
             let preferredApproachLanes = preferredApproachLanes
         {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
-                lanes![i].isValid = true
-                if usableLaneIndication != nil && lanes![i].indications.descriptions.contains(usableLaneIndication!.rawValue) {
-                        lanes![i].validIndication = usableLaneIndication
+                lanes?[i].isValid = true
+                if let usableLaneIndication = usableLaneIndication,
+                   let validLanes = lanes,
+                   validLanes[i].indications.descriptions.contains(usableLaneIndication.rawValue) {
+                    lanes?[i].validIndication = usableLaneIndication
                 }
             }
+            
             for j in preferredApproachLanes {
-                lanes![j].isActive = true
+                lanes?[j].isActive = true
             }
         }
         try container.encodeIfPresent(lanes, forKey: .lanes)
