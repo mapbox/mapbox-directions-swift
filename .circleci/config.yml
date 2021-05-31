@@ -35,6 +35,11 @@ commands:
             - run:
                 name: Publish Code Coverage
                 command: bash <(curl -s https://codecov.io/bash)
+    carthage-bootstrap:
+        steps:
+            - run:
+                name: Dependencies
+                command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks   
 
 jobs:
   spm-linux-job:
@@ -77,6 +82,21 @@ jobs:
           name: "Build"
           command: |
             carthage bootstrap --platform all --use-netrc --use-xcframeworks
+  example-app-build:
+    macos:
+      xcode: "12.4.0"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - install-mapbox-token
+      - install-carthage
+      - restore-cache
+      - carthage-bootstrap
+      - run:
+          name: "Build example app"
+          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=14.4,name=iPhone 12 Pro Max' clean build
+      - save-cache
 
   build-job:
     parameters:
@@ -113,10 +133,7 @@ jobs:
           name: Install prerequisites
           command: |
             if [ $(xcversion simulators | grep -cF "iOS << parameters.iOS >> Simulator (installed)") -eq 0 ]; then xcversion simulators --install="iOS << parameters.iOS >>" || true; fi
-      - run:
-          name: Dependencies
-          command: |
-            carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks
+      - carthage-bootstrap
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
@@ -162,3 +179,5 @@ workflows:
           xcode: "12.4.0"
       - spm-linux-job:
           name: "SPM Ubuntu build"
+      - example-app-build:
+          name: "Build example app"
