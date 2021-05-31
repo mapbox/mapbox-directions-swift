@@ -27,7 +27,7 @@ commands:
             - run:
                 name: Install Carthage
                 command: |
-                    curl -OL "https://github.com/Carthage/Carthage/releases/download/0.34.0/Carthage.pkg"
+                    curl -OL "https://github.com/Carthage/Carthage/releases/download/0.38.0/Carthage.pkg"
                     sudo installer -pkg Carthage.pkg -target /
 
     publish-codecov:
@@ -96,10 +96,7 @@ jobs:
       - run:
           name: Dependencies
           command: |
-            ./scripts/wcarthage.sh bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
+            carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>

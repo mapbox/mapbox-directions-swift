@@ -47,7 +47,7 @@ This repository contains an example application that demonstrates how to use the
 
 * One of the following package managers:
    * CocoaPods (CocoaPods 1.10 or above if using Xcode 12)
-   * Carthage 0.19 or above (run [this script](https://github.com/mapbox/mapbox-directions-swift/blob/main/scripts/wcarthage.sh) instead of `carthage` if using Xcode 12)
+   * Carthage 0.38 or above
    * Swift Package Manager 5.3 or above
 * Xcode 11 or above (Xcode 12 or above if using Swift Package Manager)
 * One of the following operating systems:
