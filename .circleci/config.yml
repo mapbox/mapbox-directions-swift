@@ -143,7 +143,7 @@ workflows:
   workflow:
     jobs:
       - build-job:
-          name: "Xcode_12.1"
+          name: "Dev Build: Xcode 12.0"
           xcode: "12.0.0"
           iOS: "14.0"
           tvOS: "14.0"
@@ -155,7 +155,10 @@ workflows:
           name: "Carthage Integration Test 12.4"
           xcode: "12.4.0"
       - spm-job:
-          name: "SPM_build"
+          name: "SPM build 12.0.0"
           xcode: "12.0.0"
+      - spm-job:
+          name: "SPM build 12.4.0"
+          xcode: "12.4.0"
       - spm-linux-job:
-          name: "SPM_Ubuntu_build"
+          name: "SPM Ubuntu build"
