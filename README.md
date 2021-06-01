@@ -212,7 +212,7 @@ The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-
 
 To build `MapboxDirectionsCLI` using Carthage pipeline:
 
-1. `carthage build --platform macos`
+1. `carthage bootstrap --platform macos --use-xcframeworks`
 1. `open MapboxDirections.xcodeproj`
 1. Select `MapboxDirectionsCLI` target.
 
