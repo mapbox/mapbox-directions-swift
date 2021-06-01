@@ -188,7 +188,6 @@
 		C58EA7AB1E9D7F73008F98CE /* Congestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* Congestion.swift */; };
 		C58EA7AC1E9D7F74008F98CE /* Congestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* Congestion.swift */; };
 		C58EA7AD1E9D7F75008F98CE /* Congestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58EA7A91E9D7EAD008F98CE /* Congestion.swift */; };
-		C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */; };
 		C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094BE203B800300EB2417 /* DirectionsOptions.swift */; };
 		C59094C1203DE6BC00EB2417 /* DirectionsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */; };
 		C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59426061F1EA6C400C8E59C /* RoadClasses.swift */; };
@@ -305,10 +304,8 @@
 		DAD31BC424D4ADBF00A1654D /* match-polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = DAD31BC224D4A8D100A1654D /* match-polyline6.json */; };
 		DAD31BC524D4ADC000A1654D /* match-polyline6.json in Resources */ = {isa = PBXBuildFile; fileRef = DAD31BC224D4A8D100A1654D /* match-polyline6.json */; };
 		DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */; };
-		DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADD27B91E5AAAD800D31FAD /* ViewController.swift */; };
 		DADD27BF1E5AAAD800D31FAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADD27BE1E5AAAD800D31FAD /* Assets.xcassets */; };
 		DADD27C81E5AAE3100D31FAD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADD27C71E5AAE3100D31FAD /* Launch Screen.storyboard */; };
-		DADD27F31E5ABD4300D31FAD /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADD27F21E5ABD4300D31FAD /* Mapbox.framework */; };
 		DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
 		DAE2DF6923AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
 		DAE2DF6A23AECB120065057A /* QuickLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE2DF6723AECB120065057A /* QuickLookTests.swift */; };
@@ -348,6 +345,7 @@
 		E232F8C52665173C0038CAF3 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; };
 		E232F8C62665173C0038CAF3 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E232F8C9266518480038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
+		E28E325826662B1E0030807F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28E325726662B1E0030807F /* ContentView.swift */; };
 		F457FA7A252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
 		F457FA7B252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
 		F457FA7C252B9E29007DAEB1 /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457FA79252B9E29007DAEB1 /* Incident.swift */; };
@@ -507,13 +505,11 @@
 		C57D55071DB58C0200B94B74 /* Lane.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lane.swift; sourceTree = "<group>"; };
 		C582BA2D2073ED6300647DAA /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		C58EA7A91E9D7EAD008F98CE /* Congestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Congestion.swift; sourceTree = "<group>"; };
-		C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBDrawingView.swift; sourceTree = "<group>"; };
 		C59094BE203B800300EB2417 /* DirectionsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsOptions.swift; sourceTree = "<group>"; };
 		C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsResult.swift; sourceTree = "<group>"; };
 		C59426061F1EA6C400C8E59C /* RoadClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoadClasses.swift; sourceTree = "<group>"; };
 		C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableMatchTests.swift; sourceTree = "<group>"; };
 		C5A3D3971E8188FE00D494A0 /* annotation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = annotation.json; path = v5/annotation.json; sourceTree = "<group>"; };
-		C5AD865A202E24F500BF47D5 /* Turf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Turf.framework; path = Carthage/Build/iOS/Turf.framework; sourceTree = "<group>"; };
 		C5C0D6332058523E003A3B1D /* null-tracepoint.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "null-tracepoint.json"; sourceTree = "<group>"; };
 		C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instructions.json; sourceTree = "<group>"; };
 		C5DAAC9920191675001F9261 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
@@ -538,7 +534,6 @@
 		DA6C9DB11CAECA0E00094FBC /* Fixture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixture.swift; sourceTree = "<group>"; };
 		DA737EE31D05F91E005BDA16 /* v5_driving_dc_geojson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = v5_driving_dc_geojson.json; sourceTree = "<group>"; };
 		DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegTests.swift; sourceTree = "<group>"; };
-		DA9E1B121E5A675F0081EDC7 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/watchOS/Polyline.framework; sourceTree = "<group>"; };
 		DAA76D671DD127CB0015EC78 /* LaneIndication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaneIndication.swift; sourceTree = "<group>"; };
 		DAABF78D2395ABA900CEEB61 /* SpokenInstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenInstructionTests.swift; sourceTree = "<group>"; };
 		DAABF7912395AE9800CEEB61 /* GeoJSONTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSONTests.swift; sourceTree = "<group>"; };
@@ -553,11 +548,9 @@
 		DAD31BC224D4A8D100A1654D /* match-polyline6.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "match-polyline6.json"; sourceTree = "<group>"; };
 		DADD27B51E5AAAD800D31FAD /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DADD27B91E5AAAD800D31FAD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DADD27BE1E5AAAD800D31FAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DADD27C31E5AAAD800D31FAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DADD27C71E5AAE3100D31FAD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		DADD27F21E5ABD4300D31FAD /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = Carthage/Build/iOS/Mapbox.framework; sourceTree = "<group>"; };
 		DAE2DF6723AECB120065057A /* QuickLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookTests.swift; sourceTree = "<group>"; };
 		DAE2DF6B23AED2280065057A /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntersectionTests.swift; sourceTree = "<group>"; };
@@ -568,12 +561,7 @@
 		E232F8AE2665141F0038CAF3 /* Turf.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Turf.xcframework; path = Carthage/Build/Turf.xcframework; sourceTree = "<group>"; };
 		E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OHHTTPStubs.xcframework; path = Carthage/Build/OHHTTPStubs.xcframework; sourceTree = "<group>"; };
 		E232F8BF266517010038CAF3 /* SwiftCLI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftCLI.xcframework; path = Carthage/Build/SwiftCLI.xcframework; sourceTree = "<group>"; };
-		F448F82A1DDCC5B6000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/iOS/Polyline.framework; sourceTree = "<group>"; };
-		F448F8381DDCC6D7000BC343 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
-		F448F8391DDCC6EB000BC343 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/Mac/OHHTTPStubs.framework; sourceTree = "<group>"; };
-		F448F83A1DDCC6EB000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/Mac/Polyline.framework; sourceTree = "<group>"; };
-		F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/tvOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
-		F448F83C1DDCC6F3000BC343 /* Polyline.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Polyline.framework; path = Carthage/Build/tvOS/Polyline.framework; sourceTree = "<group>"; };
+		E28E325726662B1E0030807F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F457FA79252B9E29007DAEB1 /* Incident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incident.swift; sourceTree = "<group>"; };
 		F4CF2C562523B66300A6D0B6 /* TollCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TollCollection.swift; sourceTree = "<group>"; };
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
@@ -652,7 +640,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAF08AAB25C0E96E00ABA8F3 /* MapboxDirections.framework in Frameworks */,
-				DADD27F31E5ABD4300D31FAD /* Mapbox.framework in Frameworks */,
 				E232F8AC266513FF0038CAF3 /* Polyline.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -695,17 +682,6 @@
 				35DBF018217F38A30009D2AE /* versions.json */,
 			);
 			path = Offline;
-			sourceTree = "<group>";
-		};
-		4025371970E36C6D8BF67116 /* iOS Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DADD27F21E5ABD4300D31FAD /* Mapbox.framework */,
-				F448F8381DDCC6D7000BC343 /* OHHTTPStubs.framework */,
-				F448F82A1DDCC5B6000BC343 /* Polyline.framework */,
-				C5AD865A202E24F500BF47D5 /* Turf.framework */,
-			);
-			name = "iOS Frameworks";
 			sourceTree = "<group>";
 		};
 		438BFEBF233D804600457294 /* Documents */ = {
@@ -903,20 +879,11 @@
 			path = v5;
 			sourceTree = "<group>";
 		};
-		DA9E1B111E5A675F0081EDC7 /* watchOS Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DA9E1B121E5A675F0081EDC7 /* Polyline.framework */,
-			);
-			name = "watchOS Frameworks";
-			sourceTree = "<group>";
-		};
 		DADD27B61E5AAAD800D31FAD /* Directions Example */ = {
 			isa = PBXGroup;
 			children = (
 				DADD27B71E5AAAD800D31FAD /* AppDelegate.swift */,
-				DADD27B91E5AAAD800D31FAD /* ViewController.swift */,
-				C59094B4203B5C7F00EB2417 /* MBDrawingView.swift */,
+				E28E325726662B1E0030807F /* ContentView.swift */,
 				DADD27CB1E5AAF5600D31FAD /* Supporting Files */,
 			);
 			path = "Directions Example";
@@ -941,10 +908,6 @@
 				2B4382FF2549C1D200A3E38B /* MapboxDirectionsCLI */,
 				DA6C9D971CAE442B00094FBC /* MapboxDirectionsTests */,
 				DD62544F1AE70C1700017857 /* Products */,
-				4025371970E36C6D8BF67116 /* iOS Frameworks */,
-				F448F8321DDCC676000BC343 /* macOS Frameworks */,
-				F448F8331DDCC68D000BC343 /* tvOS Frameworks */,
-				DA9E1B111E5A675F0081EDC7 /* watchOS Frameworks */,
 				C5AD8656202E24F400BF47D5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -963,24 +926,6 @@
 				2BA98970253F007600B643F6 /* mapbox-directions-swift */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F448F8321DDCC676000BC343 /* macOS Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F448F8391DDCC6EB000BC343 /* OHHTTPStubs.framework */,
-				F448F83A1DDCC6EB000BC343 /* Polyline.framework */,
-			);
-			name = "macOS Frameworks";
-			sourceTree = "<group>";
-		};
-		F448F8331DDCC68D000BC343 /* tvOS Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F448F83B1DDCC6F3000BC343 /* OHHTTPStubs.framework */,
-				F448F83C1DDCC6F3000BC343 /* Polyline.framework */,
-			);
-			name = "tvOS Frameworks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1735,9 +1680,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DADD27BA1E5AAAD800D31FAD /* ViewController.swift in Sources */,
-				C59094B5203B5C7F00EB2417 /* MBDrawingView.swift in Sources */,
 				DADD27B81E5AAAD800D31FAD /* AppDelegate.swift in Sources */,
+				E28E325826662B1E0030807F /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2221,6 +2165,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Directions Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2242,6 +2187,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Directions Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
