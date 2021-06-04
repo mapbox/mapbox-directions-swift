@@ -39,7 +39,7 @@ commands:
 jobs:
   spm-linux-job:
     docker:
-      - image: swift:5.3
+      - image: swift:5.4
     steps:
       - checkout
       # Limiting number of parallel jobs to avoid build crash bug.

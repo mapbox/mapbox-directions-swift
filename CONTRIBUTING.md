@@ -54,12 +54,10 @@ To add any type, constant, or member to the package’s public interface:
 
 1. Add a file to Tests/MapboxDirectionsTests/
 1. Add a file reference to the MapboxDirectionsTests group in MapboxDirections.xcodeproj.
-1. Rerun `swift test --generate-linuxmain`, which updates [XCTestManifests.swift](./Tests/MapboxDirectionsTests/XCTestManifests.swift) for builds that use Swift Package Manager.
 
 ### Adding a test case
 
 1. Add a `test*` method to one of the classes in one of the files in [Tests/MapboxDirectionsTests/](./Tests/MapboxDirectionsTests/).
-1. Rerun `swift test --generate-linuxmain`, which updates [XCTestManifests.swift](./Tests/MapboxDirectionsTests/XCTestManifests.swift) for builds that use Swift Package Manager.
 
 ### Adding a test fixture
 
