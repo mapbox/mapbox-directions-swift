@@ -1,9 +1,10 @@
 import Foundation
 
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
-let defaultAccessToken =
+let defaultAccessToken: String? =
     Bundle.main.object(forInfoDictionaryKey: "MBXAccessToken") as? String ??
-    Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
+    Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String ??
+    UserDefaults.standard.string(forKey: "MBXAccessToken")
 let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
 public struct DirectionsCredentials: Equatable {
