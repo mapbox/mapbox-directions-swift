@@ -5,6 +5,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 #endif
 import Turf
+import CoreLocation
 @testable import MapboxDirections
 
 class OfflineDirectionsTests: XCTestCase {

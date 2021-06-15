@@ -191,5 +191,29 @@ class DirectionsTests: XCTestCase {
         })
         wait(for: [expectation], timeout: 2.0)
     }
+
+#if swift(>=5.5)
+    @available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+    func testAsyncAwait() async {
+        HTTPStubs.stubRequests(passingTest: { (request) -> Bool in
+            return request.url!.absoluteString.contains("https://api.mapbox.com/directions")
+        }) { (_) -> HTTPStubsResponse in
+            return HTTPStubsResponse(data: BadResponse.data(using: .utf8)!, statusCode: 413, headers: ["Content-Type" : "text/html"])
+        }
+        let one = CLLocation(latitude: 0.0, longitude: 0.0)
+        let two = CLLocation(latitude: 2.0, longitude: 2.0)
+
+        let directions = Directions(credentials: BogusCredentials)
+        let opts = MatchOptions(locations: [one, two], profileIdentifier: nil)
+
+        do {
+            _ = try await directions.calculate(opts)
+            XCTFail("Expecting error, none returned.")
+        }
+        catch {
+            XCTAssertEqual(error as? DirectionsError, DirectionsError.requestTooLarge)
+        }
+    }
+#endif
 }
 #endif

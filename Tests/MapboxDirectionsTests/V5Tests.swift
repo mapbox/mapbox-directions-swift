@@ -5,6 +5,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 #endif
 import Polyline
+import CoreLocation
 @testable import MapboxDirections
 
 class V5Tests: XCTestCase {

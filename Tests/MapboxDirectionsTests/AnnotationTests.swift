@@ -4,6 +4,7 @@ import XCTest
 import OHHTTPStubsSwift
 #endif
 import OHHTTPStubs
+import CoreLocation
 @testable import MapboxDirections
 
 class AnnotationTests: XCTestCase {

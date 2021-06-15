@@ -219,7 +219,24 @@ open class Directions: NSObject {
         
         return requestTask
     }
-    
+
+#if swift(>=5.5)
+    @available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+    open func calculate(_ options: MatchOptions, getDataTask: (URLSessionDataTask) -> Void = {_ in }) async throws -> (session: Session, response: MapMatchingResponse) {
+        try await withCheckedThrowingContinuation { continuation in
+            let task = calculate(options) { session, result in
+                switch result {
+                case .success(let response):
+                    continuation.resume(returning: (session, response))
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+            getDataTask(task)
+        }
+    }
+#endif
+
     /**
      Begins asynchronously calculating matches using the given options and delivers the results to a closure.
      

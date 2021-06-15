@@ -5,6 +5,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 #endif
 @testable import MapboxDirections
+import CoreLocation
 
 class RoutableMatchTest: XCTestCase {
     override func tearDown() {
