@@ -99,6 +99,7 @@ public struct DirectionsPriority: Hashable, RawRepresentable {
     /**
      The priority level with which a route neither avoids nor prefers a particular type of roadway or pathway.
      */
+    // should we remove this default (or change its naming) if we don't set it as such?
     static let `default` = DirectionsPriority(rawValue: 0.0)
     
     /**

@@ -129,7 +129,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. The default value of `DirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.default` avoids alleys, and a positive value between `DirectionsPriority.default` and `DirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
-    open var alleyPriority: DirectionsPriority = .default
+    open var alleyPriority: DirectionsPriority?
     
     /**
      A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
@@ -138,7 +138,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. The default value of `DirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.default` avoids walkways, and a positive value between `DirectionsPriority.default` and `DirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
-    open var walkwayPriority: DirectionsPriority = .default
+    open var walkwayPriority: DirectionsPriority?
     
     /**
      The expected uniform travel speed measured in meters per second.
@@ -147,7 +147,7 @@ open class RouteOptions: DirectionsOptions {
      
      The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. The default value is `CLLocationSpeed.normalWalking`.
      */
-    open var speed: LocationSpeed = .normalWalking
+    open var speed: LocationSpeed?
     
     // MARK: Specifying the Response Format
 
@@ -187,12 +187,15 @@ open class RouteOptions: DirectionsOptions {
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
-
-        if profileIdentifier == .automobile || profileIdentifier == .walking {
+        if alleyPriority != nil {
             params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
         }
-        if profileIdentifier == .walking {
+        
+        if walkwayPriority != nil {
             params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
+        }
+        
+        if speed != nil {
             params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
         
