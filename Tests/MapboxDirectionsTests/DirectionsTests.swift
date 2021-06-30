@@ -73,6 +73,7 @@ class DirectionsTests: XCTestCase {
     func testPOSTRequest() {
         let coordinates = Array(repeating: LocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
         let options = RouteOptions(coordinates: coordinates)
+        options.alleyPriority = .default
         
         let directions = Directions(credentials: BogusCredentials)
         let request = directions.urlRequest(forCalculating: options)
