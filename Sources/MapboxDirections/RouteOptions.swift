@@ -187,16 +187,16 @@ open class RouteOptions: DirectionsOptions {
         if includesExitRoundaboutManeuver {
             params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
         }
-        if alleyPriority != nil {
-            params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority.rawValue)))
+        if let alleyPriority = alleyPriority?.rawValue {
+            params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority)))
         }
         
-        if walkwayPriority != nil {
-            params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority.rawValue)))
+        if let walkwayPriority = walkwayPriority?.rawValue {
+            params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority)))
         }
         
         if speed != nil {
-            params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
+            params.append(URLQueryItem(name: "walking_speed", value: String(speed!)))
         }
         
         if !roadClassesToAvoid.isEmpty {
