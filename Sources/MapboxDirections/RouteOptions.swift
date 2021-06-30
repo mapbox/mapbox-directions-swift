@@ -195,8 +195,8 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority)))
         }
         
-        if speed != nil {
-            params.append(URLQueryItem(name: "walking_speed", value: String(speed!)))
+        if let speed = speed {
+            params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
         
         if !roadClassesToAvoid.isEmpty {
