@@ -1,15 +1,11 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class RouteResponseTests: XCTestCase {
     
     func testRouteResponseEncodingAndDecoding() {
-        let originCoordinate = CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182)
+        let originCoordinate = LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182)
         let originWaypoint = Waypoint(coordinate: originCoordinate, name: "Test waypoint")
         originWaypoint.targetCoordinate = originCoordinate
         originWaypoint.coordinateAccuracy = 1.0

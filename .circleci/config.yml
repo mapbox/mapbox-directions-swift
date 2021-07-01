@@ -27,7 +27,7 @@ commands:
             - run:
                 name: Install Carthage
                 command: |
-                    curl -OL "https://github.com/Carthage/Carthage/releases/download/0.34.0/Carthage.pkg"
+                    curl -OL "https://github.com/Carthage/Carthage/releases/download/0.38.0/Carthage.pkg"
                     sudo installer -pkg Carthage.pkg -target /
 
     publish-codecov:
@@ -35,11 +35,16 @@ commands:
             - run:
                 name: Publish Code Coverage
                 command: bash <(curl -s https://codecov.io/bash)
+    carthage-bootstrap:
+        steps:
+            - run:
+                name: Dependencies
+                command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks   
 
 jobs:
   spm-linux-job:
     docker:
-      - image: swift:5.3
+      - image: swift:5.4
     steps:
       - checkout
       # Limiting number of parallel jobs to avoid build crash bug.
@@ -57,6 +62,41 @@ jobs:
     steps:
       - checkout
       - run: swift build
+  
+  carthage-integration-test:
+    parameters:
+      xcode:
+        type: string
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - install-mapbox-token
+      - install-carthage
+      - run:
+          name: "Create integration Cartfile"
+          command: |
+            echo 'github "mapbox/mapbox-directions-swift"' \"$CIRCLE_SHA1\" > Cartfile 
+      - run:
+          name: "Build"
+          command: |
+            carthage bootstrap --platform all --use-netrc --use-xcframeworks
+  example-app-build:
+    macos:
+      xcode: "12.4.0"
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - install-mapbox-token
+      - install-carthage
+      - restore-cache
+      - carthage-bootstrap
+      - run:
+          name: "Build example app"
+          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=14.4,name=iPhone 12 Pro Max' clean build
+      - save-cache
 
   build-job:
     parameters:
@@ -93,13 +133,7 @@ jobs:
           name: Install prerequisites
           command: |
             if [ $(xcversion simulators | grep -cF "iOS << parameters.iOS >> Simulator (installed)") -eq 0 ]; then xcversion simulators --install="iOS << parameters.iOS >>" || true; fi
-      - run:
-          name: Dependencies
-          command: |
-            ./scripts/wcarthage.sh bootstrap --platform ios --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform tvos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform macos --cache-builds --configuration Debug --no-use-binaries
-            ./scripts/wcarthage.sh bootstrap --platform watchos --cache-builds --configuration Debug --no-use-binaries
+      - carthage-bootstrap
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
@@ -126,20 +160,24 @@ workflows:
   workflow:
     jobs:
       - build-job:
-          name: "Xcode_12.1"
+          name: "Dev Build: Xcode 12.0"
           xcode: "12.0.0"
           iOS: "14.0"
           tvOS: "14.0"
           watchOS: "7.0"
-      - build-job:
-          name: "Xcode_11.1"
-          xcode: "11.1.0"
-          iOS: "13.1"
-          tvOS: "13.0"
-          watchOS: "6.0"
-          codecoverage: false
-      - spm-job:
-          name: "SPM_build"
+      - carthage-integration-test:
+          name: "Carthage Integration Test 12.0"
           xcode: "12.0.0"
+      - carthage-integration-test:
+          name: "Carthage Integration Test 12.4"
+          xcode: "12.4.0"
+      - spm-job:
+          name: "SPM build 12.0.0"
+          xcode: "12.0.0"
+      - spm-job:
+          name: "SPM build 12.4.0"
+          xcode: "12.4.0"
       - spm-linux-job:
-          name: "SPM_Ubuntu_build"
+          name: "SPM Ubuntu build"
+      - example-app-build:
+          name: "Build example app"

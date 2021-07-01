@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 /**
  An instruction about an upcoming `RouteStep`’s maneuver, optimized for speech synthesis.
@@ -28,7 +24,7 @@ open class SpokenInstruction: Codable {
      - parameter text: A plain-text representation of the speech-optimized instruction.
      - parameter ssmlText: A formatted representation of the speech-optimized instruction.
      */
-    public init(distanceAlongStep: CLLocationDistance, text: String, ssmlText: String) {
+    public init(distanceAlongStep: LocationDistance, text: String, ssmlText: String) {
         self.distanceAlongStep = distanceAlongStep
         self.text = text
         self.ssmlText = ssmlText
@@ -41,7 +37,7 @@ open class SpokenInstruction: Codable {
 
      The distance is measured in meters from the beginning of the associated step.
      */
-    public let distanceAlongStep: CLLocationDistance
+    public let distanceAlongStep: LocationDistance
     
     // MARK: Getting the Instruction to Say
     

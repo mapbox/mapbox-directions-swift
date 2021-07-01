@@ -1,9 +1,11 @@
 import Foundation
-import Polyline
-import Turf
+import func Polyline.encodeCoordinates
 #if canImport(CoreLocation)
-import CoreLocation
+import typealias Polyline.LocationCoordinate2D
+#else
+import struct Polyline.LocationCoordinate2D
 #endif
+import Turf
 
 extension LineString {
     /**
@@ -11,10 +13,11 @@ extension LineString {
      */
     func polylineEncodedString(precision: Double = 1e5) -> String {
         #if canImport(CoreLocation)
-        return encodeCoordinates(coordinates, precision: precision)
+        let coordinates = self.coordinates
         #else
-        return encodeCoordinates(coordinates.map { LocationCoordinate2D($0) }, precision: precision)
+        let coordinates = self.coordinates.map { Polyline.LocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }
         #endif
+        return encodeCoordinates(coordinates, precision: precision)
     }
 }
 
@@ -45,7 +48,7 @@ extension PolyLineString: Codable {
         switch options?.shapeFormat ?? .default {
         case .geoJSON:
             let lineStringContainer = try decoder.container(keyedBy: LineStringCodingKeys.self)
-            let coordinates = try lineStringContainer.decode([CLLocationCoordinate2DCodable].self, forKey: .coordinates).map { $0.decodedCoordinates }
+            let coordinates = try lineStringContainer.decode([LocationCoordinate2DCodable].self, forKey: .coordinates).map { $0.decodedCoordinates }
             self = .lineString(LineString(coordinates))
         case .polyline, .polyline6:
             let precision = options?.shapeFormat == .polyline6 ? 1e6 : 1e5
@@ -59,19 +62,18 @@ extension PolyLineString: Codable {
         switch self {
         case let .lineString(lineString):
             var lineStringContainer = encoder.container(keyedBy: LineStringCodingKeys.self)
-            try lineStringContainer.encode(lineString.coordinates.map { CLLocationCoordinate2DCodable($0) }, forKey: .coordinates)
+            try lineStringContainer.encode(lineString.coordinates.map { LocationCoordinate2DCodable($0) }, forKey: .coordinates)
         case let .polyline(encodedPolyline, precision: _):
             try container.encode(encodedPolyline)
         }
     }
 }
 
-struct CLLocationCoordinate2DCodable: Codable {
-    var latitude: CLLocationDegrees
-    var longitude: CLLocationDegrees
-    var decodedCoordinates: CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: latitude,
-                                      longitude: longitude)
+struct LocationCoordinate2DCodable: Codable {
+    var latitude: Turf.LocationDegrees
+    var longitude: Turf.LocationDegrees
+    var decodedCoordinates: Turf.LocationCoordinate2D {
+        return Turf.LocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -82,18 +84,12 @@ struct CLLocationCoordinate2DCodable: Codable {
     
     init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        longitude = try container.decode(CLLocationDegrees.self)
-        latitude = try container.decode(CLLocationDegrees.self)
+        longitude = try container.decode(Turf.LocationDegrees.self)
+        latitude = try container.decode(Turf.LocationDegrees.self)
     }
     
-    init(_ coordinate: CLLocationCoordinate2D) {
+    init(_ coordinate: Turf.LocationCoordinate2D) {
         latitude = coordinate.latitude
         longitude = coordinate.longitude
-    }
-}
-
-extension CLLocationCoordinate2D {
-    var codableCoordinates: CLLocationCoordinate2DCodable {
-        return CLLocationCoordinate2DCodable(self)
     }
 }

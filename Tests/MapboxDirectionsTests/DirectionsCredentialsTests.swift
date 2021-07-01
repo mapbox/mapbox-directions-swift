@@ -15,4 +15,10 @@ class DirectionsCredentialsTests: XCTestCase {
         XCTAssertEqual(credentials.accessToken, token)
         XCTAssertEqual(credentials.host, host)
     }
+
+    func testAccessTokenInjection() {
+        let expected = "injected"
+        UserDefaults.standard.set(expected, forKey: "MBXAccessToken")
+        XCTAssertEqual(Directions.shared.credentials.accessToken, expected)
+    }
 }

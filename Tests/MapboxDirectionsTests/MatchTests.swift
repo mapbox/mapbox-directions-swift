@@ -1,9 +1,8 @@
 import XCTest
 #if canImport(CoreLocation)
 import CoreLocation
-#else
-import Turf
 #endif
+import Turf
 #if !os(Linux)
 import OHHTTPStubs
 #if SWIFT_PACKAGE
@@ -196,9 +195,9 @@ class MatchTests: XCTestCase {
         let matchData = try! JSONSerialization.data(withJSONObject: matchJSON, options: [])
         
         let options = MatchOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 39.09740, longitude: -84.51200),
-            CLLocationCoordinate2D(latitude: 39.09638, longitude: -84.51118),
-            CLLocationCoordinate2D(latitude: 39.09687, longitude: -84.51021),
+            LocationCoordinate2D(latitude: 39.09740, longitude: -84.51200),
+            LocationCoordinate2D(latitude: 39.09638, longitude: -84.51118),
+            LocationCoordinate2D(latitude: 39.09687, longitude: -84.51021),
         ])
         options.routeShapeResolution = .none
         

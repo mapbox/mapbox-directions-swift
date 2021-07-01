@@ -18,7 +18,7 @@ Specify the following dependency in your [Carthage](https://github.com/Carthage/
 # Latest stable release
 github "mapbox/mapbox-directions-swift" ~> 1.2
 # Latest prerelease
-github "mapbox/mapbox-directions-swift" "v1.2.0-rc.1"
+github "mapbox/mapbox-directions-swift" "v2.0.0-beta.5"
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
@@ -27,7 +27,7 @@ Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 # Latest stable release
 pod 'MapboxDirections', '~> 1.2'
 # Latest prerelease
-pod 'MapboxDirections', :git => 'https://github.com/mapbox/mapbox-directions-swift.git', :tag => 'v1.2.0-rc.1'
+pod 'MapboxDirections-pre', '2.0.0-beta.5'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
@@ -36,7 +36,7 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 // Latest stable release
 .package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0")
 // Latest prerelease
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0")
+.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0-beta.5")
 ```
 
 Then `import MapboxDirections`.
@@ -47,9 +47,9 @@ This repository contains an example application that demonstrates how to use the
 
 * One of the following package managers:
    * CocoaPods (CocoaPods 1.10 or above if using Xcode 12)
-   * Carthage 0.19 or above (run [this script](https://github.com/mapbox/mapbox-directions-swift/blob/main/scripts/wcarthage.sh) instead of `carthage` if using Xcode 12)
+   * Carthage 0.38 or above
    * Swift Package Manager 5.3 or above
-* Xcode 11 or above (Xcode 12 or above if using Swift Package Manager)
+* Xcode 12 or above
 * One of the following operating systems:
    * iOS 10.0 or above
    * macOS 10.12.0 or above
@@ -63,7 +63,7 @@ v0.30.0 is the last release of MapboxDirections.swift that supports a minimum de
 
 **[API reference](https://docs.mapbox.com/ios/api/directions/)**
 
-You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), Mapbox Directions automatically recognizes your access token, as long as you’ve placed it in the `MGLMapboxAccessToken` key of your application’s Info.plist file.
+You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), Mapbox Directions automatically recognizes your access token, as long as you’ve placed it in the `MBXAccessToken` key of your application’s Info.plist file.
 
 The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [Mapbox Directions for Swift API reference](https://docs.mapbox.com/ios/api/directions/).
 
@@ -78,7 +78,7 @@ import MapboxDirections
 let directions = Directions(credentials: DirectionsCredentials(accessToken: "<#your access token#>"))
 ```
 
-Alternatively, you can place your access token in the `MGLMapboxAccessToken` key of your application’s Info.plist file, then use the shared directions object:
+Alternatively, you can place your access token in the `MBXAccessToken` key of your application’s Info.plist file, then use the shared directions object:
 
 ```swift
 // main.swift
@@ -212,7 +212,7 @@ The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-
 
 To build `MapboxDirectionsCLI` using Carthage pipeline:
 
-1. `carthage build --platform macos`
+1. `carthage bootstrap --platform macos --use-xcframeworks`
 1. `open MapboxDirections.xcodeproj`
 1. Select `MapboxDirectionsCLI` target.
 

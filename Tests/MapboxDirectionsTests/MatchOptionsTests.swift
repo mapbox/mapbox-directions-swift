@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class MatchOptionsTests: XCTestCase {
@@ -33,15 +29,15 @@ class MatchOptionsTests: XCTestCase {
     // MARK: API name-handling tests
     
     private static var testTracepoints: [Tracepoint] {
-        let one = CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)
-        let two = CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)
+        let one = LocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)
+        let two = LocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)
         return [one, two].map { Tracepoint(coordinate: $0, countOfAlternatives: 0, name: nil) }
     }
 
     
     func testWaypointSerialization() {
-        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
+        let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
         let options = MatchOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
@@ -62,9 +58,9 @@ class MatchOptionsTests: XCTestCase {
 }
 
 fileprivate let testCoordinates = [
-    CLLocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
-    CLLocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
-    CLLocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
+    LocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
+    LocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
+    LocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
 ]
 
 

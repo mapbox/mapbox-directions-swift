@@ -1,9 +1,8 @@
 import Foundation
 #if canImport(CoreLocation)
 import CoreLocation
-#else
-import Turf
 #endif
+import Turf
 
 /**
  A `MatchOptions` object is a structure that specifies the criteria for results returned by the Mapbox Map Matching API.
@@ -34,7 +33,7 @@ open class MatchOptions: DirectionsOptions {
      - parameter coordinates: An array of geographic coordinates representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 100 locations. (Some profiles, such as `DirectionsProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).) Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
         let waypoints = coordinates.map {
             Waypoint(coordinate: $0)
         }

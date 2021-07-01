@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class IntersectionTests: XCTestCase {
@@ -32,10 +28,14 @@ class IntersectionTests: XCTestCase {
                 "lanes": [
                     [
                         "valid": true,
+                        "active": false,
+                        "valid_indication": "straight",
                         "indications": ["straight"],
                     ],
                     [
                         "valid": true,
+                        "active": true,
+                        "valid_indication": "straight",
                         "indications": ["right", "straight"],
                     ],
                 ],
@@ -54,43 +54,49 @@ class IntersectionTests: XCTestCase {
         if let intersection = intersections?.first {
             XCTAssertEqual(intersection.outletRoadClasses, [.toll, .restricted])
             XCTAssertEqual(intersection.headings, [80.0])
-            XCTAssertEqual(intersection.location, CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
+            XCTAssertEqual(intersection.location, LocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
             XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
         }
         
         intersections = [
-            Intersection(location: CLLocationCoordinate2D(latitude: 52.508068, longitude: 13.426579),
+            Intersection(location: LocationCoordinate2D(latitude: 52.508068, longitude: 13.426579),
                          headings: [80.0],
                          approachIndex: -1,
                          outletIndex: 0,
                          outletIndexes: IndexSet([0]),
                          approachLanes: nil,
                          usableApproachLanes: nil,
+                         preferredApproachLanes: nil,
+                         usableLaneIndication: nil,
                          outletRoadClasses: [.toll, .restricted],
                          tollCollection: TollCollection(type: .booth),
                          tunnelName: nil,
                          restStop: nil,
                          isUrban: nil,
                          outletMapboxStreetsRoadClass: .streetLimited),
-            Intersection(location: CLLocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
+            Intersection(location: LocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
                          outletIndex: 1,
                          outletIndexes: IndexSet([1, 2]),
                          approachLanes: nil,
                          usableApproachLanes: nil,
+                         preferredApproachLanes: nil,
+                         usableLaneIndication: nil,
                          outletRoadClasses: nil,
                          tollCollection: nil,
                          tunnelName: nil,
                          restStop: nil,
                          isUrban: nil),
-            Intersection(location: CLLocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
+            Intersection(location: LocationCoordinate2D(latitude: 39.102483, longitude: -84.503956),
                          headings: [45, 135, 255],
                          approachIndex: 2,
                          outletIndex: 0,
                          outletIndexes: IndexSet([0, 1]),
                          approachLanes: [.straightAhead, [.straightAhead, .right]],
                          usableApproachLanes: IndexSet([0, 1]),
+                         preferredApproachLanes: IndexSet([1]),
+                         usableLaneIndication: .straightAhead,
                          outletRoadClasses: nil,
                          tollCollection: nil,
                          tunnelName: nil,

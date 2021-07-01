@@ -1,10 +1,9 @@
 import Foundation
 #if canImport(CoreLocation)
 import CoreLocation
-#else
-import Turf
-import Polyline
 #endif
+import Turf
+
 
 #if canImport(CoreLocation)
 /**
@@ -30,34 +29,10 @@ public typealias LocationSpeed = Double
  The accuracy of a geographical coordinate.
  */
 public typealias LocationAccuracy = Double
-
-extension CLLocationCoordinate2D {
-    init(_ locationCoordinate2D: LocationCoordinate2D) {
-        self.init(latitude: locationCoordinate2D.latitude, longitude: locationCoordinate2D.longitude)
-    }
-}
-
-extension LocationCoordinate2D {
-    init(_ clLocationCoordinate2D: CLLocationCoordinate2D) {
-        self.init(latitude: clLocationCoordinate2D.latitude, longitude: clLocationCoordinate2D.longitude)
-    }
-}
 #endif
 
-extension CLLocationCoordinate2D {
+extension LocationCoordinate2D {
     internal var requestDescription: String {
         return "\(longitude.rounded(to: 1e6)),\(latitude.rounded(to: 1e6))"
     }
 }
-
-#if canImport(CoreLocation)
-extension CLLocation {
-    /**
-     Initializes a CLLocation object with the given coordinate pair.
-     */
-    internal convenience init(coordinate: CLLocationCoordinate2D) {
-        self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
-    }
-}
-#endif
-

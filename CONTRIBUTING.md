@@ -24,9 +24,9 @@ To contribute code changes to this project, use either Carthage or Swift Package
 
 ### Using Carthage
 
-1. Install Xcode 12 and [Carthage](https://github.com/Carthage/Carthage/) v0.35 or above.
-1. Run `./scripts/wcarthage.sh bootstrap --cache-builds`. (wcarthage.sh is a temporary workaround for [a linker error in Xcode 12](https://github.com/Carthage/Carthage/issues/3019).)
-1. Once the Carthage build finishes, open MapboxDirections.xcodeproj in Xcode and build the MapboxDirections Mac scheme. Switch to the Example scheme to see the Mapbox Directions API in action on iOS.
+1. Install Xcode 12 and [Carthage](https://github.com/Carthage/Carthage/) v0.38 or above.
+1. Run `carthage bootstrap --platform all --use-xcframeworks`.
+1. Once the Carthage build finishes, open MapboxDirections.xcodeproj in Xcode and build the MapboxDirections Mac scheme.
 
 ### Using Swift Package Manager
 
@@ -54,12 +54,10 @@ To add any type, constant, or member to the package’s public interface:
 
 1. Add a file to Tests/MapboxDirectionsTests/
 1. Add a file reference to the MapboxDirectionsTests group in MapboxDirections.xcodeproj.
-1. Rerun `swift test --generate-linuxmain`, which updates [XCTestManifests.swift](./Tests/MapboxDirectionsTests/XCTestManifests.swift) for builds that use Swift Package Manager.
 
 ### Adding a test case
 
 1. Add a `test*` method to one of the classes in one of the files in [Tests/MapboxDirectionsTests/](./Tests/MapboxDirectionsTests/).
-1. Rerun `swift test --generate-linuxmain`, which updates [XCTestManifests.swift](./Tests/MapboxDirectionsTests/XCTestManifests.swift) for builds that use Swift Package Manager.
 
 ### Adding a test fixture
 
@@ -83,7 +81,7 @@ To release a new version of the MapboxDirections package:
 1. Run `./scripts/update-version.sh v#.#.#`, where _#.#.#_ is a new version number conforming to [Semantic Versioning](https://semver.org/). Commit the changes with a commit message like `v#.#.#` and open a pull request to get it reviewed and merged.
 1. Tag the merged changes as `v#.#.#`. Push the tag by running `git pull && git push origin v#.#.#`.
 1. [Create a new release](https://github.com/mapbox/mapbox-directions-swift/releases/new/). Add release notes based on the release’s section in the changelog. (Unlike the changelog, release notes accept `#123` syntax for linking to PRs.) Title the release `v#.#.#`. Check “This is a pre-release” if applicable, then click “Publish release”.
-1. Run `pod repo update && pod trunk push` to publish the release on CocoaPods trunk.
+1. Run `pod repo update && pod trunk push MapboxDirections.podspec` (or `pod trunk push MapboxDirections-pre.podspec` for a prerelease) to publish the release on CocoaPods trunk.
 1. Run `./scripts/publish-documentation.sh v#.#.#` to generate and publish the documentation. Create a pull request and set the base branch to `publisher-production`.
 1. Wait for new documentation to be live. Once you merge the branch into `publisher-production`, the new version will be available within 10 minutes. (Mapbox employees can check the #publisher channel in Slack for a notification of when the commit has been published.)
 1. _(Mapbox employees only.)_ [Update various links](https://github.com/mapbox/ios-sdk#mapboxdirectionsswift) to the current docset in the [iOS documentation] site.

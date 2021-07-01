@@ -1,10 +1,6 @@
 import XCTest
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class RouteTests: XCTestCase {
@@ -30,8 +26,8 @@ class RouteTests: XCTestCase {
         let routeData = try! JSONSerialization.data(withJSONObject: routeJSON, options: [])
         
         let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 39.73843005470756, longitude: -105.08198579860195),
-            CLLocationCoordinate2D(latitude: 39.662569, longitude: -104.954255),
+            LocationCoordinate2D(latitude: 39.73843005470756, longitude: -105.08198579860195),
+            LocationCoordinate2D(latitude: 39.662569, longitude: -104.954255),
         ], profileIdentifier: .automobileAvoidingTraffic)
         options.routeShapeResolution = .none
         
@@ -111,8 +107,8 @@ class RouteTests: XCTestCase {
         ]
 
         let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 39.73843, longitude: -105.081986),
-            CLLocationCoordinate2D(latitude: 39.662569, longitude: -104.954255),
+            LocationCoordinate2D(latitude: 39.73843, longitude: -105.081986),
+            LocationCoordinate2D(latitude: 39.662569, longitude: -104.954255),
         ])
 
         options.locale = Locale(identifier: "he")

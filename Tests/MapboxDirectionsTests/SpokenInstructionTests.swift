@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class SpokenInstructionTests: XCTestCase {
@@ -18,12 +14,12 @@ class SpokenInstructionTests: XCTestCase {
         XCTAssertNoThrow(instruction = try JSONDecoder().decode(SpokenInstruction.self, from: instructionData))
         XCTAssertNotNil(instruction)
         if let instruction = instruction {
-            XCTAssertEqual(instruction.distanceAlongStep, instructionJSON["distanceAlongGeometry"] as! CLLocationDistance)
+            XCTAssertEqual(instruction.distanceAlongStep, instructionJSON["distanceAlongGeometry"] as! LocationDistance)
             XCTAssertEqual(instruction.text, instructionJSON["announcement"] as! String)
             XCTAssertEqual(instruction.ssmlText, instructionJSON["ssmlAnnouncement"] as! String)
         }
         
-        instruction = SpokenInstruction(distanceAlongStep: instructionJSON["distanceAlongGeometry"] as! CLLocationDistance,
+        instruction = SpokenInstruction(distanceAlongStep: instructionJSON["distanceAlongGeometry"] as! LocationDistance,
                                         text: instructionJSON["announcement"] as! String,
                                         ssmlText: instructionJSON["ssmlAnnouncement"] as! String)
         let encoder = JSONEncoder()

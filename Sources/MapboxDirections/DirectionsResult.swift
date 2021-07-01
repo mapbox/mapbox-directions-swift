@@ -1,8 +1,5 @@
 import Foundation
 import Polyline
-#if canImport(CoreLocation)
-import CoreLocation
-#endif
 import Turf
 
 /**
@@ -24,7 +21,7 @@ open class DirectionsResult: Codable {
     
     // MARK: Creating a Directions Result
     
-    init(legs: [RouteLeg], shape: LineString?, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
+    init(legs: [RouteLeg], shape: LineString?, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
         self.legs = legs
         self.shape = shape
         self.distance = distance
@@ -50,7 +47,7 @@ open class DirectionsResult: Codable {
             throw DirectionsCodingError.missingOptions
         }
         
-        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        distance = try container.decode(Turf.LocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
     
@@ -134,7 +131,7 @@ open class DirectionsResult: Codable {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: CLLocationDistance
+    public let distance: Turf.LocationDistance
     
     /**
      The route’s expected travel time, measured in seconds.

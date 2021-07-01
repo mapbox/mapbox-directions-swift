@@ -1,5 +1,16 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.0.0
+
+* To gain access to the Mapbox Directions and Map Matching APIs, set `MBXAccessToken` in your Info.plist. `MGLMapboxAccessToken` is still supported but is now deprecated. ([#522](https://github.com/mapbox/mapbox-directions-swift/pull/522))
+* This library requires Turf v2.0.0-alpha.3. ([#525](https://github.com/mapbox/mapbox-directions-swift/pull/525))
+* The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
+* Added the `Intersection.preferredApproachLanes` and `Intersection.usableLaneIndication` properties that indicate preferred lane usage. `VisualInstruction.Component.lane(indications:isUsable:)` has been renamed to `VisualInstruction.Component.lane(indications:isUsable:preferredDirection:)`. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
+* Comparing two `Intersection`s with `==` now considers whether the `Intersection.restStop`, `Intersection.regionCode`, and `Intersection.outletMapboxStreetsRoadClass` properties are equal. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
+* Carthage v0.38 or above is now required for installing this SDK if you use Carthage. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
+* Xcode 12.0 or above is now required to build MapboxDirections from source. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
+* You can fully build this SDK on Macs with Apple Silicon. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
+
 ## v1.2.0
 
 ### Packaging

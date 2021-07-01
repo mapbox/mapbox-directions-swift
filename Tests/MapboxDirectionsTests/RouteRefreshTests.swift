@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 #if !os(Linux)
 import OHHTTPStubs
 #if SWIFT_PACKAGE
@@ -202,7 +198,7 @@ class RouteRefreshTests: XCTestCase {
                 let annotationJSON = legJSON["annotation"] as? [String: Any]
                 XCTAssertNotNil(annotationJSON)
                 if let annotationJSON = annotationJSON {
-                    XCTAssertEqual(annotationJSON["distance"] as? [CLLocationDistance], [0])
+                    XCTAssertEqual(annotationJSON["distance"] as? [LocationDistance], [0])
                     XCTAssertEqual(annotationJSON["duration"] as? [TimeInterval], [0])
                     XCTAssertEqual(annotationJSON["speed"] as? [LocationSpeed], [0])
                     XCTAssertEqual(annotationJSON["congestion"] as? [String], ["severe"])

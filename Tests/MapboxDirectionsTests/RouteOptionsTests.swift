@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class RouteOptionsTests: XCTestCase {
@@ -39,8 +35,8 @@ class RouteOptionsTests: XCTestCase {
     
     private static var testWaypoints: [Waypoint] {
         return [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
         ]
     }
     
@@ -94,7 +90,7 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testApproachesURLQueryParams() {
-        let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        let coordinate = LocationCoordinate2D(latitude: 0, longitude: 0)
         let wp1 = Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         wp1.allowsArrivingOnOppositeSide = false
         let waypoints = [
@@ -111,7 +107,7 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testMissingApproaches() {
-        let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+        let coordinate = LocationCoordinate2D(latitude: 0, longitude: 0)
         let waypoints = [
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
@@ -126,8 +122,8 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testDecimalPrecision() {
-        let start = CLLocationCoordinate2D(latitude: 9.945497000000003, longitude: 53.03218800000006)
-        let end = CLLocationCoordinate2D(latitude: 10.945497000000003, longitude: 54.03218800000006)
+        let start = LocationCoordinate2D(latitude: 9.945497000000003, longitude: 53.03218800000006)
+        let end = LocationCoordinate2D(latitude: 10.945497000000003, longitude: 54.03218800000006)
         
         let answer = [start.requestDescription, end.requestDescription]
         let correct = ["53.032188,9.945497", "54.032188,10.945497"]
@@ -135,9 +131,9 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testWaypointSerialization() {
-        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
-        destination.targetCoordinate = CLLocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
+        let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
+        let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        destination.targetCoordinate = LocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
         let options = RouteOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
@@ -146,9 +142,9 @@ class RouteOptionsTests: XCTestCase {
 }
 
 fileprivate let testCoordinates = [
-    CLLocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
-    CLLocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
-    CLLocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
+    LocationCoordinate2D(latitude: 52.5109, longitude: 13.4301),
+    LocationCoordinate2D(latitude: 52.5080, longitude: 13.4265),
+    LocationCoordinate2D(latitude: 52.5021, longitude: 13.4316),
 ]
 
 var testRouteOptions: RouteOptions {

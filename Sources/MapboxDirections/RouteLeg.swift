@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#endif
 import Polyline
 import Turf
 
@@ -36,7 +33,7 @@ open class RouteLeg: Codable {
      - parameter typicalTravelTime: The route leg’s typical travel time, measured in seconds.
      - parameter profileIdentifier: The primary mode of transportation for the route leg.
      */
-    public init(steps: [RouteStep], name: String, distance: CLLocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: DirectionsProfileIdentifier) {
+    public init(steps: [RouteStep], name: String, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: DirectionsProfileIdentifier) {
         self.steps = steps
         self.name = name
         self.distance = distance
@@ -61,7 +58,7 @@ open class RouteLeg: Codable {
         source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
         destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
         name = try container.decode(String.self, forKey: .name)
-        distance = try container.decode(CLLocationDistance.self, forKey: .distance)
+        distance = try container.decode(Turf.LocationDistance.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
@@ -175,7 +172,7 @@ open class RouteLeg: Codable {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.distance`.
      */
-    open var segmentDistances: [CLLocationDistance]?
+    open var segmentDistances: [Turf.LocationDistance]?
 
     /**
      An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
@@ -269,7 +266,7 @@ open class RouteLeg: Codable {
 
      The value of this property accounts for the distance that the user must travel to arrive at the destination from the source. It is not the direct distance between the source and destination, nor should not assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: CLLocationDistance
+    public let distance: Turf.LocationDistance
 
     /**
      The route leg’s expected travel time, measured in seconds.

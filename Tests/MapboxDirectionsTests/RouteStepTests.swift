@@ -1,9 +1,5 @@
 import XCTest
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 @testable import MapboxDirections
 
 class RoadTests: XCTestCase {
@@ -138,7 +134,7 @@ class RouteStepTests: XCTestCase {
             XCTAssertEqual(step.shape?.coordinates.last?.longitude ?? 0, -122.220021, accuracy: 1e-5)
             XCTAssertEqual(step.finalHeading, 73)
             XCTAssertEqual(step.initialHeading, 60)
-            XCTAssertEqual(step.maneuverLocation, CLLocationCoordinate2D(latitude: -122.220291, longitude: 37.854109))
+            XCTAssertEqual(step.maneuverLocation, LocationCoordinate2D(latitude: -122.220291, longitude: 37.854109))
             XCTAssertEqual(step.maneuverDirection, .slightRight)
             XCTAssertEqual(step.maneuverType, .reachFork)
             XCTAssertEqual(step.instructions, "Keep right onto CA 24")
@@ -153,8 +149,8 @@ class RouteStepTests: XCTestCase {
     
     func testCoding() {
         let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 52.50881, longitude: 13.42467),
-            CLLocationCoordinate2D(latitude: 52.506794, longitude: 13.42326),
+            LocationCoordinate2D(latitude: 52.50881, longitude: 13.42467),
+            LocationCoordinate2D(latitude: 52.506794, longitude: 13.42326),
         ])
         options.shapeFormat = .polyline
         
@@ -167,9 +163,22 @@ class RouteStepTests: XCTestCase {
                     "entry": [false, true, true],
                     "in": 0,
                     "lanes": [
-                        ["valid": true, "indications": ["left"]],
-                        ["valid": true, "indications": ["straight"]],
-                        ["valid": false, "indications": ["right"]],
+                        [
+                            "valid": true,
+                            "active": true,
+                            "valid_indication": "left",
+                            "indications": ["left"]
+                        ],
+                        [
+                            "valid": false,
+                            "active": false,
+                            "indications": ["straight"]
+                        ],
+                        [
+                            "valid": false,
+                            "active": false,
+                            "indications": ["right"]
+                        ],
                     ],
                 ],
             ],
@@ -260,10 +269,10 @@ class RouteStepTests: XCTestCase {
     
     func testEncodingPronunciations() {
         let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            CLLocationCoordinate2D(latitude: 1, longitude: 1),
+            LocationCoordinate2D(latitude: 0, longitude: 0),
+            LocationCoordinate2D(latitude: 1, longitude: 1),
         ])
-        let step = RouteStep(transportType: .automobile, maneuverLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0), maneuverType: .turn, maneuverDirection: .left, instructions: "", initialHeading: 0, finalHeading: 0, drivingSide: .right, distance: 10, expectedTravelTime: 10, names: ["iPhone X", "iPhone XS"], phoneticNames: ["ˈaɪˌfoʊ̯n ˈtɛn", "ˈaɪˌfoʊ̯n ˈtɛnz"])
+        let step = RouteStep(transportType: .automobile, maneuverLocation: LocationCoordinate2D(latitude: 0, longitude: 0), maneuverType: .turn, maneuverDirection: .left, instructions: "", initialHeading: 0, finalHeading: 0, drivingSide: .right, distance: 10, expectedTravelTime: 10, names: ["iPhone X", "iPhone XS"], phoneticNames: ["ˈaɪˌfoʊ̯n ˈtɛn", "ˈaɪˌfoʊ̯n ˈtɛnz"])
         
         let encoder = JSONEncoder()
         encoder.userInfo[.options] = options
@@ -284,7 +293,7 @@ class RouteStepTests: XCTestCase {
         let typicalTravelTime = 2.5
         
         let route = RouteStep(transportType: .automobile,
-                              maneuverLocation: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                              maneuverLocation: LocationCoordinate2D(latitude: 0, longitude: 0),
                               maneuverType: .turn,
                               instructions: "",
                               drivingSide: .left,
@@ -300,8 +309,8 @@ class RouteStepTests: XCTestCase {
         let filePath = URL(fileURLWithPath: path!)
         let data = try! Data(contentsOf: filePath)
         let options = RouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 37.78, longitude: -122.42),
-            CLLocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+            LocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            LocationCoordinate2D(latitude: 38.91, longitude: -77.03),
         ])
         
         let decoder = JSONDecoder()
@@ -329,6 +338,7 @@ class RouteStepTests: XCTestCase {
             XCTAssertNotNil(newRoute)
             
             XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.miscellaneous)
+            XCTAssert(newRoute!.legs.first!.incidents!.first!.impact == Incident.Impact.minor)
             XCTAssert(newRoute!.legs.first!.incidents![0].lanesBlocked!.contains(.right))
             XCTAssertNil(newRoute!.legs.first!.incidents![1].lanesBlocked)
             XCTAssert(newRoute!.legs.first!.incidents![2].lanesBlocked!.isEmpty)

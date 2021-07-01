@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
@@ -22,7 +18,7 @@ open class VisualInstruction: Codable {
     /**
      Initializes a new visual instruction banner object that displays the given information.
      */
-    public init(text: String?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, components: [Component], degrees: CLLocationDegrees? = nil) {
+    public init(text: String?, maneuverType: ManeuverType?, maneuverDirection: ManeuverDirection?, components: [Component], degrees: LocationDegrees? = nil) {
         self.text = text
         self.maneuverType = maneuverType
         self.maneuverDirection = maneuverDirection
@@ -45,7 +41,7 @@ open class VisualInstruction: Codable {
         maneuverType = try container.decodeIfPresent(ManeuverType.self, forKey: .maneuverType)
         maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .maneuverDirection)
         components = try container.decode([Component].self, forKey: .components)
-        finalHeading = try container.decodeIfPresent(CLLocationDegrees.self, forKey: .finalHeading)
+        finalHeading = try container.decodeIfPresent(LocationDegrees.self, forKey: .finalHeading)
     }
     
     // MARK: Displaying the Instruction Text
@@ -81,7 +77,7 @@ open class VisualInstruction: Codable {
 
      This property is only relevant if the `maneuverType` is any of the following values: `ManeuverType.takeRoundabout`, `ManeuverType.takeRotary`, `ManeuverType.turnAtRoundabout`, `ManeuverType.exitRoundabout`, or `ManeuverType.exitRotary`.
      */
-    public var finalHeading: CLLocationDegrees?
+    public var finalHeading: LocationDegrees?
 }
 
 extension VisualInstruction: Equatable {

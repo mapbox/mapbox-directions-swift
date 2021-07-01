@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 extension RouteLeg {
     /**
@@ -15,7 +11,7 @@ extension RouteLeg {
          
          This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.distance`.
          */
-        public var segmentDistances: [CLLocationDistance]?
+        public var segmentDistances: [LocationDistance]?
         
         /**
          An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
@@ -71,7 +67,7 @@ extension RouteLeg.Attributes: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        segmentDistances = try container.decodeIfPresent([CLLocationDistance].self, forKey: .segmentDistances)
+        segmentDistances = try container.decodeIfPresent([LocationDistance].self, forKey: .segmentDistances)
         expectedSegmentTravelTimes = try container.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
         segmentSpeeds = try container.decodeIfPresent([LocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)

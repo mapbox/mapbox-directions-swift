@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(CoreLocation)
-import CoreLocation
-#else
 import Turf
-#endif
 
 /**
  A single cross street along a step.
@@ -11,13 +7,15 @@ import Turf
 public struct Intersection {
     // MARK: Creating an Intersection
     
-    public init(location: CLLocationCoordinate2D,
-                headings: [CLLocationDirection],
+    public init(location: LocationCoordinate2D,
+                headings: [LocationDirection],
                 approachIndex: Int,
                 outletIndex: Int,
                 outletIndexes: IndexSet,
                 approachLanes: [LaneIndication]?,
                 usableApproachLanes: IndexSet?,
+                preferredApproachLanes: IndexSet?,
+                usableLaneIndication: ManeuverDirection?,
                 outletRoadClasses: RoadClasses? = nil,
                 tollCollection: TollCollection? = nil,
                 tunnelName: String? = nil,
@@ -32,6 +30,8 @@ public struct Intersection {
         self.outletIndex = outletIndex
         self.outletIndexes = outletIndexes
         self.usableApproachLanes = usableApproachLanes
+        self.preferredApproachLanes = preferredApproachLanes
+        self.usableLaneIndication = usableLaneIndication
         self.outletRoadClasses = outletRoadClasses
         self.tollCollection = tollCollection
         self.tunnelName = tunnelName
@@ -46,18 +46,18 @@ public struct Intersection {
     /**
      The geographic coordinates at the center of the intersection.
      */
-    public let location: CLLocationCoordinate2D
+    public let location: LocationCoordinate2D
     
     // MARK: Getting the Roads that Meet at the Intersection
     
     /**
-     An array of `CLLocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
+     An array of `LocationDirection`s indicating the absolute headings of the roads that meet at the intersection.
      
      A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.
      
      A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.
      */
-    public let headings: [CLLocationDirection]
+    public let headings: [LocationDirection]
     
     /**
      The indices of the items in the `headings` array that correspond to the roads that may be used to leave the intersection.
@@ -152,6 +152,20 @@ public struct Intersection {
      If no lane information is available for an intersection, this property’s value is `nil`.
      */
     public let usableApproachLanes: IndexSet?
+    
+    /**
+     The indices of the items in the `approachLanes` array that correspond to the lanes that are preferred to execute the maneuver.
+     
+     If no lane information is available for an intersection, this property’s value is `nil`.
+     */
+    public let preferredApproachLanes: IndexSet?
+    
+    /**
+     Which of the `LaneIndication`s is applicable to the current route when there is more than one.
+     
+     If no lane information is available for the intersection, this property’s value is `nil`
+     */
+    public let usableLaneIndication: ManeuverDirection?
 }
 
 extension Intersection: Codable {
@@ -232,7 +246,7 @@ extension Intersection: Codable {
     
     func encode(to encoder: Encoder, administrativeRegionIndex: Int?, geometryIndex: Int?) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(CLLocationCoordinate2DCodable(location), forKey: .location)
+        try container.encode(LocationCoordinate2DCodable(location), forKey: .location)
         try container.encode(headings, forKey: .headings)
         
         try container.encodeIfPresent(approachIndex, forKey: .approachIndex)
@@ -247,10 +261,21 @@ extension Intersection: Codable {
         
         var lanes: [Lane]?
         if let approachLanes = approachLanes,
-            let usableApproachLanes = usableApproachLanes {
+            let usableApproachLanes = usableApproachLanes,
+            let preferredApproachLanes = preferredApproachLanes
+        {
             lanes = approachLanes.map { Lane(indications: $0) }
             for i in usableApproachLanes {
-                lanes![i].isValid = true
+                lanes?[i].isValid = true
+                if let usableLaneIndication = usableLaneIndication,
+                   let validLanes = lanes,
+                   validLanes[i].indications.descriptions.contains(usableLaneIndication.rawValue) {
+                    lanes?[i].validIndication = usableLaneIndication
+                }
+            }
+            
+            for j in preferredApproachLanes {
+                lanes?[j].isActive = true
             }
         }
         try container.encodeIfPresent(lanes, forKey: .lanes)
@@ -290,16 +315,26 @@ extension Intersection: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        location = try container.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
-        headings = try container.decode([CLLocationDirection].self, forKey: .headings)
+        location = try container.decode(LocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
+        headings = try container.decode([LocationDirection].self, forKey: .headings)
         
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
+            preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
+            let validIndications = lanes.compactMap { $0.validIndication}
+            if Set(validIndications).count > 1 {
+                let context = EncodingError.Context(codingPath: decoder.codingPath, debugDescription: "Inconsistent valid indications.")
+                throw EncodingError.invalidValue(validIndications, context)
+            }
+            usableLaneIndication = validIndications.first
         } else {
             approachLanes = nil
             usableApproachLanes = nil
+            preferredApproachLanes = nil
+            usableLaneIndication = nil
         }
+        
         outletRoadClasses = try container.decodeIfPresent(RoadClasses.self, forKey: .outletRoadClasses)
         
         let outletsArray = try container.decode([Bool].self, forKey: .outletIndexes)
@@ -329,6 +364,11 @@ extension Intersection: Equatable {
             lhs.outletIndex == rhs.outletIndex &&
             lhs.approachLanes == rhs.approachLanes &&
             lhs.usableApproachLanes == rhs.usableApproachLanes &&
+            lhs.preferredApproachLanes == rhs.preferredApproachLanes &&
+            lhs.usableLaneIndication == rhs.usableLaneIndication &&
+            lhs.restStop == rhs.restStop &&
+            lhs.regionCode == rhs.regionCode &&
+            lhs.outletMapboxStreetsRoadClass == rhs.outletMapboxStreetsRoadClass &&
             lhs.outletRoadClasses == rhs.outletRoadClasses &&
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
