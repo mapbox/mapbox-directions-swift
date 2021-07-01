@@ -123,29 +123,29 @@ open class RouteOptions: DirectionsOptions {
     open var roadClassesToAvoid: RoadClasses = []
     
     /**
-     A number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
+     An optional that represents the number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.walking`.
+     This property has no effect unless it is explicitly set as it defaults to nil, and works best when the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.walking`.
      
-     The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. The default value of `DirectionsPriority.default` neither prefers nor avoids alleys, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.default` avoids alleys, and a positive value between `DirectionsPriority.default` and `DirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
+     The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. `DirectionsPriority.medium` neither prefers nor avoids alleys, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.medium` avoids alleys, and a positive value between `DirectionsPriority.medium` and `DirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
     open var alleyPriority: DirectionsPriority?
     
     /**
-     A number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
+     An optional that represents the number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
+     This property has no effect unless it is explicitly set as it defaults to nil, and works best when the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
      
-     The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. The default value of `DirectionsPriority.default` neither prefers nor avoids walkways, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.default` avoids walkways, and a positive value between `DirectionsPriority.default` and `DirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
+     The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. `DirectionsPriority.medium` neither prefers nor avoids walkways, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.medium` avoids walkways, and a positive value between `DirectionsPriority.medium` and `DirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
     open var walkwayPriority: DirectionsPriority?
     
     /**
-     The expected uniform travel speed measured in meters per second.
+     An optional that represents the expected uniform travel speed measured in meters per second.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `DirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
+     This property has no effect unless it is explicitly set as it defaults to nil, and works best when the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `DirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
      
-     The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. The default value is `CLLocationSpeed.normalWalking`.
+     The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. `CLLocationSpeed.normalWalking` corresponds to a typical preferred walking speed.
      */
     open var speed: LocationSpeed?
     
@@ -222,7 +222,7 @@ open class RouteOptions: DirectionsOptions {
 
 extension LocationSpeed {
     /**
-     By default, pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
+     Pedestrians are assumed to walk at an average rate of 1.42 meters per second (5.11 kilometers per hour or 3.18 miles per hour), corresponding to a typical preferred walking speed.
      */
     static let normalWalking: LocationSpeed = 1.42
     
