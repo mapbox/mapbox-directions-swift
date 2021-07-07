@@ -10,7 +10,7 @@
 * Carthage v0.38 or above is now required for installing this SDK if you use Carthage. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * Xcode 12.0 or above is now required to build MapboxDirections from source. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * You can fully build this SDK on Macs with Apple Silicon. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
-* `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` are now optional, and thus must be set explicitly if the developer wants to include them in the route options. `DirectionsOptions.default` has been renamed to `DirectionsOptions.medium`. ([#557](https://github.com/mapbox/mapbox-directions-swift/pull/557))
+* `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` are now optional. Set them explicitly if you want to include them in the HTTP request. Renamed `DirectionsOptions.default` to `DirectionsOptions.medium`. ([#557](https://github.com/mapbox/mapbox-directions-swift/pull/557))
 
 ## v1.2.0
 
