@@ -99,7 +99,7 @@ public struct DirectionsPriority: Hashable, RawRepresentable {
     /**
      The priority level with which a route neither avoids nor prefers a particular type of roadway or pathway.
      */
-    static let `default` = DirectionsPriority(rawValue: 0.0)
+    static let medium = DirectionsPriority(rawValue: 0.0)
     
     /**
      The priority level with which a route prefers a particular type of roadway or pathway.

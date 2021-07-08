@@ -62,7 +62,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
         let components = URLComponents(string: url.absoluteString)
-        XCTAssertEqual(components?.queryItems?.count, 8)
+        XCTAssertEqual(components?.queryItems?.count, 7)
         XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.requestDescription }.joined(separator: ";")) ?? false)
         
         let request = directions.urlRequest(forCalculating: options)
@@ -73,6 +73,7 @@ class DirectionsTests: XCTestCase {
     func testPOSTRequest() {
         let coordinates = Array(repeating: LocationCoordinate2D(latitude: 0, longitude: 0), count: maximumCoordinateCount + 1)
         let options = RouteOptions(coordinates: coordinates)
+        options.alleyPriority = .medium
         
         let directions = Directions(credentials: BogusCredentials)
         let request = directions.urlRequest(forCalculating: options)
