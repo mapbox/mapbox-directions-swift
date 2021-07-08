@@ -41,8 +41,8 @@ open class DirectionsResult: Codable {
         
         //populate legs with origin and destination
         if let options = options as? DirectionsOptions {
-            let waypoints = options.waypoints
-            legs.populate(waypoints: waypoints)
+            let legSeparators = options.legSeparators
+            legs.populate(waypoints: legSeparators)
         } else {
             throw DirectionsCodingError.missingOptions
         }
