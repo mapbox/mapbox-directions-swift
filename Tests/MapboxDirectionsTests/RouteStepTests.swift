@@ -336,14 +336,19 @@ class RouteStepTests: XCTestCase {
             var newRoute: Route?
             XCTAssertNoThrow(newRoute = try decoder.decode(Route.self, from: jsonData))
             XCTAssertNotNil(newRoute)
+            guard let leg = newRoute?.legs.first else {
+                XCTFail("No legs found"); return
+            }
             
-            XCTAssert(newRoute!.legs.first!.incidents!.first!.kind == Incident.Kind.miscellaneous)
-            XCTAssert(newRoute!.legs.first!.incidents!.first!.impact == Incident.Impact.minor)
-            XCTAssert(newRoute!.legs.first!.incidents![0].lanesBlocked!.contains(.right))
-            XCTAssertNil(newRoute!.legs.first!.incidents![1].lanesBlocked)
-            XCTAssert(newRoute!.legs.first!.incidents![2].lanesBlocked!.isEmpty)
-            XCTAssert(newRoute!.legs.first!.incidents![2].shapeIndexRange == 810..<900)
-            XCTAssert(newRoute!.legs.first!.incidents!.first! == route.legs.first!.incidents!.first!)
+            XCTAssert(leg.incidents!.first!.kind == Incident.Kind.miscellaneous)
+            XCTAssert(leg.incidents!.first!.impact == Incident.Impact.minor)
+            XCTAssert(leg.incidents![0].lanesBlocked!.contains(.right))
+            XCTAssertNil(leg.incidents![1].lanesBlocked)
+            XCTAssert(leg.incidents![2].lanesBlocked!.isEmpty)
+            XCTAssert(leg.incidents![2].shapeIndexRange == 810..<900)
+            XCTAssert(leg.incidents!.first! == leg.incidents!.first!)
+
+            XCTAssert(leg.steps.contains(where: { $0.exitIndex != nil }))
         }
     }
 }
