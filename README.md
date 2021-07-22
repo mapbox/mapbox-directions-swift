@@ -41,7 +41,7 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 
 Then `import MapboxDirections`.
 
-This repository contains an example application that demonstrates how to use the framework. To run it, you need to use [Carthage](https://github.com/Carthage/Carthage) 0.19 or above to install the dependencies. Detailed documentation is available in the [Mapbox API Documentation](https://docs.mapbox.com/api/navigation/#directions).
+This repository contains an [example application](./DirectionsPlayground/) that demonstrates how to use the framework. Detailed documentation is available in the [Mapbox API Documentation](https://docs.mapbox.com/api/navigation/#directions).
 
 ## System requirements
 
