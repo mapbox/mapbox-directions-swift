@@ -334,6 +334,7 @@ class RouteStepTests: XCTestCase {
             XCTAssert(newRoute!.legs.first!.incidents![2].lanesBlocked!.isEmpty)
             XCTAssert(newRoute!.legs.first!.incidents![2].shapeIndexRange == 810..<900)
             XCTAssert(newRoute!.legs.first!.incidents!.first! == route.legs.first!.incidents!.first!)
+            XCTAssert(newRoute!.legs.first!.steps.contains(where: { $0.exitIndex != nil }))
         }
     }
 }

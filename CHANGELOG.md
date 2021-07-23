@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v1.2.*
+
+* Fixed an issue where RouteStep.exitIndex was always unset. ([#569](https://github.com/mapbox/mapbox-directions-swift/pull/569))
+
 ## v1.2.0
 
 ### Packaging
