@@ -406,7 +406,6 @@ open class RouteStep: Codable {
         case shape = "geometry"
         case distance
         case drivingSide = "driving_side"
-        case exitIndex = "exit"
         case expectedTravelTime = "duration"
         case typicalTravelTime = "duration_typical"
         case instructions
@@ -425,6 +424,7 @@ open class RouteStep: Codable {
         case instruction
         case location
         case type
+        case exitIndex = "exit"
         case direction = "modifier"
         case initialHeading = "bearing_before"
         case finalHeading = "bearing_after"
@@ -493,7 +493,6 @@ open class RouteStep: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
         try container.encodeIfPresent(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
-        try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
         try container.encode(distance.rounded(to: 1e1), forKey: .distance)
         try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
         try container.encodeIfPresent(typicalTravelTime?.rounded(to: 1e1), forKey: .typicalTravelTime)
@@ -537,7 +536,8 @@ open class RouteStep: Codable {
         try maneuver.encode(CLLocationCoordinate2DCodable(maneuverLocation), forKey: .location)
         try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
         try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
-        
+        try maneuver.encodeIfPresent(exitIndex, forKey: .exitIndex)
+
         try container.encodeIfPresent(speedLimitSignStandard, forKey: .speedLimitSignStandard)
         if let speedLimitUnit = speedLimitUnit,
             let unit = SpeedLimitDescriptor.UnitDescriptor(unit: speedLimitUnit) {
@@ -589,7 +589,8 @@ open class RouteStep: Codable {
         maneuverLocation = try maneuver.decode(CLLocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
         maneuverType = (try? maneuver.decode(ManeuverType.self, forKey: .type)) ?? .default
         maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
-        
+        exitIndex = try maneuver.decodeIfPresent(Int.self, forKey: .exitIndex)
+
         initialHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .initialHeading)
         finalHeading = try maneuver.decodeIfPresent(CLLocationDirection.self, forKey: .finalHeading)
         
@@ -617,7 +618,6 @@ open class RouteStep: Codable {
             instructionsDisplayedAlongStep = nil
         }
         
-        exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
         distance = try container.decode(CLLocationDirection.self, forKey: .distance)
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
