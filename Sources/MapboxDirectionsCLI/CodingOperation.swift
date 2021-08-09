@@ -29,6 +29,22 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
                let jsonData = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) {
                 outputText = String(data: jsonData, encoding: .utf8)!
             }
+        case .gpx:
+            // Data -> JSON -> GPX
+            outputText = "GPX FILE!"
+            var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+            gpxText.append("\n<gpx")
+            
+            // CONVERT POINTS TO GPX
+            let json = try? JSONDecoder().decode(RouteOptions.self, from: data)
+            print("!!! JSON: \(String(describing: json))")
+            if let waypoints = json?.waypoints {
+                for waypoint in waypoints {
+                    print("!!! waypoint: \(waypoint)")
+                    break
+                }
+            } else { print("!!! NOT GOING INTO FOR LOOP")}
+            gpxText.append("\n</gpx>")
         }
         
         if let outputPath = options.outputPath {

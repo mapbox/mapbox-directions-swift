@@ -16,12 +16,13 @@ struct ProcessingOptions: ParsableArguments {
     @Option(name: [.short, .customLong("output")], help: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
     var outputPath: String?
     
-    @Option(name: [.customShort("f"), .customLong("format")], help: "Output format. Supports `text` and `json` formats.")
+    @Option(name: [.customShort("f"), .customLong("format")], help: "Output format. Supports `text`, `json`, and `gpx` formats.")
     var outputFormat: OutputFormat = .text
     
     enum OutputFormat: String, ExpressibleByArgument, CaseIterable {
         case text
         case json
+        case gpx
     }
 }
 
