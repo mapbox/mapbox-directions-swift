@@ -18,7 +18,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         return try encoder.encode(result)
     }
     
-    private func processOutput(_ data: Data) throws {
+    private func processOutput(_ data: Data, routeResponse: RouteResponse?) throws {
         var outputText: String = ""
         
         switch options.outputFormat {
@@ -30,21 +30,21 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
                 outputText = String(data: jsonData, encoding: .utf8)!
             }
         case .gpx:
-            // Data -> JSON -> GPX
-            outputText = "GPX FILE!"
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx")
+            // do we need to include additional tags like metadata or the schema version?
             
-            // CONVERT POINTS TO GPX
-            let json = try? JSONDecoder().decode(RouteOptions.self, from: data)
-            print("!!! JSON: \(String(describing: json))")
-            if let waypoints = json?.waypoints {
-                for waypoint in waypoints {
-                    print("!!! waypoint: \(waypoint)")
-                    break
+            guard let routeResponse = routeResponse else { return }
+            guard let routes = routeResponse.routes else { return }
+            routes.forEach { route in
+                let shape = route.shape
+                for coord in shape!.coordinates {
+                    gpxText.append("\n<wpt lat=\"\(coord.latitude)\" lon=\"\(coord.longitude)\">")
+                    gpxText.append("</wpt>")
                 }
-            } else { print("!!! NOT GOING INTO FOR LOOP")}
+            }
             gpxText.append("\n</gpx>")
+            outputText = gpxText
         }
         
         if let outputPath = options.outputPath {
@@ -73,8 +73,14 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
+        
+        var routeResponse: RouteResponse!
+        if options.outputFormat == .gpx {
+            guard let gpxData = try String(contentsOfFile: options.inputPath).data(using: .utf8) else { exit(1)}
+            routeResponse = try! decoder.decode(RouteResponse.self, from: gpxData)
+        }
         let data = try processResponse(decoder, type: ResponceType.self, from: input)
         
-        try processOutput(data)
+        try processOutput(data, routeResponse: routeResponse)
     }
 }
