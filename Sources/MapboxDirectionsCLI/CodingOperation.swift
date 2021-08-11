@@ -32,7 +32,6 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         case .gpx:
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
-            // do we need to include additional tags like metadata or the schema version?
             
             guard let routeResponse = routeResponse else { return }
             guard let routes = routeResponse.routes else { return }
