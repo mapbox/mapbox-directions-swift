@@ -31,16 +31,24 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             }
         case .gpx:
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-            gpxText.append("\n<gpx")
+            gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
             // do we need to include additional tags like metadata or the schema version?
             
             guard let routeResponse = routeResponse else { return }
             guard let routes = routeResponse.routes else { return }
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            var time = Date()
+            
             routes.forEach { route in
                 let shape = route.shape
+                let timeInterval = TimeInterval(route.distance/route.expectedTravelTime)
                 for coord in shape!.coordinates {
                     gpxText.append("\n<wpt lat=\"\(coord.latitude)\" lon=\"\(coord.longitude)\">")
-                    gpxText.append("</wpt>")
+                    gpxText.append("\n\t<time> \(dateFormatter.string(from: time))Z </time>")
+                    gpxText.append("\n</wpt>")
+                    time.addTimeInterval(timeInterval)
                 }
             }
             gpxText.append("\n</gpx>")
@@ -76,7 +84,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         
         var routeResponse: RouteResponse!
         if options.outputFormat == .gpx {
-            guard let gpxData = try String(contentsOfFile: options.inputPath).data(using: .utf8) else { exit(1)}
+            let gpxData = try String(contentsOfFile: options.inputPath).data(using: .utf8)!
             routeResponse = try! decoder.decode(RouteResponse.self, from: gpxData)
         }
         let data = try processResponse(decoder, type: ResponceType.self, from: input)
