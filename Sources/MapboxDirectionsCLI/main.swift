@@ -7,7 +7,7 @@ import ArgumentParser
 
 struct ProcessingOptions: ParsableArguments {
     
-    @Option(name: [.short, .customLong("input")], help: "Filepath to the input JSON.")
+    @Option(name: [.short, .customLong("input")], help: "[Optional] Filepath to the input JSON. If no filepath provided - will fall back to Directions API request.")
     var inputPath: String
     
     @Option(name: [.short, .customLong("config")], help: "Filepath to the JSON, containing serialized Options data.")
