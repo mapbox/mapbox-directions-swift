@@ -33,11 +33,11 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
             
-            guard let routeResponse = routeResponse else { return }
-            guard let routes = routeResponse.routes else { return }
+            guard let routeResponse = routeResponse,
+                  let routes = routeResponse.routes else { return }
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.formatOptions = .withInternetDateTime
             var time = Date()
             
             routes.forEach { route in
@@ -45,7 +45,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
                 let timeInterval = TimeInterval(route.distance/route.expectedTravelTime)
                 for coord in shape!.coordinates {
                     gpxText.append("\n<wpt lat=\"\(coord.latitude)\" lon=\"\(coord.longitude)\">")
-                    gpxText.append("\n\t<time> \(dateFormatter.string(from: time))Z </time>")
+                    gpxText.append("\n\t<time> \(dateFormatter.string(from: time)) </time>")
                     gpxText.append("\n</wpt>")
                     time.addTimeInterval(timeInterval)
                 }
@@ -81,7 +81,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
         
-        var routeResponse: RouteResponse!
+        var routeResponse: RouteResponse?
         if options.outputFormat == .gpx {
             let gpxData = try String(contentsOfFile: options.inputPath).data(using: .utf8)!
             routeResponse = try! decoder.decode(RouteResponse.self, from: gpxData)
