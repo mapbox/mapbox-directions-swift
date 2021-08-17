@@ -4,6 +4,9 @@ import Turf
 import CoreLocation
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
+let accessToken = ProcessInfo.processInfo.environment["access_token"]
+let credentials = DirectionsCredentials(accessToken: accessToken)
+private let directions = Directions(credentials: credentials)
 
 protocol DirectionsResultsProvider {
     var directionsResults: [DirectionsResult]? { get }
@@ -181,7 +184,7 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         }
         
         decoder.userInfo = [.options: directionsOptions,
-                            .credentials: NotBogusCredentials]
+                            .credentials: credentials]
         
         let (data, directionsResultsProvider) = try processResponse(decoder, from: input)
         
