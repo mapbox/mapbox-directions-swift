@@ -3,9 +3,10 @@ import MapboxDirections
 import Turf
 import CoreLocation
 
-private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
-let accessToken = ProcessInfo.processInfo.environment["access_token"]
-let credentials = DirectionsCredentials(accessToken: accessToken)
+let accessToken: String? =
+    ProcessInfo.processInfo.environment["access_token"] ??
+    UserDefaults.standard.string(forKey: "MBXAccessToken")
+let credentials = DirectionsCredentials(accessToken: accessToken!)
 private let directions = Directions(credentials: credentials)
 
 protocol DirectionsResultsProvider {
@@ -146,8 +147,6 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
             }
             
             responseData = data
-            print("Fetched data: \(data)")
-            print("Fetched response: \(String(describing: response))")
             semaphore.signal()
         }
         
