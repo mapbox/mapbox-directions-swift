@@ -117,6 +117,46 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return interpolatedCoordinates
     }
     
+    private func requestResponse(_ coordinates: [Waypoint]?) -> (Data?, Data) {
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        var waypoints: [Waypoint]
+        if coordinates != nil {
+            waypoints = coordinates!
+        } else {
+            waypoints = [
+                Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
+                Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
+            ]
+        }
+        
+        let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
+        options.includesSteps = true
+        var responseData: Data?
+        
+        let url = directions.url(forCalculating: options)
+        let urlSession = URLSession(configuration: .ephemeral)
+
+        let task = urlSession.dataTask(with: url) { (data, response, error) in
+            guard let data = data, error == nil else {
+                fatalError(error!.localizedDescription)
+            }
+            
+            responseData = data
+            print("Fetched data: \(data)")
+            print("Fetched response: \(String(describing: response))")
+            semaphore.signal()
+        }
+        
+        task.resume()
+        semaphore.wait()
+        
+        let encoder = JSONEncoder()
+        let encodedOptions = try! encoder.encode(options)
+        
+        return (responseData, encodedOptions)
+    }
+    
     init(options: ProcessingOptions) {
         self.options = options
     }
@@ -125,15 +165,23 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
     
     func execute() throws {
         
-        let input = FileManager.default.contents(atPath: NSString(string: options.inputPath).expandingTildeInPath)!
+//        let input = FileManager.default.contents(atPath: NSString(string: options.inputPath).expandingTildeInPath)!
         let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
+        let input: Data!
         
         let decoder = JSONDecoder()
         
         let directionsOptions = try decoder.decode(OptionsType.self, from: config)
         
+        if let inputPath = options.inputPath {
+            input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
+        } else {
+            let response = requestResponse(directionsOptions.waypoints)
+            input = response.0
+        }
+        
         decoder.userInfo = [.options: directionsOptions,
-                            .credentials: BogusCredentials]
+                            .credentials: NotBogusCredentials]
         
         let (data, directionsResultsProvider) = try processResponse(decoder, from: input)
         
