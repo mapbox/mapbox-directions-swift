@@ -157,6 +157,9 @@ class RouteRefreshTests: XCTestCase {
                         "congestion": [
                             "severe",
                         ],
+                        "congestion_numeric": [
+                            100,
+                        ]
                     ],
                 ],
             ],
@@ -173,6 +176,7 @@ class RouteRefreshTests: XCTestCase {
             XCTAssertEqual(leg.attributes.expectedSegmentTravelTimes, [0])
             XCTAssertEqual(leg.attributes.segmentSpeeds, [0])
             XCTAssertEqual(leg.attributes.segmentCongestionLevels, [.severe])
+            XCTAssertEqual(leg.attributes.segmentNumericCongestionLevels, [100])
             XCTAssertNil(leg.attributes.segmentMaximumSpeedLimits)
         }
     }
