@@ -36,13 +36,17 @@ Request ID: RAf2XH13mMVxQ96Z1cVQMPrd-hJoVA6LfaWVFDbdN2j-J1VkzaPvZg==
 
 #if !os(Linux)
 class DirectionsTests: XCTestCase {
+    private let skuToken: String = "1234567890"
+
     override func setUp() {
         // Make sure tests run in all time zones
         NSTimeZone.default = TimeZone(secondsFromGMT: 0)!
+        MBXAccounts.serviceSkuToken = skuToken
     }
     override func tearDown() {
         HTTPStubs.removeAllStubs()
         super.tearDown()
+        MBXAccounts.serviceSkuToken = nil
     }
     
     func testConfiguration() {
@@ -61,10 +65,15 @@ class DirectionsTests: XCTestCase {
         let url = directions.url(forCalculating: options, httpMethod: "GET")
         XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
         
-        let components = URLComponents(string: url.absoluteString)
-        XCTAssertEqual(components?.queryItems?.count, 7)
-        XCTAssertTrue(components?.path.contains(coordinates.compactMap { $0.requestDescription }.joined(separator: ";")) ?? false)
-        
+        guard let components = URLComponents(string: url.absoluteString),
+              let queryItems = components.queryItems else {
+            XCTFail("Invalid url"); return
+        }
+        XCTAssertEqual(queryItems.count, 8)
+        XCTAssertTrue(components.path.contains(coordinates.compactMap { $0.requestDescription }.joined(separator: ";")) )
+        XCTAssert(queryItems.contains(where: { $0.name == "sku" && $0.value == skuToken }) == true)
+        XCTAssert(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }) == true)
+
         let request = directions.urlRequest(forCalculating: options)
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
@@ -79,7 +88,7 @@ class DirectionsTests: XCTestCase {
         let request = directions.urlRequest(forCalculating: options)
         
         XCTAssertEqual(request.httpMethod, "POST")
-        XCTAssertEqual(request.url?.query, "access_token=\(BogusToken)")
+        XCTAssertEqual(request.url?.query, "access_token=\(BogusToken)&sku=\(skuToken)")
         XCTAssertNotNil(request.httpBody)
         var components = URLComponents()
         components.query = String(data: request.httpBody ?? Data(), encoding: .utf8)
@@ -192,5 +201,21 @@ class DirectionsTests: XCTestCase {
         })
         wait(for: [expectation], timeout: 2.0)
     }
+
+    func testRefreshRouteRequest() {
+        let directions = Directions(credentials: BogusCredentials)
+        guard let url = directions.urlRequest(forRefreshing: "any", routeIndex: 0, fromLegAtIndex: 0).url else {
+            XCTFail("Incorrect request"); return
+        }
+        XCTAssertLessThanOrEqual(url.absoluteString.count, MaximumURLLength, "maximumCoordinateCount is too high")
+
+        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else {
+            XCTFail("Invalid url"); return
+        }
+        XCTAssertEqual(queryItems.count, 2)
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "sku" && $0.value == skuToken }))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }))
+    }
+
 }
 #endif
