@@ -126,6 +126,17 @@ open class Directions: NSObject {
      
      - parameter credentials: A `DirectionsCredentials` object that, optionally, contains customized Token and Endpoint information. If no credentials object is supplied, then defaults are used.
      */
+
+    private var authenticationParams: [URLQueryItem] {
+        var params: [URLQueryItem] = [
+            URLQueryItem(name: "access_token", value: credentials.accessToken)
+        ]
+
+        if let skuToken = credentials.skuToken {
+            params.append(URLQueryItem(name: "sku", value: skuToken))
+        }
+        return params
+    }
     
     public init(credentials:  DirectionsCredentials = .init()) {
         self.credentials = credentials
@@ -479,9 +490,8 @@ open class Directions: NSObject {
     }
     
     open func urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int) -> URLRequest {
-        var params: [URLQueryItem] = []
-        params += [URLQueryItem(name: "access_token", value: credentials.accessToken)]
-        
+        let params: [URLQueryItem] = authenticationParams
+
         var unparameterizedURL = URL(string: "directions-refresh/v1/\(DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
         unparameterizedURL.appendPathComponent(responseIdentifier)
         unparameterizedURL.appendPathComponent(String(routeIndex))
@@ -520,12 +530,8 @@ open class Directions: NSObject {
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
-        params += [URLQueryItem(name: "access_token", value: credentials.accessToken)]
-        
-        if let skuToken = credentials.skuToken {
-            params += [URLQueryItem(name: "sku", value: skuToken)]
-        }
-        
+        params.append(contentsOf: authenticationParams)
+
         let unparameterizedURL = URL(string: includesQuery ? options.path : options.abridgedPath, relativeTo: credentials.host)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params

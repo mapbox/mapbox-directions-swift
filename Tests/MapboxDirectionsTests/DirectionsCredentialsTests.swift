@@ -21,4 +21,20 @@ class DirectionsCredentialsTests: XCTestCase {
         UserDefaults.standard.set(expected, forKey: "MBXAccessToken")
         XCTAssertEqual(Directions.shared.credentials.accessToken, expected)
     }
+
+#if !os(Linux)
+    func testSkuToken() {
+        let expectedToken = "a token"
+        MBXAccounts.serviceSkuToken = expectedToken
+        XCTAssertEqual(Directions.shared.credentials.skuToken, expectedToken)
+        MBXAccounts.serviceSkuToken = nil
+    }
+#endif
 }
+
+#if !os(Linux)
+@objc(MBXAccounts)
+final class MBXAccounts: NSObject {
+    @objc static var serviceSkuToken: String?
+}
+#endif
