@@ -13,6 +13,9 @@ struct ProcessingOptions: ParsableArguments {
     @Option(name: [.short, .customLong("config")], help: "Filepath to the JSON, containing serialized Options data.")
     var configPath: String
     
+    @Option(name: [.short, .customLong("url")], help: "[Optional] Directions API request URL.")
+    var url: String?
+    
     @Option(name: [.short, .customLong("output")], help: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
     var outputPath: String?
     

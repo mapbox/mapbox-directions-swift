@@ -1,6 +1,7 @@
 
 import Foundation
 import MapboxDirections
+import CoreLocation
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
@@ -40,6 +41,24 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
+    private func convertURLToOptions(from url: URL?) -> OptionsType? {
+        
+        guard let url = url else { return nil }
+        let pathComponents = url.pathComponents
+        guard pathComponents[1] == "directions",
+              pathComponents[2] == "v5",
+              pathComponents.count == 6 else { return nil }
+        
+        let waypoints = url.deletingPathExtension().lastPathComponent
+            .split(separator: ";")
+            .map { $0.split(separator: ",", maxSplits: 1) }
+            .map { CLLocationCoordinate2D(latitude: Double($0[1])!, longitude: Double($0[0])!) }
+            .map { Waypoint(coordinate: $0) }
+        let profileIdentifier = DirectionsProfileIdentifier(rawValue: pathComponents[3..<5].joined(separator: "/"))
+
+        return OptionsType(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    }
+    
     init(options: ProcessingOptions) {
         self.options = options
     }
@@ -52,6 +71,11 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
         
         let decoder = JSONDecoder()
+        
+        if let url = options.url {
+            let options = convertURLToOptions(from: URL(string: url))
+            print("!!! options: \(String(describing: options?.waypoints))")
+        }
         
         let directionsOptions = try decoder.decode(OptionsType.self, from: config)
         
