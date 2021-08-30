@@ -1,6 +1,7 @@
 
 import Foundation
 import MapboxDirections
+import Turf
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
@@ -36,15 +37,16 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             guard let routeResponse = routeResponse,
                   let routes = routeResponse.routes else { return }
             
+            let timeInterval: TimeInterval = 1
             let dateFormatter = ISO8601DateFormatter()
             dateFormatter.formatOptions = .withInternetDateTime
             var time = Date()
             
             routes.forEach { route in
-                let shape = route.shape
-                let timeInterval = TimeInterval(route.distance/route.expectedTravelTime)
-                for coord in shape!.coordinates {
-                    gpxText.append("\n<wpt lat=\"\(coord.latitude)\" lon=\"\(coord.longitude)\">")
+                let coordinates = interpolate(route: route)
+                for coord in coordinates {
+                    guard let lat = coord?.latitude, let lon = coord?.longitude else { continue }
+                    gpxText.append("\n<wpt lat=\"\(lat)\" lon=\"\(lon)\">")
                     gpxText.append("\n\t<time> \(dateFormatter.string(from: time)) </time>")
                     gpxText.append("\n</wpt>")
                     time.addTimeInterval(timeInterval)
@@ -61,6 +63,36 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         } else {
             print(outputText)
         }
+    }
+    
+    private func interpolate(route: Route?) -> [CLLocationCoordinate2D?] {
+        guard let route = route else { return [] }
+        
+        var distanceAway: CLLocationDistance = 0
+        let distance = route.distance/route.expectedTravelTime
+        guard let polyline = route.shape else { return [] }
+        var interpolatedCoordinates = [route.shape?.coordinates.first]
+        
+        while distanceAway < route.distance {
+            guard let currentCoordinate = interpolatedCoordinates.last,
+                  let lookAheadCoordinate = polyline.coordinateFromStart(distance: distanceAway + 5),
+                  let direction = currentCoordinate?.direction(to: lookAheadCoordinate) else { return [] }
+            
+            let newCoordinate = lookAheadCoordinate.coordinate(at: distanceAway, facing: direction)
+            
+            interpolatedCoordinates.append(newCoordinate)
+            distanceAway += distance
+        }
+
+//        while distanceAway < route.distance {
+//            guard let currentCoordinate = polyline.coordinateFromStart(distance: distanceAway),
+//                  let lookAheadCoordinate = polyline.coordinateFromStart(distance: distanceAway + 5)  else { return [] }
+//            let newCoordinate = lookAheadCoordinate.coordinate(at: distanceAway, facing: currentCoordinate.direction(to: lookAheadCoordinate))
+//
+//            interpolatedCoordinates.append(newCoordinate)
+//            distanceAway += distance
+//        }
+        return interpolatedCoordinates
     }
     
     init(options: ProcessingOptions) {
