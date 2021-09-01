@@ -73,25 +73,11 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         guard let polyline = route.shape else { return [] }
         var interpolatedCoordinates = [route.shape?.coordinates.first]
         
-        while distanceAway < route.distance {
-            guard let currentCoordinate = interpolatedCoordinates.last,
-                  let lookAheadCoordinate = polyline.coordinateFromStart(distance: distanceAway + 5),
-                  let direction = currentCoordinate?.direction(to: lookAheadCoordinate) else { return [] }
-            
-            let newCoordinate = lookAheadCoordinate.coordinate(at: distanceAway, facing: direction)
-            
-            interpolatedCoordinates.append(newCoordinate)
+        while distanceAway <= route.distance {
+            let nextCordinate = polyline.coordinateFromStart(distance: distanceAway)
+            interpolatedCoordinates.append(nextCordinate)
             distanceAway += distance
         }
-
-//        while distanceAway < route.distance {
-//            guard let currentCoordinate = polyline.coordinateFromStart(distance: distanceAway),
-//                  let lookAheadCoordinate = polyline.coordinateFromStart(distance: distanceAway + 5)  else { return [] }
-//            let newCoordinate = lookAheadCoordinate.coordinate(at: distanceAway, facing: currentCoordinate.direction(to: lookAheadCoordinate))
-//
-//            interpolatedCoordinates.append(newCoordinate)
-//            distanceAway += distance
-//        }
         return interpolatedCoordinates
     }
     
