@@ -41,22 +41,55 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
-    private func convertURLToOptions(from url: URL?) -> OptionsType? {
+    private func convertURLToOptions(from url: URL?) {
         
-        guard let url = url else { return nil }
+        // Parse the URL
+        guard let url = url else { return }
         let pathComponents = url.pathComponents
         guard pathComponents[1] == "directions",
               pathComponents[2] == "v5",
-              pathComponents.count == 6 else { return nil }
-        
+              pathComponents.count == 6 else { return }
+
         let waypoints = url.deletingPathExtension().lastPathComponent
             .split(separator: ";")
             .map { $0.split(separator: ",", maxSplits: 1) }
             .map { CLLocationCoordinate2D(latitude: Double($0[1])!, longitude: Double($0[0])!) }
             .map { Waypoint(coordinate: $0) }
         let profileIdentifier = DirectionsProfileIdentifier(rawValue: pathComponents[3..<5].joined(separator: "/"))
-
-        return OptionsType(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        
+        let data = try! Data(contentsOf: url)
+        let queryItems = url.query?.split(separator: "&")
+        print("!!! query: \(String(describing: queryItems))")
+        queryItems?.forEach { query in
+            
+        }
+        
+        let jsonData = try! JSONDecoder().decode(OptionsType.self, from: data)
+        print("!!!JSONDATA: \(jsonData)")
+        
+        let options = OptionsType(waypoints: waypoints, profileIdentifier: profileIdentifier)
+//        if let queryItems = url.query?.split(separator: "&") {
+//            let items = JSONDecoder().decode(OptionsType.self, from: data)
+//        }
+//        print("!!! query: \(String(describing: queryItems))")
+        
+        // Parse the URL into a JSON
+//        guard let url = url else { return }
+//
+//        print("!!! URL: \(url)")
+//
+//        let options: OptionsType!
+//        let pathComponents = url.pathComponents.dropFirst()
+//        print("!!! pathComponents: \(pathComponents)")
+//        let queryItems = url.query?.split(separator: "&")
+//        print("!!! query: \(String(describing: queryItems))")
+//        let profileIdentifier = pathComponents[3..<5].joined(separator: "/")
+//        print("!!! profileIdentifier: \(profileIdentifier)")
+        
+        
+        // Decode (deserialize) into RouteOptions object
+        
+        
     }
     
     init(options: ProcessingOptions) {
@@ -73,8 +106,8 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         let decoder = JSONDecoder()
         
         if let url = options.url {
-            let options = convertURLToOptions(from: URL(string: url))
-            print("!!! options: \(String(describing: options?.waypoints))")
+            convertURLToOptions(from: URL(string: url))
+//            print("!!! options: \(String(describing: options?.waypoints))")
         }
         
         let directionsOptions = try decoder.decode(OptionsType.self, from: config)
