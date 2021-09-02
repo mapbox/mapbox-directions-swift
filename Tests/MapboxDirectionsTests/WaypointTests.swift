@@ -150,4 +150,18 @@ class WaypointTests: XCTestCase {
         from.coordinateAccuracy = 5
         XCTAssertEqual(options.radiuses, "5.0;unlimited")
     }
+    
+    func testClosedRoadSnapping() {
+        let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        
+        let routeOptions = RouteOptions(waypoints: [from, through, to])
+        let matchOptions = MatchOptions(waypoints: [from, through, to], profileIdentifier: nil)
+        
+        through.allowsSnappingToClosedRoad = true
+        
+        XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
+    }
 }

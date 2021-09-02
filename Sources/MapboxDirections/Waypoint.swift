@@ -145,6 +145,13 @@ public class Waypoint: Codable {
      */
     public var targetCoordinate: LocationCoordinate2D?
     
+    /**
+     Affects snapping of waypoint location to road segments.
+     
+     If `true`, road segments closed due to live-traffic closures will be considered for snapping. Defaults to `false`. This property corresponds to the [`snapping_include_closures`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile) Directions query parameter.
+     */
+    public var allowsSnappingToClosedRoad: Bool = false
+    
     // MARK: Getting the Direction of Approach
     
     /**
