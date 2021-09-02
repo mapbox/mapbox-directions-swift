@@ -13,6 +13,7 @@
 * `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` are now optional. Set them explicitly if you want to include them in the HTTP request. Renamed `DirectionsOptions.default` to `DirectionsOptions.medium`. ([#557](https://github.com/mapbox/mapbox-directions-swift/pull/557))
 * Removed the `DirectionsResult.routeIdentifier` property. Use the `RouteResponse.identifier` property in conjunction with an index into the `RouteResponse.routes` array instead. ([#562](https://github.com/mapbox/mapbox-directions-swift/pull/562))
 * Fixed an issue where RouteStep.exitIndex was always unset. ([#567](https://github.com/mapbox/mapbox-directions-swift/pull/567))
+* Added `Waypoint.allowsSnappingToClosedRoad` property to allow snapping waypoint location to closed parts of the road. ([#583](https://github.com/mapbox/mapbox-directions-swift/pull/583))
 
 ## v1.2.0
 
