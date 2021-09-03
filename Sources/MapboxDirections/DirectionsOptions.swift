@@ -362,6 +362,10 @@ open class DirectionsOptions: Codable {
             queryItems.append(URLQueryItem(name: "waypoint_names", value: names))
         }
         
+        if let snapping = self.closureSnapping {
+            queryItems.append(URLQueryItem(name: "snapping_include_closures", value: snapping))
+        }
+        
         return queryItems
     }
     
@@ -420,6 +424,13 @@ open class DirectionsOptions: Codable {
     
     internal var coordinates: String? {
         return waypoints.map { $0.coordinate.requestDescription }.joined(separator: ";")
+    }
+    
+    internal var closureSnapping: String? {
+        guard waypoints.contains(where: \.allowsSnappingToClosedRoad) else {
+            return nil
+        }
+        return waypoints.map { $0.allowsSnappingToClosedRoad ? "true": ""}.joined(separator: ";")
     }
 
     internal var httpBody: String {
