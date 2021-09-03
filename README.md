@@ -282,6 +282,8 @@ To run (and build if it wasn't yet) `MapboxDirectionsCLI` and see usage:
 
 1. `swift run mapbox-directions-swift -h`
 
+For further details, see the [MapboxDirectionsCLI documentation](ADD LINK).
+
 ## Pricing
 
 API calls made to the Directions API are individually billed by request. Review the [pricing information](https://docs.mapbox.com/api/navigation/directions/#directions-api-pricing) and the [pricing page](https://www.mapbox.com/pricing/#directions) for current rates.
