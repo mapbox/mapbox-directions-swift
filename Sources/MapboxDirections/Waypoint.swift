@@ -146,9 +146,9 @@ public class Waypoint: Codable {
     public var targetCoordinate: LocationCoordinate2D?
     
     /**
-     Affects snapping of waypoint location to road segments.
+     A Boolean value indicating whether the waypoint may be snapped to a closed road in the resulting `RouteResponse`.
      
-     If `true`, road segments closed due to live-traffic closures will be considered for snapping. Defaults to `false`. This property corresponds to the [`snapping_include_closures`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile) Directions query parameter.
+     If `true`, the waypoint may be snapped to a road segment that is closed due to a live traffic closure. This property is `false` by default. This property corresponds to the [`snapping_include_closures`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile) query parameter in the Mapbox Directions API.
      */
     public var allowsSnappingToClosedRoad: Bool = false
     
