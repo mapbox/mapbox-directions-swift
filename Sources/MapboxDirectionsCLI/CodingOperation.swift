@@ -66,13 +66,21 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
     }
     
     private func interpolate(route: Route?) -> [CLLocationCoordinate2D?] {
-        guard let route = route else { return [] }
+        guard let route = route,
+              let polyline = route.shape else { return [] }
         
+//        route.legs.forEach { leg in
+//            let expectedSegmentTravelTimes = leg.expectedSegmentTravelTimes
+//            var distanceAway: CLLocationDistance = 0
+//            let distance = leg.segmentDistances
+//
+//        }
+//        let expectedTime = route.legs[0].expectedSegmentTravelTimes
+        print("!!! ROUTE LEGS: \(route.legs.count)")
         var distanceAway: CLLocationDistance = 0
         let distance = route.distance/route.expectedTravelTime
-        guard let polyline = route.shape else { return [] }
         var interpolatedCoordinates = [route.shape?.coordinates.first]
-        
+//        let dist = route.legs.first?.segmentSpeeds
         while distanceAway <= route.distance {
             let nextCordinate = polyline.coordinateFromStart(distance: distanceAway)
             interpolatedCoordinates.append(nextCordinate)
