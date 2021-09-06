@@ -155,7 +155,7 @@ open class RouteLeg: Codable {
         var currentStepStartIndex = 0
         for step in steps {
             if let coordinates = step.shape?.coordinates {
-                let stepCoordinateCount = step.maneuverType == .arrive ? coordinates.count : coordinates.dropLast().count
+                let stepCoordinateCount = step.maneuverType == .arrive ? 0 : coordinates.dropLast().count
                 let currentStepEndIndex = currentStepStartIndex.advanced(by: stepCoordinateCount)
                 segmentRangesByStep.append(currentStepStartIndex..<currentStepEndIndex)
                 currentStepStartIndex = currentStepEndIndex
