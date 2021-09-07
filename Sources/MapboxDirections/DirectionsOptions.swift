@@ -132,14 +132,14 @@ open class DirectionsOptions: Codable {
     private enum CodingKeys: String, CodingKey {
         case waypoints
         case profileIdentifier
-        case includesSteps
+        case includesSteps = "steps"
         case shapeFormat
         case routeShapeResolution
         case attributeOptions
         case locale
-        case includesSpokenInstructions
+        case includesSpokenInstructions = "voice_instructions"
         case distanceMeasurementSystem
-        case includesVisualInstructions
+        case includesVisualInstructions = "banner_instructions"
     }
     
     public func encode(to encoder: Encoder) throws {
