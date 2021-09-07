@@ -207,6 +207,8 @@ open class RouteLeg: Codable {
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry in numeric form.
 
+     Entries may be `nil` if congestion on that segment is not known.
+
      Traffic data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/#traffic-data).
 
      You can color-code a route line according to the congestion level along each segment of the route.
