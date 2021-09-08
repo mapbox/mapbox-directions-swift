@@ -45,6 +45,7 @@ open class RouteLeg: Codable {
         expectedSegmentTravelTimes = nil
         segmentSpeeds = nil
         segmentCongestionLevels = nil
+        segmentNumericCongestionLevels = nil
     }
     
     /**
@@ -202,6 +203,19 @@ open class RouteLeg: Codable {
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.congestionLevel`.
      */
     open var segmentCongestionLevels: [CongestionLevel]?
+
+    /**
+     An array containing the traffic congestion level along each road segment in the route leg geometry in numeric form.
+
+     Entries may be `nil` if congestion on that segment is not known.
+
+     Traffic data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/#traffic-data).
+
+     You can color-code a route line according to the congestion level along each segment of the route.
+
+     This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.numericCongestionLevel`.
+     */
+    open var segmentNumericCongestionLevels: [NumericCongestionLevel?]?
     
     /**
      An array containing the maximum speed limit along each road segment along the route leg’s shape.
@@ -223,6 +237,7 @@ open class RouteLeg: Codable {
                               expectedSegmentTravelTimes: expectedSegmentTravelTimes,
                               segmentSpeeds: segmentSpeeds,
                               segmentCongestionLevels: segmentCongestionLevels,
+                              segmentNumericCongestionLevels: segmentNumericCongestionLevels,
                               segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
         }
         set {
@@ -230,6 +245,7 @@ open class RouteLeg: Codable {
             expectedSegmentTravelTimes = newValue.expectedSegmentTravelTimes
             segmentSpeeds = newValue.segmentSpeeds
             segmentCongestionLevels = newValue.segmentCongestionLevels
+            segmentNumericCongestionLevels = newValue.segmentNumericCongestionLevels
             segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
         }
     }
@@ -322,6 +338,7 @@ extension RouteLeg: Equatable {
             lhs.expectedSegmentTravelTimes == rhs.expectedSegmentTravelTimes &&
             lhs.segmentSpeeds == rhs.segmentSpeeds &&
             lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
+            lhs.segmentNumericCongestionLevels == rhs.segmentNumericCongestionLevels &&
             lhs.segmentMaximumSpeedLimits == rhs.segmentMaximumSpeedLimits &&
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&

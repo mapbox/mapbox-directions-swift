@@ -48,6 +48,15 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
      When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry.
      */
     public static let maximumSpeedLimit = AttributeOptions(rawValue: 1 << 5)
+
+    /**
+     Traffic congestion level in numeric form.
+
+     When this attribute is specified, the `RouteLeg.numericCongestionLevels` property contains one value for each segment in the leg’s full geometry.
+
+     This attribute requires `DirectionsProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `nil` for each segment along the route.
+     */
+    public static let numericCongestionLevel = AttributeOptions(rawValue: 1 << 6)
     
     /**
      Creates an AttributeOptions from the given description strings.
@@ -66,6 +75,8 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
                 attributeOptions.update(with: .congestionLevel)
             case "maxspeed":
                 attributeOptions.update(with: .maximumSpeedLimit)
+            case "congestion_numeric":
+                attributeOptions.update(with: .numericCongestionLevel)
             case "":
                 continue
             default:
@@ -91,6 +102,9 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
         }
         if contains(.maximumSpeedLimit) {
             descriptions.append("maxspeed")
+        }
+        if contains(.numericCongestionLevel) {
+            descriptions.append("congestion_numeric")
         }
         return descriptions.joined(separator: ",")
     }

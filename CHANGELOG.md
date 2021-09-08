@@ -14,6 +14,7 @@
 * Removed the `DirectionsResult.routeIdentifier` property. Use the `RouteResponse.identifier` property in conjunction with an index into the `RouteResponse.routes` array instead. ([#562](https://github.com/mapbox/mapbox-directions-swift/pull/562))
 * Fixed an issue where RouteStep.exitIndex was always unset. ([#567](https://github.com/mapbox/mapbox-directions-swift/pull/567))
 * Added the `Waypoint.allowsSnappingToClosedRoad` property to allow snapping the waypoint’s location to a closed part of a road. ([#583](https://github.com/mapbox/mapbox-directions-swift/pull/583))
+* Added `AttributeOptions.numericCongestionLevel`, `RouteLeg.segmentNumericCongestionLevels`, `RouteLeg.Attributes.segmentNumericCongestionLevels` and `NumericCongestionLevel` to support receiving the numeric value for congestion level along each segment of a `RouteLeg`. ([#575](https://github.com/mapbox/mapbox-directions-swift/pull/575))
 
 ## v1.2.0
 

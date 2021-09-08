@@ -37,3 +37,8 @@ public enum CongestionLevel: String, Codable, CaseIterable {
      */
     case severe
 }
+
+/**
+ `NumericCongestionLevel` is the level of traffic congestion along a road segment in numeric form, from 0-100. A value of 0 indicates no congestion, a value of 100 indicates maximum congestion.
+ */
+public typealias NumericCongestionLevel = Int

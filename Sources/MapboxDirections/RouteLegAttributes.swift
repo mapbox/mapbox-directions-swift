@@ -41,6 +41,17 @@ extension RouteLeg {
          This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.congestionLevel`.
          */
         public var segmentCongestionLevels: [CongestionLevel]?
+
+        /**
+         An array containing the traffic congestion level along each road segment in the route leg geometry.
+
+         Traffic data is available in [a number of countries and territories worldwide](https://docs.mapbox.com/help/how-mapbox-works/directions/#traffic-data).
+
+         You can color-code a route line according to the congestion level along each segment of the route.
+
+         This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.numericCongestionLevel`.
+         */
+        public var segmentNumericCongestionLevels: [NumericCongestionLevel?]?
         
         /**
          An array containing the maximum speed limit along each road segment along the route leg’s shape.
@@ -61,6 +72,7 @@ extension RouteLeg.Attributes: Codable {
         case expectedSegmentTravelTimes = "duration"
         case segmentSpeeds = "speed"
         case segmentCongestionLevels = "congestion"
+        case segmentNumericCongestionLevels = "congestion_numeric"
         case segmentMaximumSpeedLimits = "maxspeed"
     }
     
@@ -71,6 +83,7 @@ extension RouteLeg.Attributes: Codable {
         expectedSegmentTravelTimes = try container.decodeIfPresent([TimeInterval].self, forKey: .expectedSegmentTravelTimes)
         segmentSpeeds = try container.decodeIfPresent([LocationSpeed].self, forKey: .segmentSpeeds)
         segmentCongestionLevels = try container.decodeIfPresent([CongestionLevel].self, forKey: .segmentCongestionLevels)
+        segmentNumericCongestionLevels = try container.decodeIfPresent([NumericCongestionLevel?].self, forKey: .segmentNumericCongestionLevels)
         
         if let speedLimitDescriptors = try container.decodeIfPresent([SpeedLimitDescriptor].self, forKey: .segmentMaximumSpeedLimits) {
             segmentMaximumSpeedLimits = speedLimitDescriptors.map { Measurement<UnitSpeed>(speedLimitDescriptor: $0) }
@@ -86,6 +99,7 @@ extension RouteLeg.Attributes: Codable {
         try container.encodeIfPresent(expectedSegmentTravelTimes, forKey: .expectedSegmentTravelTimes)
         try container.encodeIfPresent(segmentSpeeds, forKey: .segmentSpeeds)
         try container.encodeIfPresent(segmentCongestionLevels, forKey: .segmentCongestionLevels)
+        try container.encodeIfPresent(segmentNumericCongestionLevels, forKey: .segmentNumericCongestionLevels)
         
         if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
             try container.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
@@ -100,6 +114,7 @@ extension RouteLeg.Attributes: Codable {
             expectedSegmentTravelTimes == nil &&
             segmentSpeeds == nil &&
             segmentCongestionLevels == nil &&
+            segmentNumericCongestionLevels == nil &&
             segmentMaximumSpeedLimits == nil
     }
 }

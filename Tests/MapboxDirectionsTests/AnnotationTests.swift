@@ -22,7 +22,7 @@ class AnnotationTests: XCTestCase {
             "steps": "false",
             "continue_straight": "true",
             "access_token": BogusToken,
-            "annotations": "distance,duration,speed,congestion,maxspeed"
+            "annotations": "distance,duration,speed,congestion,maxspeed,congestion_numeric"
         ]
         
         stub(condition: isHost("api.mapbox.com")
@@ -39,7 +39,7 @@ class AnnotationTests: XCTestCase {
         options.includesSteps = false
         options.includesAlternativeRoutes = false
         options.routeShapeResolution = .full
-        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .maximumSpeedLimit]
+        options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .numericCongestionLevel, .maximumSpeedLimit]
         var route: Route?
         let task = Directions(credentials: BogusCredentials).calculate(options) { (session, disposition) in
             
@@ -75,11 +75,17 @@ class AnnotationTests: XCTestCase {
             XCTAssertEqual(leg.expectedSegmentTravelTimes?.count, 153)
             
             XCTAssertEqual(leg.segmentCongestionLevels?.count, 153)
-            XCTAssertFalse(leg.segmentCongestionLevels?.contains(.unknown) ?? true)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .unknown), 2)
             XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .low), 0)
-            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .moderate), 21)
-            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .heavy), 2)
+            XCTAssertEqual(leg.segmentCongestionLevels?.firstIndex(of: .moderate), 14)
+            XCTAssertFalse(leg.segmentCongestionLevels?.contains(.heavy) ?? true)
             XCTAssertFalse(leg.segmentCongestionLevels?.contains(.severe) ?? true)
+
+            XCTAssertEqual(leg.segmentNumericCongestionLevels?.count, 153)
+            XCTAssertEqual(leg.segmentNumericCongestionLevels?.firstIndex(of: nil), 2)
+            XCTAssertEqual(leg.segmentNumericCongestionLevels?.firstIndex(of: 12), 91)
+            XCTAssertEqual(leg.segmentNumericCongestionLevels?.firstIndex(of: 32), 60)
+            XCTAssertFalse(leg.segmentNumericCongestionLevels?.contains(26) ?? true)
             
             XCTAssertEqual(leg.segmentMaximumSpeedLimits?.count, 153)
             XCTAssertEqual(leg.segmentMaximumSpeedLimits?.first, Measurement(value: 48, unit: .kilometersPerHour))
