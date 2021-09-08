@@ -24,14 +24,21 @@ public struct DirectionsCredentials: Equatable {
      */
     public var skuToken: String? {
         #if !os(Linux)
-        guard let mbx: AnyClass = NSClassFromString("MBXAccounts") else { return nil }
-        guard mbx.responds(to: Selector(("serviceSkuToken"))) else { return nil }
-        guard let serviceSkuToken = mbx.value(forKeyPath: "serviceSkuToken") as? String,
-              let serviceAccessToken = mbx.value(forKeyPath: "serviceAccessToken") as? String,
-              serviceAccessToken == accessToken else {
-                  return nil
-              }
-        return serviceSkuToken
+        guard let mbx: AnyClass = NSClassFromString("MBXAccounts"),
+              mbx.responds(to: Selector(("serviceSkuToken"))),
+              let serviceSkuToken = mbx.value(forKeyPath: "serviceSkuToken") as? String
+        else { return nil }
+
+        if mbx.responds(to: Selector(("serviceAccessToken"))) {
+            guard let serviceAccessToken = mbx.value(forKeyPath: "serviceAccessToken") as? String,
+                  serviceAccessToken == accessToken
+            else { return nil }
+
+            return serviceSkuToken
+        }
+        else {
+            return serviceSkuToken
+        }
         #else
         return nil
         #endif
