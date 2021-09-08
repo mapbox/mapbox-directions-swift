@@ -42,7 +42,9 @@ class DirectionsTests: XCTestCase {
         // Make sure tests run in all time zones
         NSTimeZone.default = TimeZone(secondsFromGMT: 0)!
         MBXAccounts.serviceSkuToken = skuToken
+        MBXAccounts.serviceAccessToken = BogusCredentials.accessToken
     }
+    
     override func tearDown() {
         HTTPStubs.removeAllStubs()
         super.tearDown()
