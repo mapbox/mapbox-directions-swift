@@ -26,7 +26,12 @@ public struct DirectionsCredentials: Equatable {
         #if !os(Linux)
         guard let mbx: AnyClass = NSClassFromString("MBXAccounts") else { return nil }
         guard mbx.responds(to: Selector(("serviceSkuToken"))) else { return nil }
-        return mbx.value(forKeyPath: "serviceSkuToken") as? String
+        guard let serviceSkuToken = mbx.value(forKeyPath: "serviceSkuToken") as? String,
+              let serviceAccessToken = mbx.value(forKeyPath: "serviceAccessToken") as? String,
+              serviceAccessToken == accessToken else {
+                  return nil
+              }
+        return serviceSkuToken
         #else
         return nil
         #endif

@@ -26,8 +26,18 @@ class DirectionsCredentialsTests: XCTestCase {
     func testSkuToken() {
         let expectedToken = "a token"
         MBXAccounts.serviceSkuToken = expectedToken
+        MBXAccounts.serviceAccessToken = Directions.shared.credentials.accessToken
         XCTAssertEqual(Directions.shared.credentials.skuToken, expectedToken)
         MBXAccounts.serviceSkuToken = nil
+        MBXAccounts.serviceAccessToken = nil
+    }
+
+    func testSkuTokenWithMismatchedAccessToken() {
+        MBXAccounts.serviceSkuToken = "a token"
+        MBXAccounts.serviceAccessToken = UUID().uuidString
+        XCTAssertEqual(Directions.shared.credentials.skuToken, nil)
+        MBXAccounts.serviceSkuToken = nil
+        MBXAccounts.serviceAccessToken = nil
     }
 #endif
 }
@@ -36,5 +46,6 @@ class DirectionsCredentialsTests: XCTestCase {
 @objc(MBXAccounts)
 final class MBXAccounts: NSObject {
     @objc static var serviceSkuToken: String?
+    @objc static var serviceAccessToken: String?
 }
 #endif
