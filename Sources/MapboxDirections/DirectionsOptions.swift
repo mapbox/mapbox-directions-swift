@@ -131,14 +131,14 @@ open class DirectionsOptions: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case waypoints
-        case profileIdentifier
+        case profileIdentifier = "profile"
         case includesSteps = "steps"
-        case shapeFormat
-        case routeShapeResolution
-        case attributeOptions
-        case locale
+        case shapeFormat = "geometries"
+        case routeShapeResolution = "overview"
+        case attributeOptions = "annotations"
+        case locale = "language"
         case includesSpokenInstructions = "voice_instructions"
-        case distanceMeasurementSystem
+        case distanceMeasurementSystem = "voice_units"
         case includesVisualInstructions = "banner_instructions"
     }
     
