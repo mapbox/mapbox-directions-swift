@@ -15,6 +15,7 @@
 * Fixed an issue where RouteStep.exitIndex was always unset. ([#567](https://github.com/mapbox/mapbox-directions-swift/pull/567))
 * Added the `Waypoint.allowsSnappingToClosedRoad` property to allow snapping the waypoint’s location to a closed part of a road. ([#583](https://github.com/mapbox/mapbox-directions-swift/pull/583))
 * Added `AttributeOptions.numericCongestionLevel`, `RouteLeg.segmentNumericCongestionLevels`, `RouteLeg.Attributes.segmentNumericCongestionLevels` and `NumericCongestionLevel` to support receiving the numeric value for congestion level along each segment of a `RouteLeg`. ([#575](https://github.com/mapbox/mapbox-directions-swift/pull/575))
+* Fixed an issue where `RouteLeg.segmentRangesByStep` contained a range that was off by one for the arrival step of a leg. ([#587](https://github.com/mapbox/mapbox-directions-swift/pull/587))
 
 ## v1.2.0
 
@@ -52,7 +53,7 @@
 
 ## v0.33.1
 
-* Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437)) 
+* Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437))
 
 ## v0.33.0
 
@@ -67,7 +68,7 @@
 
 ## v0.31.1
 
-* Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437)) 
+* Fixed an issue where `RouteResponse(matching:options:credentials:)` and `Directions.calculateRoutes(matching:completionHandler:)` resulted in misshappen `Route.shape`s and `RouteStep.shape`s in the Atlantic Ocean if `MatchOptions.shapeFormat` was set to `RouteShapeFormat.polyline6`. ([#437](https://github.com/mapbox/mapbox-directions-swift/pull/437))
 
 ## v0.31.0
 
@@ -148,7 +149,7 @@
 * Added the `Waypoint.separatesLegs` property, which you can set to `false` to create a route that travels “via” the waypoint but doesn’t stop there. Deprecated the `MatchOptions.waypointIndices` property in favor of `Waypoint.separatesLegs`, which also works with `RouteOptions`. ([#340](https://github.com/mapbox/mapbox-directions-swift/pull/340))
 * Fixed unset properties in  `Waypoint` objects that are included in a calculated `Route`s or `Match`es. ([#340](https://github.com/mapbox/mapbox-directions-swift/pull/340))
 * Added `DirectionsResult.fetchStartDate` and `DirectionsResult.requestEndDate` properties. ([#335](https://github.com/mapbox/mapbox-directions-swift/pull/335))
-* Added a `DirectionsOptions.urlQueryItems` property so that subclasses of `RouteOptions` and `MatchOptions` can add any additional URL query parameters that are supported by the Mapbox Directions and Map Matching APIs. ([#343](https://github.com/mapbox/mapbox-directions-swift/pull/343)) 
+* Added a `DirectionsOptions.urlQueryItems` property so that subclasses of `RouteOptions` and `MatchOptions` can add any additional URL query parameters that are supported by the Mapbox Directions and Map Matching APIs. ([#343](https://github.com/mapbox/mapbox-directions-swift/pull/343))
 
 ## v0.26.1
 
