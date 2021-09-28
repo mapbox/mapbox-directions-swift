@@ -73,6 +73,27 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.includesExitRoundaboutManeuver, true)
         XCTAssertEqual(routeOptions.roadClassesToAvoid, .toll)
         XCTAssertEqual(routeOptions.refreshingEnabled, false)
+        
+        let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
+        let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
+        
+        let unarchivedOptions: RouteOptions = try! JSONDecoder().decode(RouteOptions.self, from: optionsString.data(using: .utf8)!)
+        
+        XCTAssertNotNil(unarchivedOptions)
+        XCTAssertEqual(unarchivedOptions.profileIdentifier, routeOptions.profileIdentifier)
+        XCTAssertEqual(unarchivedOptions.includesSteps, routeOptions.includesSteps)
+        XCTAssertEqual(unarchivedOptions.shapeFormat, routeOptions.shapeFormat)
+        XCTAssertEqual(unarchivedOptions.routeShapeResolution, routeOptions.routeShapeResolution)
+        XCTAssertEqual(unarchivedOptions.attributeOptions, routeOptions.attributeOptions)
+        XCTAssertEqual(unarchivedOptions.locale, routeOptions.locale)
+        XCTAssertEqual(unarchivedOptions.includesSpokenInstructions, routeOptions.includesSpokenInstructions)
+        XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, routeOptions.distanceMeasurementSystem)
+        XCTAssertEqual(unarchivedOptions.includesVisualInstructions, routeOptions.includesVisualInstructions)
+        XCTAssertEqual(unarchivedOptions.allowsUTurnAtWaypoint, routeOptions.allowsUTurnAtWaypoint)
+        XCTAssertEqual(unarchivedOptions.includesAlternativeRoutes, routeOptions.includesAlternativeRoutes)
+        XCTAssertEqual(unarchivedOptions.includesExitRoundaboutManeuver, routeOptions.includesExitRoundaboutManeuver)
+        XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, routeOptions.roadClassesToAvoid)
+        XCTAssertEqual(unarchivedOptions.refreshingEnabled, routeOptions.refreshingEnabled)
     }
     
     // MARK: API name-handling tests
