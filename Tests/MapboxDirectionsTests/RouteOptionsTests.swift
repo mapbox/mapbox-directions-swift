@@ -31,6 +31,50 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
     }
     
+    func testCodingWithRawCodingKeys() {
+        let routeOptionsJSON: [String: Any?] = [
+            "waypoints": [
+                [
+                "location": [-77.036500000000004, 38.8977],
+                "name": "White House",
+                ]
+            ],
+            "profile": "mapbox/driving-traffic",
+            "steps": true,
+            "geometries": "polyline",
+            "overview": "simplified",
+            "annotations": ["congestion"],
+            "language": "en_US",
+            "voice_instructions": true,
+            "voice_units": "imperial",
+            "banner_instructions": true,
+            "continue_straight": true,
+            "alternatives": false,
+            "roundabout_exits": true,
+            "exclude": ["toll"],
+            "enable_refresh": false
+        ]
+        
+        let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
+        var routeOptions: RouteOptions?
+        XCTAssertNoThrow(routeOptions = try JSONDecoder().decode(RouteOptions.self, from: routeOptionsData))
+        
+        XCTAssertEqual(routeOptions?.profileIdentifier, .automobileAvoidingTraffic)
+        XCTAssertEqual(routeOptions?.includesSteps, true)
+        XCTAssertEqual(routeOptions?.shapeFormat, .polyline)
+        XCTAssertEqual(routeOptions?.routeShapeResolution, .low)
+        XCTAssertEqual(routeOptions?.attributeOptions, .congestionLevel)
+        XCTAssertEqual(routeOptions?.locale, Locale(identifier: "en_US"))
+        XCTAssertEqual(routeOptions?.includesSpokenInstructions, true)
+        XCTAssertEqual(routeOptions?.distanceMeasurementSystem, .imperial)
+        XCTAssertEqual(routeOptions?.includesVisualInstructions, true)
+        XCTAssertEqual(routeOptions?.allowsUTurnAtWaypoint, true)
+        XCTAssertEqual(routeOptions?.includesAlternativeRoutes, false)
+        XCTAssertEqual(routeOptions?.includesExitRoundaboutManeuver, true)
+        XCTAssertEqual(routeOptions?.roadClassesToAvoid, .toll)
+        XCTAssertEqual(routeOptions?.refreshingEnabled, false)
+    }
+    
     // MARK: API name-handling tests
     
     private static var testWaypoints: [Waypoint] {
