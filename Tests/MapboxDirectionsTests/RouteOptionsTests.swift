@@ -56,23 +56,23 @@ class RouteOptionsTests: XCTestCase {
         ]
         
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
-        var routeOptions: RouteOptions?
-        XCTAssertNoThrow(routeOptions = try JSONDecoder().decode(RouteOptions.self, from: routeOptionsData))
+        var routeOptions: RouteOptions!
+        XCTAssertNoThrow(routeOptions = try! JSONDecoder().decode(RouteOptions.self, from: routeOptionsData))
         
-        XCTAssertEqual(routeOptions?.profileIdentifier, .automobileAvoidingTraffic)
-        XCTAssertEqual(routeOptions?.includesSteps, true)
-        XCTAssertEqual(routeOptions?.shapeFormat, .polyline)
-        XCTAssertEqual(routeOptions?.routeShapeResolution, .low)
-        XCTAssertEqual(routeOptions?.attributeOptions, .congestionLevel)
-        XCTAssertEqual(routeOptions?.locale, Locale(identifier: "en_US"))
-        XCTAssertEqual(routeOptions?.includesSpokenInstructions, true)
-        XCTAssertEqual(routeOptions?.distanceMeasurementSystem, .imperial)
-        XCTAssertEqual(routeOptions?.includesVisualInstructions, true)
-        XCTAssertEqual(routeOptions?.allowsUTurnAtWaypoint, true)
-        XCTAssertEqual(routeOptions?.includesAlternativeRoutes, false)
-        XCTAssertEqual(routeOptions?.includesExitRoundaboutManeuver, true)
-        XCTAssertEqual(routeOptions?.roadClassesToAvoid, .toll)
-        XCTAssertEqual(routeOptions?.refreshingEnabled, false)
+        XCTAssertEqual(routeOptions.profileIdentifier, .automobileAvoidingTraffic)
+        XCTAssertEqual(routeOptions.includesSteps, true)
+        XCTAssertEqual(routeOptions.shapeFormat, .polyline)
+        XCTAssertEqual(routeOptions.routeShapeResolution, .low)
+        XCTAssertEqual(routeOptions.attributeOptions, .congestionLevel)
+        XCTAssertEqual(routeOptions.locale, Locale(identifier: "en_US"))
+        XCTAssertEqual(routeOptions.includesSpokenInstructions, true)
+        XCTAssertEqual(routeOptions.distanceMeasurementSystem, .imperial)
+        XCTAssertEqual(routeOptions.includesVisualInstructions, true)
+        XCTAssertEqual(routeOptions.allowsUTurnAtWaypoint, true)
+        XCTAssertEqual(routeOptions.includesAlternativeRoutes, false)
+        XCTAssertEqual(routeOptions.includesExitRoundaboutManeuver, true)
+        XCTAssertEqual(routeOptions.roadClassesToAvoid, .toll)
+        XCTAssertEqual(routeOptions.refreshingEnabled, false)
     }
     
     // MARK: API name-handling tests
