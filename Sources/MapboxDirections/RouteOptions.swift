@@ -51,11 +51,11 @@ open class RouteOptions: DirectionsOptions {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case allowsUTurnAtWaypoint
-        case includesAlternativeRoutes
-        case includesExitRoundaboutManeuver
-        case roadClassesToAvoid
-        case refreshingEnabled
+        case allowsUTurnAtWaypoint = "continue_straight"
+        case includesAlternativeRoutes = "alternatives"
+        case includesExitRoundaboutManeuver = "roundabout_exits"
+        case roadClassesToAvoid = "exclude"
+        case refreshingEnabled = "enable_refresh"
     }
     
     public override func encode(to encoder: Encoder) throws {
