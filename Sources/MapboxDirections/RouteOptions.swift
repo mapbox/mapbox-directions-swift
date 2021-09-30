@@ -123,6 +123,13 @@ open class RouteOptions: DirectionsOptions {
     open var roadClassesToAvoid: RoadClasses = []
     
     /**
+     The route classes that the calculated routes will allow.
+     
+     Currently, you can only specify a single road class to allow.
+     */
+    open var roadClassesToAllow: RoadClasses = []
+    
+    /**
      The number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
      If this property isn't explicitly set, the Directions API will choose the most reasonable value.
      

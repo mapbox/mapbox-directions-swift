@@ -44,6 +44,21 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
     
     /**
+     The road segment is a HOV-2 road.
+    */
+    public static let hov2 = RoadClasses(rawValue: 1 << 6)
+    
+    /**
+     The road segment is a HOV-3 road.
+    */
+    public static let hov3 = RoadClasses(rawValue: 1 << 7)
+    
+    /**
+     The road segment is a HOT road.
+    */
+    public static let hot = RoadClasses(rawValue: 1 << 8)
+    
+    /**
      Creates a `RoadClasses` given an array of strings.
      */
     public init?(descriptions: [String]) {

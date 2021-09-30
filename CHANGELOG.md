@@ -17,6 +17,7 @@
 * Added the `Waypoint.allowsSnappingToClosedRoad` property to allow snapping the waypoint’s location to a closed part of a road. ([#583](https://github.com/mapbox/mapbox-directions-swift/pull/583))
 * Added `AttributeOptions.numericCongestionLevel`, `RouteLeg.segmentNumericCongestionLevels`, `RouteLeg.Attributes.segmentNumericCongestionLevels` and `NumericCongestionLevel` to support receiving the numeric value for congestion level along each segment of a `RouteLeg`. ([#575](https://github.com/mapbox/mapbox-directions-swift/pull/575))
 * Fixed an issue where `RouteLeg.segmentRangesByStep` contained a range that was off by one for the arrival step of a leg. ([#587](https://github.com/mapbox/mapbox-directions-swift/pull/587))
+* Added a `RouteOption.roadClassesToAllow` property that allows hov-2, hov-3, or hot roads.
 
 ## v1.2.0
 
