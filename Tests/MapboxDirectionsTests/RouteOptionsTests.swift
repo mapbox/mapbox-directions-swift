@@ -53,6 +53,7 @@ class RouteOptionsTests: XCTestCase {
             "alternatives": false,
             "roundabout_exits": true,
             "exclude": ["toll"],
+            "include": ["hov2", "hov3", "hot"],
             "enable_refresh": false
         ]
         
@@ -73,6 +74,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.includesAlternativeRoutes, false)
         XCTAssertEqual(routeOptions.includesExitRoundaboutManeuver, true)
         XCTAssertEqual(routeOptions.roadClassesToAvoid, .toll)
+        XCTAssertEqual(routeOptions.roadClassesToAllow, [.hov2, .hov3, .hot])
         XCTAssertEqual(routeOptions.refreshingEnabled, false)
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
@@ -94,6 +96,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.includesAlternativeRoutes, routeOptions.includesAlternativeRoutes)
         XCTAssertEqual(unarchivedOptions.includesExitRoundaboutManeuver, routeOptions.includesExitRoundaboutManeuver)
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, routeOptions.roadClassesToAvoid)
+        XCTAssertEqual(unarchivedOptions.roadClassesToAllow, routeOptions.roadClassesToAllow)
         XCTAssertEqual(unarchivedOptions.refreshingEnabled, routeOptions.refreshingEnabled)
     }
     
