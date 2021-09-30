@@ -55,6 +55,7 @@ open class RouteOptions: DirectionsOptions {
         case includesAlternativeRoutes = "alternatives"
         case includesExitRoundaboutManeuver = "roundabout_exits"
         case roadClassesToAvoid = "exclude"
+        case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
     }
     
@@ -65,6 +66,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(includesAlternativeRoutes, forKey: .includesAlternativeRoutes)
         try container.encode(includesExitRoundaboutManeuver, forKey: .includesExitRoundaboutManeuver)
         try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
+        try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
     }
     
@@ -77,6 +79,8 @@ open class RouteOptions: DirectionsOptions {
         includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
     
         roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
+        
+        roadClassesToAllow = try container.decode(RoadClasses.self, forKey: .roadClassesToAllow)
         
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         try super.init(from: decoder)
@@ -214,6 +218,13 @@ open class RouteOptions: DirectionsOptions {
             precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
             if let firstRoadClass = allRoadClasses.first {
                 params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+            }
+        }
+        
+        if !roadClassesToAllow.isEmpty {
+            let allRoadClasses = roadClassesToAllow.description.components(separatedBy: ",").filter { !$0.isEmpty }
+            allRoadClasses.forEach { roadClass in
+                params.append(URLQueryItem(name: "include", value: roadClass))
             }
         }
         
