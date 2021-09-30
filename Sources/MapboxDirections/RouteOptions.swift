@@ -129,8 +129,8 @@ open class RouteOptions: DirectionsOptions {
     /**
      The route classes that the calculated routes will allow.
      
-     Currently, you can only specify a single road class to allow.
-     */
+     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+    */
     open var roadClassesToAllow: RoadClasses = []
     
     /**

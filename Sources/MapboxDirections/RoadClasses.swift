@@ -32,7 +32,7 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     /**
      The user must travel this segment of the route by ferry.
      
-     The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that his or her vehicle is permitted onboard the ferry.
+     The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that their vehicle is permitted onboard the ferry.
      
      In general, the transport type of the step containing the road segment is also `TransportType.ferry`.
      */
@@ -44,17 +44,17 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
     
     /**
-     The road segment is a HOV-2 road.
+     The road segment is a HOV-2 road that requires a minimum of two vehicle occupants.
     */
     public static let hov2 = RoadClasses(rawValue: 1 << 6)
     
     /**
-     The road segment is a HOV-3 road.
+     The road segment is a HOV-3 road that requires a minumum of three vehicle occupants.
     */
     public static let hov3 = RoadClasses(rawValue: 1 << 7)
     
     /**
-     The road segment is a HOT road.
+     The road segment is a HOT road that is tolled if the user's vehicle does not meet the minimum occupant requirement.
     */
     public static let hot = RoadClasses(rawValue: 1 << 8)
     
@@ -75,6 +75,12 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
                 roadClasses.insert(.ferry)
             case "tunnel":
                 roadClasses.insert(.tunnel)
+            case "hov2":
+                roadClasses.insert(.hov2)
+            case "hov3":
+                roadClasses.insert(.hov3)
+            case "hot":
+                roadClasses.insert(.hot)
             case "":
                 continue
             default:
@@ -100,6 +106,15 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
         }
         if contains(.tunnel) {
             descriptions.append("tunnel")
+        }
+        if contains(.hov2) {
+            descriptions.append("hov2")
+        }
+        if contains(.hov3) {
+            descriptions.append("hov3")
+        }
+        if contains(.hot) {
+            descriptions.append("hot")
         }
         return descriptions.joined(separator: ",")
     }

@@ -29,6 +29,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.distanceMeasurementSystem, options.distanceMeasurementSystem)
         XCTAssertEqual(unarchivedOptions.includesVisualInstructions, options.includesVisualInstructions)
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
+        XCTAssertEqual(unarchivedOptions.roadClassesToAllow, options.roadClassesToAllow)
     }
     
     func testCodingWithRawCodingKeys() {
@@ -224,6 +225,7 @@ var testRouteOptions: RouteOptions {
     opts.distanceMeasurementSystem = .metric
     opts.includesVisualInstructions = true
     opts.roadClassesToAvoid = .toll
+    opts.roadClassesToAllow = [.hov2, .hov3, .hot]
 
     return opts
 }
