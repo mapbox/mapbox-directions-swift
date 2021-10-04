@@ -1,4 +1,3 @@
-
 import Foundation
 import MapboxDirections
 import Turf
@@ -65,9 +64,8 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
-    private func interpolate(route: Route?) -> [CLLocationCoordinate2D?] {
-        guard let route = route,
-              let polyline = route.shape else { return [] }
+    private func interpolate(route: Route) -> [CLLocationCoordinate2D?] {
+        guard let polyline = route.shape else { return [] }
         
 //        route.legs.forEach { leg in
 //            let expectedSegmentTravelTimes = leg.expectedSegmentTravelTimes
@@ -79,11 +77,11 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         print("!!! ROUTE LEGS: \(route.legs.count)")
         var distanceAway: CLLocationDistance = 0
         let distance = route.distance/route.expectedTravelTime
-        var interpolatedCoordinates = [route.shape?.coordinates.first]
+        var interpolatedCoordinates = [polyline.coordinates.first]
 //        let dist = route.legs.first?.segmentSpeeds
         while distanceAway <= route.distance {
-            let nextCordinate = polyline.coordinateFromStart(distance: distanceAway)
-            interpolatedCoordinates.append(nextCordinate)
+            let nextCoordinate = polyline.coordinateFromStart(distance: distanceAway)
+            interpolatedCoordinates.append(nextCoordinate)
             distanceAway += distance
         }
         return interpolatedCoordinates
