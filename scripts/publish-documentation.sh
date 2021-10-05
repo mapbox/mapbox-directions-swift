@@ -21,7 +21,7 @@ git checkout $RELEASE_BRANCH
 git checkout $VERSION
 
 step "Installing dependencies…"
-./scripts/wcarthage.sh bootstrap --cache-builds
+carthage bootstrap --cache-builds --use-xcframeworks
 
 step "Updating jazzy…"
 gem install jazzy
