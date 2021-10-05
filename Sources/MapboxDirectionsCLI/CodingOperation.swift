@@ -65,7 +65,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
     }
     
     private func interpolate(route: Route) -> [CLLocationCoordinate2D?] {
-        guard let polyline = route.shape else { return [] }
+        guard route.expectedTravelTime > 0, let polyline = route.shape else { return [] }
         
 //        route.legs.forEach { leg in
 //            let expectedSegmentTravelTimes = leg.expectedSegmentTravelTimes
