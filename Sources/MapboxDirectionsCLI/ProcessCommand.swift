@@ -1,38 +1,14 @@
 
 import Foundation
 import MapboxDirections
-import SwiftCLI
-
 
 private let BogusCredentials = DirectionsCredentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
-class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > : Command {
+class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > {
     
     // MARK: - Parameters
     
-    var name = "process"
-    
-    @Key("-i", "--input", description: "Filepath to the input JSON.")
-    var inputPath: String?
-    
-    @Key("-c", "--config", description: "Filepath to the JSON, containing serialized Options data.")
-    var configPath: String?
-    
-    @Key("-o", "--output", description: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
-    var outputPath: String?
-    
-    @Key("-f", "--format", description: "Output format. Supports `text` and `json` formats. Defaults to `text`")
-    var outputFormat: OutputFormat?
-    
-    enum OutputFormat: String, ConvertibleFromString {
-        case text
-        case json
-    }
-    
-    var customShortDescription: String = ""
-    var shortDescription: String {
-        return customShortDescription
-    }
+    let options: ProcessingOptions
     
     // MARK: - Helper methods
     
@@ -45,8 +21,8 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
     private func processOutput(_ data: Data) {
         var outputText: String = ""
         
-        switch outputFormat {
-        case .text, .none:
+        switch options.outputFormat {
+        case .text:
             outputText = String(data: data, encoding: .utf8)!
         case .json:
             if let object = try? JSONSerialization.jsonObject(with: data, options: []),
@@ -55,7 +31,7 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
             }
         }
         
-        if let outputPath = outputPath {
+        if let outputPath = options.outputPath {
             do {
                 try outputText.write(toFile: NSString(string: outputPath).expandingTildeInPath,
                                      atomically: true,
@@ -70,16 +46,15 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
         }
     }
     
-    init(name: String, shortDescription: String = "") {
-        self.name = name
-        self.customShortDescription = shortDescription
+    init(options: ProcessingOptions) {
+        self.options = options
     }
     
     // MARK: - Command implementation
     
     func execute() throws {
-        guard let inputPath = inputPath else { exit(1) }
-        guard let configPath = configPath else { exit(1) }
+        guard let inputPath = options.inputPath else { exit(1) }
+        guard let configPath = options.configPath else { exit(1) }
         
         let input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
         let config = FileManager.default.contents(atPath: NSString(string: configPath).expandingTildeInPath)!
@@ -109,5 +84,3 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > :
         processOutput(data)
     }
 }
-
-
