@@ -213,7 +213,10 @@ The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-
 To build `MapboxDirectionsCLI` using SPM:
 
 1. `swift build`
-1. `swift run MapboxDirectionsCLI -h` to see usage.
+
+To run (and build if it wasn't yet) `MapboxDirectionsCLI` and see usage:
+
+1. `swift run mapbox-directions-swift -h`
 
 ## Pricing
 
