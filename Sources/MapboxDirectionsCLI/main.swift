@@ -34,11 +34,11 @@ struct Command: ParsableCommand {
     
     fileprivate static func validateInput(_ options: ProcessingOptions) throws {
         guard FileManager.default.fileExists(atPath: options.inputPath) else {
-            throw ValidationError("Input JSON file `\(options.inputPath)`does not exist.")
+            throw ValidationError("Input JSON file `\(options.inputPath)` does not exist.")
         }
         
         guard FileManager.default.fileExists(atPath: options.configPath) else {
-            throw ValidationError("Options JSON file `\(options.configPath)`does not exist.")
+            throw ValidationError("Options JSON file `\(options.configPath)` does not exist.")
         }
     }
 }
