@@ -4,7 +4,7 @@ import MapboxDirections
 
 private let BogusCredentials = DirectionsCredentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
-class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > {
+class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > {
     
     // MARK: - Parameters
     
@@ -18,7 +18,7 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > {
         return try encoder.encode(result)
     }
     
-    private func processOutput(_ data: Data) {
+    private func processOutput(_ data: Data) throws {
         var outputText: String = ""
         
         switch options.outputFormat {
@@ -32,15 +32,9 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > {
         }
         
         if let outputPath = options.outputPath {
-            do {
-                try outputText.write(toFile: NSString(string: outputPath).expandingTildeInPath,
-                                     atomically: true,
-                                     encoding: .utf8)
-            } catch {
-                print("Failed to save results to output file.")
-                print(error)
-                exit(1)
-            }
+            try outputText.write(toFile: NSString(string: outputPath).expandingTildeInPath,
+                                 atomically: true,
+                                 encoding: .utf8)
         } else {
             print(outputText)
         }
@@ -53,34 +47,18 @@ class ProcessCommand<ResponceType : Codable, OptionsType : DirectionsOptions > {
     // MARK: - Command implementation
     
     func execute() throws {
-        guard let inputPath = options.inputPath else { exit(1) }
-        guard let configPath = options.configPath else { exit(1) }
         
-        let input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
-        let config = FileManager.default.contents(atPath: NSString(string: configPath).expandingTildeInPath)!
+        let input = FileManager.default.contents(atPath: NSString(string: options.inputPath).expandingTildeInPath)!
+        let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
         
         let decoder = JSONDecoder()
         
-        var directionsOptions: OptionsType!
-        do {
-            directionsOptions = try decoder.decode(OptionsType.self, from: config)
-        } catch {
-            print("Failed to decode input Options file.")
-            print(error)
-            exit(1)
-        }
+        let directionsOptions = try decoder.decode(OptionsType.self, from: config)
         
-        decoder.userInfo = [.options: directionsOptions!,
+        decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
-        var data: Data!
-        do {
-            data = try processResponse(decoder, type: ResponceType.self, from: input)
-        } catch {
-            print("Failed to decode input JSON file.")
-            print(error)
-            exit(1)
-        }
+        let data = try processResponse(decoder, type: ResponceType.self, from: input)
         
-        processOutput(data)
+        try processOutput(data)
     }
 }
