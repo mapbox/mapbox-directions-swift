@@ -3,8 +3,8 @@
 ## v2.0.0
 
 * To gain access to the Mapbox Directions and Map Matching APIs, set `MBXAccessToken` in your Info.plist. `MGLMapboxAccessToken` is still supported but is now deprecated. ([#522](https://github.com/mapbox/mapbox-directions-swift/pull/522))
-* This library requires Turf v2.0.0-rc.1. ([#571](https://github.com/mapbox/mapbox-directions-swift/pull/571))
-* `mapbox-directions-swift` no longer supports Carthage build. It now requires [swift-argument-parser](https://github.com/apple/swift-argument-parser) v1.0.0 or above. ([#606](https://github.com/mapbox/mapbox-directions-swift/pull/606))
+* MapboxDirections now requires [Turf v2._x_](https://github.com/mapbox/turf-swift/releases/tag/v2.0.0). ([#571](https://github.com/mapbox/mapbox-directions-swift/pull/571), [#608](https://github.com/mapbox/mapbox-directions-swift/pull/608))
+* The `mapbox-directions-swift` command line tool can no longer be built using Carthage. It now requires [swift-argument-parser](https://github.com/apple/swift-argument-parser) v1.0.0 or above. ([#606](https://github.com/mapbox/mapbox-directions-swift/pull/606))
 * The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
 * Added the `Intersection.preferredApproachLanes` and `Intersection.usableLaneIndication` properties that indicate preferred lane usage. `VisualInstruction.Component.lane(indications:isUsable:)` has been renamed to `VisualInstruction.Component.lane(indications:isUsable:preferredDirection:)`. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
 * Comparing two `Intersection`s with `==` now considers whether the `Intersection.restStop`, `Intersection.regionCode`, and `Intersection.outletMapboxStreetsRoadClass` properties are equal. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
