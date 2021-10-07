@@ -57,6 +57,7 @@ open class RouteOptions: DirectionsOptions {
         case roadClassesToAvoid = "exclude"
         case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
+        case avoidManeuversInOriginRadius = "avoid_maneuver_radius"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -68,6 +69,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
+        try container.encodeIfPresent(avoidManeuversInOriginRadius, forKey: .avoidManeuversInOriginRadius)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -83,6 +85,8 @@ open class RouteOptions: DirectionsOptions {
         roadClassesToAllow = try container.decode(RoadClasses.self, forKey: .roadClassesToAllow)
         
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
+        
+        _avoidManeuversInOriginRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .avoidManeuversInOriginRadius)
         try super.init(from: decoder)
     }
     
@@ -190,6 +194,27 @@ open class RouteOptions: DirectionsOptions {
      */
     open var refreshingEnabled = false
     
+    /**
+     A radius around the starting point in which the API will avoid returning any significant maneuvers.
+     
+     Use this option when the vehicle is traveling at a significant speed to avoid dangerous maneuvers when re-routing. If a route is not found using the specified value, it will be ignored. Note that if a large radius is used, the API may ignore an important turn and return a long straight path before the first maneuver.
+     
+     This value is clamped to `LocationDistance.minimumManeuverIgnoringRadius` and `LocationDistance.maximumManeuverIgnoringRadius`.
+     */
+    open var avoidManeuversInOriginRadius: LocationDistance? {
+        get {
+            _avoidManeuversInOriginRadius
+        }
+        set {
+            _avoidManeuversInOriginRadius = newValue.map {
+                min(LocationDistance.maximumManeuverIgnoringRadius,
+                    max(LocationDistance.minimumManeuverIgnoringRadius,
+                        $0))
+            }
+        }
+    }
+    private var _avoidManeuversInOriginRadius: LocationDistance?
+    
     // MARK: Getting the Request URL
     
     override open var urlQueryItems: [URLQueryItem] {
@@ -236,6 +261,10 @@ open class RouteOptions: DirectionsOptions {
             let targetCoordinates = waypoints.filter { $0.separatesLegs }.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
         }
+        
+        if let avoidManeuversInOriginRadius = avoidManeuversInOriginRadius {
+            params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(avoidManeuversInOriginRadius)))
+        }
 
         return params + super.urlQueryItems
     }
@@ -256,4 +285,16 @@ extension LocationSpeed {
      Pedestrians are assumed to walk no faster than 6.94 meters per second (25.0 kilometers per hour or 15.5 miles per hour) on average.
      */
     static let maximumWalking: LocationSpeed = 6.94
+}
+
+extension LocationDistance {
+    /**
+     Minimum positive value to ignore maneuvers around origin point during routing.
+     */
+    static let minimumManeuverIgnoringRadius: LocationDistance = 1
+    
+    /**
+     Maximum value to ignore maneuvers around origin point during routing.
+     */
+    static let maximumManeuverIgnoringRadius: LocationDistance = 1000
 }
