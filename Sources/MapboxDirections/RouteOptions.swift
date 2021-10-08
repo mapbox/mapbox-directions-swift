@@ -130,6 +130,8 @@ open class RouteOptions: DirectionsOptions {
      The route classes that the calculated routes will allow.
      
      This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+     
+     It is desirable to specify both `highOccupancyVehicle2` and `highOccupancyToll` for users in a high occupany vehicle with two occupants to include roads that allow `highOccupancyVehicle2` or `highOccupancyVehicle3` but require others to pay a toll.
     */
     open var roadClassesToAllow: RoadClasses = []
     
