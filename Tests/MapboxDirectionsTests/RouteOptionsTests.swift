@@ -74,7 +74,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.includesAlternativeRoutes, false)
         XCTAssertEqual(routeOptions.includesExitRoundaboutManeuver, true)
         XCTAssertEqual(routeOptions.roadClassesToAvoid, .toll)
-        XCTAssertEqual(routeOptions.roadClassesToAllow, [.hov2, .hov3, .hot])
+        XCTAssertEqual(routeOptions.roadClassesToAllow, [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll])
         XCTAssertEqual(routeOptions.refreshingEnabled, false)
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
@@ -228,7 +228,7 @@ var testRouteOptions: RouteOptions {
     opts.distanceMeasurementSystem = .metric
     opts.includesVisualInstructions = true
     opts.roadClassesToAvoid = .toll
-    opts.roadClassesToAllow = [.hov2, .hov3, .hot]
+    opts.roadClassesToAllow = [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]
 
     return opts
 }

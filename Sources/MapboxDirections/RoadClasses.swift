@@ -44,19 +44,25 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
     
     /**
-     The road segment is a HOV-2 road that requires a minimum of two vehicle occupants.
+     The road segment is a [high occupancy vehicle road](https://wiki.openstreetmap.org/wiki/Key:hov) that requires a minimum of two vehicle occupants.
+     
+     This option includes high occupany vehicle road segments that require a minimum of two vehicle occupants only, not high occupany vehicle lanes.
     */
-    public static let hov2 = RoadClasses(rawValue: 1 << 6)
+    public static let highOccupancyVehicle2 = RoadClasses(rawValue: 1 << 6)
     
     /**
-     The road segment is a HOV-3 road that requires a minumum of three vehicle occupants.
+     The road segment is a [high occupancy vehicle road](https://wiki.openstreetmap.org/wiki/Key:hov) that requires a minimum of three vehicle occupants.
+     
+     This option includes high occupany vehicle road segments that require a minimum of three vehicle occupants only, not high occupany vehicle lanes.
     */
-    public static let hov3 = RoadClasses(rawValue: 1 << 7)
+    public static let highOccupancyVehicle3 = RoadClasses(rawValue: 1 << 7)
     
     /**
-     The road segment is a HOT road that is tolled if the user's vehicle does not meet the minimum occupant requirement.
+     The road segment is a [high occupancy toll road](https://wikipedia.org/wiki/High-occupancy_toll_lane) that is tolled if the user's vehicle does not meet the minimum occupant requirement.
+     
+     This option includes high occupany toll road segments only, not high occupany toll lanes.
     */
-    public static let hot = RoadClasses(rawValue: 1 << 8)
+    public static let highOccupancyToll = RoadClasses(rawValue: 1 << 8)
     
     /**
      Creates a `RoadClasses` given an array of strings.
@@ -76,11 +82,11 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
             case "tunnel":
                 roadClasses.insert(.tunnel)
             case "hov2":
-                roadClasses.insert(.hov2)
+                roadClasses.insert(.highOccupancyVehicle2)
             case "hov3":
-                roadClasses.insert(.hov3)
+                roadClasses.insert(.highOccupancyVehicle3)
             case "hot":
-                roadClasses.insert(.hot)
+                roadClasses.insert(.highOccupancyToll)
             case "":
                 continue
             default:
@@ -107,13 +113,13 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
         if contains(.tunnel) {
             descriptions.append("tunnel")
         }
-        if contains(.hov2) {
+        if contains(.highOccupancyVehicle2) {
             descriptions.append("hov2")
         }
-        if contains(.hov3) {
+        if contains(.highOccupancyVehicle3) {
             descriptions.append("hov3")
         }
-        if contains(.hot) {
+        if contains(.highOccupancyToll) {
             descriptions.append("hot")
         }
         return descriptions.joined(separator: ",")

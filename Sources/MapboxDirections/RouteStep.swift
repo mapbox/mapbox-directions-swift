@@ -18,7 +18,7 @@ public enum TransportType: String, Codable {
     /**
      The route requires the user to board a ferry.
 
-     The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that his or her vehicle is permitted onboard the ferry.
+     The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that their vehicle is permitted onboard the ferry.
      */
     case ferry // automobile, walking, cycling
 

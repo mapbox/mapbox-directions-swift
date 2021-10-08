@@ -221,7 +221,7 @@ open class RouteOptions: DirectionsOptions {
             }
         }
         
-        if !roadClassesToAllow.isEmpty {
+        if !roadClassesToAllow.isEmpty && roadClassesToAllow.isSubset(of: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
             let allRoadClasses = roadClassesToAllow.description.components(separatedBy: ",").filter { !$0.isEmpty }
             allRoadClasses.forEach { roadClass in
                 params.append(URLQueryItem(name: "include", value: roadClass))
