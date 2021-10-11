@@ -121,21 +121,15 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return interpolatedCoordinates
     }
     
-    private func requestResponse(_ coordinates: [Waypoint]?) -> (Data?, Data) {
+    private func requestResponse(_ coordinates: [Waypoint]?, includesSteps: Bool?) -> (Data?, Data) {
         let semaphore = DispatchSemaphore(value: 0)
         
-        var waypoints: [Waypoint]
-        if coordinates != nil {
-            waypoints = coordinates!
-        } else {
-            waypoints = [
-                Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
-                Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
-            ]
-        }
+        guard let waypoints = coordinates, let includesSteps = includesSteps else {
+            print("Failed to request response without coordinates.")
+            exit(1) }
         
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
-        options.includesSteps = true
+        options.includesSteps = includesSteps
         var responseData: Data?
         
         let url = directions.url(forCalculating: options)
@@ -178,7 +172,7 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         if let inputPath = options.inputPath {
             input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
         } else {
-            let response = requestResponse(directionsOptions.waypoints)
+            let response = requestResponse(directionsOptions.waypoints, includesSteps: directionsOptions.includesSteps)
             input = response.0
         }
         
