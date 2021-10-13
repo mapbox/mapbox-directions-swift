@@ -12,6 +12,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     
     /**
      The road segment is [tolled](https://wiki.openstreetmap.org/wiki/Key:toll).
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
      */
     public static let toll = RoadClasses(rawValue: 1 << 1)
     
@@ -19,6 +21,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
      The road segment has access restrictions.
      
      A road segment may have this class if there are [general access restrictions](https://wiki.openstreetmap.org/wiki/Key:access) or a [high-occupancy vehicle](https://wiki.openstreetmap.org/wiki/Key:hov) restriction.
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
      */
     public static let restricted = RoadClasses(rawValue: 1 << 2)
     
@@ -26,6 +30,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
      The road segment is a [freeway](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway) or [freeway ramp](https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway_link).
      
      It may be desirable to suppress the name of the freeway when giving instructions and give instructions at fixed distances before an exit (such as 1 mile or 1 kilometer ahead).
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
      */
     public static let motorway = RoadClasses(rawValue: 1 << 3)
     
@@ -35,32 +41,44 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
      The user should verify that the ferry is in operation. For driving and cycling directions, the user should also verify that their vehicle is permitted onboard the ferry.
      
      In general, the transport type of the step containing the road segment is also `TransportType.ferry`.
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
      */
     public static let ferry = RoadClasses(rawValue: 1 << 4)
     
     /**
      The user must travel this segment of the route through a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
      */
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
     
     /**
      The road segment is a [high occupancy vehicle road](https://wiki.openstreetmap.org/wiki/Key:hov) that requires a minimum of two vehicle occupants.
      
-     This option includes high occupany vehicle road segments that require a minimum of two vehicle occupants only, not high occupany vehicle lanes.
+     This option includes high occupancy vehicle road segments that require a minimum of two vehicle occupants only, not high occupancy vehicle lanes.
+     
+     If the user is in a high-occupancy vehicle with two occupants and would accept a route that uses a [high occupancy toll road](https://wikipedia.org/wiki/High-occupancy_toll_lane), specify both `highOccupancyVehicle2` and `highOccupancyToll`. Otherwise, the routes will avoid any road that requires anyone to pay a toll.
+     
+     This option can only be used with `RouteOptions.roadClassesToAllow`.
     */
     public static let highOccupancyVehicle2 = RoadClasses(rawValue: 1 << 6)
     
     /**
      The road segment is a [high occupancy vehicle road](https://wiki.openstreetmap.org/wiki/Key:hov) that requires a minimum of three vehicle occupants.
      
-     This option includes high occupany vehicle road segments that require a minimum of three vehicle occupants only, not high occupany vehicle lanes.
+     This option includes high occupancy vehicle road segments that require a minimum of three vehicle occupants only, not high occupancy vehicle lanes.
+     
+     This option can only be used with `RouteOptions.roadClassesToAllow`.
     */
     public static let highOccupancyVehicle3 = RoadClasses(rawValue: 1 << 7)
     
     /**
      The road segment is a [high occupancy toll road](https://wikipedia.org/wiki/High-occupancy_toll_lane) that is tolled if the user's vehicle does not meet the minimum occupant requirement.
      
-     This option includes high occupany toll road segments only, not high occupany toll lanes.
+     This option includes high occupancy toll road segments only, not high occupancy toll lanes.
+     
+     This option can only be used with `RouteOptions.roadClassesToAllow`.
     */
     public static let highOccupancyToll = RoadClasses(rawValue: 1 << 8)
     

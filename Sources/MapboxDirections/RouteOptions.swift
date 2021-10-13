@@ -130,8 +130,6 @@ open class RouteOptions: DirectionsOptions {
      The route classes that the calculated routes will allow.
      
      This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
-     
-     It is desirable to specify both `highOccupancyVehicle2` and `highOccupancyToll` for users in a high occupany vehicle with two occupants to include roads that allow `highOccupancyVehicle2` or `highOccupancyVehicle3` but require others to pay a toll.
     */
     open var roadClassesToAllow: RoadClasses = []
     
@@ -215,7 +213,7 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
         }
         
-        if !roadClassesToAvoid.isEmpty {
+        if !roadClassesToAvoid.isEmpty && roadClassesToAvoid.intersection([.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]).isEmpty {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",").filter { !$0.isEmpty }
             precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
             if let firstRoadClass = allRoadClasses.first {
