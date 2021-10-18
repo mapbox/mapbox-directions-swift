@@ -137,9 +137,23 @@ open class Directions: NSObject {
         }
         return params
     }
-    
-    public init(credentials:  DirectionsCredentials = .init()) {
+
+    private let urlSession: URLSession
+    private let processingQueue: DispatchQueue
+
+    /**
+     Creates a new instance of Directions object.
+     - Parameters:
+       - credentials: Credentials that will be used to make API requests to Mapbox Directions API.
+       - urlSession: URLSession that will be used to submit API requests to Mapbox Directions API.
+       - processingQueue: A DispatchQueue that will be used for CPU intensive work.
+     */
+    public init(credentials: DirectionsCredentials = .init(),
+                urlSession: URLSession = .shared,
+                processingQueue: DispatchQueue = .global(qos: .userInitiated)) {
         self.credentials = credentials
+        self.urlSession = urlSession
+        self.processingQueue = processingQueue
     }
     
     
@@ -160,7 +174,7 @@ open class Directions: NSObject {
         options.fetchStartDate = Date()
         let session = (options: options as DirectionsOptions, credentials: self.credentials)
         let request = urlRequest(forCalculating: options)
-        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+        let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
             if let urlError = possibleError as? URLError {
                 DispatchQueue.main.async {
@@ -183,7 +197,7 @@ open class Directions: NSObject {
                 return
             }
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            self.processingQueue.async {
                 do {
                     let decoder = JSONDecoder()
                     decoder.userInfo = [.options: options,
@@ -246,7 +260,7 @@ open class Directions: NSObject {
         options.fetchStartDate = Date()
         let session = (options: options as DirectionsOptions, credentials: self.credentials)
         let request = urlRequest(forCalculating: options)
-        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+        let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
             if let urlError = possibleError as? URLError {
                 DispatchQueue.main.async {
@@ -271,7 +285,7 @@ open class Directions: NSObject {
             }
             
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            self.processingQueue.async {
                 do {
                     let decoder = JSONDecoder()
                     decoder.userInfo = [.options: options,
@@ -333,7 +347,7 @@ open class Directions: NSObject {
         options.fetchStartDate = Date()
         let session = (options: options as DirectionsOptions, credentials: self.credentials)
         let request = urlRequest(forCalculating: options)
-        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+        let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             
              if let urlError = possibleError as? URLError {
                  DispatchQueue.main.async {
@@ -356,7 +370,7 @@ open class Directions: NSObject {
                 return
             }
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            self.processingQueue.async {
                 do {
                     let decoder = JSONDecoder()
                     decoder.userInfo = [.options: options,
@@ -422,7 +436,7 @@ open class Directions: NSObject {
     @discardableResult open func refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int = 0, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
 
         let request = urlRequest(forRefreshing: responseIdentifier, routeIndex: routeIndex, fromLegAtIndex: startLegIndex)
-        let requestTask = URLSession.shared.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
+        let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             if let urlError = possibleError as? URLError {
                 DispatchQueue.main.async {
                     completionHandler(self.credentials, .failure(.network(urlError)))
@@ -444,7 +458,7 @@ open class Directions: NSObject {
                 return
             }
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            self.processingQueue.async {
                 do {
                     let decoder = JSONDecoder()
                     decoder.userInfo = [
