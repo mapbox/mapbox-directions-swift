@@ -1,3 +1,2 @@
 github "raphaelmor/Polyline" ~> 5.0
 github "mapbox/turf-swift" ~> 2.0
-github "apple/swift-argument-parser" ~> 1.0.0
