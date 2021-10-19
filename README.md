@@ -15,7 +15,7 @@ Specify the following dependency in your [Carthage](https://github.com/Carthage/
 
 ```cartfile
 # Latest stable release
-github "mapbox/mapbox-directions-swift" ~> 1.2
+github "mapbox/mapbox-directions-swift" ~> 2.0
 # Latest prerelease
 github "mapbox/mapbox-directions-swift" "v2.0.0-rc.4"
 ```
@@ -24,7 +24,7 @@ Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
 # Latest stable release
-pod 'MapboxDirections', '~> 1.2'
+pod 'MapboxDirections', '~> 2.0'
 # Latest prerelease
 pod 'MapboxDirections-pre', '2.0.0-rc.4'
 ```
@@ -33,9 +33,9 @@ Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.s
 
 ```swift
 // Latest stable release
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0")
+.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0")
 // Latest prerelease
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0-rc.4")
+.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0")
 ```
 
 Then `import MapboxDirections`.
