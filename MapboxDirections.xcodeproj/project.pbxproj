@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2B4383022549C22700A3E38B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383002549C22700A3E38B /* main.swift */; };
-		2B4383032549C22700A3E38B /* ProcessCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383012549C22700A3E38B /* ProcessCommand.swift */; };
 		2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
 		2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
 		2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */; };
@@ -449,7 +448,6 @@
 
 /* Begin PBXFileReference section */
 		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
-		2B4383012549C22700A3E38B /* ProcessCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProcessCommand.swift; path = Sources/MapboxDirectionsCLI/ProcessCommand.swift; sourceTree = "<group>"; };
 		2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshResponse.swift; sourceTree = "<group>"; };
 		2B5407F12452FA8C006C820B /* RefreshedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshedRoute.swift; sourceTree = "<group>"; };
 		2B5407F6245302AB006C820B /* RouteLegAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLegAttributes.swift; sourceTree = "<group>"; };
@@ -660,7 +658,6 @@
 			isa = PBXGroup;
 			children = (
 				2B4383002549C22700A3E38B /* main.swift */,
-				2B4383012549C22700A3E38B /* ProcessCommand.swift */,
 			);
 			name = MapboxDirectionsCLI;
 			sourceTree = "<group>";
@@ -1352,7 +1349,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B4383022549C22700A3E38B /* main.swift in Sources */,
-				2B4383032549C22700A3E38B /* ProcessCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
