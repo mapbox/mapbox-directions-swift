@@ -18,6 +18,7 @@
 * Added `AttributeOptions.numericCongestionLevel`, `RouteLeg.segmentNumericCongestionLevels`, `RouteLeg.Attributes.segmentNumericCongestionLevels` and `NumericCongestionLevel` to support receiving the numeric value for congestion level along each segment of a `RouteLeg`. ([#575](https://github.com/mapbox/mapbox-directions-swift/pull/575))
 * Fixed an issue where `RouteLeg.segmentRangesByStep` contained a range that was off by one for the arrival step of a leg. ([#587](https://github.com/mapbox/mapbox-directions-swift/pull/587))
 * Added a `RouteOptions.roadClassesToAllow` property that enables the resulting routes to use HOV-only roads or high-occupancy toll roads. ([#598](https://github.com/mapbox/mapbox-directions-swift/pull/598))
+* Added new optional parameters to `Directions.init(credentials:urlSession:processingQueue:)` method that allow you to provide custom URLSession and GCD processing queue. Read the documentation for the method to learn more. ([#613](https://github.com/mapbox/mapbox-directions-swift/pull/613))
 
 ## v1.2.0
 
