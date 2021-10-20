@@ -15,27 +15,21 @@ Specify the following dependency in your [Carthage](https://github.com/Carthage/
 
 ```cartfile
 # Latest stable release
-github "mapbox/mapbox-directions-swift" ~> 1.2
-# Latest prerelease
-github "mapbox/mapbox-directions-swift" "v2.0.0-rc.4"
+github "mapbox/mapbox-directions-swift" ~> 2.0
 ```
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
 ```podspec
 # Latest stable release
-pod 'MapboxDirections', '~> 1.2'
-# Latest prerelease
-pod 'MapboxDirections-pre', '2.0.0-rc.4'
+pod 'MapboxDirections', '~> 2.0'
 ```
 
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
 
 ```swift
 // Latest stable release
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0")
-// Latest prerelease
-.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0-rc.4")
+.package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.0.0")
 ```
 
 Then `import MapboxDirections`.
@@ -64,7 +58,7 @@ v0.30.0 is the last release of MapboxDirections.swift that supports a minimum de
 
 You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), Mapbox Directions automatically recognizes your access token, as long as you’ve placed it in the `MBXAccessToken` key of your application’s Info.plist file.
 
-The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [Mapbox Directions for Swift API reference](https://docs.mapbox.com/ios/directions/api/2.0.0-rc.4/).
+The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [Mapbox Directions for Swift API reference](https://docs.mapbox.com/ios/directions/api/2.0.0/).
 
 ### Calculating directions between locations
 
