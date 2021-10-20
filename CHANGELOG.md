@@ -2,23 +2,28 @@
 
 ## v2.0.0
 
+### Packaging
+
 * To gain access to the Mapbox Directions and Map Matching APIs, set `MBXAccessToken` in your Info.plist. `MGLMapboxAccessToken` is still supported but is now deprecated. ([#522](https://github.com/mapbox/mapbox-directions-swift/pull/522))
 * MapboxDirections now requires [Turf v2._x_](https://github.com/mapbox/turf-swift/releases/tag/v2.0.0). ([#571](https://github.com/mapbox/mapbox-directions-swift/pull/571), [#608](https://github.com/mapbox/mapbox-directions-swift/pull/608))
-* The `mapbox-directions-swift` command line tool can no longer be built using Carthage. It now requires [swift-argument-parser](https://github.com/apple/swift-argument-parser) v1.0.0 or above. ([#606](https://github.com/mapbox/mapbox-directions-swift/pull/606))
-* The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
-* Added the `Intersection.preferredApproachLanes` and `Intersection.usableLaneIndication` properties that indicate preferred lane usage. `VisualInstruction.Component.lane(indications:isUsable:)` has been renamed to `VisualInstruction.Component.lane(indications:isUsable:preferredDirection:)`. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
-* Comparing two `Intersection`s with `==` now considers whether the `Intersection.restStop`, `Intersection.regionCode`, and `Intersection.outletMapboxStreetsRoadClass` properties are equal. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
 * Carthage v0.38 or above is now required for installing this SDK if you use Carthage. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * Xcode 12.0 or above is now required to build MapboxDirections from source. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * You can fully build this SDK on Macs with Apple Silicon. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
+* The `mapbox-directions-swift` command line tool can no longer be built using Carthage. It now requires [swift-argument-parser](https://github.com/apple/swift-argument-parser) v1.0.0 or above. ([#606](https://github.com/mapbox/mapbox-directions-swift/pull/606))
+
+### Other changes
+
+* The `Incident.impact` property is now an `Incident.Impact` value instead of a string. ([#519](https://github.com/mapbox/mapbox-directions-swift/pull/519))
+* Added the `Intersection.preferredApproachLanes` and `Intersection.usableLaneIndication` properties that indicate preferred lane usage. `VisualInstruction.Component.lane(indications:isUsable:)` has been renamed to `VisualInstruction.Component.lane(indications:isUsable:preferredDirection:)`. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
+* Comparing two `Intersection`s with `==` now considers whether the `Intersection.restStop`, `Intersection.regionCode`, and `Intersection.outletMapboxStreetsRoadClass` properties are equal. ([#529](https://github.com/mapbox/mapbox-directions-swift/pull/529))
 * `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` are now optional. Set them explicitly if you want to include them in the HTTP request. Renamed `DirectionsOptions.default` to `DirectionsOptions.medium`. ([#557](https://github.com/mapbox/mapbox-directions-swift/pull/557))
 * Removed the `DirectionsResult.routeIdentifier` property. Use the `RouteResponse.identifier` property in conjunction with an index into the `RouteResponse.routes` array instead. ([#562](https://github.com/mapbox/mapbox-directions-swift/pull/562))
-* Fixed an issue where RouteStep.exitIndex was always unset. ([#567](https://github.com/mapbox/mapbox-directions-swift/pull/567))
 * Added the `Waypoint.allowsSnappingToClosedRoad` property to allow snapping the waypoint’s location to a closed part of a road. ([#583](https://github.com/mapbox/mapbox-directions-swift/pull/583))
 * Added `AttributeOptions.numericCongestionLevel`, `RouteLeg.segmentNumericCongestionLevels`, `RouteLeg.Attributes.segmentNumericCongestionLevels` and `NumericCongestionLevel` to support receiving the numeric value for congestion level along each segment of a `RouteLeg`. ([#575](https://github.com/mapbox/mapbox-directions-swift/pull/575))
-* Fixed an issue where `RouteLeg.segmentRangesByStep` contained a range that was off by one for the arrival step of a leg. ([#587](https://github.com/mapbox/mapbox-directions-swift/pull/587))
 * Added a `RouteOptions.roadClassesToAllow` property that enables the resulting routes to use HOV-only roads or high-occupancy toll roads. ([#598](https://github.com/mapbox/mapbox-directions-swift/pull/598))
-* Added new optional parameters to `Directions.init(credentials:urlSession:processingQueue:)` method that allow you to provide custom URLSession and GCD processing queue. Read the documentation for the method to learn more. ([#613](https://github.com/mapbox/mapbox-directions-swift/pull/613))
+* Added new optional parameters to the `Directions(credentials:urlSession:processingQueue:)` initializer that allow you to provide a custom `URLSession` and GCD processing queue. ([#613](https://github.com/mapbox/mapbox-directions-swift/pull/613))
+* Fixed an issue where `RouteStep.exitIndex` was always unset. ([#567](https://github.com/mapbox/mapbox-directions-swift/pull/567))
+* Fixed an issue where `RouteLeg.segmentRangesByStep` contained a range that was off by one for the arrival step of a leg. ([#587](https://github.com/mapbox/mapbox-directions-swift/pull/587))
 
 ## v1.2.0
 
