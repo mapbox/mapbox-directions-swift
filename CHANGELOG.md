@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.x
+
+* Added `Waypoint.snappedDistance` property. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
+
 ## v2.0.0
 
 * To gain access to the Mapbox Directions and Map Matching APIs, set `MBXAccessToken` in your Info.plist. `MGLMapboxAccessToken` is still supported but is now deprecated. ([#522](https://github.com/mapbox/mapbox-directions-swift/pull/522))
