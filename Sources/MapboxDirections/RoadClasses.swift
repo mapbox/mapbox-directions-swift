@@ -90,6 +90,13 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     public static let unpaved = RoadClasses(rawValue: 1 << 9)
     
     /**
+     The road segment is [tolled](https://wiki.openstreetmap.org/wiki/Key:toll) and only accepts cash payment.
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
+     */
+    public static let cashTollOnly = RoadClasses(rawValue: 1 << 10)
+    
+    /**
      Creates a `RoadClasses` given an array of strings.
      */
     public init?(descriptions: [String]) {
@@ -114,6 +121,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
                 roadClasses.insert(.highOccupancyToll)
             case "unpaved":
                 roadClasses.insert(.unpaved)
+            case "cash_only_toll":
+                roadClasses.insert(.cashTollOnly)
             case "":
                 continue
             default:
@@ -151,6 +160,9 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
         }
         if contains(.unpaved) {
             descriptions.append("unpaved")
+        }
+        if contains(.cashTollOnly) {
+            descriptions.append("cash_only_toll")
         }
         return descriptions.joined(separator: ",")
     }
