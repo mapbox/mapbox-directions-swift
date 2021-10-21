@@ -157,9 +157,9 @@ public class Waypoint: Codable {
     public var allowsSnappingToClosedRoad: Bool = false
     
     /**
-     The straight-line distance from the coordinate specified in the query to the location it was snapped to in response.
-     
-     By default, the value of this property is `nil`.
+     The straight-line distance from the coordinate specified in the query to the location it was snapped to in the resulting `RouteResponse`.
+          
+     By default, this property is set to `nil`, meaning the waypoint has no snapped distance.
      */
     public var snappedDistance: LocationDistance?
     
