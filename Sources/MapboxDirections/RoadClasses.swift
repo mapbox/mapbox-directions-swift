@@ -83,6 +83,13 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     public static let highOccupancyToll = RoadClasses(rawValue: 1 << 8)
     
     /**
+     The user must travel this segment of the route on an unpaved road.
+     
+     This option can only be used with `RouteOptions.roadClassesToAvoid`.
+     */
+    public static let unpaved = RoadClasses(rawValue: 1 << 9)
+    
+    /**
      Creates a `RoadClasses` given an array of strings.
      */
     public init?(descriptions: [String]) {
@@ -105,6 +112,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
                 roadClasses.insert(.highOccupancyVehicle3)
             case "hot":
                 roadClasses.insert(.highOccupancyToll)
+            case "unpaved":
+                roadClasses.insert(.unpaved)
             case "":
                 continue
             default:
@@ -139,6 +148,9 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
         }
         if contains(.highOccupancyToll) {
             descriptions.append("hot")
+        }
+        if contains(.unpaved) {
+            descriptions.append("unpaved")
         }
         return descriptions.joined(separator: ",")
     }
