@@ -57,7 +57,7 @@ open class RouteOptions: DirectionsOptions {
         case roadClassesToAvoid = "exclude"
         case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
-        case avoidManeuversInOriginRadius = "avoid_maneuver_radius"
+        case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -69,7 +69,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
-        try container.encodeIfPresent(avoidManeuversInOriginRadius, forKey: .avoidManeuversInOriginRadius)
+        try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -86,7 +86,7 @@ open class RouteOptions: DirectionsOptions {
         
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         
-        _avoidManeuversInOriginRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .avoidManeuversInOriginRadius)
+        _initialManeuverAvoidanceRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .initialManeuverAvoidanceRadius)
         try super.init(from: decoder)
     }
     
@@ -201,19 +201,19 @@ open class RouteOptions: DirectionsOptions {
      
      This value is clamped to `LocationDistance.minimumManeuverIgnoringRadius` and `LocationDistance.maximumManeuverIgnoringRadius`.
      */
-    open var avoidManeuversInOriginRadius: LocationDistance? {
+    open var initialManeuverAvoidanceRadius: LocationDistance? {
         get {
-            _avoidManeuversInOriginRadius
+            _initialManeuverAvoidanceRadius
         }
         set {
-            _avoidManeuversInOriginRadius = newValue.map {
+            _initialManeuverAvoidanceRadius = newValue.map {
                 min(LocationDistance.maximumManeuverIgnoringRadius,
                     max(LocationDistance.minimumManeuverIgnoringRadius,
                         $0))
             }
         }
     }
-    private var _avoidManeuversInOriginRadius: LocationDistance?
+    private var _initialManeuverAvoidanceRadius: LocationDistance?
     
     // MARK: Getting the Request URL
     
@@ -262,8 +262,8 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
         }
         
-        if let avoidManeuversInOriginRadius = avoidManeuversInOriginRadius {
-            params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(avoidManeuversInOriginRadius)))
+        if let initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius {
+            params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(initialManeuverAvoidanceRadius)))
         }
 
         return params + super.urlQueryItems
