@@ -3,6 +3,7 @@
 ## v2.x
 
 * Added `Waypoint.snappedDistance` property to support receiving the waypoint's straight-line distance to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
+* Added `RouteOptions.initialManeuverAvoidanceRadius` property to control avoidance of dangerous maneuvers when requesting a route from the Directions API. ([#609](https://github.com/mapbox/mapbox-directions-swift/pull/609))
 
 ## v2.0.0
 
