@@ -33,7 +33,7 @@ class IsochroneTests: XCTestCase {
     func testRequest() {
         let location = LocationCoordinate2D(latitude: 0, longitude: 1)
         let options = IsochroneOptions(location: location,
-                                       contour: .meters([100, 200]))
+                                       contour: .meters([99.5, 200.44]))
         options.colors = [IsochroneOptions.Color(red: 11, green: 12, blue: 13),
                           IsochroneOptions.Color(red: 21, green: 22, blue: 23)]
         options.contoursPolygons = true

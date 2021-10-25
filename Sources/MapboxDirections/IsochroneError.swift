@@ -1,5 +1,8 @@
 import Foundation
 
+/**
+ An error that occurs when calculating isochrone contours.
+ */
 public enum IsochroneError: LocalizedError {
     
     public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) {
@@ -37,13 +40,6 @@ public enum IsochroneError: LocalizedError {
     case noData
     
     /**
-     There was no route contour found for the given coordinate.
-     
-     Check for impossible routes (for example, routes over oceans without ferry connections).
-     */
-    case unableToContour
-    
-    /**
      A specified location could not be associated with a roadway or pathway.
      
      Make sure the locations are close enough to a roadway or pathway.
@@ -72,6 +68,5 @@ public enum IsochroneError: LocalizedError {
     /**
      Unknown error case. Look at associated values for more details.
      */
-    
     case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
 }

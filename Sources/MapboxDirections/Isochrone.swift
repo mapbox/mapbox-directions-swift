@@ -1,18 +1,54 @@
 import Foundation
 import Turf
 
-
+/**
+ Computes areas that are reachable within a specified amount of time or distance from a location, and returns the reachable regions as contours of polygons or lines that you can display on a map. 
+ */
 open class Isochrone {
 
+    /**
+     A tuple type representing the isochrone session that was generated from the request.
+     
+     - parameter options: A `IsochroneOptions ` object representing the request parameter options.
+     
+     - parameter credentials: A object containing the credentials used to make the request.
+     */
     public typealias Session = (options: IsochroneOptions, credentials: IsochroneCredentials)
-    public typealias IsochroneCompletionHandler = (_ session: Session, _ result: Result<FeatureCollection, IsochroneError>) -> Void
     
+    /**
+     A closure (block) to be called when a isochrone request is complete.
+     
+     - parameter session: A `Isochrone.Session` object containing session information
+     
+     - parameter result: A `Result` enum that represents the `FeatureCollection` if the request returned successfully, or the error if it did not.
+     */
+    public typealias IsochroneCompletionHandler = (_ session: Session, _ result: Result<FeatureCollection, IsochroneError>) -> Void
+
+    // MARK: Creating an Isochrone Object
+    
+    /**
+     The Authorization & Authentication credentials that are used for this service.
+     
+     If nothing is provided, the default behavior is to read credential values from the developer's Info.plist.
+     */
     public let credentials: IsochroneCredentials
     private let urlSession: URLSession
     private let processingQueue: DispatchQueue
     
+    /**
+     The shared directions object.
+     
+     To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MBXAccessToken` key in the main application bundle’s Info.plist.
+     */
     public static let shared = Isochrone()
     
+    /**
+     Creates a new instance of Isochrone object.
+     - Parameters:
+       - credentials: Credentials that will be used to make API requests to Mapbox Isochrone API.
+       - urlSession: URLSession that will be used to submit API requests to Mapbox Isochrone API.
+       - processingQueue: A DispatchQueue that will be used for CPU intensive work.
+     */
     public init(credentials: IsochroneCredentials = .init(),
                 urlSession: URLSession = .shared,
                 processingQueue: DispatchQueue = .global(qos: .userInitiated)) {
@@ -21,6 +57,17 @@ open class Isochrone {
         self.processingQueue = processingQueue
     }
     
+    /**
+     Begins asynchronously calculating isochrone contours using the given options and delivers the results to a closure.
+     
+     This method retrieves the contours asynchronously from the [Mapbox Isochrone API](https://docs.mapbox.com/api/navigation/isochrone/) over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the contours.
+     
+     Contours may be displayed atop a [Mapbox map](https://www.mapbox.com/maps/).
+     
+     - parameter options: A `IsochroneOptions` object specifying the requirements for the resulting contours.
+     - parameter completionHandler: The closure (block) to call with the resulting contours. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting contours, cancel this task.
+     */
     @discardableResult open func calculate(_ options: IsochroneOptions, completionHandler: @escaping IsochroneCompletionHandler) -> URLSessionDataTask {
         let session = (options: options, credentials: self.credentials)
         let request = urlRequest(forCalculating: options)
@@ -68,12 +115,6 @@ open class Isochrone {
                     }
                     
                     let result = try decoder.decode(FeatureCollection.self, from: data)
-//                    guard !result.features.isEmpty else {
-//                        DispatchQueue.main.async {
-//                            completionHandler(session, .failure(.unableToContour))
-//                        }
-//                        return
-//                    }
                     
                     DispatchQueue.main.async {
                         completionHandler(session, .success(result))
@@ -92,6 +133,14 @@ open class Isochrone {
         return requestTask
     }
     
+    // MARK: Request URL Preparation
+    
+    /**
+     The GET HTTP URL used to fetch the contours from the API.
+     
+     - parameter options: A `IsochroneOptions` object specifying the requirements for the resulting contours.
+     - returns: The URL to send the request to.
+     */
     open func url(forCalculating options: IsochroneOptions) -> URL {
         
         var params = options.urlQueryItems
@@ -103,17 +152,15 @@ open class Isochrone {
         return components.url!
     }
     
+    /**
+     The HTTP request used to fetch the contours from the API.
+     
+     - parameter options: A `IsochroneOptions` object specifying the requirements for the resulting routes.
+     - returns: A GET HTTP request to calculate the specified options.
+     */
     open func urlRequest(forCalculating options: IsochroneOptions) -> URLRequest {
         let getURL = self.url(forCalculating: options)
         var request = URLRequest(url: getURL)
-//        if getURL.absoluteString.count > MaximumURLLength {
-//            request.url = url(forCalculating: options, httpMethod: "POST")
-//
-//            let body = options.httpBody.data(using: .utf8)
-//            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//            request.httpMethod = "POST"
-//            request.httpBody = body
-//        }
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return request
     }
