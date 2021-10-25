@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.x
+
+* Added `Waypoint.snappedDistance` property to support receiving the waypoint's straight-line distance to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
+
 ## v2.0.0
 
 ### Packaging

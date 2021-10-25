@@ -7,6 +7,7 @@ class WaypointTests: XCTestCase {
         let waypointJSON: [String: Any?] = [
             "location": [-77.036500000000004, 38.8977],
             "name": "White House",
+            "distance": 7,
         ]
         let waypointData = try! JSONSerialization.data(withJSONObject: waypointJSON, options: [])
         var waypoint: Waypoint?
@@ -23,6 +24,7 @@ class WaypointTests: XCTestCase {
             XCTAssertNil(waypoint.headingAccuracy)
             XCTAssertTrue(waypoint.allowsArrivingOnOppositeSide)
             XCTAssertTrue(waypoint.separatesLegs)
+            XCTAssertEqual(waypoint.snappedDistance, 7.0)
         }
         
         waypoint = Waypoint(coordinate: LocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), coordinateAccuracy: 5, name: "White House")
@@ -30,6 +32,7 @@ class WaypointTests: XCTestCase {
         waypoint?.heading = 90
         waypoint?.headingAccuracy = 10
         waypoint?.allowsArrivingOnOppositeSide = false
+        waypoint?.snappedDistance = 7
         
         let encoder = JSONEncoder()
         var encodedData: Data?
