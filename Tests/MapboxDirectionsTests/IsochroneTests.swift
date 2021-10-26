@@ -40,8 +40,8 @@ class IsochroneTests: XCTestCase {
         options.colors = [IsochroneOptions.Color(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0),
                           IsochroneOptions.Color(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)]
         #else
-        options.colors = [IsochroneOptions.Color(red: 25, green: 51, blue: 76, alpha: 255),
-                          IsochroneOptions.Color(red: 102, green: 127, blue: 153, alpha: 255)]
+        options.colors = [IsochroneOptions.Color(red: 25, green: 51, blue: 76),
+                          IsochroneOptions.Color(red: 102, green: 127, blue: 153)]
         #endif
         options.contoursPolygons = true
         options.denoiseFactor = 0.5
