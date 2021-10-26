@@ -1,6 +1,11 @@
 import Foundation
 @testable import MapboxDirections
+#if !os(Linux)
 import OHHTTPStubs
+#if SWIFT_PACKAGE
+import OHHTTPStubsSwift
+#endif
+#endif
 import Turf
 import XCTest
 
@@ -13,15 +18,12 @@ let minimalValidResponse = """
 }
 """
 
-#if !os(Linux)
 class IsochroneTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-    }
-    
     override func tearDown() {
+        #if !os(Linux)
         HTTPStubs.removeAllStubs()
+        #endif
         super.tearDown()
     }
     
@@ -34,8 +36,13 @@ class IsochroneTests: XCTestCase {
         let location = LocationCoordinate2D(latitude: 0, longitude: 1)
         let options = IsochroneOptions(location: location,
                                        contours: .distance([99.5, 200.44]))
+        #if !os(Linux)
         options.colors = [IsochroneOptions.Color(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0),
                           IsochroneOptions.Color(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)]
+        #else
+        options.colors = [IsochroneOptions.Color(red: 25, green: 51, blue: 76, alpha: 255),
+                          IsochroneOptions.Color(red: 102, green: 127, blue: 153, alpha: 255)]
+        #endif
         options.contoursPolygons = true
         options.denoiseFactor = 0.5
         options.generalizeTolerance = 13
@@ -72,6 +79,7 @@ class IsochroneTests: XCTestCase {
         XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_minutes" && $0.value == "1;2"}))
     }
     
+    #if !os(Linux)
     func testMinimalValidResponse() {
         HTTPStubs.stubRequests(passingTest: { (request) -> Bool in
             return request.url!.absoluteString.contains("https://api.mapbox.com/isochrone")
@@ -125,21 +133,6 @@ class IsochroneTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
-    func testRateLimitErrorParsing() {
-        let url = URL(string: "https://api.mapbox.com")!
-        let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
-        let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
-
-        let resultError = IsochroneError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
-        if case let .rateLimited(rateLimitInterval, rateLimit, resetTime) = resultError {
-            XCTAssertEqual(rateLimitInterval, 60.0)
-            XCTAssertEqual(rateLimit, 600)
-            XCTAssertEqual(resetTime, Date(timeIntervalSince1970: 1479460584))
-        } else {
-            XCTFail("Code 429 should be interpreted as a rate limiting error.")
-        }
-    }
-
     func testDownNetwork() {
         let notConnected = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue) as! URLError
 
@@ -172,5 +165,20 @@ class IsochroneTests: XCTestCase {
         })
         wait(for: [expectation], timeout: 2.0)
     }
+    
+    func testRateLimitErrorParsing() {
+        let url = URL(string: "https://api.mapbox.com")!
+        let headerFields = ["X-Rate-Limit-Interval" : "60", "X-Rate-Limit-Limit" : "600", "X-Rate-Limit-Reset" : "1479460584"]
+        let response = HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: headerFields)
+
+        let resultError = IsochroneError(code: "429", message: "Hit rate limit", response: response, underlyingError: nil)
+        if case let .rateLimited(rateLimitInterval, rateLimit, resetTime) = resultError {
+            XCTAssertEqual(rateLimitInterval, 60.0)
+            XCTAssertEqual(rateLimit, 600)
+            XCTAssertEqual(resetTime, Date(timeIntervalSince1970: 1479460584))
+        } else {
+            XCTFail("Code 429 should be interpreted as a rate limiting error.")
+        }
+    }
+    #endif
 }
-#endif
