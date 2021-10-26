@@ -13,9 +13,9 @@ import AppKit
 */
 public class IsochroneOptions {
     
-    public init(location: LocationCoordinate2D, contour: Contour, profileIdentifier: IsochroneProfileIdentifier = .automobile) {
+    public init(location: LocationCoordinate2D, contours: Contours, profileIdentifier: IsochroneProfileIdentifier = .automobile) {
         self.location = location
-        self.contour = contour
+        self.contours = contours
         self.profileIdentifier = profileIdentifier
     }
     
@@ -32,9 +32,9 @@ public class IsochroneOptions {
      */
     public var location: LocationCoordinate2D
     /**
-     Contour distance or travel time definition.
+     Contours distance or travel time definition.
      */
-    public var contour: Contour
+    public var contours: Contours
     
     /**
      The colors to use for each isochrone contour.
@@ -90,20 +90,20 @@ public class IsochroneOptions {
         var queryItems: [URLQueryItem] = []
         var contoursCount = 0
         
-        switch contour {
-        case .meters(let meters):
+        switch contours {
+        case .distance(let meters):
             let value = meters.sorted().map { String(Int($0.rounded())) }.joined(separator: ";")
             queryItems.append(URLQueryItem(name: "contours_meters", value: value))
             contoursCount = meters.count
-        case .minutes(let minutes):
-            let value = minutes.sorted().map { String($0) }.joined(separator: ";")
+        case .expectedTravelTime(let intervals):
+            let value = intervals.sorted().map { String(Int(($0 / 60.0).rounded())) }.joined(separator: ";")
             queryItems.append(URLQueryItem(name: "contours_minutes", value: value))
-            contoursCount = minutes.count
+            contoursCount = intervals.count
         }
         
         if let colors = colors, !colors.isEmpty {
             assert(colors.count == contoursCount, "Contours `colors` count must match contours count!")
-            let value = colors.map { String(format:"%02X%02X%02X", $0.red, $0.green, $0.blue)}.joined(separator: ";")
+            let value = colors.map { queryColorDescription(color: $0)}.joined(separator: ";")
             queryItems.append(URLQueryItem(name: "contours_colors", value: value))
         }
         
@@ -127,21 +127,28 @@ extension IsochroneOptions {
     /**
      Definition of contour limit.
      */
-    public enum Contour {
+    public enum Contours {
         /**
-         The times in minutes to use for each isochrone contour.
+         The desired travel times to use for each isochrone contour.
+         
+         This value will be rounded to the nearest minute.
          */
-        case minutes([UInt])
+        case expectedTravelTime([TimeInterval])
         /**
          The distances to use for each isochrone contour.
          
          Will be rounded to the nearest integer.
          */
-        case meters([LocationDistance])
+        case distance([LocationDistance])
     }
 }
 
 extension IsochroneOptions {
+    #if canImport(UIKit)
+    public typealias Color = UIColor
+    #elseif canImport(AppKit)
+    public typealias Color = NSColor
+    #else
     public struct Color {
         public var red: Int
         public var green: Int
@@ -152,31 +159,41 @@ extension IsochroneOptions {
             self.green = green
             self.blue = blue
         }
+    }
+    #endif
+    
+    func queryColorDescription(color: Color) -> String {
+        let hexFormat = "%02X%02X%02X"
         
         #if canImport(UIKit)
-        init(_ color: UIColor) {
-            var red: CGFloat = 0
-            var green: CGFloat = 0
-            var blue: CGFloat = 0
-            
-            color.getRed(&red,
-                         green: &green,
-                         blue: &blue,
-                         alpha: nil)
-            
-            self.red = Int(red * 255)
-            self.green = Int(green * 255)
-            self.blue = Int(blue * 255)
-        }
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        
+        color.getRed(&red,
+                     green: &green,
+                     blue: &blue,
+                     alpha: nil)
+        
+        return String(format: hexFormat,
+                      Int(red * 255),
+                      Int(green * 255),
+                      Int(blue * 255))
         #elseif canImport(AppKit)
-        init?(_ color: NSColor) {
-            guard let convertedColor = color.usingColorSpace(.deviceRGB) else {
-                return nil
-            }
-            red = Int(convertedColor.redComponent * 255)
-            green = Int(convertedColor.greenComponent * 255)
-            blue = Int(convertedColor.blueComponent * 255)
+        guard let convertedColor = color.usingColorSpace(.deviceRGB) else {
+            assertionFailure("Failed to convert Isochrone contour color to RGB space.")
+            return "000000"
         }
+        
+        return String(format: hexFormat,
+                      Int(convertedColor.redComponent * 255),
+                      Int(convertedColor.greenComponent * 255),
+                      Int(convertedColor.blueComponent * 255))
+        #else
+        return String(format: hexFormat,
+                      color.red,
+                      color.green,
+                      color.blue)
         #endif
     }
 }

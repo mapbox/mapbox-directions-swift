@@ -33,15 +33,15 @@ class IsochroneTests: XCTestCase {
     func testRequest() {
         let location = LocationCoordinate2D(latitude: 0, longitude: 1)
         let options = IsochroneOptions(location: location,
-                                       contour: .meters([99.5, 200.44]))
-        options.colors = [IsochroneOptions.Color(red: 11, green: 12, blue: 13),
-                          IsochroneOptions.Color(red: 21, green: 22, blue: 23)]
+                                       contours: .distance([99.5, 200.44]))
+        options.colors = [IsochroneOptions.Color(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0),
+                          IsochroneOptions.Color(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)]
         options.contoursPolygons = true
         options.denoiseFactor = 0.5
         options.generalizeTolerance = 13
         
         let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        let url = isochrone.url(forCalculating: options)
+        var url = isochrone.url(forCalculating: options)
         let request = isochrone.urlRequest(forCalculating: options)
         
         guard let components = URLComponents(string: url.absoluteString),
@@ -52,13 +52,24 @@ class IsochroneTests: XCTestCase {
         XCTAssertTrue(components.path.contains(location.requestDescription) )
         XCTAssertTrue(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_meters" && $0.value == "100;200"}))
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_colors" && $0.value == "0B0C0D;151617"}))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_colors" && $0.value == "19334C;667F99"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "polygons" && $0.value == "true"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "denoise" && $0.value == "0.5"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "generalize" && $0.value == "13.0"}))
 
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
+        
+        options.contours = .expectedTravelTime([31, 149])
+        
+        url = isochrone.url(forCalculating: options)
+        
+        guard let components = URLComponents(string: url.absoluteString),
+              let queryItems = components.queryItems else {
+            XCTFail("Invalid url"); return
+        }
+        
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_minutes" && $0.value == "1;2"}))
     }
     
     func testMinimalValidResponse() {
@@ -70,7 +81,7 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contour: .meters([100]))
+                                       contours: .distance([100]))
         isochrone.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
                 
@@ -97,7 +108,7 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contour: .meters([100]))
+                                       contours: .distance([100]))
         isochrone.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
@@ -141,7 +152,7 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contour: .meters([100]))
+                                       contours: .distance([100]))
         isochrone.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
