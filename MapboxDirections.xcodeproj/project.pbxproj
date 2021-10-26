@@ -340,7 +340,6 @@
 		E232F8BB266516D70038CAF3 /* OHHTTPStubs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */; };
 		E232F8BC266516EB0038CAF3 /* OHHTTPStubs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */; };
 		E232F8BD266516EF0038CAF3 /* OHHTTPStubs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */; };
-		E232F8C1266517140038CAF3 /* SwiftCLI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8BF266517010038CAF3 /* SwiftCLI.xcframework */; };
 		E232F8C3266517160038CAF3 /* Turf.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8AE2665141F0038CAF3 /* Turf.xcframework */; };
 		E232F8C52665173C0038CAF3 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; };
 		E232F8C62665173C0038CAF3 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A10AF1D00F8FF009F82FA /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -560,7 +559,6 @@
 		E232F899266513C20038CAF3 /* Polyline.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Polyline.xcframework; path = Carthage/Build/Polyline.xcframework; sourceTree = "<group>"; };
 		E232F8AE2665141F0038CAF3 /* Turf.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Turf.xcframework; path = Carthage/Build/Turf.xcframework; sourceTree = "<group>"; };
 		E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OHHTTPStubs.xcframework; path = Carthage/Build/OHHTTPStubs.xcframework; sourceTree = "<group>"; };
-		E232F8BF266517010038CAF3 /* SwiftCLI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftCLI.xcframework; path = Carthage/Build/SwiftCLI.xcframework; sourceTree = "<group>"; };
 		E28E325726662B1E0030807F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F457FA79252B9E29007DAEB1 /* Incident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incident.swift; sourceTree = "<group>"; };
 		F4CF2C562523B66300A6D0B6 /* TollCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TollCollection.swift; sourceTree = "<group>"; };
@@ -576,7 +574,6 @@
 			files = (
 				E232F8C3266517160038CAF3 /* Turf.xcframework in Frameworks */,
 				E232F8C52665173C0038CAF3 /* MapboxDirections.framework in Frameworks */,
-				E232F8C1266517140038CAF3 /* SwiftCLI.xcframework in Frameworks */,
 				E232F8C9266518480038CAF3 /* Polyline.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -729,7 +726,6 @@
 		C5AD8656202E24F400BF47D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E232F8BF266517010038CAF3 /* SwiftCLI.xcframework */,
 				E232F8BA266516D70038CAF3 /* OHHTTPStubs.xcframework */,
 				E232F8AE2665141F0038CAF3 /* Turf.xcframework */,
 				E232F899266513C20038CAF3 /* Polyline.xcframework */,
@@ -1140,7 +1136,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = Mapbox;
 				TargetAttributes = {
 					2BA9896F253F007600B643F6 = {
