@@ -28,28 +28,33 @@ class IsochroneTests: XCTestCase {
     }
     
     func testConfiguration() {
-        let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        XCTAssertEqual(isochrone.credentials, IsochroneBogusCredentials)
+        let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
+        XCTAssertEqual(isochrones.credentials, IsochroneBogusCredentials)
     }
     
     func testRequest() {
         let location = LocationCoordinate2D(latitude: 0, longitude: 1)
-        let options = IsochroneOptions(location: location,
-                                       contours: .distance([99.5, 200.44]))
-        #if !os(Linux)
-        options.colors = [IsochroneOptions.Color(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0),
-                          IsochroneOptions.Color(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0)]
-        #else
-        options.colors = [IsochroneOptions.Color(red: 25, green: 51, blue: 76),
-                          IsochroneOptions.Color(red: 102, green: 127, blue: 153)]
-        #endif
-        options.contoursPolygons = true
-        options.denoiseFactor = 0.5
-        options.generalizeTolerance = 13
         
-        let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        var url = isochrone.url(forCalculating: options)
-        let request = isochrone.urlRequest(forCalculating: options)
+        #if !os(Linux)
+        let options = IsochroneOptions(centerCoordinate: location,
+                                       contours: .byDistances(.colored([
+                                        (99.5,   .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
+                                        (200.44, .init(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0))
+                                       ])))
+        #else
+        let options = IsochroneOptions(centerCoordinate: location,
+                                       contours: .byDistances(.colored([
+                                        (99.5,   .init(red: 25,  green: 51,  blue: 76)),
+                                        (200.44, .init(red: 102, green: 127, blue: 153))
+                                       ])))
+        #endif
+        options.contoursFormat = .polygon
+        options.denoisingFactor = 0.5
+        options.simplificationTolerance = 13
+        
+        let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
+        var url = isochrones.url(forCalculating: options)
+        let request = isochrones.urlRequest(forCalculating: options)
         
         guard let components = URLComponents(string: url.absoluteString),
               let queryItems = components.queryItems else {
@@ -67,9 +72,9 @@ class IsochroneTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
         
-        options.contours = .expectedTravelTime([31, 149])
+        options.contours = .byExpectedTravelTimes(.default([31, 149]))
         
-        url = isochrone.url(forCalculating: options)
+        url = isochrones.url(forCalculating: options)
         
         guard let components = URLComponents(string: url.absoluteString),
               let queryItems = components.queryItems else {
@@ -87,10 +92,10 @@ class IsochroneTests: XCTestCase {
             return HTTPStubsResponse(data: minimalValidResponse.data(using: .utf8)!, statusCode: 200, headers: ["Content-Type" : "text/html"])
         }
         let expectation = self.expectation(description: "Async callback")
-        let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .distance([100]))
-        isochrone.calculate(options, completionHandler: { (session, result) in
+        let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
+        let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
+                                       contours: .byDistances(.default([100])))
+        isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
                 
             guard case let .success(featureCollection) = result else {
@@ -114,10 +119,10 @@ class IsochroneTests: XCTestCase {
             return HTTPStubsResponse(data: message.data(using: .utf8)!, statusCode: 420, headers: ["Content-Type" : "text/plain"])
         }
         let expectation = self.expectation(description: "Async callback")
-        let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .distance([100]))
-        isochrone.calculate(options, completionHandler: { (session, result) in
+        let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
+        let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
+                                       contours: .byDistances(.default([100])))
+        isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {
@@ -143,10 +148,10 @@ class IsochroneTests: XCTestCase {
         }
 
         let expectation = self.expectation(description: "Async callback")
-        let isochrone = Isochrone(credentials: IsochroneBogusCredentials)
-        let options = IsochroneOptions(location: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .distance([100]))
-        isochrone.calculate(options, completionHandler: { (session, result) in
+        let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
+        let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
+                                       contours: .byDistances(.default([100])))
+        isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {

@@ -7,7 +7,7 @@ import Turf
 /**
  Computes areas that are reachable within a specified amount of time or distance from a location, and returns the reachable regions as contours of polygons or lines that you can display on a map. 
  */
-open class Isochrone {
+open class Isochrones {
 
     /**
      A tuple type representing the isochrone session that was generated from the request.
@@ -21,13 +21,13 @@ open class Isochrone {
     /**
      A closure (block) to be called when a isochrone request is complete.
      
-     - parameter session: A `Isochrone.Session` object containing session information
+     - parameter session: A `Isochrones.Session` object containing session information
      
      - parameter result: A `Result` enum that represents the `FeatureCollection` if the request returned successfully, or the error if it did not.
      */
     public typealias IsochroneCompletionHandler = (_ session: Session, _ result: Result<FeatureCollection, IsochroneError>) -> Void
 
-    // MARK: Creating an Isochrone Object
+    // MARK: Creating an Isochrones Object
     
     /**
      The Authorization & Authentication credentials that are used for this service.
@@ -43,10 +43,10 @@ open class Isochrone {
      
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MBXAccessToken` key in the main application bundle’s Info.plist.
      */
-    public static let shared = Isochrone()
+    public static let shared = Isochrones()
     
     /**
-     Creates a new instance of Isochrone object.
+     Creates a new instance of Isochrones object.
      - Parameters:
        - credentials: Credentials that will be used to make API requests to Mapbox Isochrone API.
        - urlSession: URLSession that will be used to submit API requests to Mapbox Isochrone API.

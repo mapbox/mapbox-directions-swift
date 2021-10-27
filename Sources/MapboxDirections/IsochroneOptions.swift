@@ -13,13 +13,27 @@ import AppKit
 */
 public class IsochroneOptions {
     
-    public init(location: LocationCoordinate2D, contours: Contours, profileIdentifier: IsochroneProfileIdentifier = .automobile) {
-        self.location = location
+    public init(centerCoordinate: LocationCoordinate2D, contours: Contours, profileIdentifier: IsochroneProfileIdentifier = .automobile) {
+        self.centerCoordinate = centerCoordinate
         self.contours = contours
         self.profileIdentifier = profileIdentifier
     }
     
     // MARK: Configuring the Contour
+    
+    /**
+     Contours GeoJSON format.
+     */
+    public enum ContourFormat {
+        /**
+         Requested contour will be presented as GeoJSON LineString.
+         */
+        case lineString
+        /**
+         Requested contour will be presented as GeoJSON Polygon.
+         */
+        case polygon
+    }
     
     /**
      A string specifying the primary mode of transportation for the contours.
@@ -30,42 +44,34 @@ public class IsochroneOptions {
     /**
      A coordinate around which to center the isochrone lines.
      */
-    public var location: LocationCoordinate2D
+    public var centerCoordinate: LocationCoordinate2D
     /**
-     Contours distance or travel time definition.
+     Contours bounds and color sheme definition.
      */
     public var contours: Contours
     
     /**
-     The colors to use for each isochrone contour.
+     Specifies the format of output contours.
      
-     Number of colors should match number of `contour`s.
-     If no colors are specified, the Isochrone API will assign a default rainbow color scheme to the output.
+     Defaults to `.lineString` which represents contours as linestrings.
      */
-    public var colors: [Color]?
+    public var contoursFormat: ContourFormat = .lineString
     
     /**
-     Specify whether to return the contours as GeoJSON polygons.
-     
-     Defaults to `false` which represents contours as linestrings.
-     */
-    public var contoursPolygons: Bool?
-    
-    /**
-     Removes contours which are `denoiseFactor` times smaller than the biggest one.
+     Removes contours which are `denoisingFactor` times smaller than the biggest one.
      
      The default is 1.0. A value of 1.0 will only return the largest contour for a given value. A value of 0.5 drops any contours that are less than half the area of the largest contour in the set of contours for that same value.
      */
-    public var denoiseFactor: Float?
+    public var denoisingFactor: Float?
     
     /**
-     Value in meters used as the tolerance for Douglas-Peucker generalization.
+     Douglas-Peucker simplification tolerance.
      
-     There is no upper bound. If no value is specified in the request, the Isochrone API will choose the most optimized generalization to use for the request.
+     Higher means simpler geometries and faster performance. There is no upper bound. If no value is specified in the request, the Isochrone API will choose the most optimized value to use for the request.
      
-     - note: Generalization of contours can lead to self-intersections, as well as intersections of adjacent contours.
+     - note: Simplification of contours can lead to self-intersections, as well as intersections of adjacent contours.
      */
-    public var generalizeTolerance: LocationDistance?
+    public var simplificationTolerance: LocationDistance?
     
     // MARK: Getting the Request URL
     
@@ -80,7 +86,7 @@ public class IsochroneOptions {
      The path of the request URL, not including the hostname or any parameters.
      */
     var path: String {
-        return "\(abridgedPath)/\(location.requestDescription).json"
+        return "\(abridgedPath)/\(centerCoordinate.requestDescription).json"
     }
     
     /**
@@ -88,34 +94,33 @@ public class IsochroneOptions {
      */
     public var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
-        var contoursCount = 0
         
         switch contours {
-        case .distance(let meters):
-            let value = meters.sorted().map { String(Int($0.rounded())) }.joined(separator: ";")
-            queryItems.append(URLQueryItem(name: "contours_meters", value: value))
-            contoursCount = meters.count
-        case .expectedTravelTime(let intervals):
-            let value = intervals.sorted().map { String(Int(($0 / 60.0).rounded())) }.joined(separator: ";")
-            queryItems.append(URLQueryItem(name: "contours_minutes", value: value))
-            contoursCount = intervals.count
+        case .byDistances(let definition):
+            let (values, colors) = definition.serialise()
+            
+            queryItems.append(URLQueryItem(name: "contours_meters", value: values))
+            if let colors = colors {
+                queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
+            }
+        case .byExpectedTravelTimes(let definition):
+            let (values, colors) = definition.serialise(roundedTo: 60)
+            
+            queryItems.append(URLQueryItem(name: "contours_minutes", value: values))
+            if let colors = colors {
+                queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
+            }
         }
         
-        if let colors = colors, !colors.isEmpty {
-            assert(colors.count == contoursCount, "Contours `colors` count must match contours count!")
-            let value = colors.map { queryColorDescription(color: $0)}.joined(separator: ";")
-            queryItems.append(URLQueryItem(name: "contours_colors", value: value))
+        if contoursFormat == .polygon {
+            queryItems.append(URLQueryItem(name: "polygons", value: "true"))
         }
         
-        if let isPolygon = contoursPolygons {
-            queryItems.append(URLQueryItem(name: "polygons", value: String(isPolygon)))
-        }
-        
-        if let denoise = denoiseFactor {
+        if let denoise = denoisingFactor {
             queryItems.append(URLQueryItem(name: "denoise", value: String(denoise)))
         }
         
-        if let tolerance = generalizeTolerance {
+        if let tolerance = simplificationTolerance {
             queryItems.append(URLQueryItem(name: "generalize", value: String(tolerance)))
         }
         
@@ -124,36 +129,110 @@ public class IsochroneOptions {
 }
 
 extension IsochroneOptions {
+    
     /**
-     Definition of contour limit.
+     Definition of contours limits.
      */
     public enum Contours {
+        
+        /**
+         Describes Individual contour bound and color.
+         */
+        public enum ContourDefinition<Value: Comparable> {
+            /**
+                Contour bound definition value and contour color.
+             */
+            public typealias ValueAndColor = (value: Value, color: Color)
+            
+            /**
+             Allows configuring just the bound, leaving coloring to a default rainbow scheme.
+             */
+            case `default`([Value])
+            /**
+             Allows configuring both the bound and contour color.
+             */
+            case colored([ValueAndColor])
+        }
+        
         /**
          The desired travel times to use for each isochrone contour.
          
          This value will be rounded to the nearest minute.
          */
-        case expectedTravelTime([TimeInterval])
+        case byExpectedTravelTimes(ContourDefinition<TimeInterval>)
+        
         /**
          The distances to use for each isochrone contour.
          
          Will be rounded to the nearest integer.
          */
-        case distance([LocationDistance])
+        case byDistances(ContourDefinition<LocationDistance>)
+    }
+}
+
+fileprivate extension Array where Element == Double {
+    func composeURLValue(roundedTo base: Int) -> String {
+        map { String(Int(($0 / Double(base)).rounded())) }.joined(separator: ";")
+    }
+}
+
+extension IsochroneOptions.Contours.ContourDefinition where Value == Double {
+    func serialise(roundedTo base: Int = 1) -> (String, String?) {
+        switch (self) {
+        case .default(let intervals):
+            return (intervals.composeURLValue(roundedTo: base), nil)
+        case .colored(let intervals):
+            let sorted = intervals.sorted { lhs, rhs in
+                lhs.value < rhs.value
+            }
+            
+            let values = sorted.map(\.value).composeURLValue(roundedTo: base)
+            let colors = sorted.map(\.color.queryDescription).joined(separator: ";")
+            return (values, colors)
+        }
     }
 }
 
 extension IsochroneOptions {
     #if canImport(UIKit)
+    /**
+     RGB-based color representation for Isochrone contour.
+     */
     public typealias Color = UIColor
     #elseif canImport(AppKit)
+    /**
+     RGB-based color representation for Isochrone contour.
+     */
     public typealias Color = NSColor
     #else
+    /**
+     RGB-based color representation for Isochrone contour.
+     
+     This is a compatibility shim to keep the library’s public interface consistent between Apple and non-Apple platforms that lack `UIKit` or `AppKit`. On Apple platforms, you can use `UIColor` or `NSColor` respectively anywhere you see this type.
+     */
     public struct Color {
+        /**
+         Red color component.
+         
+         Value ranged from `0` up to `255`.
+         */
         public var red: Int
+        /**
+         Green color component.
+         
+         Value ranged from `0` up to `255`.
+         */
         public var green: Int
+        /**
+         Blue color component.
+         
+         Value ranged from `0` up to `255`.
+         */
         public var blue: Int
         
+        /**
+         Creates new `Color` instance.
+         */
         public init(red: Int, green: Int, blue: Int) {
             self.red = red
             self.green = green
@@ -161,8 +240,10 @@ extension IsochroneOptions {
         }
     }
     #endif
-    
-    func queryColorDescription(color: Color) -> String {
+}
+
+extension IsochroneOptions.Color {
+    var queryDescription: String {
         let hexFormat = "%02X%02X%02X"
         
         #if canImport(UIKit)
@@ -170,17 +251,17 @@ extension IsochroneOptions {
         var green: CGFloat = 0
         var blue: CGFloat = 0
         
-        color.getRed(&red,
-                     green: &green,
-                     blue: &blue,
-                     alpha: nil)
+        getRed(&red,
+               green: &green,
+               blue: &blue,
+               alpha: nil)
         
         return String(format: hexFormat,
                       Int(red * 255),
                       Int(green * 255),
                       Int(blue * 255))
         #elseif canImport(AppKit)
-        guard let convertedColor = color.usingColorSpace(.deviceRGB) else {
+        guard let convertedColor = usingColorSpace(.deviceRGB) else {
             assertionFailure("Failed to convert Isochrone contour color to RGB space.")
             return "000000"
         }
@@ -191,9 +272,9 @@ extension IsochroneOptions {
                       Int(convertedColor.blueComponent * 255))
         #else
         return String(format: hexFormat,
-                      color.red,
-                      color.green,
-                      color.blue)
+                      red,
+                      green,
+                      blue)
         #endif
     }
 }
