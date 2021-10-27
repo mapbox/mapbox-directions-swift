@@ -97,14 +97,14 @@ public class IsochroneOptions {
         
         switch contours {
         case .byDistances(let definition):
-            let (values, colors) = definition.serialise()
+            let (values, colors) = definition.serialise(roundingTo: .meters)
             
             queryItems.append(URLQueryItem(name: "contours_meters", value: values))
             if let colors = colors {
                 queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
             }
         case .byExpectedTravelTimes(let definition):
-            let (values, colors) = definition.serialise(roundedTo: 60)
+            let (values, colors) = definition.serialise(roundingTo: .minutes)
             
             queryItems.append(URLQueryItem(name: "contours_minutes", value: values))
             if let colors = colors {
@@ -138,9 +138,13 @@ extension IsochroneOptions {
         /**
          Describes Individual contour bound and color.
          */
-        public enum ContourDefinition<Value: Comparable> {
+        public enum ContourDefinition<Unt: Dimension> {
             /**
-                Contour bound definition value and contour color.
+             Contour bound definition value.
+             */
+            public typealias Value = Measurement<Unt>
+            /**
+             Contour bound definition value and contour color.
              */
             public typealias ValueAndColor = (value: Value, color: Color)
             
@@ -152,44 +156,43 @@ extension IsochroneOptions {
              Allows configuring both the bound and contour color.
              */
             case colored([ValueAndColor])
+            
+            func serialise(roundingTo unit: Unt) -> (String, String?) {
+                switch (self) {
+                case .default(let intervals):
+                    
+                    return (intervals.map { $0.converted(to: unit).value }.composeURLValue(), nil)
+                case .colored(let intervals):
+                    let sorted = intervals.sorted { lhs, rhs in
+                        lhs.value < rhs.value
+                    }
+                    
+                    let values = sorted.map { $0.value.converted(to: unit).value }.composeURLValue()
+                    let colors = sorted.map(\.color.queryDescription).joined(separator: ";")
+                    return (values, colors)
+                }
+            }
         }
         
         /**
          The desired travel times to use for each isochrone contour.
          
-         This value will be rounded to the nearest minute.
+         This value will be rounded to minutes.
          */
-        case byExpectedTravelTimes(ContourDefinition<TimeInterval>)
+        case byExpectedTravelTimes(ContourDefinition<UnitDuration>)
         
         /**
          The distances to use for each isochrone contour.
          
-         Will be rounded to the nearest integer.
+         Will be rounded to meters.
          */
-        case byDistances(ContourDefinition<LocationDistance>)
+        case byDistances(ContourDefinition<UnitLength>)
     }
 }
 
 fileprivate extension Array where Element == Double {
-    func composeURLValue(roundedTo base: Int) -> String {
-        map { String(Int(($0 / Double(base)).rounded())) }.joined(separator: ";")
-    }
-}
-
-extension IsochroneOptions.Contours.ContourDefinition where Value == Double {
-    func serialise(roundedTo base: Int = 1) -> (String, String?) {
-        switch (self) {
-        case .default(let intervals):
-            return (intervals.composeURLValue(roundedTo: base), nil)
-        case .colored(let intervals):
-            let sorted = intervals.sorted { lhs, rhs in
-                lhs.value < rhs.value
-            }
-            
-            let values = sorted.map(\.value).composeURLValue(roundedTo: base)
-            let colors = sorted.map(\.color.queryDescription).joined(separator: ";")
-            return (values, colors)
-        }
+    func composeURLValue() -> String {
+        map { String(Int($0.rounded())) }.joined(separator: ";")
     }
 }
 
