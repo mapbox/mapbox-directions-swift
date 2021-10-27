@@ -34,23 +34,23 @@ class IsochroneTests: XCTestCase {
     
     func testRequest() {
         let location = LocationCoordinate2D(latitude: 0, longitude: 1)
-        
-        #if !os(Linux)
         let radius1 = Measurement(value: 99.5, unit: UnitLength.meters)
         let radius2 = Measurement(value: 0.2, unit: UnitLength.kilometers)
+        
+        #if !os(Linux)
         let options = IsochroneOptions(centerCoordinate: location,
                                        contours: .byDistances(.colored([
-                                        (radius1,   .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
+                                        (radius1, .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
                                         (radius2, .init(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0))
                                        ])))
         #else
         let options = IsochroneOptions(centerCoordinate: location,
-                                       contours: .byDistances(.colored([
-                                        (radius1,   .init(red: 25,  green: 51,  blue: 76)),
-                                        (radius2, .init(red: 102, green: 127, blue: 153))
+                                       contours: IsochroneOptions.Contours.byDistances(.colored([
+                                        (radius1, IsochroneOptions.Color(red: 25,  green: 51,  blue: 76)),
+                                        (radius2, IsochroneOptions.Color(red: 102, green: 127, blue: 153))
                                        ])))
         #endif
-        options.contoursFormat = .polygon
+        options.contoursFormat = IsochroneOptions.ContourFormat.polygon
         options.denoisingFactor = 0.5
         options.simplificationTolerance = 13
         
@@ -74,8 +74,10 @@ class IsochroneTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
         
-        options.contours = .byExpectedTravelTimes(.default([.init(value: 31,  unit: .seconds),
-                                                            .init(value: 2.1, unit: .minutes)]))
+        options.contours = IsochroneOptions.Contours.byExpectedTravelTimes(.default([
+            Measurement(value: 31,  unit: UnitDuration.seconds),
+            Measurement(value: 2.1, unit: UnitDuration.minutes)
+        ]))
         
         url = isochrones.url(forCalculating: options)
         
