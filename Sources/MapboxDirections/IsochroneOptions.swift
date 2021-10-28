@@ -161,14 +161,14 @@ extension IsochroneOptions {
                 switch (self) {
                 case .default(let intervals):
                     
-                    return (intervals.map { String(Int($0.converted(to: unit).value.rounded())) }.joined(separator: ";"), nil)
+                    return (intervals.map { String(Int($0.converted(to: unit).value.rounded())) }.joined(separator: ","), nil)
                 case .colored(let intervals):
                     let sorted = intervals.sorted { lhs, rhs in
                         lhs.value < rhs.value
                     }
                     
-                    let values = sorted.map { String(Int($0.value.converted(to: unit).value.rounded())) }.joined(separator: ";")
-                    let colors = sorted.map(\.color.queryDescription).joined(separator: ";")
+                    let values = sorted.map { String(Int($0.value.converted(to: unit).value.rounded())) }.joined(separator: ",")
+                    let colors = sorted.map(\.color.queryDescription).joined(separator: ",")
                     return (values, colors)
                 }
             }
