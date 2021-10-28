@@ -58,6 +58,8 @@ open class RouteOptions: DirectionsOptions {
         case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
         case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
+        case maximumHeight = "max_height"
+        case maximumWidth = "max_width"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -70,6 +72,8 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
+        try container.encodeIfPresent(maximumHeight, forKey: .maximumHeight)
+        try container.encodeIfPresent(maximumWidth, forKey: .maximumWidth)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -87,6 +91,11 @@ open class RouteOptions: DirectionsOptions {
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         
         _initialManeuverAvoidanceRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .initialManeuverAvoidanceRadius)
+
+        maximumHeight = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumHeight)
+
+        maximumWidth = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumWidth)
+
         try super.init(from: decoder)
     }
     
@@ -193,6 +202,24 @@ open class RouteOptions: DirectionsOptions {
      To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`. This option is set to `false` by default.
      */
     open var refreshingEnabled = false
+
+    /**
+     The maximum vehicle height in meters.
+
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height.
+     This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+     The value must be between 0 and 10 meters.
+     */
+    open var maximumHeight: LocationDistance?
+
+    /**
+     The maximum vehicle width in meters.
+
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width.
+     This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+     The value must be between 0 and 10 meters.
+     */
+    open var maximumWidth: LocationDistance?
     
     /**
      A radius around the starting point in which the API will avoid returning any significant maneuvers.
@@ -264,6 +291,14 @@ open class RouteOptions: DirectionsOptions {
         
         if let initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius {
             params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(initialManeuverAvoidanceRadius)))
+        }
+
+        if let maximumHeight = maximumHeight, profileIdentifier == .automobile || profileIdentifier == .automobileAvoidingTraffic {
+            params.append(URLQueryItem(name: CodingKeys.maximumHeight.stringValue, value: String(maximumHeight)))
+        }
+
+        if let maximumWidth = maximumWidth, profileIdentifier == .automobile || profileIdentifier == .automobileAvoidingTraffic {
+            params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(maximumWidth)))
         }
 
         return params + super.urlQueryItems
