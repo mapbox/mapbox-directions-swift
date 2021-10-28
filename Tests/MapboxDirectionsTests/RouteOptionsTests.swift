@@ -33,6 +33,9 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.initialManeuverAvoidanceRadius, options.initialManeuverAvoidanceRadius)
         XCTAssertEqual(unarchivedOptions.maximumWidth, options.maximumWidth)
         XCTAssertEqual(unarchivedOptions.maximumHeight, options.maximumHeight)
+        XCTAssertEqual(unarchivedOptions.alleyPriority, options.alleyPriority)
+        XCTAssertEqual(unarchivedOptions.walkwayPriority, options.walkwayPriority)
+        XCTAssertEqual(unarchivedOptions.speed, options.speed)
     }
     
     func testCodingWithRawCodingKeys() {
@@ -61,6 +64,8 @@ class RouteOptionsTests: XCTestCase {
             "avoid_maneuver_radius": 300,
             "max_width": 2,
             "max_height": 3,
+            "alley_bias": DirectionsPriority.low.rawValue,
+            "walkway_bias": DirectionsPriority.high.rawValue,
         ]
         
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
@@ -264,6 +269,9 @@ var testRouteOptions: RouteOptions {
     opts.initialManeuverAvoidanceRadius = 100
     opts.maximumHeight = 2.0
     opts.maximumWidth = 2.5
+    opts.alleyPriority = .low
+    opts.walkwayPriority = .high
+    opts.speed = 1
 
     return opts
 }

@@ -60,6 +60,10 @@ open class RouteOptions: DirectionsOptions {
         case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
         case maximumHeight = "max_height"
         case maximumWidth = "max_width"
+        case alleyPriority = "alley_bias"
+        case walkwayPriority = "walkway_bias"
+        case speed = "walking_speed"
+        case waypointTargets = "waypoint_targets"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -74,6 +78,9 @@ open class RouteOptions: DirectionsOptions {
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
         try container.encodeIfPresent(maximumHeight, forKey: .maximumHeight)
         try container.encodeIfPresent(maximumWidth, forKey: .maximumWidth)
+        try container.encodeIfPresent(alleyPriority, forKey: .alleyPriority)
+        try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
+        try container.encodeIfPresent(speed, forKey: .speed)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -95,6 +102,12 @@ open class RouteOptions: DirectionsOptions {
         maximumHeight = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumHeight)
 
         maximumWidth = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumWidth)
+
+        alleyPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .alleyPriority)
+
+        walkwayPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .walkwayPriority)
+
+        speed = try container.decodeIfPresent(LocationSpeed.self, forKey: .speed)
 
         try super.init(from: decoder)
     }
@@ -246,51 +259,51 @@ open class RouteOptions: DirectionsOptions {
     
     override open var urlQueryItems: [URLQueryItem] {
         var params: [URLQueryItem] = [
-            URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
+            URLQueryItem(name: CodingKeys.includesAlternativeRoutes.stringValue, value: String(includesAlternativeRoutes)),
+            URLQueryItem(name: CodingKeys.allowsUTurnAtWaypoint.stringValue, value: String(!allowsUTurnAtWaypoint)),
         ]
 
         if includesExitRoundaboutManeuver {
-            params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+            params.append(URLQueryItem(name: CodingKeys.includesExitRoundaboutManeuver.stringValue, value: String(includesExitRoundaboutManeuver)))
         }
         if let alleyPriority = alleyPriority?.rawValue {
-            params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority)))
+            params.append(URLQueryItem(name: CodingKeys.alleyPriority.stringValue, value: String(alleyPriority)))
         }
         
         if let walkwayPriority = walkwayPriority?.rawValue {
-            params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority)))
+            params.append(URLQueryItem(name: CodingKeys.walkwayPriority.stringValue, value: String(walkwayPriority)))
         }
         
         if let speed = speed {
-            params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
+            params.append(URLQueryItem(name: CodingKeys.speed.stringValue, value: String(speed)))
         }
         
         if !roadClassesToAvoid.isEmpty && roadClassesToAvoid.isDisjoint(with: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",").filter { !$0.isEmpty }
             precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
             if let firstRoadClass = allRoadClasses.first {
-                params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+                params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: firstRoadClass))
             }
         }
         
         if !roadClassesToAllow.isEmpty && roadClassesToAllow.isSubset(of: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
             let allRoadClasses = roadClassesToAllow.description.components(separatedBy: ",").filter { !$0.isEmpty }
             allRoadClasses.forEach { roadClass in
-                params.append(URLQueryItem(name: "include", value: roadClass))
+                params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: roadClass))
             }
         }
         
         if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {
-            params.append(URLQueryItem(name: "enable_refresh", value: String(refreshingEnabled)))
+            params.append(URLQueryItem(name: CodingKeys.refreshingEnabled.stringValue, value: String(refreshingEnabled)))
         }
         
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
             let targetCoordinates = waypoints.filter { $0.separatesLegs }.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
-            params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
+            params.append(URLQueryItem(name: CodingKeys.waypointTargets.stringValue, value: targetCoordinates))
         }
         
         if let initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius {
-            params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(initialManeuverAvoidanceRadius)))
+            params.append(URLQueryItem(name: CodingKeys.initialManeuverAvoidanceRadius.stringValue, value: String(initialManeuverAvoidanceRadius)))
         }
 
         if let maximumHeight = maximumHeight, profileIdentifier == .automobile || profileIdentifier == .automobileAvoidingTraffic {

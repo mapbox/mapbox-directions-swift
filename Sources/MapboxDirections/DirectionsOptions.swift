@@ -84,7 +84,7 @@ public typealias MBDirectionsPriority = DirectionsPriority
 /**
  A number that influences whether a route should prefer or avoid roadways or pathways of a given type.
  */
-public struct DirectionsPriority: Hashable, RawRepresentable {
+public struct DirectionsPriority: Hashable, RawRepresentable, Codable {
     public init(rawValue: Double) {
         self.rawValue = rawValue
     }
