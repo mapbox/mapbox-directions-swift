@@ -262,7 +262,7 @@ isochrones.calculate(IsochroneOptions(centerCoordinate: centerCoordinate,
             options: options,
             accessToken: accessToken)
 
-        // display the result!
+        // Display the result!
         drawImage(snapshot.image)
     }
 }

@@ -33,6 +33,29 @@
 		2B540809245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */; };
 		2B54080A245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */; };
 		2B54080B245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */; };
+		2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
+		2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
+		2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
+		2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
+		2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */; };
+		2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */; };
+		2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */; };
+		2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */; };
+		2B9F3889272AE23A001DBA12 /* IsochroneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387E272AE23A001DBA12 /* IsochroneError.swift */; };
+		2B9F388A272AE23A001DBA12 /* IsochroneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387E272AE23A001DBA12 /* IsochroneError.swift */; };
+		2B9F388B272AE23A001DBA12 /* IsochroneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387E272AE23A001DBA12 /* IsochroneError.swift */; };
+		2B9F388C272AE23A001DBA12 /* IsochroneError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387E272AE23A001DBA12 /* IsochroneError.swift */; };
+		2B9F388D272AE23A001DBA12 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387F272AE23A001DBA12 /* Credentials.swift */; };
+		2B9F388E272AE23A001DBA12 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387F272AE23A001DBA12 /* Credentials.swift */; };
+		2B9F388F272AE23A001DBA12 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387F272AE23A001DBA12 /* Credentials.swift */; };
+		2B9F3890272AE23A001DBA12 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387F272AE23A001DBA12 /* Credentials.swift */; };
+		2B9F3891272AE23A001DBA12 /* Isochrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3880272AE23A001DBA12 /* Isochrones.swift */; };
+		2B9F3892272AE23A001DBA12 /* Isochrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3880272AE23A001DBA12 /* Isochrones.swift */; };
+		2B9F3893272AE23A001DBA12 /* Isochrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3880272AE23A001DBA12 /* Isochrones.swift */; };
+		2B9F3894272AE23A001DBA12 /* Isochrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3880272AE23A001DBA12 /* Isochrones.swift */; };
+		2B9F389A272AE28B001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
+		2B9F389B272AE28D001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
+		2B9F389C272AE28E001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
 		2BA2E746257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
 		2BA2E747257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
 		2BA2E748257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
@@ -92,9 +115,6 @@
 		43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
 		43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
 		43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */; };
-		43538E3D23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
-		43538E3E23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
-		43538E3F23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */; };
 		4376A52723FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
 		4376A52823FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
 		4376A52923FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
@@ -456,6 +476,12 @@
 		2B5407FF245B097D006C820B /* routeRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshResponse.json; sourceTree = "<group>"; };
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
 		2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = incorrectRouteRefreshResponse.json; sourceTree = "<group>"; };
+		2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileIdentifier.swift; sourceTree = "<group>"; };
+		2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneOptions.swift; sourceTree = "<group>"; };
+		2B9F387E272AE23A001DBA12 /* IsochroneError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneError.swift; sourceTree = "<group>"; };
+		2B9F387F272AE23A001DBA12 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
+		2B9F3880272AE23A001DBA12 /* Isochrones.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Isochrones.swift; sourceTree = "<group>"; };
+		2B9F3895272AE277001DBA12 /* IsochroneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneTests.swift; sourceTree = "<group>"; };
 		2BA2E745257A667500D7AFC6 /* incidents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = incidents.json; sourceTree = "<group>"; };
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetsRoadClass.swift; sourceTree = "<group>"; };
@@ -474,7 +500,6 @@
 		43208BAA2343F81900D8BD89 /* GeoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSON.swift; sourceTree = "<group>"; };
 		43208BAC2343FF5500D8BD89 /* RouteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponse.swift; sourceTree = "<group>"; };
 		43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDisposition.swift; sourceTree = "<group>"; };
-		43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsCredentialsTests.swift; sourceTree = "<group>"; };
 		4376A52623FB13D400C6038D /* MatchOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchOptionsTests.swift; sourceTree = "<group>"; };
 		438BFEBC233D7FA900457294 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -771,6 +796,7 @@
 				C5DAAC9E20191683001F9261 /* MapMatching */,
 				C51538CB1E807FF00093FF3E /* AttributeOptions.swift */,
 				C58EA7A91E9D7EAD008F98CE /* Congestion.swift */,
+				2B9F387F272AE23A001DBA12 /* Credentials.swift */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
 				43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
@@ -780,10 +806,14 @@
 				431E93BE234664A200A71B44 /* DrivingSide.swift */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
 				C57D55001DB5669600B94B74 /* Intersection.swift */,
+				2B9F387E272AE23A001DBA12 /* IsochroneError.swift */,
+				2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */,
+				2B9F3880272AE23A001DBA12 /* Isochrones.swift */,
 				C57D55071DB58C0200B94B74 /* Lane.swift */,
 				DAA76D671DD127CB0015EC78 /* LaneIndication.swift */,
 				DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */,
 				35828C9D217A003F00ED546E /* OfflineDirections.swift */,
+				2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */,
 				DAD06E3823A008EB001A917D /* QuickLook.swift */,
 				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
 				2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */,
@@ -819,11 +849,11 @@
 				43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */,
 				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
 				DA1A110A1D01045E009F82FA /* DirectionsTests.swift */,
-				43538E3C23ED6A2000E010D4 /* DirectionsCredentialsTests.swift */,
 				DA6C9DB11CAECA0E00094FBC /* Fixture.swift */,
 				DAABF7912395AE9800CEEB61 /* GeoJSONTests.swift */,
 				DA6C9D9A1CAE442B00094FBC /* Info.plist */,
 				DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */,
+				2B9F3895272AE277001DBA12 /* IsochroneTests.swift */,
 				DABE6C7D236A37E200D370F4 /* JSONSerialization.swift */,
 				3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */,
 				C5DAACAE201AA92B001F9261 /* MatchTests.swift */,
@@ -1356,6 +1386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9F3892272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C0234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9B2019167C001F9261 /* Match.swift in Sources */,
@@ -1368,6 +1399,7 @@
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
+				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
 				431E93C423466B0F00A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4A2045E72800D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1385,6 +1417,7 @@
 				C5990B4D2045E74800D7DFD4 /* DirectionsOptions.swift in Sources */,
 				43EBD3AE23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* LaneIndication.swift in Sources */,
+				2B9F388E272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10CB1D00F969009F82FA /* RouteStep.swift in Sources */,
 				C57D55031DB566A700B94B74 /* Intersection.swift in Sources */,
@@ -1400,8 +1433,10 @@
 				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* Lane.swift in Sources */,
+				2B9F388A272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C823466B4000A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212120B6125C0052DED8 /* VisualInstructionComponent.swift in Sources */,
+				2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* Directions.swift in Sources */,
 			);
@@ -1419,6 +1454,7 @@
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				4376A52823FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				2B9F389B272AE28D001DBA12 /* IsochroneTests.swift in Sources */,
 				DAD06E36239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663A2048AECD00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA8F3A7323B56D3B00B56786 /* RouteLegTests.swift in Sources */,
@@ -1435,7 +1471,6 @@
 				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7932395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
-				43538E3E23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1444,6 +1479,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9F3893272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C1234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9C2019167D001F9261 /* Match.swift in Sources */,
@@ -1456,6 +1492,7 @@
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
+				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
 				431E93C523466B1000A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4B2045E72900D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1473,6 +1510,7 @@
 				C5990B4E2045E74900D7DFD4 /* DirectionsOptions.swift in Sources */,
 				43EBD3AF23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
+				2B9F388F272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A10F11D010247009F82FA /* RouteStep.swift in Sources */,
 				C57D55041DB566A800B94B74 /* Intersection.swift in Sources */,
@@ -1488,8 +1526,10 @@
 				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* Lane.swift in Sources */,
+				2B9F388B272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C923466B4100A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212220B6125D0052DED8 /* VisualInstructionComponent.swift in Sources */,
+				2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* Directions.swift in Sources */,
 			);
@@ -1507,6 +1547,7 @@
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				4376A52923FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				2B9F389C272AE28E001DBA12 /* IsochroneTests.swift in Sources */,
 				DAD06E37239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C596663B2048AECE00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA8F3A7423B56D3B00B56786 /* RouteLegTests.swift in Sources */,
@@ -1523,7 +1564,6 @@
 				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7942395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
-				43538E3F23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1532,6 +1572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9F3894272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93C2234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9D2019167E001F9261 /* Match.swift in Sources */,
@@ -1544,6 +1585,7 @@
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
+				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
 				431E93C623466B1100A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4C2045E72A00D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1561,6 +1603,7 @@
 				C5990B4F2045E74A00D7DFD4 /* DirectionsOptions.swift in Sources */,
 				43EBD3B023DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
+				2B9F3890272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				DA1A11081D0103A3009F82FA /* RouteStep.swift in Sources */,
 				C57D55051DB566A900B94B74 /* Intersection.swift in Sources */,
@@ -1576,8 +1619,10 @@
 				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* Lane.swift in Sources */,
+				2B9F388C272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93CA23466B4200A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212320B6125E0052DED8 /* VisualInstructionComponent.swift in Sources */,
+				2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* Directions.swift in Sources */,
 			);
@@ -1587,6 +1632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9F3891272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3823ED463100E010D4 /* ResponseDisposition.swift in Sources */,
 				431E93BF234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C51538CC1E807FF00093FF3E /* AttributeOptions.swift in Sources */,
@@ -1599,6 +1645,7 @@
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
+				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
 				431E93C323466B0E00A71B44 /* GeoJSON.swift in Sources */,
 				35EFD00B207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
@@ -1616,6 +1663,7 @@
 				C59094C1203DE6BC00EB2417 /* DirectionsResult.swift in Sources */,
 				43EBD3AD23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* RouteLeg.swift in Sources */,
+				2B9F388D272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F932350F952007B591E /* MapMatchingResponse.swift in Sources */,
 				C5434B8A200693D00069E887 /* Tracepoint.swift in Sources */,
 				DA6C9DA61CAE462800094FBC /* Directions.swift in Sources */,
@@ -1631,8 +1679,10 @@
 				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,
 				438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				C57D55011DB5669600B94B74 /* Intersection.swift in Sources */,
+				2B9F3889272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C723466B3F00A71B44 /* CoreLocation.swift in Sources */,
 				AEDC211D20B6104B0052DED8 /* VisualInstructionComponent.swift in Sources */,
+				2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */,
 			);
@@ -1650,6 +1700,7 @@
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				4376A52723FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
+				2B9F389A272AE28B001DBA12 /* IsochroneTests.swift in Sources */,
 				DAD06E35239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,
 				C59666392048A20E00C45CE5 /* RoutableMatchTests.swift in Sources */,
 				DA8F3A7223B56D3B00B56786 /* RouteLegTests.swift in Sources */,
@@ -1667,7 +1718,6 @@
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
-				43538E3D23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
