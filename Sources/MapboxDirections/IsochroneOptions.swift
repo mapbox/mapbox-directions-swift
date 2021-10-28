@@ -97,14 +97,14 @@ public class IsochroneOptions {
         
         switch contours {
         case .byDistances(let definition):
-            let (values, colors) = definition.serialise(roundingTo: .meters)
+            let (values, colors) = definition.serialize(roundingTo: .meters)
             
             queryItems.append(URLQueryItem(name: "contours_meters", value: values))
             if let colors = colors {
                 queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
             }
         case .byExpectedTravelTimes(let definition):
-            let (values, colors) = definition.serialise(roundingTo: .minutes)
+            let (values, colors) = definition.serialize(roundingTo: .minutes)
             
             queryItems.append(URLQueryItem(name: "contours_minutes", value: values))
             if let colors = colors {
@@ -157,17 +157,17 @@ extension IsochroneOptions {
              */
             case colored([ValueAndColor])
             
-            func serialise(roundingTo unit: Unt) -> (String, String?) {
+            func serialize(roundingTo unit: Unt) -> (String, String?) {
                 switch (self) {
                 case .default(let intervals):
                     
-                    return (intervals.map { $0.converted(to: unit).value }.composeURLValue(), nil)
+                    return (intervals.map { String(Int($0.converted(to: unit).value.rounded())) }.joined(separator: ";"), nil)
                 case .colored(let intervals):
                     let sorted = intervals.sorted { lhs, rhs in
                         lhs.value < rhs.value
                     }
                     
-                    let values = sorted.map { $0.value.converted(to: unit).value }.composeURLValue()
+                    let values = sorted.map { String(Int($0.value.converted(to: unit).value.rounded())) }.joined(separator: ";")
                     let colors = sorted.map(\.color.queryDescription).joined(separator: ";")
                     return (values, colors)
                 }
@@ -190,12 +190,6 @@ extension IsochroneOptions {
     }
 }
 
-fileprivate extension Array where Element == Double {
-    func composeURLValue() -> String {
-        map { String(Int($0.rounded())) }.joined(separator: ";")
-    }
-}
-
 extension IsochroneOptions {
     #if canImport(UIKit)
     /**
@@ -209,7 +203,7 @@ extension IsochroneOptions {
     public typealias Color = NSColor
     #else
     /**
-     RGB-based color representation for Isochrone contour.
+     sRGB color space representation for Isochrone contour.
      
      This is a compatibility shim to keep the library’s public interface consistent between Apple and non-Apple platforms that lack `UIKit` or `AppKit`. On Apple platforms, you can use `UIColor` or `NSColor` respectively anywhere you see this type.
      */
@@ -264,9 +258,14 @@ extension IsochroneOptions.Color {
                       Int(green * 255),
                       Int(blue * 255))
         #elseif canImport(AppKit)
-        guard let convertedColor = usingColorSpace(.deviceRGB) else {
-            assertionFailure("Failed to convert Isochrone contour color to RGB space.")
-            return "000000"
+        var convertedColor = self
+        if colorSpace != .sRGB {
+            guard let converted = usingColorSpace(.sRGB) else {
+                assertionFailure("Failed to convert Isochrone contour color to RGB space.")
+                return "000000"
+            }
+            
+            convertedColor = converted
         }
         
         return String(format: hexFormat,
