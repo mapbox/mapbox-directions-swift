@@ -38,7 +38,7 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
      
      When this attribute is specified, the `RouteLeg.congestionLevels` property contains one value for each segment in the leg’s full geometry.
      
-     This attribute requires `DirectionsProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
+     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
     public static let congestionLevel = AttributeOptions(rawValue: 1 << 4)
     
@@ -54,7 +54,7 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
 
      When this attribute is specified, the `RouteLeg.numericCongestionLevels` property contains one value for each segment in the leg’s full geometry.
 
-     This attribute requires `DirectionsProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `nil` for each segment along the route.
+     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `nil` for each segment along the route.
      */
     public static let numericCongestionLevel = AttributeOptions(rawValue: 1 << 6)
     

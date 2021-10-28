@@ -87,7 +87,7 @@ public enum DirectionsError: LocalizedError {
     /**
      Unrecognized profile identifier.
      
-     Make sure the `DirectionsOptions.profileIdentifier` option is set to one of the predefined values, such as `DirectionsProfileIdentifier.automobile`.
+     Make sure the `DirectionsOptions.profileIdentifier` option is set to one of the predefined values, such as `ProfileIdentifier.automobile`.
      */
     case profileNotFound
     
@@ -166,7 +166,7 @@ public enum DirectionsError: LocalizedError {
         case .unableToLocate:
             return "Make sure the locations are close enough to a roadway or pathway. Try setting the coordinateAccuracy property of all the waypoints to nil."
         case .profileNotFound:
-            return "Make sure the profileIdentifier option is set to one of the provided constants, such as DirectionsProfileIdentifier.automobile."
+            return "Make sure the profileIdentifier option is set to one of the provided constants, such as ProfileIdentifier.automobile."
         case .requestTooLarge:
             return "Try specifying fewer waypoints or giving the waypoints shorter names."
         case let .rateLimited(rateLimitInterval: _, rateLimit: _, resetTime: rolloverTime):

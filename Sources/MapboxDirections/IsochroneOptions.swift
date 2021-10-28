@@ -13,7 +13,7 @@ import AppKit
 */
 public class IsochroneOptions {
     
-    public init(centerCoordinate: LocationCoordinate2D, contours: Contours, profileIdentifier: IsochroneProfileIdentifier = .automobile) {
+    public init(centerCoordinate: LocationCoordinate2D, contours: Contours, profileIdentifier: ProfileIdentifier = .automobile) {
         self.centerCoordinate = centerCoordinate
         self.contours = contours
         self.profileIdentifier = profileIdentifier
@@ -38,9 +38,9 @@ public class IsochroneOptions {
     /**
      A string specifying the primary mode of transportation for the contours.
 
-     The default value of this property is `IsochroneProfileIdentifier.automobile`, which specifies driving directions.
+     The default value of this property is `ProfileIdentifier.automobile`, which specifies driving directions.
      */
-    public var profileIdentifier: IsochroneProfileIdentifier
+    public var profileIdentifier: ProfileIdentifier
     /**
      A coordinate around which to center the isochrone lines.
      */

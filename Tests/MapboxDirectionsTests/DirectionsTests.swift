@@ -12,7 +12,7 @@ import Turf
 @testable import MapboxDirections
 
 let BogusToken = "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede"
-let BogusCredentials = DirectionsCredentials(accessToken: BogusToken)
+let BogusCredentials = Credentials(accessToken: BogusToken)
 let BadResponse = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML><HEAD><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">

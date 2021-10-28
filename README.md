@@ -74,7 +74,7 @@ The main directions class is `Directions`. Create a directions object using your
 // main.swift
 import MapboxDirections
 
-let directions = Directions(credentials: DirectionsCredentials(accessToken: "<#your access token#>"))
+let directions = Directions(credentials: Credentials(accessToken: "<#your access token#>"))
 ```
 
 Alternatively, you can place your access token in the `MBXAccessToken` key of your application’s Info.plist file, then use the shared directions object:
@@ -183,7 +183,7 @@ You can also use the `Directions.calculateRoutes(matching:completionHandler:)` m
 `Isochrones` API uses the same access token initialization as `Directions`. Once that is configured, you need to fill `IsochronesOptions` parameters to calculate the desired geoJSON:
 
 ```swift
-let isochrones = Isochrones(credentials:IsochroneCredentials(accessToken: "<#your access token#>"))
+let isochrones = Isochrones(credentials: Credentials(accessToken: "<#your access token#>"))
 
 let isochroneOptions = IsochroneOptions(centerCoordinate: CLLocationCoordinate2D(latitude: 45.52, longitude: -122.681944),
                                         contours: .byDistances(.colored([(.init(value: 500, unit: .meters), .orange),
@@ -245,7 +245,7 @@ let options = SnapshotOptions(
     size: CGSize(width: 200, height: 200))
 
 // Request Isochrone contour to draw on a map
-let isochrones = Isochrones(credentials:IsochroneCredentials(accessToken: accessToken))
+let isochrones = Isochrones(credentials: Credentials(accessToken: accessToken))
 isochrones.calculate(IsochroneOptions(centerCoordinate: centerCoordinate,
                                       contours: .byDistances(.default([.init(value: 500, unit: .meters)])))) { session, result in
     if case .success(let response) = result {

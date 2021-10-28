@@ -16,7 +16,7 @@ public struct RouteResponse {
     public let waypoints: [Waypoint]?
     
     public let options: ResponseOptions
-    public let credentials: DirectionsCredentials
+    public let credentials: Credentials
     
     /**
      The time when this `RouteResponse` object was created, which is immediately upon recieving the raw URL response.
@@ -38,7 +38,7 @@ extension RouteResponse: Codable {
         case waypoints
     }
     
-    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: DirectionsCredentials) {
+    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: Credentials) {
         self.httpResponse = httpResponse
         self.identifier = identifier
         self.routes = routes
@@ -47,7 +47,7 @@ extension RouteResponse: Codable {
         self.credentials = credentials
     }
     
-    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: DirectionsCredentials) throws {
+    public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: Credentials) throws {
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
         
@@ -79,7 +79,7 @@ extension RouteResponse: Codable {
 
         self.httpResponse = decoder.userInfo[.httpResponse] as? HTTPURLResponse
         
-        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+        guard let credentials = decoder.userInfo[.credentials] as? Credentials else {
             throw DirectionsCodingError.missingCredentials
         }
         

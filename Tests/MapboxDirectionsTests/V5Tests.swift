@@ -292,7 +292,7 @@ class V5Tests: XCTestCase {
         
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = options
-        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "http://sample.website"))
+        decoder.userInfo[.credentials] = Credentials(accessToken: "foo", host: URL(string: "http://sample.website"))
         let result = try! decoder.decode(RouteResponse.self, from: data)
         
         let routes = result.routes

@@ -19,7 +19,7 @@ class RouteResponseTests: XCTestCase {
         let responseOptions = ResponseOptions.route(routeOptions)
         let accessToken = "deadbeefcafebebe"
         let host = URL(string: "https://example.com")!
-        let directionsCredentials = DirectionsCredentials(accessToken: accessToken, host: host)
+        let directionsCredentials = Credentials(accessToken: accessToken, host: host)
         
         let routeResponse = RouteResponse(httpResponse: nil,
                                           waypoints: waypoints,

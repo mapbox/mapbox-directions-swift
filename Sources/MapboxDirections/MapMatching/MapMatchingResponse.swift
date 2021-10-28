@@ -10,7 +10,7 @@ public struct MapMatchingResponse {
     public var tracepoints: [Tracepoint?]?
     
     public let options: MatchOptions
-    public let credentials: DirectionsCredentials
+    public let credentials: Credentials
     
     /**
      The time when this `MapMatchingResponse` object was created, which is immediately upon recieving the raw URL response.
@@ -28,7 +28,7 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
 
-     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Tracepoint]? = nil, options: MatchOptions, credentials: DirectionsCredentials) {
+     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Tracepoint]? = nil, options: MatchOptions, credentials: Credentials) {
         self.httpResponse = httpResponse
         self.matches = matches
         self.tracepoints = tracepoints
@@ -46,7 +46,7 @@ extension MapMatchingResponse: Codable {
         }
         self.options = options
         
-        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+        guard let credentials = decoder.userInfo[.credentials] as? Credentials else {
             throw DirectionsCodingError.missingCredentials
         }
         self.credentials = credentials

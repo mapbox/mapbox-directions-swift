@@ -9,7 +9,7 @@ import OHHTTPStubsSwift
 import Turf
 import XCTest
 
-let IsochroneBogusCredentials = IsochroneCredentials(accessToken: BogusToken)
+let IsochroneBogusCredentials = Credentials(accessToken: BogusToken)
 
 let minimalValidResponse = """
 {
@@ -65,8 +65,8 @@ class IsochroneTests: XCTestCase {
         XCTAssertEqual(queryItems.count, 6)
         XCTAssertTrue(components.path.contains(location.requestDescription) )
         XCTAssertTrue(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }))
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_meters" && $0.value == "100;200"}))
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_colors" && $0.value == "19334C;667F99"}))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_meters" && $0.value == "100,200"}))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_colors" && $0.value == "19334C,667F99"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "polygons" && $0.value == "true"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "denoise" && $0.value == "0.5"}))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "generalize" && $0.value == "13.0"}))
@@ -86,7 +86,7 @@ class IsochroneTests: XCTestCase {
             XCTFail("Invalid url"); return
         }
         
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_minutes" && $0.value == "1;2"}))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_minutes" && $0.value == "1,2"}))
     }
     
     #if !os(Linux)

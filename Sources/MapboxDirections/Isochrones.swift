@@ -16,7 +16,7 @@ open class Isochrones {
      
      - parameter credentials: A object containing the credentials used to make the request.
      */
-    public typealias Session = (options: IsochroneOptions, credentials: IsochroneCredentials)
+    public typealias Session = (options: IsochroneOptions, credentials: Credentials)
     
     /**
      A closure (block) to be called when a isochrone request is complete.
@@ -34,7 +34,7 @@ open class Isochrones {
      
      If nothing is provided, the default behavior is to read credential values from the developer's Info.plist.
      */
-    public let credentials: IsochroneCredentials
+    public let credentials: Credentials
     private let urlSession: URLSession
     private let processingQueue: DispatchQueue
     
@@ -52,7 +52,7 @@ open class Isochrones {
        - urlSession: URLSession that will be used to submit API requests to Mapbox Isochrone API.
        - processingQueue: A DispatchQueue that will be used for CPU intensive work.
      */
-    public init(credentials: IsochroneCredentials = .init(),
+    public init(credentials: Credentials = .init(),
                 urlSession: URLSession = .shared,
                 processingQueue: DispatchQueue = .global(qos: .userInitiated)) {
         self.credentials = credentials
