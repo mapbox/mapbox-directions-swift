@@ -81,12 +81,12 @@ class IsochroneTests: XCTestCase {
         
         url = isochrones.url(forCalculating: options)
         
-        guard let components = URLComponents(string: url.absoluteString),
-              let queryItems = components.queryItems else {
+        guard let componentsByTravelTime = URLComponents(string: url.absoluteString),
+              let queryItemsByTravelTime = componentsByTravelTime.queryItems else {
             XCTFail("Invalid url"); return
         }
         
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "contours_minutes" && $0.value == "1,2"}))
+        XCTAssertTrue(queryItemsByTravelTime.contains(where: { $0.name == "contours_minutes" && $0.value == "1,2"}))
     }
     
     #if !os(Linux)
