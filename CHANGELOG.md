@@ -1,11 +1,11 @@
 # Changes to Mapbox Directions for Swift
 
-## v2.x
+## v2.1.0
 
-* Added `Waypoint.snappedDistance` property to support receiving the waypoint's straight-line distance to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
-* Added `RouteOptions.initialManeuverAvoidanceRadius` property to control avoidance of dangerous maneuvers when requesting a route from the Directions API. ([#609](https://github.com/mapbox/mapbox-directions-swift/pull/609))
-* Added `RoadClasses.unpaved` property that enables the resulting routes to avoid unpaved roads. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
-* Added `RoadClasses.cashOnlyToll` property that enables the resulting routes to avoid toll roads that only accept cash payment. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
+* Added the `Waypoint.snappedDistance` property to get the straight-line distance from the waypoint to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
+* Added the `RouteOptions.initialManeuverAvoidanceRadius` property to avoid a sudden maneuver when calculating a route while the user is in motion. ([#609](https://github.com/mapbox/mapbox-directions-swift/pull/609))
+* Added the `RoadClasses.unpaved` option for avoiding unpaved roads. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
+* Added the `RoadClasses.cashOnlyToll` property for avoiding toll roads that only accept cash payment. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
 
 ## v2.0.0
 
