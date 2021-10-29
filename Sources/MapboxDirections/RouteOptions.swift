@@ -76,8 +76,8 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
-        try container.encodeIfPresent(maximumHeight, forKey: .maximumHeight)
-        try container.encodeIfPresent(maximumWidth, forKey: .maximumWidth)
+        try container.encodeIfPresent(maximumHeight?.converted(to: .meters).value, forKey: .maximumHeight)
+        try container.encodeIfPresent(maximumWidth?.converted(to: .meters).value, forKey: .maximumWidth)
         try container.encodeIfPresent(alleyPriority, forKey: .alleyPriority)
         try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
         try container.encodeIfPresent(speed, forKey: .speed)
@@ -99,9 +99,13 @@ open class RouteOptions: DirectionsOptions {
         
         _initialManeuverAvoidanceRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .initialManeuverAvoidanceRadius)
 
-        maximumHeight = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumHeight)
+        if let maximumHeightValue = try container.decodeIfPresent(Double.self, forKey: .maximumHeight) {
+            maximumHeight = Measurement(value: maximumHeightValue, unit: .meters)
+        }
 
-        maximumWidth = try container.decodeIfPresent(LocationDistance.self, forKey: .maximumWidth)
+        if let maximumWidthValue = try container.decodeIfPresent(Double.self, forKey: .maximumWidth) {
+            maximumWidth = Measurement(value: maximumWidthValue, unit: .meters)
+        }
 
         alleyPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .alleyPriority)
 
@@ -217,22 +221,20 @@ open class RouteOptions: DirectionsOptions {
     open var refreshingEnabled = false
 
     /**
-     The maximum vehicle height in meters.
+     The maximum vehicle height.
 
-     If this parameter is provided, `Directions` will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height.
-     This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
-     The value must be between 0 and 10 meters.
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height or no height limit.
+     The value must be between 0 and 10 when converted to meters.
      */
-    open var maximumHeight: LocationDistance?
+    open var maximumHeight: Measurement<UnitLength>?
 
     /**
-     The maximum vehicle width in meters.
+     The maximum vehicle width.
 
-     If this parameter is provided, `Directions` will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width.
-     This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
-     The value must be between 0 and 10 meters.
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width or no width limit.
+     The value must be between 0 and 10 when converted to meters.
      */
-    open var maximumWidth: LocationDistance?
+    open var maximumWidth: Measurement<UnitLength>?
     
     /**
      A radius around the starting point in which the API will avoid returning any significant maneuvers.
@@ -306,12 +308,14 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.initialManeuverAvoidanceRadius.stringValue, value: String(initialManeuverAvoidanceRadius)))
         }
 
-        if let maximumHeight = maximumHeight, profileIdentifier == .automobile || profileIdentifier == .automobileAvoidingTraffic {
-            params.append(URLQueryItem(name: CodingKeys.maximumHeight.stringValue, value: String(maximumHeight)))
+        if let maximumHeight = maximumHeight {
+            let heightInMeters = maximumHeight.converted(to: .meters).value
+            params.append(URLQueryItem(name: CodingKeys.maximumHeight.stringValue, value: String(heightInMeters)))
         }
 
-        if let maximumWidth = maximumWidth, profileIdentifier == .automobile || profileIdentifier == .automobileAvoidingTraffic {
-            params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(maximumWidth)))
+        if let maximumWidth = maximumWidth {
+            let widthInMeters = maximumWidth.converted(to: .meters).value
+            params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(widthInMeters)))
         }
 
         return params + super.urlQueryItems

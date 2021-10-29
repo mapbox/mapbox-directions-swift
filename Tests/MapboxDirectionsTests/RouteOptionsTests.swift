@@ -62,7 +62,7 @@ class RouteOptionsTests: XCTestCase {
             "include": ["hov3", "hot"],
             "enable_refresh": false,
             "avoid_maneuver_radius": 300,
-            "max_width": 2,
+            "max_width": 2.3,
             "max_height": 3,
             "alley_bias": DirectionsPriority.low.rawValue,
             "walkway_bias": DirectionsPriority.high.rawValue,
@@ -88,8 +88,8 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.roadClassesToAllow, [.highOccupancyVehicle3, .highOccupancyToll])
         XCTAssertEqual(routeOptions.refreshingEnabled, false)
         XCTAssertEqual(routeOptions.initialManeuverAvoidanceRadius, 300)
-        XCTAssertEqual(routeOptions.maximumWidth, 2)
-        XCTAssertEqual(routeOptions.maximumHeight, 3)
+        XCTAssertEqual(routeOptions.maximumWidth, Measurement(value: 2.3, unit: .meters))
+        XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
@@ -240,10 +240,12 @@ class RouteOptionsTests: XCTestCase {
 
     func testMaximumWidthAndMaximimHeightSerialization() {
         let options = RouteOptions(coordinates: [])
-        options.maximumWidth = 3
-        options.maximumHeight = 2
-        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(options.maximumWidth!))))
-        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(options.maximumHeight!))))
+        let widthValue = 2.3
+        let heightValue = 2.0
+        options.maximumWidth = Measurement(value: widthValue, unit: .meters)
+        options.maximumHeight = Measurement(value: heightValue, unit: .meters)
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(widthValue))))
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
     }
 }
 
@@ -267,8 +269,8 @@ var testRouteOptions: RouteOptions {
     opts.roadClassesToAvoid = .toll
     opts.roadClassesToAllow = [.highOccupancyVehicle3, .highOccupancyToll]
     opts.initialManeuverAvoidanceRadius = 100
-    opts.maximumHeight = 2.0
-    opts.maximumWidth = 2.5
+    opts.maximumWidth = Measurement(value: 2, unit: .meters)
+    opts.maximumHeight = Measurement(value: 3, unit: .meters)
     opts.alleyPriority = .low
     opts.walkwayPriority = .high
     opts.speed = 1
