@@ -296,7 +296,7 @@ extension IsochroneOptions.Color {
         #elseif canImport(AppKit)
         return gray
         #else
-        return Color(red: 128, green: 128, blue: 128)
+        return IsochroneOptions.Color(red: 128, green: 128, blue: 128)
         #endif
     }
 }
