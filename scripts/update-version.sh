@@ -40,8 +40,7 @@ if [[ $SHORT_VERSION == $SEM_VERSION && $SHORT_VERSION == *.0 ]]; then
     sed -i '' -E "s/~> *[^']+/~> ${MINOR_VERSION}/g; s/.git\", from: \"*[^\"]+/.git\", from: \"${SEM_VERSION}/g" README.md
 elif [[ $SHORT_VERSION != $SEM_VERSION ]]; then
     step "Updating readmes to version ${SEM_VERSION}…"
-    sed -i '' -E "s/:tag => 'v[^']+'/:tag => 'v${SEM_VERSION}'/g; s/'MapboxDirections-pre', *'[^']+'/'MapboxDirections-pre', '${SEM_VERSION}'/g; s/\"mapbox\/mapbox-directions-swift\" \"v[^\"]+\"/\"mapbox\/mapbox-directions-swift\" \"v${SEM_VERSION}\"/g;" README.md
-    sed -i '' -e ":a" -e "N" -e "\$!ba" -e "s/from: \"[^\"]*/from: \"${SEM_VERSION}/2" README.md
+    sed -i '' -E "s/:tag => 'v[^']+'/:tag => 'v${SEM_VERSION}'/g; s/'MapboxDirections-pre', *'[^']+'/'MapboxDirections-pre', '${SEM_VERSION}'/g; s/\"mapbox\/mapbox-directions-swift\" \"v[^\"]+\"/\"mapbox\/mapbox-directions-swift\" \"v${SEM_VERSION}\"/g; s/\.exact\\(\"*[^\"]+/.exact(\"${SEM_VERSION}/g" README.md
 fi
 
 step "Updating copyright year to ${YEAR}…"
