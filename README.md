@@ -178,16 +178,18 @@ let task = directions.calculate(options) { (session, result) in
 
 You can also use the `Directions.calculateRoutes(matching:completionHandler:)` method to get Route objects suitable for use anywhere a standard Directions API response would be used.
 
-### Isochrone API
+### Build an isochrone map
 
-`Isochrones` API uses the same access token initialization as `Directions`. Once that is configured, you need to fill `IsochronesOptions` parameters to calculate the desired geoJSON:
+Tell the user how far they can travel within certain distances or times of a given location using the Isochrone API. `Isochrones` uses the same access token initialization as `Directions`. Once that is configured, you need to fill `IsochronesOptions` parameters to calculate the desired GeoJSON:
 
 ```swift
 let isochrones = Isochrones(credentials: Credentials(accessToken: "<#your access token#>"))
 
 let isochroneOptions = IsochroneOptions(centerCoordinate: CLLocationCoordinate2D(latitude: 45.52, longitude: -122.681944),
-                                        contours: .byDistances(.colored([(.init(value: 500, unit: .meters), .orange),
-                                                                         (.init(value: 1, unit: .kilometers), .red)])))
+                                        contours: .byDistances([
+                                            .init(value: 500, unit: .meters,     color: .orange),
+                                            .init(value: 1,   unit: .kilometers, color: .red)
+                                        ]))
                                                                          
 isochrones.calculate(isochroneOptions) { session, result in
     if case .success(let response) = result {
@@ -225,7 +227,7 @@ The [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-
 
 ### Drawing Isochrones contours on a map snapshot
 
-[MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift) provides the easies way to draw an Isochrone contour on a map.
+[MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift) provides an easy way to draw a isochrone contours on a map.
 
 ```swift
 // main.swift
@@ -247,7 +249,7 @@ let options = SnapshotOptions(
 // Request Isochrone contour to draw on a map
 let isochrones = Isochrones(credentials: Credentials(accessToken: accessToken))
 isochrones.calculate(IsochroneOptions(centerCoordinate: centerCoordinate,
-                                      contours: .byDistances(.default([.init(value: 500, unit: .meters)])))) { session, result in
+                                      contours: .byDistances([.init(value: 500, unit: .meters)]))) { session, result in
     if case .success(let response) = result {
         // Serialize the geoJSON
         let encoder = JSONEncoder()

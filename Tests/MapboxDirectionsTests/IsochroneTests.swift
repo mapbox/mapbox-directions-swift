@@ -39,16 +39,18 @@ class IsochroneTests: XCTestCase {
         
         #if !os(Linux)
         let options = IsochroneOptions(centerCoordinate: location,
-                                       contours: .byDistances(.colored([
-                                        (radius1, .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
-                                        (radius2, .init(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0))
-                                       ])))
+                                       contours: .byDistances([
+                                        .init(value: radius1, color: .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
+                                        .init(value: radius2, color: .init(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0))
+                                       ]))
         #else
+        let contour1 = IsochroneOptions.Contours.Definition(value: radius1, color: IsochroneOptions.Color(red: 25,  green: 51,  blue: 76))
+        let contour2 = IsochroneOptions.Contours.Definition(value: radius2, color: IsochroneOptions.Color(red: 102, green: 127, blue: 153))
         let options = IsochroneOptions(centerCoordinate: location,
-                                       contours: IsochroneOptions.Contours.byDistances(.colored([
-                                        (radius1, IsochroneOptions.Color(red: 25,  green: 51,  blue: 76)),
-                                        (radius2, IsochroneOptions.Color(red: 102, green: 127, blue: 153))
-                                       ])))
+                                       contours: IsochroneOptions.Contours.byDistances([
+                                        contour1,
+                                        contour2
+                                       ]))
         #endif
         options.contoursFormat = IsochroneOptions.ContourFormat.polygon
         options.denoisingFactor = 0.5
@@ -74,10 +76,10 @@ class IsochroneTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
         
-        options.contours = IsochroneOptions.Contours.byExpectedTravelTimes(.default([
-            Measurement(value: 31,  unit: UnitDuration.seconds),
-            Measurement(value: 2.1, unit: UnitDuration.minutes)
-        ]))
+        options.contours = IsochroneOptions.Contours.byExpectedTravelTimes([
+            IsochroneOptions.Contours.Definition(value: 31,  unit: UnitDuration.seconds),
+            IsochroneOptions.Contours.Definition(value: 2.1, unit: UnitDuration.minutes)
+        ])
         
         url = isochrones.url(forCalculating: options)
         
@@ -99,7 +101,8 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .byDistances(.default([.init(value: 100, unit: .meters)])))
+                                       contours: .byDistances([.init(value: 100,
+                                                                     unit: .meters)]))
         isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
                 
@@ -126,7 +129,7 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .byDistances(.default([.init(value: 100, unit: .meters)])))
+                                       contours: .byDistances([.init(value: 100, unit: .meters)]))
         isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
@@ -155,7 +158,7 @@ class IsochroneTests: XCTestCase {
         let expectation = self.expectation(description: "Async callback")
         let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
-                                       contours: .byDistances(.default([.init(value: 100, unit: .meters)])))
+                                       contours: .byDistances([.init(value: 100, unit: .meters)]))
         isochrones.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 

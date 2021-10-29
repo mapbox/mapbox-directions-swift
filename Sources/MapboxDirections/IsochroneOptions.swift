@@ -96,18 +96,24 @@ public class IsochroneOptions {
         var queryItems: [URLQueryItem] = []
         
         switch contours {
-        case .byDistances(let definition):
-            let (values, colors) = definition.serialize(roundingTo: .meters)
+        case .byDistances(let definitions):
+            let fallbackColor = definitions.allSatisfy { $0.color != nil } ? nil : Color.fallbackColor
             
-            queryItems.append(URLQueryItem(name: "contours_meters", value: values))
-            if let colors = colors {
+            queryItems.append(URLQueryItem(name: "contours_meters",
+                                           value: definitions.map { $0.queryValueDescription(roundingTo: .meters) }.joined(separator: ",")))
+            
+            let colors = definitions.compactMap { $0.queryColorDescription(fallbackColor: fallbackColor) }.joined(separator: ",")
+            if !colors.isEmpty {
                 queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
             }
-        case .byExpectedTravelTimes(let definition):
-            let (values, colors) = definition.serialize(roundingTo: .minutes)
+        case .byExpectedTravelTimes(let definitions):
+            let fallbackColor = definitions.allSatisfy { $0.color != nil } ? nil : Color.fallbackColor
             
-            queryItems.append(URLQueryItem(name: "contours_minutes", value: values))
-            if let colors = colors {
+            queryItems.append(URLQueryItem(name: "contours_minutes",
+                                           value: definitions.map { $0.queryValueDescription(roundingTo: .minutes) }.joined(separator: ",")))
+            
+            let colors = definitions.compactMap { $0.queryColorDescription(fallbackColor: fallbackColor) }.joined(separator: ",")
+            if !colors.isEmpty {
                 queryItems.append(URLQueryItem(name: "contours_colors", value: colors))
             }
         }
@@ -138,39 +144,43 @@ extension IsochroneOptions {
         /**
          Describes Individual contour bound and color.
          */
-        public enum ContourDefinition<Unt: Dimension> {
+        public struct Definition<Unt: Dimension> {
             /**
-             Contour bound definition value.
+             Bound measurement value.
              */
-            public typealias Value = Measurement<Unt>
+            public var value: Measurement<Unt>
             /**
-             Contour bound definition value and contour color.
+             Contour fill color.
+             
+             If `nil` - default rainbow color sheme will be used for each contour.
+             - important: `color` value should be specified for everyone or none requested contours. Otherwise all missing colors will be grayed.
              */
-            public typealias ValueAndColor = (value: Value, color: Color)
+            public var color: Color?
             
             /**
-             Allows configuring just the bound, leaving coloring to a default rainbow scheme.
+             Initializes new contour Definition.
              */
-            case `default`([Value])
-            /**
-             Allows configuring both the bound and contour color.
-             */
-            case colored([ValueAndColor])
+            public init(value: Measurement<Unt>, color: Color? = nil) {
+                self.value = value
+                self.color = color
+            }
             
-            func serialize(roundingTo unit: Unt) -> (String, String?) {
-                switch (self) {
-                case .default(let intervals):
-                    
-                    return (intervals.map { String(Int($0.converted(to: unit).value.rounded())) }.joined(separator: ","), nil)
-                case .colored(let intervals):
-                    let sorted = intervals.sorted { lhs, rhs in
-                        lhs.value < rhs.value
-                    }
-                    
-                    let values = sorted.map { String(Int($0.value.converted(to: unit).value.rounded())) }.joined(separator: ",")
-                    let colors = sorted.map(\.color.queryDescription).joined(separator: ",")
-                    return (values, colors)
-                }
+            /**
+             Initializes new contour Definition.
+             
+             Convenience initializer for encapsulating `Measurement` initialization.
+             */
+            public init(value: Double, unit: Unt, color: Color? = nil) {
+                self.init(value: Measurement(value: value, unit: unit),
+                          color: color)
+            }
+            
+            func queryValueDescription(roundingTo unit: Unt) -> String {
+                return String(Int(value.converted(to: unit).value.rounded()))
+            }
+            
+            func queryColorDescription(fallbackColor: Color?) -> String? {
+                return (color ?? fallbackColor)?.queryDescription
             }
         }
         
@@ -179,14 +189,14 @@ extension IsochroneOptions {
          
          This value will be rounded to minutes.
          */
-        case byExpectedTravelTimes(ContourDefinition<UnitDuration>)
+        case byExpectedTravelTimes([Definition<UnitDuration>])
         
         /**
          The distances to use for each isochrone contour.
          
          Will be rounded to meters.
          */
-        case byDistances(ContourDefinition<UnitLength>)
+        case byDistances([Definition<UnitLength>])
     }
 }
 
@@ -277,6 +287,16 @@ extension IsochroneOptions.Color {
                       red,
                       green,
                       blue)
+        #endif
+    }
+    
+    static var fallbackColor: IsochroneOptions.Color {
+        #if canImport(UIKit)
+        return gray
+        #elseif canImport(AppKit)
+        return gray
+        #else
+        return Color(red: 128, green: 128, blue: 128)
         #endif
     }
 }
