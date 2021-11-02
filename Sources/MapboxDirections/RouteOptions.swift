@@ -117,6 +117,108 @@ open class RouteOptions: DirectionsOptions {
     }
     
     /**
+     Initializes a route options object from a given Directions API request URL.
+
+     - parameter url: A URL that can be used to request a response from the [Directions API](https://docs.mapbox.com/api/navigation/directions/). This URL should be a valid Directions API request.
+     */
+    // should this be a convenience init or a seperate method named `from(url:)` or something of that sort
+    public convenience init?(url: URL) {
+        
+        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems else { return nil }
+        print("!!! queryItems: \(queryItems)")
+        var optionsJSON = JSONDictionary()
+        for queryItem in queryItems {
+            if queryItem.value == "true" || queryItem.value == "false" {
+                guard let value = Bool(queryItem.value!) else { return nil }
+                optionsJSON[queryItem.name] = value
+            } else if queryItem.name == "waypoint_targets" || queryItem.name == "waypoint_names" {
+                let replaced = queryItem.value!.replacingOccurrences(of: ";", with: "")
+                optionsJSON[queryItem.name] = [replaced]
+            } else if queryItem.name == "annotations" {
+                optionsJSON[queryItem.name] = [queryItem.value]
+            } else if queryItem.name == "access_token" {
+                continue
+            } else {
+                optionsJSON[queryItem.name] = queryItem.value
+            }
+        }
+        // get profile identifier
+        
+        let data = try! JSONSerialization.data(withJSONObject: optionsJSON, options: [])
+        let options = try! JSONDecoder().decode(RouteOptions.self, from: data)
+        print("!!! options stuffs: \(options.waypoints)")
+        
+//        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else {
+//            let coord = CLLocationCoordinate2D(latitude: 75.123, longitude: 123.85)
+//            self.init(waypoints: [Waypoint(coordinate: coord)])
+//            return
+//        }
+//        var waypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: -75.23, longitude: 123.85))
+//            for queryItem in queryItems {
+//                print("!!! queryitem: \(queryItem.name), \(String(describing: queryItem.value))")
+//                if queryItem.name == "waypoint_targets" {
+//                    print("ENTERED IF STATEMENT")
+//                    waypoint = Waypoint(coordinate:CLLocationCoordinate2D(latitude: 123.85, longitude: -75.23))
+//                }
+//            }
+        
+//        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else { return nil }
+//        var optionsJSON = JSONDictionary()
+//        for queryItem in queryItems {
+//            if queryItem.value == "true" || queryItem.value == "false" {
+//                guard let value = Bool(queryItem.value!) else { return nil }
+//                optionsJSON[queryItem.name] = value
+//            } else if queryItem.name == "waypoint_targets" || queryItem.name == "waypoint_names" {
+//                let replaced = queryItem.value!.replacingOccurrences(of: ";", with: "")
+//                optionsJSON[queryItem.name] = [replaced]
+//            } else if queryItem.name == "annotations" {
+//                optionsJSON[queryItem.name] = [queryItem.value]
+//            } else if queryItem.name == "access_token" {
+//                continue
+//            } else {
+//                optionsJSON[queryItem.name] = queryItem.value
+//            }
+//        }
+//        print("!!! JSON: \(optionsJSON)")
+//
+        let waypoint = Waypoint(coordinate:CLLocationCoordinate2D(latitude: 123.85, longitude: -75.23))
+        self.init(waypoints: [waypoint])
+    }
+    
+    public func convert(from url: URL) {
+        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else { return }
+        var optionsJSON = JSONDictionary()
+        for queryItem in queryItems {
+            if queryItem.value == "true" || queryItem.value == "false" {
+                guard let value = Bool(queryItem.value!) else { return }
+                optionsJSON[queryItem.name] = value
+            } else if queryItem.name == "waypoint_targets" {
+                let replaced = queryItem.value?.replacingOccurrences(of: ";\"", with: "")
+                optionsJSON[queryItem.name] = [replaced]
+            } else if queryItem.name == "waypoint_names" {
+                let replaced = queryItem.value?.replacingOccurrences(of: ";", with: "")
+                optionsJSON[queryItem.name] = [replaced]
+            } else if queryItem.name == "annotations" {
+                optionsJSON[queryItem.name] = [queryItem.value]
+            } else {
+                optionsJSON[queryItem.name] = queryItem.value
+            }
+        }
+        print("!!! JSON: \(optionsJSON)")
+    }
+    
+//    public func convertFrom(url: URL) {
+//        if let queryItems = URLComponents(string: url.absoluteString)?.queryItems {
+//            for queryItem in queryItems {
+//                print("!!! queryitem: \(queryItem.name), \(queryItem.value)")
+//            }
+//        }
+//
+//        let data = try! Data(contentsOf: url)
+//        let encoded = try! JSONDecoder().decode(RouteOptions.self, from: data)
+//    }
+    
+    /**
      Initializes an equivalent route options object from a match options object. Desirable for building a navigation experience from map matching.
 
      - parameter matchOptions: The `MatchOptions` that is being used to convert to a `RouteOptions` object.

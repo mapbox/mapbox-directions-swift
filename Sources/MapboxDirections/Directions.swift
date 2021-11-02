@@ -570,6 +570,42 @@ open class Directions: NSObject {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return request
     }
+    
+    public func convertToRouteOptions(from url: URL) -> RouteOptions? {
+        var routeOptions: RouteOptions!
+//        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else { return nil }
+//        var optionsJSON = JSONDictionary()
+//        for queryItem in queryItems {
+//            optionsJSON[queryItem.name] = queryItem.value
+//        }
+//
+//        print("!!! JSON: \(optionsJSON)")
+        
+        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems else { return nil }
+        print("!!! queryItems: \(queryItems)")
+        var optionsJSON = JSONDictionary()
+        for queryItem in queryItems {
+            if queryItem.value == "true" || queryItem.value == "false" {
+                guard let value = Bool(queryItem.value!) else { return nil }
+                optionsJSON[queryItem.name] = value
+            } else if queryItem.name == "waypoint_targets" || queryItem.name == "waypoint_names" {
+                let replaced = queryItem.value!.replacingOccurrences(of: ";", with: "")
+                optionsJSON[queryItem.name] = [replaced]
+            } else if queryItem.name == "annotations" {
+                optionsJSON[queryItem.name] = [queryItem.value]
+            } else if queryItem.name == "access_token" {
+                continue
+            } else {
+                optionsJSON[queryItem.name] = queryItem.value
+            }
+        }
+        // get profile identifier, waypoints
+        
+        let data = try! JSONSerialization.data(withJSONObject: optionsJSON, options: [])
+        let options = try! JSONDecoder().decode(RouteOptions.self, from: data)
+        print("!!! options stuffs: \(options.waypoints)")
+        return routeOptions
+    }
 }
 
 /**
