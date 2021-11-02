@@ -1,6 +1,7 @@
 import Foundation
 import MapboxDirections
 import Turf
+import CoreLocation
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
@@ -65,23 +66,16 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
     }
     
     private func interpolate(route: Route) -> [CLLocationCoordinate2D?] {
-        guard route.expectedTravelTime > 0, let polyline = route.shape else { return [] }
+        guard route.expectedTravelTime > 0, let polyline = route.shape,
+              let firstCoordinate = polyline.coordinates.first else { return [] }
         
-//        route.legs.forEach { leg in
-//            let expectedSegmentTravelTimes = leg.expectedSegmentTravelTimes
-//            var distanceAway: CLLocationDistance = 0
-//            let distance = leg.segmentDistances
-//
-//        }
-//        let expectedTime = route.legs[0].expectedSegmentTravelTimes
-        print("!!! ROUTE LEGS: \(route.legs.count)")
         var distanceAway: CLLocationDistance = 0
         let distance = route.distance/route.expectedTravelTime
-        var interpolatedCoordinates = [polyline.coordinates.first]
-//        let dist = route.legs.first?.segmentSpeeds
+        var interpolatedCoordinates = [firstCoordinate]
         while distanceAway <= route.distance {
-            let nextCoordinate = polyline.coordinateFromStart(distance: distanceAway)
-            interpolatedCoordinates.append(nextCoordinate)
+            if let nextCoordinate = polyline.coordinateFromStart(distance: distanceAway) {
+                interpolatedCoordinates.append(nextCoordinate)
+            }
             distanceAway += distance
         }
         return interpolatedCoordinates
