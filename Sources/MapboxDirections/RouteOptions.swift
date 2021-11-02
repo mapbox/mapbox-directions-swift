@@ -124,65 +124,50 @@ open class RouteOptions: DirectionsOptions {
     // should this be a convenience init or a seperate method named `from(url:)` or something of that sort
     public convenience init?(url: URL) {
         
-        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems else { return nil }
+        let waypoint = Waypoint(coordinate:CLLocationCoordinate2D(latitude: 123.85, longitude: -75.23))
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let queryItems = components.queryItems else { return nil }
         print("!!! queryItems: \(queryItems)")
         var optionsJSON = JSONDictionary()
+
         for queryItem in queryItems {
             if queryItem.value == "true" || queryItem.value == "false" {
                 guard let value = Bool(queryItem.value!) else { return nil }
                 optionsJSON[queryItem.name] = value
-            } else if queryItem.name == "waypoint_targets" || queryItem.name == "waypoint_names" {
+            } else if queryItem.name == "waypoint_names" {
                 let replaced = queryItem.value!.replacingOccurrences(of: ";", with: "")
-                optionsJSON[queryItem.name] = [replaced]
+//                optionsJSON["waypoints"] = [replaced]
             } else if queryItem.name == "annotations" {
-                optionsJSON[queryItem.name] = [queryItem.value]
+                optionsJSON[queryItem.name] = queryItem.value?.replacingOccurrences(of: ",", with: " ").components(separatedBy: " ")
+            } else if queryItem.name == "waypoint_targets" {
+                let coords = queryItem.value!.replacingOccurrences(of: ";", with: "").split(separator: ",", maxSplits: 1).compactMap(Double.init)
+                optionsJSON["waypoints"] = [["location": coords],]
+                print(optionsJSON["waypoints"]!)
             } else if queryItem.name == "access_token" {
                 continue
             } else {
                 optionsJSON[queryItem.name] = queryItem.value
             }
         }
+        if optionsJSON["exclude"] == nil {
+            optionsJSON["exclude"] = []
+        }
+        if optionsJSON["include"] == nil {
+            optionsJSON["include"] = []
+        }
+        
         // get profile identifier
+        let pathComponents = url.pathComponents
+        let profileIdentifier = DirectionsProfileIdentifier(rawValue: pathComponents[3..<5].joined(separator: "/"))
+        optionsJSON["profile"] = profileIdentifier.rawValue
         
         let data = try! JSONSerialization.data(withJSONObject: optionsJSON, options: [])
         let options = try! JSONDecoder().decode(RouteOptions.self, from: data)
+        print()
         print("!!! options stuffs: \(options.waypoints)")
-        
-//        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else {
-//            let coord = CLLocationCoordinate2D(latitude: 75.123, longitude: 123.85)
-//            self.init(waypoints: [Waypoint(coordinate: coord)])
-//            return
-//        }
-//        var waypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: -75.23, longitude: 123.85))
-//            for queryItem in queryItems {
-//                print("!!! queryitem: \(queryItem.name), \(String(describing: queryItem.value))")
-//                if queryItem.name == "waypoint_targets" {
-//                    print("ENTERED IF STATEMENT")
-//                    waypoint = Waypoint(coordinate:CLLocationCoordinate2D(latitude: 123.85, longitude: -75.23))
-//                }
-//            }
-        
-//        guard let queryItems = URLComponents(string: url.absoluteString)?.queryItems else { return nil }
-//        var optionsJSON = JSONDictionary()
-//        for queryItem in queryItems {
-//            if queryItem.value == "true" || queryItem.value == "false" {
-//                guard let value = Bool(queryItem.value!) else { return nil }
-//                optionsJSON[queryItem.name] = value
-//            } else if queryItem.name == "waypoint_targets" || queryItem.name == "waypoint_names" {
-//                let replaced = queryItem.value!.replacingOccurrences(of: ";", with: "")
-//                optionsJSON[queryItem.name] = [replaced]
-//            } else if queryItem.name == "annotations" {
-//                optionsJSON[queryItem.name] = [queryItem.value]
-//            } else if queryItem.name == "access_token" {
-//                continue
-//            } else {
-//                optionsJSON[queryItem.name] = queryItem.value
-//            }
-//        }
-//        print("!!! JSON: \(optionsJSON)")
-//
-        let waypoint = Waypoint(coordinate:CLLocationCoordinate2D(latitude: 123.85, longitude: -75.23))
-        self.init(waypoints: [waypoint])
+
+        self.init(waypoints: [waypoint], profileIdentifier: profileIdentifier)
     }
     
     public func convert(from url: URL) {

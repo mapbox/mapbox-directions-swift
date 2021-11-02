@@ -248,19 +248,11 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
     }
     
-//    func testConversion() {
-//        let url = URL(string: "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-77.03195,38.903536%3B-77.011649,38.914365.json?alternatives=true&continue_straight=true&roundabout_exits=true&enable_refresh=true&waypoint_targets=;-77.011649,38.914365&geometries=polyline6&overview=full&steps=true&language=en-US&voice_instructions=true&voice_units=imperial&banner_instructions=true&annotations=duration,congestion,maxspeed&waypoint_names=;Dropped%20Pin%20%231&access_token=")
-//        guard let url = url else {
-//            print("!!! ISSUE WITH URL!")
-//            return
-//        }
-////        let options = RouteOptions(fromUrl: url)
-////        print("!!! FOR TESTING: \(options.waypoints)")
-//        var options = RouteOptions()
-//        options.convert(from: url)
-////        print("!!! FOR TESTING: \(options.waypoints)")
-//        
-//    }
+    func testConversion() {
+        let url = URL(string: "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-77.03195,38.903536%3B-77.011649,38.914365.json?alternatives=true&continue_straight=true&roundabout_exits=true&enable_refresh=true&waypoint_targets=;-77.011649,38.914365&geometries=polyline6&overview=full&steps=true&language=en-US&voice_instructions=true&voice_units=imperial&banner_instructions=true&annotations=duration,congestion,maxspeed&waypoint_names=;Dropped%20Pin%20%231&access_token=")
+        guard let url = url else { return }
+        let options = RouteOptions(url: url)
+    }
 }
 
 fileprivate let testCoordinates = [
