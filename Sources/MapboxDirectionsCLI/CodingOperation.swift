@@ -130,6 +130,12 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
         options.includesSteps = includesSteps
+        options.allowsUTurnAtWaypoint = true
+        options.includesAlternativeRoutes = false
+        options.includesExitRoundaboutManeuver = true
+        options.roadClassesToAvoid = []
+        options.routeShapeResolution = .full
+        
         var responseData: Data?
         
         let url = directions.url(forCalculating: options)
