@@ -31,6 +31,11 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.roadClassesToAvoid, options.roadClassesToAvoid)
         XCTAssertEqual(unarchivedOptions.roadClassesToAllow, options.roadClassesToAllow)
         XCTAssertEqual(unarchivedOptions.initialManeuverAvoidanceRadius, options.initialManeuverAvoidanceRadius)
+        XCTAssertEqual(unarchivedOptions.maximumWidth, options.maximumWidth)
+        XCTAssertEqual(unarchivedOptions.maximumHeight, options.maximumHeight)
+        XCTAssertEqual(unarchivedOptions.alleyPriority, options.alleyPriority)
+        XCTAssertEqual(unarchivedOptions.walkwayPriority, options.walkwayPriority)
+        XCTAssertEqual(unarchivedOptions.speed, options.speed)
     }
     
     func testCodingWithRawCodingKeys() {
@@ -56,7 +61,11 @@ class RouteOptionsTests: XCTestCase {
             "exclude": ["toll"],
             "include": ["hov3", "hot"],
             "enable_refresh": false,
-            "avoid_maneuver_radius": 300
+            "avoid_maneuver_radius": 300,
+            "max_width": 2.3,
+            "max_height": 3,
+            "alley_bias": DirectionsPriority.low.rawValue,
+            "walkway_bias": DirectionsPriority.high.rawValue,
         ]
         
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
@@ -79,6 +88,8 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.roadClassesToAllow, [.highOccupancyVehicle3, .highOccupancyToll])
         XCTAssertEqual(routeOptions.refreshingEnabled, false)
         XCTAssertEqual(routeOptions.initialManeuverAvoidanceRadius, 300)
+        XCTAssertEqual(routeOptions.maximumWidth, Measurement(value: 2.3, unit: .meters))
+        XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
@@ -102,6 +113,8 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.roadClassesToAllow, routeOptions.roadClassesToAllow)
         XCTAssertEqual(unarchivedOptions.refreshingEnabled, routeOptions.refreshingEnabled)
         XCTAssertEqual(unarchivedOptions.initialManeuverAvoidanceRadius, routeOptions.initialManeuverAvoidanceRadius)
+        XCTAssertEqual(unarchivedOptions.maximumWidth, routeOptions.maximumWidth)
+        XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
     }
     
     // MARK: API name-handling tests
@@ -224,6 +237,16 @@ class RouteOptionsTests: XCTestCase {
         
         XCTAssertFalse(options.urlQueryItems.contains(URLQueryItem(name: "avoid_maneuver_radius", value: nil)))
     }
+
+    func testMaximumWidthAndMaximimHeightSerialization() {
+        let options = RouteOptions(coordinates: [])
+        let widthValue = 2.3
+        let heightValue = 2.0
+        options.maximumWidth = Measurement(value: widthValue, unit: .meters)
+        options.maximumHeight = Measurement(value: heightValue, unit: .meters)
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(widthValue))))
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
+    }
 }
 
 fileprivate let testCoordinates = [
@@ -246,6 +269,11 @@ var testRouteOptions: RouteOptions {
     opts.roadClassesToAvoid = .toll
     opts.roadClassesToAllow = [.highOccupancyVehicle3, .highOccupancyToll]
     opts.initialManeuverAvoidanceRadius = 100
+    opts.maximumWidth = Measurement(value: 2, unit: .meters)
+    opts.maximumHeight = Measurement(value: 3, unit: .meters)
+    opts.alleyPriority = .low
+    opts.walkwayPriority = .high
+    opts.speed = 1
 
     return opts
 }

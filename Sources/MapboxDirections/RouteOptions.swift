@@ -58,6 +58,12 @@ open class RouteOptions: DirectionsOptions {
         case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
         case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
+        case maximumHeight = "max_height"
+        case maximumWidth = "max_width"
+        case alleyPriority = "alley_bias"
+        case walkwayPriority = "walkway_bias"
+        case speed = "walking_speed"
+        case waypointTargets = "waypoint_targets"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -70,6 +76,11 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
+        try container.encodeIfPresent(maximumHeight?.converted(to: .meters).value, forKey: .maximumHeight)
+        try container.encodeIfPresent(maximumWidth?.converted(to: .meters).value, forKey: .maximumWidth)
+        try container.encodeIfPresent(alleyPriority, forKey: .alleyPriority)
+        try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
+        try container.encodeIfPresent(speed, forKey: .speed)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -87,6 +98,21 @@ open class RouteOptions: DirectionsOptions {
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         
         _initialManeuverAvoidanceRadius = try container.decodeIfPresent(LocationDistance.self, forKey: .initialManeuverAvoidanceRadius)
+
+        if let maximumHeightValue = try container.decodeIfPresent(Double.self, forKey: .maximumHeight) {
+            maximumHeight = Measurement(value: maximumHeightValue, unit: .meters)
+        }
+
+        if let maximumWidthValue = try container.decodeIfPresent(Double.self, forKey: .maximumWidth) {
+            maximumWidth = Measurement(value: maximumWidthValue, unit: .meters)
+        }
+
+        alleyPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .alleyPriority)
+
+        walkwayPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .walkwayPriority)
+
+        speed = try container.decodeIfPresent(LocationSpeed.self, forKey: .speed)
+
         try super.init(from: decoder)
     }
     
@@ -193,6 +219,24 @@ open class RouteOptions: DirectionsOptions {
      To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`. This option is set to `false` by default.
      */
     open var refreshingEnabled = false
+
+    /**
+     The maximum vehicle height.
+
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height or no height limit.
+     This property is supported by `DirectionsProfileIdentifier.automobile` and `DirectionsProfileIdentifier.automobileAvoidingTraffic` profiles.
+     The value must be between 0 and 10 when converted to meters.
+     */
+    open var maximumHeight: Measurement<UnitLength>?
+
+    /**
+     The maximum vehicle width.
+
+     If this parameter is provided, `Directions` will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width or no width limit.
+     This property is supported by `DirectionsProfileIdentifier.automobile` and `DirectionsProfileIdentifier.automobileAvoidingTraffic` profiles.
+     The value must be between 0 and 10 when converted to meters.
+     */
+    open var maximumWidth: Measurement<UnitLength>?
     
     /**
      A radius around the starting point in which the API will avoid returning any significant maneuvers.
@@ -219,51 +263,61 @@ open class RouteOptions: DirectionsOptions {
     
     override open var urlQueryItems: [URLQueryItem] {
         var params: [URLQueryItem] = [
-            URLQueryItem(name: "alternatives", value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: "continue_straight", value: String(!allowsUTurnAtWaypoint)),
+            URLQueryItem(name: CodingKeys.includesAlternativeRoutes.stringValue, value: String(includesAlternativeRoutes)),
+            URLQueryItem(name: CodingKeys.allowsUTurnAtWaypoint.stringValue, value: String(!allowsUTurnAtWaypoint)),
         ]
 
         if includesExitRoundaboutManeuver {
-            params.append(URLQueryItem(name: "roundabout_exits", value: String(includesExitRoundaboutManeuver)))
+            params.append(URLQueryItem(name: CodingKeys.includesExitRoundaboutManeuver.stringValue, value: String(includesExitRoundaboutManeuver)))
         }
         if let alleyPriority = alleyPriority?.rawValue {
-            params.append(URLQueryItem(name: "alley_bias", value: String(alleyPriority)))
+            params.append(URLQueryItem(name: CodingKeys.alleyPriority.stringValue, value: String(alleyPriority)))
         }
         
         if let walkwayPriority = walkwayPriority?.rawValue {
-            params.append(URLQueryItem(name: "walkway_bias", value: String(walkwayPriority)))
+            params.append(URLQueryItem(name: CodingKeys.walkwayPriority.stringValue, value: String(walkwayPriority)))
         }
         
         if let speed = speed {
-            params.append(URLQueryItem(name: "walking_speed", value: String(speed)))
+            params.append(URLQueryItem(name: CodingKeys.speed.stringValue, value: String(speed)))
         }
         
         if !roadClassesToAvoid.isEmpty && roadClassesToAvoid.isDisjoint(with: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
             let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",").filter { !$0.isEmpty }
             precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
             if let firstRoadClass = allRoadClasses.first {
-                params.append(URLQueryItem(name: "exclude", value: firstRoadClass))
+                params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: firstRoadClass))
             }
         }
         
         if !roadClassesToAllow.isEmpty && roadClassesToAllow.isSubset(of: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
             let allRoadClasses = roadClassesToAllow.description.components(separatedBy: ",").filter { !$0.isEmpty }
             allRoadClasses.forEach { roadClass in
-                params.append(URLQueryItem(name: "include", value: roadClass))
+                params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: roadClass))
             }
         }
         
         if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {
-            params.append(URLQueryItem(name: "enable_refresh", value: String(refreshingEnabled)))
+            params.append(URLQueryItem(name: CodingKeys.refreshingEnabled.stringValue, value: String(refreshingEnabled)))
         }
         
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
             let targetCoordinates = waypoints.filter { $0.separatesLegs }.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
-            params.append(URLQueryItem(name: "waypoint_targets", value: targetCoordinates))
+            params.append(URLQueryItem(name: CodingKeys.waypointTargets.stringValue, value: targetCoordinates))
         }
         
         if let initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius {
-            params.append(URLQueryItem(name: "avoid_maneuver_radius", value: String(initialManeuverAvoidanceRadius)))
+            params.append(URLQueryItem(name: CodingKeys.initialManeuverAvoidanceRadius.stringValue, value: String(initialManeuverAvoidanceRadius)))
+        }
+
+        if let maximumHeight = maximumHeight {
+            let heightInMeters = maximumHeight.converted(to: .meters).value
+            params.append(URLQueryItem(name: CodingKeys.maximumHeight.stringValue, value: String(heightInMeters)))
+        }
+
+        if let maximumWidth = maximumWidth {
+            let widthInMeters = maximumWidth.converted(to: .meters).value
+            params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(widthInMeters)))
         }
 
         return params + super.urlQueryItems
