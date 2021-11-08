@@ -291,7 +291,7 @@ open class DirectionsOptions: Codable {
     // MARK: Getting the Request URL
     
     /**
-     An array of URL query items to include in an HTTP request.
+     The path of the request URL, specifying service name, version and profile.
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */

@@ -39,7 +39,7 @@ open class Isochrones {
     private let processingQueue: DispatchQueue
     
     /**
-     The shared directions object.
+     The shared isochrones object.
      
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MBXAccessToken` key in the main application bundle’s Info.plist.
      */
