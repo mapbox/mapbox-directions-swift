@@ -6,6 +6,9 @@
 * Added the `RouteOptions.initialManeuverAvoidanceRadius` property to avoid a sudden maneuver when calculating a route while the user is in motion. ([#609](https://github.com/mapbox/mapbox-directions-swift/pull/609))
 * Added the `RoadClasses.unpaved` option for avoiding unpaved roads. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
 * Added the `RoadClasses.cashOnlyToll` property for avoiding toll roads that only accept cash payment. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
+* Added the `RouteOptions.maximumHeight` and `RouteOptions.maximumWidth` properties for ensuring that the resulting routes can accommodate a vehicle of a certain size. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
+* The `DirectionsPriority` struct now conforms to the `Codable` protocol. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
+* Fixed an issue where the `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` properties were excluded from the encoded representation of a `RouteOptions` object. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
 
 ## v2.0.0
 
