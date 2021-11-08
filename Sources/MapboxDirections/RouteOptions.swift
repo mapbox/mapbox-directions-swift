@@ -224,6 +224,7 @@ open class RouteOptions: DirectionsOptions {
      The maximum vehicle height.
 
      If this parameter is provided, `Directions` will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height or no height limit.
+     This property is supported by `DirectionsProfileIdentifier.automobile` and `DirectionsProfileIdentifier.automobileAvoidingTraffic` profiles.
      The value must be between 0 and 10 when converted to meters.
      */
     open var maximumHeight: Measurement<UnitLength>?
@@ -232,6 +233,7 @@ open class RouteOptions: DirectionsOptions {
      The maximum vehicle width.
 
      If this parameter is provided, `Directions` will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width or no width limit.
+     This property is supported by `DirectionsProfileIdentifier.automobile` and `DirectionsProfileIdentifier.automobileAvoidingTraffic` profiles.
      The value must be between 0 and 10 when converted to meters.
      */
     open var maximumWidth: Measurement<UnitLength>?
