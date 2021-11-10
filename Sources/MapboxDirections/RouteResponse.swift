@@ -26,6 +26,49 @@ public struct RouteResponse {
      This property does not persist after encoding and decoding.
      */
     public var created: Date = Date()
+    
+    /**
+     Managed of `RoadClasses` restrictions specified to `RouteOptions.roadClassesToAvoid` which were violated during route calculation.
+     
+     Routing engine may still utilize `RoadClasses` meant to be avoided in cases when routing is impossible otherwise.
+     
+     Resulting array is in the same order as `routes`, showing exact `RoadClasses` restrictions were ignored for each particular route at specific leg/step/intersection. `nil` and empty return arrays correspond to `nil` and empty `routes` array.
+     */
+    public var ignoredRoadClassesAvoidance: [RouteRoadClassesViolations]? {
+        guard case let .route(routeOptions) = options else {
+            assertionFailure("Only `RouteOptions` allow excluding road classes.")
+            return nil
+        }
+        
+        guard let routes = routes else {
+            return nil
+        }
+        
+        var result = [RouteRoadClassesViolations]()
+        let avoidedClasses = routeOptions.roadClassesToAvoid
+        
+        for route in routes {
+            var violations = [RoadClassExclusionViolation]()
+            
+            for (legIndex, leg) in route.legs.enumerated() {
+                for (stepIndex, step) in leg.steps.enumerated() {
+                    for (intersectionIndex, intersection) in (step.intersections ?? []).enumerated() {
+                        if let outletRoadClasses = intersection.outletRoadClasses,
+                           !avoidedClasses.isDisjoint(with: outletRoadClasses) {
+                            violations.append(RoadClassExclusionViolation(roadClasses: avoidedClasses.intersection(outletRoadClasses),
+                                                                          route: route,
+                                                                          legIndex: legIndex,
+                                                                          stepIndex: stepIndex,
+                                                                          intersectionIndex: intersectionIndex))
+                        }
+                    }
+                }
+            }
+            
+            result.append(RouteRoadClassesViolations(route: route, violations: violations))
+        }
+        return result
+    }
 }
 
 extension RouteResponse: Codable {

@@ -56,6 +56,13 @@
 		2B9F389A272AE28B001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
 		2B9F389B272AE28D001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
 		2B9F389C272AE28E001DBA12 /* IsochroneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F3895272AE277001DBA12 /* IsochroneTests.swift */; };
+		2B5F0DFC273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
+		2B5F0DFD273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
+		2B5F0DFE273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
+		2B5F0E00273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
+		2B5F0E01273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
+		2B5F0E02273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
+		2B5F0E03273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
 		2BA2E746257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
 		2BA2E747257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
 		2BA2E748257A667500D7AFC6 /* incidents.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA2E745257A667500D7AFC6 /* incidents.json */; };
@@ -474,6 +481,8 @@
 		2B9F387F272AE23A001DBA12 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		2B9F3880272AE23A001DBA12 /* Isochrones.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Isochrones.swift; sourceTree = "<group>"; };
 		2B9F3895272AE277001DBA12 /* IsochroneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneTests.swift; sourceTree = "<group>"; };
+		2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tollAndFerryDirectionsRoute.json; sourceTree = "<group>"; };
+		2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRoadClassesViolations.swift; sourceTree = "<group>"; };
 		2BA2E745257A667500D7AFC6 /* incidents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = incidents.json; sourceTree = "<group>"; };
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetsRoadClass.swift; sourceTree = "<group>"; };
@@ -811,6 +820,7 @@
 				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
 				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
 				2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */,
+				2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */,
 				2B5407F12452FA8C006C820B /* RefreshedRoute.swift */,
 				43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */,
 				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
@@ -870,6 +880,7 @@
 		DA6C9DAD1CAEC93800094FBC /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */,
 				2BA2E745257A667500D7AFC6 /* incidents.json */,
 				2B540803245B09B2006C820B /* RouteRefresh */,
 				35DBF017217F387F0009D2AE /* Offline */,
@@ -1241,6 +1252,7 @@
 				2B54080A245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D63520586419003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390E20D7F508008F4E54 /* subLaneInstructions.json in Resources */,
+				2B5F0DFD273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */,
 				DAD31BC424D4ADBF00A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F11F6AF92500A1C4F1 /* instructions.json in Resources */,
 				8D381B661FDB089E008D5A58 /* apiDestinationName.json in Resources */,
@@ -1273,6 +1285,7 @@
 				2B54080B245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D6362058641B003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390F20D7F50A008F4E54 /* subLaneInstructions.json in Resources */,
+				2B5F0DFE273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */,
 				DAD31BC524D4ADC000A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F21F6AF92600A1C4F1 /* instructions.json in Resources */,
 				8D381B671FDB089F008D5A58 /* apiDestinationName.json in Resources */,
@@ -1312,6 +1325,7 @@
 				2B540809245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				C5C0D6342058523E003A3B1D /* null-tracepoint.json in Resources */,
 				AEAB390D20D7F4F4008F4E54 /* subLaneInstructions.json in Resources */,
+				2B5F0DFC273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */,
 				DAD31BC324D4ADBF00A1654D /* match-polyline6.json in Resources */,
 				C5D1D7F01F6AF91700A1C4F1 /* instructions.json in Resources */,
 				8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */,
@@ -1385,6 +1399,7 @@
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				2B5F0E01273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1476,6 +1491,7 @@
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				2B5F0E02273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1567,6 +1583,7 @@
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				2B5F0E03273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1625,6 +1642,7 @@
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
+				2B5F0E00273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,

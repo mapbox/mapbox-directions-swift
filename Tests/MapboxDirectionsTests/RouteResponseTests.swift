@@ -62,4 +62,33 @@ class RouteResponseTests: XCTestCase {
             XCTFail("Failed with error: \(error)")
         }
     }
+    
+    func testRoadClassesViolations() {
+        guard let fixtureURL = Bundle.module.url(forResource: "tollAndFerryDirectionsRoute", withExtension:"json") else {
+            XCTFail()
+            return
+        }
+        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {
+            XCTFail()
+            return
+        }
+    
+        let options = RouteOptions(coordinates: [.init(latitude: 14.758522,
+                                                       longitude: 55.193541),
+                                                 .init(latitude: 12.54072,
+                                                       longitude: 55.685213)])
+        options.roadClassesToAvoid = [.ferry, .toll]
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "https://test.website")!)
+        var response: RouteResponse?
+        XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
+        
+        let roadClassesViolations = response!.ignoredRoadClassesAvoidance
+        
+        XCTAssertNotNil(roadClassesViolations)
+        XCTAssertEqual(roadClassesViolations?.first!.violations.count, 77, "Incorrect number of RoadClassViolations found")
+        XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
+        XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
+    }
 }
