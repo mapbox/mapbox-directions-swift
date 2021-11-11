@@ -2,6 +2,12 @@
 
 ## v2.1.0
 
+### Packaging
+
+* MapboxDirections now requires [Turf v2.1.0 (up to 3.0.0, not including)](https://github.com/mapbox/turf-swift/releases/tag/v2.1.0). ([#628](https://github.com/mapbox/mapbox-directions-swift/pull/628))
+
+### Other changes
+
 * Added the `Waypoint.snappedDistance` property to get the straight-line distance from the waypoint to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
 * Added the `RouteOptions.initialManeuverAvoidanceRadius` property to avoid a sudden maneuver when calculating a route while the user is in motion. ([#609](https://github.com/mapbox/mapbox-directions-swift/pull/609))
 * Added the `RoadClasses.unpaved` option for avoiding unpaved roads. ([#620](https://github.com/mapbox/mapbox-directions-swift/pull/620))
