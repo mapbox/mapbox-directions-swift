@@ -75,7 +75,7 @@ open class Directions: NSObject {
      
      - parameter credentials: A object containing the credentials used to make the request.
      */
-    public typealias Session = (options: DirectionsOptions, credentials: DirectionsCredentials)
+    public typealias Session = (options: DirectionsOptions, credentials: Credentials)
     
     /**
      A closure (block) to be called when a directions request is complete.
@@ -103,7 +103,7 @@ open class Directions: NSObject {
      
      - postcondition: To update the original route, pass `RouteRefreshResponse.route` into the `Route.refreshLegAttributes(from:)` method.
      */
-    public typealias RouteRefreshCompletionHandler = (_ credentials: DirectionsCredentials, _ result: Result<RouteRefreshResponse, DirectionsError>) -> Void
+    public typealias RouteRefreshCompletionHandler = (_ credentials: Credentials, _ result: Result<RouteRefreshResponse, DirectionsError>) -> Void
     
     // MARK: Creating a Directions Object
     
@@ -119,14 +119,8 @@ open class Directions: NSObject {
      
      If nothing is provided, the default behavior is to read credential values from the developer's Info.plist.
      */
-    public let credentials: DirectionsCredentials
+    public let credentials: Credentials
     
-    /**
-     Initializes a newly created directions object with an optional access token and host.
-     
-     - parameter credentials: A `DirectionsCredentials` object that, optionally, contains customized Token and Endpoint information. If no credentials object is supplied, then defaults are used.
-     */
-
     private var authenticationParams: [URLQueryItem] {
         var params: [URLQueryItem] = [
             URLQueryItem(name: "access_token", value: credentials.accessToken)
@@ -148,7 +142,7 @@ open class Directions: NSObject {
        - urlSession: URLSession that will be used to submit API requests to Mapbox Directions API.
        - processingQueue: A DispatchQueue that will be used for CPU intensive work.
      */
-    public init(credentials: DirectionsCredentials = .init(),
+    public init(credentials: Credentials = .init(),
                 urlSession: URLSession = .shared,
                 processingQueue: DispatchQueue = .global(qos: .userInitiated)) {
         self.credentials = credentials
@@ -506,7 +500,7 @@ open class Directions: NSObject {
     open func urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int) -> URLRequest {
         let params: [URLQueryItem] = authenticationParams
 
-        var unparameterizedURL = URL(string: "directions-refresh/v1/\(DirectionsProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
+        var unparameterizedURL = URL(string: "directions-refresh/v1/\(ProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
         unparameterizedURL.appendPathComponent(responseIdentifier)
         unparameterizedURL.appendPathComponent(String(routeIndex))
         unparameterizedURL.appendPathComponent(String(startLegIndex))

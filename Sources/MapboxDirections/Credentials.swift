@@ -7,7 +7,7 @@ let defaultAccessToken: String? =
     UserDefaults.standard.string(forKey: "MBXAccessToken")
 let defaultApiEndPointURLString = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAPIBaseURL") as? String
 
-public struct DirectionsCredentials: Equatable {
+public struct Credentials: Equatable {
     
     /**
     The mapbox access token. You can find this in your Mapbox account dashboard.
@@ -65,3 +65,5 @@ public struct DirectionsCredentials: Equatable {
     }
 }
 
+@available(*, deprecated, renamed: "Credentials")
+public typealias DirectionsCredentials = Credentials

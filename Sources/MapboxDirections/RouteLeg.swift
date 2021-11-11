@@ -33,7 +33,7 @@ open class RouteLeg: Codable {
      - parameter typicalTravelTime: The route leg’s typical travel time, measured in seconds.
      - parameter profileIdentifier: The primary mode of transportation for the route leg.
      */
-    public init(steps: [RouteStep], name: String, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: DirectionsProfileIdentifier) {
+    public init(steps: [RouteStep], name: String, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil, profileIdentifier: ProfileIdentifier) {
         self.steps = steps
         self.name = name
         self.distance = distance
@@ -63,7 +63,7 @@ open class RouteLeg: Codable {
         expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
         typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
         
-        if let profileIdentifier = try container.decodeIfPresent(DirectionsProfileIdentifier.self, forKey: .profileIdentifier) {
+        if let profileIdentifier = try container.decodeIfPresent(ProfileIdentifier.self, forKey: .profileIdentifier) {
             self.profileIdentifier = profileIdentifier
         } else if let options = decoder.userInfo[.options] as? DirectionsOptions {
             profileIdentifier = options.profileIdentifier
@@ -287,7 +287,7 @@ open class RouteLeg: Codable {
     /**
      The route leg’s expected travel time, measured in seconds.
 
-     The value of this property reflects the time it takes to traverse the route leg. If the route was calculated using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile, this property reflects current traffic conditions at the time of the request, not necessarily the traffic conditions at the time the user would begin this leg. For other profiles, this property reflects travel time under ideal conditions and does not account for traffic congestion. If the leg makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
+     The value of this property reflects the time it takes to traverse the route leg. If the route was calculated using the `ProfileIdentifier.automobileAvoidingTraffic` profile, this property reflects current traffic conditions at the time of the request, not necessarily the traffic conditions at the time the user would begin this leg. For other profiles, this property reflects travel time under ideal conditions and does not account for traffic congestion. If the leg makes use of a ferry or train, the actual travel time may additionally be subject to the schedules of those services.
 
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
@@ -313,7 +313,7 @@ open class RouteLeg: Codable {
     /**
      The route leg’s typical travel time, measured in seconds.
      
-     The value of this property reflects the typical time it takes to traverse the route leg. This property is available when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this leg. If the leg makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
+     The value of this property reflects the typical time it takes to traverse the route leg. This property is available when using the `ProfileIdentifier.automobileAvoidingTraffic` profile. This property reflects typical traffic conditions at the time of the request, not necessarily the typical traffic conditions at the time the user would begin this leg. If the leg makes use of a ferry, the typical travel time may additionally be subject to the schedule of this service.
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteStep.typicalTravelTime` property.
      */
@@ -326,7 +326,7 @@ open class RouteLeg: Codable {
 
      The value of this property depends on the `RouteOptions.profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
-    public let profileIdentifier: DirectionsProfileIdentifier
+    public let profileIdentifier: ProfileIdentifier
 }
 
 extension RouteLeg: Equatable {

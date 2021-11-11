@@ -15,11 +15,11 @@ open class RouteOptions: DirectionsOptions {
     /**
      Initializes a route options object for routes between the given waypoints and an optional profile identifier.
 
-     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `DirectionsProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
      */
-    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
-        let profilesDisallowingUTurns: [DirectionsProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
+    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
+        let profilesDisallowingUTurns: [ProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
         allowsUTurnAtWaypoint = !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -31,9 +31,9 @@ open class RouteOptions: DirectionsOptions {
      - note: This initializer is intended for `CLLocation` objects created using the `CLLocation.init(latitude:longitude:)` initializer. If you intend to use a `CLLocation` object obtained from a `CLLocationManager` object, consider increasing the `horizontalAccuracy` or set it to a negative value to avoid overfitting, since the `Waypoint` class’s `coordinateAccuracy` property represents the maximum allowed deviation from the waypoint.
 
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -43,9 +43,9 @@ open class RouteOptions: DirectionsOptions {
      Initializes a route options object for routes between the given geographic coordinates and an optional profile identifier.
 
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
      */
-    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = nil) {
+    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: ProfileIdentifier? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
     }
@@ -145,7 +145,7 @@ open class RouteOptions: DirectionsOptions {
 
      Set this property to `true` if you expect the user to traverse each leg of the trip separately. For example, it would be quite easy for the user to effectively “U-turn” at a waypoint if the user first parks the car and patronizes a restaurant there before embarking on the next leg of the trip. Set this property to `false` if you expect the user to proceed to the next waypoint immediately upon arrival. For example, if the user only needs to drop off a passenger or package at the waypoint before continuing, it would be inconvenient to perform a U-turn at that location.
 
-     The default value of this property is `false` when the profile identifier is `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic` and `true` otherwise.
+     The default value of this property is `false` when the profile identifier is `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic` and `true` otherwise.
      */
     open var allowsUTurnAtWaypoint: Bool
     
@@ -159,7 +159,7 @@ open class RouteOptions: DirectionsOptions {
     /**
      The route classes that the calculated routes will allow.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.automobileAvoidingTraffic`.
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`.
     */
     open var roadClassesToAllow: RoadClasses = []
     
@@ -167,7 +167,7 @@ open class RouteOptions: DirectionsOptions {
      The number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
      If this property isn't explicitly set, the Directions API will choose the most reasonable value.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.automobile` or `DirectionsProfileIdentifier.walking`.
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.walking`.
      
      The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. `DirectionsPriority.medium` neither prefers nor avoids alleys, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.medium` avoids alleys, and a positive value between `DirectionsPriority.medium` and `DirectionsPriority.high` prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.
      */
@@ -177,7 +177,7 @@ open class RouteOptions: DirectionsOptions {
      The number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
      If this property isn't explicitly set, the Directions API will choose the most reasonable value.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.walking`. You can adjust this property to avoid [sidewalks and crosswalks that are mapped as separate footpaths](https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way), which may be more granular than needed for some forms of pedestrian navigation.
      
      The value of this property must be at least `DirectionsPriority.low` and at most `DirectionsPriority.high`. `DirectionsPriority.medium` neither prefers nor avoids walkways, while a negative value between `DirectionsPriority.low` and `DirectionsPriority.medium` avoids walkways, and a positive value between `DirectionsPriority.medium` and `DirectionsPriority.high` prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.
      */
@@ -187,7 +187,7 @@ open class RouteOptions: DirectionsOptions {
      The expected uniform travel speed measured in meters per second.
      If this property isn't explicitly set, the Directions API will choose the most reasonable value.
      
-     This property has no effect unless the profile identifier is set to `DirectionsProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `DirectionsProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.walking`. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as `ProfileIdentifier.driving`, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.
      
      The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. `CLLocationSpeed.normalWalking` corresponds to a typical preferred walking speed.
      */
@@ -216,7 +216,7 @@ open class RouteOptions: DirectionsOptions {
     /**
      A Boolean value indicating whether `Directions` can refresh time-dependent properties of the `RouteLeg`s of the resulting `Route`s.
      
-     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `DirectionsProfileIdentifier.automobileAvoidingTraffic`. This option is set to `false` by default.
+     To refresh the `RouteLeg.expectedSegmentTravelTimes`, `RouteLeg.segmentSpeeds`, and `RouteLeg.segmentCongestionLevels` properties, use the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)` method. This property is ignored unless `profileIdentifier` is `ProfileIdentifier.automobileAvoidingTraffic`. This option is set to `false` by default.
      */
     open var refreshingEnabled = false
 

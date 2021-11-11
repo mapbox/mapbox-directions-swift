@@ -120,10 +120,10 @@ open class DirectionsOptions: Codable {
 
      Do not call `DirectionsOptions(waypoints:profileIdentifier:)` directly; instead call the corresponding initializer of `RouteOptions` or `MatchOptions`.
 
-     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `DirectionsProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
-     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `DirectionsProfileIdentifier.automobile` is used by default.
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
      */
-    required public init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = nil) {
+    required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
     }
@@ -159,7 +159,7 @@ open class DirectionsOptions: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         waypoints = try container.decode([Waypoint].self, forKey: .waypoints)
-        profileIdentifier = try container.decode(DirectionsProfileIdentifier.self, forKey: .profileIdentifier)
+        profileIdentifier = try container.decode(ProfileIdentifier.self, forKey: .profileIdentifier)
         includesSteps = try container.decode(Bool.self, forKey: .includesSteps)
         shapeFormat = try container.decode(RouteShapeFormat.self, forKey: .shapeFormat)
         routeShapeResolution = try container.decode(RouteShapeResolution.self, forKey: .routeShapeResolution)
@@ -197,9 +197,9 @@ open class DirectionsOptions: Codable {
     /**
      A string specifying the primary mode of transportation for the routes.
 
-     The default value of this property is `DirectionsProfileIdentifier.automobile`, which specifies driving directions.
+     The default value of this property is `ProfileIdentifier.automobile`, which specifies driving directions.
      */
-    open var profileIdentifier: DirectionsProfileIdentifier
+    open var profileIdentifier: ProfileIdentifier
 
     // MARK: Specifying the Response Format
 
@@ -291,7 +291,7 @@ open class DirectionsOptions: Codable {
     // MARK: Getting the Request URL
     
     /**
-     An array of URL query items to include in an HTTP request.
+     The path of the request URL, specifying service name, version and profile.
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */

@@ -13,7 +13,7 @@ class OfflineDirectionsTests: XCTestCase {
     let hostURL = URL(string: "https://api.mapbox.com")!
     
     func testAvailableVersions() {
-        let credentials = DirectionsCredentials(accessToken: token, host: hostURL)
+        let credentials = Credentials(accessToken: token, host: hostURL)
         let directions = Directions(credentials: credentials)
         
         

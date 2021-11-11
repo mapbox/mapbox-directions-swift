@@ -35,7 +35,7 @@ public struct RouteRefreshResponse {
     /**
      The credentials used to make the request.
      */
-    public let credentials: DirectionsCredentials
+    public let credentials: Credentials
     
     /**
      The time when this `RouteRefreshResponse` object was created, which is immediately upon recieving the raw URL response.
@@ -58,7 +58,7 @@ extension RouteRefreshResponse: Codable {
 
         self.httpResponse = decoder.userInfo[.httpResponse] as? HTTPURLResponse
         
-        guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
+        guard let credentials = decoder.userInfo[.credentials] as? Credentials else {
             throw DirectionsCodingError.missingCredentials
         }
         

@@ -2,7 +2,7 @@
 import Foundation
 import MapboxDirections
 
-private let BogusCredentials = DirectionsCredentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
+private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
 class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > {
     

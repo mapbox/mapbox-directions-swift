@@ -15,7 +15,7 @@ protocol CustomQuickLookConvertible {
 /**
  Returns a URL to an image representation of the given coordinates via the [Mapbox Static Images API](https://docs.mapbox.com/api/maps/#static-images).
  */
-func debugQuickLookURL(illustrating shape: LineString, profileIdentifier: DirectionsProfileIdentifier = .automobile, accessToken: String? = defaultAccessToken) -> URL? {
+func debugQuickLookURL(illustrating shape: LineString, profileIdentifier: ProfileIdentifier = .automobile, accessToken: String? = defaultAccessToken) -> URL? {
     guard let accessToken = accessToken else {
         return nil
     }
