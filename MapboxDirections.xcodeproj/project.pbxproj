@@ -118,10 +118,6 @@
 		4376A52723FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
 		4376A52823FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
 		4376A52923FB13D400C6038D /* MatchOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376A52623FB13D400C6038D /* MatchOptionsTests.swift */; };
-		438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
-		438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
-		438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
-		438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */; };
 		439255772344113B006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
 		439255792344113D006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
 		4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4392557523440EC2006EEE88 /* DirectionsError.swift */; };
@@ -133,10 +129,6 @@
 		43D992FD2437B93E008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
 		43D992FE2437B93F008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
 		43D992FF2437B940008A2D74 /* CredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */; };
-		43EBD3AD23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
-		43EBD3AE23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
-		43EBD3AF23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
-		43EBD3B023DBC06800B09D05 /* DirectionsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */; };
 		43F89F932350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
@@ -503,10 +495,8 @@
 		4376A52623FB13D400C6038D /* MatchOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchOptionsTests.swift; sourceTree = "<group>"; };
 		438BFEBC233D7FA900457294 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		438BFEC0233D805500457294 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsProfileIdentifier.swift; sourceTree = "<group>"; };
 		4392557523440EC2006EEE88 /* DirectionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsError.swift; sourceTree = "<group>"; };
 		43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsTests.swift; sourceTree = "<group>"; };
-		43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsCredentials.swift; sourceTree = "<group>"; };
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponseTests.swift; sourceTree = "<group>"; };
 		8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
@@ -798,10 +788,8 @@
 				C58EA7A91E9D7EAD008F98CE /* Congestion.swift */,
 				2B9F387F272AE23A001DBA12 /* Credentials.swift */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
-				43EBD3AC23DBC06800B09D05 /* DirectionsCredentials.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
 				C59094BE203B800300EB2417 /* DirectionsOptions.swift */,
-				438BFEC1233D854D00457294 /* DirectionsProfileIdentifier.swift */,
 				C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */,
 				431E93BE234664A200A71B44 /* DrivingSide.swift */,
 				DA6C9D8C1CAE442B00094FBC /* Info.plist */,
@@ -1415,7 +1403,6 @@
 				2B5407F32452FA8C006C820B /* RefreshedRoute.swift in Sources */,
 				431E93D023466D7500A71B44 /* Codable.swift in Sources */,
 				C5990B4D2045E74800D7DFD4 /* DirectionsOptions.swift in Sources */,
-				43EBD3AE23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D691DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B9F388E272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */,
@@ -1428,7 +1415,6 @@
 				F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				2BBBD05F257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD08E257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
-				438BFEC3233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
@@ -1508,7 +1494,6 @@
 				2B5407F42452FA8C006C820B /* RefreshedRoute.swift in Sources */,
 				431E93D123466D7600A71B44 /* Codable.swift in Sources */,
 				C5990B4E2045E74900D7DFD4 /* DirectionsOptions.swift in Sources */,
-				43EBD3AF23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D6A1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B9F388F272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */,
@@ -1521,7 +1506,6 @@
 				F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				2BBBD060257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD08F257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
-				438BFEC4233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
@@ -1601,7 +1585,6 @@
 				2B5407F52452FA8C006C820B /* RefreshedRoute.swift in Sources */,
 				431E93D223466D7700A71B44 /* Codable.swift in Sources */,
 				C5990B4F2045E74A00D7DFD4 /* DirectionsOptions.swift in Sources */,
-				43EBD3B023DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAA76D6B1DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B9F3890272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */,
@@ -1614,7 +1597,6 @@
 				F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */,
 				2BBBD061257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD090257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
-				438BFEC5233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
@@ -1661,7 +1643,6 @@
 				2B5407F22452FA8C006C820B /* RefreshedRoute.swift in Sources */,
 				431E93CF23466D7400A71B44 /* Codable.swift in Sources */,
 				C59094C1203DE6BC00EB2417 /* DirectionsResult.swift in Sources */,
-				43EBD3AD23DBC06800B09D05 /* DirectionsCredentials.swift in Sources */,
 				DAC05F1A1CFC077C00FA0071 /* RouteLeg.swift in Sources */,
 				2B9F388D272AE23A001DBA12 /* Credentials.swift in Sources */,
 				43F89F932350F952007B591E /* MapMatchingResponse.swift in Sources */,
@@ -1677,7 +1658,6 @@
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
 				F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,
-				438BFEC2233D854D00457294 /* DirectionsProfileIdentifier.swift in Sources */,
 				C57D55011DB5669600B94B74 /* Intersection.swift in Sources */,
 				2B9F3889272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C723466B3F00A71B44 /* CoreLocation.swift in Sources */,

@@ -152,8 +152,7 @@ extension IsochroneOptions {
             /**
              Contour fill color.
              
-             If `nil` - default rainbow color sheme will be used for each contour.
-             - important: `color` value should be specified for everyone or none requested contours. Otherwise all missing colors will be grayed.
+             If this property is unspecified, the contour is colored gray. If this property is not specified for any contour, the contours are rainbow-colored.
              */
             public var color: Color?
             

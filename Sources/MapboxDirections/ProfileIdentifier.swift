@@ -42,3 +42,13 @@ public struct ProfileIdentifier: Codable, Hashable, RawRepresentable {
     */
     public static let walking: ProfileIdentifier = .init(rawValue: "mapbox/walking")
 }
+
+
+@available(*, deprecated, renamed: "ProfileIdentifier")
+public typealias MBDirectionsProfileIdentifier = ProfileIdentifier
+
+/**
+ Options determining the primary mode of transportation for the routes.
+ */
+@available(*, deprecated, renamed: "ProfileIdentifier")
+public typealias DirectionsProfileIdentifier = ProfileIdentifier

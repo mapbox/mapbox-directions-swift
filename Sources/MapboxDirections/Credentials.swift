@@ -64,3 +64,6 @@ public struct Credentials: Equatable {
         }
     }
 }
+
+@available(*, deprecated, renamed: "Credentials")
+public typealias DirectionsCredentials = Credentials
