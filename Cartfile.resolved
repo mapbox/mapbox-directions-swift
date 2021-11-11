@@ -1,4 +1,4 @@
 github "AliSoftware/OHHTTPStubs" "9.1.0"
 github "mapbox/mapbox-events-ios" "v0.10.13"
-github "mapbox/turf-swift" "v2.0.0"
+github "mapbox/turf-swift" "v2.1.0"
 github "raphaelmor/Polyline" "v5.0.2"
