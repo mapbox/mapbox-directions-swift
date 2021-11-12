@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Waypoint Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    <link rel='shortcut icon' href='https://www.mapbox.com/img/favicon.ico' type='image/x-icon' />
+
+    <style type="text/css">
+      .nav-group-name[data-name="Waypoint"] > .small-heading,
+      .nav-group-task[data-name="Waypoint"] {
+        background-color: #f5f8fc;
+        font-family: "Open Sans Bold";
+        border-left: 3px solid #3a68d8;
+        padding-left: 5px
+      }
+    </style>
+    <script src="https://docs.mapbox.com/analytics.js"></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/Waypoint" class="dashAnchor"></a>
+
+    <a title="Waypoint Class Reference"></a>
+
+    <header class="header-container">
+      <div class="limiter">
+        <div class="header">
+        <p class="header-col header-col--primary">
+          <a class="header-link" href="../index.html">
+            <img style="height: 25px;"  class="header-icon" src="../img/mapbox.svg" alt="Mapbox Directions for Swift Docs"/>
+            <span class='header-tag'>Directions.swift Reference (2.1.0-rc.1)</span>
+          </a>
+          
+        </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link space-right2" href="https://github.com/mapbox/mapbox-directions-swift">
+              <svg style="margin-bottom: 1px;" class="header-icon" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		      <path stroke="none" stroke-width="1" fill="white" fill-rule="evenodd" d="M16.6,0.4 C7.6,0.4 0.3,7.7 0.3,16.7 C0.3,23.9 5,30 11.4,32.2 C12.2,32.3 12.5,31.8 12.5,31.4 L12.5,28.6 C8,29.6 7,26.4 7,26.4 C6.3,24.5 5.2,24 5.2,24 C3.7,23 5.3,23 5.3,23 C6.9,23.1 7.8,24.7 7.8,24.7 C9.3,27.2 11.6,26.5 12.5,26.1 C12.6,25 13.1,24.3 13.5,23.9 C9.9,23.5 6.1,22.1 6.1,15.8 C6.1,14 6.7,12.6 7.8,11.4 C7.6,11 7.1,9.3 8,7.1 C8,7.1 9.4,6.7 12.5,8.8 C13.8,8.4 15.2,8.3 16.6,8.3 C18,8.3 19.4,8.5 20.7,8.8 C23.8,6.7 25.2,7.1 25.2,7.1 C26.1,9.3 25.5,11 25.4,11.4 C26.4,12.5 27.1,14 27.1,15.8 C27.1,22.1 23.3,23.4 19.7,23.8 C20.3,24.3 20.8,25.3 20.8,26.8 L20.8,31.3 C20.8,31.7 21.1,32.2 21.9,32.1 C28.4,29.9 33,23.8 33,16.6 C32.9,7.7 25.6,0.4 16.6,0.4 L16.6,0.4 Z"></path>
+              </svg>
+              View on GitHub
+            </a>
+          </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link bold" href="dash-feed://https%3A%2F%2Fdocs.mapbox.com%2Fios%2Fdocsets%2FMapboxDirections.xml">
+              <img style="margin-bottom: 1px;" class="header-icon" src="../img/dash.png"/>
+              Install in Dash
+            </a>
+          </p>
+      </div>
+      </div>
+    </header>
+
+    <div class="breadcrumbs">
+      <div class="limiter">
+        <a class="breadcrumb" href="../index.html">Mapbox Directions for Swift Reference</a>
+        <img class="carat" src="../img/carat.png" />
+        Waypoint Class Reference
+      </div>
+    </div>
+
+    <div class="content-wrapper limiter">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name" data-name="Guides">
+            <a class="small-heading" href="../Guides.html">Guides<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Navigation SDK" data-url="navigation-sdk.html">
+                <a title="Navigation SDK" class="nav-group-task-link" href="../navigation-sdk.html">Navigation SDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Getting Directions">
+            <a class="small-heading" href="../Getting Directions.html">Getting Directions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Directions" data-url="Classes/Directions.html">
+                <a title="Directions" class="nav-group-task-link" href="../Classes/Directions.html">Directions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteOptions" data-url="Classes/RouteOptions.html">
+                <a title="RouteOptions" class="nav-group-task-link" href="../Classes/RouteOptions.html">RouteOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Waypoint" data-url="Classes/Waypoint.html">
+                <a title="Waypoint" class="nav-group-task-link" href="../Classes/Waypoint.html">Waypoint</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Map Matching">
+            <a class="small-heading" href="../Map Matching.html">Map Matching<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MatchOptions" data-url="Classes/MatchOptions.html">
+                <a title="MatchOptions" class="nav-group-task-link" href="../Classes/MatchOptions.html">MatchOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Tracepoint" data-url="Classes/Tracepoint.html">
+                <a title="Tracepoint" class="nav-group-task-link" href="../Classes/Tracepoint.html">Tracepoint</a>
+              </li>
+              <li class="nav-group-task" data-name="Match" data-url="Classes/Match.html">
+                <a title="Match" class="nav-group-task-link" href="../Classes/Match.html">Match</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Results">
+            <a class="small-heading" href="../Results.html">Results<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Route" data-url="Classes/Route.html">
+                <a title="Route" class="nav-group-task-link" href="../Classes/Route.html">Route</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLeg" data-url="Classes/RouteLeg.html">
+                <a title="RouteLeg" class="nav-group-task-link" href="../Classes/RouteLeg.html">RouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="– Attributes" data-url="Classes/RouteLeg/Attributes.html">
+                <a title="– Attributes" class="nav-group-task-link" href="../Classes/RouteLeg/Attributes.html">– Attributes</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteStep" data-url="Classes/RouteStep.html">
+                <a title="RouteStep" class="nav-group-task-link" href="../Classes/RouteStep.html">RouteStep</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Classes">
+            <a class="small-heading" href="../Other Classes.html">Other Classes<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsOptions" data-url="Classes/DirectionsOptions.html">
+                <a title="DirectionsOptions" class="nav-group-task-link" href="../Classes/DirectionsOptions.html">DirectionsOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsResult" data-url="Classes/DirectionsResult.html">
+                <a title="DirectionsResult" class="nav-group-task-link" href="../Classes/DirectionsResult.html">DirectionsResult</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneOptions" data-url="Classes/IsochroneOptions.html">
+                <a title="IsochroneOptions" class="nav-group-task-link" href="../Classes/IsochroneOptions.html">IsochroneOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="– ContourFormat" data-url="Classes/IsochroneOptions/ContourFormat.html">
+                <a title="– ContourFormat" class="nav-group-task-link" href="../Classes/IsochroneOptions/ContourFormat.html">– ContourFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="– Contours" data-url="Classes/IsochroneOptions/Contours.html">
+                <a title="– Contours" class="nav-group-task-link" href="../Classes/IsochroneOptions/Contours.html">– Contours</a>
+              </li>
+              <li class="nav-group-task" data-name="Isochrones" data-url="Classes/Isochrones.html">
+                <a title="Isochrones" class="nav-group-task-link" href="../Classes/Isochrones.html">Isochrones</a>
+              </li>
+              <li class="nav-group-task" data-name="SpokenInstruction" data-url="Classes/SpokenInstruction.html">
+                <a title="SpokenInstruction" class="nav-group-task-link" href="../Classes/SpokenInstruction.html">SpokenInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstruction" data-url="Classes/VisualInstruction.html">
+                <a title="VisualInstruction" class="nav-group-task-link" href="../Classes/VisualInstruction.html">VisualInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="– Component" data-url="Classes/VisualInstruction/Component.html">
+                <a title="– Component" class="nav-group-task-link" href="../Classes/VisualInstruction/Component.html">– Component</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstructionBanner" data-url="Classes/VisualInstructionBanner.html">
+                <a title="VisualInstructionBanner" class="nav-group-task-link" href="../Classes/VisualInstructionBanner.html">VisualInstructionBanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Global Variables">
+            <a class="small-heading" href="../Other Global Variables.html">Other Global Variables<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MBDirectionsErrorDomain" data-url="Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">
+                <a title="MBDirectionsErrorDomain" class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">MBDirectionsErrorDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Enumerations">
+            <a class="small-heading" href="../Other Enumerations.html">Other Enumerations<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CongestionLevel" data-url="Enums/CongestionLevel.html">
+                <a title="CongestionLevel" class="nav-group-task-link" href="../Enums/CongestionLevel.html">CongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsCodingError" data-url="Enums/DirectionsCodingError.html">
+                <a title="DirectionsCodingError" class="nav-group-task-link" href="../Enums/DirectionsCodingError.html">DirectionsCodingError</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsError" data-url="Enums/DirectionsError.html">
+                <a title="DirectionsError" class="nav-group-task-link" href="../Enums/DirectionsError.html">DirectionsError</a>
+              </li>
+              <li class="nav-group-task" data-name="DrivingSide" data-url="Enums/DrivingSide.html">
+                <a title="DrivingSide" class="nav-group-task-link" href="../Enums/DrivingSide.html">DrivingSide</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneError" data-url="Enums/IsochroneError.html">
+                <a title="IsochroneError" class="nav-group-task-link" href="../Enums/IsochroneError.html">IsochroneError</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverDirection" data-url="Enums/ManeuverDirection.html">
+                <a title="ManeuverDirection" class="nav-group-task-link" href="../Enums/ManeuverDirection.html">ManeuverDirection</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverType" data-url="Enums/ManeuverType.html">
+                <a title="ManeuverType" class="nav-group-task-link" href="../Enums/ManeuverType.html">ManeuverType</a>
+              </li>
+              <li class="nav-group-task" data-name="MapboxStreetsRoadClass" data-url="Enums/MapboxStreetsRoadClass.html">
+                <a title="MapboxStreetsRoadClass" class="nav-group-task-link" href="../Enums/MapboxStreetsRoadClass.html">MapboxStreetsRoadClass</a>
+              </li>
+              <li class="nav-group-task" data-name="MeasurementSystem" data-url="Enums/MeasurementSystem.html">
+                <a title="MeasurementSystem" class="nav-group-task-link" href="../Enums/MeasurementSystem.html">MeasurementSystem</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeFormat" data-url="Enums/RouteShapeFormat.html">
+                <a title="RouteShapeFormat" class="nav-group-task-link" href="../Enums/RouteShapeFormat.html">RouteShapeFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeResolution" data-url="Enums/RouteShapeResolution.html">
+                <a title="RouteShapeResolution" class="nav-group-task-link" href="../Enums/RouteShapeResolution.html">RouteShapeResolution</a>
+              </li>
+              <li class="nav-group-task" data-name="SignStandard" data-url="Enums/SignStandard.html">
+                <a title="SignStandard" class="nav-group-task-link" href="../Enums/SignStandard.html">SignStandard</a>
+              </li>
+              <li class="nav-group-task" data-name="TransportType" data-url="Enums/TransportType.html">
+                <a title="TransportType" class="nav-group-task-link" href="../Enums/TransportType.html">TransportType</a>
+              </li>
+              <li class="nav-group-task" data-name="Weight" data-url="Other%20Enums.html#/s:16MapboxDirections6WeightO">
+                <a title="Weight" class="nav-group-task-link" href="../Other%20Enums.html#/s:16MapboxDirections6WeightO">Weight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Extensions">
+            <a class="small-heading" href="../Other Extensions.html">Other Extensions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Array" data-url="Extensions/Array.html">
+                <a title="Array" class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task" data-name="BoundingBox" data-url="Extensions/BoundingBox.html">
+                <a title="BoundingBox" class="nav-group-task-link" href="../Extensions/BoundingBox.html">BoundingBox</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Structures">
+            <a class="small-heading" href="../Other Structures.html">Other Structures<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="AdministrativeRegion" data-url="Structs/AdministrativeRegion.html">
+                <a title="AdministrativeRegion" class="nav-group-task-link" href="../Structs/AdministrativeRegion.html">AdministrativeRegion</a>
+              </li>
+              <li class="nav-group-task" data-name="AttributeOptions" data-url="Structs/AttributeOptions.html">
+                <a title="AttributeOptions" class="nav-group-task-link" href="../Structs/AttributeOptions.html">AttributeOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="BlockedLanes" data-url="Structs/BlockedLanes.html">
+                <a title="BlockedLanes" class="nav-group-task-link" href="../Structs/BlockedLanes.html">BlockedLanes</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsPriority" data-url="Structs/DirectionsPriority.html">
+                <a title="DirectionsPriority" class="nav-group-task-link" href="../Structs/DirectionsPriority.html">DirectionsPriority</a>
+              </li>
+              <li class="nav-group-task" data-name="GuidanceViewImageRepresentation" data-url="Structs/GuidanceViewImageRepresentation.html">
+                <a title="GuidanceViewImageRepresentation" class="nav-group-task-link" href="../Structs/GuidanceViewImageRepresentation.html">GuidanceViewImageRepresentation</a>
+              </li>
+              <li class="nav-group-task" data-name="Incident" data-url="Structs/Incident.html">
+                <a title="Incident" class="nav-group-task-link" href="../Structs/Incident.html">Incident</a>
+              </li>
+              <li class="nav-group-task" data-name="– Kind" data-url="Structs/Incident/Kind.html">
+                <a title="– Kind" class="nav-group-task-link" href="../Structs/Incident/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task" data-name="– Impact" data-url="Structs/Incident/Impact.html">
+                <a title="– Impact" class="nav-group-task-link" href="../Structs/Incident/Impact.html">– Impact</a>
+              </li>
+              <li class="nav-group-task" data-name="Intersection" data-url="Structs/Intersection.html">
+                <a title="Intersection" class="nav-group-task-link" href="../Structs/Intersection.html">Intersection</a>
+              </li>
+              <li class="nav-group-task" data-name="LaneIndication" data-url="Structs/LaneIndication.html">
+                <a title="LaneIndication" class="nav-group-task-link" href="../Structs/LaneIndication.html">LaneIndication</a>
+              </li>
+              <li class="nav-group-task" data-name="ProfileIdentifier" data-url="Structs/ProfileIdentifier.html">
+                <a title="ProfileIdentifier" class="nav-group-task-link" href="../Structs/ProfileIdentifier.html">ProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRoute" data-url="Structs/RefreshedRoute.html">
+                <a title="RefreshedRoute" class="nav-group-task-link" href="../Structs/RefreshedRoute.html">RefreshedRoute</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRouteLeg" data-url="Structs/RefreshedRouteLeg.html">
+                <a title="RefreshedRouteLeg" class="nav-group-task-link" href="../Structs/RefreshedRouteLeg.html">RefreshedRouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="RestStop" data-url="Structs/RestStop.html">
+                <a title="RestStop" class="nav-group-task-link" href="../Structs/RestStop.html">RestStop</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClasses" data-url="Structs/RoadClasses.html">
+                <a title="RoadClasses" class="nav-group-task-link" href="../Structs/RoadClasses.html">RoadClasses</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshResponse" data-url="Structs/RouteRefreshResponse.html">
+                <a title="RouteRefreshResponse" class="nav-group-task-link" href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="TollCollection" data-url="Structs/TollCollection.html">
+                <a title="TollCollection" class="nav-group-task-link" href="../Structs/TollCollection.html">TollCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Type Aliases">
+            <a class="small-heading" href="../Other Type Aliases.html">Other Type Aliases<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsProfileIdentifier" data-url="Other%20Typealiases.html#/s:16MapboxDirections0B17ProfileIdentifiera">
+                <a title="DirectionsProfileIdentifier" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections0B17ProfileIdentifiera">DirectionsProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/LocationAccuracy">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationAccuracy">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/LocationSpeed">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationSpeed">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="NumericCongestionLevel" data-url="Other%20Typealiases.html#/s:16MapboxDirections22NumericCongestionLevela">
+                <a title="NumericCongestionLevel" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections22NumericCongestionLevela">NumericCongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/Scale">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/Scale">Scale</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/s:16MapboxDirections5Scalea">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections5Scalea">Scale</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <a href="#/Waypoint"><h1 id="Waypoint">Waypoint<span class="anchor-icon" /></h1></a>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Waypoint</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Waypoint</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Waypoint</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+
+                </div>
+              </div>
+            <p>A <code>Waypoint</code> object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object using waypoint objects and also receive waypoint objects in the completion handler of the <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12RouteOptionsC_yAA0bJ0C7options_AA11CredentialsV11credentialst_s6ResultOyAA0I8ResponseVAA0B5ErrorOGtctF">Directions.calculate(_:completionHandler:)</a></code> method.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Creating%20a%20Waypoint"></a>
+                <a name="//apple_ref/swift/Section/Creating a Waypoint" class="dashAnchor"></a>
+                <a href="#/Creating%20a%20Waypoint">
+                  <h3 id="Creating%20a%20Waypoint" class="section-name">Creating a Waypoint<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Se4fromxs7Decoder_p_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Se4fromxs7Decoder_p_tKcfc"><span class="token-name">init(from:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">from</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">Decoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L24-L53">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SE6encode2toys7Encoder_p_tKF"></a>
+                    <a name="//apple_ref/swift/Method/encode(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SE6encode2toys7Encoder_p_tKF"><span class="token-name">encode(to:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">to</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">Encoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L55-L68">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC10coordinate0D8Accuracy4nameACSo22CLLocationCoordinate2DV_SdSgSSSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coordinate:coordinateAccuracy:name:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC10coordinate0D8Accuracy4nameACSo22CLLocationCoordinate2DV_SdSgSSSgtcfc"><span class="token-name">init(coordinate:coordinateAccuracy:name:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a new waypoint object with the given geographic coordinate and an optional accuracy and name.</p>
+
+<p>It is recommended that the value of this argument be greater than the <code>horizontalAccuracy</code> property of a <code>CLLocation</code> object obtained from a <code>CLLocationManager</code> object. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">coordinate</span><span class="p">:</span> <span class="kt">LocationCoordinate2D</span><span class="p">,</span> <span class="nv">coordinateAccuracy</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">LocationAccuracy</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  coordinate
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The geographic coordinate of the waypoint.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  coordinateAccuracy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The maximum distance away from the waypoint that the route may come and still be considered viable. This argument is measured in meters. A negative value means the route may be an indefinite number of meters away from the route and still be considered viable.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  name
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L79-L83">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(location:heading:name:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(location:heading:name:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a new waypoint object with the given <code>CLLocation</code> object and an optional heading value and name.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This initializer is intended for <code>CLLocation</code> objects created using the <code>CLLocation(latitude:longitude:)</code> initializer. If you intend to use a <code>CLLocation</code> object obtained from a <code>CLLocationManager</code> object, consider increasing the <code>horizontalAccuracy</code> or set it to a negative value to avoid overfitting, since the <code>Waypoint</code> class’s <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC18coordinateAccuracySdSgvp">coordinateAccuracy</a></code> property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway or inside a building.</p>
+
+</div>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC8location7heading4nameACSo10CLLocationC_So9CLHeadingCSgSSSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(location:heading:name:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC8location7heading4nameACSo10CLLocationC_So9CLHeadingCSgSSSgtcfc"><span class="token-name">init(location:heading:name:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a new waypoint object with the given <code>CLLocation</code> object and an optional <code>CLHeading</code> object and name.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This initializer is intended for <code>CLLocation</code> objects created using the <code>CLLocation(latitude:longitude:)</code> initializer. If you intend to use a <code>CLLocation</code> object obtained from a <code>CLLocationManager</code> object, consider increasing the <code>horizontalAccuracy</code> or set it to a negative value to avoid overfitting, since the <code>Waypoint</code> class’s <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC18coordinateAccuracySdSgvp">coordinateAccuracy</a></code> property represents the maximum allowed deviation from the waypoint. There is a high likelihood that the user may be located some distance away from a navigable road, for instance if the user is currently on a driveway of inside a building.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">location</span><span class="p">:</span> <span class="kt">CLLocation</span><span class="p">,</span> <span class="nv">heading</span><span class="p">:</span> <span class="kt">CLHeading</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  location
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>CLLocation</code> object representing the waypoint’s location. This initializer respects the <code>CLLocation</code> class’s <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp">coordinate</a></code> and <code>horizontalAccuracy</code> properties, converting them into the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp">coordinate</a></code> and <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC18coordinateAccuracySdSgvp">coordinateAccuracy</a></code> properties, respectively.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  heading
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>CLHeading</code> object representing the direction from which the route must approach the waypoint in order to be considered viable. This initializer respects the <code>CLHeading</code> class’s <code>trueHeading</code> property or <code>magneticHeading</code> property, converting it into the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC15headingAccuracySdSgvp">headingAccuracy</a></code> property.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  name
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The name of the waypoint. This argument does not affect the route but may help you to distinguish one waypoint from another.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L114-L121">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Positioning%20the%20Waypoint"></a>
+                <a name="//apple_ref/swift/Section/Positioning the Waypoint" class="dashAnchor"></a>
+                <a href="#/Positioning%20the%20Waypoint">
+                  <h3 id="Positioning%20the%20Waypoint" class="section-name">Positioning the Waypoint<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp"></a>
+                    <a name="//apple_ref/swift/Property/coordinate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp"><span class="token-name">coordinate</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The geographic coordinate of the waypoint.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">coordinate</span><span class="p">:</span> <span class="kt">LocationCoordinate2D</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L130">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC18coordinateAccuracySdSgvp"></a>
+                    <a name="//apple_ref/swift/Property/coordinateAccuracy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC18coordinateAccuracySdSgvp"><span class="token-name">coordinateAccuracy</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The radius of uncertainty for the waypoint, measured in meters.</p>
+
+<p>For a route to be considered viable, it must enter this waypoint’s circle of uncertainty. The <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp">coordinate</a></code> property identifies the center of the circle, while this property indicates the circle’s radius. If the value of this property is negative, a route is considered viable regardless of whether it enters this waypoint’s circle of uncertainty, subject to an undefined maximum distance.</p>
+
+<p>By default, the value of this property is <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">coordinateAccuracy</span><span class="p">:</span> <span class="kt"><a href="../Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">LocationAccuracy</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L139">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC16targetCoordinateSo22CLLocationCoordinate2DVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/targetCoordinate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC16targetCoordinateSo22CLLocationCoordinate2DVSgvp"><span class="token-name">targetCoordinate</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The geographic coordinate of the waypoint’s target.</p>
+
+<p>The waypoint’s target affects arrival instructions without affecting the route’s shape. For example, a delivery or ride hailing application may specify a waypoint target that represents a drop-off location. The target determines whether the arrival visual and spoken instructions indicate that the destination is “on the left” or “on the right”.</p>
+
+<p>By default, this property is set to <code>nil</code>, meaning the waypoint has no target. This property is ignored on the first waypoint of a <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object, on any waypoint of a <code><a href="../Classes/MatchOptions.html">MatchOptions</a></code> object, or on any waypoint of a <code><a href="../Classes/RouteOptions.html">RouteOptions</a></code> object if <code><a href="../Classes/DirectionsOptions.html#/s:16MapboxDirections0B7OptionsC13includesStepsSbvp">DirectionsOptions.includesSteps</a></code> is set to <code>false</code>.</p>
+
+<p>This property corresponds to the <a href="https://docs.mapbox.com/api/navigation/#retrieve-directions"><code>waypoint_targets</code></a> query parameter in the Mapbox Directions and Map Matching APIs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">targetCoordinate</span><span class="p">:</span> <span class="kt">LocationCoordinate2D</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L150">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC26allowsSnappingToClosedRoadSbvp"></a>
+                    <a name="//apple_ref/swift/Property/allowsSnappingToClosedRoad" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC26allowsSnappingToClosedRoadSbvp"><span class="token-name">allowsSnappingToClosedRoad</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether the waypoint may be snapped to a closed road in the resulting <code>RouteResponse</code>.</p>
+
+<p>If <code>true</code>, the waypoint may be snapped to a road segment that is closed due to a live traffic closure. This property is <code>false</code> by default. This property corresponds to the <a href="https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile"><code>snapping_include_closures</code></a> query parameter in the Mapbox Directions API.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">allowsSnappingToClosedRoad</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L157">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC15snappedDistanceSdSgvp"></a>
+                    <a name="//apple_ref/swift/Property/snappedDistance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC15snappedDistanceSdSgvp"><span class="token-name">snappedDistance</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The straight-line distance from the coordinate specified in the query to the location it was snapped to in the resulting <code>RouteResponse</code>.</p>
+
+<p>By default, this property is set to <code>nil</code>, meaning the waypoint has no snapped distance.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">snappedDistance</span><span class="p">:</span> <span class="kt">LocationDistance</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L164">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20the%20Direction%20of%20Approach"></a>
+                <a name="//apple_ref/swift/Section/Getting the Direction of Approach" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Direction%20of%20Approach">
+                  <h3 id="Getting%20the%20Direction%20of%20Approach" class="section-name">Getting the Direction of Approach<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC7headingSdSgvp"></a>
+                    <a name="//apple_ref/swift/Property/heading" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC7headingSdSgvp"><span class="token-name">heading</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The direction from which a route must approach this waypoint in order to be considered viable.</p>
+
+<p>This property is measured in degrees clockwise from true north. A value of 0 degrees means due north, 90 degrees means due east, 180 degrees means due south, and so on. If the value of this property is negative, a route is considered viable regardless of the direction from which it approaches this waypoint.</p>
+
+<p>If this waypoint is the first waypoint (the source waypoint), the route must start out by heading in the direction specified by this property. You should always set the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC15headingAccuracySdSgvp">headingAccuracy</a></code> property in conjunction with this property. If the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC15headingAccuracySdSgvp">headingAccuracy</a></code> property is set to <code>nil</code>, this property is ignored.</p>
+
+<p>For driving directions, this property can be useful for avoiding a route that begins by going in the direction opposite the current direction of travel. For example, if you know the user is moving eastwardly and the first waypoint is the user’s current location, specifying a heading of 90 degrees and a heading accuracy of 90 degrees for the first waypoint avoids a route that begins with a “head west” instruction.</p>
+
+<p>You should be certain that the user is in motion before specifying a heading and heading accuracy; otherwise, you may be unnecessarily filtering out the best route. For example, suppose the user is sitting in a car parked in a driveway, facing due north, with the garage in front and the street to the rear. In that case, specifying a heading of 0 degrees and a heading accuracy of 90 degrees may result in a route that begins on the back alley or, worse, no route at all. For this reason, it is recommended that you only specify a heading and heading accuracy when automatically recalculating directions due to the user deviating from the route.</p>
+
+<p>By default, the value of this property is <code>nil</code>, meaning that a route is considered viable regardless of the direction of approach.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">heading</span><span class="p">:</span> <span class="kt">LocationDirection</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L181">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC15headingAccuracySdSgvp"></a>
+                    <a name="//apple_ref/swift/Property/headingAccuracy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC15headingAccuracySdSgvp"><span class="token-name">headingAccuracy</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The maximum amount, in degrees, by which a route’s approach to a waypoint may differ from <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code> in either direction in order to be considered viable.</p>
+
+<p>A value of 0 degrees means that the approach must match the specified <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code> exactly – an unlikely scenario. A value of 180 degrees or more means that the approach may be as much as 180 degrees in either direction from the specified <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code>, effectively allowing a candidate route to approach the waypoint from any direction.</p>
+
+<p>If you set the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code> property, you should set this property to a value such as 90 degrees, to avoid filtering out routes whose approaches differ only slightly from the specified <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code>. Otherwise, if the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code> property is set to a negative value, this property is ignored.</p>
+
+<p>By default, the value of this property is <code>nil</code>, meaning that a route is considered viable regardless of the direction of approach.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">headingAccuracy</span><span class="p">:</span> <span class="kt">LocationDirection</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L192">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC28allowsArrivingOnOppositeSideSbvp"></a>
+                    <a name="//apple_ref/swift/Property/allowsArrivingOnOppositeSide" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC28allowsArrivingOnOppositeSideSbvp"><span class="token-name">allowsArrivingOnOppositeSide</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether arriving on opposite side is allowed.
+This property has no effect if <code><a href="../Classes/DirectionsOptions.html#/s:16MapboxDirections0B7OptionsC13includesStepsSbvp">DirectionsOptions.includesSteps</a></code> is set to <code>false</code>.
+This property corresponds to the <a href="https://www.mapbox.com/api-documentation/navigation/#retrieve-directions"><code>approaches</code></a> query parameter in the Mapbox Directions and Map Matching APIs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="k">var</span> <span class="nv">allowsArrivingOnOppositeSide</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L208">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Identifying%20the%20Waypoint"></a>
+                <a name="//apple_ref/swift/Section/Identifying the Waypoint" class="dashAnchor"></a>
+                <a href="#/Identifying%20the%20Waypoint">
+                  <h3 id="Identifying%20the%20Waypoint" class="section-name">Identifying the Waypoint<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC4nameSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC4nameSSSgvp"><span class="token-name">name</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The name of the waypoint.</p>
+
+<p>This property does not affect the route, but the name is included in the arrival instruction, to help the user distinguish between multiple destinations. The name can also help you distinguish one waypoint from another in the array of waypoints passed into the completion handler of the <code><a href="../Classes/Directions.html#/s:16MapboxDirections0B0C9calculate_17completionHandlerSo20NSURLSessionDataTaskCAA12RouteOptionsC_yAA0bJ0C7options_AA11CredentialsV11credentialst_s6ResultOyAA0I8ResponseVAA0B5ErrorOGtctF">Directions.calculate(_:completionHandler:)</a></code> method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L217">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Separating%20the%20Routes%20Into%20Legs"></a>
+                <a name="//apple_ref/swift/Section/Separating the Routes Into Legs" class="dashAnchor"></a>
+                <a href="#/Separating%20the%20Routes%20Into%20Legs">
+                  <h3 id="Separating%20the%20Routes%20Into%20Legs" class="section-name">Separating the Routes Into Legs<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections8WaypointC13separatesLegsSbvp"></a>
+                    <a name="//apple_ref/swift/Property/separatesLegs" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections8WaypointC13separatesLegsSbvp"><span class="token-name">separatesLegs</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether the waypoint is significant enough to appear in the resulting routes as a waypoint separating two legs, along with corresponding guidance instructions.</p>
+
+<p>By default, this property is set to <code>true</code>, which means that each resulting route will include a leg that ends by arriving at the waypoint as <code><a href="../Classes/RouteLeg.html#/s:16MapboxDirections8RouteLegC11destinationAA8WaypointCSgvp">RouteLeg.destination</a></code> and a subsequent leg that begins by departing from the waypoint as <code><a href="../Classes/RouteLeg.html#/s:16MapboxDirections8RouteLegC6sourceAA8WaypointCSgvp">RouteLeg.source</a></code>. Otherwise, if this property is set to <code>false</code>, a single leg passes through the waypoint without specifically mentioning it. Regardless of the value of this property, each resulting route passes through the location specified by the <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC10coordinateSo22CLLocationCoordinate2DVvp">coordinate</a></code> property, accounting for approach-related properties such as <code><a href="../Classes/Waypoint.html#/s:16MapboxDirections8WaypointC7headingSdSgvp">heading</a></code>.</p>
+
+<p>With the Mapbox Directions API, set this property to <code>false</code> if you want the waypoint’s location to influence the path that the route follows without attaching any meaning to the waypoint object itself. With the Mapbox Map Matching API, use this property when the <code><a href="../Classes/DirectionsOptions.html#/s:16MapboxDirections0B7OptionsC13includesStepsSbvp">DirectionsOptions.includesSteps</a></code> property is <code>true</code> or when <code>coordinates</code> represents a trace with a high sample rate.
+This property has no effect if <code><a href="../Classes/DirectionsOptions.html#/s:16MapboxDirections0B7OptionsC13includesStepsSbvp">DirectionsOptions.includesSteps</a></code> is set to <code>false</code>, or if <code><a href="../Classes/MatchOptions.html#/s:16MapboxDirections12MatchOptionsC15waypointIndices10Foundation8IndexSetVSgvp">MatchOptions.waypointIndices</a></code> is non-nil.
+This property corresponds to the <a href="https://docs.mapbox.com/api/navigation/#retrieve-directions"><code>approaches</code></a> query parameter in the Mapbox Directions and Map Matching APIs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">separatesLegs</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L230">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
+                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ"><span class="token-name">==(_:_:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Waypoint</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L234-L236">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s23CustomStringConvertibleP11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSvp"><span class="token-name">description</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.1.0-rc.1/Sources/MapboxDirections/Waypoint.swift#L240-L248">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer limiter">
+      <p>© 2014–2021 <a class="link" href="https://www.mapbox.com/" target="_blank" rel="external noopener">Mapbox</a>. See <a class="link" href="https://github.com/mapbox/mapbox-directions-swift/blob/master/LICENSE.md" target="_blank" rel="external noopener">license</a> for more details.</p> Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.
+    </section>
+  </body>
+</div>
+</html>
