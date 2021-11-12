@@ -64,7 +64,7 @@ v0.30.0 is the last release of MapboxDirections.swift that supports a minimum de
 
 You’ll need a [Mapbox access token](https://docs.mapbox.com/api/#access-tokens-and-token-scopes) in order to use the API. If you’re already using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/), Mapbox Directions automatically recognizes your access token, as long as you’ve placed it in the `MBXAccessToken` key of your application’s Info.plist file.
 
-The examples below are each provided in Swift (denoted with `main.swift`), For further details, see the [Mapbox Directions for Swift API reference](https://docs.mapbox.com/ios/directions/api/2.0.0/).
+The examples below are each provided in Swift (denoted with `main.swift`). For further details, see the documentation available by the link in the [releases](https://github.com/mapbox/mapbox-directions-swift/releases).
 
 ### Calculating directions between locations
 
@@ -104,7 +104,7 @@ let task = directions.calculate(options) { (session, result) in
         guard let route = response.routes?.first, let leg = route.legs.first else {
             return
         }
-        
+
         print("Route via \(leg):")
 
         let distanceFormatter = LengthFormatter()
@@ -155,7 +155,7 @@ let task = directions.calculate(options) { (session, result) in
         guard let match = response.matches?.first, let leg = match.legs.first else {
             return
         }
-        
+
         print("Match via \(leg):")
 
         let distanceFormatter = LengthFormatter()
@@ -190,7 +190,7 @@ let isochroneOptions = IsochroneOptions(centerCoordinate: CLLocationCoordinate2D
                                             .init(value: 500, unit: .meters,     color: .orange),
                                             .init(value: 1,   unit: .kilometers, color: .red)
                                         ]))
-                                                                         
+
 isochrones.calculate(isochroneOptions) { session, result in
     if case .success(let response) = result {
          print(response)
@@ -214,7 +214,7 @@ if var routeCoordinates = route.shape?.coordinates, routeCoordinates.count > 0 {
 
     // Add the polyline to the map.
     mapView.addAnnotation(routeLine)
-    
+
     // Fit the viewport to the polyline.
     let camera = mapView.cameraThatFitsShape(routeLine, direction: 0, edgePadding: .zero)
     mapView.setCamera(camera, animated: true)
