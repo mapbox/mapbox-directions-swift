@@ -81,12 +81,12 @@ class RouteResponseTests: XCTestCase {
         var response: RouteResponse?
         XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
         
-        guard let response = response else {
+        guard let unwrappedResponse = response else {
             XCTFail("Failed to decode route fixture.")
             return
         }
         
-        let roadClassesViolations = response.roadClassViolations
+        let roadClassesViolations = unwrappedResponse.roadClassViolations
         
         XCTAssertNotNil(roadClassesViolations)
         XCTAssertEqual(roadClassesViolations?.first?.violations.count, 77, "Incorrect number of RoadClassViolations found")
