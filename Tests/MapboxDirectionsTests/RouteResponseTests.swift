@@ -17,21 +17,18 @@ class RouteResponseTests: XCTestCase {
         let waypoints = [originWaypoint]
         let routeOptions = RouteOptions(waypoints: waypoints)
         let responseOptions = ResponseOptions.route(routeOptions)
-        let accessToken = "deadbeefcafebebe"
-        let host = URL(string: "https://example.com")!
-        let directionsCredentials = Credentials(accessToken: accessToken, host: host)
         
         let routeResponse = RouteResponse(httpResponse: nil,
                                           waypoints: waypoints,
                                           options: responseOptions,
-                                          credentials: directionsCredentials)
+                                          credentials: BogusCredentials)
         
         do {
             let encodedRouteResponse = try JSONEncoder().encode(routeResponse)
             
             let decoder = JSONDecoder()
             decoder.userInfo[.options] = routeOptions
-            decoder.userInfo[.credentials] = directionsCredentials
+            decoder.userInfo[.credentials] = BogusCredentials
             
             let decodedRouteResponse = try decoder.decode(RouteResponse.self, from: encodedRouteResponse)
             
@@ -80,14 +77,19 @@ class RouteResponseTests: XCTestCase {
         options.roadClassesToAvoid = [.ferry, .toll]
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = options
-        decoder.userInfo[.credentials] = DirectionsCredentials(accessToken: "foo", host: URL(string: "https://test.website")!)
+        decoder.userInfo[.credentials] = BogusCredentials
         var response: RouteResponse?
         XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
         
-        let roadClassesViolations = response!.ignoredRoadClassesAvoidance
+        guard let response = response else {
+            XCTFail("Failed to decode route fixture.")
+            return
+        }
+        
+        let roadClassesViolations = response.roadClassViolations
         
         XCTAssertNotNil(roadClassesViolations)
-        XCTAssertEqual(roadClassesViolations?.first!.violations.count, 77, "Incorrect number of RoadClassViolations found")
+        XCTAssertEqual(roadClassesViolations?.first?.violations.count, 77, "Incorrect number of RoadClassViolations found")
         XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
         XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
     }

@@ -12,7 +12,11 @@ public struct RouteResponse {
     public let httpResponse: HTTPURLResponse?
     
     public let identifier: String?
-    public var routes: [Route]?    
+    public var routes: [Route]? {
+        didSet {
+            parseIgnoredRoadClassesAvoidance()
+        }
+    }
     public let waypoints: [Waypoint]?
     
     public let options: ResponseOptions
@@ -34,20 +38,23 @@ public struct RouteResponse {
      
      Resulting array is in the same order as `routes`, showing exact `RoadClasses` restrictions were ignored for each particular route at specific leg/step/intersection. `nil` and empty return arrays correspond to `nil` and empty `routes` array.
      */
-    public var ignoredRoadClassesAvoidance: [RouteRoadClassesViolations]? {
+    public private(set) var roadClassViolations: [RouteRoadClassesViolations]?
+    
+    mutating func parseIgnoredRoadClassesAvoidance() {
         guard case let .route(routeOptions) = options else {
-            assertionFailure("Only `RouteOptions` allow excluding road classes.")
-            return nil
+            roadClassViolations = nil
+            return
         }
         
         guard let routes = routes else {
-            return nil
+            roadClassViolations = nil
+            return
         }
         
         var result = [RouteRoadClassesViolations]()
         let avoidedClasses = routeOptions.roadClassesToAvoid
         
-        for route in routes {
+        for (routeIndex, route) in routes.enumerated() {
             var violations = [RoadClassExclusionViolation]()
             
             for (legIndex, leg) in route.legs.enumerated() {
@@ -56,7 +63,7 @@ public struct RouteResponse {
                         if let outletRoadClasses = intersection.outletRoadClasses,
                            !avoidedClasses.isDisjoint(with: outletRoadClasses) {
                             violations.append(RoadClassExclusionViolation(roadClasses: avoidedClasses.intersection(outletRoadClasses),
-                                                                          route: route,
+                                                                          routeIndex: routeIndex,
                                                                           legIndex: legIndex,
                                                                           stepIndex: stepIndex,
                                                                           intersectionIndex: intersectionIndex))
@@ -67,7 +74,7 @@ public struct RouteResponse {
             
             result.append(RouteRoadClassesViolations(route: route, violations: violations))
         }
-        return result
+        roadClassViolations = result
     }
 }
 
@@ -84,10 +91,12 @@ extension RouteResponse: Codable {
     public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: Credentials) {
         self.httpResponse = httpResponse
         self.identifier = identifier
+        self.options = options
         self.routes = routes
         self.waypoints = waypoints
-        self.options = options
         self.credentials = credentials
+        
+        parseIgnoredRoadClassesAvoidance()
     }
     
     public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: Credentials) throws {
@@ -183,6 +192,8 @@ extension RouteResponse: Codable {
         } else {
             routes = nil
         }
+        
+        parseIgnoredRoadClassesAvoidance()
     }
     
     public func encode(to encoder: Encoder) throws {
