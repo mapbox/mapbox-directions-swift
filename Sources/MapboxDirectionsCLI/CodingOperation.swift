@@ -4,7 +4,7 @@ import Turf
 import CoreLocation
 
 let accessToken: String? =
-    ProcessInfo.processInfo.environment["access_token"] ??
+    ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
     UserDefaults.standard.string(forKey: "MBXAccessToken")
 let credentials = DirectionsCredentials(accessToken: accessToken!)
 private let directions = Directions(credentials: credentials)
@@ -121,24 +121,12 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return interpolatedCoordinates
     }
     
-    private func requestResponse(_ coordinates: [Waypoint]?, includesSteps: Bool?) -> (Data?, Data) {
+    private func requestResponse(_ directionsOptions: OptionsType) -> (Data) {
         let semaphore = DispatchSemaphore(value: 0)
         
-        guard let waypoints = coordinates, let includesSteps = includesSteps else {
-            print("Failed to request response without coordinates.")
-            exit(1) }
+        var responseData: Data!
         
-        let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
-        options.includesSteps = includesSteps
-        options.allowsUTurnAtWaypoint = true
-        options.includesAlternativeRoutes = false
-        options.includesExitRoundaboutManeuver = true
-        options.roadClassesToAvoid = []
-        options.routeShapeResolution = .full
-        
-        var responseData: Data?
-        
-        let url = directions.url(forCalculating: options)
+        let url = directions.url(forCalculating: directionsOptions)
         let urlSession = URLSession(configuration: .ephemeral)
 
         let task = urlSession.dataTask(with: url) { (data, response, error) in
@@ -153,10 +141,7 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         task.resume()
         semaphore.wait()
         
-        let encoder = JSONEncoder()
-        let encodedOptions = try! encoder.encode(options)
-        
-        return (responseData, encodedOptions)
+        return (responseData)
     }
     
     init(options: ProcessingOptions) {
@@ -167,9 +152,8 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
     
     func execute() throws {
         
-//        let input = FileManager.default.contents(atPath: NSString(string: options.inputPath).expandingTildeInPath)!
         let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
-        let input: Data!
+        let input: Data
         
         let decoder = JSONDecoder()
         
@@ -178,8 +162,8 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         if let inputPath = options.inputPath {
             input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
         } else {
-            let response = requestResponse(directionsOptions.waypoints, includesSteps: directionsOptions.includesSteps)
-            input = response.0
+            let response = requestResponse(directionsOptions)
+            input = response
         }
         
         decoder.userInfo = [.options: directionsOptions,
