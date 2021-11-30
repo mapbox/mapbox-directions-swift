@@ -282,7 +282,7 @@ To run (and build if it wasn't yet) `MapboxDirectionsCLI` and see usage:
 
 1. `swift run mapbox-directions-swift -h`
 
-For further details, see the [MapboxDirectionsCLI documentation](ADD LINK).
+For further details, see the [MapboxDirectionsCLI documentation](CommandLineTool.md).
 
 ## Pricing
 
