@@ -38,10 +38,10 @@
 		2B5F0DFC273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
 		2B5F0DFD273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
 		2B5F0DFE273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */; };
-		2B5F0E00273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
-		2B5F0E01273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
-		2B5F0E02273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
-		2B5F0E03273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */; };
+		2B5F0E00273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */; };
+		2B5F0E01273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */; };
+		2B5F0E02273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */; };
+		2B5F0E03273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */; };
 		2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
 		2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
 		2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
@@ -478,7 +478,7 @@
 		2B540804245B09E1006C820B /* routeRefreshRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = routeRefreshRoute.json; sourceTree = "<group>"; };
 		2B540808245B23BE006C820B /* incorrectRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = incorrectRouteRefreshResponse.json; sourceTree = "<group>"; };
 		2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tollAndFerryDirectionsRoute.json; sourceTree = "<group>"; };
-		2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRoadClassesViolations.swift; sourceTree = "<group>"; };
+		2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadClassExclusionViolation.swift; sourceTree = "<group>"; };
 		2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileIdentifier.swift; sourceTree = "<group>"; };
 		2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneOptions.swift; sourceTree = "<group>"; };
 		2B9F387E272AE23A001DBA12 /* IsochroneError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneError.swift; sourceTree = "<group>"; };
@@ -822,7 +822,7 @@
 				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
 				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
 				2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */,
-				2B5F0DFF273BEB3600CC2C1A /* RouteRoadClassesViolations.swift */,
+				2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */,
 				2B5407F12452FA8C006C820B /* RefreshedRoute.swift */,
 				43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */,
 				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
@@ -1401,7 +1401,7 @@
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
-				2B5F0E01273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
+				2B5F0E01273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1494,7 +1494,7 @@
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
-				2B5F0E02273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
+				2B5F0E02273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1587,7 +1587,7 @@
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
-				2B5F0E03273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
+				2B5F0E03273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1646,7 +1646,7 @@
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
-				2B5F0E00273BEB3600CC2C1A /* RouteRoadClassesViolations.swift in Sources */,
+				2B5F0E00273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,

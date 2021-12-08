@@ -86,11 +86,11 @@ class RouteResponseTests: XCTestCase {
             return
         }
         
-        let roadClassesViolations = unwrappedResponse.roadClassViolations
+        let roadClassesViolations = unwrappedResponse.roadClassExclusionViolations
         
         XCTAssertNotNil(roadClassesViolations)
-        XCTAssertEqual(roadClassesViolations?.first?.violations.count, 77, "Incorrect number of RoadClassViolations found")
-        XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
-        XCTAssertEqual(roadClassesViolations?.first?.violations(at: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
+        XCTAssertEqual(roadClassesViolations?.count, 77, "Incorrect number of RoadClassViolations found")
+        XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
+        XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
     }
 }
