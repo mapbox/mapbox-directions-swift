@@ -99,9 +99,9 @@ extension Route {
      
      - parameter refreshedRoute: The route containing leg attributes to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the attributes from a one-leg route affects only the last leg of the receiver.
      */
-    public func refreshLegAttributes(from refreshedRoute: RefreshedRoute) {
-        for (leg, refreshedLeg) in zip(legs.suffix(refreshedRoute.legs.count), refreshedRoute.legs) {
-            leg.attributes = refreshedLeg.attributes
+    public func refreshLegAttributes(from refreshedRoute: RouteRefreshing) {
+        for (leg, refreshedLeg) in zip(legs.suffix(refreshedRoute.refreshedLegs.count), refreshedRoute.refreshedLegs) {
+            leg.attributes = refreshedLeg.refreshedAttributes
         }
     }
 }
