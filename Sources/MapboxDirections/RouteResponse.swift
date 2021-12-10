@@ -14,7 +14,7 @@ public struct RouteResponse {
     public let identifier: String?
     public var routes: [Route]? {
         didSet {
-            parseIgnoredRoadClassesAvoidance()
+            updateRoadClassExclusionViolations()
         }
     }
     public let waypoints: [Waypoint]?
@@ -32,11 +32,11 @@ public struct RouteResponse {
     public var created: Date = Date()
     
     /**
-     Managed of `RoadClasses` restrictions specified to `RouteOptions.roadClassesToAvoid` which were violated during route calculation.
+     Managed array of `RoadClasses` restrictions specified to `RouteOptions.roadClassesToAvoid` which were violated during route calculation.
      
      Routing engine may still utilize `RoadClasses` meant to be avoided in cases when routing is impossible otherwise.
      
-     Resulting array is in the same order as `routes`, showing exact `RoadClasses` restrictions were ignored for each particular route at specific leg/step/intersection. `nil` and empty return arrays correspond to `nil` and empty `routes` array.
+     Violations are ordered by routes from the `routes` array, then by a leg, step, and intersection, where `RoadClasses` restrictions were ignored. `nil` and empty return arrays correspond to `nil` and empty `routes` array respectively.
      */
     public private(set) var roadClassExclusionViolations: [RoadClassExclusionViolation]?
 }
@@ -59,7 +59,7 @@ extension RouteResponse: Codable {
         self.waypoints = waypoints
         self.credentials = credentials
         
-        parseIgnoredRoadClassesAvoidance()
+        updateRoadClassExclusionViolations()
     }
     
     public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: Credentials) throws {
@@ -156,7 +156,7 @@ extension RouteResponse: Codable {
             routes = nil
         }
         
-        parseIgnoredRoadClassesAvoidance()
+        updateRoadClassExclusionViolations()
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -170,7 +170,7 @@ extension RouteResponse: Codable {
 
 extension RouteResponse {
     
-    mutating func parseIgnoredRoadClassesAvoidance() {
+    mutating func updateRoadClassExclusionViolations() {
         guard case let .route(routeOptions) = options else {
             roadClassExclusionViolations = nil
             return
