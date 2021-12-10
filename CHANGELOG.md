@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.2.0
+
+* Added the `RouteResponse.roadClassViolations` property, which indicates any requested `RouteOptions.roadClassesToAvoid` values that could not be satisfied when calculating the routes. You can use convenience `RouteResponse.exclusionViolations(routeIndex:legIndex:stepIndex:intersectionIndex:)` method to search for a specific item. ([#627](https://github.com/mapbox/mapbox-directions-swift/pull/627))
+
 ## v2.1.0
 
 * Added the `Waypoint.snappedDistance` property to get the straight-line distance from the waypoint to the location it was snapped to in the `RouteResponse`. ([#616](https://github.com/mapbox/mapbox-directions-swift/pull/616))
@@ -11,7 +15,7 @@
 * Added the `RouteOptions.maximumHeight` and `RouteOptions.maximumWidth` properties for ensuring that the resulting routes can accommodate a vehicle of a certain size. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
 * The `DirectionsPriority` struct now conforms to the `Codable` protocol. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
 * Fixed an issue where the `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` properties were excluded from the encoded representation of a `RouteOptions` object. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
-* Added the `RouteResponse.roadClassViolations` property, which indicates any requested `RouteOptions.roadClassesToAvoid` values that could not be satisfied when calculating the routes. You can use convenience `RouteResponse.exclusionViolations(routeIndex:legIndex:stepIndex:intersectionIndex:)` method to search for a specific item. ([#627](https://github.com/mapbox/mapbox-directions-swift/pull/627))
+
 
 ## v2.0.0
 
