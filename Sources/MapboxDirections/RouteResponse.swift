@@ -12,7 +12,11 @@ public struct RouteResponse {
     public let httpResponse: HTTPURLResponse?
     
     public let identifier: String?
-    public var routes: [Route]?    
+    public var routes: [Route]? {
+        didSet {
+            updateRoadClassExclusionViolations()
+        }
+    }
     public let waypoints: [Waypoint]?
     
     public let options: ResponseOptions
@@ -26,6 +30,15 @@ public struct RouteResponse {
      This property does not persist after encoding and decoding.
      */
     public var created: Date = Date()
+    
+    /**
+     Managed array of `RoadClasses` restrictions specified to `RouteOptions.roadClassesToAvoid` which were violated during route calculation.
+     
+     Routing engine may still utilize `RoadClasses` meant to be avoided in cases when routing is impossible otherwise.
+     
+     Violations are ordered by routes from the `routes` array, then by a leg, step, and intersection, where `RoadClasses` restrictions were ignored. `nil` and empty return arrays correspond to `nil` and empty `routes` array respectively.
+     */
+    public private(set) var roadClassExclusionViolations: [RoadClassExclusionViolation]?
 }
 
 extension RouteResponse: Codable {
@@ -41,10 +54,12 @@ extension RouteResponse: Codable {
     public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: Credentials) {
         self.httpResponse = httpResponse
         self.identifier = identifier
+        self.options = options
         self.routes = routes
         self.waypoints = waypoints
-        self.options = options
         self.credentials = credentials
+        
+        updateRoadClassExclusionViolations()
     }
     
     public init(matching response: MapMatchingResponse, options: MatchOptions, credentials: Credentials) throws {
@@ -140,6 +155,8 @@ extension RouteResponse: Codable {
         } else {
             routes = nil
         }
+        
+        updateRoadClassExclusionViolations()
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -149,4 +166,129 @@ extension RouteResponse: Codable {
         try container.encodeIfPresent(waypoints, forKey: .waypoints)
     }
 
+}
+
+extension RouteResponse {
+    
+    mutating func updateRoadClassExclusionViolations() {
+        guard case let .route(routeOptions) = options else {
+            roadClassExclusionViolations = nil
+            return
+        }
+        
+        guard let routes = routes else {
+            roadClassExclusionViolations = nil
+            return
+        }
+        
+        let avoidedClasses = routeOptions.roadClassesToAvoid
+        
+        guard !avoidedClasses.isEmpty else {
+            roadClassExclusionViolations = nil
+            return
+        }
+        
+        var violations = [RoadClassExclusionViolation]()
+        
+        for (routeIndex, route) in routes.enumerated() {
+            for (legIndex, leg) in route.legs.enumerated() {
+                for (stepIndex, step) in leg.steps.enumerated() {
+                    for (intersectionIndex, intersection) in (step.intersections ?? []).enumerated() {
+                        if let outletRoadClasses = intersection.outletRoadClasses,
+                           !avoidedClasses.isDisjoint(with: outletRoadClasses) {
+                            violations.append(RoadClassExclusionViolation(roadClasses: avoidedClasses.intersection(outletRoadClasses),
+                                                                          routeIndex: routeIndex,
+                                                                          legIndex: legIndex,
+                                                                          stepIndex: stepIndex,
+                                                                          intersectionIndex: intersectionIndex))
+                        }
+                    }
+                }
+            }
+        }
+        roadClassExclusionViolations = violations
+    }
+    
+    /**
+     Filters `roadClassExclusionViolations` lazily to search for specific leg and step.
+     
+     - parameter routeIndex: Index of a route inside current `RouteResponse` to search in.
+     - parameter legIndex: Index of a leg inside related `Route`to search in.
+     - returns: Lazy filtered array of `RoadClassExclusionViolation` under given indicies.
+     
+     Passing `nil` as `legIndex` will result in searching for all legs.
+     */
+    public func exclusionViolations(routeIndex: Int, legIndex: Int? = nil) -> LazyFilterSequence<[RoadClassExclusionViolation]> {
+        return filteredViolations(routeIndex: routeIndex,
+                                  legIndex: legIndex,
+                                  stepIndex: nil,
+                                  intersectionIndex: nil)
+    }
+    
+    /**
+     Filters `roadClassExclusionViolations` lazily to search for specific leg and step.
+     
+     - parameter routeIndex: Index of a route inside current `RouteResponse` to search in.
+     - parameter legIndex: Index of a leg inside related `Route`to search in.
+     - parameter stepIndex: Index of a step inside given `Route`'s leg.
+     - returns: Lazy filtered array of `RoadClassExclusionViolation` under given indicies.
+     
+     Passing `nil` as `stepIndex` will result in searching for all steps.
+     */
+    public func exclusionViolations(routeIndex: Int, legIndex: Int, stepIndex: Int? = nil) -> LazyFilterSequence<[RoadClassExclusionViolation]> {
+        return filteredViolations(routeIndex: routeIndex,
+                                  legIndex: legIndex,
+                                  stepIndex: stepIndex,
+                                  intersectionIndex: nil)
+    }
+    
+    /**
+     Filters `roadClassExclusionViolations` lazily to search for specific leg, step and intersection.
+     
+     - parameter routeIndex: Index of a route inside current `RouteResponse` to search in.
+     - parameter legIndex: Index of a leg inside related `Route`to search in.
+     - parameter stepIndex: Index of a step inside given `Route`'s leg.
+     - parameter intersectionIndex: Index of an intersection inside given `Route`'s leg and step.
+     - returns: Lazy filtered array of `RoadClassExclusionViolation` under given indicies.
+     
+     Passing `nil` as `intersectionIndex` will result in searching for all intersections of given step.
+     */
+    public func exclusionViolations(routeIndex: Int, legIndex: Int, stepIndex: Int, intersectionIndex: Int?) -> LazyFilterSequence<[RoadClassExclusionViolation]> {
+        return filteredViolations(routeIndex: routeIndex,
+                                  legIndex: legIndex,
+                                  stepIndex: stepIndex,
+                                  intersectionIndex: intersectionIndex)
+    }
+    
+    private func filteredViolations(routeIndex: Int, legIndex: Int? = nil, stepIndex: Int? = nil, intersectionIndex: Int? = nil) -> LazyFilterSequence<[RoadClassExclusionViolation]> {
+        assert(!(stepIndex == nil && intersectionIndex != nil), "It is forbidden to select `intersectionIndex` without specifying `stepIndex`.")
+        
+        guard let roadClassExclusionViolations = roadClassExclusionViolations else {
+            return LazyFilterSequence<[RoadClassExclusionViolation]>(_base: [], {_ in true})
+        }
+        
+        var filtered = roadClassExclusionViolations.lazy.filter {
+            $0.routeIndex == routeIndex
+        }
+        
+        if let legIndex = legIndex {
+            filtered = filtered.filter {
+                $0.legIndex == legIndex
+            }
+        }
+        
+        if let stepIndex = stepIndex {
+            filtered = filtered.filter {
+                $0.stepIndex == stepIndex
+            }
+        }
+        
+        if let intersectionIndex = intersectionIndex {
+            filtered = filtered.filter {
+                $0.intersectionIndex == intersectionIndex
+            }
+        }
+        
+        return filtered
+    }
 }

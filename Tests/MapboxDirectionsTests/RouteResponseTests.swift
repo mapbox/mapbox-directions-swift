@@ -17,21 +17,18 @@ class RouteResponseTests: XCTestCase {
         let waypoints = [originWaypoint]
         let routeOptions = RouteOptions(waypoints: waypoints)
         let responseOptions = ResponseOptions.route(routeOptions)
-        let accessToken = "deadbeefcafebebe"
-        let host = URL(string: "https://example.com")!
-        let directionsCredentials = Credentials(accessToken: accessToken, host: host)
         
         let routeResponse = RouteResponse(httpResponse: nil,
                                           waypoints: waypoints,
                                           options: responseOptions,
-                                          credentials: directionsCredentials)
+                                          credentials: BogusCredentials)
         
         do {
             let encodedRouteResponse = try JSONEncoder().encode(routeResponse)
             
             let decoder = JSONDecoder()
             decoder.userInfo[.options] = routeOptions
-            decoder.userInfo[.credentials] = directionsCredentials
+            decoder.userInfo[.credentials] = BogusCredentials
             
             let decodedRouteResponse = try decoder.decode(RouteResponse.self, from: encodedRouteResponse)
             
@@ -61,5 +58,39 @@ class RouteResponseTests: XCTestCase {
         } catch {
             XCTFail("Failed with error: \(error)")
         }
+    }
+    
+    func testRoadClassesViolations() {
+        guard let fixtureURL = Bundle.module.url(forResource: "tollAndFerryDirectionsRoute", withExtension:"json") else {
+            XCTFail()
+            return
+        }
+        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {
+            XCTFail()
+            return
+        }
+    
+        let options = RouteOptions(coordinates: [.init(latitude: 14.758522,
+                                                       longitude: 55.193541),
+                                                 .init(latitude: 12.54072,
+                                                       longitude: 55.685213)])
+        options.roadClassesToAvoid = [.ferry, .toll]
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = BogusCredentials
+        var response: RouteResponse?
+        XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
+        
+        guard let unwrappedResponse = response else {
+            XCTFail("Failed to decode route fixture.")
+            return
+        }
+        
+        let roadClassesViolations = unwrappedResponse.roadClassExclusionViolations
+        
+        XCTAssertNotNil(roadClassesViolations)
+        XCTAssertEqual(roadClassesViolations?.count, 77, "Incorrect number of RoadClassViolations found")
+        XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
+        XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
     }
 }
