@@ -1,7 +1,7 @@
 import Foundation
 import MapboxDirections
 import Turf
-#if canImport(CoreLocation)
+#if !os(Linux)
 import CoreLocation
 #endif
 
@@ -32,6 +32,8 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
                let jsonData = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) {
                 outputText = String(data: jsonData, encoding: .utf8)!
             }
+            
+        #if !os(Linux)
         case .gpx:
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
@@ -56,6 +58,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             }
             gpxText.append("\n</gpx>")
             outputText = gpxText
+            #endif
         }
         
         if let outputPath = options.outputPath {
@@ -67,6 +70,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
+    #if !os(Linux)
     private func interpolate(route: Route) -> [CLLocationCoordinate2D?] {
         guard route.expectedTravelTime > 0, let polyline = route.shape,
               let firstCoordinate = polyline.coordinates.first else { return [] }
@@ -82,6 +86,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
         return interpolatedCoordinates
     }
+    #endif
     
     init(options: ProcessingOptions) {
         self.options = options
