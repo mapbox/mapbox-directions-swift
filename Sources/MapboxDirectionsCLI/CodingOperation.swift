@@ -1,9 +1,7 @@
 import Foundation
 import MapboxDirections
 import Turf
-#if canImport(CoreLocation)
 import CoreLocation
-#endif
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
