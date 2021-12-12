@@ -33,8 +33,8 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
                 outputText = String(data: jsonData, encoding: .utf8)!
             }
             
-        #if !os(Linux)
         case .gpx:
+            #if !os(Linux)
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
             
@@ -58,6 +58,9 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             }
             gpxText.append("\n</gpx>")
             outputText = gpxText
+            #else
+            print("GPX output requires use of CoreLocation, a framework that is not available on Linux.")
+            exit(1)
             #endif
         }
         
