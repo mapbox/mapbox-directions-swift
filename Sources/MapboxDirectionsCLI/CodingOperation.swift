@@ -6,7 +6,7 @@ import CoreLocation
 let accessToken: String? =
     ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
     UserDefaults.standard.string(forKey: "MBXAccessToken")
-let credentials = DirectionsCredentials(accessToken: accessToken!)
+let credentials = Credentials(accessToken: accessToken!)
 private let directions = Directions(credentials: credentials)
 
 protocol DirectionsResultsProvider {
