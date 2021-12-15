@@ -15,14 +15,8 @@ for opt, arg in opts:
      docs_root = arg
      
 # receive, parse and remove index file
-index_file = "search.json"
-urllib.request.urlretrieve('{base_url}/search.json'.format(base_url=base_url), index_file)
-
-with open(index_file) as index:
-  index_data = json.load(index)
-  
-if os.path.exists(index_file):
-  os.remove(index_file)
+with urllib.request.urlopen('{base_url}/search.json'.format(base_url=base_url)) as url:
+  index_data = json.loads(url.read().decode())
 
 # fill the [symbol: url] dictionary
 symbols = dict()
