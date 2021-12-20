@@ -16,7 +16,7 @@ for opt, arg in opts:
      
 # receive, parse and remove index file
 with urllib.request.urlopen('{base_url}/search.json'.format(base_url=base_url)) as url:
-  index_data = json.loads(url.read().decode())
+  index_data = json.load(url)
 
 # fill the [symbol: url] dictionary
 symbols = dict()
@@ -38,4 +38,4 @@ for root, dirs, files in os.walk(docs_root):
       # Mapbox Directions specific
       line = re.sub(r'MapboxDirections\s+(Docs|Reference)', lambda x: 'Mapbox Directions for Swift {section}'.format(section=x.group(1)), line.rstrip('\n'))
       
-      print(line)
+      sys.stdout.write(line)
