@@ -34,4 +34,34 @@ class GeoJSONTests: XCTestCase {
         XCTAssertEqual(lineString?.coordinates.first, lineString?.coordinates.last)
         XCTAssertEqual(lineString?.polylineEncodedString(precision: 1e6), "s{byuArigzhF??")
     }
+    
+    func testLineStringCoding() throws {
+        let coordinates: [LocationCoordinate2D] = [
+            .init(latitude: 0, longitude: 0),
+            .init(latitude: 1, longitude: 1),
+            .init(latitude: -1, longitude: -1),
+        ]
+        let options = RouteOptions(coordinates: coordinates)
+        options.shapeFormat = .geoJSON
+        
+        let json: [String: Any?] = [
+            "type": "LineString",
+            "coordinates": [[0, 0], [1, 1], [-1, -1]],
+        ]
+        let data = try JSONSerialization.data(withJSONObject: json, options: [])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        let polyLineString = try decoder.decode(PolyLineString.self, from: data)
+        guard case .lineString = polyLineString else {
+            XCTFail("Should decode polyline/linestring as linestring.")
+            return
+        }
+        
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        let reencodedData = try encoder.encode(polyLineString)
+        let reencodedJSON = try JSONSerialization.jsonObject(with: reencodedData, options: [])
+        XCTAssertEqual(json as NSDictionary, reencodedJSON as? NSDictionary)
+    }
 }
