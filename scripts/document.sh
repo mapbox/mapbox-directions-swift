@@ -4,15 +4,7 @@ set -e
 set -o pipefail
 set -u
 
-if [ -z `which jazzy` ]; then
-    echo "Installing jazzy…"
-    gem install jazzy
-    if [ -z `which jazzy` ]; then
-        echo "Unable to install jazzy. See https://github.com/mapbox/mapbox-gl-native/blob/master/platform/ios/INSTALL.md"
-        exit 1
-    fi
-fi
-
+bundle check || bundle install
 
 OUTPUT=${OUTPUT:-documentation}
 
@@ -40,7 +32,7 @@ perl -pi -e "s/\\$\\{MINOR_VERSION\\}/${MINOR_VERSION}/" "${README}"
 echo "## Changes in version ${RELEASE_VERSION}" >> "${README}"
 sed -n -e '/^## /{' -e ':a' -e 'n' -e '/^## /q' -e 'p' -e 'ba' -e '}' CHANGELOG.md >> "${README}"
 
-jazzy \
+bundle exec jazzy \
     --config docs/jazzy.yml \
     --sdk iphonesimulator \
     --module-version ${SHORT_VERSION} \
@@ -51,11 +43,9 @@ jazzy \
     --theme ${THEME} \
     --output ${OUTPUT} \
     --build-tool-arguments CODE_SIGN_IDENTITY=,CODE_SIGNING_REQUIRED=NO,CODE_SIGNING_ALLOWED=NO
-
-REPLACE_REGEXP='s/MapboxDirections\s+(Docs|Reference)/Mapbox Directions for Swift $1/, '
-
-find ${OUTPUT} -name *.html -exec \
-    perl -pi -e "$REPLACE_REGEXP" {} \;
-
+    
+# Link to turf documentation
+TURF_VERSION=$(python3 -c "import json; print(list(filter(lambda x:x['package']=='Turf', json.loads(open('Package.resolved').read())['object']['pins']))[0]['state']['version'])")
+python3 scripts/postprocess-docs.py -b "https://mapbox.github.io/turf-swift/${TURF_VERSION}" -d "${OUTPUT}"
 
 echo $SHORT_VERSION > $OUTPUT/latest_version
