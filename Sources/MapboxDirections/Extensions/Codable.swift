@@ -38,18 +38,12 @@ enum PolyLineString {
 }
 
 extension PolyLineString: Codable {
-    private enum LineStringCodingKeys: String, CodingKey {
-        case coordinates
-    }
-    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let options = decoder.userInfo[.options] as? DirectionsOptions
         switch options?.shapeFormat ?? .default {
         case .geoJSON:
-            let lineStringContainer = try decoder.container(keyedBy: LineStringCodingKeys.self)
-            let coordinates = try lineStringContainer.decode([LocationCoordinate2DCodable].self, forKey: .coordinates).map { $0.decodedCoordinates }
-            self = .lineString(LineString(coordinates))
+            self = .lineString(try container.decode(LineString.self))
         case .polyline, .polyline6:
             let precision = options?.shapeFormat == .polyline6 ? 1e6 : 1e5
             let encodedPolyline = try container.decode(String.self)
@@ -61,8 +55,7 @@ extension PolyLineString: Codable {
         var container = encoder.singleValueContainer()
         switch self {
         case let .lineString(lineString):
-            var lineStringContainer = encoder.container(keyedBy: LineStringCodingKeys.self)
-            try lineStringContainer.encode(lineString.coordinates.map { LocationCoordinate2DCodable($0) }, forKey: .coordinates)
+            try container.encode(lineString)
         case let .polyline(encodedPolyline, precision: _):
             try container.encode(encodedPolyline)
         }
