@@ -1,9 +1,6 @@
 import Foundation
 import MapboxDirections
 import Turf
-#if !os(Linux)
-import CoreLocation
-#endif
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
@@ -73,23 +70,22 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
-    #if !os(Linux)
-    private func interpolate(route: Route) -> [CLLocationCoordinate2D?] {
+    private func interpolate(route: Route, timeInterval: TimeInterval) -> [LocationCoordinate2D?] {
         guard route.expectedTravelTime > 0, let polyline = route.shape,
               let firstCoordinate = polyline.coordinates.first else { return [] }
         
-        var distanceAway: CLLocationDistance = 0
-        let distance = route.distance/route.expectedTravelTime
+        var distanceAway: LocationDistance = 0
+        let distancePerTick = route.distance/route.expectedTravelTime
         var interpolatedCoordinates = [firstCoordinate]
         while distanceAway <= route.distance {
             if let nextCoordinate = polyline.coordinateFromStart(distance: distanceAway) {
                 interpolatedCoordinates.append(nextCoordinate)
             }
-            distanceAway += distance
+            distanceAway += distancePerTick * timeInterval
         }
+        interpolatedCoordinates.append(polyline.coordinates.last)
         return interpolatedCoordinates
     }
-    #endif
     
     init(options: ProcessingOptions) {
         self.options = options
