@@ -44,13 +44,16 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             var time = Date()
             
             routes.forEach { route in
-                let coordinates = interpolate(route: route)
+                let coordinates = interpolate(route: route, timeInterval: timeInterval)
                 for coord in coordinates {
                     guard let lat = coord?.latitude, let lon = coord?.longitude else { continue }
                     gpxText.append("\n<wpt lat=\"\(lat)\" lon=\"\(lon)\">")
                     gpxText.append("\n\t<time> \(dateFormatter.string(from: time)) </time>")
                     gpxText.append("\n</wpt>")
                     time.addTimeInterval(timeInterval)
+                }
+                if routes.count > 1 {
+                    gpxText.append("<!--Moving to next route-->")
                 }
             }
             gpxText.append("\n</gpx>")
