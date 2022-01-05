@@ -139,11 +139,10 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         var routeResponse: RouteResponse?
         var matchResponse: MapMatchingResponse?
         if options.outputFormat == .gpx {
-            let gpxData = try String(contentsOfFile: options.inputPath).data(using: .utf8)!
             do {
-                routeResponse = try decoder.decode(RouteResponse.self, from: gpxData)
+                routeResponse = try decoder.decode(RouteResponse.self, from: input)
             } catch {
-                matchResponse = try decoder.decode(MapMatchingResponse.self, from: gpxData)
+                matchResponse = try decoder.decode(MapMatchingResponse.self, from: input)
             }
         }
         let data = try processResponse(decoder, type: ResponceType.self, from: input)
