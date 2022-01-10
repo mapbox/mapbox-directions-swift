@@ -4,7 +4,19 @@ import Turf
 
 private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
 
-class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > {
+protocol DirectionsResultsProvider {
+    var directionsResults: [DirectionsResult]? { get }
+}
+
+extension RouteResponse: DirectionsResultsProvider {
+    var directionsResults: [DirectionsResult]? { routes }
+}
+
+extension MapMatchingResponse: DirectionsResultsProvider {
+    var directionsResults: [DirectionsResult]? { matches }
+}
+
+class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, OptionsType : DirectionsOptions > {
     
     // MARK: - Parameters
     
@@ -19,8 +31,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
     }
     
     private func processOutput(_ data: Data,
-                               routeResponse: RouteResponse? = nil,
-                               matchResponse: MapMatchingResponse? = nil) throws {
+                               directionsResultsProvider: DirectionsResultsProvider? = nil) throws {
         var outputText: String = ""
         
         switch options.outputFormat {
@@ -36,22 +47,13 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
             var gpxText: String = String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
             gpxText.append("\n<gpx xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.topografix.com/GPX/1/1\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\">")
             
-            if let routeResponse = routeResponse,
-               let routes = routeResponse.routes {
-                routes.forEach { route in
-                    let text = populateGPX(route)
+            if let directionsResultsProvider = directionsResultsProvider,
+               let directionsResults = directionsResultsProvider.directionsResults {
+                directionsResults.forEach { result in
+                    let text = populateGPX(result)
                     gpxText.append(text)
-                    if routes.count > 1 {
+                    if directionsResults.count > 1 {
                         gpxText.append("<!--Moving to next route-->")
-                    }
-                }
-            } else if let matchResponse = matchResponse,
-                      let matches = matchResponse.matches {
-                matches.forEach { match in
-                    let text = populateGPX(nil, match)
-                    gpxText.append(text)
-                    if matches.count > 1 {
-                        gpxText.append("<!--Moving to next match-->")
                     }
                 }
             }
@@ -68,7 +70,7 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         }
     }
     
-    private func populateGPX(_ route: Route? = nil, _ match: Match? = nil) -> String {
+    private func populateGPX(_ result: DirectionsResult?) -> String {
         let timeInterval: TimeInterval = 1
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = .withInternetDateTime
@@ -76,19 +78,11 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         var text: String = ""
         var coordinates: [LocationCoordinate2D?] = []
         
-        if route != nil {
-            guard let route = route else { return "" }
-            coordinates = interpolate(shape: route.shape,
-                                      expectedTravelTime: route.expectedTravelTime,
-                                      distance: route.distance,
-                                      timeInterval: timeInterval)
-        } else if match != nil {
-            guard let match = match else { return "" }
-            coordinates = interpolate(shape: match.shape,
-                                      expectedTravelTime: match.expectedTravelTime,
-                                      distance: match.distance,
-                                     timeInterval: timeInterval)
-        }
+        guard let result = result else { return "" }
+        coordinates = interpolate(shape: result.shape,
+                                  expectedTravelTime: result.expectedTravelTime,
+                                  distance: result.distance,
+                                  timeInterval: timeInterval)
         
         for coord in coordinates {
             guard let lat = coord?.latitude, let lon = coord?.longitude else { continue }
@@ -136,17 +130,16 @@ class CodingOperation<ResponceType : Codable, OptionsType : DirectionsOptions > 
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
         
-        var routeResponse: RouteResponse?
-        var matchResponse: MapMatchingResponse?
+        var directionsResultsProvider: DirectionsResultsProvider?
         if options.outputFormat == .gpx {
             do {
-                routeResponse = try decoder.decode(RouteResponse.self, from: input)
+                directionsResultsProvider = try decoder.decode(ResponceType.self, from: input) as DirectionsResultsProvider
             } catch {
-                matchResponse = try decoder.decode(MapMatchingResponse.self, from: input)
+                directionsResultsProvider = try decoder.decode(MapMatchingResponse.self, from: input) as DirectionsResultsProvider
             }
         }
         let data = try processResponse(decoder, type: ResponceType.self, from: input)
         
-        try processOutput(data, routeResponse: routeResponse, matchResponse: matchResponse)
+        try processOutput(data, directionsResultsProvider: directionsResultsProvider)
     }
 }
