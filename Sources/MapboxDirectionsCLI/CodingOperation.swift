@@ -16,7 +16,7 @@ extension MapMatchingResponse: DirectionsResultsProvider {
     var directionsResults: [DirectionsResult]? { matches }
 }
 
-class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, OptionsType : DirectionsOptions > {
+class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, OptionsType : DirectionsOptions > {
     
     // MARK: - Parameters
     
@@ -24,8 +24,8 @@ class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, Option
     
     // MARK: - Helper methods
     
-    private func processResponse(_ decoder: JSONDecoder, type: ResponceType.Type, from data: Data) throws -> (Data, ResponceType) {
-        let result = try decoder.decode(type, from: data)
+    private func processResponse(_ decoder: JSONDecoder, from data: Data) throws -> (Data, ResponseType) {
+        let result = try decoder.decode(ResponseType.self, from: data)
         let encoder = JSONEncoder()
         let data = try encoder.encode(result)
         return (data, result)
@@ -134,7 +134,7 @@ class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, Option
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
         
-        let (data, directionsResultsProvider) = try processResponse(decoder, type: ResponceType.self, from: input)
+        let (data, directionsResultsProvider) = try processResponse(decoder, from: input)
         
         try processOutput(data, directionsResultsProvider: directionsResultsProvider)
     }
