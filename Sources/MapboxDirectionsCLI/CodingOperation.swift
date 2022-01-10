@@ -24,10 +24,11 @@ class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, Option
     
     // MARK: - Helper methods
     
-    private func processResponse<T>(_ decoder: JSONDecoder, type: T.Type, from data: Data) throws -> Data where T : Codable {
+    private func processResponse(_ decoder: JSONDecoder, type: ResponceType.Type, from data: Data) throws -> (Data, ResponceType) {
         let result = try decoder.decode(type, from: data)
         let encoder = JSONEncoder()
-        return try encoder.encode(result)
+        let data = try encoder.encode(result)
+        return (data, result)
     }
     
     private func processOutput(_ data: Data,
@@ -94,7 +95,10 @@ class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, Option
         return text
     }
     
-    private func interpolate(shape: LineString?, expectedTravelTime: TimeInterval, distance: LocationDistance, timeInterval: TimeInterval) -> [LocationCoordinate2D?] {
+    private func interpolate(shape: LineString?,
+                             expectedTravelTime: TimeInterval,
+                             distance: LocationDistance,
+                             timeInterval: TimeInterval) -> [LocationCoordinate2D?] {
         guard expectedTravelTime > 0, let polyline = shape,
               let firstCoordinate = polyline.coordinates.first,
               let lastCoordinate = polyline.coordinates.last else { return [] }
@@ -130,15 +134,7 @@ class CodingOperation<ResponceType : Codable & DirectionsResultsProvider, Option
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: BogusCredentials]
         
-        var directionsResultsProvider: DirectionsResultsProvider?
-        if options.outputFormat == .gpx {
-            do {
-                directionsResultsProvider = try decoder.decode(ResponceType.self, from: input) as DirectionsResultsProvider
-            } catch {
-                directionsResultsProvider = try decoder.decode(MapMatchingResponse.self, from: input) as DirectionsResultsProvider
-            }
-        }
-        let data = try processResponse(decoder, type: ResponceType.self, from: input)
+        let (data, directionsResultsProvider) = try processResponse(decoder, type: ResponceType.self, from: input)
         
         try processOutput(data, directionsResultsProvider: directionsResultsProvider)
     }
