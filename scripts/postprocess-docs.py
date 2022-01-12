@@ -38,4 +38,4 @@ for root, dirs, files in os.walk(docs_root):
       # Mapbox Directions specific
       line = re.sub(r'MapboxDirections\s+(Docs|Reference)', lambda x: 'Mapbox Directions for Swift {section}'.format(section=x.group(1)), line.rstrip('\n'))
       
-      sys.stdout.write(line)
+      sys.stdout.write(line + "\n")
