@@ -76,10 +76,10 @@
 		2BBBD08E257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
 		2BBBD08F257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
 		2BBBD090257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
-		2BF398C527620CD7000C9A72 /* RouteRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */; };
-		2BF398C627620CD7000C9A72 /* RouteRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */; };
-		2BF398C727620CD7000C9A72 /* RouteRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */; };
-		2BF398C827620CD7000C9A72 /* RouteRefreshing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */; };
+		2BF398C527620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
+		2BF398C627620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
+		2BF398C727620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
+		2BF398C827620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -493,7 +493,7 @@
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetsRoadClass.swift; sourceTree = "<group>"; };
 		2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedLanes.swift; sourceTree = "<group>"; };
-		2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshing.swift; sourceTree = "<group>"; };
+		2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshSource.swift; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
@@ -829,7 +829,7 @@
 				2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */,
 				2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */,
 				2B5407F12452FA8C006C820B /* RefreshedRoute.swift */,
-				2BF398C427620CD7000C9A72 /* RouteRefreshing.swift */,
+				2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */,
 				43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */,
 				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
 				C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */,
@@ -1445,7 +1445,7 @@
 				2B9F388A272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C823466B4000A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212120B6125C0052DED8 /* VisualInstructionComponent.swift in Sources */,
-				2BF398C627620CD7000C9A72 /* RouteRefreshing.swift in Sources */,
+				2BF398C627620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* Directions.swift in Sources */,
@@ -1539,7 +1539,7 @@
 				2B9F388B272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C923466B4100A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212220B6125D0052DED8 /* VisualInstructionComponent.swift in Sources */,
-				2BF398C727620CD7000C9A72 /* RouteRefreshing.swift in Sources */,
+				2BF398C727620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* Directions.swift in Sources */,
@@ -1633,7 +1633,7 @@
 				2B9F388C272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93CA23466B4200A71B44 /* CoreLocation.swift in Sources */,
 				AEDC212320B6125E0052DED8 /* VisualInstructionComponent.swift in Sources */,
-				2BF398C827620CD7000C9A72 /* RouteRefreshing.swift in Sources */,
+				2BF398C827620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* Directions.swift in Sources */,
@@ -1693,7 +1693,7 @@
 				2B9F3889272AE23A001DBA12 /* IsochroneError.swift in Sources */,
 				431E93C723466B3F00A71B44 /* CoreLocation.swift in Sources */,
 				AEDC211D20B6104B0052DED8 /* VisualInstructionComponent.swift in Sources */,
-				2BF398C527620CD7000C9A72 /* RouteRefreshing.swift in Sources */,
+				2BF398C527620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */,
