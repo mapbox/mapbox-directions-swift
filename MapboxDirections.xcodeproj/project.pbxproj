@@ -524,6 +524,7 @@
 		AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = subLaneInstructions.json; sourceTree = "<group>"; };
 		AEAB391020D94699008F4E54 /* subVisualInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = subVisualInstructions.json; sourceTree = "<group>"; };
 		AEDC211C20B6104A0052DED8 /* VisualInstructionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualInstructionComponent.swift; sourceTree = "<group>"; };
+		C34502DD27568E4C005FE26F /* CommandLineTool.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CommandLineTool.md; sourceTree = "<group>"; };
 		C51538CB1E807FF00093FF3E /* AttributeOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeOptions.swift; sourceTree = "<group>"; };
 		C5247D701E818A24004B6154 /* AnnotationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualInstructionBanner.swift; sourceTree = "<group>"; };
@@ -718,6 +719,7 @@
 				8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */,
 				438BFEBC233D7FA900457294 /* Package.swift */,
 				438BFEC0233D805500457294 /* README.md */,
+				C34502DD27568E4C005FE26F /* CommandLineTool.md */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
