@@ -1,7 +1,6 @@
 import Foundation
 import MapboxDirections
 import Turf
-import CoreLocation
 
 let accessToken: String? =
     ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
