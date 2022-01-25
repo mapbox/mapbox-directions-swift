@@ -45,9 +45,9 @@ public extension VisualInstruction {
          
          - parameter image: The component’s preferred image representation.
          - parameter alternativeText: The component’s alternative text representation. Use this representation if the image representation is unavailable or unusable, but consider formatting the text in a special way to distinguish it from an ordinary `.text` component.
-         - parameter mapboxShield: Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
+         - parameter shield: Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
          */
-        case image(image: ImageRepresentation, alternativeText: TextRepresentation, mapboxShield: ShieldRepresentation? = nil)
+        case image(image: ImageRepresentation, alternativeText: TextRepresentation, shield: ShieldRepresentation? = nil)
 
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
@@ -254,7 +254,7 @@ extension VisualInstruction.Component: Codable {
         case abbreviatedTextPriority = "abbr_priority"
         case imageBaseURL
         case imageURL
-        case mapboxShield = "mapbox_shield"
+        case shield = "mapbox_shield"
         case directions
         case isActive = "active"
         case activeDirection = "active_direction"
@@ -286,7 +286,7 @@ extension VisualInstruction.Component: Codable {
         let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
         let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
         let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-        let mapboxShield = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .mapboxShield)
+        let shieldRepresentation = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .shield)
         
         switch kind {
         case .delimiter:
@@ -299,7 +299,7 @@ extension VisualInstruction.Component: Codable {
                 imageBaseURL = URL(string: imageBaseURLString)
             }
             let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL)
-            self = .image(image: imageRepresentation, alternativeText: textRepresentation, mapboxShield: mapboxShield)
+            self = .image(image: imageRepresentation, alternativeText: textRepresentation, shield: shieldRepresentation)
         case .exit:
             self = .exit(text: textRepresentation)
         case .exitCode:
@@ -327,11 +327,11 @@ extension VisualInstruction.Component: Codable {
         case .text(let text):
             try container.encode(Kind.text, forKey: .kind)
             textRepresentation = text
-        case .image(let image, let alternativeText, let mapboxShield):
+        case .image(let image, let alternativeText, let shield):
             try container.encode(Kind.image, forKey: .kind)
             textRepresentation = alternativeText
             try container.encodeIfPresent(image.imageBaseURL?.absoluteString, forKey: .imageBaseURL)
-            try container.encodeIfPresent(mapboxShield, forKey: .mapboxShield)
+            try container.encodeIfPresent(shield, forKey: .shield)
         case .exit(let text):
             try container.encode(Kind.exit, forKey: .kind)
             textRepresentation = text
@@ -366,11 +366,11 @@ extension VisualInstruction.Component: Equatable {
              (let .exit(lhsText), let .exit(rhsText)),
              (let .exitCode(lhsText), let .exitCode(rhsText)):
             return lhsText == rhsText
-        case (let .image(lhsURL, lhsAlternativeText, lhsMapboxShield),
-              let .image(rhsURL, rhsAlternativeText, rhsMapboxShield)):
+        case (let .image(lhsURL, lhsAlternativeText, lhsShield),
+              let .image(rhsURL, rhsAlternativeText, rhsShield)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-                && lhsMapboxShield == rhsMapboxShield
+                && lhsShield == rhsShield
         case (let .guidanceView(lhsURL, lhsAlternativeText),
               let .guidanceView(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
