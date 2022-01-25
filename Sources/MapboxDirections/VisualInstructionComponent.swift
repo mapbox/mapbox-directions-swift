@@ -45,9 +45,10 @@ public extension VisualInstruction {
          
          - parameter image: The component’s preferred image representation.
          - parameter alternativeText: The component’s alternative text representation. Use this representation if the image representation is unavailable or unusable, but consider formatting the text in a special way to distinguish it from an ordinary `.text` component.
+         - parameter shield: Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
          */
-        case image(image: ImageRepresentation, alternativeText: TextRepresentation)
-        
+        case image(image: ImageRepresentation, alternativeText: TextRepresentation, shield: ShieldRepresentation? = nil)
+
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
          */
@@ -169,6 +170,64 @@ public extension VisualInstruction.Component {
             return scale
         }
     }
+    
+    /**
+     A mapbox shield representation of a visual instruction component.
+     */
+    struct ShieldRepresentation: Equatable, Codable {
+        /**
+         Initializes a mapbox shield with the given name, text color, and display ref.
+         */
+        public init(baseURL: URL, name: String, textColor: String, text: String) {
+            self.baseURL = baseURL
+            self.name = name
+            self.textColor = textColor
+            self.text = text
+        }
+        
+        /**
+         Base URL to query the styles endpoint.
+         */
+        public let baseURL: URL
+
+        /**
+         String indicating the name of the route shield.
+         */
+        public let name: String
+        
+        /**
+         String indicating the color of the text to be rendered on the route shield.
+         */
+        public let textColor: String
+        
+        /**
+         String indicating the route reference code that will be displayed on the shield.
+         */
+        public let text: String
+        
+        private enum CodingKeys: String, CodingKey {
+            case baseURL = "base_url"
+            case name
+            case textColor = "text_color"
+            case text = "display_ref"
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            baseURL = try container.decode(URL.self, forKey: .baseURL)
+            name = try container.decode(String.self, forKey: .name)
+            textColor = try container.decode(String.self, forKey: .textColor)
+            text = try container.decode(String.self, forKey: .text)
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(baseURL, forKey: .baseURL)
+            try container.encode(name, forKey: .name)
+            try container.encode(textColor, forKey: .textColor)
+            try container.encode(text, forKey: .text)
+        }
+    }
 }
 
 /// A guidance view image representation of a visual instruction component.
@@ -195,6 +254,7 @@ extension VisualInstruction.Component: Codable {
         case abbreviatedTextPriority = "abbr_priority"
         case imageBaseURL
         case imageURL
+        case shield = "mapbox_shield"
         case directions
         case isActive = "active"
         case activeDirection = "active_direction"
@@ -226,6 +286,7 @@ extension VisualInstruction.Component: Codable {
         let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
         let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
         let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
+        let shieldRepresentation = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .shield)
         
         switch kind {
         case .delimiter:
@@ -238,7 +299,7 @@ extension VisualInstruction.Component: Codable {
                 imageBaseURL = URL(string: imageBaseURLString)
             }
             let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL)
-            self = .image(image: imageRepresentation, alternativeText: textRepresentation)
+            self = .image(image: imageRepresentation, alternativeText: textRepresentation, shield: shieldRepresentation)
         case .exit:
             self = .exit(text: textRepresentation)
         case .exitCode:
@@ -266,10 +327,11 @@ extension VisualInstruction.Component: Codable {
         case .text(let text):
             try container.encode(Kind.text, forKey: .kind)
             textRepresentation = text
-        case .image(let image, let alternativeText):
+        case .image(let image, let alternativeText, let shield):
             try container.encode(Kind.image, forKey: .kind)
             textRepresentation = alternativeText
             try container.encodeIfPresent(image.imageBaseURL?.absoluteString, forKey: .imageBaseURL)
+            try container.encodeIfPresent(shield, forKey: .shield)
         case .exit(let text):
             try container.encode(Kind.exit, forKey: .kind)
             textRepresentation = text
@@ -304,10 +366,11 @@ extension VisualInstruction.Component: Equatable {
              (let .exit(lhsText), let .exit(rhsText)),
              (let .exitCode(lhsText), let .exitCode(rhsText)):
             return lhsText == rhsText
-        case (let .image(lhsURL, lhsAlternativeText),
-              let .image(rhsURL, rhsAlternativeText)):
+        case (let .image(lhsURL, lhsAlternativeText, lhsShield),
+              let .image(rhsURL, rhsAlternativeText, rhsShield)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
+                && lhsShield == rhsShield
         case (let .guidanceView(lhsURL, lhsAlternativeText),
               let .guidanceView(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL

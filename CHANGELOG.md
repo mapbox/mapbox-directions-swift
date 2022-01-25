@@ -1,5 +1,8 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.3.0
+* Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Renamed `VisualInstruction.Component.image(image:alternativeText:)` to `VisualInstruction.Component.image(image:alternativeText:shield:)`. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644))
+
 ## v2.2.0
 
 * Added the `RouteResponse.roadClassViolations` property, which indicates any requested `RouteOptions.roadClassesToAvoid` values that could not be satisfied when calculating the routes. You can use convenience `RouteResponse.exclusionViolations(routeIndex:legIndex:stepIndex:intersectionIndex:)` method to search for a specific item. ([#627](https://github.com/mapbox/mapbox-directions-swift/pull/627))
