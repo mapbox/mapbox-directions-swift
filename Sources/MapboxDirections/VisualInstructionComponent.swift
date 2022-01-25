@@ -45,9 +45,9 @@ public extension VisualInstruction {
          
          - parameter image: The component’s preferred image representation.
          - parameter alternativeText: The component’s alternative text representation. Use this representation if the image representation is unavailable or unusable, but consider formatting the text in a special way to distinguish it from an ordinary `.text` component.
-         - parameter mapboxShield: Optional for the component's mapbox shield representation.
+         - parameter mapboxShield: Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
          */
-        case image(image: ImageRepresentation, alternativeText: TextRepresentation, mapboxShield: MapboxShield?)
+        case image(image: ImageRepresentation, alternativeText: TextRepresentation, mapboxShield: ShieldRepresentation? = nil)
 
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
@@ -170,63 +170,63 @@ public extension VisualInstruction.Component {
             return scale
         }
     }
-}
+    
+    /**
+     A mapbox shield representation of a visual instruction component.
+     */
+    struct ShieldRepresentation: Equatable, Codable {
+        /**
+         Initializes a mapbox shield with the given name, text color, and display ref.
+         */
+        public init(baseURL: URL, name: String, textColor: String, text: String) {
+            self.baseURL = baseURL
+            self.name = name
+            self.textColor = textColor
+            self.text = text
+        }
+        
+        /**
+         Base URL to query the styles endpoint.
+         */
+        public let baseURL: URL
 
-/**
- A mapbox shield representation of a visual instruction component.
- */
-public struct MapboxShield: Equatable, Codable {
-    /**
-     Initializes a mapbox shield with the given name, text color, and display ref.
-     */
-    public init(baseURL: URL, name: String, textColor: String, displayRef: String) {
-        self.baseURL = baseURL
-        self.name = name
-        self.textColor = textColor
-        self.displayRef = displayRef
-    }
-    
-    /**
-     Base URL to query the styles endpoint.
-     */
-    public let baseURL: URL
-
-    /**
-     String indicating the name of the route shield.
-     */
-    public let name: String
-    
-    /**
-     String indicating the color of the text to be rendered on the route shield.
-     */
-    public let textColor: String
-    
-    /**
-     String indicating the display ref.
-     */
-    public let displayRef: String
-    
-    private enum CodingKeys: String, CodingKey {
-        case baseURL = "base_url"
-        case name
-        case textColor = "text_color"
-        case displayRef = "display_ref"
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        baseURL = try container.decode(URL.self, forKey: .baseURL)
-        name = try container.decode(String.self, forKey: .name)
-        textColor = try container.decode(String.self, forKey: .textColor)
-        displayRef = try container.decode(String.self, forKey: .displayRef)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(baseURL, forKey: .baseURL)
-        try container.encode(name, forKey: .name)
-        try container.encode(textColor, forKey: .textColor)
-        try container.encode(displayRef, forKey: .displayRef)
+        /**
+         String indicating the name of the route shield.
+         */
+        public let name: String
+        
+        /**
+         String indicating the color of the text to be rendered on the route shield.
+         */
+        public let textColor: String
+        
+        /**
+         String indicating the route reference code that will be displayed on the shield.
+         */
+        public let text: String
+        
+        private enum CodingKeys: String, CodingKey {
+            case baseURL = "base_url"
+            case name
+            case textColor = "text_color"
+            case text = "display_ref"
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            baseURL = try container.decode(URL.self, forKey: .baseURL)
+            name = try container.decode(String.self, forKey: .name)
+            textColor = try container.decode(String.self, forKey: .textColor)
+            text = try container.decode(String.self, forKey: .text)
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(baseURL, forKey: .baseURL)
+            try container.encode(name, forKey: .name)
+            try container.encode(textColor, forKey: .textColor)
+            try container.encode(text, forKey: .text)
+        }
     }
 }
 
@@ -286,7 +286,7 @@ extension VisualInstruction.Component: Codable {
         let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
         let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
         let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-        let mapboxShield = try container.decodeIfPresent(MapboxShield.self, forKey: .mapboxShield)
+        let mapboxShield = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .mapboxShield)
         
         switch kind {
         case .delimiter:
