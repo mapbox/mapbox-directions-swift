@@ -1,6 +1,7 @@
 # Changes to Mapbox Directions for Swift
 
 ## v2.3.0
+
 * Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Renamed `VisualInstruction.Component.image(image:alternativeText:)` to `VisualInstruction.Component.image(image:alternativeText:shield:)`. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644))
 
 ## v2.2.0
@@ -20,7 +21,6 @@
 * Added the `RouteOptions.maximumHeight` and `RouteOptions.maximumWidth` properties for ensuring that the resulting routes can accommodate a vehicle of a certain size. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
 * The `DirectionsPriority` struct now conforms to the `Codable` protocol. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
 * Fixed an issue where the `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` properties were excluded from the encoded representation of a `RouteOptions` object. ([#623](https://github.com/mapbox/mapbox-directions-swift/pull/623))
-
 
 ## v2.0.0
 
