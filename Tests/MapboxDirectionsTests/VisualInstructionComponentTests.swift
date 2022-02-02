@@ -51,12 +51,12 @@ class VisualInstructionComponentTests: XCTestCase {
                 XCTAssertEqual(image.shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
                 XCTAssertEqual(image.shield?.name, "us-interstate")
                 XCTAssertEqual(image.shield?.textColor, "white")
-                XCTAssertEqual(image.shield?.code, "95")
+                XCTAssertEqual(image.shield?.text, "95")
             default:
                 XCTFail("Image component should not be decoded as any other kind of component.")
             }
         }
-        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", code: "95")
+        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", text: "95")
         component = .image(image: .init(imageBaseURL: URL(string: "https://s3.amazonaws.com/mapbox/shields/v3/i-95")!, shield: shield),
                            alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil))
         let encoder = JSONEncoder()
@@ -90,9 +90,9 @@ class VisualInstructionComponentTests: XCTestCase {
             XCTAssertEqual(shield.baseURL, url)
             XCTAssertEqual(shield.name, "us-interstate")
             XCTAssertEqual(shield.textColor, "white")
-            XCTAssertEqual(shield.code, "95")
+            XCTAssertEqual(shield.text, "95")
         }
-        shield = .init(baseURL: url!, name: "us-interstate", textColor: "white", code: "95")
+        shield = .init(baseURL: url!, name: "us-interstate", textColor: "white", text: "95")
         
         let encoder = JSONEncoder()
         var encodedData: Data?
@@ -133,13 +133,13 @@ class VisualInstructionComponentTests: XCTestCase {
                 XCTAssertEqual(image.shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
                 XCTAssertEqual(image.shield?.name, "us-interstate")
                 XCTAssertEqual(image.shield?.textColor, "white")
-                XCTAssertEqual(image.shield?.code, "95")
+                XCTAssertEqual(image.shield?.text, "95")
             default:
                 XCTFail("Image component should not be decoded as any other kind of component.")
             }
         }
         
-        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", code: "95")
+        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", text: "95")
         component = .image(image: .init(imageBaseURL: nil, shield: shield),
                            alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil))
         let encoder = JSONEncoder()

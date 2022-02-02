@@ -183,11 +183,11 @@ public extension VisualInstruction.Component {
         /**
          Initializes a mapbox shield with the given name, text color, and display ref.
          */
-        public init(baseURL: URL, name: String, textColor: String, code: String) {
+        public init(baseURL: URL, name: String, textColor: String, text: String) {
             self.baseURL = baseURL
             self.name = name
             self.textColor = textColor
-            self.code = code
+            self.text = text
         }
         
         /**
@@ -208,13 +208,13 @@ public extension VisualInstruction.Component {
         /**
          String indicating the route reference code that will be displayed on the shield.
          */
-        public let code: String
+        public let text: String
         
         private enum CodingKeys: String, CodingKey {
             case baseURL = "base_url"
             case name
             case textColor = "text_color"
-            case code = "display_ref"
+            case text = "display_ref"
         }
         
         public init(from decoder: Decoder) throws {
@@ -222,7 +222,7 @@ public extension VisualInstruction.Component {
             baseURL = try container.decode(URL.self, forKey: .baseURL)
             name = try container.decode(String.self, forKey: .name)
             textColor = try container.decode(String.self, forKey: .textColor)
-            code = try container.decode(String.self, forKey: .code)
+            text = try container.decode(String.self, forKey: .text)
         }
         
         public func encode(to encoder: Encoder) throws {
@@ -230,7 +230,7 @@ public extension VisualInstruction.Component {
             try container.encode(baseURL, forKey: .baseURL)
             try container.encode(name, forKey: .name)
             try container.encode(textColor, forKey: .textColor)
-            try container.encode(code, forKey: .code)
+            try container.encode(text, forKey: .text)
         }
     }
 }
