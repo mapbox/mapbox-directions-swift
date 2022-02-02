@@ -40,7 +40,7 @@ class VisualInstructionComponentTests: XCTestCase {
         XCTAssertNotNil(component)
         if let component = component {
             switch component {
-            case .image(let image, let alternativeText, let shield):
+            case .image(let image, let alternativeText):
                 XCTAssertEqual(image.imageBaseURL?.absoluteString, "https://s3.amazonaws.com/mapbox/shields/v3/i-95")
                 XCTAssertEqual(image.imageURL(scale: 1, format: .svg)?.absoluteString, "https://s3.amazonaws.com/mapbox/shields/v3/i-95@1x.svg")
                 XCTAssertEqual(image.imageURL(scale: 3, format: .svg)?.absoluteString, "https://s3.amazonaws.com/mapbox/shields/v3/i-95@3x.svg")
@@ -48,18 +48,17 @@ class VisualInstructionComponentTests: XCTestCase {
                 XCTAssertEqual(alternativeText.text, "I 95")
                 XCTAssertNil(alternativeText.abbreviation)
                 XCTAssertNil(alternativeText.abbreviationPriority)
-                XCTAssertEqual(shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
-                XCTAssertEqual(shield?.name, "us-interstate")
-                XCTAssertEqual(shield?.textColor, "white")
-                XCTAssertEqual(shield?.text, "95")
+                XCTAssertEqual(image.shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
+                XCTAssertEqual(image.shield?.name, "us-interstate")
+                XCTAssertEqual(image.shield?.textColor, "white")
+                XCTAssertEqual(image.shield?.code, "95")
             default:
                 XCTFail("Image component should not be decoded as any other kind of component.")
             }
         }
-        
-        component = .image(image: .init(imageBaseURL: URL(string: "https://s3.amazonaws.com/mapbox/shields/v3/i-95")!),
-                           alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil),
-                           shield: .init(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", text: "95"))
+        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", code: "95")
+        component = .image(image: .init(imageBaseURL: URL(string: "https://s3.amazonaws.com/mapbox/shields/v3/i-95")!, shield: shield),
+                           alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil))
         let encoder = JSONEncoder()
         var encodedData: Data?
         XCTAssertNoThrow(encodedData = try encoder.encode(component))
@@ -91,9 +90,9 @@ class VisualInstructionComponentTests: XCTestCase {
             XCTAssertEqual(shield.baseURL, url)
             XCTAssertEqual(shield.name, "us-interstate")
             XCTAssertEqual(shield.textColor, "white")
-            XCTAssertEqual(shield.text, "95")
+            XCTAssertEqual(shield.code, "95")
         }
-        shield = .init(baseURL: url!, name: "us-interstate", textColor: "white", text: "95")
+        shield = .init(baseURL: url!, name: "us-interstate", textColor: "white", code: "95")
         
         let encoder = JSONEncoder()
         var encodedData: Data?
@@ -126,23 +125,23 @@ class VisualInstructionComponentTests: XCTestCase {
         XCTAssertNotNil(component)
         if let component = component {
             switch component {
-            case .image(let image, let alternativeText, let shield):
+            case .image(let image, let alternativeText):
                 XCTAssertNil(image.imageBaseURL?.absoluteString)
                 XCTAssertEqual(alternativeText.text, "I 95")
                 XCTAssertNil(alternativeText.abbreviation)
                 XCTAssertNil(alternativeText.abbreviationPriority)
-                XCTAssertEqual(shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
-                XCTAssertEqual(shield?.name, "us-interstate")
-                XCTAssertEqual(shield?.textColor, "white")
-                XCTAssertEqual(shield?.text, "95")
+                XCTAssertEqual(image.shield?.baseURL, URL(string: "https://api.mapbox.com/styles/v1/")!)
+                XCTAssertEqual(image.shield?.name, "us-interstate")
+                XCTAssertEqual(image.shield?.textColor, "white")
+                XCTAssertEqual(image.shield?.code, "95")
             default:
                 XCTFail("Image component should not be decoded as any other kind of component.")
             }
         }
         
-        component = .image(image: .init(imageBaseURL: nil),
-                           alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil),
-                           shield: .init(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", text: "95"))
+        let shield = VisualInstruction.Component.ShieldRepresentation(baseURL: URL(string: "https://api.mapbox.com/styles/v1/")!, name: "us-interstate", textColor: "white", code: "95")
+        component = .image(image: .init(imageBaseURL: nil, shield: shield),
+                           alternativeText: .init(text: "I 95", abbreviation: nil, abbreviationPriority: nil))
         let encoder = JSONEncoder()
         var encodedData: Data?
         XCTAssertNoThrow(encodedData = try encoder.encode(component))
