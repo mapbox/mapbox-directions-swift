@@ -2,7 +2,7 @@
 
 ## v2.3.0
 
-* Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Renamed `VisualInstruction.Component.image(image:alternativeText:)` to `VisualInstruction.Component.image(image:alternativeText:shield:)`. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644))
+* Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Added `VisualInstruction.Component.ImageRepresentation.shield` property. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644), [#647](https://github.com/mapbox/mapbox-directions-swift/pull/647))
 
 ## v2.2.0
 

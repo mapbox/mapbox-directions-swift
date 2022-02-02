@@ -45,9 +45,8 @@ public extension VisualInstruction {
          
          - parameter image: The component’s preferred image representation.
          - parameter alternativeText: The component’s alternative text representation. Use this representation if the image representation is unavailable or unusable, but consider formatting the text in a special way to distinguish it from an ordinary `.text` component.
-         - parameter shield: Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
          */
-        case image(image: ImageRepresentation, alternativeText: TextRepresentation, shield: ShieldRepresentation? = nil)
+        case image(image: ImageRepresentation, alternativeText: TextRepresentation)
 
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
@@ -128,14 +127,20 @@ public extension VisualInstruction.Component {
         /**
          Initializes an image representation bearing the image at the given base URL.
          */
-        public init(imageBaseURL: URL?) {
+        public init(imageBaseURL: URL?, shield: ShieldRepresentation? = nil) {
             self.imageBaseURL = imageBaseURL
+            self.shield = shield
         }
         
         /**
          The URL whose path is the prefix of all the possible URLs returned by `imageURL(scale:format:)`.
          */
         public let imageBaseURL: URL?
+        
+        /**
+         Optionally, a structured image representation for displaying a [highway shield](https://en.wikipedia.org/wiki/Highway_shield).
+         */
+        public let shield: ShieldRepresentation?
         
         /**
          Returns a remote URL to the image file that represents the component.
@@ -286,7 +291,6 @@ extension VisualInstruction.Component: Codable {
         let abbreviation = try container.decodeIfPresent(String.self, forKey: .abbreviatedText)
         let abbreviationPriority = try container.decodeIfPresent(Int.self, forKey: .abbreviatedTextPriority)
         let textRepresentation = TextRepresentation(text: text, abbreviation: abbreviation, abbreviationPriority: abbreviationPriority)
-        let shieldRepresentation = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .shield)
         
         switch kind {
         case .delimiter:
@@ -298,8 +302,9 @@ extension VisualInstruction.Component: Codable {
             if let imageBaseURLString = try container.decodeIfPresent(String.self, forKey: .imageBaseURL) {
                 imageBaseURL = URL(string: imageBaseURLString)
             }
-            let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL)
-            self = .image(image: imageRepresentation, alternativeText: textRepresentation, shield: shieldRepresentation)
+            let shieldRepresentation = try container.decodeIfPresent(ShieldRepresentation.self, forKey: .shield)
+            let imageRepresentation = ImageRepresentation(imageBaseURL: imageBaseURL, shield: shieldRepresentation)
+            self = .image(image: imageRepresentation, alternativeText: textRepresentation)
         case .exit:
             self = .exit(text: textRepresentation)
         case .exitCode:
@@ -327,11 +332,11 @@ extension VisualInstruction.Component: Codable {
         case .text(let text):
             try container.encode(Kind.text, forKey: .kind)
             textRepresentation = text
-        case .image(let image, let alternativeText, let shield):
+        case .image(let image, let alternativeText):
             try container.encode(Kind.image, forKey: .kind)
             textRepresentation = alternativeText
             try container.encodeIfPresent(image.imageBaseURL?.absoluteString, forKey: .imageBaseURL)
-            try container.encodeIfPresent(shield, forKey: .shield)
+            try container.encodeIfPresent(image.shield, forKey: .shield)
         case .exit(let text):
             try container.encode(Kind.exit, forKey: .kind)
             textRepresentation = text
@@ -366,11 +371,10 @@ extension VisualInstruction.Component: Equatable {
              (let .exit(lhsText), let .exit(rhsText)),
              (let .exitCode(lhsText), let .exitCode(rhsText)):
             return lhsText == rhsText
-        case (let .image(lhsURL, lhsAlternativeText, lhsShield),
-              let .image(rhsURL, rhsAlternativeText, rhsShield)):
+        case (let .image(lhsURL, lhsAlternativeText),
+              let .image(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-                && lhsShield == rhsShield
         case (let .guidanceView(lhsURL, lhsAlternativeText),
               let .guidanceView(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
