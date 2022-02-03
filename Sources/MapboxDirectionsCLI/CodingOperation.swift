@@ -1,6 +1,9 @@
 import Foundation
 import MapboxDirections
 import Turf
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 let accessToken: String? =
     ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
