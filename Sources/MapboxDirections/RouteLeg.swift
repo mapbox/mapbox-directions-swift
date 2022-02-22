@@ -20,6 +20,7 @@ open class RouteLeg: Codable {
         case annotation
         case administrativeRegions = "admins"
         case incidents
+        case viaWaypoints = "via_waypoints"
     }
     
     // MARK: Creating a Leg
@@ -85,6 +86,10 @@ open class RouteLeg: Codable {
         if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
             self.incidents = incidents
         }
+
+        if let viaWaypoints = try container.decodeIfPresent([SilentWaypoint].self, forKey: .viaWaypoints) {
+            self.viaWaypoints = viaWaypoints
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -109,6 +114,10 @@ open class RouteLeg: Codable {
 
         if let incidents = incidents {
             try container.encode(incidents, forKey: .incidents)
+        }
+
+        if let viaWaypoints = viaWaypoints {
+            try container.encode(viaWaypoints, forKey: .viaWaypoints)
         }
     }
     
@@ -309,6 +318,13 @@ open class RouteLeg: Codable {
      This property is set to `nil` if incidents data is not available.
      */
     open var incidents: [Incident]?
+
+    /**
+     Describes where a particular `Waypoint` passed to `RouteOptions` matches to the route along a `RouteLeg`.
+
+     The property is non-nil when for one or several `Waypoint` objects passed to `RouteOptions` have `separatesLegs` property set to `false`.
+     */
+    open var viaWaypoints: [SilentWaypoint]?
     
     /**
      The route leg’s typical travel time, measured in seconds.
@@ -343,6 +359,9 @@ extension RouteLeg: Equatable {
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.administrativeRegions == rhs.administrativeRegions &&
+            lhs.incidents == rhs.incidents &&
+            lhs.viaWaypoints == rhs.viaWaypoints &&
             lhs.typicalTravelTime == rhs.typicalTravelTime &&
             lhs.profileIdentifier == rhs.profileIdentifier
     }
