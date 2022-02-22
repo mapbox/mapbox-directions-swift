@@ -3,6 +3,7 @@
 ## v2.3.0
 
 * Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Added `VisualInstruction.Component.ImageRepresentation.shield` property. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644), [#647](https://github.com/mapbox/mapbox-directions-swift/pull/647))
+* Added `RouteLeg.viaWaypoints` property and `SilentWaypoint` struct for describing silent waypoints along `RouteLeg`. ([#656](https://github.com/mapbox/mapbox-directions-swift/pull/656))
 
 ## v2.2.0
 
