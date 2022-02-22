@@ -160,7 +160,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
         test(shapeFormat: .geoJSON)
     }
-    
+
     func testPolyline() {
         XCTAssertEqual(RouteShapeFormat.polyline.rawValue, "polyline")
         test(shapeFormat: .polyline)
@@ -279,6 +279,11 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(leg?.destination?.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
         XCTAssertEqual(leg?.destination?.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
         XCTAssertEqual(leg?.name, "Perlen Strasse, Haupt Strasse")
+        XCTAssertEqual(leg?.viaWaypoints!.count, 1)
+        let silentWaypoint = leg?.viaWaypoints?.first!
+        XCTAssertEqual(silentWaypoint?.waypointIndex, 1)
+        XCTAssertEqual(silentWaypoint?.distanceFromStart, 610.733)
+        XCTAssertEqual(silentWaypoint?.shapeCoordinateIndex, 21)
     }
     
     func testCoding() {
