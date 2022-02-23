@@ -80,6 +80,10 @@
 		2BF398C627620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
 		2BF398C727620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
 		2BF398C827620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
+		2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
+		2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
+		2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
+		2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -494,6 +498,7 @@
 		2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetsRoadClass.swift; sourceTree = "<group>"; };
 		2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedLanes.swift; sourceTree = "<group>"; };
 		2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshSource.swift; sourceTree = "<group>"; };
+		2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentWaypoint.swift; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
@@ -834,6 +839,7 @@
 				2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */,
 				43538E3623ED3B1600E010D4 /* ResponseDisposition.swift */,
 				DA2E03E81CB0E0B000D1269A /* RouteStep.swift */,
+				2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */,
 				C55FB44A1F6AEBF6006BD1E9 /* SpokenInstruction.swift */,
 				35EFD00A207DFACA00BF3873 /* VisualInstruction.swift */,
 				C52552B81FA15D5900B1545C /* VisualInstructionBanner.swift */,
@@ -1411,6 +1417,7 @@
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E01273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
+				2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
@@ -1505,6 +1512,7 @@
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E02273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
+				2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
@@ -1599,6 +1607,7 @@
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E03273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
+				2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
@@ -1659,6 +1668,7 @@
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E00273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
+				2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
