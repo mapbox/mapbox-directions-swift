@@ -2,8 +2,8 @@
 
 ## v2.3.0
 
-* Added `VisualInstruction.Component.ShieldRepresentation` struct for displaying a highway shield. Added `VisualInstruction.Component.ImageRepresentation.shield` property. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644), [#647](https://github.com/mapbox/mapbox-directions-swift/pull/647))
-* Added `RouteLeg.viaWaypoints` property and `SilentWaypoint` struct for describing silent waypoints along `RouteLeg`. ([#656](https://github.com/mapbox/mapbox-directions-swift/pull/656))
+* Added `VisualInstruction.Component.ShieldRepresentation` struct and the `VisualInstruction.Component.ImageRepresentation.shield` property containing metadata for displaying a highway shield consistent with map styles used by the Mapbox Maps SDK. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644), [#647](https://github.com/mapbox/mapbox-directions-swift/pull/647))
+* Added a `RouteLeg.viaWaypoints` property that lists the non-leg-separating waypoints (also known as “silent waypoints”) along a `RouteLeg`. Previously, you had to filter `DirectionsOptions.waypoints` to include only the items whose `Waypoints.separatesLegs` property was set to `true`, then zip them with `RouteResponse.routes`. This approach still works in some cases but is not guaranteed to be reliable for all Mapbox Directions API responses in the future. ([#656](https://github.com/mapbox/mapbox-directions-swift/pull/656))
 
 ## v2.2.0
 
