@@ -185,3 +185,14 @@ extension RoadClasses: Codable {
         }
     }
 }
+
+extension RoadClasses {
+    static var validAvoidClasses: RoadClasses {
+        // .restricted and .tunnel road types are not supported by Directions API anymore
+        return [.toll, .motorway, .ferry, .unpaved, .cashTollOnly]
+    }
+
+    static var validAllowClasses: RoadClasses {
+        return [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]
+    }
+}
