@@ -123,10 +123,96 @@ open class DirectionsOptions: Codable {
 
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
+    required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
+        
+        guard let queryItems = queryItems else {
+            return
+        }
+        
+        let mappedQueryItems = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap {
+            guard let value = $0.value else { return nil }
+            return ($0.name, value)
+        })
+        
+        if let mappedValue = mappedQueryItems[CodingKeys.shapeFormat.stringValue],
+           let shapeFormat = RouteShapeFormat(rawValue: mappedValue) {
+            self.shapeFormat = shapeFormat
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.routeShapeResolution.stringValue],
+           let routeShapeResolution = RouteShapeResolution(rawValue: mappedValue) {
+            self.routeShapeResolution = routeShapeResolution
+        }
+        if mappedQueryItems[CodingKeys.includesSteps.stringValue] == "true" {
+            self.includesSteps = true
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.locale.stringValue] {
+            self.locale = Locale(identifier: mappedValue)
+        }
+        if mappedQueryItems[CodingKeys.includesSpokenInstructions.stringValue] == "true" {
+            self.includesSpokenInstructions = true
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.distanceMeasurementSystem.stringValue],
+           let measurementSystem = MeasurementSystem(rawValue: mappedValue) {
+            self.distanceMeasurementSystem = measurementSystem
+        }
+        if mappedQueryItems[CodingKeys.includesVisualInstructions.stringValue] == "true" {
+            self.includesVisualInstructions = true
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.attributeOptions.stringValue],
+           let attributeOptions = AttributeOptions(descriptions: mappedValue.components(separatedBy: ",")) {
+            self.attributeOptions = attributeOptions
+        }
+        if let mappedValue = mappedQueryItems["waypoints"] {
+            let indicies = mappedValue.components(separatedBy: ";").compactMap { Int($0) }
+            if !indicies.isEmpty {
+                waypoints.enumerated().forEach {
+                    $0.element.separatesLegs = indicies.contains($0.offset)
+                }
+            }
+        }
+        
+        let waypointsData = [mappedQueryItems["approaches"]?.components(separatedBy: ";"),
+                             mappedQueryItems["bearings"]?.components(separatedBy: ";"),
+                             mappedQueryItems["radiuses"]?.components(separatedBy: ";"),
+                             mappedQueryItems["waypoint_names"]?.components(separatedBy: ";"),
+                             mappedQueryItems["snapping_include_closures"]?.components(separatedBy: ";")
+        ] as [[String]?]
+        
+        let getElement: ((_ array: [String]?, _ index: Int) -> String?) = { array, index in
+            if array?.count ?? -1 > index {
+                return array?[index]
+            }
+            return nil
+        }
+        
+        waypoints.enumerated().forEach {
+            if let approach = getElement(waypointsData[0], $0.offset) {
+                $0.element.allowsArrivingOnOppositeSide = approach == "unrestricted" ? true : false
+            }
+            
+            if let descriptions = waypointsData[1]?[$0.offset].components(separatedBy: ",") {
+                $0.element.heading = LocationDirection(descriptions.first!)
+                $0.element.headingAccuracy = LocationDirection(descriptions.last!)
+            }
+            
+            if let accuracy = waypointsData[2]?[$0.offset] {
+                $0.element.coordinateAccuracy = LocationAccuracy(accuracy)
+            }
+            
+            if let snaps = waypointsData[4]?[$0.offset] {
+                $0.element.allowsSnappingToClosedRoad = snaps == "true"
+            }
+        }
+        
+        waypoints.filter { $0.separatesLegs }.enumerated().forEach {
+            if let name = waypointsData[3]?[$0.offset] {
+                $0.element.name = name
+            }
+        }
     }
     
     /**
@@ -162,9 +248,8 @@ open class DirectionsOptions: Codable {
         let profileIdentifier = ProfileIdentifier(rawValue: url.pathComponents.dropLast().suffix(2).joined(separator: "/"))
         
         self.init(waypoints: waypoints,
-                  profileIdentifier: profileIdentifier)
-        
-        restore(from: url)
+                  profileIdentifier: profileIdentifier,
+                  queryItems: URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems)
     }
     
     
@@ -408,97 +493,6 @@ open class DirectionsOptions: Codable {
         return queryItems
     }
     
-    /**
-     Method to deserialize options parameters from given `url`.
-     
-     - parameter url: An URL, used to make a route request.
-     */
-    open func restore(from url: URL) {
-        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems else {
-            return
-        }
-        
-        let mappedQueryItems = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap {
-            guard let value = $0.value else { return nil }
-            return ($0.name, value)
-        })
-        
-        if let mappedValue = mappedQueryItems[CodingKeys.shapeFormat.stringValue],
-           let shapeFormat = RouteShapeFormat(rawValue: mappedValue) {
-            self.shapeFormat = shapeFormat
-        }
-        if let mappedValue = mappedQueryItems[CodingKeys.routeShapeResolution.stringValue],
-           let routeShapeResolution = RouteShapeResolution(rawValue: mappedValue) {
-            self.routeShapeResolution = routeShapeResolution
-        }
-        if mappedQueryItems[CodingKeys.includesSteps.stringValue] == "true" {
-            self.includesSteps = true
-        }
-        if let mappedValue = mappedQueryItems[CodingKeys.locale.stringValue] {
-            self.locale = Locale(identifier: mappedValue)
-        }
-        if mappedQueryItems[CodingKeys.includesSpokenInstructions.stringValue] == "true" {
-            self.includesSpokenInstructions = true
-        }
-        if let mappedValue = mappedQueryItems[CodingKeys.distanceMeasurementSystem.stringValue],
-           let measurementSystem = MeasurementSystem(rawValue: mappedValue) {
-            self.distanceMeasurementSystem = measurementSystem
-        }
-        if mappedQueryItems[CodingKeys.includesVisualInstructions.stringValue] == "true" {
-            self.includesVisualInstructions = true
-        }
-        if let mappedValue = mappedQueryItems[CodingKeys.attributeOptions.stringValue],
-           let attributeOptions = AttributeOptions(descriptions: mappedValue.components(separatedBy: ",")) {
-            self.attributeOptions = attributeOptions
-        }
-        if let mappedValue = mappedQueryItems["waypoints"] {
-            let indicies = mappedValue.components(separatedBy: ";").compactMap { Int($0) }
-            if !indicies.isEmpty {
-                waypoints.enumerated().forEach {
-                    $0.element.separatesLegs = indicies.contains($0.offset)
-                }
-            }
-        }
-        
-        let waypointsData = [mappedQueryItems["approaches"]?.components(separatedBy: ";"),
-                             mappedQueryItems["bearings"]?.components(separatedBy: ";"),
-                             mappedQueryItems["radiuses"]?.components(separatedBy: ";"),
-                             mappedQueryItems["waypoint_names"]?.components(separatedBy: ";"),
-                             mappedQueryItems["snapping_include_closures"]?.components(separatedBy: ";")
-        ] as [[String]?]
-        
-        let getElement: ((_ array: [String]?, _ index: Int) -> String?) = { array, index in
-            if array?.count ?? -1 > index {
-                return array?[index]
-            }
-            return nil
-        }
-        
-        waypoints.enumerated().forEach {
-            if let approach = getElement(waypointsData[0], $0.offset) {
-                $0.element.allowsArrivingOnOppositeSide = approach == "unrestricted" ? true : false
-            }
-            
-            if let descriptions = waypointsData[1]?[$0.offset].components(separatedBy: ",") {
-                $0.element.heading = LocationDirection(descriptions.first!)
-                $0.element.headingAccuracy = LocationDirection(descriptions.last!)
-            }
-            
-            if let accuracy = waypointsData[2]?[$0.offset] {
-                $0.element.coordinateAccuracy = LocationAccuracy(accuracy)
-            }
-            
-            if let snaps = waypointsData[4]?[$0.offset] {
-                $0.element.allowsSnappingToClosedRoad = snaps == "true"
-            }
-        }
-        
-        waypoints.filter { $0.separatesLegs }.enumerated().forEach {
-            if let name = waypointsData[3]?[$0.offset] {
-                $0.element.name = name
-            }
-        }
-    }
     
     var bearings: String? {
         guard waypoints.contains(where: { $0.heading ?? -1 >= 0 }) else {
