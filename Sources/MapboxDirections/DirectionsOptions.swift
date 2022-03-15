@@ -245,7 +245,7 @@ open class DirectionsOptions: Codable {
         }
             
         guard waypoints.count >= 2 else {
-                    return nil
+            return nil
         }
         
         let profileIdentifier = ProfileIdentifier(rawValue: url.pathComponents.dropLast().suffix(2).joined(separator: "/"))
