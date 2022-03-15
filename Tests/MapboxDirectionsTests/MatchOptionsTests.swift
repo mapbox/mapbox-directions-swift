@@ -26,6 +26,44 @@ class MatchOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.resamplesTraces, options.resamplesTraces)
     }
     
+    func testURLCoding() {
+        
+        let originalOptions = testMatchOptions
+        originalOptions.resamplesTraces = true
+        
+        originalOptions.waypoints.enumerated().forEach {
+            $0.element.separatesLegs = $0.offset != 1
+            if $0.element.separatesLegs {
+                $0.element.name = "name_\($0.offset)"
+                $0.element.targetCoordinate = $0.element.coordinate
+            }
+        }
+        
+        let url = Directions(credentials: BogusCredentials).url(forCalculating: originalOptions)
+        
+        guard let decodedOptions = MatchOptions(url: url) else {
+            XCTFail("Could not decode `MatchOptions`")
+            return
+        }
+        
+        let decodedWaypoints = decodedOptions.waypoints
+        XCTAssertEqual(decodedWaypoints.count, testCoordinates.count)
+        XCTAssertEqual(decodedWaypoints[0].coordinate.latitude, testCoordinates[0].latitude)
+        XCTAssertEqual(decodedWaypoints[0].coordinate.longitude, testCoordinates[0].longitude)
+        XCTAssertEqual(decodedWaypoints[1].coordinate.latitude, testCoordinates[1].latitude)
+        XCTAssertEqual(decodedWaypoints[1].coordinate.longitude, testCoordinates[1].longitude)
+        XCTAssertEqual(decodedWaypoints[2].coordinate.latitude, testCoordinates[2].latitude)
+        XCTAssertEqual(decodedWaypoints[2].coordinate.longitude, testCoordinates[2].longitude)
+        
+        zip(decodedWaypoints, originalOptions.waypoints).forEach {
+            XCTAssertEqual($0.0.separatesLegs, $0.1.separatesLegs)
+            XCTAssertEqual($0.0.name, $0.1.name)
+        }
+        
+        XCTAssertEqual(decodedOptions.profileIdentifier, originalOptions.profileIdentifier)
+        XCTAssertEqual(decodedOptions.resamplesTraces, originalOptions.resamplesTraces)
+    }
+    
     // MARK: API name-handling tests
     
     private static var testTracepoints: [Tracepoint] {

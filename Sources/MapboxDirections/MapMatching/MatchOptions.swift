@@ -18,12 +18,13 @@ open class MatchOptions: DirectionsOptions {
 
      - parameter locations: An array of `CLLocation` objects representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 100 locations. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         let waypoints = locations.map {
             Waypoint(location: $0)
         }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
     }
     #endif
 
@@ -32,16 +33,42 @@ open class MatchOptions: DirectionsOptions {
 
      - parameter coordinates: An array of geographic coordinates representing locations to attempt to match against the road network. The array should contain at least two locations (the source and destination) and at most 100 locations. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).) Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: ProfileIdentifier? = nil) {
+    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         let waypoints = coordinates.map {
             Waypoint(coordinate: $0)
         }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
     }
 
-    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
-        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
+        
+        guard let queryItems = queryItems else {
+            return
+        }
+        
+        let mappedQueryItems = Dictionary<String, String>(queryItems.compactMap {
+            guard let value = $0.value else { return nil }
+            return ($0.name, value)
+        },
+                   uniquingKeysWith: { (_, latestValue) in
+            return latestValue
+        })
+        
+        if mappedQueryItems[CodingKeys.resamplesTraces.stringValue] == "true" {
+            self.resamplesTraces = true
+        }
+        
+        if let mappedValue = mappedQueryItems["waypoints"] {
+            let indicies = mappedValue.components(separatedBy: ";").compactMap { Int($0) }
+            if !indicies.isEmpty {
+                waypoints.enumerated().forEach {
+                    $0.element.separatesLegs = indicies.contains($0.offset)
+                }
+            }
+        }
     }
     
     private enum CodingKeys: String, CodingKey {

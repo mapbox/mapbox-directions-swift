@@ -63,6 +63,23 @@ public struct Credentials: Equatable {
             self.host = URL(string: "https://api.mapbox.com")!
         }
     }
+    
+    /**
+     :nodoc:
+     Attempts to get `host` and `accessToken` from provided URL to create `Credentials` instance.
+     
+     If it is impossible to extract parameter(s) - default values will be used.
+     */
+    public init(requestURL url: URL) {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let accessToken = components?
+            .queryItems?
+            .first { $0.name == "access_token" }?
+            .value
+        components?.path = "/"
+        components?.queryItems = nil
+        self.init(accessToken: accessToken, host: components?.url)
+    }
 }
 
 @available(*, deprecated, renamed: "Credentials")
