@@ -64,6 +64,12 @@ public struct Credentials: Equatable {
         }
     }
     
+    /**
+     :nodoc:
+     Attempts to get `host` and `accessToken` from provided URL to create `Credentials` instance.
+     
+     If it is impossible to extract parameter(s) - default values will be used.
+     */
     public init(requestURL url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let accessToken = components?

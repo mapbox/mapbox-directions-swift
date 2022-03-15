@@ -127,6 +127,8 @@ class RouteOptionsTests: XCTestCase {
         originalOptions.waypoints.enumerated().forEach {
             $0.element.allowsArrivingOnOppositeSide = $0.offset == 2
             $0.element.coordinateAccuracy = LocationAccuracy($0.offset)
+            $0.element.heading = LocationDirection($0.offset * 10)
+            $0.element.headingAccuracy = LocationDirection($0.offset)
             $0.element.separatesLegs = $0.offset != 1
             if $0.element.separatesLegs {
                 $0.element.name = "name_\($0.offset)"
@@ -157,6 +159,8 @@ class RouteOptionsTests: XCTestCase {
             XCTAssertEqual($0.0.targetCoordinate, $0.1.targetCoordinate)
             XCTAssertEqual($0.0.separatesLegs, $0.1.separatesLegs)
             XCTAssertEqual($0.0.coordinateAccuracy, $0.1.coordinateAccuracy)
+            XCTAssertEqual($0.0.heading, $0.1.heading)
+            XCTAssertEqual($0.0.headingAccuracy, $0.1.headingAccuracy)
             XCTAssertEqual($0.0.name, $0.1.name)
         }
         

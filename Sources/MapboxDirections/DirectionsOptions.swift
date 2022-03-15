@@ -133,9 +133,12 @@ open class DirectionsOptions: Codable {
             return
         }
         
-        let mappedQueryItems = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap {
+        let mappedQueryItems = Dictionary<String, String>(queryItems.compactMap {
             guard let value = $0.value else { return nil }
             return ($0.name, value)
+        },
+                   uniquingKeysWith: { (_, latestValue) in
+            return latestValue
         })
         
         if let mappedValue = mappedQueryItems[CodingKeys.shapeFormat.stringValue],
@@ -194,22 +197,22 @@ open class DirectionsOptions: Codable {
                 $0.element.allowsArrivingOnOppositeSide = approach == "unrestricted" ? true : false
             }
             
-            if let descriptions = waypointsData[1]?[$0.offset].components(separatedBy: ",") {
+            if let descriptions = getElement(waypointsData[1], $0.offset)?.components(separatedBy: ",") {
                 $0.element.heading = LocationDirection(descriptions.first!)
                 $0.element.headingAccuracy = LocationDirection(descriptions.last!)
             }
             
-            if let accuracy = waypointsData[2]?[$0.offset] {
+            if let accuracy = getElement(waypointsData[2], $0.offset) {
                 $0.element.coordinateAccuracy = LocationAccuracy(accuracy)
             }
             
-            if let snaps = waypointsData[4]?[$0.offset] {
+            if let snaps = getElement(waypointsData[4], $0.offset) {
                 $0.element.allowsSnappingToClosedRoad = snaps == "true"
             }
         }
         
         waypoints.filter { $0.separatesLegs }.enumerated().forEach {
-            if let name = waypointsData[3]?[$0.offset] {
+            if let name = getElement(waypointsData[3], $0.offset) {
                 $0.element.name = name
             }
         }
@@ -224,7 +227,7 @@ open class DirectionsOptions: Codable {
      */
     public convenience init?(url: URL) {
         guard url.pathComponents.count >= 3 else {
-                    return nil
+            return nil
         }
         
         let waypointsString = url.lastPathComponent.replacingOccurrences(of: ".json", with: "")

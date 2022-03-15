@@ -28,9 +28,12 @@ open class RouteOptions: DirectionsOptions {
             return
         }
         
-        let mappedQueryItems = Dictionary<String, String>(uniqueKeysWithValues: queryItems.compactMap {
+        let mappedQueryItems = Dictionary<String, String>(queryItems.compactMap {
             guard let value = $0.value else { return nil }
             return ($0.name, value)
+        },
+                   uniquingKeysWith: { (_, latestValue) in
+            return latestValue
         })
         
         if mappedQueryItems[CodingKeys.includesAlternativeRoutes.stringValue] == "true" {
