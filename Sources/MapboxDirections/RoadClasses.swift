@@ -21,6 +21,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
      The road segment has access restrictions.
      
      A road segment may have this class if there are [general access restrictions](https://wiki.openstreetmap.org/wiki/Key:access) or a [high-occupancy vehicle](https://wiki.openstreetmap.org/wiki/Key:hov) restriction.
+
+     This option **cannot** be used with `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow`.
      */
     public static let restricted = RoadClasses(rawValue: 1 << 2)
     
@@ -46,6 +48,8 @@ public struct RoadClasses: OptionSet, CustomStringConvertible {
     
     /**
      The user must travel this segment of the route through a [tunnel](https://wiki.openstreetmap.org/wiki/Key:tunnel).
+
+     This option **cannot** be used with `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow`.
      */
     public static let tunnel = RoadClasses(rawValue: 1 << 5)
     
@@ -184,7 +188,6 @@ extension RoadClasses: Codable {
 
 extension RoadClasses {
     static var validAvoidClasses: RoadClasses {
-        // .restricted and .tunnel road types are not supported by Directions API anymore
         return [.toll, .motorway, .ferry, .unpaved, .cashTollOnly]
     }
 
