@@ -2,7 +2,8 @@
 
 ## v2.4.0
 
-* Added support for multiple road classes in `RouteOptions.roadClassesToAvoid` and `RouteOptions.roadClassesToAllow` properties. Refer to `RoadClasses` documentation to know which road classes can be avoided or allowed. Trying to avoid a road class that can be only allowed or vice-versa will trigger an assertion failure in Debug builds.
+* Fixed a crash that occurred when `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties contained multiple road classes.
+* `RoadClasses.tunnel` and `RoadClasses.restricted` are no longer supported in `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties
 
 ## v2.3.0
 
