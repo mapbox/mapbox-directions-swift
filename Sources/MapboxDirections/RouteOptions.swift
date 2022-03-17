@@ -283,18 +283,12 @@ open class RouteOptions: DirectionsOptions {
         }
 
         if !roadClassesToAvoid.isEmpty {
-            if !roadClassesToAvoid.isSubset(of: .validAvoidClasses) {
-                assertionFailure("Provided road classes cannot be avoided")
-            }
-            let roadClasses = roadClassesToAvoid.intersection(.validAvoidClasses).description
+            let roadClasses = roadClassesToAvoid.description
             params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: roadClasses))
         }
         
         if !roadClassesToAllow.isEmpty {
-            if !roadClassesToAllow.isSubset(of: .validAllowClasses) {
-                assertionFailure("Provided road classes cannot be included")
-            }
-            let parameterValue = roadClassesToAllow.intersection(.validAllowClasses).description
+            let parameterValue = roadClassesToAllow.description
             params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: parameterValue))
         }
         
