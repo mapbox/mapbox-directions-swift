@@ -117,6 +117,75 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
     }
     
+    func testURLCoding() {
+        
+        let originalOptions = testRouteOptions
+        originalOptions.includesAlternativeRoutes = true
+        originalOptions.includesExitRoundaboutManeuver = true
+        originalOptions.refreshingEnabled = true
+        
+        originalOptions.waypoints.enumerated().forEach {
+            $0.element.allowsArrivingOnOppositeSide = $0.offset == 2
+            $0.element.coordinateAccuracy = LocationAccuracy($0.offset)
+            $0.element.heading = LocationDirection($0.offset * 10)
+            $0.element.headingAccuracy = LocationDirection($0.offset)
+            $0.element.separatesLegs = $0.offset != 1
+            if $0.element.separatesLegs {
+                $0.element.name = "name_\($0.offset)"
+                $0.element.targetCoordinate = $0.element.coordinate
+            }
+            $0.element.allowsSnappingToClosedRoad = $0.offset == 1
+        }
+        
+        let url = Directions(credentials: BogusCredentials).url(forCalculating: originalOptions)
+        
+        guard let decodedOptions = RouteOptions(url: url) else {
+            XCTFail("Could not decode `RouteOptions`")
+            return
+        }
+        
+        let decodedWaypoints = decodedOptions.waypoints
+        XCTAssertEqual(decodedWaypoints.count, testCoordinates.count)
+        XCTAssertEqual(decodedWaypoints[0].coordinate.latitude, testCoordinates[0].latitude)
+        XCTAssertEqual(decodedWaypoints[0].coordinate.longitude, testCoordinates[0].longitude)
+        XCTAssertEqual(decodedWaypoints[1].coordinate.latitude, testCoordinates[1].latitude)
+        XCTAssertEqual(decodedWaypoints[1].coordinate.longitude, testCoordinates[1].longitude)
+        XCTAssertEqual(decodedWaypoints[2].coordinate.latitude, testCoordinates[2].latitude)
+        XCTAssertEqual(decodedWaypoints[2].coordinate.longitude, testCoordinates[2].longitude)
+        
+        zip(decodedWaypoints, originalOptions.waypoints).forEach {
+            XCTAssertEqual($0.0.allowsSnappingToClosedRoad, $0.1.allowsSnappingToClosedRoad)
+            XCTAssertEqual($0.0.allowsArrivingOnOppositeSide, $0.1.allowsArrivingOnOppositeSide)
+            XCTAssertEqual($0.0.targetCoordinate, $0.1.targetCoordinate)
+            XCTAssertEqual($0.0.separatesLegs, $0.1.separatesLegs)
+            XCTAssertEqual($0.0.coordinateAccuracy, $0.1.coordinateAccuracy)
+            XCTAssertEqual($0.0.heading, $0.1.heading)
+            XCTAssertEqual($0.0.headingAccuracy, $0.1.headingAccuracy)
+            XCTAssertEqual($0.0.name, $0.1.name)
+        }
+        
+        XCTAssertEqual(decodedOptions.includesAlternativeRoutes, originalOptions.includesAlternativeRoutes)
+        XCTAssertEqual(decodedOptions.includesExitRoundaboutManeuver, originalOptions.includesExitRoundaboutManeuver)
+        XCTAssertEqual(decodedOptions.refreshingEnabled, originalOptions.refreshingEnabled)
+        XCTAssertEqual(decodedOptions.shapeFormat, originalOptions.shapeFormat)
+        XCTAssertEqual(decodedOptions.routeShapeResolution, originalOptions.routeShapeResolution)
+        XCTAssertEqual(decodedOptions.includesSteps, originalOptions.includesSteps)
+        XCTAssertEqual(decodedOptions.attributeOptions, originalOptions.attributeOptions)
+        XCTAssertEqual(decodedOptions.profileIdentifier, originalOptions.profileIdentifier)
+        XCTAssertEqual(decodedOptions.locale, originalOptions.locale)
+        XCTAssertEqual(decodedOptions.includesSpokenInstructions, originalOptions.includesSpokenInstructions)
+        XCTAssertEqual(decodedOptions.distanceMeasurementSystem, originalOptions.distanceMeasurementSystem)
+        XCTAssertEqual(decodedOptions.includesVisualInstructions, originalOptions.includesVisualInstructions)
+        XCTAssertEqual(decodedOptions.roadClassesToAvoid, originalOptions.roadClassesToAvoid)
+        XCTAssertEqual(decodedOptions.roadClassesToAllow, originalOptions.roadClassesToAllow)
+        XCTAssertEqual(decodedOptions.initialManeuverAvoidanceRadius, originalOptions.initialManeuverAvoidanceRadius)
+        XCTAssertEqual(decodedOptions.maximumWidth, originalOptions.maximumWidth)
+        XCTAssertEqual(decodedOptions.maximumHeight, originalOptions.maximumHeight)
+        XCTAssertEqual(decodedOptions.alleyPriority, originalOptions.alleyPriority)
+        XCTAssertEqual(decodedOptions.walkwayPriority, originalOptions.walkwayPriority)
+        XCTAssertEqual(decodedOptions.speed, originalOptions.speed)
+    }
+    
     // MARK: API name-handling tests
     
     private static var testWaypoints: [Waypoint] {

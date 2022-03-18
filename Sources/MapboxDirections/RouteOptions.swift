@@ -17,11 +17,76 @@ open class RouteOptions: DirectionsOptions {
 
      - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
+    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         let profilesDisallowingUTurns: [ProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
         allowsUTurnAtWaypoint = !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
-        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        super.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
+        
+        guard let queryItems = queryItems else {
+            return
+        }
+        
+        let mappedQueryItems = Dictionary<String, String>(queryItems.compactMap {
+            guard let value = $0.value else { return nil }
+            return ($0.name, value)
+        },
+                   uniquingKeysWith: { (_, latestValue) in
+            return latestValue
+        })
+        
+        if mappedQueryItems[CodingKeys.includesAlternativeRoutes.stringValue] == "true" {
+            self.includesAlternativeRoutes = true
+        }
+        if mappedQueryItems[CodingKeys.includesExitRoundaboutManeuver.stringValue] == "true" {
+            self.includesExitRoundaboutManeuver = true
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.alleyPriority.stringValue],
+           let alleyPriority = Double(mappedValue) {
+            self.alleyPriority = DirectionsPriority(rawValue: alleyPriority)
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.walkwayPriority.stringValue],
+           let walkwayPriority = Double(mappedValue) {
+            self.walkwayPriority = DirectionsPriority(rawValue: walkwayPriority)
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.speed.stringValue],
+           let speed = LocationSpeed(mappedValue) {
+            self.speed = speed
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.roadClassesToAvoid.stringValue],
+           let roadClassesToAvoid = RoadClasses(descriptions:mappedValue.components(separatedBy: ",")) {
+            self.roadClassesToAvoid = roadClassesToAvoid
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.roadClassesToAllow.stringValue],
+           let roadClassesToAllow = RoadClasses(descriptions:mappedValue.components(separatedBy: ",")) {
+            self.roadClassesToAllow = roadClassesToAllow
+        }
+        if mappedQueryItems[CodingKeys.refreshingEnabled.stringValue] == "true" && profileIdentifier == .automobileAvoidingTraffic {
+            self.refreshingEnabled = true
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.waypointTargets.stringValue] {
+            zip(waypoints.filter { $0.separatesLegs },
+                mappedValue.components(separatedBy: ";")).forEach {
+                let coordinatesComponents = $1.components(separatedBy: ",")
+                if coordinatesComponents.count == 2 {
+                    $0.targetCoordinate = LocationCoordinate2D(latitude: LocationDegrees(coordinatesComponents.last!)!,
+                                                               longitude: LocationDegrees(coordinatesComponents.first!)!)
+                }
+            }
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.initialManeuverAvoidanceRadius.stringValue],
+           let initialManeuverAvoidanceRadius = LocationDistance(mappedValue) {
+            self.initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.maximumHeight.stringValue],
+           let doubleValue = Double(mappedValue) {
+            self.maximumHeight = Measurement(value: doubleValue, unit: UnitLength.meters)
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.maximumWidth.stringValue],
+           let doubleValue = Double(mappedValue) {
+            self.maximumWidth = Measurement(value: doubleValue, unit: UnitLength.meters)
+        }
     }
 
     #if canImport(CoreLocation)
@@ -32,10 +97,11 @@ open class RouteOptions: DirectionsOptions {
 
      - parameter locations: An array of `CLLocation` objects representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each location object is converted into a `Waypoint` object. This class respects the `CLLocation` class’s `coordinate` and `horizontalAccuracy` properties, converting them into the `Waypoint` class’s `coordinate` and `coordinateAccuracy` properties, respectively.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = nil) {
+    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         let waypoints = locations.map { Waypoint(location: $0) }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
     }
     #endif
 
@@ -44,10 +110,11 @@ open class RouteOptions: DirectionsOptions {
 
      - parameter coordinates: An array of geographic coordinates representing locations that the route should visit in chronological order. The array should contain at least two locations (the source and destination) and at most 25 locations. Each coordinate is converted into a `Waypoint` object.
      - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
-    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: ProfileIdentifier? = nil) {
+    public convenience init(coordinates: [LocationCoordinate2D], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         let waypoints = coordinates.map { Waypoint(coordinate: $0) }
-        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier)
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -317,6 +384,7 @@ open class RouteOptions: DirectionsOptions {
 
         return params + super.urlQueryItems
     }
+    
 }
 
 extension LocationSpeed {
