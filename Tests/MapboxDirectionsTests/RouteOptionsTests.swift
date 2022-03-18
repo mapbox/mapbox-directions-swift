@@ -316,6 +316,18 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(widthValue))))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
     }
+
+    func testExcludeAndIncludeRoadClasses() {
+        let options = RouteOptions(coordinates: [])
+        options.roadClassesToAvoid = [.toll, .motorway, .ferry, .unpaved, .cashTollOnly]
+        options.roadClassesToAllow = [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]
+
+        let expectedExcludeQueryItem = URLQueryItem(name: "exclude", value: "toll,motorway,ferry,unpaved,cash_only_toll")
+        XCTAssertTrue(options.urlQueryItems.contains(expectedExcludeQueryItem))
+
+        let expectedIncludeQueryItem = URLQueryItem(name: "include", value: "hov2,hov3,hot")
+        XCTAssertTrue(options.urlQueryItems.contains(expectedIncludeQueryItem))
+    }
 }
 
 fileprivate let testCoordinates = [

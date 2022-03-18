@@ -348,17 +348,15 @@ open class RouteOptions: DirectionsOptions {
         if let speed = speed {
             params.append(URLQueryItem(name: CodingKeys.speed.stringValue, value: String(speed)))
         }
-        
-        if !roadClassesToAvoid.isEmpty && roadClassesToAvoid.isDisjoint(with: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
-            let allRoadClasses = roadClassesToAvoid.description.components(separatedBy: ",").filter { !$0.isEmpty }
-            precondition(allRoadClasses.count < 2, "You can only avoid one road class at a time.")
-            if let firstRoadClass = allRoadClasses.first {
-                params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: firstRoadClass))
-            }
+
+        if !roadClassesToAvoid.isEmpty {
+            let roadClasses = roadClassesToAvoid.description
+            params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: roadClasses))
         }
         
-        if !roadClassesToAllow.isEmpty && roadClassesToAllow.isSubset(of: [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]) {
-            params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: roadClassesToAllow.description))
+        if !roadClassesToAllow.isEmpty {
+            let parameterValue = roadClassesToAllow.description
+            params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: parameterValue))
         }
         
         if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {

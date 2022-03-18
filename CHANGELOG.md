@@ -1,5 +1,10 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.4.0
+
+* Fixed a crash that occurred when `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties contained multiple road classes.
+* `RoadClasses.tunnel` and `RoadClasses.restricted` are no longer supported in `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties
+
 ## v2.3.0
 
 * Added `VisualInstruction.Component.ShieldRepresentation` struct and the `VisualInstruction.Component.ImageRepresentation.shield` property containing metadata for displaying a highway shield consistent with map styles used by the Mapbox Maps SDK. ([#644](https://github.com/mapbox/mapbox-directions-swift/pull/644), [#647](https://github.com/mapbox/mapbox-directions-swift/pull/647))
