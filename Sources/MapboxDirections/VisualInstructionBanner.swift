@@ -8,8 +8,10 @@ internal extension CodingUserInfoKey {
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-open class VisualInstructionBanner: Codable {
-    private enum CodingKeys: String, CodingKey {
+open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case distanceAlongStep = "distanceAlongGeometry"
         case primaryInstruction = "primary"
         case secondaryInstruction = "secondary"
@@ -40,6 +42,8 @@ open class VisualInstructionBanner: Codable {
         try container.encodeIfPresent(tertiaryInstruction, forKey: .tertiaryInstruction)
         try container.encodeIfPresent(quaternaryInstruction, forKey: .quaternaryInstruction)
         try container.encode(drivingSide, forKey: .drivingSide)
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     required public init(from decoder: Decoder) throws {
@@ -54,6 +58,8 @@ open class VisualInstructionBanner: Codable {
         } else {
             drivingSide = .default
         }
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     // MARK: Timing When to Display the Banner

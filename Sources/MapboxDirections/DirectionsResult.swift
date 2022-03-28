@@ -7,8 +7,10 @@ import Turf
  
  You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-open class DirectionsResult: Codable {
-    private enum CodingKeys: String, CodingKey {
+open class DirectionsResult: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case shape = "geometry"
         case legs
         case distance
@@ -64,6 +66,8 @@ open class DirectionsResult: Codable {
         }
 
         responseContainsSpeechLocale = container.contains(.speechLocale)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     
@@ -83,6 +87,8 @@ open class DirectionsResult: Codable {
         if responseContainsSpeechLocale {
             try container.encode(speechLocale?.identifier, forKey: .speechLocale)
         }
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     // MARK: Getting the Shape of the Route

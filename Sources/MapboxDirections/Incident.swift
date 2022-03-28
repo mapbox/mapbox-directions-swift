@@ -1,9 +1,11 @@
 import Foundation
+import Turf
 
 /**
  `Incident` describes any corresponding event, used for annotating the route.
  */
-public struct Incident: Codable, Equatable {
+public struct Incident: Codable, Equatable, ForeignMemberContainer {
+    public var foreignMembers: JSONObject = [:]
 
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"
@@ -228,6 +230,7 @@ public struct Incident: Codable, Equatable {
         numberOfBlockedLanes = try container.decodeIfPresent(Int.self, forKey: .numberOfBlockedLanes)
         congestionLevel = try container.decodeIfPresent(CongestionContainer.self, forKey: .congestionLevel)?.clampedValue
         affectedRoadNames = try container.decodeIfPresent([String].self, forKey: .affectedRoadNames)
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -256,5 +259,7 @@ public struct Incident: Codable, Equatable {
             try container.encode(CongestionContainer(value: congestionLevel), forKey: .congestionLevel)
         }
         try container.encodeIfPresent(affectedRoadNames, forKey: .affectedRoadNames)
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }

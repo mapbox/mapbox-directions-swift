@@ -4,7 +4,10 @@ import Turf
 /**
  A single cross street along a step.
  */
-public struct Intersection {
+public struct Intersection: ForeignMemberContainer {
+    public var foreignMembers: JSONObject = [:]
+    public var lanesForeignMembers: [JSONObject] = []
+    
     // MARK: Creating an Intersection
     
     public init(location: LocationCoordinate2D,
@@ -187,7 +190,9 @@ extension Intersection: Codable {
     }
     
     /// Used to code `Intersection.outletMapboxStreetsRoadClass`
-    private struct MapboxStreetClassCodable: Codable {
+    private struct MapboxStreetClassCodable: Codable, ForeignMemberContainer {
+        var foreignMembers: JSONObject = [:]
+        
         private enum CodingKeys: String, CodingKey {
             case streetClass = "class"
         }
@@ -207,6 +212,14 @@ extension Intersection: Codable {
                 streetClass = nil
             }
             
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(streetClass, forKey: .streetClass)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
         }
     }
 
@@ -272,6 +285,9 @@ extension Intersection: Codable {
                    validLanes[i].indications.descriptions.contains(usableLaneIndication.rawValue) {
                     lanes?[i].validIndication = usableLaneIndication
                 }
+                if usableApproachLanes.count == lanesForeignMembers.count {
+                    lanes?[i].foreignMembers = lanesForeignMembers[i]
+                }
             }
             
             for j in preferredApproachLanes {
@@ -311,6 +327,8 @@ extension Intersection: Codable {
         if let geoIndex = geometryIndex {
             try container.encode(geoIndex, forKey: .geometryIndex)
         }
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     public init(from decoder: Decoder) throws {
@@ -319,6 +337,7 @@ extension Intersection: Codable {
         headings = try container.decode([LocationDirection].self, forKey: .headings)
         
         if let lanes = try container.decodeIfPresent([Lane].self, forKey: .lanes) {
+            lanesForeignMembers = lanes.map(\.foreignMembers)
             approachLanes = lanes.map { $0.indications }
             usableApproachLanes = lanes.indices { $0.isValid }
             preferredApproachLanes = lanes.indices { ($0.isActive ?? false) }
@@ -352,6 +371,8 @@ extension Intersection: Codable {
         isUrban = try container.decodeIfPresent(Bool.self, forKey: .isUrban)
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
 }
 

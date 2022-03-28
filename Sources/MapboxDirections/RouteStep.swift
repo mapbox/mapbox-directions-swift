@@ -301,7 +301,9 @@ extension Array where Element == String {
 /**
  Encapsulates all the information about a road.
  */
-struct Road {
+struct Road: ForeignMemberContainer {
+    var foreignMembers: JSONObject = [:]
+    
     let names: [String]?
     let codes: [String]?
     let exitCodes: [String]?
@@ -365,6 +367,8 @@ extension Road: Codable {
         let destinations = try container.decodeIfPresent(String.self, forKey: .destinations)
         let rotaryName = try container.decodeIfPresent(String.self, forKey: .rotaryName)
         self.init(name: name, ref: ref, exits: exits, destination: destinations, rotaryName: rotaryName)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -390,6 +394,8 @@ extension Road: Codable {
         try container.encodeIfPresent(exitCodes?.tagValues(joinedBy: ";"), forKey: .exits)
         try container.encodeIfPresent(ref, forKey: .ref)
         try container.encodeIfPresent(rotaryNames?.tagValues(joinedBy: ";"), forKey: .rotaryName)
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }
 
@@ -398,8 +404,10 @@ extension Road: Codable {
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-open class RouteStep: Codable {
-    private enum CodingKeys: String, CodingKey {
+open class RouteStep: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case shape = "geometry"
         case distance
         case drivingSide = "driving_side"
@@ -417,14 +425,77 @@ open class RouteStep: Codable {
         case transportType = "mode"
     }
     
-    private enum ManeuverCodingKeys: String, CodingKey {
-        case instruction
-        case location
-        case type
-        case exitIndex = "exit"
-        case direction = "modifier"
-        case initialHeading = "bearing_before"
-        case finalHeading = "bearing_after"
+    private struct Maneuver: Codable, ForeignMemberContainer {
+        var foreignMembers: JSONObject = [:]
+        
+        private enum CodingKeys: String, CodingKey {
+            case instruction
+            case location
+            case type
+            case exitIndex = "exit"
+            case direction = "modifier"
+            case initialHeading = "bearing_before"
+            case finalHeading = "bearing_after"
+        }
+        
+        let instructions: String
+        let maneuverType: ManeuverType
+        let maneuverDirection: ManeuverDirection?
+        let maneuverLocation: Turf.LocationCoordinate2D
+        let initialHeading: Turf.LocationDirection?
+        let finalHeading: Turf.LocationDirection?
+        let exitIndex: Int?
+        
+        init(instructions: String,
+             maneuverType: ManeuverType,
+             maneuverDirection: ManeuverDirection?,
+             maneuverLocation: Turf.LocationCoordinate2D,
+             initialHeading: Turf.LocationDirection?,
+             finalHeading: Turf.LocationDirection?,
+             exitIndex: Int?) {
+            self.instructions = instructions
+            self.maneuverType = maneuverType
+            self.maneuverLocation = maneuverLocation
+            self.maneuverDirection = maneuverDirection
+            self.initialHeading = initialHeading
+            self.finalHeading = finalHeading
+            self.exitIndex = exitIndex
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            maneuverLocation = try container.decode(LocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
+            maneuverType = (try? container.decode(ManeuverType.self, forKey: .type)) ?? .default
+            maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
+            exitIndex = try container.decodeIfPresent(Int.self, forKey: .exitIndex)
+
+            initialHeading = try container.decodeIfPresent(Turf.LocationDirection.self, forKey: .initialHeading)
+            finalHeading = try container.decodeIfPresent(Turf.LocationDirection.self, forKey: .finalHeading)
+            
+            if let instruction = try? container.decode(String.self, forKey: .instruction) {
+                instructions = instruction
+            } else {
+                instructions = "\(maneuverType) \(maneuverDirection?.rawValue ?? "")"
+            }
+            
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            try container.encode(instructions, forKey: .instruction)
+            try container.encode(maneuverType, forKey: .type)
+            try container.encodeIfPresent(exitIndex, forKey: .exitIndex)
+
+            try container.encodeIfPresent(maneuverDirection, forKey: .direction)
+            try container.encode(LocationCoordinate2DCodable(maneuverLocation), forKey: .location)
+            try container.encodeIfPresent(initialHeading, forKey: .initialHeading)
+            try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
+        }
     }
     
     // MARK: Creating a Step
@@ -526,21 +597,23 @@ open class RouteStep: Codable {
             try container.encode(polyLineString, forKey: .shape)
         }
         
-        var maneuver = container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
-        try maneuver.encode(instructions, forKey: .instruction)
-        try maneuver.encode(maneuverType, forKey: .type)
-        try maneuver.encodeIfPresent(exitIndex, forKey: .exitIndex)
 
-        try maneuver.encodeIfPresent(maneuverDirection, forKey: .direction)
-        try maneuver.encode(LocationCoordinate2DCodable(maneuverLocation), forKey: .location)
-        try maneuver.encodeIfPresent(initialHeading, forKey: .initialHeading)
-        try maneuver.encodeIfPresent(finalHeading, forKey: .finalHeading)
+        let maneuver = Maneuver(instructions: instructions,
+                                maneuverType: maneuverType,
+                                maneuverDirection: maneuverDirection,
+                                maneuverLocation: maneuverLocation,
+                                initialHeading: initialHeading,
+                                finalHeading: finalHeading,
+                                exitIndex: exitIndex)
+        try container.encode(maneuver, forKey: .maneuver)
         
         try container.encodeIfPresent(speedLimitSignStandard, forKey: .speedLimitSignStandard)
         if let speedLimitUnit = speedLimitUnit,
             let unit = SpeedLimitDescriptor.UnitDescriptor(unit: speedLimitUnit) {
             try container.encode(unit, forKey: .speedLimitUnit)
         }
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     static func decode(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]) throws -> [RouteStep] {
@@ -558,21 +631,53 @@ open class RouteStep: Codable {
     
     
     /// Used to Decode `Intersection.admin_index`
-    private struct AdministrativeAreaIndex: Codable {
+    private struct AdministrativeAreaIndex: Codable, ForeignMemberContainer {
+        var foreignMembers: JSONObject = [:]
+        
         private enum CodingKeys: String, CodingKey {
             case administrativeRegionIndex = "admin_index"
         }
         
         var administrativeRegionIndex: Int?
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            administrativeRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrativeRegionIndex)
+            
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(administrativeRegionIndex, forKey: .administrativeRegionIndex)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
+        }
     }
     
     /// Used to Decode `Intersection.geometry_index`
-    private struct IntersectionShapeIndex: Codable {
+    private struct IntersectionShapeIndex: Codable, ForeignMemberContainer {
+        var foreignMembers: JSONObject = [:]
+        
         private enum CodingKeys: String, CodingKey {
             case geometryIndex = "geometry_index"
         }
         
         let geometryIndex: Int?
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
+            
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(geometryIndex, forKey: .geometryIndex)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
+        }
     }
 
     
@@ -582,15 +687,16 @@ open class RouteStep: Codable {
     
     init(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]?) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let maneuver = try container.nestedContainer(keyedBy: ManeuverCodingKeys.self, forKey: .maneuver)
         
-        maneuverLocation = try maneuver.decode(LocationCoordinate2DCodable.self, forKey: .location).decodedCoordinates
-        maneuverType = (try? maneuver.decode(ManeuverType.self, forKey: .type)) ?? .default
-        maneuverDirection = try maneuver.decodeIfPresent(ManeuverDirection.self, forKey: .direction)
-        exitIndex = try maneuver.decodeIfPresent(Int.self, forKey: .exitIndex)
-
-        initialHeading = try maneuver.decodeIfPresent(Turf.LocationDirection.self, forKey: .initialHeading)
-        finalHeading = try maneuver.decodeIfPresent(Turf.LocationDirection.self, forKey: .finalHeading)
+        let maneuver = try container.decode(Maneuver.self, forKey: .maneuver)
+        
+        maneuverLocation = maneuver.maneuverLocation
+        maneuverType = maneuver.maneuverType
+        maneuverDirection = maneuver.maneuverDirection
+        exitIndex = maneuver.exitIndex
+        initialHeading = maneuver.initialHeading
+        finalHeading = maneuver.finalHeading
+        instructions = maneuver.instructions
         
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
@@ -598,11 +704,6 @@ open class RouteStep: Codable {
             shape = nil
         }
         
-        if let instruction = try? maneuver.decode(String.self, forKey: .instruction) {
-            instructions = instruction
-        } else {
-            instructions = "\(maneuverType) \(maneuverDirection?.rawValue ?? "")"
-        }
         drivingSide = try container.decode(DrivingSide.self, forKey: .drivingSide)
   
         instructionsSpokenAlongStep = try container.decodeIfPresent([SpokenInstruction].self, forKey: .instructionsSpokenAlongStep)
@@ -663,6 +764,8 @@ open class RouteStep: Codable {
             exitNames = nil
             phoneticExitNames = nil
         }
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     // MARK: Getting the Shape of the Step

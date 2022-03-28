@@ -7,8 +7,11 @@ import Turf
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
-open class RouteLeg: Codable {
-    public enum CodingKeys: String, CodingKey {
+open class RouteLeg: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    public var attributesForeignMembers: JSONObject = [:]
+    
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case source
         case destination
         case steps
@@ -81,6 +84,7 @@ open class RouteLeg: Codable {
         
         if let attributes = try container.decodeIfPresent(Attributes.self, forKey: .annotation) {
             self.attributes = attributes
+            self.attributesForeignMembers = attributes.foreignMembers
         }
 
         if let incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents) {
@@ -90,6 +94,8 @@ open class RouteLeg: Codable {
         if let viaWaypoints = try container.decodeIfPresent([SilentWaypoint].self, forKey: .viaWaypoints) {
             self.viaWaypoints = viaWaypoints
         }
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -103,8 +109,9 @@ open class RouteLeg: Codable {
         try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
         
-        let attributes = self.attributes
+        var attributes = self.attributes
         if !attributes.isEmpty {
+            attributes.foreignMembers = self.attributesForeignMembers
             try container.encode(attributes, forKey: .annotation)
         }
 
@@ -119,6 +126,8 @@ open class RouteLeg: Codable {
         if let viaWaypoints = viaWaypoints {
             try container.encode(viaWaypoints, forKey: .viaWaypoints)
         }
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     // MARK: Getting the Endpoints of the Leg

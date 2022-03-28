@@ -5,7 +5,9 @@ extension RouteLeg {
     /**
      A collection of per-segment attributes along a route leg.
      */
-    public struct Attributes: Equatable {
+    public struct Attributes: Equatable, ForeignMemberContainer {
+        public var foreignMembers: JSONObject = [:]
+        
         /**
          An array containing the distance (measured in meters) between each coordinate in the route leg geometry.
          
@@ -90,6 +92,8 @@ extension RouteLeg.Attributes: Codable {
         } else {
             segmentMaximumSpeedLimits = nil
         }
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -104,6 +108,8 @@ extension RouteLeg.Attributes: Codable {
         if let speedLimitDescriptors = segmentMaximumSpeedLimits?.map({ SpeedLimitDescriptor(speed: $0) }) {
             try container.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
         }
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     /**
