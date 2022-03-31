@@ -24353,7 +24353,18 @@
                             ],
                             "lanes_blocked": ["RIGHT", "SIDE"],
                             "geometry_index_start": 353,
-                            "geometry_index_end": 367
+                            "geometry_index_end": 367,
+                            "iso_3166_1_alpha3": "DEU",
+                            "iso_3166_1_alpha2": "DE",
+                            "closed": false,
+                            "num_lanes_blocked": 2,
+                            "congestion": {
+                                "value": 50
+                            },
+                            "affected_road_names": [
+                                "A96",
+                                "test"
+                            ]
                         },
                         {
                             "id": "12779545487967908590",
@@ -24370,7 +24381,8 @@
                                 701
                             ],
                             "geometry_index_start": 476,
-                            "geometry_index_end": 566
+                            "geometry_index_end": 566,
+                            "closed": true
                         },
                         {
                             "id": "2113169574233653303",
@@ -24388,7 +24400,8 @@
                             ],
                             "lanes_blocked": ["unknown lane type"],
                             "geometry_index_start": 810,
-                            "geometry_index_end": 900
+                            "geometry_index_end": 900,
+                            "num_lanes_blocked": 1
                         }
                     ],
                     "distance": 109978.258,
