@@ -19,6 +19,13 @@ public struct Incident: Codable, Equatable {
         case lanesBlocked = "lanes_blocked"
         case geometryIndexStart = "geometry_index_start"
         case geometryIndexEnd = "geometry_index_end"
+        case countryCodeAlpha3 = "iso_3166_1_alpha3"
+        case countryCode = "iso_3166_1_alpha2"
+        case roadIsClosed = "closed"
+        case longDescription = "long_description"
+        case numberOfBlockedLanes = "num_lanes_blocked"
+        case congestionLevel = "congestion"
+        case affectedRoadNames = "affected_road_names"
     }
     
     /// Defines known types of incidents.
@@ -65,6 +72,17 @@ public struct Incident: Codable, Equatable {
         case low
     }
 
+    private struct CongestionContainer: Codable {
+        enum CodingKeys: String, CodingKey {
+            case value
+        }
+        
+        let value: Int
+        var clampedValue: Int? {
+            value == 101 ? nil : value
+        }
+    }
+    
     /// Incident identifier
     public var identifier: String
     /// The kind of an incident
@@ -88,6 +106,24 @@ public struct Incident: Codable, Equatable {
     public var subtype: String?
     /// Breif description of the subtype. May be not available for all incident types and is not available if `subtype` is `nil`
     public var subtypeDescription: String?
+    /// The three-letter ISO 3166-1 alpha-3 code for the country the incident is located in. Example: "USA".
+    public var countryCodeAlpha3: String?
+    /// The two-letter ISO 3166-1 alpha-2 code for the country the incident is located in. Example: "US".
+    public var countryCode: String?
+    /// If this is true then the road has been completely closed.
+    public var roadIsClosed: Bool?
+    /// A long description of the incident in a human-readable format.
+    public var longDescription: String?
+    /// The number of items in the `lanesBlocked`.
+    public var numberOfBlockedLanes: Int?
+    /// Information about the amount of congestion on the road around the incident.
+    ///
+    /// A number between 0 and 100 representing the level of congestion caused by the incident. The higher the number, the more congestion there is. A value of 0 means there is no congestion on the road. A value of 100 means that the road is closed.
+    public var congestionLevel: NumericCongestionLevel?
+    /// List of roads names affected by the incident.
+    ///
+    /// Alternate road names are separated by a /. The list is ordered from the first affected road to the last one that the incident lies on.
+    public var affectedRoadNames: [String]?
     /// Contains list of ISO 14819-2:2013 codes
     ///
     /// See https://www.iso.org/standard/59231.html for details
@@ -110,7 +146,14 @@ public struct Incident: Codable, Equatable {
                 subtypeDescription: String?,
                 alertCodes: Set<Int>,
                 lanesBlocked: BlockedLanes?,
-                shapeIndexRange: Range<Int>) {
+                shapeIndexRange: Range<Int>,
+                countryCodeAlpha3: String? = nil,
+                countryCode: String? = nil,
+                roadIsClosed: Bool? = nil,
+                longDescription: String? = nil,
+                numberOfBlockedLanes: Int? = nil,
+                congestionLevel: NumericCongestionLevel? = nil,
+                affectedRoadNames: [String]? = nil) {
         self.identifier = identifier
         self.rawKind = type.rawValue
         self.description = description
@@ -123,6 +166,13 @@ public struct Incident: Codable, Equatable {
         self.alertCodes = alertCodes
         self.lanesBlocked = lanesBlocked
         self.shapeIndexRange = shapeIndexRange
+        self.countryCodeAlpha3 = countryCodeAlpha3
+        self.countryCode = countryCode
+        self.roadIsClosed = roadIsClosed
+        self.longDescription = longDescription
+        self.numberOfBlockedLanes = numberOfBlockedLanes
+        self.congestionLevel = congestionLevel
+        self.affectedRoadNames = affectedRoadNames
     }
     
     public init(from decoder: Decoder) throws {
@@ -166,6 +216,14 @@ public struct Incident: Codable, Equatable {
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
         shapeIndexRange = geometryIndexStart..<geometryIndexEnd
+        
+        countryCodeAlpha3 = try container.decodeIfPresent(String.self, forKey: .countryCodeAlpha3)
+        countryCode = try container.decodeIfPresent(String.self, forKey: .countryCode)
+        roadIsClosed = try container.decodeIfPresent(Bool.self, forKey: .roadIsClosed)
+        longDescription = try container.decodeIfPresent(String.self, forKey: .longDescription)
+        numberOfBlockedLanes = try container.decodeIfPresent(Int.self, forKey: .numberOfBlockedLanes)
+        congestionLevel = try container.decodeIfPresent(CongestionContainer.self, forKey: .congestionLevel)?.clampedValue
+        affectedRoadNames = try container.decodeIfPresent([String].self, forKey: .affectedRoadNames)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -185,5 +243,14 @@ public struct Incident: Codable, Equatable {
         try container.encodeIfPresent(lanesBlocked, forKey: .lanesBlocked)
         try container.encode(shapeIndexRange.lowerBound, forKey: .geometryIndexStart)
         try container.encode(shapeIndexRange.upperBound, forKey: .geometryIndexEnd)
+        try container.encodeIfPresent(countryCodeAlpha3, forKey: .countryCodeAlpha3)
+        try container.encodeIfPresent(countryCode, forKey: .countryCode)
+        try container.encodeIfPresent(roadIsClosed, forKey: .roadIsClosed)
+        try container.encodeIfPresent(longDescription, forKey: .longDescription)
+        try container.encodeIfPresent(numberOfBlockedLanes, forKey: .numberOfBlockedLanes)
+        if let congestionLevel = congestionLevel {
+            try container.encode(CongestionContainer(value: congestionLevel), forKey: .congestionLevel)
+        }
+        try container.encodeIfPresent(affectedRoadNames, forKey: .affectedRoadNames)
     }
 }
