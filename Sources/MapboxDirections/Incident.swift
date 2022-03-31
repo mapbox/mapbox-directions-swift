@@ -73,13 +73,17 @@ public struct Incident: Codable, Equatable {
     }
 
     private struct CongestionContainer: Codable {
+        // `Directions` define this as service value to indicate "no congestion calculated"
+        // see: https://docs.mapbox.com/api/navigation/directions/#incident-object
+        private static let CongestionUnavailableKey = 101
+        
         enum CodingKeys: String, CodingKey {
             case value
         }
         
         let value: Int
         var clampedValue: Int? {
-            value == 101 ? nil : value
+            value == Self.CongestionUnavailableKey ? nil : value
         }
     }
     
