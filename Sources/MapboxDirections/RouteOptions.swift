@@ -88,7 +88,7 @@ open class RouteOptions: DirectionsOptions {
             self.maximumWidth = Measurement(value: doubleValue, unit: UnitLength.meters)
         }
         
-        let formatter = ISO8601DateFormatter()
+        let formatter = DateFormatter.ISO8601DirectionsFormatter()
         if let mappedValue = mappedQueryItems[CodingKeys.departAt.stringValue],
            let departAt = formatter.date(from: mappedValue) {
             self.departAt = departAt
@@ -161,7 +161,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
         try container.encodeIfPresent(speed, forKey: .speed)
         
-        let formatter = ISO8601DateFormatter()
+        let formatter = DateFormatter.ISO8601DirectionsFormatter()
         if let arriveBy = arriveBy {
             try container.encode(formatter.string(from: arriveBy), forKey: .arriveBy)
         }
@@ -200,7 +200,7 @@ open class RouteOptions: DirectionsOptions {
 
         speed = try container.decodeIfPresent(LocationSpeed.self, forKey: .speed)
 
-        let formatter = ISO8601DateFormatter()
+        let formatter = DateFormatter.ISO8601DirectionsFormatter()
         if let dateString = try container.decodeIfPresent(String.self, forKey: .departAt) {
             departAt = formatter.date(from: dateString)
         }
@@ -290,14 +290,14 @@ open class RouteOptions: DirectionsOptions {
     open var speed: LocationSpeed?
     
     /**
-     The desired arrival time, in the local time at the route destination.
+     The desired arrival time, ignoring seconds precision, in the local time at the route destination.
      
      This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile`.
      */
     open var arriveBy: Date?
     
     /**
-     The desired departure time, in the local time at the route origin
+     The desired departure time, ignoring seconds precision, in the local time at the route origin
      
      This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`.
      */
@@ -426,17 +426,17 @@ open class RouteOptions: DirectionsOptions {
         }
 
         if [ProfileIdentifier.automobile, .automobileAvoidingTraffic].contains(profileIdentifier) {
-            let formatter = ISO8601DateFormatter()
+            let formatter = DateFormatter.ISO8601DirectionsFormatter()
             
             if let departAt = departAt {
                 params.append(URLQueryItem(name: CodingKeys.departAt.stringValue,
-                                           value: formatter.string(from: departAt)))
+                                           value: String(formatter.string(from: departAt))))
             }
             
             if profileIdentifier == .automobile,
                let arriveBy = arriveBy {
                 params.append(URLQueryItem(name: CodingKeys.arriveBy.stringValue,
-                                           value: formatter.string(from: arriveBy)))
+                                           value: String(formatter.string(from: arriveBy))))
             }
         }
         
@@ -472,4 +472,14 @@ extension LocationDistance {
      Maximum value to ignore maneuvers around origin point during routing.
      */
     static let maximumManeuverIgnoringRadius: LocationDistance = 1000
+}
+
+extension DateFormatter {
+    /// Special ISO8601 date converter for `depart_at` and `arrive_by` parameters, as Directions API explicitly require no seconds bit.
+    static fileprivate func ISO8601DirectionsFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }
 }

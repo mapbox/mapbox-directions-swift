@@ -185,7 +185,8 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(decodedOptions.walkwayPriority, originalOptions.walkwayPriority)
         XCTAssertEqual(decodedOptions.speed, originalOptions.speed)
         XCTAssertNil(decodedOptions.arriveBy)
-        XCTAssertEqual(decodedOptions.departAt, originalOptions.departAt)
+        // URL encoding skips seconds, so we check that dates are within 1 minute delta
+        XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)
     }
     
     // MARK: API name-handling tests
