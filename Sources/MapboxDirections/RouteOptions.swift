@@ -87,6 +87,16 @@ open class RouteOptions: DirectionsOptions {
            let doubleValue = Double(mappedValue) {
             self.maximumWidth = Measurement(value: doubleValue, unit: UnitLength.meters)
         }
+        
+        let formatter = ISO8601DateFormatter()
+        if let mappedValue = mappedQueryItems[CodingKeys.departAt.stringValue],
+           let departAt = formatter.date(from: mappedValue) {
+            self.departAt = departAt
+        }
+        if let mappedValue = mappedQueryItems[CodingKeys.arriveBy.stringValue],
+           let arriveBy = formatter.date(from: mappedValue) {
+            self.arriveBy = arriveBy
+        }
     }
 
     #if canImport(CoreLocation)
@@ -131,6 +141,8 @@ open class RouteOptions: DirectionsOptions {
         case walkwayPriority = "walkway_bias"
         case speed = "walking_speed"
         case waypointTargets = "waypoint_targets"
+        case arriveBy = "arrive_by"
+        case departAt = "depart_at"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -148,6 +160,14 @@ open class RouteOptions: DirectionsOptions {
         try container.encodeIfPresent(alleyPriority, forKey: .alleyPriority)
         try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
         try container.encodeIfPresent(speed, forKey: .speed)
+        
+        let formatter = ISO8601DateFormatter()
+        if let arriveBy = arriveBy {
+            try container.encode(formatter.string(from: arriveBy), forKey: .arriveBy)
+        }
+        if let departAt = departAt {
+            try container.encode(formatter.string(from: departAt), forKey: .departAt)
+        }
     }
     
     public required init(from decoder: Decoder) throws {
@@ -180,6 +200,15 @@ open class RouteOptions: DirectionsOptions {
 
         speed = try container.decodeIfPresent(LocationSpeed.self, forKey: .speed)
 
+        let formatter = ISO8601DateFormatter()
+        if let dateString = try container.decodeIfPresent(String.self, forKey: .departAt) {
+            departAt = formatter.date(from: dateString)
+        }
+        
+        if let dateString = try container.decodeIfPresent(String.self, forKey: .arriveBy) {
+            arriveBy = formatter.date(from: dateString)
+        }
+        
         try super.init(from: decoder)
     }
     
@@ -259,6 +288,20 @@ open class RouteOptions: DirectionsOptions {
      The value of this property must be at least `CLLocationSpeed.minimumWalking` and at most `CLLocationSpeed.maximumWalking`. `CLLocationSpeed.normalWalking` corresponds to a typical preferred walking speed.
      */
     open var speed: LocationSpeed?
+    
+    /**
+     The desired arrival time, in the local time at the route destination.
+     
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile`.
+     */
+    open var arriveBy: Date?
+    
+    /**
+     The desired departure time, in the local time at the route origin
+     
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`.
+     */
+    open var departAt: Date?
     
     // MARK: Specifying the Response Format
 
@@ -382,6 +425,21 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(widthInMeters)))
         }
 
+        if [ProfileIdentifier.automobile, .automobileAvoidingTraffic].contains(profileIdentifier) {
+            let formatter = ISO8601DateFormatter()
+            
+            if let departAt = departAt {
+                params.append(URLQueryItem(name: CodingKeys.departAt.stringValue,
+                                           value: formatter.string(from: departAt)))
+            }
+            
+            if profileIdentifier == .automobile,
+               let arriveBy = arriveBy {
+                params.append(URLQueryItem(name: CodingKeys.arriveBy.stringValue,
+                                           value: formatter.string(from: arriveBy)))
+            }
+        }
+        
         return params + super.urlQueryItems
     }
     
