@@ -184,6 +184,9 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(decodedOptions.alleyPriority, originalOptions.alleyPriority)
         XCTAssertEqual(decodedOptions.walkwayPriority, originalOptions.walkwayPriority)
         XCTAssertEqual(decodedOptions.speed, originalOptions.speed)
+        XCTAssertNil(decodedOptions.arriveBy)
+        // URL encoding skips seconds, so we check that dates are within 1 minute delta
+        XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)
     }
     
     // MARK: API name-handling tests
@@ -355,6 +358,8 @@ var testRouteOptions: RouteOptions {
     opts.alleyPriority = .low
     opts.walkwayPriority = .high
     opts.speed = 1
+    opts.departAt = Date(timeIntervalSince1970: 500)
+    opts.arriveBy = Date(timeIntervalSince1970: 600)
 
     return opts
 }
