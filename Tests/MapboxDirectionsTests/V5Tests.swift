@@ -111,7 +111,8 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(step?.expectedTravelTime ?? 0, 31, accuracy: 1)
         XCTAssertEqual(step?.instructions, "Take exit 43-44 towards VA 193: George Washington Memorial Parkway")
         
-        XCTAssertNil(step?.names)
+        XCTAssertNotNil(step?.names)
+        XCTAssertTrue(step?.names?.isEmpty ?? false)
         XCTAssertEqual(step?.destinationCodes, ["VA 193"])
         XCTAssertEqual(step?.destinations, ["George Washington Memorial Parkway", "Washington", "Georgetown Pike"])
         XCTAssertEqual(step?.maneuverType, .takeOffRamp)
@@ -124,12 +125,12 @@ class V5Tests: XCTestCase {
             XCTAssertEqual(step?.shape?.coordinates.first?.latitude ?? 0, 38.9667, accuracy: 1e-4)
             XCTAssertEqual(step?.shape?.coordinates.first?.longitude ?? 0, -77.1802, accuracy: 1e-4)
         
-        XCTAssertEqual(leg?.steps[32].names, nil)
+        XCTAssertEqual(leg?.steps[32].names, ["I-80"])
         XCTAssertEqual(leg?.steps[32].codes, ["I-80"])
         XCTAssertEqual(leg?.steps[32].destinationCodes, ["I-80 East", "I-90"])
         XCTAssertEqual(leg?.steps[32].destinations, ["Toll Road"])
         
-        XCTAssertEqual(leg?.steps[35].names, ["Ohio Turnpike"])
+        XCTAssertEqual(leg?.steps[35].names, ["Ohio Turnpike (I-80 East)"])
         XCTAssertEqual(leg?.steps[35].codes, ["I-80 East"])
         XCTAssertNil(leg?.steps[35].destinationCodes)
         XCTAssertNil(leg?.steps[35].destinations)
@@ -158,7 +159,41 @@ class V5Tests: XCTestCase {
     
     func testGeoJSON() {
         XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
-        test(shapeFormat: .geoJSON)
+        
+        // Removes excessive foreignMembers
+        let transformer: JSONTransformer = { json in
+            var transformed = json
+            let routes = (transformed["routes"] as! [JSONDictionary])
+            var newRoutes = [JSONDictionary]()
+            
+            for var route in routes {
+                let legs = route["legs"] as! [JSONDictionary]
+                var newLegs = [JSONDictionary]()
+                
+                for var leg in legs {
+                    let steps = leg["steps"] as! [JSONDictionary]
+                    var newSteps = [JSONDictionary]()
+                    
+                    for var step in steps {
+                        step.removeValue(forKey: "weight")
+
+                        newSteps.append(step)
+                    }
+                    
+                    leg["steps"] = newSteps
+                    newLegs.append(leg)
+                }
+                
+                route["legs"] = newLegs
+                newRoutes.append(route)
+            }
+            
+            
+            transformed["routes"] = newRoutes
+            return transformed
+        }
+        
+        test(shapeFormat: .geoJSON, transformer: transformer)
     }
 
     func testPolyline() {

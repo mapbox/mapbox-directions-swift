@@ -321,17 +321,7 @@ struct Road: ForeignMemberContainer {
     }
     
     init(name: String, ref: String?, exits: String?, destination: String?, rotaryName: String?) {
-        if !name.isEmpty, let ref = ref {
-            // Mapbox Directions API v5 encodes the ref separately from the name but redundantly includes the ref in the name for backwards compatibility. Remove the ref from the name.
-            let parenthetical = "(\(ref))"
-            if name == ref {
-                self.names = nil
-            } else {
-                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
-            }
-        } else {
-            self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
-        }
+        self.names = name.tagValues(separatedBy: ";")
 
         // Mapbox Directions API v5 combines the destination’s ref and name.
         if let destination = destination, destination.contains(": ") {
@@ -350,7 +340,7 @@ struct Road: ForeignMemberContainer {
 }
 
 extension Road: Codable {
-    private enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case ref
         case exits
@@ -375,10 +365,7 @@ extension Road: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         let ref = codes?.tagValues(joinedBy: ";")
-        if var name = names?.tagValues(joinedBy: ";") {
-            if let ref = ref {
-                name = "\(name) (\(ref))"
-            }
+        if let name = names?.tagValues(joinedBy: ";") {
             try container.encodeIfPresent(name, forKey: .name)
         } else {
             try container.encodeIfPresent(ref, forKey: .name)
@@ -406,6 +393,7 @@ extension Road: Codable {
  */
 open class RouteStep: Codable, ForeignMemberContainerClass {
     public var foreignMembers: JSONObject = [:]
+    public var maneuverForeignMembers: JSONObject = [:]
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case shape = "geometry"
@@ -597,14 +585,14 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
             try container.encode(polyLineString, forKey: .shape)
         }
         
-
-        let maneuver = Maneuver(instructions: instructions,
+        var maneuver = Maneuver(instructions: instructions,
                                 maneuverType: maneuverType,
                                 maneuverDirection: maneuverDirection,
                                 maneuverLocation: maneuverLocation,
                                 initialHeading: initialHeading,
                                 finalHeading: finalHeading,
                                 exitIndex: exitIndex)
+        maneuver.foreignMembers = maneuverForeignMembers
         try container.encode(maneuver, forKey: .maneuver)
         
         try container.encodeIfPresent(speedLimitSignStandard, forKey: .speedLimitSignStandard)
@@ -697,6 +685,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         initialHeading = maneuver.initialHeading
         finalHeading = maneuver.finalHeading
         instructions = maneuver.instructions
+        maneuverForeignMembers = maneuver.foreignMembers
         
         if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
             shape = try LineString(polyLineString: polyLineString)
@@ -766,6 +755,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         }
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        try decodeForeignMembers(notKeyedBy: Road.CodingKeys.self, with: decoder)
     }
     
     // MARK: Getting the Shape of the Step
