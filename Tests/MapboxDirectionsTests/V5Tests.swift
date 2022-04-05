@@ -63,7 +63,7 @@ class V5Tests: XCTestCase {
         }
         XCTAssertNotNil(task)
         
-        waitForExpectations(timeout: 10) { (error) in
+        waitForExpectations(timeout: 15) { (error) in
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
@@ -159,41 +159,7 @@ class V5Tests: XCTestCase {
     
     func testGeoJSON() {
         XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
-        
-        // Removes excessive foreignMembers
-        let transformer: JSONTransformer = { json in
-            var transformed = json
-            let routes = (transformed["routes"] as! [JSONDictionary])
-            var newRoutes = [JSONDictionary]()
-            
-            for var route in routes {
-                let legs = route["legs"] as! [JSONDictionary]
-                var newLegs = [JSONDictionary]()
-                
-                for var leg in legs {
-                    let steps = leg["steps"] as! [JSONDictionary]
-                    var newSteps = [JSONDictionary]()
-                    
-                    for var step in steps {
-                        step.removeValue(forKey: "weight")
-
-                        newSteps.append(step)
-                    }
-                    
-                    leg["steps"] = newSteps
-                    newLegs.append(leg)
-                }
-                
-                route["legs"] = newLegs
-                newRoutes.append(route)
-            }
-            
-            
-            transformed["routes"] = newRoutes
-            return transformed
-        }
-        
-        test(shapeFormat: .geoJSON, transformer: transformer)
+        test(shapeFormat: .geoJSON)
     }
 
     func testPolyline() {

@@ -6,6 +6,7 @@ import Turf
  */
 public struct Incident: Codable, Equatable, ForeignMemberContainer {
     public var foreignMembers: JSONObject = [:]
+    public var congestionForeignMembers: JSONObject = [:]
 
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"
@@ -74,7 +75,9 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         case low
     }
 
-    private struct CongestionContainer: Codable {
+    private struct CongestionContainer: Codable, ForeignMemberContainer {
+        var foreignMembers: JSONObject = [:]
+        
         // `Directions` define this as service value to indicate "no congestion calculated"
         // see: https://docs.mapbox.com/api/navigation/directions/#incident-object
         private static let CongestionUnavailableKey = 101
@@ -86,6 +89,24 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         let value: Int
         var clampedValue: Int? {
             value == Self.CongestionUnavailableKey ? nil : value
+        }
+        
+        init(value: Int) {
+            self.value = value
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            value = try container.decode(Int.self, forKey: .value)
+            
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(value, forKey: .value)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
         }
     }
     
@@ -228,7 +249,9 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         roadIsClosed = try container.decodeIfPresent(Bool.self, forKey: .roadIsClosed)
         longDescription = try container.decodeIfPresent(String.self, forKey: .longDescription)
         numberOfBlockedLanes = try container.decodeIfPresent(Int.self, forKey: .numberOfBlockedLanes)
-        congestionLevel = try container.decodeIfPresent(CongestionContainer.self, forKey: .congestionLevel)?.clampedValue
+        let congestionContainer = try container.decodeIfPresent(CongestionContainer.self, forKey: .congestionLevel)
+        congestionLevel = congestionContainer?.clampedValue
+        congestionForeignMembers = congestionContainer?.foreignMembers ?? [:]
         affectedRoadNames = try container.decodeIfPresent([String].self, forKey: .affectedRoadNames)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
@@ -256,7 +279,9 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         try container.encodeIfPresent(longDescription, forKey: .longDescription)
         try container.encodeIfPresent(numberOfBlockedLanes, forKey: .numberOfBlockedLanes)
         if let congestionLevel = congestionLevel {
-            try container.encode(CongestionContainer(value: congestionLevel), forKey: .congestionLevel)
+            var congestionContainer = CongestionContainer(value: congestionLevel)
+            congestionContainer.foreignMembers = congestionForeignMembers
+            try container.encode(congestionContainer, forKey: .congestionLevel)
         }
         try container.encodeIfPresent(affectedRoadNames, forKey: .affectedRoadNames)
         
