@@ -12,3 +12,4 @@ Carthage/Checkouts
 /build
 /documentation
 .build
+.vscode
