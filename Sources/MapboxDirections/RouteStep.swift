@@ -321,7 +321,16 @@ struct Road: ForeignMemberContainer {
     }
     
     init(name: String, ref: String?, exits: String?, destination: String?, rotaryName: String?) {
-        self.names = name.tagValues(separatedBy: ";")
+        if !name.isEmpty, let ref = ref {
+            let parenthetical = "(\(ref))"
+            if name == ref {
+                self.names = nil
+            } else {
+                self.names = name.replacingOccurrences(of: parenthetical, with: "").tagValues(separatedBy: ";")
+            }
+        } else {
+            self.names = name.isEmpty ? nil : name.tagValues(separatedBy: ";")
+        }
 
         // Mapbox Directions API v5 combines the destination’s ref and name.
         if let destination = destination, destination.contains(": ") {
@@ -365,10 +374,13 @@ extension Road: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         let ref = codes?.tagValues(joinedBy: ";")
-        if let name = names?.tagValues(joinedBy: ";") {
+        if var name = names?.tagValues(joinedBy: ";") {
+            if let ref = ref {
+                name = "\(name) (\(ref))"
+            }
             try container.encodeIfPresent(name, forKey: .name)
         } else {
-            try container.encodeIfPresent(ref, forKey: .name)
+            try container.encode(ref ?? "", forKey: .name)
         }
         
         if var destinations = destinations?.tagValues(joinedBy: ",") {

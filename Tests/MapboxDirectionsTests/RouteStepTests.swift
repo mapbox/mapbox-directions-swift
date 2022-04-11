@@ -5,8 +5,7 @@ import Turf
 class RoadTests: XCTestCase {
     func testEmpty() {
         let r = Road(name: "", ref: nil, exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertNotNil(r.names)
-        XCTAssertTrue(r.names?.isEmpty ?? false)
+        XCTAssertNil(r.names)
         XCTAssertNil(r.codes)
         XCTAssertNil(r.exitCodes)
         XCTAssertNil(r.destinations)
@@ -27,12 +26,10 @@ class RoadTests: XCTestCase {
 
         // Ref only
         r = Road(name: "", ref: "Ref 1", exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertNotNil(r.names)
-        XCTAssertTrue(r.names?.isEmpty ?? false)
+        XCTAssertNil(r.names)
         XCTAssertEqual(r.codes ?? [], [ "Ref 1" ])
         r = Road(name: "", ref: "Ref 1; Ref 2", exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertNotNil(r.names)
-        XCTAssertTrue(r.names!.isEmpty)
+        XCTAssertNil(r.names)
         XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
 
         // Separate Name and Ref
@@ -47,14 +44,14 @@ class RoadTests: XCTestCase {
         XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
 
         // Ref duplicated in Name (Mapbox Directions API v5)
-        r = Road(name: "Way Name", ref: "Ref", exits: nil, destination: nil, rotaryName: nil)
+        r = Road(name: "Way Name (Ref)", ref: "Ref", exits: nil, destination: nil, rotaryName: nil)
         XCTAssertEqual(r.names ?? [], [ "Way Name" ])
         XCTAssertEqual(r.codes ?? [], [ "Ref" ])
-        r = Road(name: "Way Name 1; Way Name 2", ref: "Ref 1; Ref 2", exits: nil, destination: nil, rotaryName: nil)
+        r = Road(name: "Way Name 1; Way Name 2 (Ref 1; Ref 2)", ref: "Ref 1; Ref 2", exits: nil, destination: nil, rotaryName: nil)
         XCTAssertEqual(r.names ?? [], [ "Way Name 1", "Way Name 2"])
         XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
         r = Road(name: "Ref 1; Ref 2", ref: "Ref 1; Ref 2", exits: nil, destination: nil, rotaryName: nil)
-        XCTAssertEqual(r.names ?? [], [ "Ref 1", "Ref 2" ])
+        XCTAssertNil(r.names)
         XCTAssertEqual(r.codes ?? [], [ "Ref 1", "Ref 2" ])
     }
 
