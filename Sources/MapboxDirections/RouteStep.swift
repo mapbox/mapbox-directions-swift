@@ -322,6 +322,7 @@ struct Road: ForeignMemberContainer {
     
     init(name: String, ref: String?, exits: String?, destination: String?, rotaryName: String?) {
         if !name.isEmpty, let ref = ref {
+            // Directions API v5 profiles powered by Valhalla no longer include the ref in the name. However, the `mapbox/cycling` profile, which is powered by OSRM, still includes the ref.
             let parenthetical = "(\(ref))"
             if name == ref {
                 self.names = nil
