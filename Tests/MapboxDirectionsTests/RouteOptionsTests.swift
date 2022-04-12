@@ -228,13 +228,13 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testResponseWithoutDestinationName() {
-        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.412115,39.272675.json?overview=false&steps=false&access_token=pk.feedcafedeadbeef
+        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.412115,39.272675?overview=false&steps=false&access_token=pk.feedcafedeadbeef
         let response = self.response(for: "noDestinationName")!
         XCTAssertNil(response.route.legs.last?.destination?.name, "Empty-string waypoint name in API responds should be represented as nil.")
     }
     
     func testResponseWithDestinationName() {
-        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.41195,39.27260.json?overview=false&steps=false&access_token=pk.feedcafedeadbeef
+        // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.41195,39.27260?overview=false&steps=false&access_token=pk.feedcafedeadbeef
         let response = self.response(for: "apiDestinationName")!
         XCTAssertEqual(response.route.legs.last?.destination?.name, "Reading Road", "Waypoint name in fixture response not parsed correctly.")
     }

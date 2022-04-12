@@ -167,7 +167,7 @@ class MatchTests: XCTestCase {
     #endif
     
     func testCoding() {
-        // https://api.mapbox.com/matching/v5/mapbox/driving/-84.51200,39.09740;-84.51118,39.09638;-84.51021,39.09687.json?geometries=polyline&overview=false&tidy=false&access_token=…
+        // https://api.mapbox.com/matching/v5/mapbox/driving/-84.51200,39.09740;-84.51118,39.09638;-84.51021,39.09687?geometries=polyline&overview=false&tidy=false&access_token=…
         let matchJSON: [String: Any?] = [
             "confidence": 0.00007401405321383336,
             "legs": [
