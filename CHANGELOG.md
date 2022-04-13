@@ -7,6 +7,7 @@
 * Added `DirectionsOptions(url:)`, `RouteOptions(url:)` and extended existing `DirectionsOptions(waypoints:profileIdentifier:queryItems:)`, `RouteOptions(waypoints:profileIdentifier:queryItems:)`, `MatchOptions(waypoints:profileIdentifier:queryItems:)` and related convenience init methods for deserializing corresponding options object using appropriate request URL or it's query items. ([#655](https://github.com/mapbox/mapbox-directions-swift/pull/655))
 * Added `Incident` properties: `countryCode`, `countryCodeAlpha3`, `roadIsClosed`, `longDescription`, `numberOfBlockedLanes`, `congestionLevel`, `affectedRoadNames`. ([#672](https://github.com/mapbox/mapbox-directions-swift/pull/672))
 * Added `departAt` and `arriveBy` properties to `RouteOptions` to allow configuring Directions routes calculation. ([#673](https://github.com/mapbox/mapbox-directions-swift/pull/673))
+* Removed url request's `.json` suffix for Directions and Isochrones to follow V5 scheme. ([#678](https://github.com/mapbox/mapbox-directions-swift/pull/678))
 
 ## v2.3.0
 

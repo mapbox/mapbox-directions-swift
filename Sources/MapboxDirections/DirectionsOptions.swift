@@ -435,7 +435,7 @@ open class DirectionsOptions: Codable {
             assertionFailure("No query")
             return ""
         }
-        return "\(abridgedPath)/\(coordinates).json"
+        return "\(abridgedPath)/\(coordinates)"
     }
     
     /**
