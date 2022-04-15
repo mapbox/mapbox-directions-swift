@@ -46,3 +46,9 @@ fi
 step "Updating copyright year to ${YEAR}…"
 
 sed -i '' -E "s/© ([0-9]{4})[–-][0-9]{4}/© \\1–${YEAR}/g" LICENSE.md docs/jazzy.yml Sources/MapboxDirections/Info.plist
+
+# Bumping baseline if this is not alpha or beta release. During alpha/beta it is allowed to break the API that was added during alpha-beta cycle.
+if [[ $1 != *alpha* && $1 != *beta* ]]; then
+    step "Bumping API baseline"
+    ./scripts/update-baseline.sh $1
+fi

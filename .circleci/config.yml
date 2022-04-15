@@ -42,6 +42,42 @@ commands:
                 command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks   
 
 jobs:
+  detect-breaking-changes:
+    macos:
+      xcode: 13.3.0
+    steps:
+      - checkout
+      - install-mapbox-token
+      - run:
+          name: "Diagnose breaking changes"
+          command: |
+            swift package diagnose-api-breaking-changes \
+                --products MapboxDirections \
+                --baseline-dir swift-package-baseline \
+                --breakage-allowlist-path swift-package-baseline/breakage-allowlist-path.txt \
+                "$(cat swift-package-baseline/baseline.txt)" \
+              | tee diagnose-output.txt \
+              || TRUE
+      - run:
+          name: "Parse breaking changes"
+          command: |
+            EXIT_CODE=0
+            cat diagnose-output.txt | sed -n '/API breakage:/p' > breaking-changes.txt
+            if [ -s breaking-changes.txt ]; then
+              echo "Breaking changes detected"
+              cat breaking-changes.txt
+            else
+              rm breaking-changes.txt
+            fi
+      - store_artifacts:
+          path: breaking-changes.txt
+          destination: breaking-changes.txt
+      - run:
+          name: "Fail if breaking changes detected"
+          command: |
+            if [ -f breaking-changes.txt ]; then
+              exit 1
+            fi
   spm-linux-job:
     docker:
       - image: swift:5.4
@@ -159,6 +195,8 @@ jobs:
 workflows:
   workflow:
     jobs:
+      - detect-breaking-changes:
+          name: "Detect Breaking Changes"
       - build-job:
           name: "Dev Build: Xcode 12.0"
           xcode: "12.0.0"
