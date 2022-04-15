@@ -1,1 +1,1 @@
-API breakage: constructor Incident.init(identifier:type:description:creationDate:startDate:endDate:impact:subtype:subtypeDescription:alertCodes:lanesBlocked:shapeIndexRange:) has been removed
+
