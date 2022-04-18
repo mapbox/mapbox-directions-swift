@@ -4,6 +4,7 @@
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
 * Added the `TollCollection.name` property. ([#691](https://github.com/mapbox/mapbox-directions-swift/pull/691))
+* The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
 
 ## v2.4.0
 
@@ -23,7 +24,6 @@
 * Added the `RouteResponse.roadClassViolations` property, which indicates any requested `RouteOptions.roadClassesToAvoid` values that could not be satisfied when calculating the routes. You can use convenience `RouteResponse.exclusionViolations(routeIndex:legIndex:stepIndex:intersectionIndex:)` method to search for a specific item. ([#627](https://github.com/mapbox/mapbox-directions-swift/pull/627))
 * Fixed an issue where `PolyLineString` encoded an invalid GeoJSON LineString. ([#638](https://github.com/mapbox/mapbox-directions-swift/pull/638))
 * Added `RouteRefreshSource` protocol to allow refreshing `Route` objects with `RefreshedRoute` or another `Route` instance. ([#634](https://github.com/mapbox/mapbox-directions-swift/pull/634))
-* The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
 
 ## v2.1.0
 
