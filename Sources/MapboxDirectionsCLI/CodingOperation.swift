@@ -1,8 +1,15 @@
 import Foundation
 import MapboxDirections
 import Turf
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
-private let BogusCredentials = Credentials(accessToken: "pk.feedCafeDadeDeadBeef-BadeBede.FadeCafeDadeDeed-BadeBede")
+let accessToken: String? =
+    ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
+    UserDefaults.standard.string(forKey: "MBXAccessToken")
+let credentials = Credentials(accessToken: accessToken!)
+private let directions = Directions(credentials: credentials)
 
 protocol DirectionsResultsProvider {
     var directionsResults: [DirectionsResult]? { get }
@@ -116,6 +123,29 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return interpolatedCoordinates
     }
     
+    private func requestResponse(_ directionsOptions: OptionsType) -> (Data) {
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        var responseData: Data!
+        
+        let url = directions.url(forCalculating: directionsOptions)
+        let urlSession = URLSession(configuration: .ephemeral)
+
+        let task = urlSession.dataTask(with: url) { (data, response, error) in
+            guard let data = data, error == nil else {
+                fatalError(error!.localizedDescription)
+            }
+            
+            responseData = data
+            semaphore.signal()
+        }
+        
+        task.resume()
+        semaphore.wait()
+        
+        return (responseData)
+    }
+    
     init(options: ProcessingOptions) {
         self.options = options
     }
@@ -124,15 +154,22 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
     
     func execute() throws {
         
-        let input = FileManager.default.contents(atPath: NSString(string: options.inputPath).expandingTildeInPath)!
         let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
+        let input: Data
         
         let decoder = JSONDecoder()
         
         let directionsOptions = try decoder.decode(OptionsType.self, from: config)
         
+        if let inputPath = options.inputPath {
+            input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
+        } else {
+            let response = requestResponse(directionsOptions)
+            input = response
+        }
+        
         decoder.userInfo = [.options: directionsOptions,
-                            .credentials: BogusCredentials]
+                            .credentials: credentials]
         
         let (data, directionsResultsProvider) = try processResponse(decoder, from: input)
         

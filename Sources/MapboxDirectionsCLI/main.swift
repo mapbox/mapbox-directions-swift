@@ -7,8 +7,8 @@ import ArgumentParser
 
 struct ProcessingOptions: ParsableArguments {
     
-    @Option(name: [.short, .customLong("input")], help: "Filepath to the input JSON.")
-    var inputPath: String
+    @Option(name: [.short, .customLong("input")], help: "[Optional] Filepath to the input JSON. If no filepath provided - will fall back to Directions API request using locations in config file.")
+    var inputPath: String?
     
     @Option(name: [.short, .customLong("config")], help: "Filepath to the JSON, containing serialized Options data.")
     var configPath: String
@@ -34,9 +34,6 @@ struct Command: ParsableCommand {
     )
     
     fileprivate static func validateInput(_ options: ProcessingOptions) throws {
-        guard FileManager.default.fileExists(atPath: options.inputPath) else {
-            throw ValidationError("Input JSON file `\(options.inputPath)` does not exist.")
-        }
         
         guard FileManager.default.fileExists(atPath: options.configPath) else {
             throw ValidationError("Options JSON file `\(options.configPath)` does not exist.")
