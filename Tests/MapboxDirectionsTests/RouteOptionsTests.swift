@@ -363,3 +363,11 @@ var testRouteOptions: RouteOptions {
 
     return opts
 }
+
+var routeOptionsSubclassTest = testRouteOptionsSubclass(waypoints: [])
+
+class testRouteOptionsSubclass: RouteOptions {
+    convenience init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier?) {
+        self.init(waypoints: [], profileIdentifier: nil, queryItems: nil)
+    }
+}
