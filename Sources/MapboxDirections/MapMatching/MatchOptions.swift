@@ -42,6 +42,16 @@ open class MatchOptions: DirectionsOptions {
         self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
     }
 
+    /**
+     Initializes a match options object for matching locations against the road network.
+
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://docs.mapbox.com/api/navigation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     */
+    public convenience init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: nil)
+    }
+    
     public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
         

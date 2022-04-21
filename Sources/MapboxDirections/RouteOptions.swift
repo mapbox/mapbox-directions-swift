@@ -98,6 +98,16 @@ open class RouteOptions: DirectionsOptions {
             self.arriveBy = arriveBy
         }
     }
+    
+    /**
+     Initializes a route options object for routes between the given waypoints and an optional profile identifier.
+
+     - parameter waypoints: An array of `Waypoint` objects representing locations that the route should visit in chronological order. The array should contain at least two waypoints (the source and destination) and at most 25 waypoints. (Some profiles, such as `ProfileIdentifier.automobileAvoidingTraffic`, [may have lower limits](https://www.mapbox.com/api-documentation/#directions).)
+     - parameter profileIdentifier: A string specifying the primary mode of transportation for the routes. `ProfileIdentifier.automobile` is used by default.
+     */
+    public convenience init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil) {
+        self.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: nil)
+    }
 
     #if canImport(CoreLocation)
     /**
