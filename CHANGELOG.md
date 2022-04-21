@@ -1,5 +1,8 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.4.1
+* Fixed an issue that caused a compiler error when subclassing `RouteOptions`. ([#685](https://github.com/mapbox/mapbox-directions-swift/pull/685))
+
 ## v2.4.0
 
 * Fixed a crash that occurred when `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties contained multiple road classes.
