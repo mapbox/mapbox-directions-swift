@@ -299,7 +299,7 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testInitialManeuverAvoidanceRadiusSerialization() {
-        let options = RouteOptions(coordinates: [])
+        let options = RouteOptions(coordinates: testCoordinates)
         
         options.initialManeuverAvoidanceRadius = 123.456
         
@@ -311,7 +311,7 @@ class RouteOptionsTests: XCTestCase {
     }
 
     func testMaximumWidthAndMaximimHeightSerialization() {
-        let options = RouteOptions(coordinates: [])
+        let options = RouteOptions(coordinates: testCoordinates)
         let widthValue = 2.3
         let heightValue = 2.0
         options.maximumWidth = Measurement(value: widthValue, unit: .meters)
@@ -321,7 +321,7 @@ class RouteOptionsTests: XCTestCase {
     }
 
     func testExcludeAndIncludeRoadClasses() {
-        let options = RouteOptions(coordinates: [])
+        let options = RouteOptions(coordinates: testCoordinates)
         options.roadClassesToAvoid = [.toll, .motorway, .ferry, .unpaved, .cashTollOnly]
         options.roadClassesToAllow = [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]
 
