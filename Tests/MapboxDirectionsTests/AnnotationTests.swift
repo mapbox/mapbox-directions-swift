@@ -1,5 +1,6 @@
 import XCTest
 #if !os(Linux)
+import CoreLocation
 #if SWIFT_PACKAGE
 import OHHTTPStubsSwift
 #endif

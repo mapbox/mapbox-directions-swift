@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.5.0
+
+* Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
+
 ## v2.4.0
 
 * Fixed a crash that occurred when `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties contained multiple road classes.
