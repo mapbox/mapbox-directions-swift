@@ -301,9 +301,7 @@ extension Array where Element == String {
 /**
  Encapsulates all the information about a road.
  */
-struct Road: ForeignMemberContainer {
-    var foreignMembers: JSONObject = [:]
-    
+struct Road {
     let names: [String]?
     let codes: [String]?
     let exitCodes: [String]?
@@ -367,8 +365,6 @@ extension Road: Codable {
         let destinations = try container.decodeIfPresent(String.self, forKey: .destinations)
         let rotaryName = try container.decodeIfPresent(String.self, forKey: .rotaryName)
         self.init(name: name, ref: ref, exits: exits, destination: destinations, rotaryName: rotaryName)
-        
-        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -394,8 +390,6 @@ extension Road: Codable {
         try container.encodeIfPresent(exitCodes?.tagValues(joinedBy: ";"), forKey: .exits)
         try container.encodeIfPresent(ref, forKey: .ref)
         try container.encodeIfPresent(rotaryNames?.tagValues(joinedBy: ";"), forKey: .rotaryName)
-        
-        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }
 
