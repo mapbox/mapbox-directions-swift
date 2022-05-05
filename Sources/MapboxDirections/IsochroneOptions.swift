@@ -86,7 +86,7 @@ public class IsochroneOptions {
      The path of the request URL, not including the hostname or any parameters.
      */
     var path: String {
-        return "\(abridgedPath)/\(centerCoordinate.requestDescription).json"
+        return "\(abridgedPath)/\(centerCoordinate.requestDescription)"
     }
     
     /**

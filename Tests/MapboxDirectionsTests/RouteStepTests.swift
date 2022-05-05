@@ -97,7 +97,7 @@ class RoadTests: XCTestCase {
 
 class RouteStepTests: XCTestCase {
     func testDecoding() {
-        // Derived from <https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-122.22060192394258,37.853964632136226;-122.22001854348318,37.85415735273948.json?geometries=polyline&steps=true&overview=full&access_token=pk.feedcafedeadbeef>
+        // Derived from <https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-122.22060192394258,37.853964632136226;-122.22001854348318,37.85415735273948?geometries=polyline&steps=true&overview=full&access_token=pk.feedcafedeadbeef>
         let stepJSON = [
             "driving_side": "right",
             "geometry": "ek`fFxc~hVIu@",

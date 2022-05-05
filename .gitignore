@@ -11,4 +11,6 @@ Carthage/Build
 Carthage/Checkouts
 /build
 /documentation
+/swift-package-baseline/*/MapboxDirections.json
 .build
+.vscode

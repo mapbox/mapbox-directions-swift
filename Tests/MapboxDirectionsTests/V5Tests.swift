@@ -1,5 +1,6 @@
 import XCTest
 #if !os(Linux)
+import CoreLocation
 import OHHTTPStubs
 #if SWIFT_PACKAGE
 import OHHTTPStubsSwift
@@ -27,7 +28,7 @@ class V5Tests: XCTestCase {
             "access_token": BogusToken,
         ]
         stub(condition: isHost("api.mapbox.com")
-            && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91.json")
+            && isPath("/directions/v5/mapbox/driving/-122.42,37.78;-77.03,38.91")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle.module.path(forResource: filePath ?? "v5_driving_dc_\(shapeFormat.rawValue)", ofType: "json")
                 let filePath = URL(fileURLWithPath: path!)
@@ -222,7 +223,7 @@ class V5Tests: XCTestCase {
             "access_token": BogusToken,
         ]
         stub(condition: isHost("api.mapbox.com")
-            && isPath("/directions/v5/mapbox/driving/-85.206232,39.33841;-85.203991,39.34181;-85.199697,39.342048.json")
+            && isPath("/directions/v5/mapbox/driving/-85.206232,39.33841;-85.203991,39.34181;-85.199697,39.342048")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle.module.path(forResource: "v5_driving_oldenburg_polyline", ofType: "json")
                 let filePath = URL(fileURLWithPath: path!)

@@ -5,7 +5,7 @@ import Turf
 
 class RouteTests: XCTestCase {
     func testCoding() {
-        // https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-105.08198579860195%2C39.73843005470756;-104.954255,39.662569.json?overview=false&access_token=…
+        // https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-105.08198579860195%2C39.73843005470756;-104.954255,39.662569?overview=false&access_token=…
         let routeJSON: [String: Any?] = [
             "legs": [
                 [
@@ -79,7 +79,7 @@ class RouteTests: XCTestCase {
         // Key arguments:
         // - voice_instructions=true - makes the API to include "voiceLocale" in the response
         // - language=he - one of the unsupported languages by the API, which makes API to return `nil` for "voiceLocale"
-        // https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-105.081986,39.73843;-104.954255,39.662569.json?overview=false&language=he&voice_instructions=true&access_token=...
+        // https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-105.081986,39.73843;-104.954255,39.662569?overview=false&language=he&voice_instructions=true&access_token=...
 
         let routeJSON: [String: Any?] = [
             "legs": [
