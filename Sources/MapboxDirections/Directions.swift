@@ -536,6 +536,8 @@ open class Directions: NSObject {
      - returns: The URL to send the request to.
      */
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
+        if options.waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
+
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
         params.append(contentsOf: authenticationParams)

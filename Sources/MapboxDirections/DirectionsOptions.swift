@@ -129,8 +129,6 @@ open class DirectionsOptions: Codable {
         self.waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
         
-        if waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
-        
         guard let queryItems = queryItems else {
             return
         }
