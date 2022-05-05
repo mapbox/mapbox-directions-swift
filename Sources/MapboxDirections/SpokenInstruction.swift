@@ -41,7 +41,7 @@ open class SpokenInstruction: Codable, ForeignMemberContainerClass {
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
-    public func encode(to encoder: Encoder) throws {
+    open func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
         try container.encode(text, forKey: .text)
