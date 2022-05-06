@@ -25,7 +25,11 @@ public struct TollCollection: Codable, Equatable {
         case name
     }
 
-    public init(type: CollectionType, name: String? = nil) {
+    public init(type: CollectionType) {
+        self.init(type: type, name: nil)
+    }
+    
+    public init(type: CollectionType, name: String?) {
         self.type = type
         self.name = name
     }
