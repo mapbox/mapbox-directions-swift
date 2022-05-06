@@ -15,7 +15,10 @@ class IntersectionTests: XCTestCase {
                 "mapbox_streets_v8": [
                     "class": "street_limited"
                 ],
-                "toll_collection": ["type": "toll_booth"],
+                "toll_collection": [
+                    "type": "toll_booth",
+                    "name": "test toll booth"
+                ],
             ],
             [
                 "out": 1,
@@ -69,7 +72,7 @@ class IntersectionTests: XCTestCase {
                          preferredApproachLanes: nil,
                          usableLaneIndication: nil,
                          outletRoadClasses: [.toll, .restricted],
-                         tollCollection: TollCollection(type: .booth),
+                         tollCollection: TollCollection(type: .booth, name: "test toll booth"),
                          tunnelName: nil,
                          restStop: nil,
                          isUrban: nil,

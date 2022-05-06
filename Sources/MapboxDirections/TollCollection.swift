@@ -14,12 +14,23 @@ public struct TollCollection: Codable, Equatable {
      The type of the toll collection point.
      */
     public let type: CollectionType
+    
+    /**
+     The name of the toll collection point.
+     */
+    public var name: String?
 
     private enum CodingKeys: String, CodingKey {
         case type
+        case name
     }
 
     public init(type: CollectionType) {
+        self.init(type: type, name: nil)
+    }
+    
+    public init(type: CollectionType, name: String?) {
         self.type = type
+        self.name = name
     }
 }
