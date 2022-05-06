@@ -4,6 +4,8 @@
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
 * Added the `TollCollection.name` property. ([#691](https://github.com/mapbox/mapbox-directions-swift/pull/691))
+* Types that correspond to objects in the Mapbox Directions API response, such as `RouteResponse`, `RouteRefreshResponse`, `MatchResponse`, and `RouteStep`, now conform to the `ForeignMemberContainer` and `ForeignMemberClassContainer` protocols. Types that conform to these protocols can persist unrecognized properties in the response, such as properties that are in beta, even after coding and decoding. You can access these properties using the `ForeignMemberContainer.foreignMembers` and `ForeignMemberClassContainer.foreignMembers` properties. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
+* Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
 * The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
 
 ## v2.4.0
@@ -11,8 +13,6 @@
 * Fixed a crash that occurred when `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties contained multiple road classes.
 * `RoadClasses.tunnel` and `RoadClasses.restricted` are no longer supported in `RouteOptions.roadClassesToAvoid` or `RouteOptions.roadClassesToAllow` properties
 * Added `DirectionsOptions(url:)`, `RouteOptions(url:)` and extended existing `DirectionsOptions(waypoints:profileIdentifier:queryItems:)`, `RouteOptions(waypoints:profileIdentifier:queryItems:)`, `MatchOptions(waypoints:profileIdentifier:queryItems:)` and related convenience init methods for deserializing corresponding options object using appropriate request URL or it's query items. ([#655](https://github.com/mapbox/mapbox-directions-swift/pull/655))
-* Types that correspond to objects in the Mapbox Directions API response, such as `RouteResponse`, `RouteRefreshResponse`, `MatchResponse`, and `RouteStep`, now conform to the `ForeignMemberContainer` and `ForeignMemberClassContainer` protocols. Types that conform to these protocols can persist unrecognized properties in the response, such as properties that are in beta, even after coding and decoding. You can access these properties using the `ForeignMemberContainer.foreignMembers` and `ForeignMemberClassContainer.foreignMembers` properties. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
-* Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
 * Added `Incident` properties: `countryCode`, `countryCodeAlpha3`, `roadIsClosed`, `longDescription`, `numberOfBlockedLanes`, `congestionLevel`, `affectedRoadNames`. ([#672](https://github.com/mapbox/mapbox-directions-swift/pull/672))
 * Added `departAt` and `arriveBy` properties to `RouteOptions` to allow configuring Directions routes calculation. ([#673](https://github.com/mapbox/mapbox-directions-swift/pull/673))
 * Removed url request's `.json` suffix for Directions and Isochrones to follow V5 scheme. ([#678](https://github.com/mapbox/mapbox-directions-swift/pull/678))
