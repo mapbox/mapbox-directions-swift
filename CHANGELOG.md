@@ -3,6 +3,7 @@
 ## v2.5.0
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
+* Added the `TollCollection.name` property. ([#691](https://github.com/mapbox/mapbox-directions-swift/pull/691))
 
 ## v2.4.0
 
