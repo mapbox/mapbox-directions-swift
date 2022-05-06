@@ -10,7 +10,7 @@ class RouteTests: XCTestCase {
             "legs": [
                 [
                     "summary": "West 6th Avenue Freeway, South University Boulevard",
-                    "weight": 1346.3,
+                    "weight": 2346.3,
                     "duration": 1083.4,
                     "duration_typical": 1483.262,
                     "steps": [],
@@ -65,16 +65,8 @@ class RouteTests: XCTestCase {
                     encodedLegJSON[0].removeValue(forKey: "profileIdentifier")
                     encodedRouteJSON?["legs"] = encodedLegJSON
                 }
-
-                // https://github.com/mapbox/mapbox-directions-swift/issues/125
-                var referenceRouteJSON = routeJSON
-                referenceRouteJSON.removeValue(forKey: "weight")
-                referenceRouteJSON.removeValue(forKey: "weight_name")
-                var referenceLegJSON = referenceRouteJSON["legs"] as! [[String: Any?]]
-                referenceLegJSON[0].removeValue(forKey: "weight")
-                referenceRouteJSON["legs"] = referenceLegJSON
                 
-                XCTAssert(JSONSerialization.objectsAreEqual(referenceRouteJSON, encodedRouteJSON, approximate: true))
+                XCTAssert(JSONSerialization.objectsAreEqual(routeJSON, encodedRouteJSON, approximate: true))
             }
         }
     }

@@ -114,7 +114,7 @@ class RouteStepTests: XCTestCase {
             "weight": 2.5,
             "duration": 2.5,
             "duration_typical": 2.369,
-            "name": "Grove Shafter Freeway (CA 24)",
+            "name": "Grove Shafter Freeway",
             "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
             "distance": 24.5,
         ] as [String: Any?]
@@ -225,12 +225,8 @@ class RouteStepTests: XCTestCase {
                 var encodedStepJSON: Any?
                 XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []))
                 XCTAssertNotNil(encodedStepJSON)
-
-                // https://github.com/mapbox/mapbox-directions-swift/issues/125
-                var referenceStepJSON = stepJSON
-                referenceStepJSON.removeValue(forKey: "weight")
                 
-                XCTAssert(JSONSerialization.objectsAreEqual(referenceStepJSON, encodedStepJSON, approximate: true))
+                XCTAssert(JSONSerialization.objectsAreEqual(stepJSON, encodedStepJSON, approximate: true))
             }
         }
         
@@ -257,12 +253,8 @@ class RouteStepTests: XCTestCase {
                 var encodedStepJSON: Any?
                 XCTAssertNoThrow(encodedStepJSON = try JSONSerialization.jsonObject(with: encodedStepData, options: []))
                 XCTAssertNotNil(encodedStepJSON)
-
-                // https://github.com/mapbox/mapbox-directions-swift/issues/125
-                var referenceStepJSON = stepJSON
-                referenceStepJSON.removeValue(forKey: "weight")
                 
-                XCTAssert(JSONSerialization.objectsAreEqual(referenceStepJSON, encodedStepJSON, approximate: true))
+                XCTAssert(JSONSerialization.objectsAreEqual(stepJSON, encodedStepJSON, approximate: true))
             }
         }
     }

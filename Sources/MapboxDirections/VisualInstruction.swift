@@ -4,10 +4,12 @@ import Turf
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
-open class VisualInstruction: Codable {
+open class VisualInstruction: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
     // MARK: Creating a Visual Instruction
     
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case text
         case maneuverType = "type"
         case maneuverDirection = "modifier"
@@ -33,6 +35,8 @@ open class VisualInstruction: Codable {
         try container.encodeIfPresent(maneuverDirection, forKey: .maneuverDirection)
         try container.encode(components, forKey: .components)
         try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     public required init(from decoder: Decoder) throws {
@@ -42,6 +46,8 @@ open class VisualInstruction: Codable {
         maneuverDirection = try container.decodeIfPresent(ManeuverDirection.self, forKey: .maneuverDirection)
         components = try container.decode([Component].self, forKey: .components)
         finalHeading = try container.decodeIfPresent(LocationDegrees.self, forKey: .finalHeading)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     // MARK: Displaying the Instruction Text

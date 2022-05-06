@@ -1,4 +1,5 @@
 import Foundation
+import Turf
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -8,7 +9,9 @@ public enum ResponseOptions {
     case match(MatchOptions)
 }
 
-public struct RouteResponse {
+public struct RouteResponse: ForeignMemberContainer {
+    public var foreignMembers: JSONObject = [:]
+    
     public let httpResponse: HTTPURLResponse?
     
     public let identifier: String?
@@ -43,7 +46,6 @@ public struct RouteResponse {
 
 extension RouteResponse: Codable {
     enum CodingKeys: String, CodingKey {
-        case code
         case message
         case error
         case identifier = "uuid"
@@ -128,12 +130,14 @@ extension RouteResponse: Codable {
                 let waypoint = Waypoint(coordinate: decodedWaypoint.coordinate,
                                         coordinateAccuracy: waypointInOptions.coordinateAccuracy,
                                         name: waypointInOptions.name?.nonEmptyString ?? decodedWaypoint.name)
-
+                waypoint.snappedDistance = decodedWaypoint.snappedDistance
                 waypoint.targetCoordinate = waypointInOptions.targetCoordinate
                 waypoint.heading = waypointInOptions.heading
                 waypoint.headingAccuracy = waypointInOptions.headingAccuracy
                 waypoint.separatesLegs = waypointInOptions.separatesLegs
                 waypoint.allowsArrivingOnOppositeSide = waypointInOptions.allowsArrivingOnOppositeSide
+                
+                waypoint.foreignMembers = decodedWaypoint.foreignMembers
                 
                 return waypoint
             }
@@ -157,6 +161,8 @@ extension RouteResponse: Codable {
         }
         
         updateRoadClassExclusionViolations()
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -164,6 +170,8 @@ extension RouteResponse: Codable {
         try container.encodeIfPresent(identifier, forKey: .identifier)
         try container.encodeIfPresent(routes, forKey: .routes)
         try container.encodeIfPresent(waypoints, forKey: .waypoints)
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 
 }

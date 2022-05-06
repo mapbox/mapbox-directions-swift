@@ -8,8 +8,10 @@ import Turf
 
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
-open class SpokenInstruction: Codable {
-    private enum CodingKeys: String, CodingKey {
+open class SpokenInstruction: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case distanceAlongStep = "distanceAlongGeometry"
         case text = "announcement"
         case ssmlText = "ssmlAnnouncement"
@@ -28,6 +30,24 @@ open class SpokenInstruction: Codable {
         self.distanceAlongStep = distanceAlongStep
         self.text = text
         self.ssmlText = ssmlText
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        distanceAlongStep = try container.decode(LocationDistance.self, forKey: .distanceAlongStep)
+        text = try container.decode(String.self, forKey: .text)
+        ssmlText = try container.decode(String.self, forKey: .ssmlText)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+    }
+    
+    open func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
+        try container.encode(text, forKey: .text)
+        try container.encode(ssmlText, forKey: .ssmlText)
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     // MARK: Timing When to Say the Instruction

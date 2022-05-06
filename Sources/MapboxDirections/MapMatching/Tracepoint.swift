@@ -10,7 +10,7 @@ public class Tracepoint: Waypoint {
      */
     public let countOfAlternatives: Int
     
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case countOfAlternatives = "alternatives_count"
     }
     
@@ -23,6 +23,7 @@ public class Tracepoint: Waypoint {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         countOfAlternatives = try container.decode(Int.self, forKey: .countOfAlternatives)
         try super.init(from: decoder)
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public override func encode(to encoder: Encoder) throws {

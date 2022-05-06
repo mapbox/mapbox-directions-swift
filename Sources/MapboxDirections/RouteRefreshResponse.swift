@@ -2,11 +2,14 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Turf
 
 /**
  A Directions Refresh API response.
  */
-public struct RouteRefreshResponse {
+public struct RouteRefreshResponse: ForeignMemberContainer {
+    public var foreignMembers: JSONObject = [:]
+    
     /**
      The raw HTTP response from the Directions Refresh API.
      */
@@ -83,6 +86,8 @@ extension RouteRefreshResponse: Codable {
         } else {
             throw DirectionsCodingError.missingOptions
         }
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -90,6 +95,8 @@ extension RouteRefreshResponse: Codable {
         try container.encodeIfPresent(identifier, forKey: .identifier)
         
         try container.encode(route, forKey: .route)
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }
 

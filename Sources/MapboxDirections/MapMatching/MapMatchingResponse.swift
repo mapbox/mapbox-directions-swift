@@ -2,8 +2,11 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Turf
 
-public struct MapMatchingResponse {
+public struct MapMatchingResponse: ForeignMemberContainer {
+    public var foreignMembers: JSONObject = [:]
+    
     public let httpResponse: HTTPURLResponse?
     
     public var matches : [Match]?
@@ -53,5 +56,15 @@ extension MapMatchingResponse: Codable {
         
         tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(matches, forKey: .matches)
+        try container.encodeIfPresent(tracepoints, forKey: .tracepoints)
+        
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }

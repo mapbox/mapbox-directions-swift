@@ -6,8 +6,10 @@ import Turf
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
-public class Waypoint: Codable {
-    private enum CodingKeys: String, CodingKey {
+public class Waypoint: Codable, ForeignMemberContainerClass {
+    public var foreignMembers: JSONObject = [:]
+    
+    private enum CodingKeys: String, CodingKey, CaseIterable {
         case coordinate = "location"
         case coordinateAccuracy
         case targetCoordinate
@@ -50,21 +52,25 @@ public class Waypoint: Codable {
         }
         
         snappedDistance = try container.decodeIfPresent(LocationDistance.self, forKey: .snappedDistance)
+        
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(LocationCoordinate2DCodable(coordinate), forKey: .coordinate)
-        try container.encode(coordinateAccuracy, forKey: .coordinateAccuracy)
+        try container.encodeIfPresent(coordinateAccuracy, forKey: .coordinateAccuracy)
         let targetCoordinateCodable = targetCoordinate != nil ? LocationCoordinate2DCodable(targetCoordinate!) : nil
-        try container.encode(targetCoordinateCodable, forKey: .targetCoordinate)
+        try container.encodeIfPresent(targetCoordinateCodable, forKey: .targetCoordinate)
         try container.encodeIfPresent(heading, forKey: .heading)
         try container.encodeIfPresent(headingAccuracy, forKey: .headingAccuracy)
         try container.encodeIfPresent(separatesLegs, forKey: .separatesLegs)
         try container.encodeIfPresent(allowsArrivingOnOppositeSide, forKey: .allowsArrivingOnOppositeSide)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(snappedDistance, forKey: .snappedDistance)
+        
+        try encodeForeignMembers(to: encoder)
     }
     
     /**
