@@ -626,8 +626,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
     
     
     /// Used to Decode `Intersection.admin_index`
-    private struct AdministrativeAreaIndex: Codable, ForeignMemberContainer {
-        var foreignMembers: JSONObject = [:]
+    private struct AdministrativeAreaIndex: Codable {
         
         private enum CodingKeys: String, CodingKey {
             case administrativeRegionIndex = "admin_index"
@@ -638,21 +637,16 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             administrativeRegionIndex = try container.decodeIfPresent(Int.self, forKey: .administrativeRegionIndex)
-            
-            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encodeIfPresent(administrativeRegionIndex, forKey: .administrativeRegionIndex)
-            
-            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
         }
     }
     
     /// Used to Decode `Intersection.geometry_index`
-    private struct IntersectionShapeIndex: Codable, ForeignMemberContainer {
-        var foreignMembers: JSONObject = [:]
+    private struct IntersectionShapeIndex: Codable {
         
         private enum CodingKeys: String, CodingKey {
             case geometryIndex = "geometry_index"
@@ -663,15 +657,11 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             geometryIndex = try container.decodeIfPresent(Int.self, forKey: .geometryIndex)
-            
-            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encodeIfPresent(geometryIndex, forKey: .geometryIndex)
-            
-            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
         }
     }
 
