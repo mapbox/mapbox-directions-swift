@@ -521,6 +521,7 @@ open class Directions: NSObject {
      - returns: The URL to send the request to.
      */
     open func url(forCalculating options: DirectionsOptions) -> URL {
+        if options.waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
         return url(forCalculating: options, httpMethod: "GET")
     }
     
@@ -536,8 +537,6 @@ open class Directions: NSObject {
      - returns: The URL to send the request to.
      */
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
-        if options.waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
-
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
         params.append(contentsOf: authenticationParams)
@@ -559,6 +558,7 @@ open class Directions: NSObject {
      - returns: A GET or POST HTTP request to calculate the specified options.
      */
     open func urlRequest(forCalculating options: DirectionsOptions) -> URLRequest {
+        if options.waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
         let getURL = self.url(forCalculating: options, httpMethod: "GET")
         var request = URLRequest(url: getURL)
         if getURL.absoluteString.count > MaximumURLLength {
