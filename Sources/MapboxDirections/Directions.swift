@@ -521,7 +521,6 @@ open class Directions: NSObject {
      - returns: The URL to send the request to.
      */
     open func url(forCalculating options: DirectionsOptions) -> URL {
-        if options.waypoints.count < 2 { assertionFailure("waypoints array requires at least 2 waypoints") }
         return url(forCalculating: options, httpMethod: "GET")
     }
     
