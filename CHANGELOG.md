@@ -7,6 +7,7 @@
 * Types that correspond to objects in the Mapbox Directions API response, such as `RouteResponse`, `RouteRefreshResponse`, `MatchResponse`, and `RouteStep`, now conform to the `ForeignMemberContainer` and `ForeignMemberClassContainer` protocols. Types that conform to these protocols can persist unrecognized properties in the response, such as properties that are in beta, even after coding and decoding. You can access these properties using the `ForeignMemberContainer.foreignMembers` and `ForeignMemberClassContainer.foreignMembers` properties. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
 * Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
 * The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
+* Added the `RouteOptions.maximumWeight` property to compute routes that excludes roads with a lower weight limit. ([#694](https://github.com/mapbox/mapbox-directions-swift/pull/694))
 
 ## v2.4.0
 

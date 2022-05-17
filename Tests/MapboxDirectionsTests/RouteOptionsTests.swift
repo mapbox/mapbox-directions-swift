@@ -63,6 +63,7 @@ class RouteOptionsTests: XCTestCase {
             "enable_refresh": false,
             "avoid_maneuver_radius": 300,
             "max_width": 2.3,
+            "max_weight": 3.5,
             "max_height": 3,
             "alley_bias": DirectionsPriority.low.rawValue,
             "walkway_bias": DirectionsPriority.high.rawValue,
@@ -90,6 +91,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.initialManeuverAvoidanceRadius, 300)
         XCTAssertEqual(routeOptions.maximumWidth, Measurement(value: 2.3, unit: .meters))
         XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
+        XCTAssertEqual(routeOptions.maximumWeight, Measurement(value: 3.5, unit: .metricTons))
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
@@ -318,6 +320,13 @@ class RouteOptionsTests: XCTestCase {
         options.maximumHeight = Measurement(value: heightValue, unit: .meters)
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(widthValue))))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
+    }
+    
+    func testMaximumWeightSerialization() {
+        let options = RouteOptions(coordinates: [])
+        let weightValue = 13.3
+        options.maximumWeight = Measurement(value: weightValue, unit: .metricTons)
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_weight", value: String(weightValue))))
     }
 
     func testExcludeAndIncludeRoadClasses() {
