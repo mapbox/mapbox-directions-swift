@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## main
+
+* Removed limiting `RouteStep.distance`, `RouteStep.expectedTravelTime` and `RouteStep.typicalTravelTime` precision to 1 decimal digit when being encoded. ([#697](https://github.com/mapbox/mapbox-directions-swift/pull/697))
+
 ## v2.5.0
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
