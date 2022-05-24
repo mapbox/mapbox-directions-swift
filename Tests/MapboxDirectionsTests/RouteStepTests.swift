@@ -112,11 +112,11 @@ class RouteStepTests: XCTestCase {
             ],
             "ref": "CA 24",
             "weight": 2.5,
-            "duration": 2.5,
+            "duration": 2.55,
             "duration_typical": 2.369,
             "name": "Grove Shafter Freeway",
             "pronunciation": "ˈaɪˌfoʊ̯n ˈtɛn",
-            "distance": 24.5,
+            "distance": 24.50001,
         ] as [String: Any?]
         
         let stepData = try! JSONSerialization.data(withJSONObject: stepJSON, options: [])
@@ -139,11 +139,11 @@ class RouteStepTests: XCTestCase {
             XCTAssertEqual(step.maneuverType, .reachFork)
             XCTAssertEqual(step.instructions, "Keep right onto CA 24")
             XCTAssertEqual(step.codes, ["CA 24"])
-            XCTAssertEqual(step.expectedTravelTime, 2.5)
+            XCTAssertEqual(step.expectedTravelTime, 2.55)
             XCTAssertEqual(step.typicalTravelTime, 2.369)
             XCTAssertEqual(step.names, ["Grove Shafter Freeway"])
             XCTAssertEqual(step.phoneticNames, ["ˈaɪˌfoʊ̯n ˈtɛn"])
-            XCTAssertEqual(step.distance, 24.5)
+            XCTAssertEqual(step.distance, 24.50001)
         }
     }
     

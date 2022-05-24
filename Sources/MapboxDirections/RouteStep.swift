@@ -556,9 +556,9 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
         try container.encodeIfPresent(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)
-        try container.encode(distance.rounded(to: 1e1), forKey: .distance)
-        try container.encode(expectedTravelTime.rounded(to: 1e1), forKey: .expectedTravelTime)
-        try container.encodeIfPresent(typicalTravelTime?.rounded(to: 1e1), forKey: .typicalTravelTime)
+        try container.encode(distance, forKey: .distance)
+        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
+        try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
         try container.encode(transportType, forKey: .transportType)
         
         let isRound = maneuverType == .takeRotary || maneuverType == .takeRoundabout
