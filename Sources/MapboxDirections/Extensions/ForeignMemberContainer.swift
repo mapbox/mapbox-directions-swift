@@ -47,11 +47,18 @@ extension ForeignMemberContainer {
 }
 
 /**
- A GeoJSON *class* that can contain [foreign members](https://datatracker.ietf.org/doc/html/rfc7946#section-6.1) in arbitrary keys.
+ A class that can contain foreign members in arbitrary keys.
  
  When subclassing `ForeignMemberContainerClass` type, you should call `decodeForeignMembers(notKeyedBy:with:)` during your `Decodable.init(from:)` initializer if your subclass has added any new properties.
+ 
+ Structures should conform to the `ForeignMemberContainer` protocol instead of this protocol.
  */
 public protocol ForeignMemberContainerClass: AnyObject {
+    /**
+     Foreign members to round-trip to JSON.
+     
+     Foreign members are unrecognized properties, similar to [foreign members](https://datatracker.ietf.org/doc/html/rfc7946#section-6.1) in GeoJSON. This library does not officially support any property that is documented as a “beta” property in the Mapbox Directions API response format, but you can get and set it as an element of this `JSONObject`.
+     */
     var foreignMembers: JSONObject { get set }
     
     /**

@@ -9,6 +9,14 @@ import Turf
  */
 open class RouteLeg: Codable, ForeignMemberContainerClass {
     public var foreignMembers: JSONObject = [:]
+    
+    /**
+     Foreign attribute arrays associated with this leg.
+     
+     This library does not officially support any attribute that is documented as a “beta” annotation type in the Mapbox Directions API response format, but you can get and set it as an element of this `JSONObject`. It is round-tripped to the `annotation` property in JSON.
+     
+     For non-attribute-related foreign members, use the `foreignMembers` property.
+     */
     public var attributesForeignMembers: JSONObject = [:]
     
     public enum CodingKeys: String, CodingKey, CaseIterable {
