@@ -1,14 +1,11 @@
 # Changes to Mapbox Directions for Swift
 
-## main
-
-* Removed limiting `RouteStep.distance`, `RouteStep.expectedTravelTime` and `RouteStep.typicalTravelTime` precision to 1 decimal digit when being encoded. ([#697](https://github.com/mapbox/mapbox-directions-swift/pull/697))
-
 ## v2.5.0
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
 * Added the `TollCollection.name` property. ([#691](https://github.com/mapbox/mapbox-directions-swift/pull/691))
 * Types that correspond to objects in the Mapbox Directions API response, such as `RouteResponse`, `RouteRefreshResponse`, `MatchResponse`, and `RouteStep`, now conform to the `ForeignMemberContainer` and `ForeignMemberClassContainer` protocols. Types that conform to these protocols can persist unrecognized properties in the response, such as properties that are in beta, even after coding and decoding. You can access these properties using the `ForeignMemberContainer.foreignMembers` and `ForeignMemberClassContainer.foreignMembers` properties. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
+* Fixed an issue where `RouteStep.distance`, `RouteStep.expectedTravelTime` and `RouteStep.typicalTravelTime` were rounded to one decimal place when being encoded. ([#697](https://github.com/mapbox/mapbox-directions-swift/pull/697))
 * Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
 * The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
 
