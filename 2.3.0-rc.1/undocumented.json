@@ -1,0 +1,418 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/AdministrativeRegion.swift",
+      "line": 22,
+      "symbol": "AdministrativeRegion.init(countryCode:countryCodeAlpha3:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Credentials.swift",
+      "line": 10,
+      "symbol": "Credentials",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Credentials.swift",
+      "line": 69,
+      "symbol": "DirectionsCredentials",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 500,
+      "symbol": "Directions.urlRequest(forRefreshing:routeIndex:fromLegAtIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 579,
+      "symbol": "CodingUserInfoKey.options",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 580,
+      "symbol": "CodingUserInfoKey.httpResponse",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 581,
+      "symbol": "CodingUserInfoKey.credentials",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 582,
+      "symbol": "CodingUserInfoKey.tracepoints",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 584,
+      "symbol": "CodingUserInfoKey.responseIdentifier",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 585,
+      "symbol": "CodingUserInfoKey.routeIndex",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Directions.swift",
+      "line": 586,
+      "symbol": "CodingUserInfoKey.startLegIndex",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/DirectionsError.swift",
+      "line": 11,
+      "symbol": "DirectionsError.init(code:message:response:underlyingError:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/DirectionsOptions.swift",
+      "line": 82,
+      "symbol": "MBDirectionsPriority",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/DirectionsResult.swift",
+      "line": 110,
+      "symbol": "DirectionsResult.legSeparators",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Extensions/Codable.swift",
+      "line": 40,
+      "symbol": "PolyLineString",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Extensions/GeoJSON.swift",
+      "line": 44,
+      "symbol": "GeometryError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Extensions/Measurement.swift",
+      "line": 54,
+      "symbol": "SpeedLimitDescriptor",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Incident.swift",
+      "line": 102,
+      "symbol": "Incident.init(identifier:type:description:creationDate:startDate:endDate:impact:subtype:subtypeDescription:alertCodes:lanesBlocked:shapeIndexRange:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/Intersection.swift",
+      "line": 10,
+      "symbol": "Intersection.init(location:headings:approachIndex:outletIndex:outletIndexes:approachLanes:usableApproachLanes:preferredApproachLanes:usableLaneIndication:outletRoadClasses:tollCollection:tunnelName:restStop:isUrban:regionCode:outletMapboxStreetsRoadClass:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/IsochroneError.swift",
+      "line": 11,
+      "symbol": "IsochroneError.init(code:message:response:underlyingError:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/IsochroneOptions.swift",
+      "line": 16,
+      "symbol": "IsochroneOptions.init(centerCoordinate:contours:profileIdentifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/LaneIndication.swift",
+      "line": 77,
+      "symbol": "LaneIndication.descriptions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/MapMatchingResponse.swift",
+      "line": 6,
+      "symbol": "MapMatchingResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/MapMatchingResponse.swift",
+      "line": 25,
+      "symbol": "MapMatchingResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 9,
+      "symbol": "Weight.routability(value:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 10,
+      "symbol": "Weight.other(value:metric:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 12,
+      "symbol": "Weight.init(value:metric:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 87,
+      "symbol": "Match.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 51,
+      "symbol": "MatchOptions.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 57,
+      "symbol": "MatchOptions.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 119,
+      "symbol": "MatchOptions.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 22,
+      "symbol": "Tracepoint.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 28,
+      "symbol": "Tracepoint.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 36,
+      "symbol": "Tracepoint.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 7,
+      "symbol": "OfflineVersion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 8,
+      "symbol": "OfflineDownloaderCompletionHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 9,
+      "symbol": "OfflineDownloaderProgressHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 10,
+      "symbol": "OfflineVersionsHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 16,
+      "symbol": "OfflineDirectionsProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/ProfileIdentifier.swift",
+      "line": 48,
+      "symbol": "MBDirectionsProfileIdentifier",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RefreshedRoute.swift",
+      "line": 33,
+      "symbol": "RefreshedRouteLeg.attributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RestStop.swift",
+      "line": 8,
+      "symbol": "RestStop.StopType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RestStop.swift",
+      "line": 22,
+      "symbol": "RestStop.init(type:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteLeg.swift",
+      "line": 11,
+      "symbol": "RouteLeg.CodingKeys",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteOptions.swift",
+      "line": 69,
+      "symbol": "RouteOptions.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteOptions.swift",
+      "line": 86,
+      "symbol": "RouteOptions.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshResponse.swift",
+      "line": 26,
+      "symbol": "RouteRefreshResponse.startLegIndex",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 7,
+      "symbol": "RouteRefreshSource.refreshedLegs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 14,
+      "symbol": "RouteLegRefreshSource.refreshedAttributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 18,
+      "symbol": "Route.refreshedLegs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 23,
+      "symbol": "RouteLeg.refreshedAttributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 29,
+      "symbol": "RefreshedRoute.refreshedLegs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteRefreshSource.swift",
+      "line": 34,
+      "symbol": "RefreshedRouteLeg.refreshedAttributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 6,
+      "symbol": "ResponseOptions",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 11,
+      "symbol": "RouteResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 44,
+      "symbol": "RouteResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 171,
+      "symbol": "RouteResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/TollCollection.swift",
+      "line": 8,
+      "symbol": "TollCollection.CollectionType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shanma/Documents/Code/mapbox-directions-swift/Sources/MapboxDirections/TollCollection.swift",
+      "line": 22,
+      "symbol": "TollCollection.init(type:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/shanma/Documents/Code/mapbox-directions-swift"
+}

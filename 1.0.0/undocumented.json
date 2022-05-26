@@ -1,0 +1,306 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 471,
+      "symbol": "Directions.urlRequest(forRefreshing:routeIndex:fromLegAtIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 555,
+      "symbol": "CodingUserInfoKey.options",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 556,
+      "symbol": "CodingUserInfoKey.httpResponse",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 557,
+      "symbol": "CodingUserInfoKey.credentials",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 558,
+      "symbol": "CodingUserInfoKey.tracepoints",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 560,
+      "symbol": "CodingUserInfoKey.responseIdentifier",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 561,
+      "symbol": "CodingUserInfoKey.routeIndex",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Directions.swift",
+      "line": 562,
+      "symbol": "CodingUserInfoKey.startLegIndex",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/DirectionsCredentials.swift",
+      "line": 7,
+      "symbol": "DirectionsCredentials",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/DirectionsError.swift",
+      "line": 8,
+      "symbol": "DirectionsError.init(code:message:response:underlyingError:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/DirectionsOptions.swift",
+      "line": 83,
+      "symbol": "MBDirectionsPriority",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/DirectionsProfileIdentifier.swift",
+      "line": 4,
+      "symbol": "MBDirectionsProfileIdentifier",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/DirectionsResult.swift",
+      "line": 111,
+      "symbol": "DirectionsResult.legSeparators",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Extensions/Codable.swift",
+      "line": 31,
+      "symbol": "PolyLineString",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Extensions/GeoJSON.swift",
+      "line": 36,
+      "symbol": "GeometryError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Extensions/Measurement.swift",
+      "line": 54,
+      "symbol": "SpeedLimitDescriptor",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/Intersection.swift",
+      "line": 10,
+      "symbol": "Intersection.init(location:headings:approachIndex:outletIndex:outletIndexes:approachLanes:usableApproachLanes:outletRoadClasses:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/LaneIndication.swift",
+      "line": 72,
+      "symbol": "LaneIndication.descriptions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/MapMatchingResponse.swift",
+      "line": 3,
+      "symbol": "MapMatchingResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/MapMatchingResponse.swift",
+      "line": 22,
+      "symbol": "MapMatchingResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 11,
+      "symbol": "Weight.routability(value:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 12,
+      "symbol": "Weight.other(value:metric:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 14,
+      "symbol": "Weight.init(value:metric:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Match.swift",
+      "line": 89,
+      "symbol": "Match.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 46,
+      "symbol": "MatchOptions.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 52,
+      "symbol": "MatchOptions.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/MatchOptions.swift",
+      "line": 114,
+      "symbol": "MatchOptions.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 22,
+      "symbol": "Tracepoint.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 28,
+      "symbol": "Tracepoint.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/MapMatching/Tracepoint.swift",
+      "line": 36,
+      "symbol": "Tracepoint.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 4,
+      "symbol": "OfflineVersion",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 5,
+      "symbol": "OfflineDownloaderCompletionHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 6,
+      "symbol": "OfflineDownloaderProgressHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 7,
+      "symbol": "OfflineVersionsHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/OfflineDirections.swift",
+      "line": 13,
+      "symbol": "OfflineDirectionsProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RefreshedRoute.swift",
+      "line": 33,
+      "symbol": "RefreshedRouteLeg.attributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteLeg.swift",
+      "line": 12,
+      "symbol": "RouteLeg.CodingKeys",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteOptions.swift",
+      "line": 55,
+      "symbol": "RouteOptions.encode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteOptions.swift",
+      "line": 65,
+      "symbol": "RouteOptions.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteRefreshResponse.swift",
+      "line": 23,
+      "symbol": "RouteRefreshResponse.startLegIndex",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 3,
+      "symbol": "ResponseOptions",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 8,
+      "symbol": "RouteResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mxn/hub/ios-sdk/_code/directions/Sources/MapboxDirections/RouteResponse.swift",
+      "line": 28,
+      "symbol": "RouteResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/mxn/hub/ios-sdk/_code/directions"
+}

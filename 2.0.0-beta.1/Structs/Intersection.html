@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Intersection Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    <link rel='shortcut icon' href='https://www.mapbox.com/img/favicon.ico' type='image/x-icon' />
+
+    <style type="text/css">
+      .nav-group-name[data-name="Intersection"] > .small-heading,
+      .nav-group-task[data-name="Intersection"] {
+        background-color: #f5f8fc;
+        font-family: "Open Sans Bold";
+        border-left: 3px solid #3a68d8;
+        padding-left: 5px
+      }
+    </style>
+    <script src="https://docs.mapbox.com/analytics.js"></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Struct/Intersection" class="dashAnchor"></a>
+
+    <a title="Intersection Structure Reference"></a>
+
+    <header class="header-container">
+      <div class="limiter">
+        <div class="header">
+        <p class="header-col header-col--primary">
+          <a class="header-link" href="../index.html">
+            <img style="height: 25px;"  class="header-icon" src="../img/mapbox.svg" alt="Mapbox Directions for Swift Docs"/>
+            <span class='header-tag'>Directions.swift Reference (2.0.0-beta.1)</span>
+          </a>
+          
+        </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link space-right2" href="https://github.com/mapbox/mapbox-directions-swift">
+              <svg style="margin-bottom: 1px;" class="header-icon" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		      <path stroke="none" stroke-width="1" fill="white" fill-rule="evenodd" d="M16.6,0.4 C7.6,0.4 0.3,7.7 0.3,16.7 C0.3,23.9 5,30 11.4,32.2 C12.2,32.3 12.5,31.8 12.5,31.4 L12.5,28.6 C8,29.6 7,26.4 7,26.4 C6.3,24.5 5.2,24 5.2,24 C3.7,23 5.3,23 5.3,23 C6.9,23.1 7.8,24.7 7.8,24.7 C9.3,27.2 11.6,26.5 12.5,26.1 C12.6,25 13.1,24.3 13.5,23.9 C9.9,23.5 6.1,22.1 6.1,15.8 C6.1,14 6.7,12.6 7.8,11.4 C7.6,11 7.1,9.3 8,7.1 C8,7.1 9.4,6.7 12.5,8.8 C13.8,8.4 15.2,8.3 16.6,8.3 C18,8.3 19.4,8.5 20.7,8.8 C23.8,6.7 25.2,7.1 25.2,7.1 C26.1,9.3 25.5,11 25.4,11.4 C26.4,12.5 27.1,14 27.1,15.8 C27.1,22.1 23.3,23.4 19.7,23.8 C20.3,24.3 20.8,25.3 20.8,26.8 L20.8,31.3 C20.8,31.7 21.1,32.2 21.9,32.1 C28.4,29.9 33,23.8 33,16.6 C32.9,7.7 25.6,0.4 16.6,0.4 L16.6,0.4 Z"></path>
+              </svg>
+              View on GitHub
+            </a>
+          </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link bold" href="dash-feed://https%3A%2F%2Fdocs.mapbox.com%2Fios%2Fdocsets%2FMapboxDirections.xml">
+              <img style="margin-bottom: 1px;" class="header-icon" src="../img/dash.png"/>
+              Install in Dash
+            </a>
+          </p>
+      </div>
+      </div>
+    </header>
+
+    <div class="breadcrumbs">
+      <div class="limiter">
+        <a class="breadcrumb" href="../index.html">Mapbox Directions for Swift Reference</a>
+        <img class="carat" src="../img/carat.png" />
+        Intersection Structure Reference
+      </div>
+    </div>
+
+    <div class="content-wrapper limiter">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name" data-name="Guides">
+            <a class="small-heading" href="../Guides.html">Guides<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Navigation SDK" data-url="navigation-sdk.html">
+                <a title="Navigation SDK" class="nav-group-task-link" href="../navigation-sdk.html">Navigation SDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Getting Directions">
+            <a class="small-heading" href="../Getting Directions.html">Getting Directions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Directions" data-url="Classes/Directions.html">
+                <a title="Directions" class="nav-group-task-link" href="../Classes/Directions.html">Directions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteOptions" data-url="Classes/RouteOptions.html">
+                <a title="RouteOptions" class="nav-group-task-link" href="../Classes/RouteOptions.html">RouteOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Waypoint" data-url="Classes/Waypoint.html">
+                <a title="Waypoint" class="nav-group-task-link" href="../Classes/Waypoint.html">Waypoint</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Map Matching">
+            <a class="small-heading" href="../Map Matching.html">Map Matching<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MatchOptions" data-url="Classes/MatchOptions.html">
+                <a title="MatchOptions" class="nav-group-task-link" href="../Classes/MatchOptions.html">MatchOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Tracepoint" data-url="Classes/Tracepoint.html">
+                <a title="Tracepoint" class="nav-group-task-link" href="../Classes/Tracepoint.html">Tracepoint</a>
+              </li>
+              <li class="nav-group-task" data-name="Match" data-url="Classes/Match.html">
+                <a title="Match" class="nav-group-task-link" href="../Classes/Match.html">Match</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Results">
+            <a class="small-heading" href="../Results.html">Results<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Route" data-url="Classes/Route.html">
+                <a title="Route" class="nav-group-task-link" href="../Classes/Route.html">Route</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLeg" data-url="Classes/RouteLeg.html">
+                <a title="RouteLeg" class="nav-group-task-link" href="../Classes/RouteLeg.html">RouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="– Attributes" data-url="Classes/RouteLeg/Attributes.html">
+                <a title="– Attributes" class="nav-group-task-link" href="../Classes/RouteLeg/Attributes.html">– Attributes</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteStep" data-url="Classes/RouteStep.html">
+                <a title="RouteStep" class="nav-group-task-link" href="../Classes/RouteStep.html">RouteStep</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Classes">
+            <a class="small-heading" href="../Other Classes.html">Other Classes<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsOptions" data-url="Classes/DirectionsOptions.html">
+                <a title="DirectionsOptions" class="nav-group-task-link" href="../Classes/DirectionsOptions.html">DirectionsOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsResult" data-url="Classes/DirectionsResult.html">
+                <a title="DirectionsResult" class="nav-group-task-link" href="../Classes/DirectionsResult.html">DirectionsResult</a>
+              </li>
+              <li class="nav-group-task" data-name="SpokenInstruction" data-url="Classes/SpokenInstruction.html">
+                <a title="SpokenInstruction" class="nav-group-task-link" href="../Classes/SpokenInstruction.html">SpokenInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstruction" data-url="Classes/VisualInstruction.html">
+                <a title="VisualInstruction" class="nav-group-task-link" href="../Classes/VisualInstruction.html">VisualInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="– Component" data-url="Classes/VisualInstruction/Component.html">
+                <a title="– Component" class="nav-group-task-link" href="../Classes/VisualInstruction/Component.html">– Component</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstructionBanner" data-url="Classes/VisualInstructionBanner.html">
+                <a title="VisualInstructionBanner" class="nav-group-task-link" href="../Classes/VisualInstructionBanner.html">VisualInstructionBanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Global Variables">
+            <a class="small-heading" href="../Other Global Variables.html">Other Global Variables<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MBDirectionsErrorDomain" data-url="Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">
+                <a title="MBDirectionsErrorDomain" class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">MBDirectionsErrorDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Enumerations">
+            <a class="small-heading" href="../Other Enumerations.html">Other Enumerations<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CongestionLevel" data-url="Enums/CongestionLevel.html">
+                <a title="CongestionLevel" class="nav-group-task-link" href="../Enums/CongestionLevel.html">CongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsCodingError" data-url="Enums/DirectionsCodingError.html">
+                <a title="DirectionsCodingError" class="nav-group-task-link" href="../Enums/DirectionsCodingError.html">DirectionsCodingError</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsError" data-url="Enums/DirectionsError.html">
+                <a title="DirectionsError" class="nav-group-task-link" href="../Enums/DirectionsError.html">DirectionsError</a>
+              </li>
+              <li class="nav-group-task" data-name="DrivingSide" data-url="Enums/DrivingSide.html">
+                <a title="DrivingSide" class="nav-group-task-link" href="../Enums/DrivingSide.html">DrivingSide</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverDirection" data-url="Enums/ManeuverDirection.html">
+                <a title="ManeuverDirection" class="nav-group-task-link" href="../Enums/ManeuverDirection.html">ManeuverDirection</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverType" data-url="Enums/ManeuverType.html">
+                <a title="ManeuverType" class="nav-group-task-link" href="../Enums/ManeuverType.html">ManeuverType</a>
+              </li>
+              <li class="nav-group-task" data-name="MapboxStreetsRoadClass" data-url="Enums/MapboxStreetsRoadClass.html">
+                <a title="MapboxStreetsRoadClass" class="nav-group-task-link" href="../Enums/MapboxStreetsRoadClass.html">MapboxStreetsRoadClass</a>
+              </li>
+              <li class="nav-group-task" data-name="MeasurementSystem" data-url="Enums/MeasurementSystem.html">
+                <a title="MeasurementSystem" class="nav-group-task-link" href="../Enums/MeasurementSystem.html">MeasurementSystem</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeFormat" data-url="Enums/RouteShapeFormat.html">
+                <a title="RouteShapeFormat" class="nav-group-task-link" href="../Enums/RouteShapeFormat.html">RouteShapeFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeResolution" data-url="Enums/RouteShapeResolution.html">
+                <a title="RouteShapeResolution" class="nav-group-task-link" href="../Enums/RouteShapeResolution.html">RouteShapeResolution</a>
+              </li>
+              <li class="nav-group-task" data-name="SignStandard" data-url="Enums/SignStandard.html">
+                <a title="SignStandard" class="nav-group-task-link" href="../Enums/SignStandard.html">SignStandard</a>
+              </li>
+              <li class="nav-group-task" data-name="TransportType" data-url="Enums/TransportType.html">
+                <a title="TransportType" class="nav-group-task-link" href="../Enums/TransportType.html">TransportType</a>
+              </li>
+              <li class="nav-group-task" data-name="Weight" data-url="Other%20Enums.html#/s:16MapboxDirections6WeightO">
+                <a title="Weight" class="nav-group-task-link" href="../Other%20Enums.html#/s:16MapboxDirections6WeightO">Weight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Extensions">
+            <a class="small-heading" href="../Other Extensions.html">Other Extensions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Array" data-url="Extensions/Array.html">
+                <a title="Array" class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task" data-name="BoundingBox" data-url="Extensions/BoundingBox.html">
+                <a title="BoundingBox" class="nav-group-task-link" href="../Extensions/BoundingBox.html">BoundingBox</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Structures">
+            <a class="small-heading" href="../Other Structures.html">Other Structures<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="AdministrativeRegion" data-url="Structs/AdministrativeRegion.html">
+                <a title="AdministrativeRegion" class="nav-group-task-link" href="../Structs/AdministrativeRegion.html">AdministrativeRegion</a>
+              </li>
+              <li class="nav-group-task" data-name="AttributeOptions" data-url="Structs/AttributeOptions.html">
+                <a title="AttributeOptions" class="nav-group-task-link" href="../Structs/AttributeOptions.html">AttributeOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="BlockedLanes" data-url="Structs/BlockedLanes.html">
+                <a title="BlockedLanes" class="nav-group-task-link" href="../Structs/BlockedLanes.html">BlockedLanes</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsPriority" data-url="Structs/DirectionsPriority.html">
+                <a title="DirectionsPriority" class="nav-group-task-link" href="../Structs/DirectionsPriority.html">DirectionsPriority</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsProfileIdentifier" data-url="Structs/DirectionsProfileIdentifier.html">
+                <a title="DirectionsProfileIdentifier" class="nav-group-task-link" href="../Structs/DirectionsProfileIdentifier.html">DirectionsProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="GuidanceViewImageRepresentation" data-url="Structs/GuidanceViewImageRepresentation.html">
+                <a title="GuidanceViewImageRepresentation" class="nav-group-task-link" href="../Structs/GuidanceViewImageRepresentation.html">GuidanceViewImageRepresentation</a>
+              </li>
+              <li class="nav-group-task" data-name="Incident" data-url="Structs/Incident.html">
+                <a title="Incident" class="nav-group-task-link" href="../Structs/Incident.html">Incident</a>
+              </li>
+              <li class="nav-group-task" data-name="– Kind" data-url="Structs/Incident/Kind.html">
+                <a title="– Kind" class="nav-group-task-link" href="../Structs/Incident/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task" data-name="– Impact" data-url="Structs/Incident/Impact.html">
+                <a title="– Impact" class="nav-group-task-link" href="../Structs/Incident/Impact.html">– Impact</a>
+              </li>
+              <li class="nav-group-task" data-name="Intersection" data-url="Structs/Intersection.html">
+                <a title="Intersection" class="nav-group-task-link" href="../Structs/Intersection.html">Intersection</a>
+              </li>
+              <li class="nav-group-task" data-name="LaneIndication" data-url="Structs/LaneIndication.html">
+                <a title="LaneIndication" class="nav-group-task-link" href="../Structs/LaneIndication.html">LaneIndication</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRoute" data-url="Structs/RefreshedRoute.html">
+                <a title="RefreshedRoute" class="nav-group-task-link" href="../Structs/RefreshedRoute.html">RefreshedRoute</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRouteLeg" data-url="Structs/RefreshedRouteLeg.html">
+                <a title="RefreshedRouteLeg" class="nav-group-task-link" href="../Structs/RefreshedRouteLeg.html">RefreshedRouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="RestStop" data-url="Structs/RestStop.html">
+                <a title="RestStop" class="nav-group-task-link" href="../Structs/RestStop.html">RestStop</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClasses" data-url="Structs/RoadClasses.html">
+                <a title="RoadClasses" class="nav-group-task-link" href="../Structs/RoadClasses.html">RoadClasses</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshResponse" data-url="Structs/RouteRefreshResponse.html">
+                <a title="RouteRefreshResponse" class="nav-group-task-link" href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="TollCollection" data-url="Structs/TollCollection.html">
+                <a title="TollCollection" class="nav-group-task-link" href="../Structs/TollCollection.html">TollCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Type Aliases">
+            <a class="small-heading" href="../Other Type Aliases.html">Other Type Aliases<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/LocationAccuracy">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationAccuracy">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/LocationSpeed">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationSpeed">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/Scale">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/Scale">Scale</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/s:16MapboxDirections5Scalea">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections5Scalea">Scale</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <a href="#/Intersection"><h1 id="Intersection">Intersection<span class="anchor-icon" /></h1></a>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Intersection</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Intersection</span><span class="p">:</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Intersection</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A single cross street along a step.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20the%20Location%20of%20the%20Intersection"></a>
+                <a name="//apple_ref/swift/Section/Getting the Location of the Intersection" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Location%20of%20the%20Intersection">
+                  <h3 id="Getting%20the%20Location%20of%20the%20Intersection" class="section-name">Getting the Location of the Intersection<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV8locationSo22CLLocationCoordinate2DVvp"></a>
+                    <a name="//apple_ref/swift/Property/location" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV8locationSo22CLLocationCoordinate2DVvp"><span class="token-name">location</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The geographic coordinates at the center of the intersection.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">location</span><span class="p">:</span> <span class="kt">LocationCoordinate2D</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L49">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20the%20Roads%20that%20Meet%20at%20the%20Intersection"></a>
+                <a name="//apple_ref/swift/Section/Getting the Roads that Meet at the Intersection" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Roads%20that%20Meet%20at%20the%20Intersection">
+                  <h3 id="Getting%20the%20Roads%20that%20Meet%20at%20the%20Intersection" class="section-name">Getting the Roads that Meet at the Intersection<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV8headingsSaySdGvp"></a>
+                    <a name="//apple_ref/swift/Property/headings" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV8headingsSaySdGvp"><span class="token-name">headings</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>An array of <code>LocationDirection</code>s indicating the absolute headings of the roads that meet at the intersection.</p>
+
+<p>A road is represented in this array by a heading indicating the direction from which the road meets the intersection. To get the direction of travel when leaving the intersection along the road, rotate the heading 180 degrees.</p>
+
+<p>A single road that passes through this intersection is represented by two items in this array: one for the segment that enters the intersection and one for the segment that exits it.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">headings</span><span class="p">:</span> <span class="p">[</span><span class="kt">LocationDirection</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L60">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV13outletIndexes10Foundation8IndexSetVvp"></a>
+                    <a name="//apple_ref/swift/Property/outletIndexes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV13outletIndexes10Foundation8IndexSetVvp"><span class="token-name">outletIndexes</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The indices of the items in the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV8headingsSaySdGvp">headings</a></code> array that correspond to the roads that may be used to leave the intersection.</p>
+
+<p>This index set effectively excludes any one-way road that leads toward the intersection.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">outletIndexes</span><span class="p">:</span> <span class="kt">IndexSet</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L67">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20the%20Roads%20That%20Take%20the%20Route%20Through%20the%20Intersection"></a>
+                <a name="//apple_ref/swift/Section/Getting the Roads That Take the Route Through the Intersection" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Roads%20That%20Take%20the%20Route%20Through%20the%20Intersection">
+                  <h3 id="Getting%20the%20Roads%20That%20Take%20the%20Route%20Through%20the%20Intersection" class="section-name">Getting the Roads That Take the Route Through the Intersection<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV13approachIndexSiSgvp"></a>
+                    <a name="//apple_ref/swift/Property/approachIndex" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV13approachIndexSiSgvp"><span class="token-name">approachIndex</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The index of the item in the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV8headingsSaySdGvp">headings</a></code> array that corresponds to the road that the containing route step uses to approach the intersection.</p>
+
+<p>This property is set to <code>nil</code> for a departure maneuver.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">approachIndex</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L76">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV11outletIndexSiSgvp"></a>
+                    <a name="//apple_ref/swift/Property/outletIndex" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV11outletIndexSiSgvp"><span class="token-name">outletIndex</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The index of the item in the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV8headingsSaySdGvp">headings</a></code> array that corresponds to the road that the containing route step uses to leave the intersection.</p>
+
+<p>This property is set to <code>nil</code> for an arrival maneuver.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">outletIndex</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L83">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV17outletRoadClassesAA0eF0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/outletRoadClasses" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV17outletRoadClassesAA0eF0VSgvp"><span class="token-name">outletRoadClasses</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The road classes of the road that the containing step uses to leave the intersection.</p>
+
+<p>If road class information is unavailable, this property is set to <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">outletRoadClasses</span><span class="p">:</span> <span class="kt"><a href="../Structs/RoadClasses.html">RoadClasses</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L90">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV06outletA16StreetsRoadClassAA0aefG0OSgvp"></a>
+                    <a name="//apple_ref/swift/Property/outletMapboxStreetsRoadClass" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV06outletA16StreetsRoadClassAA0aefG0OSgvp"><span class="token-name">outletMapboxStreetsRoadClass</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The road classes of the road that the containing step uses to leave the intersection, according to the <a href="https://docs.mapbox.com/vector-tiles/reference/mapbox-streets-v8/#road">Mapbox Streets source</a> , version 8.</p>
+
+<p>If detailed road class information is unavailable, this property is set to <code>nil</code>. This property only indicates the road classification; for other aspects of the road, use the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV17outletRoadClassesAA0eF0VSgvp">outletRoadClasses</a></code> property.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">outletMapboxStreetsRoadClass</span><span class="p">:</span> <span class="kt"><a href="../Enums/MapboxStreetsRoadClass.html">MapboxStreetsRoadClass</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L97">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV10tunnelNameSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/tunnelName" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV10tunnelNameSSSgvp"><span class="token-name">tunnelName</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The name of the tunnel that this intersection is a part of.</p>
+
+<p>If this Intersection is not a tunnel entrance or exit, or if information is unavailable then this property is set to <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">tunnelName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L104">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV14tollCollectionAA04TollE0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/tollCollection" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV14tollCollectionAA04TollE0VSgvp"><span class="token-name">tollCollection</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A toll collection point.</p>
+
+<p>If this Intersection is not a toll collection intersection, or if this information is unavailable then this property is set to <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">tollCollection</span><span class="p">:</span> <span class="kt"><a href="../Structs/TollCollection.html">TollCollection</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L111">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV8restStopAA04RestE0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/restStop" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV8restStopAA04RestE0VSgvp"><span class="token-name">restStop</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Corresponding rest stop.</p>
+
+<p>If this Intersection is not a rest stop, or if this information is unavailable then this property is set to <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">restStop</span><span class="p">:</span> <span class="kt"><a href="../Structs/RestStop.html">RestStop</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L118">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV7isUrbanSbSgvp"></a>
+                    <a name="//apple_ref/swift/Property/isUrban" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV7isUrbanSbSgvp"><span class="token-name">isUrban</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Whether the intersection lays within the bounds of an urban zone.</p>
+
+<p>If this information is unavailable, then this property is set to <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">isUrban</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L125">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV10regionCodeSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/regionCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV10regionCodeSSSgvp"><span class="token-name">regionCode</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A 2-letter region code to identify corresponding country that this intersection lies in.</p>
+
+<p>Automatically populated during decoding a <code><a href="../Classes/RouteLeg.html">RouteLeg</a></code> object, since this is the source of all <code><a href="../Structs/AdministrativeRegion.html">AdministrativeRegion</a></code>s. Value is <code>nil</code> if such information is unavailable.</p>
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <code>RouteStep.regionCode(atStepIndex:, intersectionIndex:)</code>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">regionCode</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L134">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Telling%20the%20User%20Which%20Lanes%20to%20Use"></a>
+                <a name="//apple_ref/swift/Section/Telling the User Which Lanes to Use" class="dashAnchor"></a>
+                <a href="#/Telling%20the%20User%20Which%20Lanes%20to%20Use">
+                  <h3 id="Telling%20the%20User%20Which%20Lanes%20to%20Use" class="section-name">Telling the User Which Lanes to Use<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV13approachLanesSayAA14LaneIndicationVGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/approachLanes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV13approachLanesSayAA14LaneIndicationVGSgvp"><span class="token-name">approachLanes</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>All the lanes of the road that the containing route step uses to approach the intersection. Each item in the array represents a lane, which is represented by one or more <code><a href="../Structs/LaneIndication.html">LaneIndication</a></code>s.</p>
+
+<p>If no lane information is available for the intersection, this property’s value is <code>nil</code>. The first item corresponds to the leftmost lane, the second item corresponds to the second lane from the left, and so on, regardless of whether the surrounding country drives on the left or on the right.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">approachLanes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/LaneIndication.html">LaneIndication</a></span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L147">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV19usableApproachLanes10Foundation8IndexSetVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/usableApproachLanes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV19usableApproachLanes10Foundation8IndexSetVSgvp"><span class="token-name">usableApproachLanes</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The indices of the items in the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV13approachLanesSayAA14LaneIndicationVGSgvp">approachLanes</a></code> array that correspond to the lanes that may be used to execute the maneuver.</p>
+
+<p>If no lane information is available for an intersection, this property’s value is <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">usableApproachLanes</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L154">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV22preferredApproachLanes10Foundation8IndexSetVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/preferredApproachLanes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV22preferredApproachLanes10Foundation8IndexSetVSgvp"><span class="token-name">preferredApproachLanes</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The indices of the items in the <code><a href="../Structs/Intersection.html#/s:16MapboxDirections12IntersectionV13approachLanesSayAA14LaneIndicationVGSgvp">approachLanes</a></code> array that correspond to the lanes that are preferred to execute the maneuver.</p>
+
+<p>If no lane information is available for an intersection, this property’s value is <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">preferredApproachLanes</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L161">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections12IntersectionV20usableLaneIndicationAA0eF0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/usableLaneIndication" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections12IntersectionV20usableLaneIndicationAA0eF0VSgvp"><span class="token-name">usableLaneIndication</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Which of the <code><a href="../Structs/LaneIndication.html">LaneIndication</a></code>s is applicable to the current route when there is more than one.</p>
+
+<p>If no lane information is available for the intersection, this property’s value is <code>nil</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">usableLaneIndication</span><span class="p">:</span> <span class="kt"><a href="../Structs/LaneIndication.html">LaneIndication</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L168">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SE6encode2toys7Encoder_p_tKF"></a>
+                    <a name="//apple_ref/swift/Method/encode(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SE6encode2toys7Encoder_p_tKF"><span class="token-name">encode(to:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">to</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">Encoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L243-L245">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Se4fromxs7Decoder_p_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Se4fromxs7Decoder_p_tKcfc"><span class="token-name">init(from:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">from</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">Decoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L313-L348">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
+                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ"><span class="token-name">==(_:_:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Intersection</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Intersection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.0.0-beta.1/Sources/MapboxDirections/Intersection.swift#L352-L369">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer limiter">
+      <p>© 2014–2021 <a class="link" href="https://www.mapbox.com/" target="_blank" rel="external">Mapbox</a>. See <a class="link" href="https://github.com/mapbox/mapbox-directions-swift/blob/master/LICENSE.md" target="_blank" rel="external">license</a> for more details.</p> Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.
+    </section>
+  </body>
+</div>
+</html>
