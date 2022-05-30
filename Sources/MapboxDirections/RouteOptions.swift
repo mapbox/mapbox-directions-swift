@@ -87,6 +87,11 @@ open class RouteOptions: DirectionsOptions {
            let doubleValue = Double(mappedValue) {
             self.maximumWidth = Measurement(value: doubleValue, unit: UnitLength.meters)
         }
+        if let mappedValue = mappedQueryItems[CodingKeys.maximumWeight.stringValue],
+           let doubleValue = Double(mappedValue) {
+            self.maximumWeight = Measurement(value: doubleValue, unit: UnitMass.metricTons)
+        }
+        
         
         let formatter = DateFormatter.ISO8601DirectionsFormatter()
         if let mappedValue = mappedQueryItems[CodingKeys.departAt.stringValue],
@@ -137,6 +142,7 @@ open class RouteOptions: DirectionsOptions {
         case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
         case maximumHeight = "max_height"
         case maximumWidth = "max_width"
+        case maximumWeight = "max_weight"
         case alleyPriority = "alley_bias"
         case walkwayPriority = "walkway_bias"
         case speed = "walking_speed"
@@ -157,6 +163,7 @@ open class RouteOptions: DirectionsOptions {
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
         try container.encodeIfPresent(maximumHeight?.converted(to: .meters).value, forKey: .maximumHeight)
         try container.encodeIfPresent(maximumWidth?.converted(to: .meters).value, forKey: .maximumWidth)
+        try container.encodeIfPresent(maximumWeight?.converted(to: .metricTons).value, forKey: .maximumWeight)
         try container.encodeIfPresent(alleyPriority, forKey: .alleyPriority)
         try container.encodeIfPresent(walkwayPriority, forKey: .walkwayPriority)
         try container.encodeIfPresent(speed, forKey: .speed)
@@ -192,6 +199,9 @@ open class RouteOptions: DirectionsOptions {
 
         if let maximumWidthValue = try container.decodeIfPresent(Double.self, forKey: .maximumWidth) {
             maximumWidth = Measurement(value: maximumWidthValue, unit: .meters)
+        }
+        if let maximumWeightValue = try container.decodeIfPresent(Double.self, forKey: .maximumWeight) {
+            maximumWeight = Measurement(value: maximumWeightValue, unit: .metricTons)
         }
 
         alleyPriority = try container.decodeIfPresent(DirectionsPriority.self, forKey: .alleyPriority)
@@ -349,6 +359,14 @@ open class RouteOptions: DirectionsOptions {
     open var maximumWidth: Measurement<UnitLength>?
     
     /**
+     The maximum vehicle weight.
+     
+     If this parameter is provided, the `Directions` will compute a route that includes only roads with a weight limit greater than or equal to the max vehicle weight.
+     This property is supported by `DirectionsProfileIdentifier.automobile` and `DirectionsProfileIdentifier.automobileAvoidingTraffic` profiles.
+     The value must be between 0 and 100 metric tons. If unspecified,  2.5 metric tons is assumed.
+     */
+    open var maximumWeight: Measurement<UnitMass>?
+    /**
      A radius around the starting point in which the API will avoid returning any significant maneuvers.
      
      Use this option when the vehicle is traveling at a significant speed to avoid dangerous maneuvers when re-routing. If a route is not found using the specified value, it will be ignored. Note that if a large radius is used, the API may ignore an important turn and return a long straight path before the first maneuver.
@@ -423,6 +441,11 @@ open class RouteOptions: DirectionsOptions {
         if let maximumWidth = maximumWidth {
             let widthInMeters = maximumWidth.converted(to: .meters).value
             params.append(URLQueryItem(name: CodingKeys.maximumWidth.stringValue, value: String(widthInMeters)))
+        }
+        
+        if let maximumWeight = maximumWeight {
+            let weightInTonnes = maximumWeight.converted(to: .metricTons).value
+            params.append(URLQueryItem(name: CodingKeys.maximumWeight.stringValue, value: String(weightInTonnes)))
         }
 
         if [ProfileIdentifier.automobile, .automobileAvoidingTraffic].contains(profileIdentifier) {

@@ -8,6 +8,7 @@
 * Fixed an issue where `RouteStep.distance`, `RouteStep.expectedTravelTime` and `RouteStep.typicalTravelTime` were rounded to one decimal place when being encoded. ([#697](https://github.com/mapbox/mapbox-directions-swift/pull/697))
 * Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
 * The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
+* Added the `RouteOptions.maximumWeight` property to compute routes that excludes roads with a lower weight limit. ([#694](https://github.com/mapbox/mapbox-directions-swift/pull/694))
 
 ## v2.4.0
 
