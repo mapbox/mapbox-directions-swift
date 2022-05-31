@@ -436,7 +436,7 @@ open class DirectionsOptions: Codable {
             return ""
         }
         
-        if coordinates.count < 2 {
+        if waypoints.count < 2 {
             return "\(abridgedPath)"
         }
         

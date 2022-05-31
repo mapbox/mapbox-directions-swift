@@ -331,6 +331,13 @@ class RouteOptionsTests: XCTestCase {
         let expectedIncludeQueryItem = URLQueryItem(name: "include", value: "hov2,hov3,hot")
         XCTAssertTrue(options.urlQueryItems.contains(expectedIncludeQueryItem))
     }
+    
+    func testNoWaypointsAndOneWaypoint() {
+        let noWaypointOptions = RouteOptions(coordinates: [])
+        XCTAssertEqual(noWaypointOptions.path, noWaypointOptions.abridgedPath)
+        let oneWaypointOptions = RouteOptions(coordinates: [LocationCoordinate2D(latitude: 0.0, longitude: 0.0)])
+        XCTAssertEqual(oneWaypointOptions.path, oneWaypointOptions.abridgedPath)
+    }
 }
 
 fileprivate let testCoordinates = [
