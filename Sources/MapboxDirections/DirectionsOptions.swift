@@ -431,10 +431,15 @@ open class DirectionsOptions: Codable {
      The path of the request URL, not including the hostname or any parameters.
      */
     var path: String {
-        guard let coordinates = coordinates, !coordinates.isEmpty else {
+        guard let coordinates = coordinates else {
             assertionFailure("No query")
             return ""
         }
+        
+        if waypoints.count < 2 {
+            return "\(abridgedPath)"
+        }
+        
         return "\(abridgedPath)/\(coordinates)"
     }
     
