@@ -106,8 +106,10 @@ class RouteRefreshTests: XCTestCase {
                 
                 let route = routeResponse.routes?[routeIndex]
                 route?.refreshLegAttributes(from: refresh.route)
+                route?.refreshLegIncidents(from: refresh.route)
                 
-                XCTAssertEqual(refresh.route.legs[0].attributes, route?.legs[0].attributes, "Route legs are not refreshed")
+                XCTAssertEqual(refresh.route.legs[0].attributes, route?.legs[0].attributes, "Route legs attributes are not refreshed")
+                XCTAssertEqual(refresh.route.legs[0].incidents, route?.legs[0].incidents, "Route legs incidents are not refreshed")
                 routeUpdatedExpectation.fulfill()
             }
         }
@@ -127,8 +129,11 @@ class RouteRefreshTests: XCTestCase {
                     XCTAssertEqual(response.route.legs.count, 2)
                     let route = routeResponse.routes?[routeIndex]
                     route?.refreshLegAttributes(from: response.route)
-                    XCTAssertEqual(route?.legs[0].attributes, response.route.legs[0].attributes, "Route legs are not refreshed correctly")
-                    XCTAssertEqual(route?.legs[1].attributes, response.route.legs[1].attributes, "Route legs are not refreshed correctly")
+                    route?.refreshLegIncidents(from: response.route)
+                    XCTAssertEqual(route?.legs[0].attributes, response.route.legs[0].attributes, "Route legs attributes are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[1].attributes, response.route.legs[1].attributes, "Route legs attributes are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[0].incidents, response.route.legs[0].incidents, "Route legs incidents are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[1].incidents, response.route.legs[1].incidents, "Route legs incidents are not refreshed correctly")
                     routeUpdatedExpectation.fulfill()
                 case let .failure(error):
                     XCTFail("Refresh failed with unexpected error: \(error).")

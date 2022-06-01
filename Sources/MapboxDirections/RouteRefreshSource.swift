@@ -12,6 +12,7 @@ public protocol RouteRefreshSource {
  */
 public protocol RouteLegRefreshSource {
     var refreshedAttributes: RouteLeg.Attributes { get }
+    var refreshedIncidents: [Incident]? { get }
 }
 
 extension Route: RouteRefreshSource {
@@ -23,6 +24,10 @@ extension RouteLeg: RouteLegRefreshSource {
     public var refreshedAttributes: Attributes {
         attributes
     }
+    
+    public var refreshedIncidents: [Incident]? {
+        incidents
+    }
 }
 
 extension RefreshedRoute: RouteRefreshSource {
@@ -31,6 +36,10 @@ extension RefreshedRoute: RouteRefreshSource {
     }
 }
 extension RefreshedRouteLeg: RouteLegRefreshSource {
+    public var refreshedIncidents: [Incident]? {
+        incidents
+    }
+    
     public var refreshedAttributes: RouteLeg.Attributes {
         attributes
     }

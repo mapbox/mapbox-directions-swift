@@ -40,16 +40,19 @@ public struct RefreshedRouteLeg: ForeignMemberContainer {
     public var foreignMembers: JSONObject = [:]
     
     public var attributes: RouteLeg.Attributes
+    public var incidents: [Incident]?
 }
 
 extension RefreshedRouteLeg: Codable {
     enum CodingKeys: String, CodingKey {
         case attributes = "annotation"
+        case incidents = "incidents"
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         attributes = try container.decode(RouteLeg.Attributes.self, forKey: .attributes)
+        incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents)
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
@@ -57,6 +60,7 @@ extension RefreshedRouteLeg: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
+        try container.encodeIfPresent(incidents, forKey: .incidents)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }

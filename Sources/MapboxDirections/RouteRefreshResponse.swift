@@ -31,7 +31,7 @@ public struct RouteRefreshResponse: ForeignMemberContainer {
     /**
      A skeleton route that contains only the time-sensitive information that has been updated.
      
-     Use the `Route.refreshLegAttributes(from:)` method to merge this object with the original route to continue using the original route with updated information.
+     Use the `Route.refreshLegAttributes(from:)` and `Route.refreshLegIncidents(from:)` methods to merge this object with the original route to continue using the original route with updated information.
      */
     public var route: RefreshedRoute
     
@@ -109,6 +109,17 @@ extension Route {
     public func refreshLegAttributes(from refreshedRoute: RouteRefreshSource) {
         for (leg, refreshedLeg) in zip(legs.suffix(refreshedRoute.refreshedLegs.count), refreshedRoute.refreshedLegs) {
             leg.attributes = refreshedLeg.refreshedAttributes
+        }
+    }
+    
+    /**
+     Merges the incidents of the given route’s legs into the receiver’s legs.
+     
+     - parameter refreshedRoute: The route containing leg incidents to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the incidents from a one-leg route affects only the last leg of the receiver.
+     */
+    public func refreshLegIncidents(from refreshedRoute: RouteRefreshSource) {
+        for (leg, refreshedLeg) in zip(legs.suffix(refreshedRoute.refreshedLegs.count), refreshedRoute.refreshedLegs) {
+            leg.incidents = refreshedLeg.refreshedIncidents
         }
     }
 }
