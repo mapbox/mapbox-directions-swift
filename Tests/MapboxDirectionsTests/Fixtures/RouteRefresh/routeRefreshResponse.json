@@ -3,6 +3,35 @@
     "route": {
         "legs": [
             {
+                "incidents": [
+                    {
+                        "id": "12727074056824787215",
+                        "type": "miscellaneous",
+                        "description": "Bei Windach - Verkehrsbehinderung.",
+                        "long_description": "Bei Windach - Verkehrsbehinderung. A96 Lindau Richtung München in Höhe Windach Grünpflege, bis 04.11.2020 15:00 Uhr",
+                        "creation_time": "2020-11-04T09:51:00Z",
+                        "start_time": "2020-11-04T07:07:50Z",
+                        "end_time": "2020-11-04T14:00:00Z",
+                        "impact": "minor",
+                        "alertc_codes": [
+                            1
+                        ],
+                        "lanes_blocked": ["RIGHT", "SIDE"],
+                        "geometry_index_start": 10,
+                        "geometry_index_end": 15,
+                        "iso_3166_1_alpha3": "DEU",
+                        "iso_3166_1_alpha2": "DE",
+                        "closed": false,
+                        "num_lanes_blocked": 2,
+                        "congestion": {
+                            "value": 50
+                        },
+                        "affected_road_names": [
+                            "A96",
+                            "test"
+                        ]
+                    }
+                ],
                 "annotation": {
                     "duration": [
                         34.3,
@@ -353,6 +382,26 @@
                 }
             },
             {
+                "incidents": [
+                    {
+                        "id": "12779545487967908590",
+                        "type": "construction",
+                        "description": "Zwischen Eching und Inning a. Ammersee - Baustelle.",
+                        "long_description": "Zwischen Eching und Inning a. Ammersee - Baustelle.",
+                        "creation_time": "2020-11-04T09:51:00Z",
+                        "start_time": "2020-07-03T17:00:00Z",
+                        "end_time": "2020-12-08T04:30:00Z",
+                        "impact": "minor",
+                        "sub_type": "CONSTRUCTION",
+                        "sub_type_description": "construction",
+                        "alertc_codes": [
+                            701
+                        ],
+                        "geometry_index_start": 7,
+                        "geometry_index_end": 14,
+                        "closed": true
+                    }
+                ],
                 "annotation": {
                     "duration": [
                         4.9,

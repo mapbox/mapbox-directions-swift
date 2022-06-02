@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## main
+
+* Added `Route.refreshLegIncidents(from:)` method to allow refreshing `RouteLeg.incidents` during a route refresh. ([#704](https://github.com/mapbox/mapbox-directions-swift/pull/704))
+
 ## v2.5.0
 
 * Added the `RestStop.name` property. ([#689](https://github.com/mapbox/mapbox-directions-swift/pull/689))
