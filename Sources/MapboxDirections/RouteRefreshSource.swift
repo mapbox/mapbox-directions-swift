@@ -15,11 +15,18 @@ public protocol RouteLegRefreshSource {
     var refreshedIncidents: [Incident]? { get }
 }
 
+public extension RouteLegRefreshSource {
+    var refreshedIncidents: [Incident]? {
+        return nil
+    }
+}
+
 extension Route: RouteRefreshSource {
     public var refreshedLegs: [RouteLegRefreshSource] {
         legs
     }
 }
+
 extension RouteLeg: RouteLegRefreshSource {
     public var refreshedAttributes: Attributes {
         attributes
@@ -35,12 +42,13 @@ extension RefreshedRoute: RouteRefreshSource {
         legs
     }
 }
+
 extension RefreshedRouteLeg: RouteLegRefreshSource {
-    public var refreshedIncidents: [Incident]? {
-        incidents
-    }
-    
     public var refreshedAttributes: RouteLeg.Attributes {
         attributes
+    }
+    
+    public var refreshedIncidents: [Incident]? {
+        incidents
     }
 }
