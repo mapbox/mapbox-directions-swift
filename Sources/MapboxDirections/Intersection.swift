@@ -178,9 +178,32 @@ public struct Intersection: ForeignMemberContainer {
      */
     public let usableLaneIndication: ManeuverDirection?
     
+    /**
+     Indicates whether there is a railway crossing at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
     public let railwayCrossing: Bool?
+    
+    /**
+     Indicates whether there is a traffic signal at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
     public let trafficSignal: Bool?
+    
+    /**
+     Indicates whether there is a stop sign at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
     public let stopSign: Bool?
+    
+    /**
+     Indicates whether there is a yield sign at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
     public let yieldSign: Bool?
 }
 

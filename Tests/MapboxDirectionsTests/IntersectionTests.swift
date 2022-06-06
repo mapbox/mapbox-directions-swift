@@ -21,8 +21,8 @@ class IntersectionTests: XCTestCase {
                 ],
                 "railway_crossing": true,
                 "traffic_signal": true,
-                "stop_sign": true,
-                "yield_sign": true
+                "stop_sign": false,
+                "yield_sign": false
             ],
             [
                 "out": 1,
@@ -65,8 +65,8 @@ class IntersectionTests: XCTestCase {
             XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
             XCTAssertEqual(intersection.railwayCrossing, true)
             XCTAssertEqual(intersection.trafficSignal, true)
-            XCTAssertEqual(intersection.stopSign, true)
-            XCTAssertEqual(intersection.yieldSign, true)
+            XCTAssertEqual(intersection.stopSign, false)
+            XCTAssertEqual(intersection.yieldSign, false)
         }
         
         intersections = [
@@ -87,8 +87,8 @@ class IntersectionTests: XCTestCase {
                          outletMapboxStreetsRoadClass: .streetLimited,
                          railwayCrossing: true,
                          trafficSignal: true,
-                         stopSign: true,
-                         yieldSign: true),
+                         stopSign: false,
+                         yieldSign: false),
             Intersection(location: LocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
