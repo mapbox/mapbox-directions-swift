@@ -63,7 +63,7 @@ class IntersectionTests: XCTestCase {
             XCTAssertEqual(intersection.headings, [80.0])
             XCTAssertEqual(intersection.location, LocationCoordinate2D(latitude: 52.508068, longitude: 13.426579))
             XCTAssertEqual(intersection.outletMapboxStreetsRoadClass, MapboxStreetsRoadClass.streetLimited)
-            XCTAssertEqual(intersection.railwayCrossing, true)
+            XCTAssertEqual(intersection.railroadCrossing, true)
             XCTAssertEqual(intersection.trafficSignal, true)
             XCTAssertEqual(intersection.stopSign, false)
             XCTAssertEqual(intersection.yieldSign, false)
@@ -85,7 +85,7 @@ class IntersectionTests: XCTestCase {
                          restStop: nil,
                          isUrban: nil,
                          outletMapboxStreetsRoadClass: .streetLimited,
-                         railwayCrossing: true,
+                         railroadCrossing: true,
                          trafficSignal: true,
                          stopSign: false,
                          yieldSign: false),

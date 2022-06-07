@@ -26,7 +26,7 @@ public struct Intersection: ForeignMemberContainer {
                 isUrban: Bool? = nil,
                 regionCode: String? = nil,
                 outletMapboxStreetsRoadClass: MapboxStreetsRoadClass? = nil,
-                railwayCrossing: Bool? = nil,
+                railroadCrossing: Bool? = nil,
                 trafficSignal: Bool? = nil,
                 stopSign: Bool? = nil,
                 yieldSign: Bool? = nil) {
@@ -46,7 +46,7 @@ public struct Intersection: ForeignMemberContainer {
         self.restStop = restStop
         self.regionCode = regionCode
         self.outletMapboxStreetsRoadClass = outletMapboxStreetsRoadClass
-        self.railwayCrossing = railwayCrossing
+        self.railroadCrossing = railroadCrossing
         self.trafficSignal = trafficSignal
         self.stopSign = stopSign
         self.yieldSign = yieldSign
@@ -179,11 +179,11 @@ public struct Intersection: ForeignMemberContainer {
     public let usableLaneIndication: ManeuverDirection?
     
     /**
-     Indicates whether there is a railway crossing at the intersection.
+     Indicates whether there is a railroad crossing at the intersection.
      
      If such information is not available for an intersection, this property’s value is `nil`.
      */
-    public let railwayCrossing: Bool?
+    public let railroadCrossing: Bool?
     
     /**
      Indicates whether there is a traffic signal at the intersection.
@@ -223,7 +223,7 @@ extension Intersection: Codable {
         case restStop = "rest_stop"
         case administrativeRegionIndex = "admin_index"
         case geometryIndex = "geometry_index"
-        case railwayCrossing = "railway_crossing"
+        case railroadCrossing = "railway_crossing"
         case trafficSignal = "traffic_signal"
         case stopSign = "stop_sign"
         case yieldSign = "yield_sign"
@@ -368,8 +368,8 @@ extension Intersection: Codable {
             try container.encode(geoIndex, forKey: .geometryIndex)
         }
         
-        if let railwayCrossing = railwayCrossing {
-            try container.encode(railwayCrossing, forKey: .railwayCrossing)
+        if let railwayCrossing = railroadCrossing {
+            try container.encode(railwayCrossing, forKey: .railroadCrossing)
         }
         
         if let trafficSignal = trafficSignal {
@@ -428,7 +428,7 @@ extension Intersection: Codable {
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
         
-        railwayCrossing = try container.decodeIfPresent(Bool.self, forKey: .railwayCrossing)
+        railroadCrossing = try container.decodeIfPresent(Bool.self, forKey: .railroadCrossing)
         trafficSignal = try container.decodeIfPresent(Bool.self, forKey: .trafficSignal)
         stopSign = try container.decodeIfPresent(Bool.self, forKey: .stopSign)
         yieldSign = try container.decodeIfPresent(Bool.self, forKey: .yieldSign)
@@ -455,7 +455,7 @@ extension Intersection: Equatable {
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
             lhs.isUrban == rhs.isUrban &&
-            lhs.railwayCrossing == rhs.railwayCrossing &&
+            lhs.railroadCrossing == rhs.railroadCrossing &&
             lhs.trafficSignal == rhs.trafficSignal &&
             lhs.stopSign == rhs.stopSign &&
             lhs.yieldSign == rhs.yieldSign
