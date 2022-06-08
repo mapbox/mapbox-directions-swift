@@ -5,6 +5,7 @@
 * MapboxDirections now requires [Turf v2.4](https://github.com/mapbox/turf-swift/releases/tag/v2.4.0). ([#703](https://github.com/mapbox/mapbox-directions-swift/pull/703))
 * Added the `RouteOptions.maximumWeight` property to compute routes that excludes roads with a lower weight limit. ([#694](https://github.com/mapbox/mapbox-directions-swift/pull/694))
 * Added `Route.refreshLegIncidents(from:)` method to allow refreshing `RouteLeg.incidents` during a route refresh. ([#704](https://github.com/mapbox/mapbox-directions-swift/pull/704))
+* Added the `Intersection.railroadCrossing`, `Intersection.trafficSignal`, `Intersection.stopSign` and `Intersection.yieldSign` properties to indicate the kind of traffic control devices at an intersection along the route. ([#706](https://github.com/mapbox/mapbox-directions-swift/pull/706))
 
 ## v2.5.0
 

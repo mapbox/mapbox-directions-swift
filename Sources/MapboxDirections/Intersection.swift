@@ -25,7 +25,11 @@ public struct Intersection: ForeignMemberContainer {
                 restStop: RestStop? = nil,
                 isUrban: Bool? = nil,
                 regionCode: String? = nil,
-                outletMapboxStreetsRoadClass: MapboxStreetsRoadClass? = nil) {
+                outletMapboxStreetsRoadClass: MapboxStreetsRoadClass? = nil,
+                railroadCrossing: Bool? = nil,
+                trafficSignal: Bool? = nil,
+                stopSign: Bool? = nil,
+                yieldSign: Bool? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -42,6 +46,10 @@ public struct Intersection: ForeignMemberContainer {
         self.restStop = restStop
         self.regionCode = regionCode
         self.outletMapboxStreetsRoadClass = outletMapboxStreetsRoadClass
+        self.railroadCrossing = railroadCrossing
+        self.trafficSignal = trafficSignal
+        self.stopSign = stopSign
+        self.yieldSign = yieldSign
     }
     
     // MARK: Getting the Location of the Intersection
@@ -169,6 +177,34 @@ public struct Intersection: ForeignMemberContainer {
      If no lane information is available for the intersection, this property’s value is `nil`
      */
     public let usableLaneIndication: ManeuverDirection?
+    
+    /**
+     Indicates whether there is a railroad crossing at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
+    public let railroadCrossing: Bool?
+    
+    /**
+     Indicates whether there is a traffic signal at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
+    public let trafficSignal: Bool?
+    
+    /**
+     Indicates whether there is a stop sign at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
+    public let stopSign: Bool?
+    
+    /**
+     Indicates whether there is a yield sign at the intersection.
+     
+     If such information is not available for an intersection, this property’s value is `nil`.
+     */
+    public let yieldSign: Bool?
 }
 
 extension Intersection: Codable {
@@ -187,6 +223,10 @@ extension Intersection: Codable {
         case restStop = "rest_stop"
         case administrativeRegionIndex = "admin_index"
         case geometryIndex = "geometry_index"
+        case railroadCrossing = "railway_crossing"
+        case trafficSignal = "traffic_signal"
+        case stopSign = "stop_sign"
+        case yieldSign = "yield_sign"
     }
     
     /// Used to code `Intersection.outletMapboxStreetsRoadClass`
@@ -328,6 +368,22 @@ extension Intersection: Codable {
             try container.encode(geoIndex, forKey: .geometryIndex)
         }
         
+        if let railwayCrossing = railroadCrossing {
+            try container.encode(railwayCrossing, forKey: .railroadCrossing)
+        }
+        
+        if let trafficSignal = trafficSignal {
+            try container.encode(trafficSignal, forKey: .trafficSignal)
+        }
+        
+        if let stopSign = stopSign {
+            try container.encode(stopSign, forKey: .stopSign)
+        }
+        
+        if let yieldSign = yieldSign {
+            try container.encode(yieldSign, forKey: .yieldSign)
+        }
+        
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
@@ -372,6 +428,11 @@ extension Intersection: Codable {
 
         restStop = try container.decodeIfPresent(RestStop.self, forKey: .restStop)
         
+        railroadCrossing = try container.decodeIfPresent(Bool.self, forKey: .railroadCrossing)
+        trafficSignal = try container.decodeIfPresent(Bool.self, forKey: .trafficSignal)
+        stopSign = try container.decodeIfPresent(Bool.self, forKey: .stopSign)
+        yieldSign = try container.decodeIfPresent(Bool.self, forKey: .yieldSign)
+        
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
 }
@@ -393,6 +454,10 @@ extension Intersection: Equatable {
             lhs.outletRoadClasses == rhs.outletRoadClasses &&
             lhs.tollCollection == rhs.tollCollection &&
             lhs.tunnelName == rhs.tunnelName &&
-            lhs.isUrban == rhs.isUrban
+            lhs.isUrban == rhs.isUrban &&
+            lhs.railroadCrossing == rhs.railroadCrossing &&
+            lhs.trafficSignal == rhs.trafficSignal &&
+            lhs.stopSign == rhs.stopSign &&
+            lhs.yieldSign == rhs.yieldSign
     }
 }
