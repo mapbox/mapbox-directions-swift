@@ -1056,8 +1056,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA1A10C41D00F8FF009F82FA /* Build configuration list for PBXNativeTarget "MapboxDirectionsMac" */;
 			buildPhases = (
-				DA1A10AA1D00F8FF009F82FA /* Sources */,
 				DA1A10AC1D00F8FF009F82FA /* Headers */,
+				DA1A10AA1D00F8FF009F82FA /* Sources */,
 				DA1A10AD1D00F8FF009F82FA /* Resources */,
 				653A4672B83CA07822A37632 /* Frameworks */,
 			);
@@ -1092,8 +1092,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA1A10EA1D0101ED009F82FA /* Build configuration list for PBXNativeTarget "MapboxDirectionsTV" */;
 			buildPhases = (
-				DA1A10D01D0101ED009F82FA /* Sources */,
 				DA1A10D21D0101ED009F82FA /* Headers */,
+				DA1A10D01D0101ED009F82FA /* Sources */,
 				DA1A10D31D0101ED009F82FA /* Resources */,
 				84AE54CA0DD2836DC232F06B /* Frameworks */,
 			);
@@ -1128,8 +1128,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA1A11001D010361009F82FA /* Build configuration list for PBXNativeTarget "MapboxDirectionsWatch" */;
 			buildPhases = (
-				DA1A10F61D010361009F82FA /* Sources */,
 				DA1A10F81D010361009F82FA /* Headers */,
+				DA1A10F61D010361009F82FA /* Sources */,
 				DA1A10F91D010361009F82FA /* Resources */,
 				E05B24A0DFB05E8378736C51 /* Frameworks */,
 			);
@@ -1146,8 +1146,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA6C9DA01CAE442B00094FBC /* Build configuration list for PBXNativeTarget "MapboxDirections" */;
 			buildPhases = (
-				DA6C9D831CAE442B00094FBC /* Sources */,
 				DA6C9D851CAE442B00094FBC /* Headers */,
+				DA6C9D831CAE442B00094FBC /* Sources */,
 				DA6C9D861CAE442B00094FBC /* Resources */,
 				7AC435C54F754F3C6A047D02 /* Frameworks */,
 			);
