@@ -1206,7 +1206,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = Mapbox;
 				TargetAttributes = {
 					2BA9896F253F007600B643F6 = {
