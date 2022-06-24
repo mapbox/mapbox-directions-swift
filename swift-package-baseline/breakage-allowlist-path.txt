@@ -1,2 +1,1 @@
-API breakage: var RouteLegRefreshSource.refreshedIncidents has been added as a protocol requirement
-API breakage: constructor Intersection.init(location:headings:approachIndex:outletIndex:outletIndexes:approachLanes:usableApproachLanes:preferredApproachLanes:usableLaneIndication:outletRoadClasses:tollCollection:tunnelName:restStop:isUrban:regionCode:outletMapboxStreetsRoadClass:) has been removed
+
