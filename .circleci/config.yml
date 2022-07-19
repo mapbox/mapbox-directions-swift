@@ -80,11 +80,10 @@ jobs:
             fi
   spm-linux-job:
     docker:
-      - image: swift:5.4
+      - image: swift:5.6
     steps:
       - checkout
-      # Limiting number of parallel jobs to avoid build crash bug.
-      - run: swift build --jobs=1
+      - run: swift build
       - run: swift test
 
   spm-job:
@@ -120,7 +119,7 @@ jobs:
             carthage bootstrap --platform all --use-netrc --use-xcframeworks
   example-app-build:
     macos:
-      xcode: "12.4.0"
+      xcode: "13.4.1"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -131,25 +130,26 @@ jobs:
       - carthage-bootstrap
       - run:
           name: "Build example app"
-          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=14.4,name=iPhone 12 Pro Max' clean build
+          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13 Pro Max' clean build
       - save-cache
 
   build-job:
     parameters:
       xcode:
         type: string
+        default: "13.4.1"
       device:
         type: string
-        default: "iPhone 8 Plus"
+        default: "iPhone 13"
       iOS:
         type: string
-        default: "12.1"
+        default: "15.5"
       watchOS:
         type: string
-        default: "5.0"
+        default: "8.5"
       tvOS:
         type: string
-        default: "12.0"
+        default: "15.4"
       test:
         type: boolean
         default: true
@@ -198,23 +198,19 @@ workflows:
       - detect-breaking-changes:
           name: "Detect Breaking Changes"
       - build-job:
-          name: "Dev Build: Xcode 12.0"
-          xcode: "12.0.0"
-          iOS: "14.0"
-          tvOS: "14.0"
-          watchOS: "7.0"
+          name: "Dev Build: Xcode 13.4.1"
       - carthage-integration-test:
-          name: "Carthage Integration Test 12.0"
-          xcode: "12.0.0"
+          name: "Carthage Integration Test 12.5.1"
+          xcode: "12.5.1"
       - carthage-integration-test:
-          name: "Carthage Integration Test 12.4"
-          xcode: "12.4.0"
+          name: "Carthage Integration Test 13.4.1"
+          xcode: "13.4.1"
       - spm-job:
-          name: "SPM build 12.0.0"
-          xcode: "12.0.0"
+          name: "SPM build 12.5.1"
+          xcode: "12.5.1"
       - spm-job:
-          name: "SPM build 12.4.0"
-          xcode: "12.4.0"
+          name: "SPM build 13.4.1"
+          xcode: "13.4.1"
       - spm-linux-job:
           name: "SPM Ubuntu build"
       - example-app-build:
