@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		2B01E4B92746ABBC0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B01E4BA2746ABBD0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
-		2B39DD40270F034700ED68E4 /* CodingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39DD3F270F034700ED68E4 /* CodingOperation.swift */; };
-		2B4383022549C22700A3E38B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383002549C22700A3E38B /* main.swift */; };
 		2B28E22327EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22427EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22527EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
@@ -491,8 +489,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2B39DD3F270F034700ED68E4 /* CodingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodingOperation.swift; path = Sources/MapboxDirectionsCLI/CodingOperation.swift; sourceTree = "<group>"; };
-		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
 		2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignMemberContainerTests.swift; sourceTree = "<group>"; };
 		2B39DD3F270F034700ED68E4 /* CodingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodingOperation.swift; path = Sources/MapboxDirectionsCLI/CodingOperation.swift; sourceTree = "<group>"; };
 		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
@@ -1146,8 +1142,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA6C9DA01CAE442B00094FBC /* Build configuration list for PBXNativeTarget "MapboxDirections" */;
 			buildPhases = (
-				DA6C9D831CAE442B00094FBC /* Sources */,
 				DA6C9D851CAE442B00094FBC /* Headers */,
+				DA6C9D831CAE442B00094FBC /* Sources */,
 				DA6C9D861CAE442B00094FBC /* Resources */,
 				7AC435C54F754F3C6A047D02 /* Frameworks */,
 			);
