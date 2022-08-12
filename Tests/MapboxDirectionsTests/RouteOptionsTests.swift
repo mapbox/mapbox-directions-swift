@@ -137,6 +137,7 @@ class RouteOptionsTests: XCTestCase {
                 $0.element.targetCoordinate = $0.element.coordinate
             }
             $0.element.allowsSnappingToClosedRoad = $0.offset == 1
+            $0.element.allowsSnappingToStaticallyClosedRoad = $0.offset == 1
         }
         
         let url = Directions(credentials: BogusCredentials).url(forCalculating: originalOptions)
@@ -157,6 +158,7 @@ class RouteOptionsTests: XCTestCase {
         
         zip(decodedWaypoints, originalOptions.waypoints).forEach {
             XCTAssertEqual($0.0.allowsSnappingToClosedRoad, $0.1.allowsSnappingToClosedRoad)
+            XCTAssertEqual($0.0.allowsSnappingToStaticallyClosedRoad, $0.1.allowsSnappingToStaticallyClosedRoad)
             XCTAssertEqual($0.0.allowsArrivingOnOppositeSide, $0.1.allowsArrivingOnOppositeSide)
             XCTAssertEqual($0.0.targetCoordinate, $0.1.targetCoordinate)
             XCTAssertEqual($0.0.separatesLegs, $0.1.separatesLegs)

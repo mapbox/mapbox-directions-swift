@@ -161,6 +161,13 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
      If `true`, the waypoint may be snapped to a road segment that is closed due to a live traffic closure. This property is `false` by default. This property corresponds to the [`snapping_include_closures`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile) query parameter in the Mapbox Directions API.
      */
     public var allowsSnappingToClosedRoad: Bool = false
+
+    /**
+     A Boolean value indicating whether the waypoint may be snapped to a statically (long-term) closed road in the resulting `RouteResponse`.
+
+     If `true`, the waypoint may be snapped to a road segment statically closed, that is long-term (for example, road under construction). This property is `false` by default. This property corresponds to the [`snapping_include_static_closures`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters-for-the-mapboxdriving-traffic-profile) query parameter in the Mapbox Directions API.
+     */
+    public var allowsSnappingToStaticallyClosedRoad: Bool = false
     
     /**
      The straight-line distance from the coordinate specified in the query to the location it was snapped to in the resulting `RouteResponse`.
