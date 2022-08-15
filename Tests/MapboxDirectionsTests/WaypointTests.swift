@@ -158,13 +158,30 @@ class WaypointTests: XCTestCase {
         let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
-        
+
         let routeOptions = RouteOptions(waypoints: [from, through, to])
         let matchOptions = MatchOptions(waypoints: [from, through, to], profileIdentifier: nil)
-        
+
         through.allowsSnappingToClosedRoad = true
-        
+        through.allowsSnappingToStaticallyClosedRoad = true
+
         XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
+        XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_static_closures" }?.value, ";true;")
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_static_closures" }?.value, ";true;")
+    }
+
+    func testClosedRoadSnappingNotSet() {
+        let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+
+        let routeOptions = RouteOptions(waypoints: [from, through, to])
+        let matchOptions = MatchOptions(waypoints: [from, through, to], profileIdentifier: nil)
+
+        XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, nil)
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, nil)
+        XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_static_closures" }?.value, nil)
+        XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_static_closures" }?.value, nil)
     }
 }

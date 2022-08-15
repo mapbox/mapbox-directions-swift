@@ -182,7 +182,8 @@ open class DirectionsOptions: Codable {
                              mappedQueryItems["bearings"]?.components(separatedBy: ";"),
                              mappedQueryItems["radiuses"]?.components(separatedBy: ";"),
                              mappedQueryItems["waypoint_names"]?.components(separatedBy: ";"),
-                             mappedQueryItems["snapping_include_closures"]?.components(separatedBy: ";")
+                             mappedQueryItems["snapping_include_closures"]?.components(separatedBy: ";"),
+                             mappedQueryItems["snapping_include_static_closures"]?.components(separatedBy: ";")
         ] as [[String]?]
         
         let getElement: ((_ array: [String]?, _ index: Int) -> String?) = { array, index in
@@ -208,6 +209,10 @@ open class DirectionsOptions: Codable {
             
             if let snaps = getElement(waypointsData[4], $0.offset) {
                 $0.element.allowsSnappingToClosedRoad = snaps == "true"
+            }
+
+            if let snapsToStaticallyClosed = getElement(waypointsData[5], $0.offset) {
+                $0.element.allowsSnappingToStaticallyClosedRoad = snapsToStaticallyClosed == "true"
             }
         }
         
@@ -497,6 +502,10 @@ open class DirectionsOptions: Codable {
         if let snapping = self.closureSnapping {
             queryItems.append(URLQueryItem(name: "snapping_include_closures", value: snapping))
         }
+
+        if let staticClosureSnapping = self.staticClosureSnapping {
+            queryItems.append(URLQueryItem(name: "snapping_include_static_closures", value: staticClosureSnapping))
+        }
         
         return queryItems
     }
@@ -560,10 +569,16 @@ open class DirectionsOptions: Codable {
     }
     
     internal var closureSnapping: String? {
-        guard waypoints.contains(where: \.allowsSnappingToClosedRoad) else {
-            return nil
-        }
-        return waypoints.map { $0.allowsSnappingToClosedRoad ? "true": ""}.joined(separator: ";")
+        makeStringFromBoolProperties(of: waypoints, for: \.allowsSnappingToClosedRoad)
+    }
+
+    internal var staticClosureSnapping: String? {
+        makeStringFromBoolProperties(of: waypoints, for: \.allowsSnappingToStaticallyClosedRoad)
+    }
+
+    private func makeStringFromBoolProperties<T>(of elements: [T], for keyPath: KeyPath<T, Bool>) -> String? {
+        guard elements.contains(where: { $0[keyPath: keyPath] }) else { return nil }
+        return elements.map { $0[keyPath: keyPath] ? "true" : "" }.joined(separator: ";")
     }
 
     internal var httpBody: String {
