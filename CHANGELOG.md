@@ -1,6 +1,6 @@
 # Changes to Mapbox Directions for Swift
 
-## main
+## 2.7.0
 
 * Added `Waypoint.allowsSnappingToStaticallyClosedRoad` property to allow snapping the waypoint’s location to a statically (long-term) closed part of a road. ([#721](https://github.com/mapbox/mapbox-directions-swift/pull/721))
 
