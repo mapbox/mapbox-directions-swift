@@ -47,7 +47,7 @@ This repository contains an example application that demonstrates how to use the
 * One of the following package managers:
    * CocoaPods 1.10 or above
    * Carthage 0.38 or above
-   * Swift Package Manager 5.3 or above
+   * Swift Package Manager 5.5 or above
 * Xcode 13 or above
 * One of the following operating systems:
    * iOS 10.0 or above

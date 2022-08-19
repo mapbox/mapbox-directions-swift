@@ -200,17 +200,17 @@ workflows:
       - build-job:
           name: "Dev Build: Xcode 13.4.1"
       - carthage-integration-test:
-          name: "Carthage Integration Test 12.5.1"
-          xcode: "12.5.1"
+          name: "Carthage Integration Test 13.0.0"
+          xcode: "13.0.0"
       - carthage-integration-test:
-          name: "Carthage Integration Test 13.4.1"
-          xcode: "13.4.1"
+          name: "Carthage Integration Test 14.0.0"
+          xcode: "14.0.0"
       - spm-job:
-          name: "SPM build 12.5.1"
-          xcode: "12.5.1"
+          name: "SPM build 13.0.0"
+          xcode: "13.0.0"
       - spm-job:
-          name: "SPM build 13.4.1"
-          xcode: "13.4.1"
+          name: "SPM build 14.0.0"
+          xcode: "14.0.0"
       - spm-linux-job:
           name: "SPM Ubuntu build"
       - example-app-build:

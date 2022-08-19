@@ -2,7 +2,7 @@
 
 ## 2.7.0
 
-* Xcode 13.0 or above is now required to build MapboxDirections from source. ([#725](https://github.com/mapbox/mapbox-directions-swift/pull/725))
+* Xcode 13.0 or above and Swift 5.5 or above are now required to build MapboxDirections from source. ([#725](https://github.com/mapbox/mapbox-directions-swift/pull/725), [#727](https://github.com/mapbox/mapbox-directions-swift/pull/727))
 * Added `Waypoint.allowsSnappingToStaticallyClosedRoad` property to allow snapping the waypoint’s location to a statically (long-term) closed part of a road. ([#721](https://github.com/mapbox/mapbox-directions-swift/pull/721))
 
 ## v2.6.0
