@@ -27,6 +27,16 @@ struct ProcessingOptions: ParsableArguments {
 }
 
 struct Command: ParsableCommand {
+    static var accessToken: String {
+        get throws {
+            guard let accessToken = ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
+                    UserDefaults.standard.string(forKey: "MBXAccessToken") else {
+                throw ValidationError("A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>, then set the MAPBOX_ACCESS_TOKEN environment variable to your access token.")
+            }
+            return accessToken
+        }
+    }
+    
     static var configuration = CommandConfiguration(
         commandName: "mapbox-directions-swift",
         abstract: "'mapbox-directions-swift' is a command line tool, designed to round-trip an arbitrary, JSON-formatted Directions or Map Matching API response through model objects and back to JSON.",
@@ -54,7 +64,8 @@ extension Command {
         }
         
         mutating func run() throws {
-            try CodingOperation<MapMatchingResponse, MatchOptions>(options: options).execute()
+            let credentials = Credentials(accessToken: try accessToken)
+            try CodingOperation<MapMatchingResponse, MatchOptions>(options: options, credentials: credentials).execute()
         }
     }
 }
@@ -72,7 +83,8 @@ extension Command {
         }
         
         mutating func run() throws {
-            try CodingOperation<RouteResponse, RouteOptions>(options: options).execute()
+            let credentials = Credentials(accessToken: try accessToken)
+            try CodingOperation<RouteResponse, RouteOptions>(options: options, credentials: credentials).execute()
         }
     }
 }
