@@ -24,7 +24,7 @@ To contribute code changes to this project, use either Carthage or Swift Package
 
 ### Using Carthage
 
-1. Install Xcode 12 and [Carthage](https://github.com/Carthage/Carthage/) v0.38 or above.
+1. Install Xcode 13 and [Carthage](https://github.com/Carthage/Carthage/) v0.38 or above.
 1. Run `carthage bootstrap --platform all --use-xcframeworks`.
 1. Once the Carthage build finishes, open MapboxDirections.xcodeproj in Xcode and build the MapboxDirections Mac scheme.
 
