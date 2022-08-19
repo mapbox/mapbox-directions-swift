@@ -118,13 +118,17 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return interpolatedCoordinates
     }
     
-    private func requestResponse(_ directionsOptions: OptionsType) -> (Data) {
+    private func response(fetching directionsOptions: OptionsType) -> (Data) {
+        let directions = Directions(credentials: credentials)
+        let url = directions.url(forCalculating: directionsOptions)
+        return response(fetching: url)
+    }
+    
+    private func response(fetching url: URL) -> Data {
         let semaphore = DispatchSemaphore(value: 0)
         
         var responseData: Data!
         
-        let directions = Directions(credentials: credentials)
-        let url = directions.url(forCalculating: directionsOptions)
         let urlSession = URLSession(configuration: .ephemeral)
 
         let task = urlSession.dataTask(with: url) { (data, response, error) in
@@ -151,20 +155,43 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
     
     func execute() throws {
         
-        let config = FileManager.default.contents(atPath: NSString(string: options.configPath).expandingTildeInPath)!
+        let directions: Directions
+        let directionsOptions: OptionsType
+        let requestURL: URL
+        if FileManager.default.fileExists(atPath: (options.config as NSString).expandingTildeInPath) {
+            // Assume the file is a configuration JSON file. Convert it to an options object.
+            let configData = FileManager.default.contents(atPath: (options.config as NSString).expandingTildeInPath)!
+            let decoder = JSONDecoder()
+            directions = Directions(credentials: credentials)
+            directionsOptions = try decoder.decode(OptionsType.self, from: configData)
+        } else if let url = URL(string: options.config) {
+            // Try to convert the URL to an options object.
+            if let parsedOptions = (RouteOptions(url: url) ?? MatchOptions(url: url)) as? OptionsType {
+                directionsOptions = parsedOptions
+            } else {
+                fatalError("Configuration is not a valid Mapbox Directions API or Mapbox Map Matching API request URL.")
+            }
+            
+            // Get credentials from the request URL but fall back to the environment.
+            var urlWithAccessToken = URLComponents(string: url.absoluteString)!
+            urlWithAccessToken.queryItems = (urlWithAccessToken.queryItems ?? []) + [.init(name: "access_token", value: self.credentials.accessToken)]
+            let credentials = Credentials(requestURL: urlWithAccessToken.url!)
+            
+            directions = Directions(credentials: credentials)
+        } else {
+            fatalError("Configuration is not a valid JSON configuration file or request URL.")
+        }
+        
         let input: Data
-        
-        let decoder = JSONDecoder()
-        
-        let directionsOptions = try decoder.decode(OptionsType.self, from: config)
-        
         if let inputPath = options.inputPath {
             input = FileManager.default.contents(atPath: NSString(string: inputPath).expandingTildeInPath)!
         } else {
-            let response = requestResponse(directionsOptions)
+            requestURL = directions.url(forCalculating: directionsOptions)
+            let response = response(fetching: requestURL)
             input = response
         }
         
+        let decoder = JSONDecoder()
         decoder.userInfo = [.options: directionsOptions,
                             .credentials: credentials]
         

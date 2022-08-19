@@ -23,12 +23,16 @@ To connect to an API endpoint other than the default Mapbox API endpoint, set th
 
 `mapbox-directions-swift` is a useful tool for mobile quality assurance. This tool can be used to verify a response to ensure proper Directions API integration, get a [GPX](https://wikipedia.org/wiki/GPS_Exchange_Format) trace that can be used in the Xcode Simulator, and convert a Directions API request to an Options object.
 
+### Arguments
+
+The sole argument is either:
+
+* The path to a JSON file that contains a serialized `RouteOptions` or `MatchOptions`
+* The URL of a Mapbox Directions API or Mapbox Map Matching API request
+
 ### Options
 `--input`
-An optional flag for the filepath to the input JSON. If this flag is not used, `mapbox-directions-swift` will fallback to a Directions API request. To request using specific coordinates, specify coordinates using `--waypoints` or a Directions API request using `--url`.
-
-`--config`
-An optional flag for the filepath to the JSON, containing serialized Options data.
+An optional flag for the filepath to the input JSON. If this flag is not used, `mapbox-directions-swift` will fallback to a Directions API request.
 
 `--output`
 An optional flag for the filepath to save the conversion result. If no filepath is provided, the result will output to the shell. If you want a GPX trace that can be easily uploaded to Xcode, provide an output filepath with this flag.

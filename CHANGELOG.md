@@ -2,11 +2,20 @@
 
 ## 2.7.0
 
+### Packaging
+
 * Xcode 13.0 or above and Swift 5.5 or above are now required to build MapboxDirections from source. ([#725](https://github.com/mapbox/mapbox-directions-swift/pull/725), [#727](https://github.com/mapbox/mapbox-directions-swift/pull/727))
+
+### Command line tool
+
+* Removed the `--config` option. Instead, pass in either the path to a JSON configuration file or the full URL to a Mapbox Directions API or Mapbox Map Matching API request. ([#726](https://github.com/mapbox/mapbox-directions-swift/pull/726)) 
+* When the `MAPBOX_ACCESS_TOKEN` environment variable is unset, the tool exits with an error code instead of crashing. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
+* The tool now connects to the API endpoint in the `MAPBOX_HOST` environment variable, if specified. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
+
+### Other changes
+
 * Added `Waypoint.allowsSnappingToStaticallyClosedRoad` property to allow snapping the waypoint’s location to a statically (long-term) closed part of a road. ([#721](https://github.com/mapbox/mapbox-directions-swift/pull/721))
 * `RouteOptions(url:)` now returns `nil` if given a Mapbox Map Matching API request URL, and `MatchOptions(url:)` returns `nil` if given a Mapbox Directions API request URL. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
-* When the `MAPBOX_ACCESS_TOKEN` environment variable is unset, the `mapbox-directions-swift` command line tool exits with an error code instead of crashing. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
-* The `mapbox-directions-swift` command line tool now connects to the API endpoint in the `MAPBOX_HOST` environment variable, if specified. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
 
 ## v2.6.0
 

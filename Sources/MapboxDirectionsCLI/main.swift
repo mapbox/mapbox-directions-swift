@@ -4,14 +4,13 @@ import Foundation
 import MapboxDirections
 import ArgumentParser
 
-
 struct ProcessingOptions: ParsableArguments {
     
     @Option(name: [.short, .customLong("input")], help: "[Optional] Filepath to the input JSON. If no filepath provided - will fall back to Directions API request using locations in config file.")
     var inputPath: String?
     
-    @Option(name: [.short, .customLong("config")], help: "Filepath to the JSON, containing serialized Options data.")
-    var configPath: String
+    @Argument(help: "Path to a JSON file containing serialized RouteOptions or MatchOptions properties, or the full URL of a Mapbox Directions API or Mapbox Map Matching API request.")
+    var config: String
     
     @Option(name: [.short, .customLong("output")], help: "[Optional] Output filepath to save the conversion result. If no filepath provided - will output to the shell.")
     var outputPath: String?
@@ -53,9 +52,8 @@ struct Command: ParsableCommand {
     )
     
     fileprivate static func validateInput(_ options: ProcessingOptions) throws {
-        
-        guard FileManager.default.fileExists(atPath: options.configPath) else {
-            throw ValidationError("Options JSON file `\(options.configPath)` does not exist.")
+        if !FileManager.default.fileExists(atPath: (options.config as NSString).expandingTildeInPath) && URL(string: options.config) == nil {
+            throw ValidationError("Configuration is a nonexistent file or invalid request URL: \(options.config)")
         }
     }
 }
