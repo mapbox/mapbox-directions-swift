@@ -5,12 +5,6 @@ import Turf
 import FoundationNetworking
 #endif
 
-let accessToken: String? =
-    ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
-    UserDefaults.standard.string(forKey: "MBXAccessToken")
-let credentials = Credentials(accessToken: accessToken!)
-private let directions = Directions(credentials: credentials)
-
 protocol DirectionsResultsProvider {
     var directionsResults: [DirectionsResult]? { get }
 }
@@ -28,6 +22,7 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
     // MARK: - Parameters
     
     let options: ProcessingOptions
+    let credentials: Credentials
     
     // MARK: - Helper methods
     
@@ -128,6 +123,7 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         
         var responseData: Data!
         
+        let directions = Directions(credentials: credentials)
         let url = directions.url(forCalculating: directionsOptions)
         let urlSession = URLSession(configuration: .ephemeral)
 
@@ -146,8 +142,9 @@ class CodingOperation<ResponseType : Codable & DirectionsResultsProvider, Option
         return (responseData)
     }
     
-    init(options: ProcessingOptions) {
+    init(options: ProcessingOptions, credentials: Credentials) {
         self.options = options
+        self.credentials = credentials
     }
     
     // MARK: - Command implementation
