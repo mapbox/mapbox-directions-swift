@@ -27,13 +27,22 @@ struct ProcessingOptions: ParsableArguments {
 }
 
 struct Command: ParsableCommand {
-    static var accessToken: String {
+    static var credentials: Credentials {
         get throws {
             guard let accessToken = ProcessInfo.processInfo.environment["MAPBOX_ACCESS_TOKEN"] ??
                     UserDefaults.standard.string(forKey: "MBXAccessToken") else {
                 throw ValidationError("A Mapbox access token is required. Go to <https://account.mapbox.com/access-tokens/>, then set the MAPBOX_ACCESS_TOKEN environment variable to your access token.")
             }
-            return accessToken
+            
+            let hostURL: URL?
+            if let host = ProcessInfo.processInfo.environment["MAPBOX_HOST"] ??
+                UserDefaults.standard.string(forKey: "MGLMapboxAPIBaseURL") {
+                hostURL = URL(string: host)
+            } else {
+                hostURL = nil
+            }
+            
+            return Credentials(accessToken: accessToken, host: hostURL)
         }
     }
     
@@ -64,8 +73,7 @@ extension Command {
         }
         
         mutating func run() throws {
-            let credentials = Credentials(accessToken: try accessToken)
-            try CodingOperation<MapMatchingResponse, MatchOptions>(options: options, credentials: credentials).execute()
+            try CodingOperation<MapMatchingResponse, MatchOptions>(options: options, credentials: try credentials).execute()
         }
     }
 }
@@ -83,8 +91,7 @@ extension Command {
         }
         
         mutating func run() throws {
-            let credentials = Credentials(accessToken: try accessToken)
-            try CodingOperation<RouteResponse, RouteOptions>(options: options, credentials: credentials).execute()
+            try CodingOperation<RouteResponse, RouteOptions>(options: options, credentials: try credentials).execute()
         }
     }
 }
