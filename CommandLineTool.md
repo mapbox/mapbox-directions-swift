@@ -13,6 +13,10 @@ To run (and build if it wasn't yet) `MapboxDirectionsCLI` and see usage:
 
 To run the `MapboxDirectionsCLI` within Xcode, select the `MapboxDirectionsCLI` target and edit the scheme to include arguments passed at launch.
 
+## Configuration
+
+A [Mapbox access token](https://account.mapbox.com/access-tokens/) is required for some operations. Set the `MAPBOX_ACCESS_TOKEN` environment variable to your access token.
+
 ## Usage and Recipes
 
 `mapbox-directions-swift` is a useful tool for mobile quality assurance. This tool can be used to verify a response to ensure proper Directions API integration, get a [GPX](https://wikipedia.org/wiki/GPS_Exchange_Format) trace that can be used in the Xcode Simulator, and convert a Directions API request to an Options object.
