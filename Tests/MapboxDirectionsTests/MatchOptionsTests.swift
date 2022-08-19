@@ -26,7 +26,7 @@ class MatchOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.resamplesTraces, options.resamplesTraces)
     }
     
-    func testURLCoding() {
+    func testURLCoding() throws {
         
         let originalOptions = testMatchOptions
         originalOptions.resamplesTraces = true
@@ -62,6 +62,10 @@ class MatchOptionsTests: XCTestCase {
         
         XCTAssertEqual(decodedOptions.profileIdentifier, originalOptions.profileIdentifier)
         XCTAssertEqual(decodedOptions.resamplesTraces, originalOptions.resamplesTraces)
+        
+        let matchURL = try XCTUnwrap(URL(string: "https://api.mapbox.com/matching/v5/mapbox/driving/-121.913565,37.331832;-121.916282,37.328707.json"))
+        XCTAssertNotNil(MatchOptions(url: matchURL))
+        XCTAssertNil(RouteOptions(url: matchURL))
     }
     
     // MARK: API name-handling tests

@@ -258,6 +258,11 @@ open class DirectionsOptions: Codable {
         self.init(waypoints: waypoints,
                   profileIdentifier: profileIdentifier,
                   queryItems: URLComponents(url: url, resolvingAgainstBaseURL: true)?.queryItems)
+        
+        // Distinguish between Directions API and Map Matching API URLs.
+        guard url.pathComponents.dropLast().joined(separator: "/").hasSuffix(abridgedPath) else {
+            return nil
+        }
     }
     
     

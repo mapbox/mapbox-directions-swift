@@ -119,7 +119,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
     }
     
-    func testURLCoding() {
+    func testURLCoding() throws {
         
         let originalOptions = testRouteOptions
         originalOptions.includesAlternativeRoutes = true
@@ -191,6 +191,10 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertNil(decodedOptions.arriveBy)
         // URL encoding skips seconds, so we check that dates are within 1 minute delta
         XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)
+        
+        let routeURL = try XCTUnwrap(URL(string: "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-121.913565,37.331832;-121.916282,37.328707.json"))
+        XCTAssertNotNil(RouteOptions(url: routeURL))
+        XCTAssertNil(MatchOptions(url: routeURL))
     }
     
     // MARK: API name-handling tests
