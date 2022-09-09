@@ -439,8 +439,28 @@ open class Directions: NSObject {
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting skeleton routes, cancel this task.
      */
     @discardableResult open func refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int = 0, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+        _refreshRoute(responseIdentifier: responseIdentifier,
+                      routeIndex: routeIndex,
+                      fromLegAtIndex: startLegIndex,
+                      currentRouteShapeIndex: nil,
+                      completionHandler: completionHandler)
+    }
 
-        let request = urlRequest(forRefreshing: responseIdentifier, routeIndex: routeIndex, fromLegAtIndex: startLegIndex)
+    @discardableResult open func refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int = 0, currentRouteShapeIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+        _refreshRoute(responseIdentifier: responseIdentifier,
+                      routeIndex: routeIndex,
+                      fromLegAtIndex: startLegIndex,
+                      currentRouteShapeIndex: currentRouteShapeIndex,
+                      completionHandler: completionHandler)
+    }
+
+    private func _refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int, currentRouteShapeIndex: Int?, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
+        let request: URLRequest
+        if let currentRouteShapeIndex = currentRouteShapeIndex {
+            request = urlRequest(forRefreshing: responseIdentifier, routeIndex: routeIndex, fromLegAtIndex: startLegIndex, currentRouteShapeIndex: currentRouteShapeIndex)
+        } else {
+            request = urlRequest(forRefreshing: responseIdentifier, routeIndex: routeIndex, fromLegAtIndex: startLegIndex)
+        }
         let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             if let urlError = possibleError as? URLError {
                 DispatchQueue.main.async {
@@ -509,20 +529,39 @@ open class Directions: NSObject {
     }
     
     open func urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int) -> URLRequest {
-        let params: [URLQueryItem] = authenticationParams
+        _urlRequest(forRefreshing: responseIdentifier,
+                    routeIndex: routeIndex,
+                    fromLegAtIndex: startLegIndex,
+                    currentRouteShapeIndex: nil)
+    }
+
+    open func urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int, currentRouteShapeIndex: Int) -> URLRequest {
+        _urlRequest(forRefreshing: responseIdentifier,
+                    routeIndex: routeIndex,
+                    fromLegAtIndex: startLegIndex,
+                    currentRouteShapeIndex: currentRouteShapeIndex)
+    }
+
+    private func _urlRequest(forRefreshing responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int, currentRouteShapeIndex: Int?) -> URLRequest {
+        var params: [URLQueryItem] = authenticationParams
+        if let currentRouteShapeIndex = currentRouteShapeIndex {
+            params.append(URLQueryItem(name: "current_route_geometry_index", value: String(currentRouteShapeIndex)))
+        }
 
         var unparameterizedURL = URL(string: "directions-refresh/v1/\(ProfileIdentifier.automobileAvoidingTraffic.rawValue)", relativeTo: credentials.host)!
         unparameterizedURL.appendPathComponent(responseIdentifier)
         unparameterizedURL.appendPathComponent(String(routeIndex))
         unparameterizedURL.appendPathComponent(String(startLegIndex))
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
+
         components.queryItems = params
-        
+
         let getURL = components.url!
         var request = URLRequest(url: getURL)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         return request
     }
+
     /**
      The GET HTTP URL used to fetch the routes from the API.
      
