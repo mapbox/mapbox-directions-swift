@@ -111,6 +111,14 @@ extension Route {
             leg.attributes = refreshedLeg.refreshedAttributes
         }
     }
+
+    public func refreshLegAttributes(from refreshedRoute: RouteRefreshSource, legIndex: Int, legShapeIndex: Int) {
+        guard legIndex + refreshedRoute.refreshedLegs.count <= legs.count else { return }
+        for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count].enumerated(), refreshedRoute.refreshedLegs) {
+            let startIndex = leg.offset == 0 ? legShapeIndex : 0
+            leg.element.refreshAttributes(newAttributes: refreshedLeg.refreshedAttributes, startLegShapeIndex: startIndex)
+        }
+    }
     
     /**
      Merges the incidents of the given route’s legs into the receiver’s legs.
@@ -119,6 +127,12 @@ extension Route {
      */
     public func refreshLegIncidents(from refreshedRoute: RouteRefreshSource) {
         for (leg, refreshedLeg) in zip(legs.suffix(refreshedRoute.refreshedLegs.count), refreshedRoute.refreshedLegs) {
+            leg.incidents = refreshedLeg.refreshedIncidents
+        }
+    }
+
+    public func refreshLegIncidents(from refreshedRoute: RouteRefreshSource, legIndex: Int, legShapeIndex: Int) {
+        for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count], refreshedRoute.refreshedLegs) {
             leg.incidents = refreshedLeg.refreshedIncidents
         }
     }

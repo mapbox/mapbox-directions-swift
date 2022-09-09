@@ -7,6 +7,7 @@ import Turf
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
+
 open class RouteLeg: Codable, ForeignMemberContainerClass {
     public var foreignMembers: JSONObject = [:]
     
@@ -275,6 +276,20 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
             segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
         }
     }
+
+    func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
+        guard startLegShapeIndex < steps.count else { return }
+
+        let refreshRange = PartialRangeFrom(startLegShapeIndex)
+
+        attributes = Attributes(foreignMembers: newAttributes.foreignMembers,
+                                segmentDistances: Array(newAttributes.segmentDistances?[refreshRange]),
+                                expectedSegmentTravelTimes: Array(newAttributes.expectedSegmentTravelTimes?[refreshRange]),
+                                segmentSpeeds: Array(newAttributes.segmentSpeeds?[refreshRange]),
+                                segmentCongestionLevels: Array(newAttributes.segmentCongestionLevels?[refreshRange]),
+                                segmentNumericCongestionLevels: Array(newAttributes.segmentNumericCongestionLevels?[refreshRange]),
+                                segmentMaximumSpeedLimits: Array(newAttributes.segmentMaximumSpeedLimits?[refreshRange]))
+    }
     
     /**
      Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
@@ -410,6 +425,16 @@ public extension Array where Element == RouteLeg {
         for (endpoints, leg) in legInfo {
             leg.source = endpoints.0
             leg.destination = endpoints.1
+        }
+    }
+}
+
+private extension Array {
+    init?(_ slice: Optional<SubSequence>) {
+        if let array = slice.map(Array.init) {
+            self = array
+        } else {
+            return nil
         }
     }
 }
