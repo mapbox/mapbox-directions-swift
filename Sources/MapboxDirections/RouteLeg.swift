@@ -278,17 +278,14 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     }
 
     func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
-        guard startLegShapeIndex < steps.count else { return }
-
         let refreshRange = PartialRangeFrom(startLegShapeIndex)
 
-        attributes = Attributes(foreignMembers: newAttributes.foreignMembers,
-                                segmentDistances: Array(newAttributes.segmentDistances?[refreshRange]),
-                                expectedSegmentTravelTimes: Array(newAttributes.expectedSegmentTravelTimes?[refreshRange]),
-                                segmentSpeeds: Array(newAttributes.segmentSpeeds?[refreshRange]),
-                                segmentCongestionLevels: Array(newAttributes.segmentCongestionLevels?[refreshRange]),
-                                segmentNumericCongestionLevels: Array(newAttributes.segmentNumericCongestionLevels?[refreshRange]),
-                                segmentMaximumSpeedLimits: Array(newAttributes.segmentMaximumSpeedLimits?[refreshRange]))
+        segmentDistances?.replace(subrange: refreshRange, with: newAttributes.segmentDistances)
+        expectedSegmentTravelTimes?.replace(subrange: refreshRange, with: newAttributes.expectedSegmentTravelTimes)
+        segmentSpeeds?.replace(subrange: refreshRange, with: newAttributes.segmentSpeeds)
+        segmentCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentCongestionLevels)
+        segmentNumericCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentNumericCongestionLevels)
+        segmentMaximumSpeedLimits?.replace(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
     }
     
     /**
@@ -430,11 +427,9 @@ public extension Array where Element == RouteLeg {
 }
 
 private extension Array {
-    init?(_ slice: Optional<SubSequence>) {
-        if let array = slice.map(Array.init) {
-            self = array
-        } else {
-            return nil
-        }
+    mutating func replace(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
+        guard let newElements = newElements else { return }
+        precondition(subrange.lowerBound < newElements.count)
+        replaceSubrange(subrange, with: newElements)
     }
 }
