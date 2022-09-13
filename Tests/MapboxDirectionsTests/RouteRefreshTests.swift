@@ -30,6 +30,14 @@ class RouteRefreshTests: XCTestCase {
                     return HTTPStubsResponse(fileAtPath: path!, statusCode: 422, headers: ["Content-Type": "application/json"])
                 }
         }
+        
+        stub(condition: isHost("api.mapbox.com")
+            && isMethodGET()
+            && containsQueryParams(["current_route_geometry_index": "9"])
+            && pathStartsWith("/directions-refresh/v1/mapbox/driving-traffic")) { _ in
+            let path = Bundle.module.path(forResource: "partialRouteRefreshResponse", ofType: "json")
+            return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        }
     }
 
     override func tearDown() {
@@ -138,6 +146,62 @@ class RouteRefreshTests: XCTestCase {
                 case let .failure(error):
                     XCTFail("Refresh failed with unexpected error: \(error).")
                 }
+            }
+        }
+        
+        wait(for: [routeUpdatedExpectation], timeout: 3)
+    }
+    
+    func testRouteIsRefreshedFromGeometryIndex() {
+        let routeUpdatedExpectation = expectation(description: "Route is not refreshed.")
+        let routeIndex = 0
+        let legIndex = 0
+        let geometryIndex = 9
+        
+        fetchStubbedRoute { routeResponse in
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!,
+                                                                   routeIndex: routeIndex,
+                                                                   fromLegAtIndex: legIndex,
+                                                                   currentRouteShapeIndex: geometryIndex) {
+                guard case let .success(refresh) = $1 else {
+                    XCTFail("Refresh failed with unexpected error.")
+                    return
+                }
+                
+                let route = routeResponse.routes?[routeIndex]
+                let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
+                let originalIncidents = route!.legs[0].incidents
+                
+                route?.refreshLegAttributes(from: refresh.route,
+                                            legIndex: legIndex,
+                                            legShapeIndex: geometryIndex)
+                route?.refreshLegIncidents(from: refresh.route,
+                                           legIndex: legIndex,
+                                           legShapeIndex: geometryIndex)
+                
+                let refreshCongestions = refresh.route.legs[0].attributes.segmentCongestionLevels!
+                let refreshedCongestions = route!.legs[0].attributes.segmentCongestionLevels!
+                let refreshIncidents = refresh.route.legs[0].incidents
+                let refreshedIncidents = route!.legs[0].incidents
+                
+                XCTAssertEqual(originalCongestions[PartialRangeUpTo(geometryIndex)],
+                               refreshedCongestions[PartialRangeUpTo(geometryIndex)],
+                               "Traversed portions of legs attributes should remain equal")
+                XCTAssertNotEqual(originalCongestions[PartialRangeFrom(geometryIndex)],
+                                  refreshedCongestions[PartialRangeFrom(geometryIndex)],
+                                  "Future portions of legs attributes should be refreshed")
+                XCTAssertEqual(refreshCongestions[PartialRangeFrom(0)],
+                               refreshedCongestions[PartialRangeFrom(geometryIndex)],
+                               "Route legs attributes are not refreshed")
+                
+                XCTAssertNotEqual(originalIncidents,
+                                  refreshedIncidents,
+                                  "Incidents should be refreshed")
+                XCTAssertEqual(refreshIncidents,
+                               refreshedIncidents,
+                               "Incidents are not refreshed")
+                
+                routeUpdatedExpectation.fulfill()
             }
         }
         

@@ -446,6 +446,20 @@ open class Directions: NSObject {
                       completionHandler: completionHandler)
     }
 
+    /**
+     Begins asynchronously refreshing the route with the given identifier, optionally starting from an arbitrary leg and point along the route.
+     
+     This method retrieves skeleton route data asynchronously from the Mapbox Directions Refresh API over a network connection. If a connection error or server error occurs, details about the error are passed into the given completion handler in lieu of the routes.
+     
+     - precondition: Set `RouteOptions.refreshingEnabled` to `true` when calculating the original route.
+     
+     - parameter responseIdentifier: The `RouteResponse.identifier` value of the `RouteResponse` that contains the route to refresh.
+     - parameter routeIndex: The index of the route to refresh in the original `RouteResponse.routes` array.
+     - parameter startLegIndex: The index of the leg in the route at which to begin refreshing. The response will omit any leg before this index and refresh any leg from this index to the end of the route. If this argument is omitted, the entire route is refreshed.
+     - parameter currentRouteShapeIndex: The index of the route geometry at which to begin refreshing. Indexed geometry must be contained by the leg at `startLegIndex`.
+     - parameter completionHandler: The closure (block) to call with the resulting skeleton route data. This closure is executed on the application’s main thread.
+     - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting skeleton routes, cancel this task.
+     */
     @discardableResult open func refreshRoute(responseIdentifier: String, routeIndex: Int, fromLegAtIndex startLegIndex: Int = 0, currentRouteShapeIndex: Int, completionHandler: @escaping RouteRefreshCompletionHandler) -> URLSessionDataTask? {
         _refreshRoute(responseIdentifier: responseIdentifier,
                       routeIndex: routeIndex,

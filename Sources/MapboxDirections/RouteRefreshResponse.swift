@@ -31,7 +31,7 @@ public struct RouteRefreshResponse: ForeignMemberContainer {
     /**
      A skeleton route that contains only the time-sensitive information that has been updated.
      
-     Use the `Route.refreshLegAttributes(from:)` and `Route.refreshLegIncidents(from:)` methods to merge this object with the original route to continue using the original route with updated information.
+     Use the `Route.refreshLegAttributes(from:)`, `Route.refreshLegAttributes(from:legIndex:legShapeIndex:)` and `Route.refreshLegIncidents(from:)`, `Route.refreshLegIncidents(from:legIndex:legShapeIndex:)` methods to merge this object with the original route to continue using the original route with updated information.
      */
     public var route: RefreshedRoute
     
@@ -112,6 +112,13 @@ extension Route {
         }
     }
 
+    /**
+     Merges the attributes of the given route’s legs into the receiver’s legs.
+     
+     - parameter refreshedRoute: The route containing leg attributes to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the attributes from a one-leg route affects only the last leg of the receiver.
+     - parameter legIndex: The index of a leg, from which to start applying the refreshed attributes.
+     - parameter legShapeIndex: Index of a geometry of the `legIndex` leg, where to start refreshing from.
+     */
     public func refreshLegAttributes(from refreshedRoute: RouteRefreshSource, legIndex: Int, legShapeIndex: Int) {
         guard legIndex + refreshedRoute.refreshedLegs.count <= legs.count else { return }
         for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count].enumerated(), refreshedRoute.refreshedLegs) {
@@ -131,9 +138,17 @@ extension Route {
         }
     }
 
+    /**
+     Merges the incidents of the given route’s legs into the receiver’s legs.
+     
+     - parameter refreshedRoute: The route containing leg incidents to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the incidents from a one-leg route affects only the last leg of the receiver.
+     - parameter legIndex: The index of a leg, from which to start applying the refreshed incidents.
+     - parameter legShapeIndex: Index of a geometry of the `legIndex` leg, where to start refreshing from.
+     */
     public func refreshLegIncidents(from refreshedRoute: RouteRefreshSource, legIndex: Int, legShapeIndex: Int) {
-        for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count], refreshedRoute.refreshedLegs) {
-            leg.incidents = refreshedLeg.refreshedIncidents
+        for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count].enumerated(), refreshedRoute.refreshedLegs) {
+            let startIndex = leg.offset == 0 ? legShapeIndex : 0
+            leg.element.refreshIncidents(newIncidents: refreshedLeg.refreshedIncidents, startLegShapeIndex: startIndex)
         }
     }
 }

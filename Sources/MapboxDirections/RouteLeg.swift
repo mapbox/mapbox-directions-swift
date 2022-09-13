@@ -288,6 +288,24 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         segmentMaximumSpeedLimits?.replace(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
     }
     
+    func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
+        guard let newIncidents = newIncidents else {
+            incidents = nil
+            return
+        }
+        
+        incidents?.removeAll(where: {
+            $0.shapeIndexRange.upperBound > startLegShapeIndex
+        })
+        
+        if incidents == nil {
+            incidents = []
+        }
+        
+        incidents?.append(contentsOf: newIncidents)
+    }
+    
+    
     /**
      Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
      
