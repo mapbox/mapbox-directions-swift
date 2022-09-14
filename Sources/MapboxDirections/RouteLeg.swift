@@ -7,6 +7,7 @@ import Turf
 
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
+
 open class RouteLeg: Codable, ForeignMemberContainerClass {
     public var foreignMembers: JSONObject = [:]
     
@@ -275,6 +276,35 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
             segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
         }
     }
+
+    func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
+        let refreshRange = PartialRangeFrom(startLegShapeIndex)
+
+        segmentDistances?.replace(subrange: refreshRange, with: newAttributes.segmentDistances)
+        expectedSegmentTravelTimes?.replace(subrange: refreshRange, with: newAttributes.expectedSegmentTravelTimes)
+        segmentSpeeds?.replace(subrange: refreshRange, with: newAttributes.segmentSpeeds)
+        segmentCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentCongestionLevels)
+        segmentNumericCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentNumericCongestionLevels)
+        segmentMaximumSpeedLimits?.replace(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
+    }
+    
+    func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
+        guard let newIncidents = newIncidents else {
+            incidents = nil
+            return
+        }
+        
+        incidents?.removeAll(where: {
+            $0.shapeIndexRange.upperBound > startLegShapeIndex
+        })
+        
+        if incidents == nil {
+            incidents = []
+        }
+        
+        incidents?.append(contentsOf: newIncidents)
+    }
+    
     
     /**
      Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
@@ -411,5 +441,13 @@ public extension Array where Element == RouteLeg {
             leg.source = endpoints.0
             leg.destination = endpoints.1
         }
+    }
+}
+
+private extension Array {
+    mutating func replace(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
+        guard let newElements = newElements else { return }
+        precondition(subrange.lowerBound < newElements.count)
+        replaceSubrange(subrange, with: newElements)
     }
 }

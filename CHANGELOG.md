@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## main
+
+* Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:completionHandler:)` method, which takes the index into the route geometry at which to begin refreshing, as well as corresponding `Directions.urlRequest(forRefreshing responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:)`, `RouteRefreshResponse.refreshLegAttributes(from:legIndex:legShapeIndex:)`, and `RouteRefreshResponse.refreshLegIncidents(from:legIndex:legShapeIndex:)` methods. ([#733](https://github.com/mapbox/mapbox-directions-swift/pull/733/files))
+
 ## 2.7.0
 
 ### Packaging
