@@ -9,20 +9,47 @@ public enum ResponseOptions {
     case match(MatchOptions)
 }
 
+/**
+ A `RouteResponse` object is a structure that corresponds to a directions response returned by the Mapbox Directions API.
+ */
 public struct RouteResponse: ForeignMemberContainer {
+    /**
+     Unrecognized properties that are documented as "beta" properties in the Mapbox Directions API response.
+     */
     public var foreignMembers: JSONObject = [:]
     
+    /**
+     The raw HTTP response from the Directions API.
+     */
     public let httpResponse: HTTPURLResponse?
     
+    /**
+     The response identifier used to request the route.
+     */
     public let identifier: String?
+    
+    /**
+     An array of `Route` objects ordered by descending recommendation rank. This property may contain at most two `Route`s.
+     */
     public var routes: [Route]? {
         didSet {
             updateRoadClassExclusionViolations()
         }
     }
+    
+    /**
+     An array of `Waypoint` objects in the order of the input coordinates. Each `Waypoint` is an input coordinate snapped to the road and path network.
+     */
     public let waypoints: [Waypoint]?
     
+    /**
+     The criteria for the directions response.
+     */
     public let options: ResponseOptions
+    
+    /**
+     The credentials used to make the request.
+     */
     public let credentials: Credentials
     
     /**
