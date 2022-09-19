@@ -92,6 +92,14 @@ open class RouteOptions: DirectionsOptions {
             self.maximumWeight = Measurement(value: doubleValue, unit: UnitMass.metricTons)
         }
         
+//        if waypoints.first(where: { $0.layer != nil} ) != nil {
+//            let layers = waypoints.map { $0.layer?.description ?? ";" }.joined()
+//            params.append(URLQueryItem(name: CodingKeys.layers.stringValue, value: layers))
+//        }
+        
+        if let mappedValue = mappedQueryItems[CodingKeys.layers.stringValue] {
+            waypoints.
+        }
         
         let formatter = DateFormatter.ISO8601DirectionsFormatter()
         if let mappedValue = mappedQueryItems[CodingKeys.departAt.stringValue],
@@ -149,6 +157,7 @@ open class RouteOptions: DirectionsOptions {
         case waypointTargets = "waypoint_targets"
         case arriveBy = "arrive_by"
         case departAt = "depart_at"
+        case layers
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -427,6 +436,11 @@ open class RouteOptions: DirectionsOptions {
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
             let targetCoordinates = waypoints.filter { $0.separatesLegs }.map { $0.targetCoordinate?.requestDescription ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: CodingKeys.waypointTargets.stringValue, value: targetCoordinates))
+        }
+        
+        if waypoints.first(where: { $0.layer != nil} ) != nil {
+            let layers = waypoints.map { $0.layer?.description ?? ";" }.joined()
+            params.append(URLQueryItem(name: CodingKeys.layers.stringValue, value: layers))
         }
         
         if let initialManeuverAvoidanceRadius = initialManeuverAvoidanceRadius {
