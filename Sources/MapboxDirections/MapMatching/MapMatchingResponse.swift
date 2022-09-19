@@ -8,9 +8,6 @@ import Turf
  A `MapMatchingResponse` object is a structure that corresponds to a map matching response returned by the Mapbox Map Matching API.
  */
 public struct MapMatchingResponse: ForeignMemberContainer {
-    /**
-     Unrecognized properties that are documented as "beta" properties in the Mapbox Map Matching API response.
-     */
     public var foreignMembers: JSONObject = [:]
     
     /**

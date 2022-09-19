@@ -13,9 +13,6 @@ public enum ResponseOptions {
  A `RouteResponse` object is a structure that corresponds to a directions response returned by the Mapbox Directions API.
  */
 public struct RouteResponse: ForeignMemberContainer {
-    /**
-     Unrecognized properties that are documented as "beta" properties in the Mapbox Directions API response.
-     */
     public var foreignMembers: JSONObject = [:]
     
     /**
@@ -24,12 +21,13 @@ public struct RouteResponse: ForeignMemberContainer {
     public let httpResponse: HTTPURLResponse?
     
     /**
-     The response identifier used to request the route.
+     The unique identifier that the Mapbox Directions API has assigned to this response.
      */
     public let identifier: String?
     
     /**
-     An array of `Route` objects ordered by descending recommendation rank. This property may contain at most two `Route`s.
+     An array of `Route` objects sorted from most recommended to least recommended. A route may be highly recommended based on characteristics such as expected travel time or distance.
+     This property contains a maximum of two `Route`s.
      */
     public var routes: [Route]? {
         didSet {
@@ -39,6 +37,8 @@ public struct RouteResponse: ForeignMemberContainer {
     
     /**
      An array of `Waypoint` objects in the order of the input coordinates. Each `Waypoint` is an input coordinate snapped to the road and path network.
+    
+     This property omits the waypoint corresponding to any waypoint in `RouteOptions.waypoints` that has `Waypoint.separatesLegs` set to `true`.
      */
     public let waypoints: [Waypoint]?
     
