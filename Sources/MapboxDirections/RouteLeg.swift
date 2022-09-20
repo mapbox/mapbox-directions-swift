@@ -447,7 +447,6 @@ public extension Array where Element == RouteLeg {
 private extension Array {
     mutating func replace(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
         guard let newElements = newElements else { return }
-        precondition(subrange.lowerBound < newElements.count)
         replaceSubrange(subrange, with: newElements)
     }
 }
