@@ -42,7 +42,7 @@ let package = Package(
             resources: [
                 .process("Fixtures"),
             ]),
-        .target(
+        .executableTarget(
             name: "MapboxDirectionsCLI",
             dependencies: [
                 "MapboxDirections",
