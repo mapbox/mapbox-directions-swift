@@ -207,6 +207,61 @@ class RouteRefreshTests: XCTestCase {
         
         wait(for: [routeUpdatedExpectation], timeout: 3)
     }
+    
+    func testRouteRefreshedFromIncorrectGeometryIndex() {
+        let routeUpdatedExpectation = expectation(description: "Route is not refreshed.")
+        let routeIndex = 0
+        let legIndex = 0
+        let geometryIndex = 9
+        
+        fetchStubbedRoute { routeResponse in
+            Directions(credentials: BogusCredentials).refreshRoute(responseIdentifier: routeResponse.identifier!,
+                                                                   routeIndex: routeIndex,
+                                                                   fromLegAtIndex: legIndex,
+                                                                   currentRouteShapeIndex: geometryIndex) {
+                guard case let .success(refresh) = $1 else {
+                    XCTFail("Refresh failed with unexpected error.")
+                    return
+                }
+                
+                let route = routeResponse.routes?[routeIndex]
+                let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
+                
+                // should remain the same
+                route?.refreshLegAttributes(from: refresh.route,
+                                            legIndex: legIndex,
+                                            legShapeIndex: geometryIndex + 1)
+                
+                var refreshedCongestions = route!.legs[0].attributes.segmentCongestionLevels!
+                
+                XCTAssertEqual(originalCongestions,
+                               refreshedCongestions,
+                               "Too long refreshed annotations should be skipped.")
+                
+                // should still apply
+                route?.refreshLegAttributes(from: refresh.route,
+                                            legIndex: legIndex,
+                                            legShapeIndex: geometryIndex - 1)
+                
+                let refreshCongestions = refresh.route.legs[0].attributes.segmentCongestionLevels!
+                refreshedCongestions = route!.legs[0].attributes.segmentCongestionLevels!
+                
+                XCTAssertEqual(originalCongestions[PartialRangeUpTo(geometryIndex - 1)],
+                               refreshedCongestions[PartialRangeUpTo(geometryIndex - 1)],
+                               "Traversed portions of legs attributes should remain equal")
+                XCTAssertNotEqual(originalCongestions[PartialRangeFrom(geometryIndex - 1)],
+                                  refreshedCongestions[PartialRangeFrom(geometryIndex - 1)],
+                                  "Future portions of legs attributes should be refreshed")
+                XCTAssertEqual(refreshCongestions[PartialRangeFrom(0)],
+                               refreshedCongestions[(geometryIndex - 1)..<(refreshCongestions.count + (geometryIndex - 1))],
+                               "Route legs attributes are not refreshed")
+                
+                routeUpdatedExpectation.fulfill()
+            }
+        }
+        
+        wait(for: [routeUpdatedExpectation], timeout: 3)
+    }
     #endif
     
     func testDecoding() {
