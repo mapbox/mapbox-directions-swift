@@ -280,12 +280,12 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
         let refreshRange = PartialRangeFrom(startLegShapeIndex)
 
-        segmentDistances?.replace(subrange: refreshRange, with: newAttributes.segmentDistances)
-        expectedSegmentTravelTimes?.replace(subrange: refreshRange, with: newAttributes.expectedSegmentTravelTimes)
-        segmentSpeeds?.replace(subrange: refreshRange, with: newAttributes.segmentSpeeds)
-        segmentCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentCongestionLevels)
-        segmentNumericCongestionLevels?.replace(subrange: refreshRange, with: newAttributes.segmentNumericCongestionLevels)
-        segmentMaximumSpeedLimits?.replace(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
+        segmentDistances?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentDistances)
+        expectedSegmentTravelTimes?.replaceIfPossible(subrange: refreshRange, with: newAttributes.expectedSegmentTravelTimes)
+        segmentSpeeds?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentSpeeds)
+        segmentCongestionLevels?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentCongestionLevels)
+        segmentNumericCongestionLevels?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentNumericCongestionLevels)
+        segmentMaximumSpeedLimits?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
     }
     
     func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
@@ -445,8 +445,13 @@ public extension Array where Element == RouteLeg {
 }
 
 private extension Array {
-    mutating func replace(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
-        guard let newElements = newElements else { return }
-        replaceSubrange(subrange, with: newElements)
+    mutating func replaceIfPossible(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
+        guard let newElements = newElements, !newElements.isEmpty else { return }
+        let upperBound = subrange.lowerBound + newElements.count
+        
+        guard count >= upperBound else { return }
+        
+        let adjustedSubrange = subrange.lowerBound..<upperBound
+        replaceSubrange(adjustedSubrange, with: newElements)
     }
 }
