@@ -40,6 +40,23 @@ commands:
             - run:
                 name: Dependencies
                 command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks   
+    install-mbx-ci:
+      steps:
+        - run:
+            name: "Install MBX CI"
+            command: |
+              curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-darwin-amd64 > /usr/local/bin/mbx-ci
+              chmod 755 /usr/local/bin/mbx-ci  
+    setup-write-repo-access:
+        steps:
+            - run:
+                name: Setup write access to the repo
+                command: |
+                    export GITHUB_TOKEN="$(mbx-ci github writer public token)"
+                    echo "export GITHUB_TOKEN='${GITHUB_TOKEN}'" >> $BASH_ENV
+                    git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/mapbox/mapbox-directions-swift.git"
+                    git config user.email "release-bot@mapbox.com"
+                    git config user.name "Mapbox Releases" 
 
 jobs:
   detect-breaking-changes:
@@ -192,6 +209,24 @@ jobs:
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 5 - 44mm,OS=<< parameters.watchOS >>' clean build
       - save-cache
 
+  publish-documentation:
+    macos:
+      xcode: "12.5.1"
+    steps:
+      - checkout
+      - install-mapbox-token
+      - install-carthage
+      - install-mbx-ci
+      - run:
+          name: Generate Documentation
+          command: |
+            ./scripts/publish-documentation.sh << pipeline.git.tag >>
+      - setup-write-repo-access
+      - run:
+          name: "Push Generated Documentation"
+          command: |
+            git push origin $(git rev-parse --abbrev-ref HEAD):publisher-production
+
 workflows:
   workflow:
     jobs:
@@ -215,3 +250,15 @@ workflows:
           name: "SPM Ubuntu build"
       - example-app-build:
           name: "Build example app"
+      - approve-publish-documentation:
+          name: "Approve Publish Documentation"
+          type: approval
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+(-.+)?$/
+            branches:
+              ignore: /.*/
+      - publish-documentation:
+          name: "Publish Documentation"
+          requires:
+            - "Approve Publish Documentation"
