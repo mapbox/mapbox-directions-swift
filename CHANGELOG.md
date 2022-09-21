@@ -5,6 +5,11 @@
 ### Packaging
 
 * This library now requires a minimum deployment target of iOS 12.0 or above, macOS 10.14.0 or above, tvOS 12.0 or above, or watchOS 5.0 or above. Older operating system versions are no longer supported. ([#736](https://github.com/mapbox/mapbox-directions-swift/pull/736))
+* Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:completionHandler:)` method, which takes the index into the route geometry at which to begin refreshing, as well as corresponding `Directions.urlRequest(forRefreshing responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:)`, `RouteRefreshResponse.refreshLegAttributes(from:legIndex:legShapeIndex:)`, and `RouteRefreshResponse.refreshLegIncidents(from:legIndex:legShapeIndex:)` methods. ([#733](https://github.com/mapbox/mapbox-directions-swift/pull/733/files))
+
+### Other Changes
+
+* Added the `Waypoint.layer` property which influences the layer of road from which a route starts from that waypoint. This property is useful for avoiding ambiguity in the case of multi-level roads (such as a tunnel under a road). ([#745](https://github.com/mapbox/mapbox-directions-swift/pull/745))
 
 ## 2.7.0
 
