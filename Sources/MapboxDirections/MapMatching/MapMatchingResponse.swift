@@ -4,15 +4,36 @@ import FoundationNetworking
 #endif
 import Turf
 
+/**
+ A `MapMatchingResponse` object is a structure that corresponds to a map matching response returned by the Mapbox Map Matching API.
+ */
 public struct MapMatchingResponse: ForeignMemberContainer {
     public var foreignMembers: JSONObject = [:]
     
+    /**
+     The raw HTTP response from the Map Matching API.
+     */
     public let httpResponse: HTTPURLResponse?
     
+    /**
+     An array of `Match` objects.
+     */
     public var matches : [Match]?
+    
+    /**
+     An array of `Tracepoint` objects that represent the location an input point was matched with, in the order in which they were matched.
+     This property will be `nil` if a trace point is omitted by the Map Matching API because it is an outlier.
+     */
     public var tracepoints: [Tracepoint?]?
     
+    /**
+     The criteria for the map matching response.
+     */
     public let options: MatchOptions
+    
+    /**
+     The credentials used to make the request.
+     */
     public let credentials: Credentials
     
     /**
