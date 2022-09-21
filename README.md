@@ -50,10 +50,10 @@ This repository contains an example application that demonstrates how to use the
    * Swift Package Manager 5.5 or above
 * Xcode 13 or above
 * One of the following operating systems:
-   * iOS 10.0 or above
-   * macOS 10.12.0 or above
-   * tvOS 10.0 or above
-   * watchOS 3.0 or above
+   * iOS 12.0 or above
+   * macOS 10.14 or above
+   * tvOS 12.0 or above
+   * watchOS 5.0 or above
    * Any Linux distribution supported by Swift
 
 v0.30.0 is the last release of MapboxDirections.swift that supports a minimum deployment target of iOS 9._x_, macOS 10.11._x_, tvOS 9._x_, or watchOS 2._x_. v0.30.0 is also the last release that is compatible with Objective-C or AppleScript code.
