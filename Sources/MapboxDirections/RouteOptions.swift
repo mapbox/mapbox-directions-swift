@@ -92,13 +92,10 @@ open class RouteOptions: DirectionsOptions {
             self.maximumWeight = Measurement(value: doubleValue, unit: UnitMass.metricTons)
         }
         
-//        if waypoints.first(where: { $0.layer != nil} ) != nil {
-//            let layers = waypoints.map { $0.layer?.description ?? ";" }.joined()
-//            params.append(URLQueryItem(name: CodingKeys.layers.stringValue, value: layers))
-//        }
-        
         if let mappedValue = mappedQueryItems[CodingKeys.layers.stringValue] {
-            waypoints.
+            zip(waypoints, mappedValue.components(separatedBy: ";")).forEach {
+                $0.layer = Int($1) ?? nil
+            }
         }
         
         let formatter = DateFormatter.ISO8601DirectionsFormatter()
@@ -157,7 +154,7 @@ open class RouteOptions: DirectionsOptions {
         case waypointTargets = "waypoint_targets"
         case arriveBy = "arrive_by"
         case departAt = "depart_at"
-        case layers
+        case layers = "layers"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -439,7 +436,7 @@ open class RouteOptions: DirectionsOptions {
         }
         
         if waypoints.first(where: { $0.layer != nil} ) != nil {
-            let layers = waypoints.map { $0.layer?.description ?? ";" }.joined()
+            let layers = waypoints.map { $0.layer?.description ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: CodingKeys.layers.stringValue, value: layers))
         }
         

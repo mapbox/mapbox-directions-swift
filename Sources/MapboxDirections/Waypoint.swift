@@ -181,12 +181,11 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
     public var snappedDistance: LocationDistance?
     
     /**
-     The layer of road that he waypoint is positioned which is used to filter the road segment that the waypoint will be placed on in Z-order. It is useful for avoiding ambiguity in the case of multi-level roads (such as a tunnel under a road).
+     The layer of road that the waypoint is positioned which is used to filter the road segment that the waypoint will be placed on in Z-order. It is useful for avoiding ambiguity in the case of multi-level roads (such as a tunnel under a road).
      
      This property corresponds to the ['layers'](https://docs.mapbox.com/api/navigation/directions/#optional-parameters) query parameter in the Mapbox Directions API. If a matching layer is not found, the Mapbox Directions API will choose a suitable layer according to the other procided parameters.
      
-     // TODO: verify if this is the case
-     By default, this property is set to `nil`, meaning the waypoint is placed on the surface road level.
+     By default, this property is set to `nil`, meaning the route from the `Waypoint`will not be influenced by a layer of road.
      */
     public var layer: Int?
     
