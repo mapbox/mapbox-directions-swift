@@ -435,7 +435,7 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.waypointTargets.stringValue, value: targetCoordinates))
         }
         
-        if waypoints.first(where: { $0.layer != nil} ) != nil {
+        if waypoints.contains(where: { $0.layer != nil }) {
             let layers = waypoints.map { $0.layer?.description ?? "" }.joined(separator: ";")
             params.append(URLQueryItem(name: CodingKeys.layers.stringValue, value: layers))
         }
