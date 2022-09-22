@@ -19,6 +19,7 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
         case name
         case allowsArrivingOnOppositeSide
         case snappedDistance = "distance"
+        case layer
     }
     
     // MARK: Creating a Waypoint
@@ -53,6 +54,8 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
         
         snappedDistance = try container.decodeIfPresent(LocationDistance.self, forKey: .snappedDistance)
         
+        layer = try container.decodeIfPresent(Int.self, forKey: .layer)
+        
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
@@ -69,6 +72,7 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
         try container.encodeIfPresent(allowsArrivingOnOppositeSide, forKey: .allowsArrivingOnOppositeSide)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(snappedDistance, forKey: .snappedDistance)
+        try container.encodeIfPresent(layer, forKey: .layer)
         
         try encodeForeignMembers(to: encoder)
     }
@@ -175,6 +179,15 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
      By default, this property is set to `nil`, meaning the waypoint has no snapped distance.
      */
     public var snappedDistance: LocationDistance?
+    
+    /**
+     The [layer](https://wiki.openstreetmap.org/wiki/Key:layer) of road that the waypoint is positioned which is used to filter the road segment that the waypoint will be placed on in Z-order. It is useful for avoiding ambiguity in the case of multi-level roads (such as a tunnel under a road).
+     
+     This property corresponds to the [`layers`](https://docs.mapbox.com/api/navigation/directions/#optional-parameters) query parameter in the Mapbox Directions API. If a matching layer is not found, the Mapbox Directions API will choose a suitable layer according to the other  provided `DirectionsOptions` and `Waypoint` properties.
+     
+     By default, this property is set to `nil`, meaning the route from the `Waypoint` will not be influenced by a layer of road.
+     */
+    public var layer: Int?
     
     // MARK: Getting the Direction of Approach
     

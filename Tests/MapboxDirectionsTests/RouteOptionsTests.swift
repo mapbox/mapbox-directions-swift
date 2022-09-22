@@ -22,6 +22,8 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedWaypoints[1].coordinate.longitude, coordinates[1].longitude)
         XCTAssertEqual(unarchivedWaypoints[2].coordinate.latitude, coordinates[2].latitude)
         XCTAssertEqual(unarchivedWaypoints[2].coordinate.longitude, coordinates[2].longitude)
+        XCTAssertEqual(unarchivedWaypoints[0].layer, -1)
+        XCTAssertEqual(unarchivedWaypoints[2].layer, 3)
         
         XCTAssertEqual(unarchivedOptions.profileIdentifier, options.profileIdentifier)
         XCTAssertEqual(unarchivedOptions.locale, options.locale)
@@ -306,6 +308,16 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
     }
     
+    func testWaypointLayers(){
+        let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        from.layer = -1
+        to.layer = 3
+        let options = RouteOptions(waypoints: [from, through, to])
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "layers", value: "-1;;3")))
+    }
+    
     func testInitialManeuverAvoidanceRadiusSerialization() {
         let options = RouteOptions(coordinates: testCoordinates)
         
@@ -362,7 +374,11 @@ fileprivate let testCoordinates = [
 ]
 
 var testRouteOptions: RouteOptions {
-    let opts = RouteOptions(coordinates: testCoordinates, profileIdentifier: .automobileAvoidingTraffic)
+    let waypoints = testCoordinates.map { Waypoint(coordinate: $0)}
+    waypoints[0].layer = -1
+    waypoints[2].layer = 3
+    
+    let opts = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
     opts.locale = Locale(identifier: "en_US")
     opts.allowsUTurnAtWaypoint = true
     opts.shapeFormat = .polyline

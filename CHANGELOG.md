@@ -6,6 +6,10 @@
 
 * This library now requires a minimum deployment target of iOS 12.0 or above, macOS 10.14.0 or above, tvOS 12.0 or above, or watchOS 5.0 or above. Older operating system versions are no longer supported. ([#736](https://github.com/mapbox/mapbox-directions-swift/pull/736))
 
+### Other Changes
+
+* Added the `Waypoint.layer` property, which can ensure that the route begins on the correct road if it is above or below another road. ([#745](https://github.com/mapbox/mapbox-directions-swift/pull/745))
+
 ## 2.7.0
 
 ### Packaging
