@@ -220,7 +220,7 @@ jobs:
       - run:
           name: Generate Documentation
           command: |
-            ./scripts/publish-documentation.sh << pipeline.git.tag >>
+            ./scripts/publish-documentation.sh v2.7.0
       - setup-write-repo-access
       - run:
           name: "Push Generated Documentation"
@@ -253,15 +253,8 @@ workflows:
       - approve-publish-documentation:
           name: "Approve Publish Documentation"
           type: approval
-          filters: &filters-tag-push
-            tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?$/
-            branches:
-              ignore: /.*/
       - publish-documentation:
           name: "Publish Documentation"
           requires:
             - "Approve Publish Documentation"
-          filters: 
-            <<: *filters-tag-push
         
