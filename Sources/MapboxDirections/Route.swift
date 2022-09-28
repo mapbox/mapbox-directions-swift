@@ -7,6 +7,9 @@ import Turf
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can use `JSONDecoder` to convert the HTTP response into a `RouteResponse` or `MapMatchingResponse` object and access the `RouteResponse.routes` or `MapMatchingResponse.routes` property.
  */
 open class Route: DirectionsResult {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case tollCosts = "toll_costs"
+    }
     
     /**
      Initializes a route.
@@ -28,8 +31,27 @@ open class Route: DirectionsResult {
      - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Route` object.
      */
     public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        tollCosts = try container.decodeIfPresent([TollCost].self, forKey: .tollCosts)
+        
         try super.init(from: decoder)
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(tollCosts, forKey: .tollCosts)
+        
+        try super.encode(to: encoder)
+    }
+    
+    /**
+     :nodoc:
+     List of calculated toll costs for this route.
+     
+     See `TollCost`.
+     */
+    open var tollCosts: [TollCost]?
 }
 
 extension Route: Equatable {

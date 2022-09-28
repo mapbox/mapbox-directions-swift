@@ -107,6 +107,9 @@ open class RouteOptions: DirectionsOptions {
            let arriveBy = formatter.date(from: mappedValue) {
             self.arriveBy = arriveBy
         }
+        if mappedQueryItems[CodingKeys.computeTollCost.stringValue] == "true" {
+            self.computeTollCost = true
+        }
     }
 
     #if canImport(CoreLocation)
@@ -155,6 +158,7 @@ open class RouteOptions: DirectionsOptions {
         case arriveBy = "arrive_by"
         case departAt = "depart_at"
         case layers = "layers"
+        case computeTollCost = "compute_toll_cost"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -180,6 +184,10 @@ open class RouteOptions: DirectionsOptions {
         }
         if let departAt = departAt {
             try container.encode(formatter.string(from: departAt), forKey: .departAt)
+        }
+        
+        if computeTollCost {
+            try container.encode(computeTollCost, forKey: .computeTollCost)
         }
     }
     
@@ -224,6 +232,8 @@ open class RouteOptions: DirectionsOptions {
         if let dateString = try container.decodeIfPresent(String.self, forKey: .arriveBy) {
             arriveBy = formatter.date(from: dateString)
         }
+        
+        computeTollCost = try container.decodeIfPresent(Bool.self, forKey: .computeTollCost) ?? false
         
         try super.init(from: decoder)
     }
@@ -393,6 +403,14 @@ open class RouteOptions: DirectionsOptions {
     }
     private var _initialManeuverAvoidanceRadius: LocationDistance?
     
+    /**
+     :nodoc:
+     Toggle whether to return calculated toll cost for the route, if data is available.
+     
+     Default value is `false`.
+     */
+    open var computeTollCost = false
+    
     // MARK: Getting the Request URL
     
     override open var urlQueryItems: [URLQueryItem] {
@@ -472,6 +490,11 @@ open class RouteOptions: DirectionsOptions {
                 params.append(URLQueryItem(name: CodingKeys.arriveBy.stringValue,
                                            value: String(formatter.string(from: arriveBy))))
             }
+        }
+        
+        if computeTollCost {
+            params.append(URLQueryItem(name: CodingKeys.computeTollCost.stringValue,
+                                       value: String(computeTollCost)))
         }
         
         return params + super.urlQueryItems
