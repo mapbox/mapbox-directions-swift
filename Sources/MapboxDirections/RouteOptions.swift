@@ -107,8 +107,8 @@ open class RouteOptions: DirectionsOptions {
            let arriveBy = formatter.date(from: mappedValue) {
             self.arriveBy = arriveBy
         }
-        if mappedQueryItems[CodingKeys.computeTollCost.stringValue] == "true" {
-            self.computeTollCost = true
+        if mappedQueryItems[CodingKeys.includesTollPrices.stringValue] == "true" {
+            self.includesTollPrices = true
         }
     }
 
@@ -158,7 +158,7 @@ open class RouteOptions: DirectionsOptions {
         case arriveBy = "arrive_by"
         case departAt = "depart_at"
         case layers = "layers"
-        case computeTollCost = "compute_toll_cost"
+        case includesTollPrices = "compute_toll_cost"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -186,8 +186,8 @@ open class RouteOptions: DirectionsOptions {
             try container.encode(formatter.string(from: departAt), forKey: .departAt)
         }
         
-        if computeTollCost {
-            try container.encode(computeTollCost, forKey: .computeTollCost)
+        if includesTollPrices {
+            try container.encode(includesTollPrices, forKey: .includesTollPrices)
         }
     }
     
@@ -233,7 +233,7 @@ open class RouteOptions: DirectionsOptions {
             arriveBy = formatter.date(from: dateString)
         }
         
-        computeTollCost = try container.decodeIfPresent(Bool.self, forKey: .computeTollCost) ?? false
+        includesTollPrices = try container.decodeIfPresent(Bool.self, forKey: .includesTollPrices) ?? false
         
         try super.init(from: decoder)
     }
@@ -409,7 +409,7 @@ open class RouteOptions: DirectionsOptions {
      
      Default value is `false`.
      */
-    open var computeTollCost = false
+    open var includesTollPrices = false
     
     // MARK: Getting the Request URL
     
@@ -492,9 +492,9 @@ open class RouteOptions: DirectionsOptions {
             }
         }
         
-        if computeTollCost {
-            params.append(URLQueryItem(name: CodingKeys.computeTollCost.stringValue,
-                                       value: String(computeTollCost)))
+        if includesTollPrices {
+            params.append(URLQueryItem(name: CodingKeys.includesTollPrices.stringValue,
+                                       value: String(includesTollPrices)))
         }
         
         return params + super.urlQueryItems

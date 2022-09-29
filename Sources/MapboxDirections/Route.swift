@@ -32,7 +32,7 @@ open class Route: DirectionsResult {
      */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        tollCosts = try container.decodeIfPresent([TollCost].self, forKey: .tollCosts)
+        tollsPrices = try container.decodeIfPresent([TollPrice].self, forKey: .tollCosts)
         
         try super.init(from: decoder)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
@@ -40,7 +40,7 @@ open class Route: DirectionsResult {
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(tollCosts, forKey: .tollCosts)
+        try container.encodeIfPresent(tollsPrices, forKey: .tollCosts)
         
         try super.encode(to: encoder)
     }
@@ -49,9 +49,9 @@ open class Route: DirectionsResult {
      :nodoc:
      List of calculated toll costs for this route.
      
-     See `TollCost`.
+     See `TollPrice`.
      */
-    open var tollCosts: [TollCost]?
+    open var tollsPrices: [TollPrice]?
 }
 
 extension Route: Equatable {
@@ -62,6 +62,7 @@ extension Route: Equatable {
             lhs.speechLocale == rhs.speechLocale &&
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
             lhs.legs == rhs.legs &&
-            lhs.shape == rhs.shape
+            lhs.shape == rhs.shape &&
+            lhs.tollsPrices == rhs.tollsPrices
     }
 }

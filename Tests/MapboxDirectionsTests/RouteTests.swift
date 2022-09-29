@@ -54,13 +54,13 @@ class RouteTests: XCTestCase {
         let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262, profileIdentifier: .automobileAvoidingTraffic)
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
-        let expectedTollCosts = TollCost(currency: "JPY",
-                                         paymentMethods: .init(ETC: .init(standard: 1200,
-                                                                          middle: 1400),
-                                                               cash: .init(standard: 1250)))
+        let expectedTollPrices = TollPrice(currencyCode: "JPY",
+                                           paymentMethods: [.electronicTollCollection: [.standard: 1200,
+                                                                                        .middle: 1400],
+                                                            .cash: [.standard: 1250]])
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
+        expectedRoute.tollsPrices = [expectedTollPrices]
         XCTAssertEqual(route, expectedRoute)
-        XCTAssertEqual(route?.tollCosts, [expectedTollCosts])
         
         if let route = route {
             let encoder = JSONEncoder()
