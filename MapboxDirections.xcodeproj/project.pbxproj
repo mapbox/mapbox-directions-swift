@@ -54,10 +54,10 @@
 		2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */; };
 		2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */; };
 		2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */; };
-		2B79D3E128E4922600B3F127 /* TollCost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E028E4922600B3F127 /* TollCost.swift */; };
-		2B79D3E228E4922600B3F127 /* TollCost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E028E4922600B3F127 /* TollCost.swift */; };
-		2B79D3E328E4922600B3F127 /* TollCost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E028E4922600B3F127 /* TollCost.swift */; };
-		2B79D3E428E4922600B3F127 /* TollCost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E028E4922600B3F127 /* TollCost.swift */; };
+		2B79D3E628E5EB3900B3F127 /* TollPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E528E5EB3900B3F127 /* TollPrice.swift */; };
+		2B79D3E728E5EB3900B3F127 /* TollPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E528E5EB3900B3F127 /* TollPrice.swift */; };
+		2B79D3E828E5EB3900B3F127 /* TollPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E528E5EB3900B3F127 /* TollPrice.swift */; };
+		2B79D3E928E5EB3900B3F127 /* TollPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D3E528E5EB3900B3F127 /* TollPrice.swift */; };
 		2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
 		2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
 		2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */; };
@@ -511,7 +511,7 @@
 		2B5F0DFF273BEB3600CC2C1A /* RoadClassExclusionViolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadClassExclusionViolation.swift; sourceTree = "<group>"; };
 		2B609EFE28D0B669004BFE37 /* partialRouteRefreshResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = partialRouteRefreshResponse.json; sourceTree = "<group>"; };
 		2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RouteResponseWithForeignMembers.json; sourceTree = "<group>"; };
-		2B79D3E028E4922600B3F127 /* TollCost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TollCost.swift; sourceTree = "<group>"; };
+		2B79D3E528E5EB3900B3F127 /* TollPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TollPrice.swift; sourceTree = "<group>"; };
 		2B9F387C272AE23A001DBA12 /* ProfileIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileIdentifier.swift; sourceTree = "<group>"; };
 		2B9F387D272AE23A001DBA12 /* IsochroneOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneOptions.swift; sourceTree = "<group>"; };
 		2B9F387E272AE23A001DBA12 /* IsochroneError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsochroneError.swift; sourceTree = "<group>"; };
@@ -876,7 +876,7 @@
 				AEDC211C20B6104A0052DED8 /* VisualInstructionComponent.swift */,
 				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
 				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
-				2B79D3E028E4922600B3F127 /* TollCost.swift */,
+				2B79D3E528E5EB3900B3F127 /* TollPrice.swift */,
 				F4F508372524D6F10044F2D0 /* RestStop.swift */,
 				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
@@ -1462,6 +1462,7 @@
 				2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
+				2B79D3E728E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
 				431E93C423466B0F00A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4A2045E72800D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1491,7 +1492,6 @@
 				2BBBD05F257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD08E257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
 				F4CF2C582523B66300A6D0B6 /* TollCollection.swift in Sources */,
-				2B79D3E228E4922600B3F127 /* TollCost.swift in Sources */,
 				F4F508392524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FC2073F1EF002E273F /* Array.swift in Sources */,
 				C547EC691DB59F8F009817F3 /* Lane.swift in Sources */,
@@ -1560,6 +1560,7 @@
 				2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
+				2B79D3E828E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
 				431E93C523466B1000A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4B2045E72900D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1589,7 +1590,6 @@
 				2BBBD060257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD08F257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
 				F4CF2C592523B66300A6D0B6 /* TollCollection.swift in Sources */,
-				2B79D3E328E4922600B3F127 /* TollCost.swift in Sources */,
 				F4F5083A2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FD2073F1F0002E273F /* Array.swift in Sources */,
 				C547EC6A1DB59F90009817F3 /* Lane.swift in Sources */,
@@ -1658,6 +1658,7 @@
 				2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
+				2B79D3E928E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
 				431E93C623466B1100A71B44 /* GeoJSON.swift in Sources */,
 				C5990B4C2045E72A00D7DFD4 /* DirectionsResult.swift in Sources */,
@@ -1687,7 +1688,6 @@
 				2BBBD061257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD090257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
 				F4CF2C5A2523B66300A6D0B6 /* TollCollection.swift in Sources */,
-				2B79D3E428E4922600B3F127 /* TollCost.swift in Sources */,
 				F4F5083B2524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C54549FE2073F1F1002E273F /* Array.swift in Sources */,
 				C547EC6B1DB59F91009817F3 /* Lane.swift in Sources */,
@@ -1721,6 +1721,7 @@
 				2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
+				2B79D3E628E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
 				431E93C323466B0E00A71B44 /* GeoJSON.swift in Sources */,
 				35EFD00B207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
@@ -1750,7 +1751,6 @@
 				2BBBD05E257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift in Sources */,
 				2BBBD08D257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */,
 				8D381B6A1FDB101F008D5A58 /* String.swift in Sources */,
-				2B79D3E128E4922600B3F127 /* TollCost.swift in Sources */,
 				F4CF2C572523B66300A6D0B6 /* TollCollection.swift in Sources */,
 				F4F508382524D6F10044F2D0 /* RestStop.swift in Sources */,
 				C57D55011DB5669600B94B74 /* Intersection.swift in Sources */,
