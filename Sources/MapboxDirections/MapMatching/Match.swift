@@ -4,7 +4,7 @@ import Turf
 /**
  A `Weight` enum represents the weight given to a specific `Match` by the Directions API. The default metric is a compound index called "routability", which is duration-based with additional penalties for less desirable maneuvers.
  */
-public enum Weight: Equatable {
+public enum Weight: Equatable, Sendable {
     
     case routability(value: Float)
     case other(value: Float, metric: String)
