@@ -8,7 +8,7 @@ import Turf
  */
 open class Route: DirectionsResult {
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case tollCosts = "toll_costs"
+        case tollPrices = "toll_costs"
     }
     
     /**
@@ -32,7 +32,7 @@ open class Route: DirectionsResult {
      */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        tollsPrices = try container.decodeIfPresent([TollPrice].self, forKey: .tollCosts)
+        tollPrices = try container.decodeIfPresent([TollPrice].self, forKey: .tollPrices)
         
         try super.init(from: decoder)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
@@ -40,7 +40,7 @@ open class Route: DirectionsResult {
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(tollsPrices, forKey: .tollCosts)
+        try container.encodeIfPresent(tollPrices, forKey: .tollPrices)
         
         try super.encode(to: encoder)
     }
@@ -49,9 +49,10 @@ open class Route: DirectionsResult {
      :nodoc:
      List of calculated toll costs for this route.
      
+     This property is set to `nil` unless request `RouteOptions.includesTollPrices` is set to `true`.
      See `TollPrice`.
      */
-    open var tollsPrices: [TollPrice]?
+    open var tollPrices: [TollPrice]?
 }
 
 extension Route: Equatable {
@@ -63,6 +64,6 @@ extension Route: Equatable {
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
             lhs.legs == rhs.legs &&
             lhs.shape == rhs.shape &&
-            lhs.tollsPrices == rhs.tollsPrices
+            lhs.tollPrices == rhs.tollPrices
     }
 }

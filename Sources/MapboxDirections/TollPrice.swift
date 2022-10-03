@@ -5,7 +5,7 @@ import Turf
  :nodoc:
  Information about toll payment method.
  */
-public struct PaymentMethod: Hashable, Equatable {
+public struct TollPaymentMethod: Hashable, Equatable {
     /**
      Method identifier.
      */
@@ -14,18 +14,18 @@ public struct PaymentMethod: Hashable, Equatable {
     /**
      Payment is done by electronic toll collection.
      */
-    public static let electronicTollCollection = PaymentMethod(identifier: "etc")
+    public static let electronicTollCollection = TollPaymentMethod(identifier: "etc")
     /**
      Payment is done by cash.
      */
-    public static let cash = PaymentMethod(identifier: "cash")
+    public static let cash = TollPaymentMethod(identifier: "cash")
 }
 
 /**
  :nodoc:
  Categories by which toll fees are divided.
  */
-public struct Category: Hashable, Equatable {
+public struct TollCategory: Hashable, Equatable {
     /**
      Category name.
      */
@@ -34,37 +34,37 @@ public struct Category: Hashable, Equatable {
     /**
      A small sized vehicle.
      
-     Vehicle size is [standartized](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
+     In Japan, this is a [standard vehicle size](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
      */
-    public static let small = Category(name: "small")
+    public static let small = TollCategory(name: "small")
     /**
      A standard sized vehicle.
      
-     Vehicle size is [standartized](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
+     In Japan, this is a [standard vehicle size](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
      */
-    public static let standard = Category(name: "standard")
+    public static let standard = TollCategory(name: "standard")
     /**
      A middle sized vehicle.
      
-     Vehicle size is [standartized](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
+     In Japan, this is a [standard vehicle size](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
      */
-    public static let middle = Category(name: "middle")
+    public static let middle = TollCategory(name: "middle")
     /**
      A large sized vehicle.
      
-     Vehicle size is [standartized](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
+     In Japan, this is a [standard vehicle size](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
      */
-    public static let large = Category(name: "large")
+    public static let large = TollCategory(name: "large")
     /**
      A jumbo sized vehicle.
      
-     Vehicle size is [standartized](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
+     In Japan, this is a [standard vehicle size](https://en.wikipedia.org/wiki/Expressways_of_Japan#Tolls).
      */
-    public static let jumbo = Category(name: "jumbo")
+    public static let jumbo = TollCategory(name: "jumbo")
 }
 
-public typealias CategoriesTolls = [Category: Decimal]
-public typealias PaymentMethods = [PaymentMethod: CategoriesTolls]
+public typealias CategoriesTolls = [TollCategory: Decimal]
+public typealias PaymentMethods = [TollPaymentMethod: CategoriesTolls]
 
 /**
  :nodoc:
@@ -82,6 +82,7 @@ public struct TollPrice: Equatable,  Codable, ForeignMemberContainer {
      Related currency code string.
      
      Uses ISO 4217 format. Refers to values in `CategoriesTolls`. A toll cost of `0` is valid and simply means that no toll costs are incurred for this route.
+     This value is compatible with `NumberFormatter().currencyCode`.
      */
     public let currencyCode: String
     /**
@@ -121,8 +122,8 @@ extension TollPrice {
 
 private func paymentMethodsFromRawStrings(_ rawPaymentMethods: [String: [String: Decimal]]) -> PaymentMethods {
     return rawPaymentMethods.reduce(into: [:], { paymentResult, paymentElement in
-        paymentResult[PaymentMethod(identifier: paymentElement.key)] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
-            categoryResult[Category(name: categoryElement.key)] = categoryElement.value
+        paymentResult[TollPaymentMethod(identifier: paymentElement.key)] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
+            categoryResult[TollCategory(name: categoryElement.key)] = categoryElement.value
         })
     })
 }

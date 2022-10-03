@@ -59,7 +59,7 @@ class RouteTests: XCTestCase {
                                                                                         .middle: 1400],
                                                             .cash: [.standard: 1250]])
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
-        expectedRoute.tollsPrices = [expectedTollPrices]
+        expectedRoute.tollPrices = [expectedTollPrices]
         XCTAssertEqual(route, expectedRoute)
         
         if let route = route {

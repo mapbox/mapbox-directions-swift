@@ -407,6 +407,7 @@ open class RouteOptions: DirectionsOptions {
      :nodoc:
      Toggle whether to return calculated toll cost for the route, if data is available.
      
+     Toll prices are populeted in resulting route's `Route.tollPrices`.
      Default value is `false`.
      */
     open var includesTollPrices = false
