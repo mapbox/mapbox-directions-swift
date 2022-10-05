@@ -12,7 +12,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
      Provides a text value description for user-provided options.
      
      `AttributeOptions` will recognize a custom option if it's unique `rawValue` flag is set and `customOptions` contains a description for that flag.
-     Use `update(customOption:)` methid to append a custom option.
+     Use the `update(customOption:)` method to append a custom option.
      */
     public var customOptions: [Int: String] = [:]
     
