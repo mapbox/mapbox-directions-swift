@@ -18,14 +18,12 @@
 		2B46024628EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
 		2B46024728EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
 		2B46024828EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
-		2B46024B28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
-		2B46024C28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
-		2B46024D28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
-		2B46024E28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
-		2B46024F28EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
-		2B46025028EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
-		2B46025128EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
-		2B46025228EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
+		2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
+		2B46025428EDB62F0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
+		2B46025528EDB6300008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
+		2B46025628EDB6390008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
+		2B46025728EDB63A0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
+		2B46025828EDB63B0008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
 		2B46DB0C27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */; };
 		2B46DB0D27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */; };
 		2B46DB0E27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */; };
@@ -1463,7 +1461,6 @@
 				431E93C0234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9B2019167C001F9261 /* Match.swift in Sources */,
 				2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
-				2B46024C28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */,
@@ -1473,7 +1470,6 @@
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E01273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
-				2B46025028EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1538,6 +1534,7 @@
 				DA8F3A7323B56D3B00B56786 /* RouteLegTests.swift in Sources */,
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				2B46025428EDB62F0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2B5407FD245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
@@ -1548,6 +1545,7 @@
 				DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				DAABF78F2395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
+				2B46025728EDB63A0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7932395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
@@ -1563,7 +1561,6 @@
 				431E93C1234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9C2019167D001F9261 /* Match.swift in Sources */,
 				2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
-				2B46024D28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */,
@@ -1573,7 +1570,6 @@
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E02273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
-				2B46025128EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1638,6 +1634,7 @@
 				DA8F3A7423B56D3B00B56786 /* RouteLegTests.swift in Sources */,
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				2B46025528EDB6300008A624 /* AttributeOptionsTests.swift in Sources */,
 				2B5407FE245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
@@ -1648,6 +1645,7 @@
 				DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				DAABF7902395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
+				2B46025828EDB63B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7942395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
@@ -1663,7 +1661,6 @@
 				431E93C2234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9D2019167E001F9261 /* Match.swift in Sources */,
 				2B5407F02451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
-				2B46024E28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */,
@@ -1673,7 +1670,6 @@
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E03273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
-				2B46025228EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1728,7 +1724,6 @@
 				431E93BF234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C51538CC1E807FF00093FF3E /* AttributeOptions.swift in Sources */,
 				2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
-				2B46024B28EDB18B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */,
@@ -1738,7 +1733,6 @@
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E00273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
-				2B46024F28EDB18B0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
@@ -1803,6 +1797,7 @@
 				DA6C9DAC1CAEC72800094FBC /* V5Tests.swift in Sources */,
 				8A3B4C9B24EB55F60085DA64 /* RouteResponseTests.swift in Sources */,
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
+				2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2B5407FC245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
@@ -1813,6 +1808,7 @@
 				DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */,
 				DAABF78E2395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
+				2B46025628EDB6390008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
