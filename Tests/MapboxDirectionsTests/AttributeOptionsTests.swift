@@ -7,10 +7,10 @@ class AttributeOptionsTests: XCTestCase {
         var options2merge = AttributeOptions(descriptions: ["speed"])!
         var optionsWithCustom = AttributeOptions()
 
-        optionsWithCustom.update(customOption: (1<<7, "Custom7"))
+        optionsWithCustom.update(customOption: (1<<7, "Custom7"), comparisonPolicy: .allowEqual)
         options.update(with: .distance)
         options.update(with: optionsWithCustom)
-        options2merge.update(customOption: (1<<8, "Custom_8"))
+        options2merge.update(customOption: (1<<8, "Custom_8"), comparisonPolicy: .allowEqual)
 
         options.update(with: options2merge)
         
@@ -20,7 +20,7 @@ class AttributeOptionsTests: XCTestCase {
         XCTAssertEqual(options.description.split(separator: ",").count,
                        4)
         XCTAssertEqual(optionsWithCustom,
-                       options.update(customOption: (1<<7, "Custom7")))
+                       options.update(customOption: (1<<7, "Custom7"), comparisonPolicy: .allowEqual))
         
         // insert existing default
         XCTAssertFalse(options.insert(.distance).inserted)
@@ -28,8 +28,8 @@ class AttributeOptionsTests: XCTestCase {
         XCTAssertFalse(options.insert(optionsWithCustom).inserted)
         // insert conflicting custom
         var optionsWithConflict = AttributeOptions()
-        optionsWithConflict.update(customOption: (optionsWithCustom.rawValue, "Another custom name"))
-        XCTAssertFalse(options.insert(optionsWithConflict).inserted)
+        optionsWithConflict.update(customOption: (optionsWithCustom.rawValue, "Another custom name"), comparisonPolicy: .allowEqual)
+        XCTAssertFalse(options.insert(optionsWithConflict, comparisonPolicy: .allowUnequal).inserted)
         // insert custom with default raw
         optionsWithConflict.rawValue = AttributeOptions.distance.rawValue
         XCTAssertFalse(options.insert(optionsWithConflict).inserted)
@@ -38,29 +38,29 @@ class AttributeOptionsTests: XCTestCase {
     func testContains() {
         var options = AttributeOptions()
         options.update(with: .expectedTravelTime)
-        options.update(customOption: (1<<9, "Custom"))
+        options.update(customOption: (1<<9, "Custom"), comparisonPolicy: .allowEqual)
         
         XCTAssertTrue(options.contains(.init(rawValue: AttributeOptions.expectedTravelTime.rawValue)))
         XCTAssertFalse(options.contains(.congestionLevel))
         
         var wrongCustomOption = AttributeOptions()
-        wrongCustomOption.update(customOption: (1<<9, "Wrong name"))
+        wrongCustomOption.update(customOption: (1<<9, "Wrong name"), comparisonPolicy: .allowEqual)
         XCTAssertFalse(options.contains(wrongCustomOption))
         
         var correctCustomOption = AttributeOptions()
-        correctCustomOption.update(customOption: (1<<9, "Custom"))
+        correctCustomOption.update(customOption: (1<<9, "Custom"), comparisonPolicy: .allowEqual)
         XCTAssertTrue(options.contains(correctCustomOption))
         
-        XCTAssertTrue(options.contains(.init(rawValue: 1<<9)))
+        XCTAssertTrue(options.contains(.init(rawValue: 1<<9), comparisonPolicy: .allowEqualOrNull))
     }
     
     func testRemove() {
         var preservedOption = AttributeOptions()
-        preservedOption.update(customOption: (1<<12, "Should be preserved"))
+        preservedOption.update(customOption: (1<<12, "Should be preserved"), comparisonPolicy: .allowEqual)
         var options = AttributeOptions()
         options.update(with: .congestionLevel)
         options.update(with: .distance)
-        options.update(customOption: (1<<10, "Custom"))
+        options.update(customOption: (1<<10, "Custom"), comparisonPolicy: .allowEqual)
         options.update(with: preservedOption)
         
         // Removing default item
@@ -77,7 +77,7 @@ class AttributeOptionsTests: XCTestCase {
         
         // Removing custom option with incorrect name
         var wrongCustomOption = AttributeOptions()
-        wrongCustomOption.update(customOption: (1<<10, "Wrong name"))
+        wrongCustomOption.update(customOption: (1<<10, "Wrong name"), comparisonPolicy: .allowEqual)
         
         XCTAssertNil(options.remove(wrongCustomOption))
         XCTAssertTrue(options.contains(.congestionLevel))
@@ -85,7 +85,7 @@ class AttributeOptionsTests: XCTestCase {
         
         // Removing existing custom option
         var correctCustomOption = AttributeOptions()
-        correctCustomOption.update(customOption: (1<<10, "Custom"))
+        correctCustomOption.update(customOption: (1<<10, "Custom"), comparisonPolicy: .allowEqual)
         
         XCTAssertEqual(options.remove(correctCustomOption), correctCustomOption)
         XCTAssertTrue(options.contains(.congestionLevel))
@@ -93,11 +93,27 @@ class AttributeOptionsTests: XCTestCase {
         
         // Removing custom option with default raw value
         var customOptionWithDefaultRaw = AttributeOptions()
-        customOptionWithDefaultRaw.update(customOption: (AttributeOptions.distance.rawValue, "Not a distance"))
+        customOptionWithDefaultRaw.update(customOption: (AttributeOptions.distance.rawValue, "Not a distance"), comparisonPolicy: .allowEqual)
         XCTAssertNil(options.remove(customOptionWithDefaultRaw))
         
         // Removing custom option by raw value only
         options.update(with: correctCustomOption)
-        XCTAssertEqual(options.remove(.init(rawValue: 1<<10)), correctCustomOption)
+        XCTAssertEqual(options.remove(.init(rawValue: 1<<10), comparisonPolicy: .allowEqualOrNull), correctCustomOption)
+    }
+    
+    func testCustomAttributes() {
+        let customOption1 = (1, "atmospheric pressure")
+        let customOption2 = (1<<10, "space radiation")
+        var attributes = AttributeOptions()
+        attributes.insert(.congestionLevel)
+        attributes.insert(.speed)
+        attributes.update(customOption: customOption1, comparisonPolicy: .allowEqual)
+        attributes.update(customOption: customOption2, comparisonPolicy: .allowEqual)
+        
+        let descriptions = attributes.description.split(separator: ",")
+        XCTAssertTrue(descriptions.contains { $0 == AttributeOptions.congestionLevel.description })
+        XCTAssertTrue(descriptions.contains { $0 == AttributeOptions.speed.description })
+        XCTAssertTrue(descriptions.contains { $0 == customOption1.1 })
+        XCTAssertTrue(descriptions.contains { $0 == customOption2.1 })
     }
 }
