@@ -29,7 +29,7 @@ public enum CustomOptionComparisonPolicy {
 }
 
 /// Option set implementation which allows each option to have custom string value attached.
-public protocol CustomValueOptionSet: RawRepresentable, SetAlgebra where RawValue: FixedWidthInteger, Element == Self {
+public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthInteger, Element == Self {
     associatedtype Element = Self
     associatedtype CustomValue: Equatable
     var rawValue: Self.RawValue { get set }
