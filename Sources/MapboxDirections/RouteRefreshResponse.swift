@@ -140,15 +140,21 @@ extension Route {
 
     /**
      Merges the incidents of the given route’s legs into the receiver’s legs.
-     
+
      - parameter refreshedRoute: The route containing leg incidents to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the incidents from a one-leg route affects only the last leg of the receiver.
      - parameter legIndex: The index of a leg, from which to start applying the refreshed incidents.
      - parameter legShapeIndex: Index of a geometry of the `legIndex` leg, where to start refreshing from.
      */
     public func refreshLegIncidents(from refreshedRoute: RouteRefreshSource, legIndex: Int, legShapeIndex: Int) {
-        for (leg, refreshedLeg) in zip(legs[legIndex..<legIndex + refreshedRoute.refreshedLegs.count].enumerated(), refreshedRoute.refreshedLegs) {
-            let startIndex = leg.offset == 0 ? legShapeIndex : 0
-            leg.element.refreshIncidents(newIncidents: refreshedLeg.refreshedIncidents, startLegShapeIndex: startIndex)
+        let endRefreshIndex = legIndex + refreshedRoute.refreshedLegs.count
+        for (index, leg) in legs.enumerated() {
+            if (legIndex..<endRefreshIndex).contains(index) {
+                let refreshedLeg = refreshedRoute.refreshedLegs[index-legIndex]
+                let startIndex = index == legIndex ? legShapeIndex : 0
+                leg.refreshIncidents(newIncidents: refreshedLeg.refreshedIncidents, startLegShapeIndex: startIndex)
+            } else {
+                leg.incidents = nil
+            }
         }
     }
 }
