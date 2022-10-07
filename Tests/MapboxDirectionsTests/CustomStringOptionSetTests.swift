@@ -11,7 +11,7 @@ struct BareCustomStringOptionSet : CustomValueOptionSet {
     }
     
     var rawValue: Int
-    var customOptions: [Int: String] = [:]
+    var customOptionsByRawValue: [Int: String] = [:]
     var description: String = ""
 }
 
@@ -19,27 +19,27 @@ struct BareCustomStringOptionSet : CustomValueOptionSet {
 class CustomStringOptionSetTests: XCTestCase {
     func getEmptySet() -> BareCustomStringOptionSet {
         var set = BareCustomStringOptionSet()
-        set.customOptions = [1: "value"]
+        set.customOptionsByRawValue = [1: "value"]
         return set
     }
     
     func getSet1() -> BareCustomStringOptionSet {
         var set = BareCustomStringOptionSet(rawValue: 1+2+4+8)
-        set.customOptions = [2: "value 2",
+        set.customOptionsByRawValue = [2: "value 2",
                              8: "value 8"]
         return set
     }
     
     func getSet2() -> BareCustomStringOptionSet {
         var set = BareCustomStringOptionSet(rawValue: 4+8+16+32)
-        set.customOptions = [8: "value 8",
+        set.customOptionsByRawValue = [8: "value 8",
                              32: "value 32"]
         return set
     }
     
     func getSubset() -> BareCustomStringOptionSet {
         var set = BareCustomStringOptionSet(rawValue: 4+8)
-        set.customOptions = [8: "value 8"]
+        set.customOptionsByRawValue = [8: "value 8"]
         return set
     }
     
@@ -57,9 +57,9 @@ class CustomStringOptionSetTests: XCTestCase {
         let set = getSet1()
         
         XCTAssertEqual(set, set.intersection(set,
-                                             comparisonPolicy: .allowEqual))
+                                             comparisonPolicy: .equal))
         XCTAssertEqual(emptySet, set.intersection(emptySet,
-                                                  comparisonPolicy: .allowEqual))
+                                                  comparisonPolicy: .equal))
     }
     
     //     x.union(x) == x
@@ -69,9 +69,9 @@ class CustomStringOptionSetTests: XCTestCase {
         let set = getSet1()
         
         XCTAssertEqual(set, set.union(set,
-                                      comparisonPolicy: .allowEqual))
+                                      comparisonPolicy: .equal))
         XCTAssertEqual(set, set.union(emptySet,
-                                      comparisonPolicy: .allowEqual))
+                                      comparisonPolicy: .equal))
     }
     
     //     x.contains(e) implies x.union(y).contains(e)
@@ -82,10 +82,10 @@ class CustomStringOptionSetTests: XCTestCase {
         let set2 = getSet2()
         let setE = getSubset()
         
-        XCTAssertTrue(set1.contains(setE, comparisonPolicy: .allowEqual))
-        XCTAssertTrue(set1.union(set2, comparisonPolicy: .allowEqual).contains(setE, comparisonPolicy: .allowEqual))
+        XCTAssertTrue(set1.contains(setE, comparisonPolicy: .equal))
+        XCTAssertTrue(set1.union(set2, comparisonPolicy: .equal).contains(setE, comparisonPolicy: .equal))
         
-        XCTAssertTrue(set1.intersection(set2, comparisonPolicy: .allowEqual).contains(setE, comparisonPolicy: .allowEqual))
+        XCTAssertTrue(set1.intersection(set2, comparisonPolicy: .equal).contains(setE, comparisonPolicy: .equal))
     }
     
     //     x.isSubset(of: y) implies x.union(y) == y
@@ -96,11 +96,11 @@ class CustomStringOptionSetTests: XCTestCase {
         let setE = getSubset()
         
         XCTAssertTrue(setE.isSubset(of: set1,
-                                     comparisonPolicy: .allowEqual))
-        XCTAssertEqual(setE.union(set1, comparisonPolicy: .allowEqual), set1)
-        XCTAssertEqual(set1.union(setE, comparisonPolicy: .allowEqual), set1)
+                                     comparisonPolicy: .equal))
+        XCTAssertEqual(setE.union(set1, comparisonPolicy: .equal), set1)
+        XCTAssertEqual(set1.union(setE, comparisonPolicy: .equal), set1)
         XCTAssertTrue(set1.isSuperset(of: setE,
-                                     comparisonPolicy: .allowEqual))
+                                     comparisonPolicy: .equal))
     }
     
     //     x.isStrictSuperset(of: y) if and only if x.isSuperset(of: y) && x != y
@@ -109,8 +109,8 @@ class CustomStringOptionSetTests: XCTestCase {
         let set1 = getSet1()
         let setE = getSubset()
         
-        XCTAssertTrue(set1.isStrictSuperset(of: setE, comparisonPolicy: .allowEqual))
-        XCTAssertTrue(setE.isStrictSubset(of: set1, comparisonPolicy: .allowEqual))
+        XCTAssertTrue(set1.isStrictSuperset(of: setE, comparisonPolicy: .equal))
+        XCTAssertTrue(setE.isStrictSubset(of: set1, comparisonPolicy: .equal))
         XCTAssertNotEqual(set1, setE)
     }
 }

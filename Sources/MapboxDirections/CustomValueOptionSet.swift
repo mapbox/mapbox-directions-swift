@@ -1,6 +1,6 @@
 import Foundation
 
-/// Describes how `customOptions` component is compared during logical operations in `CustomValueOptionSet`.
+/// Describes how `customOptionsByRawValue` component is compared during logical operations in `CustomValueOptionSet`.
 public enum CustomOptionComparisonPolicy {
     /// Custom options are equal if `customOptions` key-value pairs are strictly equal
     ///
@@ -9,7 +9,7 @@ public enum CustomOptionComparisonPolicy {
     /// [1: "value1"] != [1: "value2"]
     /// [1: "value1"] != [:]
     /// [:] == [:]
-    case allowEqual
+    case equal
     /// Custom options are equal if `customOptions` by the given key is equal or `nil`
     ///
     /// Example:
@@ -17,7 +17,7 @@ public enum CustomOptionComparisonPolicy {
     /// [1: "value1"] != [1: "value2"]
     /// [1: "value1"] == [:]
     /// [:] == [:]
-    case allowEqualOrNull
+    case equalOrNull
     /// Custom options are not compared. Only `rawValue` is taken into account when comparing `CustomStringOptionSet`s.
     ///
     /// Example:
@@ -25,7 +25,7 @@ public enum CustomOptionComparisonPolicy {
     /// [1: "value1"] == [1: "value2"]
     /// [1: "value1"] == [:]
     /// [:] == [:]
-    case allowUnequal
+    case rawValueEqual
 }
 
 /// Option set implementation which allows each option to have custom string value attached.
@@ -33,7 +33,13 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     associatedtype Element = Self
     associatedtype CustomValue: Equatable
     var rawValue: Self.RawValue { get set }
-    var customOptions: [RawValue: CustomValue] { get set }
+    
+    
+    /// Provides a text value description for user-provided options.
+    ///
+    /// The option set will recognize a custom option if it's unique `rawValue` flag is set and `customOptionsByRawValue` contains a description for that flag.
+    /// Use the `update(customOption:comparisonPolicy:)` method to append a custom option.
+    var customOptionsByRawValue: [RawValue: CustomValue] { get set }
     
     init(rawValue: Self.RawValue)
     
@@ -53,7 +59,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "5 is prime!"
     ///
     /// - Parameter member: An element to look for in the set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if `member` exists in the set; otherwise, `false`.
     func contains(_ member: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
     /// Returns a new set with the elements of both this and the given set.
@@ -76,7 +82,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "[2, 4, 6, 7, 0, 1, 3]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: A new set with the unique elements of this set and `other`.
     ///
     /// - Note: if this set and `other` contain elements that are equal but
@@ -103,7 +109,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "[2, 4, 6, 7, 0, 1, 3]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     mutating func formUnion(_ other: Self, comparisonPolicy: CustomOptionComparisonPolicy)
     /// Returns a new set with the elements that are common to both this set and
     /// the given set.
@@ -120,7 +126,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Bethany", "Eric"]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: A new set.
     ///
     /// - Note: if this set and `other` contain elements that are equal but
@@ -140,7 +146,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Bethany", "Eric"]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     mutating func formIntersection(_ other: Self, comparisonPolicy: CustomOptionComparisonPolicy)
     /// Returns a new set with the elements that are either in this set or in the
     /// given set, but not in both.
@@ -157,7 +163,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Diana", "Forlani", "Alicia"]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: A new set.
     func symmetricDifference(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Self.Element
     /// Removes the elements of the set that are also in the given set and adds
@@ -176,7 +182,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Diana", "Forlani", "Alicia"]"
     ///
     /// - Parameter other: A set of the same type.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     mutating func formSymmetricDifference(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy)
     /// Returns a new set containing the elements of this set that do not occur
     /// in the given set.
@@ -191,7 +197,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Diana", "Chris", "Alicia"]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: A new set.
     func subtracting(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Self.Element
     /// Removes the elements of the given set from this set.
@@ -207,7 +213,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "["Diana", "Chris", "Alicia"]"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     mutating func subtract(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy)
     /// Inserts the given element in the set if it is not already present.
     ///
@@ -233,7 +239,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "[.friday, .wednesday, .monday]"
     ///
     /// - Parameter newMember: An element to insert into the set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `(true, newMember)` if `newMember` was not contained in the
     ///   set. If an element equal to `newMember` was already contained in the
     ///   set, the method returns `(false, oldMember)`, where `oldMember` is the
@@ -244,7 +250,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     /// Removes the given element and any elements subsumed by the given element.
     ///
     /// - Parameter member: The element of the set to remove.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: For ordinary sets, an element equal to `member` if `member` is
     ///   contained in the set; otherwise, `nil`. In some cases, a returned
     ///   element may be distinguishable from `member` by identity comparison
@@ -270,7 +276,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "Optional(.monday)"
     ///
     /// - Parameter newMember: An element to insert into the set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: For ordinary sets, an element equal to `newMember` if the set
     ///   already contained such a member; otherwise, `nil`. In some cases, the
     ///   returned element may be distinguishable from `newMember` by identity
@@ -283,10 +289,10 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     /// Inserts the given element into the set unconditionally.
     ///
     /// If an element equal to `customOption` is already contained in the set,
-    /// `customOption` replaces the existing element. Otherwise - updates the set contents and fills `customOptions` accordingly.
+    /// `customOption` replaces the existing element. Otherwise - updates the set contents and fills `customOptionsByRawValue` accordingly.
     ///
     /// - Parameter customOption: An element to insert into the set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: For ordinary sets, an element equal to `customOption` if the set
     ///   already contained such a member; otherwise, `nil`. In some cases, the
     ///   returned element may be distinguishable from `customOption` by identity
@@ -308,7 +314,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "true"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if the set is a subset of `other`; otherwise, `false`.
     func isSubset(of other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
     /// Returns a Boolean value that indicates whether the set is a superset of
@@ -323,7 +329,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "true"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if the set is a superset of `possibleSubset`;
     ///   otherwise, `false`.
     func isSuperset(of other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
@@ -344,7 +350,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "false"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if the set is a strict subset of `other`; otherwise,
     ///   `false`.
     func isStrictSubset(of other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
@@ -365,7 +371,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "false"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if the set is a strict superset of `other`; otherwise,
     ///   `false`.
     func isStrictSuperset(of other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
@@ -381,7 +387,7 @@ public protocol CustomValueOptionSet: OptionSet where RawValue: FixedWidthIntege
     ///     // Prints "true"
     ///
     /// - Parameter other: A set of the same type as the current set.
-    /// - Parameter comparisonPolicy: comparison method to be used for `customOptions`.
+    /// - Parameter comparisonPolicy: comparison method to be used for `customOptionsByRawValue`.
     /// - Returns: `true` if the set has no elements in common with `other`;
     ///   otherwise, `false`.
     func isDisjoint(with other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) -> Bool
@@ -396,11 +402,11 @@ public extension CustomValueOptionSet where Self == Self.Element {
                                      key: RawValue,
                                      policy: CustomOptionComparisonPolicy) -> Bool {
         switch policy {
-        case .allowEqual:
+        case .equal:
             return lhs[key] == rhs[key]
-        case .allowEqualOrNull:
+        case .equalOrNull:
             return lhs[key] == rhs[key] || lhs[key] == nil || rhs[key] == nil
-        case .allowUnequal:
+        case .rawValueEqual:
             return true
         }
     }
@@ -413,8 +419,8 @@ public extension CustomValueOptionSet where Self == Self.Element {
         }
         
         for offset in 0..<intersection.bitWidth {
-            guard customOptionIsEqual(customOptions,
-                                      member.customOptions,
+            guard customOptionIsEqual(customOptionsByRawValue,
+                                      member.customOptionsByRawValue,
                                       key: intersection & 1<<offset,
                                       policy: comparisonPolicy) else {
                 return false
@@ -430,7 +436,7 @@ public extension CustomValueOptionSet where Self == Self.Element {
             return (false, intersection(newMember, comparisonPolicy: comparisonPolicy))
         } else {
             rawValue = rawValue | newMember.rawValue
-            customOptions.merge(newMember.customOptions) { current, _ in current }
+            customOptionsByRawValue.merge(newMember.customOptionsByRawValue) { current, _ in current }
             return (true, newMember)
         }
     }
@@ -443,7 +449,7 @@ public extension CustomValueOptionSet where Self == Self.Element {
             return nil
         } else {
             rawValue -= intersection.rawValue
-            customOptions = customOptions.filter { (key, _) in
+            customOptionsByRawValue = customOptionsByRawValue.filter { (key, _) in
                 rawValue & key != 0
             }
             return intersection
@@ -457,20 +463,20 @@ public extension CustomValueOptionSet where Self == Self.Element {
         if intersection.rawValue == 0 {
             // insert
             rawValue = rawValue | newMember.rawValue
-            customOptions.merge(newMember.customOptions) { current, _ in current }
+            customOptionsByRawValue.merge(newMember.customOptionsByRawValue) { current, _ in current }
             return nil
         } else {
             // update
             rawValue = rawValue | newMember.rawValue
-            customOptions.merge(intersection.customOptions) { _, new in new }
+            customOptionsByRawValue.merge(intersection.customOptionsByRawValue) { _, new in new }
             return intersection
         }
     }
     
     mutating func formIntersection(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) {
         rawValue = rawValue & other.rawValue
-        customOptions = customOptions.reduce(into: [:]) { (partialResult, item) in
-            if customOptionIsEqual(customOptions, other.customOptions, key: item.key, policy: comparisonPolicy) {
+        customOptionsByRawValue = customOptionsByRawValue.reduce(into: [:]) { (partialResult, item) in
+            if customOptionIsEqual(customOptionsByRawValue, other.customOptionsByRawValue, key: item.key, policy: comparisonPolicy) {
                 partialResult[item.key] = item.value
             } else if rawValue & item.key != 0 {
                 rawValue -= item.key
@@ -480,8 +486,8 @@ public extension CustomValueOptionSet where Self == Self.Element {
     
     mutating func subtract(_ other: Self.Element, comparisonPolicy: CustomOptionComparisonPolicy) {
         rawValue = rawValue ^ (rawValue & other.rawValue)
-        customOptions = customOptions.reduce(into: [:], { partialResult, item in
-            if !customOptionIsEqual(customOptions, other.customOptions, key: item.key, policy: comparisonPolicy) {
+        customOptionsByRawValue = customOptionsByRawValue.reduce(into: [:], { partialResult, item in
+            if !customOptionIsEqual(customOptionsByRawValue, other.customOptionsByRawValue, key: item.key, policy: comparisonPolicy) {
                 partialResult[item.key] = item.value
             }
         })
@@ -513,7 +519,7 @@ public extension CustomValueOptionSet where Self == Self.Element {
     @discardableResult @inlinable
     mutating func update(customOption: (RawValue, CustomValue), comparisonPolicy: CustomOptionComparisonPolicy) -> Self.Element? {
         var newMember = Self(rawValue: customOption.0)
-        newMember.customOptions[customOption.0] = customOption.1
+        newMember.customOptionsByRawValue[customOption.0] = customOption.1
         return update(with: newMember, comparisonPolicy: comparisonPolicy)
     }
     
@@ -568,62 +574,62 @@ public extension CustomValueOptionSet where Self == Self.Element {
 public extension CustomValueOptionSet {
     @discardableResult @inlinable
     func contains(_ member: Self.Element) -> Bool {
-        return contains(member, comparisonPolicy: .allowEqual)
+        return contains(member, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func union(_ other: Self) -> Self {
-        return union(other, comparisonPolicy: .allowEqual)
+        return union(other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func intersection(_ other: Self) -> Self {
-        return intersection(other, comparisonPolicy: .allowEqual)
+        return intersection(other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func symmetricDifference(_ other: Self) -> Self {
-        return symmetricDifference(other, comparisonPolicy: .allowEqual)
+        return symmetricDifference(other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     mutating func insert(_ newMember: Self.Element) -> (inserted: Bool, memberAfterInsert: Self.Element) {
-        return insert(newMember, comparisonPolicy: .allowEqual)
+        return insert(newMember, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     mutating func remove(_ member: Self.Element) -> Self.Element? {
-        return remove(member, comparisonPolicy: .allowEqual)
+        return remove(member, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     mutating func update(with newMember: Self.Element) -> Self.Element? {
-        return update(with: newMember, comparisonPolicy: .allowEqual)
+        return update(with: newMember, comparisonPolicy: .equal)
     }
     @inlinable
     mutating func formUnion(_ other: Self) {
-        formUnion(other, comparisonPolicy: .allowEqual)
+        formUnion(other, comparisonPolicy: .equal)
     }
     @inlinable
     mutating func formIntersection(_ other: Self) {
-        formIntersection(other, comparisonPolicy: .allowEqual)
+        formIntersection(other, comparisonPolicy: .equal)
     }
     @inlinable
     mutating func formSymmetricDifference(_ other: Self) {
-        formSymmetricDifference(other, comparisonPolicy: .allowEqual)
+        formSymmetricDifference(other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func subtracting(_ other: Self) -> Self {
-        return subtracting(other, comparisonPolicy: .allowEqual)
+        return subtracting(other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func isSubset(of other: Self) -> Bool {
-        return isSubset(of: other, comparisonPolicy: .allowEqual)
+        return isSubset(of: other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func isDisjoint(with other: Self) -> Bool {
-        return isDisjoint(with: other, comparisonPolicy: .allowEqual)
+        return isDisjoint(with: other, comparisonPolicy: .equal)
     }
     @discardableResult @inlinable
     func isSuperset(of other: Self) -> Bool {
-        return isSuperset(of: other, comparisonPolicy: .allowEqual)
+        return isSuperset(of: other, comparisonPolicy: .equal)
     }
     @inlinable
     mutating func subtract(_ other: Self) {
-        subtract(other, comparisonPolicy: .allowEqual)
+        subtract(other, comparisonPolicy: .equal)
     }
 }

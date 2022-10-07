@@ -8,13 +8,7 @@ import Foundation
 public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     public var rawValue: Int
     
-    /**
-     Provides a text value description for user-provided options.
-     
-     `AttributeOptions` will recognize a custom option if it's unique `rawValue` flag is set and `customOptions` contains a description for that flag.
-     Use the `update(customOption:)` method to append a custom option.
-     */
-    public var customOptions: [Int: String] = [:]
+    public var customOptionsByRawValue: [Int: String] = [:]
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
@@ -118,7 +112,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
         if contains(.numericCongestionLevel) {
             descriptions.append("congestion_numeric")
         }
-        for (key, value) in customOptions {
+        for (key, value) in customOptionsByRawValue {
             if rawValue & key != 0 {
                 descriptions.append(value)
             }
