@@ -170,7 +170,7 @@ class RouteRefreshTests: XCTestCase {
                 
                 let route = routeResponse.routes?[routeIndex]
                 let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
-                let originalIncidents = route!.legs[0].incidents
+                let originalIncidents = route!.legs.map(\.incidents)
                 
                 route?.refreshLegAttributes(from: refresh.route,
                                             legIndex: legIndex,
@@ -181,8 +181,8 @@ class RouteRefreshTests: XCTestCase {
                 
                 let refreshCongestions = refresh.route.legs[0].attributes.segmentCongestionLevels!
                 let refreshedCongestions = route!.legs[0].attributes.segmentCongestionLevels!
-                let refreshIncidents = refresh.route.legs[0].incidents
-                let refreshedIncidents = route!.legs[0].incidents
+                let refreshIncidents = refresh.route.legs.map(\.incidents)
+                let refreshedIncidents = route!.legs.map(\.incidents)
                 
                 XCTAssertEqual(originalCongestions[PartialRangeUpTo(geometryIndex)],
                                refreshedCongestions[PartialRangeUpTo(geometryIndex)],
@@ -197,9 +197,25 @@ class RouteRefreshTests: XCTestCase {
                 XCTAssertNotEqual(originalIncidents,
                                   refreshedIncidents,
                                   "Incidents should be refreshed")
-                XCTAssertEqual(refreshIncidents,
-                               refreshedIncidents,
-                               "Incidents are not refreshed")
+                for leg in zip(refreshIncidents, refreshedIncidents).enumerated() {
+                    let (new, updated) = leg.element
+                    if leg.offset == legIndex {
+                        XCTAssertEqual(new != nil, updated != nil)
+
+                        if let new = new, let updated = updated {
+                            for incident in zip(new, updated) {
+                                var offsetNewIncident = incident.0
+                                // refreshed ranges should be offset by leg shape index
+                                let startIndex = offsetNewIncident.shapeIndexRange.lowerBound + geometryIndex
+                                let endIndex = offsetNewIncident.shapeIndexRange.upperBound + geometryIndex
+                                offsetNewIncident.shapeIndexRange = startIndex..<endIndex
+                                XCTAssertEqual(offsetNewIncident, incident.1, "Incidents are not refreshed")
+                            }
+                        }
+                    } else {
+                        XCTAssertEqual(new, updated, "Incidents are not refreshed")
+                    }
+                }
                 
                 routeUpdatedExpectation.fulfill()
             }

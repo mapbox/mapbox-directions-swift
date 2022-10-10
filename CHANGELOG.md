@@ -9,6 +9,7 @@
 ### Other Changes
 
 * Added the `Waypoint.layer` property, which can ensure that the route begins on the correct road if it is above or below another road. ([#745](https://github.com/mapbox/mapbox-directions-swift/pull/745))
+* Fixed incorrect shape indicies in `RouteLeg.incidents` after route refresh. ([#752](https://github.com/mapbox/mapbox-directions-swift/pull/752))
 
 ## 2.7.0
 
