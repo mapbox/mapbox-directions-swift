@@ -5,11 +5,17 @@ import Foundation
  
  When any of the attributes are specified, the resulting route leg contains one attribute value for each segment in leg, where a segment is the straight line between two coordinates in the route leg’s full geometry.
  */
-public struct AttributeOptions: OptionSet, CustomStringConvertible {
+public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     public var rawValue: Int
+    
+    public var customOptionsByRawValue: [Int: String] = [:]
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
+    }
+    
+    public init() {
+        rawValue = 0
     }
     
     /**
@@ -105,6 +111,11 @@ public struct AttributeOptions: OptionSet, CustomStringConvertible {
         }
         if contains(.numericCongestionLevel) {
             descriptions.append("congestion_numeric")
+        }
+        for (key, value) in customOptionsByRawValue {
+            if rawValue & key != 0 {
+                descriptions.append(value)
+            }
         }
         return descriptions.joined(separator: ",")
     }
