@@ -55,7 +55,7 @@ class RouteTests: XCTestCase {
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
         let expectedTollPrices = TollPrice(currencyCode: "JPY",
-                                           paymentMethods: [.electronicTollCollection: [.standard: 1200,
+                                           paymentDetails: [.electronicTollCollection: [.standard: 1200,
                                                                                         .middle: 1400],
                                                             .cash: [.standard: 1250]])
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)

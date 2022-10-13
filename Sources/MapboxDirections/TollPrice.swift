@@ -64,7 +64,7 @@ public struct TollCategory: Hashable, Equatable {
 }
 
 public typealias CategoriesTolls = [TollCategory: Decimal]
-public typealias PaymentMethods = [TollPaymentMethod: CategoriesTolls]
+public typealias PaymentDetails = [TollPaymentMethod: CategoriesTolls]
 
 /**
  :nodoc:
@@ -86,13 +86,13 @@ public struct TollPrice: Equatable,  Codable, ForeignMemberContainer {
      */
     public let currencyCode: String
     /**
-     Information about toll payment methods.
+     Information about toll payment.
      */
-    public let paymentMethods: PaymentMethods
+    public let paymentDetails: PaymentDetails
     
-    init(currencyCode: String, paymentMethods: PaymentMethods) {
+    init(currencyCode: String, paymentDetails: PaymentDetails) {
         self.currencyCode = currencyCode
-        self.paymentMethods = paymentMethods
+        self.paymentDetails = paymentDetails
     }
 }
 
@@ -104,9 +104,9 @@ extension TollPrice {
         
         let rawPaymentMethods = try? container.decode([String: [String: Decimal]].self, forKey: .paymentMethods)
         if let rawPaymentMethods = rawPaymentMethods {
-            self.paymentMethods = paymentMethodsFromRawStrings(rawPaymentMethods)
+            self.paymentDetails = paymentDetailsFromRawStrings(rawPaymentMethods)
         } else {
-            self.paymentMethods = [:]
+            self.paymentDetails = [:]
             try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
         }
     }
@@ -114,22 +114,22 @@ extension TollPrice {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(currencyCode, forKey: .currency)
-        try container.encode(paymentMethodsToRawStrings(paymentMethods), forKey: .paymentMethods)
+        try container.encode(paymentDetailsToRawStrings(paymentDetails), forKey: .paymentMethods)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }
 
-private func paymentMethodsFromRawStrings(_ rawPaymentMethods: [String: [String: Decimal]]) -> PaymentMethods {
-    return rawPaymentMethods.reduce(into: [:], { paymentResult, paymentElement in
+private func paymentDetailsFromRawStrings(_ rawPaymentDetails: [String: [String: Decimal]]) -> PaymentDetails {
+    return rawPaymentDetails.reduce(into: [:], { paymentResult, paymentElement in
         paymentResult[TollPaymentMethod(identifier: paymentElement.key)] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
             categoryResult[TollCategory(name: categoryElement.key)] = categoryElement.value
         })
     })
 }
 
-private func paymentMethodsToRawStrings(_ paymentMethods: PaymentMethods) -> [String: [String: Decimal]] {
-    return paymentMethods.reduce(into: [:], { paymentResult, paymentElement in
+private func paymentDetailsToRawStrings(_ paymentDetails: PaymentDetails) -> [String: [String: Decimal]] {
+    return paymentDetails.reduce(into: [:], { paymentResult, paymentElement in
         paymentResult[paymentElement.key.identifier] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
             categoryResult[categoryElement.key.name] = categoryElement.value
         })
