@@ -63,75 +63,120 @@ public struct TollCategory: Hashable, Equatable {
     public static let jumbo = TollCategory(name: "jumbo")
 }
 
-public typealias CategoriesTolls = [TollCategory: Decimal]
-public typealias PaymentDetails = [TollPaymentMethod: CategoriesTolls]
-
 /**
  :nodoc:
  Toll cost information for the `Route`.
  */
-public struct TollPrice: Equatable,  Codable, ForeignMemberContainer {
+public struct TollPrice: Equatable, Hashable, ForeignMemberContainer {
     public var foreignMembers: Turf.JSONObject = [:]
     
-    private enum CodingKeys: String, CodingKey {
-        case currency
-        case paymentMethods = "payment_methods"
-    }
-
     /**
      Related currency code string.
      
-     Uses ISO 4217 format. Refers to values in `CategoriesTolls`. A toll cost of `0` is valid and simply means that no toll costs are incurred for this route.
+     Uses ISO 4217 format. Refers to `amount` value.
      This value is compatible with `NumberFormatter().currencyCode`.
      */
     public let currencyCode: String
     /**
      Information about toll payment.
      */
-    public let paymentDetails: PaymentDetails
+    public let paymentMethod: TollPaymentMethod
+    /**
+     Toll category information.
+     */
+    public let category: TollCategory
+    /**
+     The actual toll price in `currencyCode` currency.
+     
+     A toll cost of `0` is valid and simply means that no toll costs are incurred for this route.
+     */
+    public let amount: Decimal
     
-    init(currencyCode: String, paymentDetails: PaymentDetails) {
+    init(currencyCode: String, paymentMethod: TollPaymentMethod, category: TollCategory, amount: Decimal) {
         self.currencyCode = currencyCode
-        self.paymentDetails = paymentDetails
+        self.paymentMethod = paymentMethod
+        self.category = category
+        self.amount = amount
     }
 }
 
 
-extension TollPrice {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        currencyCode = try container.decode(String.self, forKey: .currency)
+
+internal struct TollPriceCoder: Codable {
+    let tollPrices: [TollPrice]
+    
+    init(tollPrices: [TollPrice]) {
+        self.tollPrices = tollPrices
+    }
+    
+    private class TollPriceItem: Codable, ForeignMemberContainerClass {
+        var foreignMembers: Turf.JSONObject = [:]
         
-        let rawPaymentMethods = try? container.decode([String: [String: Decimal]].self, forKey: .paymentMethods)
-        if let rawPaymentMethods = rawPaymentMethods {
-            self.paymentDetails = paymentDetailsFromRawStrings(rawPaymentMethods)
-        } else {
-            self.paymentDetails = [:]
+        private enum CodingKeys: String, CodingKey, CaseIterable {
+            case currency
+            case paymentMethods = "payment_methods"
+        }
+        
+        var currencyCode: String
+        var paymentMethods: [String: [String: Decimal]] = [:]
+        
+        init(currencyCode: String) {
+            self.currencyCode = currencyCode
+        }
+        
+        required init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            currencyCode = try container.decode(String.self, forKey: .currency)
+            paymentMethods = try container.decode([String: [String: Decimal]].self, forKey: .paymentMethods)
+            
             try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(currencyCode, forKey: .currency)
+            try container.encode(paymentMethods, forKey: .paymentMethods)
+            
+            try encodeForeignMembers(to: encoder)
         }
     }
     
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(currencyCode, forKey: .currency)
-        try container.encode(paymentDetailsToRawStrings(paymentDetails), forKey: .paymentMethods)
+    init(from decoder: Decoder) throws {
+        let item = try TollPriceItem(from: decoder)
         
-        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
+        var tollPrices = Array<TollPrice>()
+        for method in item.paymentMethods {
+            for category in method.value {
+                var newItem = TollPrice(currencyCode: item.currencyCode,
+                                        paymentMethod: TollPaymentMethod(identifier: method.key),
+                                        category: TollCategory(name: category.key),
+                                        amount: category.value)
+                newItem.foreignMembers = item.foreignMembers
+                tollPrices.append(newItem)
+            }
+        }
+        self.tollPrices = tollPrices
     }
-}
-
-private func paymentDetailsFromRawStrings(_ rawPaymentDetails: [String: [String: Decimal]]) -> PaymentDetails {
-    return rawPaymentDetails.reduce(into: [:], { paymentResult, paymentElement in
-        paymentResult[TollPaymentMethod(identifier: paymentElement.key)] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
-            categoryResult[TollCategory(name: categoryElement.key)] = categoryElement.value
-        })
-    })
-}
-
-private func paymentDetailsToRawStrings(_ paymentDetails: PaymentDetails) -> [String: [String: Decimal]] {
-    return paymentDetails.reduce(into: [:], { paymentResult, paymentElement in
-        paymentResult[paymentElement.key.identifier] = paymentElement.value.reduce(into: [:], { categoryResult, categoryElement in
-            categoryResult[categoryElement.key.name] = categoryElement.value
-        })
-    })
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        var items: [TollPriceItem] = []
+        
+        for price in tollPrices {
+            var item: TollPriceItem
+            if let existingItem = items.first(where: { $0.currencyCode == price.currencyCode }) {
+                item = existingItem
+            } else {
+                item = TollPriceItem(currencyCode: price.currencyCode)
+                item.foreignMembers = price.foreignMembers
+                items.append(item)
+            }
+            if item.paymentMethods[price.paymentMethod.identifier] == nil {
+                item.paymentMethods[price.paymentMethod.identifier] = [:]
+            }
+            item.paymentMethods[price.paymentMethod.identifier]?[price.category.name] = price.amount
+        }
+        
+        try container.encode(contentsOf: items)
+    }
 }

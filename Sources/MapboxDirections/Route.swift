@@ -32,7 +32,7 @@ open class Route: DirectionsResult {
      */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        tollPrices = try container.decodeIfPresent([TollPrice].self, forKey: .tollPrices)
+        tollPrices = try container.decodeIfPresent([TollPriceCoder].self, forKey: .tollPrices)?.reduce(into: []) { $0.append(contentsOf: $1.tollPrices) }
         
         try super.init(from: decoder)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
@@ -40,7 +40,7 @@ open class Route: DirectionsResult {
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(tollPrices, forKey: .tollPrices)
+        try container.encodeIfPresent(tollPrices.map { TollPriceCoder(tollPrices: $0) }, forKey: .tollPrices)
         
         try super.encode(to: encoder)
     }
@@ -64,6 +64,6 @@ extension Route: Equatable {
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
             lhs.legs == rhs.legs &&
             lhs.shape == rhs.shape &&
-            lhs.tollPrices == rhs.tollPrices
+            lhs.tollPrices.map { Set($0) } == rhs.tollPrices.map { Set($0) } // comparing sets to mitigate items reordering caused by custom Coding impl.
     }
 }
