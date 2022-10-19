@@ -38,6 +38,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.alleyPriority, options.alleyPriority)
         XCTAssertEqual(unarchivedOptions.walkwayPriority, options.walkwayPriority)
         XCTAssertEqual(unarchivedOptions.speed, options.speed)
+        XCTAssertEqual(unarchivedOptions.includesTollPrices, options.includesTollPrices)
     }
     
     func testCodingWithRawCodingKeys() {
@@ -69,6 +70,7 @@ class RouteOptionsTests: XCTestCase {
             "max_height": 3,
             "alley_bias": DirectionsPriority.low.rawValue,
             "walkway_bias": DirectionsPriority.high.rawValue,
+            "compute_toll_cost": true
         ]
         
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
@@ -94,6 +96,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.maximumWidth, Measurement(value: 2.3, unit: .meters))
         XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
         XCTAssertEqual(routeOptions.maximumWeight, Measurement(value: 3.5, unit: .metricTons))
+        XCTAssertEqual(routeOptions.includesTollPrices, true)
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
@@ -119,6 +122,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.initialManeuverAvoidanceRadius, routeOptions.initialManeuverAvoidanceRadius)
         XCTAssertEqual(unarchivedOptions.maximumWidth, routeOptions.maximumWidth)
         XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
+        XCTAssertEqual(unarchivedOptions.includesTollPrices, routeOptions.includesTollPrices)
     }
     
     func testURLCoding() throws {
@@ -190,6 +194,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(decodedOptions.alleyPriority, originalOptions.alleyPriority)
         XCTAssertEqual(decodedOptions.walkwayPriority, originalOptions.walkwayPriority)
         XCTAssertEqual(decodedOptions.speed, originalOptions.speed)
+        XCTAssertEqual(decodedOptions.includesTollPrices, originalOptions.includesTollPrices)
         XCTAssertNil(decodedOptions.arriveBy)
         // URL encoding skips seconds, so we check that dates are within 1 minute delta
         XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)
@@ -398,6 +403,7 @@ var testRouteOptions: RouteOptions {
     opts.speed = 1
     opts.departAt = Date(timeIntervalSince1970: 500)
     opts.arriveBy = Date(timeIntervalSince1970: 600)
+    opts.includesTollPrices = true
 
     return opts
 }

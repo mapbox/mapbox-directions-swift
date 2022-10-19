@@ -107,6 +107,9 @@ open class RouteOptions: DirectionsOptions {
            let arriveBy = formatter.date(from: mappedValue) {
             self.arriveBy = arriveBy
         }
+        if mappedQueryItems[CodingKeys.includesTollPrices.stringValue] == "true" {
+            self.includesTollPrices = true
+        }
     }
 
     #if canImport(CoreLocation)
@@ -155,6 +158,7 @@ open class RouteOptions: DirectionsOptions {
         case arriveBy = "arrive_by"
         case departAt = "depart_at"
         case layers = "layers"
+        case includesTollPrices = "compute_toll_cost"
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -180,6 +184,10 @@ open class RouteOptions: DirectionsOptions {
         }
         if let departAt = departAt {
             try container.encode(formatter.string(from: departAt), forKey: .departAt)
+        }
+        
+        if includesTollPrices {
+            try container.encode(includesTollPrices, forKey: .includesTollPrices)
         }
     }
     
@@ -224,6 +232,8 @@ open class RouteOptions: DirectionsOptions {
         if let dateString = try container.decodeIfPresent(String.self, forKey: .arriveBy) {
             arriveBy = formatter.date(from: dateString)
         }
+        
+        includesTollPrices = try container.decodeIfPresent(Bool.self, forKey: .includesTollPrices) ?? false
         
         try super.init(from: decoder)
     }
@@ -393,16 +403,25 @@ open class RouteOptions: DirectionsOptions {
     }
     private var _initialManeuverAvoidanceRadius: LocationDistance?
     
+    /**
+     :nodoc:
+     Toggle whether to return calculated toll cost for the route, if data is available.
+     
+     Toll prices are populeted in resulting route's `Route.tollPrices`.
+     Default value is `false`.
+     */
+    open var includesTollPrices = false
+    
     // MARK: Getting the Request URL
     
     override open var urlQueryItems: [URLQueryItem] {
         var params: [URLQueryItem] = [
-            URLQueryItem(name: CodingKeys.includesAlternativeRoutes.stringValue, value: String(includesAlternativeRoutes)),
-            URLQueryItem(name: CodingKeys.allowsUTurnAtWaypoint.stringValue, value: String(!allowsUTurnAtWaypoint)),
+            URLQueryItem(name: CodingKeys.includesAlternativeRoutes.stringValue, value: includesAlternativeRoutes.queryString),
+            URLQueryItem(name: CodingKeys.allowsUTurnAtWaypoint.stringValue, value: (!allowsUTurnAtWaypoint).queryString),
         ]
 
         if includesExitRoundaboutManeuver {
-            params.append(URLQueryItem(name: CodingKeys.includesExitRoundaboutManeuver.stringValue, value: String(includesExitRoundaboutManeuver)))
+            params.append(URLQueryItem(name: CodingKeys.includesExitRoundaboutManeuver.stringValue, value: includesExitRoundaboutManeuver.queryString))
         }
         if let alleyPriority = alleyPriority?.rawValue {
             params.append(URLQueryItem(name: CodingKeys.alleyPriority.stringValue, value: String(alleyPriority)))
@@ -427,7 +446,7 @@ open class RouteOptions: DirectionsOptions {
         }
         
         if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {
-            params.append(URLQueryItem(name: CodingKeys.refreshingEnabled.stringValue, value: String(refreshingEnabled)))
+            params.append(URLQueryItem(name: CodingKeys.refreshingEnabled.stringValue, value: refreshingEnabled.queryString))
         }
         
         if waypoints.first(where: { $0.targetCoordinate != nil }) != nil {
@@ -474,9 +493,20 @@ open class RouteOptions: DirectionsOptions {
             }
         }
         
+        if includesTollPrices {
+            params.append(URLQueryItem(name: CodingKeys.includesTollPrices.stringValue,
+                                       value: includesTollPrices.queryString))
+        }
+        
         return params + super.urlQueryItems
     }
     
+}
+
+extension Bool {
+    var queryString: String {
+        return self ? "true": "false"
+    }
 }
 
 extension LocationSpeed {

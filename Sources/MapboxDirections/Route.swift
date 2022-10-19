@@ -7,6 +7,9 @@ import Turf
  Typically, you do not create instances of this class directly. Instead, you receive route objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method. However, if you use the `Directions.url(forCalculating:)` method instead, you can use `JSONDecoder` to convert the HTTP response into a `RouteResponse` or `MapMatchingResponse` object and access the `RouteResponse.routes` or `MapMatchingResponse.routes` property.
  */
 open class Route: DirectionsResult {
+    private enum CodingKeys: String, CodingKey, CaseIterable {
+        case tollPrices = "toll_costs"
+    }
     
     /**
      Initializes a route.
@@ -28,8 +31,28 @@ open class Route: DirectionsResult {
      - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Route` object.
      */
     public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        tollPrices = try container.decodeIfPresent([TollPriceCoder].self, forKey: .tollPrices)?.reduce(into: []) { $0.append(contentsOf: $1.tollPrices) }
+        
         try super.init(from: decoder)
+        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
+    
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(tollPrices.map { TollPriceCoder(tollPrices: $0) }, forKey: .tollPrices)
+        
+        try super.encode(to: encoder)
+    }
+    
+    /**
+     :nodoc:
+     List of calculated toll costs for this route.
+     
+     This property is set to `nil` unless request `RouteOptions.includesTollPrices` is set to `true`.
+     See `TollPrice`.
+     */
+    open var tollPrices: [TollPrice]?
 }
 
 extension Route: Equatable {
@@ -40,6 +63,7 @@ extension Route: Equatable {
             lhs.speechLocale == rhs.speechLocale &&
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
             lhs.legs == rhs.legs &&
-            lhs.shape == rhs.shape
+            lhs.shape == rhs.shape &&
+            lhs.tollPrices.map { Set($0) } == rhs.tollPrices.map { Set($0) } // comparing sets to mitigate items reordering caused by custom Coding impl.
     }
 }

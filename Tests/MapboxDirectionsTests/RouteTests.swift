@@ -22,6 +22,31 @@ class RouteTests: XCTestCase {
             "duration": 1083.4,
             "duration_typical": 1483.262,
             "distance": 17036.8,
+            "toll_costs": [
+               [
+                    "currency": "JPY",
+                    "payment_methods": [
+                        "etc": [
+                            "standard": 1200,
+                            "middle": 1400
+                        ],
+                        "cash": [
+                            "standard": 1250
+                        ]
+                    ]
+               ],
+               [
+                    "currency": "USD",
+                    "payment_methods": [
+                        "etc": [
+                            "standard": 120,
+                        ],
+                        "cash": [
+                            "standard": 125
+                        ]
+                    ]
+               ],
+            ]
         ]
         let routeData = try! JSONSerialization.data(withJSONObject: routeJSON, options: [])
         
@@ -40,7 +65,31 @@ class RouteTests: XCTestCase {
         let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262, profileIdentifier: .automobileAvoidingTraffic)
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
+        let expectedTollPrices = [
+            TollPrice(currencyCode: "JPY",
+                      paymentMethod: .electronicTollCollection,
+                      category: .standard,
+                      amount: 1200),
+            TollPrice(currencyCode: "JPY",
+                      paymentMethod: .electronicTollCollection,
+                      category: .middle,
+                      amount: 1400),
+            TollPrice(currencyCode: "JPY",
+                      paymentMethod: .cash,
+                      category: .standard,
+                      amount: 1250),
+            TollPrice(currencyCode: "USD",
+                      paymentMethod: .electronicTollCollection,
+                      category: .standard,
+                      amount: 120),
+            TollPrice(currencyCode: "USD",
+                      paymentMethod: .cash,
+                      category: .standard,
+                      amount: 125),
+        ]
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
+        expectedRoute.tollPrices = expectedTollPrices
+        
         XCTAssertEqual(route, expectedRoute)
         
         if let route = route {
