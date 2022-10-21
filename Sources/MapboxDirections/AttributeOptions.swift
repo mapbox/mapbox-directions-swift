@@ -19,6 +19,15 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     }
     
     /**
+      Live-traffic closures along the road segment.
+      
+      When this attribute is specified, the `RouteLeg.closures` property is filled with relevant data.
+      
+      This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`.
+     */
+    public static let closures = AttributeOptions(rawValue: 1)
+    
+    /**
      Distance (in meters) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentDistances` property contains one value for each segment in the leg’s full geometry.
@@ -71,6 +80,8 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
         var attributeOptions: AttributeOptions = []
         for description in descriptions {
             switch description {
+            case "closure":
+                attributeOptions.update(with: .closures)
             case "distance":
                 attributeOptions.update(with: .distance)
             case "duration":
@@ -94,6 +105,9 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     
     public var description: String {
         var descriptions: [String] = []
+        if contains(.closures) {
+            descriptions.append("closure")
+        }
         if contains(.distance) {
             descriptions.append("distance")
         }

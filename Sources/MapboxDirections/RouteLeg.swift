@@ -33,6 +33,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         case administrativeRegions = "admins"
         case incidents
         case viaWaypoints = "via_waypoints"
+        case closures = "closures"
     }
     
     // MARK: Creating a Leg
@@ -100,6 +101,10 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
             self.incidents = incidents
         }
 
+        if let closures = try container.decodeIfPresent([Closure].self, forKey: .closures) {
+            self.closures = closures
+        }
+        
         if let viaWaypoints = try container.decodeIfPresent([SilentWaypoint].self, forKey: .viaWaypoints) {
             self.viaWaypoints = viaWaypoints
         }
@@ -130,6 +135,9 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
         if let incidents = incidents {
             try container.encode(incidents, forKey: .incidents)
+        }
+        if let closures = closures {
+            try container.encode(closures, forKey: .closures)
         }
 
         if let viaWaypoints = viaWaypoints {
@@ -256,6 +264,13 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
     
     /**
+     An array of `Closure` objects describing live-traffic related closures that occur along the route.
+     
+     This annotation is only available for the `mapbox/driving-traffic` profile and when `RouteOptions.attributeOptions` property contains `AttributeOptions.closures`.
+     */
+    open var closures: [Closure]?
+    
+    /**
      The full collection of attributes along the leg.
      */
     var attributes: Attributes {
@@ -288,16 +303,30 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         segmentMaximumSpeedLimits?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
     }
     
+    private func adjustShapeIndexRange(_ range: Range<Int>, startLegShapeIndex: Int) -> Range<Int> {
+        let startIndex = startLegShapeIndex + range.lowerBound
+        let endIndex = startLegShapeIndex + range.upperBound
+        return startIndex..<endIndex
+    }
+    
     func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
         incidents = newIncidents?.map { incident in
             var adjustedIncident = incident
-            let startIndex = startLegShapeIndex + incident.shapeIndexRange.lowerBound
-            let endIndex = startLegShapeIndex + incident.shapeIndexRange.upperBound
-            adjustedIncident.shapeIndexRange = startIndex..<endIndex
+            adjustedIncident.shapeIndexRange = adjustShapeIndexRange(incident.shapeIndexRange,
+                                                                     startLegShapeIndex: startLegShapeIndex)
             return adjustedIncident
         }
     }
 
+    func refreshClosures(newClosures: [Closure]?, startLegShapeIndex: Int = 0) {
+        closures = newClosures?.map { closure in
+            var adjustedClosure = closure
+            adjustedClosure.shapeIndexRange = adjustShapeIndexRange(closure.shapeIndexRange,
+                                                                    startLegShapeIndex: startLegShapeIndex)
+            return adjustedClosure
+        }
+    }
+    
     /**
      Returns the ISO 3166-1 alpha-2 region code for the administrative region through which the given intersection passes. The intersection is identified by its step index and intersection index.
      
@@ -419,6 +448,44 @@ extension RouteLeg: CustomQuickLookConvertible {
             return nil
         }
         return debugQuickLookURL(illustrating: LineString(coordinates))
+    }
+}
+
+extension RouteLeg {
+    /**
+     Live-traffic related closure that occured along the route.
+     */
+    public struct Closure: Codable, Equatable, ForeignMemberContainer {
+        public var foreignMembers: JSONObject = [:]
+
+        private enum CodingKeys: String, CodingKey {
+            case geometryIndexStart = "geometry_index_start"
+            case geometryIndexEnd = "geometry_index_end"
+        }
+
+        /**
+         The range of segments within the current leg, where the closure spans.
+         */
+        public var shapeIndexRange: Range<Int>
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
+            let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
+            shapeIndexRange = geometryIndexStart..<geometryIndexEnd
+            
+            try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            try container.encode(shapeIndexRange.lowerBound, forKey: .geometryIndexStart)
+            try container.encode(shapeIndexRange.upperBound, forKey: .geometryIndexEnd)
+            
+            try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
+        }
     }
 }
 

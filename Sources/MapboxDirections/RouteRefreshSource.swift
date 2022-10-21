@@ -13,10 +13,14 @@ public protocol RouteRefreshSource {
 public protocol RouteLegRefreshSource {
     var refreshedAttributes: RouteLeg.Attributes { get }
     var refreshedIncidents: [Incident]? { get }
+    var refreshedClosures: [RouteLeg.Closure]? { get }
 }
 
 public extension RouteLegRefreshSource {
     var refreshedIncidents: [Incident]? {
+        return nil
+    }
+    var refreshedClosures: [RouteLeg.Closure]? {
         return nil
     }
 }
@@ -35,6 +39,10 @@ extension RouteLeg: RouteLegRefreshSource {
     public var refreshedIncidents: [Incident]? {
         incidents
     }
+    
+    public var refreshedClosures: [RouteLeg.Closure]? {
+        closures
+    }
 }
 
 extension RefreshedRoute: RouteRefreshSource {
@@ -50,5 +58,9 @@ extension RefreshedRouteLeg: RouteLegRefreshSource {
     
     public var refreshedIncidents: [Incident]? {
         incidents
+    }
+    
+    public var refreshedClosures: [RouteLeg.Closure]? {
+        closures
     }
 }
