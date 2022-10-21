@@ -266,7 +266,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     /**
      An array of `Closure` objects describing live-traffic related closures that occur along the route.
      
-     This annotation is only available for the `mapbox/driving-traffic` profile and when `RouteOptions.attributeOptions` property contains `AttributeOptions.closures`.
+     This information is only available for the `mapbox/driving-traffic` profile and when `RouteOptions.attributeOptions` property contains `AttributeOptions.closures`.
      */
     open var closures: [Closure]?
     
