@@ -5,6 +5,7 @@
 ### Packaging
 
 * This library now requires a minimum deployment target of iOS 12.0 or above, macOS 10.14.0 or above, tvOS 12.0 or above, or watchOS 5.0 or above. Older operating system versions are no longer supported. ([#736](https://github.com/mapbox/mapbox-directions-swift/pull/736))
+* MapboxDirections now requires [Turf v2.6.0-beta.1](https://github.com/mapbox/turf-swift/releases/tag/v2.6.0-beta.1). ([#757](https://github.com/mapbox/mapbox-directions-swift/pull/757))
 
 ### Other Changes
 
