@@ -113,11 +113,11 @@ class RouteRefreshTests: XCTestCase {
                 }
                 
                 let route = routeResponse.routes?[routeIndex]
-                route?.refreshLegAttributes(from: refresh.route)
-                route?.refreshLegIncidents(from: refresh.route)
+                route?.refresh(from: refresh.route)
                 
                 XCTAssertEqual(refresh.route.legs[0].attributes, route?.legs[0].attributes, "Route legs attributes are not refreshed")
                 XCTAssertEqual(refresh.route.legs[0].incidents, route?.legs[0].incidents, "Route legs incidents are not refreshed")
+                XCTAssertEqual(refresh.route.legs[0].closures, route?.legs[0].closures, "Route legs closures are not refreshed")
                 routeUpdatedExpectation.fulfill()
             }
         }
@@ -136,12 +136,13 @@ class RouteRefreshTests: XCTestCase {
                     XCTAssertNotNil(response.route)
                     XCTAssertEqual(response.route.legs.count, 2)
                     let route = routeResponse.routes?[routeIndex]
-                    route?.refreshLegAttributes(from: response.route)
-                    route?.refreshLegIncidents(from: response.route)
+                    route?.refresh(from: response.route)
                     XCTAssertEqual(route?.legs[0].attributes, response.route.legs[0].attributes, "Route legs attributes are not refreshed correctly")
                     XCTAssertEqual(route?.legs[1].attributes, response.route.legs[1].attributes, "Route legs attributes are not refreshed correctly")
                     XCTAssertEqual(route?.legs[0].incidents, response.route.legs[0].incidents, "Route legs incidents are not refreshed correctly")
                     XCTAssertEqual(route?.legs[1].incidents, response.route.legs[1].incidents, "Route legs incidents are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[0].closures, response.route.legs[0].closures, "Route legs closures are not refreshed correctly")
+                    XCTAssertEqual(route?.legs[1].closures, response.route.legs[1].closures, "Route legs closures are not refreshed correctly")
                     routeUpdatedExpectation.fulfill()
                 case let .failure(error):
                     XCTFail("Refresh failed with unexpected error: \(error).")
@@ -171,18 +172,18 @@ class RouteRefreshTests: XCTestCase {
                 let route = routeResponse.routes?[routeIndex]
                 let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
                 let originalIncidents = route!.legs.map(\.incidents)
+                let originalClosures = route!.legs.map(\.closures)
                 
-                route?.refreshLegAttributes(from: refresh.route,
-                                            legIndex: legIndex,
-                                            legShapeIndex: geometryIndex)
-                route?.refreshLegIncidents(from: refresh.route,
-                                           legIndex: legIndex,
-                                           legShapeIndex: geometryIndex)
+                route?.refresh(from: refresh.route,
+                               refreshParameters: .init(startingIndex: .init(legIndex: legIndex,
+                                                                             legShapeIndex: geometryIndex)))
                 
                 let refreshCongestions = refresh.route.legs[0].attributes.segmentCongestionLevels!
                 let refreshedCongestions = route!.legs[0].attributes.segmentCongestionLevels!
                 let refreshIncidents = refresh.route.legs.map(\.incidents)
                 let refreshedIncidents = route!.legs.map(\.incidents)
+                let refreshClosures = refresh.route.legs.map(\.closures)
+                let refreshedClosures = route!.legs.map(\.closures)
                 
                 XCTAssertEqual(originalCongestions[PartialRangeUpTo(geometryIndex)],
                                refreshedCongestions[PartialRangeUpTo(geometryIndex)],
@@ -197,6 +198,9 @@ class RouteRefreshTests: XCTestCase {
                 XCTAssertNotEqual(originalIncidents,
                                   refreshedIncidents,
                                   "Incidents should be refreshed")
+                XCTAssertNotEqual(originalClosures,
+                                  refreshedClosures,
+                                  "Closures should be refreshed")
                 for leg in zip(refreshIncidents, refreshedIncidents).enumerated() {
                     let (new, updated) = leg.element
                     if leg.offset == legIndex {
@@ -214,6 +218,25 @@ class RouteRefreshTests: XCTestCase {
                         }
                     } else {
                         XCTAssertEqual(new, updated, "Incidents are not refreshed")
+                    }
+                }
+                for leg in zip(refreshClosures, refreshedClosures).enumerated() {
+                    let (new, updated) = leg.element
+                    if leg.offset == legIndex {
+                        XCTAssertEqual(new != nil, updated != nil)
+
+                        if let new = new, let updated = updated {
+                            for closure in zip(new, updated) {
+                                var offsetNewClosure = closure.0
+                                // refreshed ranges should be offset by leg shape index
+                                let startIndex = offsetNewClosure.shapeIndexRange.lowerBound + geometryIndex
+                                let endIndex = offsetNewClosure.shapeIndexRange.upperBound + geometryIndex
+                                offsetNewClosure.shapeIndexRange = startIndex..<endIndex
+                                XCTAssertEqual(offsetNewClosure, closure.1, "Closures are not refreshed")
+                            }
+                        }
+                    } else {
+                        XCTAssertEqual(new, updated, "Closures are not refreshed")
                     }
                 }
                 

@@ -3,6 +3,12 @@
     "route": {
         "legs": [
             {
+                "closures": [
+                    {
+                        "geometry_index_start": 8,
+                        "geometry_index_end": 20,
+                    }
+                ],
                 "incidents": [
                     {
                         "id": "12727074056824787215",
@@ -382,6 +388,12 @@
                 }
             },
             {
+                "closures": [
+                    {
+                        "geometry_index_start": 6,
+                        "geometry_index_end": 18,
+                    }
+                ],
                 "incidents": [
                     {
                         "id": "12779545487967908590",

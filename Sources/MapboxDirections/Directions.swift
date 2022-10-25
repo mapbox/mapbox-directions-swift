@@ -112,7 +112,7 @@ open class Directions: NSObject {
      - parameter credentials: An object containing the credentials used to make the request.
      - parameter result: A `Result` enum that represents the `RouteRefreshResponse` if the request returned successfully, or the error if it did not.
      
-     - postcondition: To update the original route, pass `RouteRefreshResponse.route` into the `Route.refreshLegAttributes(from:)` and `Route.refreshLegIncidents(from:)` methods.
+     - postcondition: To update the original route, pass `RouteRefreshResponse.route` into the `Route.refreshLegAttributes(from:)`, `Route.refreshLegIncidents(from:)`, `Route.refreshLegClosures(from:legIndex:legShapeIndex:)` or `Route.refresh(from:refreshParameters:)` methods.
      */
     public typealias RouteRefreshCompletionHandler = (_ credentials: Credentials, _ result: Result<RouteRefreshResponse, DirectionsError>) -> Void
     

@@ -31,7 +31,7 @@ public struct RouteRefreshResponse: ForeignMemberContainer {
     /**
      A skeleton route that contains only the time-sensitive information that has been updated.
      
-     Use the `Route.refreshLegAttributes(from:)`, `Route.refreshLegAttributes(from:legIndex:legShapeIndex:)` and `Route.refreshLegIncidents(from:)`, `Route.refreshLegIncidents(from:legIndex:legShapeIndex:)` methods to merge this object with the original route to continue using the original route with updated information.
+     Use the `Route.refreshLegAttributes(from:)`, `Route.refreshLegAttributes(from:legIndex:legShapeIndex:)`, `Route.refreshLegIncidents(from:)`, `Route.refreshLegIncidents(from:legIndex:legShapeIndex:)`, `Route.refreshLegClosures(from:legIndex:legShapeIndex:)` or `Route.refresh(from:refreshParameters:)` methods to merge this object with the original route to continue using the original route with updated information.
      */
     public var route: RefreshedRoute
     
@@ -102,6 +102,96 @@ extension RouteRefreshResponse: Codable {
 
 extension Route {
     /**
+     Configuration for applying `RouteRefreshSource` updates to a route.
+     */
+    public struct RefreshParameters {
+        /**
+         Configuration for type of information to be merged during refreshing.
+         */
+        public struct PropertiesToMerge: OptionSet {
+            public var rawValue: Int
+            public init(rawValue: Int) {
+                self.rawValue = rawValue
+            }
+            /**
+             Will update route annotations.
+             */
+            static public let annotations = PropertiesToMerge(rawValue: 1)
+            /**
+             Will update route `Incidents`.
+             */
+            static public let incidents = PropertiesToMerge(rawValue: 1 << 1)
+            /**
+             Will update route `Closures`.
+             */
+            static public let closures = PropertiesToMerge(rawValue: 1 << 2)
+            
+            /**
+             Includes `annotations`, `incidents` and `closures`.
+             */
+            static public let everything: PropertiesToMerge = [PropertiesToMerge.annotations, PropertiesToMerge.closures, PropertiesToMerge.incidents]
+        }
+        /**
+         Configures starting point to run the partial route refreshing.
+         */
+        public struct StartingIndex {
+            /**
+             The index of a leg, from which to start applying the refreshed data.
+             */
+            public let legIndex: Int
+            /**
+             Index of a geometry of the `legIndex` leg, where to start refreshing from.
+             */
+            public let legShapeIndex: Int
+            /**
+             Creates new `StartingIndex`.
+             */
+            public init(legIndex: Int, legShapeIndex: Int) {
+                self.legIndex = legIndex
+                self.legShapeIndex = legShapeIndex
+            }
+        }
+        /**
+         Configuration for type of information to be merged during refreshing.
+         */
+        public var propertiesToMerge: PropertiesToMerge
+        /**
+         Configures starting point to run the partial route refreshing.
+         
+         If set to `nil` - route will be refreshed from the beginning.
+         */
+        public var startingIndex: StartingIndex?
+        /**
+         Creates new `RefreshParameters`.
+         */
+        public init(propertiesToMerge: PropertiesToMerge = .everything, startingIndex: StartingIndex? = nil) {
+            self.propertiesToMerge = propertiesToMerge
+            self.startingIndex = startingIndex
+        }
+    }
+    
+    /**
+     Merges various properties from `refreshedRoute` legs to the reciever.
+     
+     - parameter refreshedRoute: The route containing leg data to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the data from a one-leg route affects only the last leg of the receiver.
+     - parameter refreshParameters: Configuration about what exactly should be updated and from which geometry position.
+     */
+    public func refresh(from refreshedRoute: RouteRefreshSource, refreshParameters: RefreshParameters = RefreshParameters()) {
+        let legIndex = refreshParameters.startingIndex?.legIndex ?? 0
+        let legShapeIndex = refreshParameters.startingIndex?.legShapeIndex ?? 0
+        
+        if refreshParameters.propertiesToMerge.contains(.annotations) {
+            refreshLegAttributes(from: refreshedRoute, legIndex: legIndex, legShapeIndex: legShapeIndex)
+        }
+        if refreshParameters.propertiesToMerge.contains(.incidents) {
+            refreshLegIncidents(from: refreshedRoute, legIndex: legIndex, legShapeIndex: legShapeIndex)
+        }
+        if refreshParameters.propertiesToMerge.contains(.closures) {
+            refreshLegClosures(from: refreshedRoute, legIndex: legIndex, legShapeIndex: legShapeIndex)
+        }
+    }
+    
+    /**
      Merges the attributes of the given route’s legs into the receiver’s legs.
      
      - parameter refreshedRoute: The route containing leg attributes to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the attributes from a one-leg route affects only the last leg of the receiver.
@@ -154,6 +244,27 @@ extension Route {
                 leg.refreshIncidents(newIncidents: refreshedLeg.refreshedIncidents, startLegShapeIndex: startIndex)
             } else {
                 leg.incidents = nil
+            }
+        }
+    }
+    
+    /**
+     Merges the closures of the given route’s legs into the receiver’s legs.
+
+     - parameter refreshedRoute: The route containing leg closures to merge into the receiver. If this route contains fewer legs than the receiver, this method skips legs from the beginning of the route to make up the difference, so that merging the closures from a one-leg route affects only the last leg of the receiver.
+     - parameter legIndex: The index of a leg, from which to start applying the refreshed closures.
+     - parameter legShapeIndex: Index of a geometry of the `legIndex` leg, where to start refreshing from.
+     */
+    public func refreshLegClosures(from refreshedRoute: RouteRefreshSource, legIndex: Int = 0, legShapeIndex: Int = 0) {
+        let endRefreshIndex = legIndex + refreshedRoute.refreshedLegs.count
+        for (index, leg) in legs.enumerated() {
+            if (legIndex..<endRefreshIndex).contains(index) {
+                let refreshedLeg = refreshedRoute.refreshedLegs[index-legIndex]
+                let startIndex = index == legIndex ? legShapeIndex : 0
+                leg.refreshClosures(newClosures: refreshedLeg.refreshedClosures,
+                                    startLegShapeIndex: startIndex)
+            } else {
+                leg.closures = nil
             }
         }
     }

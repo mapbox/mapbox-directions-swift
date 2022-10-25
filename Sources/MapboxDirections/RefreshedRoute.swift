@@ -41,18 +41,21 @@ public struct RefreshedRouteLeg: ForeignMemberContainer {
     
     public var attributes: RouteLeg.Attributes
     public var incidents: [Incident]?
+    public var closures: [RouteLeg.Closure]?
 }
 
 extension RefreshedRouteLeg: Codable {
     enum CodingKeys: String, CodingKey {
         case attributes = "annotation"
         case incidents = "incidents"
+        case closures = "closures"
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         attributes = try container.decode(RouteLeg.Attributes.self, forKey: .attributes)
         incidents = try container.decodeIfPresent([Incident].self, forKey: .incidents)
+        closures = try container.decodeIfPresent([RouteLeg.Closure].self, forKey: .closures)
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
@@ -61,6 +64,7 @@ extension RefreshedRouteLeg: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
         try container.encodeIfPresent(incidents, forKey: .incidents)
+        try container.encodeIfPresent(closures, forKey: .closures)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
