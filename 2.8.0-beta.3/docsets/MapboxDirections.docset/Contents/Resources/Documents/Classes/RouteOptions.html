@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RouteOptions Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    <link rel='shortcut icon' href='https://www.mapbox.com/img/favicon.ico' type='image/x-icon' />
+
+    <style type="text/css">
+      .nav-group-name[data-name="RouteOptions"] > .small-heading,
+      .nav-group-task[data-name="RouteOptions"] {
+        background-color: #f5f8fc;
+        font-family: "Open Sans Bold";
+        border-left: 3px solid #3a68d8;
+        padding-left: 5px
+      }
+    </style>
+    <script src="https://docs.mapbox.com/analytics.js"></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/RouteOptions" class="dashAnchor"></a>
+
+    <a title="RouteOptions Class Reference"></a>
+
+    <header class="header-container">
+      <div class="limiter">
+        <div class="header">
+        <p class="header-col header-col--primary">
+          <a class="header-link" href="../index.html">
+            <img style="height: 25px;"  class="header-icon" src="../img/mapbox.svg" alt="Mapbox Directions for Swift Docs"/>
+            <span class='header-tag'>Directions.swift Reference (2.8.0-beta.3)</span>
+          </a>
+          
+        </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link space-right2" href="https://github.com/mapbox/mapbox-directions-swift">
+              <svg style="margin-bottom: 1px;" class="header-icon" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		      <path stroke="none" stroke-width="1" fill="white" fill-rule="evenodd" d="M16.6,0.4 C7.6,0.4 0.3,7.7 0.3,16.7 C0.3,23.9 5,30 11.4,32.2 C12.2,32.3 12.5,31.8 12.5,31.4 L12.5,28.6 C8,29.6 7,26.4 7,26.4 C6.3,24.5 5.2,24 5.2,24 C3.7,23 5.3,23 5.3,23 C6.9,23.1 7.8,24.7 7.8,24.7 C9.3,27.2 11.6,26.5 12.5,26.1 C12.6,25 13.1,24.3 13.5,23.9 C9.9,23.5 6.1,22.1 6.1,15.8 C6.1,14 6.7,12.6 7.8,11.4 C7.6,11 7.1,9.3 8,7.1 C8,7.1 9.4,6.7 12.5,8.8 C13.8,8.4 15.2,8.3 16.6,8.3 C18,8.3 19.4,8.5 20.7,8.8 C23.8,6.7 25.2,7.1 25.2,7.1 C26.1,9.3 25.5,11 25.4,11.4 C26.4,12.5 27.1,14 27.1,15.8 C27.1,22.1 23.3,23.4 19.7,23.8 C20.3,24.3 20.8,25.3 20.8,26.8 L20.8,31.3 C20.8,31.7 21.1,32.2 21.9,32.1 C28.4,29.9 33,23.8 33,16.6 C32.9,7.7 25.6,0.4 16.6,0.4 L16.6,0.4 Z"></path>
+              </svg>
+              View on GitHub
+            </a>
+          </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link bold" href="dash-feed://https%3A%2F%2Fdocs.mapbox.com%2Fios%2Fdocsets%2FMapboxDirections.xml">
+              <img style="margin-bottom: 1px;" class="header-icon" src="../img/dash.png"/>
+              Install in Dash
+            </a>
+          </p>
+      </div>
+      </div>
+    </header>
+
+    <div class="breadcrumbs">
+      <div class="limiter">
+        <a class="breadcrumb" href="../index.html">Mapbox Directions for Swift Reference</a>
+        <img class="carat" src="../img/carat.png" />
+        RouteOptions Class Reference
+      </div>
+    </div>
+
+    <div class="content-wrapper limiter">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name" data-name="Guides">
+            <a class="small-heading" href="../Guides.html">Guides<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Navigation SDK" data-url="navigation-sdk.html">
+                <a title="Navigation SDK" class="nav-group-task-link" href="../navigation-sdk.html">Navigation SDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Getting Directions">
+            <a class="small-heading" href="../Getting Directions.html">Getting Directions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Directions" data-url="Classes/Directions.html">
+                <a title="Directions" class="nav-group-task-link" href="../Classes/Directions.html">Directions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteOptions" data-url="Classes/RouteOptions.html">
+                <a title="RouteOptions" class="nav-group-task-link" href="../Classes/RouteOptions.html">RouteOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Waypoint" data-url="Classes/Waypoint.html">
+                <a title="Waypoint" class="nav-group-task-link" href="../Classes/Waypoint.html">Waypoint</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Map Matching">
+            <a class="small-heading" href="../Map Matching.html">Map Matching<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MatchOptions" data-url="Classes/MatchOptions.html">
+                <a title="MatchOptions" class="nav-group-task-link" href="../Classes/MatchOptions.html">MatchOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Tracepoint" data-url="Classes/Tracepoint.html">
+                <a title="Tracepoint" class="nav-group-task-link" href="../Classes/Tracepoint.html">Tracepoint</a>
+              </li>
+              <li class="nav-group-task" data-name="Match" data-url="Classes/Match.html">
+                <a title="Match" class="nav-group-task-link" href="../Classes/Match.html">Match</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Results">
+            <a class="small-heading" href="../Results.html">Results<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Route" data-url="Classes/Route.html">
+                <a title="Route" class="nav-group-task-link" href="../Classes/Route.html">Route</a>
+              </li>
+              <li class="nav-group-task" data-name="– RefreshParameters" data-url="Classes/Route/RefreshParameters.html">
+                <a title="– RefreshParameters" class="nav-group-task-link" href="../Classes/Route/RefreshParameters.html">– RefreshParameters</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLeg" data-url="Classes/RouteLeg.html">
+                <a title="RouteLeg" class="nav-group-task-link" href="../Classes/RouteLeg.html">RouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="– CodingKeys" data-url="Classes/RouteLeg/CodingKeys.html">
+                <a title="– CodingKeys" class="nav-group-task-link" href="../Classes/RouteLeg/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task" data-name="– Closure" data-url="Classes/RouteLeg/Closure.html">
+                <a title="– Closure" class="nav-group-task-link" href="../Classes/RouteLeg/Closure.html">– Closure</a>
+              </li>
+              <li class="nav-group-task" data-name="– Attributes" data-url="Classes/RouteLeg/Attributes.html">
+                <a title="– Attributes" class="nav-group-task-link" href="../Classes/RouteLeg/Attributes.html">– Attributes</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteStep" data-url="Classes/RouteStep.html">
+                <a title="RouteStep" class="nav-group-task-link" href="../Classes/RouteStep.html">RouteStep</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Classes">
+            <a class="small-heading" href="../Other Classes.html">Other Classes<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsOptions" data-url="Classes/DirectionsOptions.html">
+                <a title="DirectionsOptions" class="nav-group-task-link" href="../Classes/DirectionsOptions.html">DirectionsOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsResult" data-url="Classes/DirectionsResult.html">
+                <a title="DirectionsResult" class="nav-group-task-link" href="../Classes/DirectionsResult.html">DirectionsResult</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneOptions" data-url="Classes/IsochroneOptions.html">
+                <a title="IsochroneOptions" class="nav-group-task-link" href="../Classes/IsochroneOptions.html">IsochroneOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="– ContourFormat" data-url="Classes/IsochroneOptions/ContourFormat.html">
+                <a title="– ContourFormat" class="nav-group-task-link" href="../Classes/IsochroneOptions/ContourFormat.html">– ContourFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="– Contours" data-url="Classes/IsochroneOptions/Contours.html">
+                <a title="– Contours" class="nav-group-task-link" href="../Classes/IsochroneOptions/Contours.html">– Contours</a>
+              </li>
+              <li class="nav-group-task" data-name="Isochrones" data-url="Classes/Isochrones.html">
+                <a title="Isochrones" class="nav-group-task-link" href="../Classes/Isochrones.html">Isochrones</a>
+              </li>
+              <li class="nav-group-task" data-name="SpokenInstruction" data-url="Classes/SpokenInstruction.html">
+                <a title="SpokenInstruction" class="nav-group-task-link" href="../Classes/SpokenInstruction.html">SpokenInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstruction" data-url="Classes/VisualInstruction.html">
+                <a title="VisualInstruction" class="nav-group-task-link" href="../Classes/VisualInstruction.html">VisualInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="– Component" data-url="Classes/VisualInstruction/Component.html">
+                <a title="– Component" class="nav-group-task-link" href="../Classes/VisualInstruction/Component.html">– Component</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstructionBanner" data-url="Classes/VisualInstructionBanner.html">
+                <a title="VisualInstructionBanner" class="nav-group-task-link" href="../Classes/VisualInstructionBanner.html">VisualInstructionBanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Global Variables">
+            <a class="small-heading" href="../Other Global Variables.html">Other Global Variables<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MBDirectionsErrorDomain" data-url="Other%20Global%20Variables.html#/MBDirectionsErrorDomain">
+                <a title="MBDirectionsErrorDomain" class="nav-group-task-link" href="../Other%20Global%20Variables.html#/MBDirectionsErrorDomain">MBDirectionsErrorDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Enumerations">
+            <a class="small-heading" href="../Other Enumerations.html">Other Enumerations<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CongestionLevel" data-url="Enums/CongestionLevel.html">
+                <a title="CongestionLevel" class="nav-group-task-link" href="../Enums/CongestionLevel.html">CongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="CustomOptionComparisonPolicy" data-url="Enums/CustomOptionComparisonPolicy.html">
+                <a title="CustomOptionComparisonPolicy" class="nav-group-task-link" href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsCodingError" data-url="Enums/DirectionsCodingError.html">
+                <a title="DirectionsCodingError" class="nav-group-task-link" href="../Enums/DirectionsCodingError.html">DirectionsCodingError</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsError" data-url="Enums/DirectionsError.html">
+                <a title="DirectionsError" class="nav-group-task-link" href="../Enums/DirectionsError.html">DirectionsError</a>
+              </li>
+              <li class="nav-group-task" data-name="DrivingSide" data-url="Enums/DrivingSide.html">
+                <a title="DrivingSide" class="nav-group-task-link" href="../Enums/DrivingSide.html">DrivingSide</a>
+              </li>
+              <li class="nav-group-task" data-name="GeometryError" data-url="Enums/GeometryError.html">
+                <a title="GeometryError" class="nav-group-task-link" href="../Enums/GeometryError.html">GeometryError</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneError" data-url="Enums/IsochroneError.html">
+                <a title="IsochroneError" class="nav-group-task-link" href="../Enums/IsochroneError.html">IsochroneError</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverDirection" data-url="Enums/ManeuverDirection.html">
+                <a title="ManeuverDirection" class="nav-group-task-link" href="../Enums/ManeuverDirection.html">ManeuverDirection</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverType" data-url="Enums/ManeuverType.html">
+                <a title="ManeuverType" class="nav-group-task-link" href="../Enums/ManeuverType.html">ManeuverType</a>
+              </li>
+              <li class="nav-group-task" data-name="MapboxStreetsRoadClass" data-url="Enums/MapboxStreetsRoadClass.html">
+                <a title="MapboxStreetsRoadClass" class="nav-group-task-link" href="../Enums/MapboxStreetsRoadClass.html">MapboxStreetsRoadClass</a>
+              </li>
+              <li class="nav-group-task" data-name="MeasurementSystem" data-url="Enums/MeasurementSystem.html">
+                <a title="MeasurementSystem" class="nav-group-task-link" href="../Enums/MeasurementSystem.html">MeasurementSystem</a>
+              </li>
+              <li class="nav-group-task" data-name="ResponseOptions" data-url="Enums/ResponseOptions.html">
+                <a title="ResponseOptions" class="nav-group-task-link" href="../Enums/ResponseOptions.html">ResponseOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeFormat" data-url="Enums/RouteShapeFormat.html">
+                <a title="RouteShapeFormat" class="nav-group-task-link" href="../Enums/RouteShapeFormat.html">RouteShapeFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeResolution" data-url="Enums/RouteShapeResolution.html">
+                <a title="RouteShapeResolution" class="nav-group-task-link" href="../Enums/RouteShapeResolution.html">RouteShapeResolution</a>
+              </li>
+              <li class="nav-group-task" data-name="SignStandard" data-url="Enums/SignStandard.html">
+                <a title="SignStandard" class="nav-group-task-link" href="../Enums/SignStandard.html">SignStandard</a>
+              </li>
+              <li class="nav-group-task" data-name="TransportType" data-url="Enums/TransportType.html">
+                <a title="TransportType" class="nav-group-task-link" href="../Enums/TransportType.html">TransportType</a>
+              </li>
+              <li class="nav-group-task" data-name="Weight" data-url="Enums/Weight.html">
+                <a title="Weight" class="nav-group-task-link" href="../Enums/Weight.html">Weight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Extensions">
+            <a class="small-heading" href="../Other Extensions.html">Other Extensions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Array" data-url="Extensions/Array.html">
+                <a title="Array" class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task" data-name="BoundingBox" data-url="Extensions/BoundingBox.html">
+                <a title="BoundingBox" class="nav-group-task-link" href="../Extensions/BoundingBox.html">BoundingBox</a>
+              </li>
+              <li class="nav-group-task" data-name="CodingUserInfoKey" data-url="Extensions/CodingUserInfoKey.html">
+                <a title="CodingUserInfoKey" class="nav-group-task-link" href="../Extensions/CodingUserInfoKey.html">CodingUserInfoKey</a>
+              </li>
+              <li class="nav-group-task" data-name="Lane" data-url="Other%20Extensions.html#/Lane">
+                <a title="Lane" class="nav-group-task-link" href="../Other%20Extensions.html#/Lane">Lane</a>
+              </li>
+              <li class="nav-group-task" data-name="PolyLineString" data-url="Other%20Extensions.html#/PolyLineString">
+                <a title="PolyLineString" class="nav-group-task-link" href="../Other%20Extensions.html#/PolyLineString">PolyLineString</a>
+              </li>
+              <li class="nav-group-task" data-name="Road" data-url="Other%20Extensions.html#/Road">
+                <a title="Road" class="nav-group-task-link" href="../Other%20Extensions.html#/Road">Road</a>
+              </li>
+              <li class="nav-group-task" data-name="SpeedLimitDescriptor" data-url="Other%20Extensions.html#/SpeedLimitDescriptor">
+                <a title="SpeedLimitDescriptor" class="nav-group-task-link" href="../Other%20Extensions.html#/SpeedLimitDescriptor">SpeedLimitDescriptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Protocols">
+            <a class="small-heading" href="../Other Protocols.html">Other Protocols<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CustomValueOptionSet" data-url="Protocols/CustomValueOptionSet.html">
+                <a title="CustomValueOptionSet" class="nav-group-task-link" href="../Protocols/CustomValueOptionSet.html">CustomValueOptionSet</a>
+              </li>
+              <li class="nav-group-task" data-name="ForeignMemberContainerClass" data-url="Protocols/ForeignMemberContainerClass.html">
+                <a title="ForeignMemberContainerClass" class="nav-group-task-link" href="../Protocols/ForeignMemberContainerClass.html">ForeignMemberContainerClass</a>
+              </li>
+              <li class="nav-group-task" data-name="OfflineDirectionsProtocol" data-url="Protocols/OfflineDirectionsProtocol.html">
+                <a title="OfflineDirectionsProtocol" class="nav-group-task-link" href="../Protocols/OfflineDirectionsProtocol.html">OfflineDirectionsProtocol</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLegRefreshSource" data-url="Protocols/RouteLegRefreshSource.html">
+                <a title="RouteLegRefreshSource" class="nav-group-task-link" href="../Protocols/RouteLegRefreshSource.html">RouteLegRefreshSource</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshSource" data-url="Protocols/RouteRefreshSource.html">
+                <a title="RouteRefreshSource" class="nav-group-task-link" href="../Protocols/RouteRefreshSource.html">RouteRefreshSource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Structures">
+            <a class="small-heading" href="../Other Structures.html">Other Structures<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="AdministrativeRegion" data-url="Structs/AdministrativeRegion.html">
+                <a title="AdministrativeRegion" class="nav-group-task-link" href="../Structs/AdministrativeRegion.html">AdministrativeRegion</a>
+              </li>
+              <li class="nav-group-task" data-name="AttributeOptions" data-url="Structs/AttributeOptions.html">
+                <a title="AttributeOptions" class="nav-group-task-link" href="../Structs/AttributeOptions.html">AttributeOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="BlockedLanes" data-url="Structs/BlockedLanes.html">
+                <a title="BlockedLanes" class="nav-group-task-link" href="../Structs/BlockedLanes.html">BlockedLanes</a>
+              </li>
+              <li class="nav-group-task" data-name="Credentials" data-url="Structs/Credentials.html">
+                <a title="Credentials" class="nav-group-task-link" href="../Structs/Credentials.html">Credentials</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsPriority" data-url="Structs/DirectionsPriority.html">
+                <a title="DirectionsPriority" class="nav-group-task-link" href="../Structs/DirectionsPriority.html">DirectionsPriority</a>
+              </li>
+              <li class="nav-group-task" data-name="GuidanceViewImageRepresentation" data-url="Structs/GuidanceViewImageRepresentation.html">
+                <a title="GuidanceViewImageRepresentation" class="nav-group-task-link" href="../Structs/GuidanceViewImageRepresentation.html">GuidanceViewImageRepresentation</a>
+              </li>
+              <li class="nav-group-task" data-name="Incident" data-url="Structs/Incident.html">
+                <a title="Incident" class="nav-group-task-link" href="../Structs/Incident.html">Incident</a>
+              </li>
+              <li class="nav-group-task" data-name="– Kind" data-url="Structs/Incident/Kind.html">
+                <a title="– Kind" class="nav-group-task-link" href="../Structs/Incident/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task" data-name="– Impact" data-url="Structs/Incident/Impact.html">
+                <a title="– Impact" class="nav-group-task-link" href="../Structs/Incident/Impact.html">– Impact</a>
+              </li>
+              <li class="nav-group-task" data-name="Intersection" data-url="Structs/Intersection.html">
+                <a title="Intersection" class="nav-group-task-link" href="../Structs/Intersection.html">Intersection</a>
+              </li>
+              <li class="nav-group-task" data-name="LaneIndication" data-url="Structs/LaneIndication.html">
+                <a title="LaneIndication" class="nav-group-task-link" href="../Structs/LaneIndication.html">LaneIndication</a>
+              </li>
+              <li class="nav-group-task" data-name="MapMatchingResponse" data-url="Structs/MapMatchingResponse.html">
+                <a title="MapMatchingResponse" class="nav-group-task-link" href="../Structs/MapMatchingResponse.html">MapMatchingResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="ProfileIdentifier" data-url="Structs/ProfileIdentifier.html">
+                <a title="ProfileIdentifier" class="nav-group-task-link" href="../Structs/ProfileIdentifier.html">ProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRoute" data-url="Structs/RefreshedRoute.html">
+                <a title="RefreshedRoute" class="nav-group-task-link" href="../Structs/RefreshedRoute.html">RefreshedRoute</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRouteLeg" data-url="Structs/RefreshedRouteLeg.html">
+                <a title="RefreshedRouteLeg" class="nav-group-task-link" href="../Structs/RefreshedRouteLeg.html">RefreshedRouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="RestStop" data-url="Structs/RestStop.html">
+                <a title="RestStop" class="nav-group-task-link" href="../Structs/RestStop.html">RestStop</a>
+              </li>
+              <li class="nav-group-task" data-name="– StopType" data-url="Structs/RestStop/StopType.html">
+                <a title="– StopType" class="nav-group-task-link" href="../Structs/RestStop/StopType.html">– StopType</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClassExclusionViolation" data-url="Structs/RoadClassExclusionViolation.html">
+                <a title="RoadClassExclusionViolation" class="nav-group-task-link" href="../Structs/RoadClassExclusionViolation.html">RoadClassExclusionViolation</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClasses" data-url="Structs/RoadClasses.html">
+                <a title="RoadClasses" class="nav-group-task-link" href="../Structs/RoadClasses.html">RoadClasses</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshResponse" data-url="Structs/RouteRefreshResponse.html">
+                <a title="RouteRefreshResponse" class="nav-group-task-link" href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteResponse" data-url="Structs/RouteResponse.html">
+                <a title="RouteResponse" class="nav-group-task-link" href="../Structs/RouteResponse.html">RouteResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="SilentWaypoint" data-url="Structs/SilentWaypoint.html">
+                <a title="SilentWaypoint" class="nav-group-task-link" href="../Structs/SilentWaypoint.html">SilentWaypoint</a>
+              </li>
+              <li class="nav-group-task" data-name="– CodingKeys" data-url="Structs/SilentWaypoint/CodingKeys.html">
+                <a title="– CodingKeys" class="nav-group-task-link" href="../Structs/SilentWaypoint/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task" data-name="TollCollection" data-url="Structs/TollCollection.html">
+                <a title="TollCollection" class="nav-group-task-link" href="../Structs/TollCollection.html">TollCollection</a>
+              </li>
+              <li class="nav-group-task" data-name="– CollectionType" data-url="Structs/TollCollection/CollectionType.html">
+                <a title="– CollectionType" class="nav-group-task-link" href="../Structs/TollCollection/CollectionType.html">– CollectionType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Type Aliases">
+            <a class="small-heading" href="../Other Type Aliases.html">Other Type Aliases<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/LocationAccuracy">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationAccuracy">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/LocationSpeed">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationSpeed">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="NumericCongestionLevel" data-url="Other%20Typealiases.html#/NumericCongestionLevel">
+                <a title="NumericCongestionLevel" class="nav-group-task-link" href="../Other%20Typealiases.html#/NumericCongestionLevel">NumericCongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="OfflineDownloaderCompletionHandler" data-url="Other%20Typealiases.html#/OfflineDownloaderCompletionHandler">
+                <a title="OfflineDownloaderCompletionHandler" class="nav-group-task-link" href="../Other%20Typealiases.html#/OfflineDownloaderCompletionHandler">OfflineDownloaderCompletionHandler</a>
+              </li>
+              <li class="nav-group-task" data-name="OfflineDownloaderProgressHandler" data-url="Other%20Typealiases.html#/OfflineDownloaderProgressHandler">
+                <a title="OfflineDownloaderProgressHandler" class="nav-group-task-link" href="../Other%20Typealiases.html#/OfflineDownloaderProgressHandler">OfflineDownloaderProgressHandler</a>
+              </li>
+              <li class="nav-group-task" data-name="OfflineVersion" data-url="Other%20Typealiases.html#/OfflineVersion">
+                <a title="OfflineVersion" class="nav-group-task-link" href="../Other%20Typealiases.html#/OfflineVersion">OfflineVersion</a>
+              </li>
+              <li class="nav-group-task" data-name="OfflineVersionsHandler" data-url="Other%20Typealiases.html#/OfflineVersionsHandler">
+                <a title="OfflineVersionsHandler" class="nav-group-task-link" href="../Other%20Typealiases.html#/OfflineVersionsHandler">OfflineVersionsHandler</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/Scale">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/Scale">Scale</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <a href="#/RouteOptions"><h1 id="RouteOptions">RouteOptions<span class="anchor-icon" /></h1></a>
+            <p>A <code>RouteOptions</code> object is a structure that specifies the criteria for results returned by the Mapbox Directions API.</p>
+
+<p>Pass an instance of this class into the <code><a href="../Classes/Directions.html#/calculate(_:completionHandler:)">Directions.calculate(_:completionHandler:)</a></code> method.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Creating%20a%20Route%20Options%20Object"></a>
+                <a name="//apple_ref/swift/Section/Creating a Route Options Object" class="dashAnchor"></a>
+                <a href="#/Creating%20a%20Route%20Options%20Object">
+                  <h3 id="Creating%20a%20Route%20Options%20Object" class="section-name">Creating a Route Options Object<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(waypoints:profileIdentifier:queryItems:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(waypoints:profileIdentifier:queryItems:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a route options object for routes between the given waypoints and an optional profile identifier.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(locations:profileIdentifier:queryItems:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(locations:profileIdentifier:queryItems:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a route options object for routes between the given locations and an optional profile identifier.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This initializer is intended for <code>CLLocation</code> objects created using the <code>CLLocation.init(latitude:longitude:)</code> initializer. If you intend to use a <code>CLLocation</code> object obtained from a <code>CLLocationManager</code> object, consider increasing the <code>horizontalAccuracy</code> or set it to a negative value to avoid overfitting, since the <code><a href="../Classes/Waypoint.html">Waypoint</a></code> class’s <code>coordinateAccuracy</code> property represents the maximum allowed deviation from the waypoint.</p>
+
+</div>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(coordinates:profileIdentifier:queryItems:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(coordinates:profileIdentifier:queryItems:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes a route options object for routes between the given geographic coordinates and an optional profile identifier.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/encode(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">encode(to:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(from:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Method/init(matchOptions:)" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">init(matchOptions:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Initializes an equivalent route options object from a match options object. Desirable for building a navigation experience from map matching.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Influencing%20the%20Path%20of%20the%20Route"></a>
+                <a name="//apple_ref/swift/Section/Influencing the Path of the Route" class="dashAnchor"></a>
+                <a href="#/Influencing%20the%20Path%20of%20the%20Route">
+                  <h3 id="Influencing%20the%20Path%20of%20the%20Route" class="section-name">Influencing the Path of the Route<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/allowsUTurnAtWaypoint" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">allowsUTurnAtWaypoint</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value that indicates whether a returned route may require a point U-turn at an intermediate waypoint.</p>
+
+<p>If the value of this property is <code>true</code>, a returned route may require an immediate U-turn at an intermediate waypoint. At an intermediate waypoint, if the value of this property is <code>false</code>, each returned route may continue straight ahead or turn to either side but may not U-turn. This property has no effect if only two waypoints are specified.</p>
+
+<p>Set this property to <code>true</code> if you expect the user to traverse each leg of the trip separately. For example, it would be quite easy for the user to effectively “U-turn” at a waypoint if the user first parks the car and patronizes a restaurant there before embarking on the next leg of the trip. Set this property to <code>false</code> if you expect the user to proceed to the next waypoint immediately upon arrival. For example, if the user only needs to drop off a passenger or package at the waypoint before continuing, it would be inconvenient to perform a U-turn at that location.</p>
+
+<p>The default value of this property is <code>false</code> when the profile identifier is <code><a href="../Structs/ProfileIdentifier.html#/automobile">ProfileIdentifier.automobile</a></code> or <code><a href="../Structs/ProfileIdentifier.html#/automobileAvoidingTraffic">ProfileIdentifier.automobileAvoidingTraffic</a></code> and <code>true</code> otherwise.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/roadClassesToAvoid" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">roadClassesToAvoid</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The route classes that the calculated routes will avoid.</p>
+
+<p>Currently, you can only specify a single road class to avoid.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/roadClassesToAllow" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">roadClassesToAllow</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The route classes that the calculated routes will allow.</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/automobile">ProfileIdentifier.automobile</a></code> or <code><a href="../Structs/ProfileIdentifier.html#/automobileAvoidingTraffic">ProfileIdentifier.automobileAvoidingTraffic</a></code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/alleyPriority" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">alleyPriority</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
+If this property isn&rsquo;t explicitly set, the Directions API will choose the most reasonable value.</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/automobile">ProfileIdentifier.automobile</a></code> or <code><a href="../Structs/ProfileIdentifier.html#/walking">ProfileIdentifier.walking</a></code>.</p>
+
+<p>The value of this property must be at least <code>DirectionsPriority.low</code> and at most <code>DirectionsPriority.high</code>. <code>DirectionsPriority.medium</code> neither prefers nor avoids alleys, while a negative value between <code>DirectionsPriority.low</code> and <code>DirectionsPriority.medium</code> avoids alleys, and a positive value between <code>DirectionsPriority.medium</code> and <code>DirectionsPriority.high</code> prefers alleys. A value of 0.9 is suitable for pedestrians who are comfortable with walking down alleys.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/walkwayPriority" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">walkwayPriority</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The number that influences whether the route should prefer or avoid roads or paths that are set aside for pedestrian-only use (walkways or footpaths).
+If this property isn&rsquo;t explicitly set, the Directions API will choose the most reasonable value.</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/walking">ProfileIdentifier.walking</a></code>. You can adjust this property to avoid <a href="https://wiki.openstreetmap.org/wiki/Sidewalks#Sidewalk_as_separate_way">sidewalks and crosswalks that are mapped as separate footpaths</a>, which may be more granular than needed for some forms of pedestrian navigation.</p>
+
+<p>The value of this property must be at least <code>DirectionsPriority.low</code> and at most <code>DirectionsPriority.high</code>. <code>DirectionsPriority.medium</code> neither prefers nor avoids walkways, while a negative value between <code>DirectionsPriority.low</code> and <code>DirectionsPriority.medium</code> avoids walkways, and a positive value between <code>DirectionsPriority.medium</code> and <code>DirectionsPriority.high</code> prefers walkways. A value of −0.1 results in less verbose routes in cities where sidewalks and crosswalks are generally mapped as separate footpaths.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/speed" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">speed</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The expected uniform travel speed measured in meters per second.
+If this property isn&rsquo;t explicitly set, the Directions API will choose the most reasonable value.</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/walking">ProfileIdentifier.walking</a></code>. You can adjust this property to account for running or for faster or slower gaits. When the profile identifier is set to another profile identifier, such as <code>ProfileIdentifier.driving</code>, this property is ignored in favor of the expected travel speed on each road along the route. This property may be supported by other routing profiles in the future.</p>
+
+<p>The value of this property must be at least <code>CLLocationSpeed.minimumWalking</code> and at most <code>CLLocationSpeed.maximumWalking</code>. <code>CLLocationSpeed.normalWalking</code> corresponds to a typical preferred walking speed.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/arriveBy" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">arriveBy</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The desired arrival time, ignoring seconds precision, in the local time at the route destination.</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/automobile">ProfileIdentifier.automobile</a></code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/departAt" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">departAt</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The desired departure time, ignoring seconds precision, in the local time at the route origin</p>
+
+<p>This property has no effect unless the profile identifier is set to <code><a href="../Structs/ProfileIdentifier.html#/automobile">ProfileIdentifier.automobile</a></code> or <code><a href="../Structs/ProfileIdentifier.html#/automobileAvoidingTraffic">ProfileIdentifier.automobileAvoidingTraffic</a></code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Specifying%20the%20Response%20Format"></a>
+                <a name="//apple_ref/swift/Section/Specifying the Response Format" class="dashAnchor"></a>
+                <a href="#/Specifying%20the%20Response%20Format">
+                  <h3 id="Specifying%20the%20Response%20Format" class="section-name">Specifying the Response Format<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/includesAlternativeRoutes" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">includesAlternativeRoutes</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether alternative routes should be included in the response.</p>
+
+<p>If the value of this property is <code>false</code>, the server only calculates a single route that visits each of the waypoints. If the value of this property is <code>true</code>, the server attempts to find additional reasonable routes that visit the waypoints. Regardless, multiple routes are only returned if it is possible to visit the waypoints by a different route without significantly increasing the distance or travel time. The alternative routes may partially overlap with the preferred route, especially if intermediate waypoints are specified.</p>
+
+<p>Alternative routes may take longer to calculate and make the response significantly larger, so only request alternative routes if you intend to display them to the user or let the user choose them over the preferred route. For example, do not request alternative routes if you only want to know the distance or estimated travel time to a destination.</p>
+
+<p>The default value of this property is <code>false</code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/includesExitRoundaboutManeuver" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">includesExitRoundaboutManeuver</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether the route includes a <code><a href="../Enums/ManeuverType.html#/exitRoundabout">ManeuverType.exitRoundabout</a></code> or <code><a href="../Enums/ManeuverType.html#/exitRotary">ManeuverType.exitRotary</a></code> step when traversing a roundabout or rotary, respectively.</p>
+
+<p>If this option is set to <code>true</code>, a route that traverses a roundabout includes both a <code><a href="../Enums/ManeuverType.html#/takeRoundabout">ManeuverType.takeRoundabout</a></code> step and a <code><a href="../Enums/ManeuverType.html#/exitRoundabout">ManeuverType.exitRoundabout</a></code> step; likewise, a route that traverses a large, named roundabout includes both a <code><a href="../Enums/ManeuverType.html#/takeRotary">ManeuverType.takeRotary</a></code> step and a <code><a href="../Enums/ManeuverType.html#/exitRotary">ManeuverType.exitRotary</a></code> step. Otherwise, it only includes a <code><a href="../Enums/ManeuverType.html#/takeRoundabout">ManeuverType.takeRoundabout</a></code> or <code><a href="../Enums/ManeuverType.html#/takeRotary">ManeuverType.takeRotary</a></code> step. This option is set to <code>false</code> by default.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/refreshingEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">refreshingEnabled</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A Boolean value indicating whether <code><a href="../Classes/Directions.html">Directions</a></code> can refresh time-dependent properties of the <code><a href="../Classes/RouteLeg.html">RouteLeg</a></code>s of the resulting <code><a href="../Classes/Route.html">Route</a></code>s.</p>
+
+<p>To refresh the <code><a href="../Classes/RouteLeg.html#/expectedSegmentTravelTimes">RouteLeg.expectedSegmentTravelTimes</a></code>, <code><a href="../Classes/RouteLeg.html#/segmentSpeeds">RouteLeg.segmentSpeeds</a></code>, and <code><a href="../Classes/RouteLeg.html#/segmentCongestionLevels">RouteLeg.segmentCongestionLevels</a></code> properties, use the <code><a href="../Classes/Directions.html#/refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)">Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:completionHandler:)</a></code> method. This property is ignored unless <code>profileIdentifier</code> is <code><a href="../Structs/ProfileIdentifier.html#/automobileAvoidingTraffic">ProfileIdentifier.automobileAvoidingTraffic</a></code>. This option is set to <code>false</code> by default.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/maximumHeight" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">maximumHeight</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The maximum vehicle height.</p>
+
+<p>If this parameter is provided, <code><a href="../Classes/Directions.html">Directions</a></code> will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height or no height limit.
+This property is supported by <code>DirectionsProfileIdentifier.automobile</code> and <code>DirectionsProfileIdentifier.automobileAvoidingTraffic</code> profiles.
+The value must be between 0 and 10 when converted to meters.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/maximumWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">maximumWidth</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The maximum vehicle width.</p>
+
+<p>If this parameter is provided, <code><a href="../Classes/Directions.html">Directions</a></code> will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width or no width limit.
+This property is supported by <code>DirectionsProfileIdentifier.automobile</code> and <code>DirectionsProfileIdentifier.automobileAvoidingTraffic</code> profiles.
+The value must be between 0 and 10 when converted to meters.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/maximumWeight" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">maximumWeight</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>The maximum vehicle weight.</p>
+
+<p>If this parameter is provided, the <code><a href="../Classes/Directions.html">Directions</a></code> will compute a route that includes only roads with a weight limit greater than or equal to the max vehicle weight.
+This property is supported by <code>DirectionsProfileIdentifier.automobile</code> and <code>DirectionsProfileIdentifier.automobileAvoidingTraffic</code> profiles.
+The value must be between 0 and 100 metric tons. If unspecified,  2.5 metric tons is assumed.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/initialManeuverAvoidanceRadius" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">initialManeuverAvoidanceRadius</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>A radius around the starting point in which the API will avoid returning any significant maneuvers.</p>
+
+<p>Use this option when the vehicle is traveling at a significant speed to avoid dangerous maneuvers when re-routing. If a route is not found using the specified value, it will be ignored. Note that if a large radius is used, the API may ignore an important turn and return a long straight path before the first maneuver.</p>
+
+<p>This value is clamped to <code>LocationDistance.minimumManeuverIgnoringRadius</code> and <code>LocationDistance.maximumManeuverIgnoringRadius</code>.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Getting%20the%20Request%20URL"></a>
+                <a name="//apple_ref/swift/Section/Getting the Request URL" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Request%20URL">
+                  <h3 id="Getting%20the%20Request%20URL" class="section-name">Getting the Request URL<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/"></a>
+                    <a name="//apple_ref/swift/Property/urlQueryItems" class="dashAnchor"></a>
+                    <a class="token" href="#/"><span class="token-name">urlQueryItems</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer limiter">
+      <p>© 2014–2022 <a class="link" href="https://www.mapbox.com/" target="_blank" rel="external noopener">Mapbox</a>. See <a class="link" href="https://github.com/mapbox/mapbox-directions-swift/blob/master/LICENSE.md" target="_blank" rel="external noopener">license</a> for more details.</p> Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.
+    </section>
+  </body>
+</div>
+</html>
