@@ -6,13 +6,13 @@
 
 * This library now requires a minimum deployment target of iOS 12.0 or above, macOS 10.14.0 or above, tvOS 12.0 or above, or watchOS 5.0 or above. Older operating system versions are no longer supported. ([#736](https://github.com/mapbox/mapbox-directions-swift/pull/736))
 
-### Other Changes
+### Other changes
 
 * Added the `Waypoint.layer` property, which can ensure that the route begins on the correct road if it is above or below another road. ([#745](https://github.com/mapbox/mapbox-directions-swift/pull/745))
-* Expanded `AttributeOptions` to allow user options with custom values. See `AttributeOptions.customOptionsByRawValue` for reference. ([#748](https://github.com/mapbox/mapbox-directions-swift/pull/748))
-* Fixed incorrect shape indicies in `RouteLeg.incidents` after route refresh. ([#752](https://github.com/mapbox/mapbox-directions-swift/pull/752))
-* Added `RouteLeg.closures` for displaying live-traffic closure on the route. This information is only available for the `mapbox/driving-traffic` profile and when `RouteOptions.attributeOptions` property contains `AttributeOptions.closures`. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
-* Added `Route.refresh(from:refreshParameters:)` method as a single entry point for refreshing various parameters of the `Route` object. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
+* Added the `AttributeOptions.update(customOption:comparisonPolicy:)` method and `AttributeOptions.customOptionsByRawValue` property for specifying attribute options that are still marked as beta in the Mapbox Directions API. ([#748](https://github.com/mapbox/mapbox-directions-swift/pull/748))
+* Fixed stale `Incident.shapeIndexRange` values even after calling the `RouteRefreshResponse.refreshLegIncidents(from:legIndex:legShapeIndex:)` method. ([#752](https://github.com/mapbox/mapbox-directions-swift/pull/752))
+* Added the `RouteLeg.closures` property containing information about road closures based on live traffic conditions. This information requires adding `AttributeOptions.closures` to the `RouteOptions.attributeOptions` property and setting the `DirectionsOptions.profileIdentifier` property to `ProfileIdentifier.automobileAvoidingTraffic`. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
+* Added the `Route.refresh(from:refreshParameters:)` method as a single entry point for refreshing various parameters of the `Route` object. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
 
 ## 2.7.0
 
