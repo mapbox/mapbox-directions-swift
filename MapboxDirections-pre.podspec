@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.name         = "MapboxDirections"
+  s.name         = "MapboxDirections-pre"
   s.version      = "2.8.0-rc.1"
   s.summary      = "Mapbox Directions API wrapper for Swift."
 
