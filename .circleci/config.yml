@@ -34,7 +34,10 @@ commands:
         steps:
             - run:
                 name: Publish Code Coverage
-                command: bash <(curl -s https://codecov.io/bash)
+                command: |
+                    curl -Os https://uploader.codecov.io/latest/macos/codecov
+                    chmod +x codecov
+                    ./codecov
     carthage-bootstrap:
         steps:
             - run:
@@ -56,7 +59,7 @@ commands:
                     echo "export GITHUB_TOKEN='${GITHUB_TOKEN}'" >> $BASH_ENV
                     git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/mapbox/mapbox-directions-swift.git"
                     git config user.email "release-bot@mapbox.com"
-                    git config user.name "Mapbox Releases" 
+                    git config user.name "Mapbox Releases"
 
 jobs:
   detect-breaking-changes:
@@ -172,7 +175,7 @@ jobs:
         default: true
       codecoverage:
         type: boolean
-        default: false
+        default: true
     macos:
       xcode: << parameters.xcode >>
     environment:
