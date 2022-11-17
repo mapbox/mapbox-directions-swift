@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CustomValueOptionSet Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    <link rel='shortcut icon' href='https://www.mapbox.com/img/favicon.ico' type='image/x-icon' />
+
+    <style type="text/css">
+      .nav-group-name[data-name="CustomValueOptionSet"] > .small-heading,
+      .nav-group-task[data-name="CustomValueOptionSet"] {
+        background-color: #f5f8fc;
+        font-family: "Open Sans Bold";
+        border-left: 3px solid #3a68d8;
+        padding-left: 5px
+      }
+    </style>
+    <script src="https://docs.mapbox.com/analytics.js"></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/CustomValueOptionSet" class="dashAnchor"></a>
+
+    <a title="CustomValueOptionSet Protocol Reference"></a>
+
+    <header class="header-container">
+      <div class="limiter">
+        <div class="header">
+        <p class="header-col header-col--primary">
+          <a class="header-link" href="../index.html">
+            <img style="height: 25px;"  class="header-icon" src="../img/mapbox.svg" alt="Mapbox Directions for Swift Docs"/>
+            <span class='header-tag'>Directions.swift Reference (2.8.0)</span>
+          </a>
+          
+        </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link space-right2" href="https://github.com/mapbox/mapbox-directions-swift">
+              <svg style="margin-bottom: 1px;" class="header-icon" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      		      <path stroke="none" stroke-width="1" fill="white" fill-rule="evenodd" d="M16.6,0.4 C7.6,0.4 0.3,7.7 0.3,16.7 C0.3,23.9 5,30 11.4,32.2 C12.2,32.3 12.5,31.8 12.5,31.4 L12.5,28.6 C8,29.6 7,26.4 7,26.4 C6.3,24.5 5.2,24 5.2,24 C3.7,23 5.3,23 5.3,23 C6.9,23.1 7.8,24.7 7.8,24.7 C9.3,27.2 11.6,26.5 12.5,26.1 C12.6,25 13.1,24.3 13.5,23.9 C9.9,23.5 6.1,22.1 6.1,15.8 C6.1,14 6.7,12.6 7.8,11.4 C7.6,11 7.1,9.3 8,7.1 C8,7.1 9.4,6.7 12.5,8.8 C13.8,8.4 15.2,8.3 16.6,8.3 C18,8.3 19.4,8.5 20.7,8.8 C23.8,6.7 25.2,7.1 25.2,7.1 C26.1,9.3 25.5,11 25.4,11.4 C26.4,12.5 27.1,14 27.1,15.8 C27.1,22.1 23.3,23.4 19.7,23.8 C20.3,24.3 20.8,25.3 20.8,26.8 L20.8,31.3 C20.8,31.7 21.1,32.2 21.9,32.1 C28.4,29.9 33,23.8 33,16.6 C32.9,7.7 25.6,0.4 16.6,0.4 L16.6,0.4 Z"></path>
+              </svg>
+              View on GitHub
+            </a>
+          </p>
+    
+          <p class="header-col header-col--secondary">
+            <a class="header-link bold" href="dash-feed://https%3A%2F%2Fdocs.mapbox.com%2Fios%2Fdocsets%2FMapboxDirections.xml">
+              <img style="margin-bottom: 1px;" class="header-icon" src="../img/dash.png"/>
+              Install in Dash
+            </a>
+          </p>
+      </div>
+      </div>
+    </header>
+
+    <div class="breadcrumbs">
+      <div class="limiter">
+        <a class="breadcrumb" href="../index.html">Mapbox Directions for Swift Reference</a>
+        <img class="carat" src="../img/carat.png" />
+        CustomValueOptionSet Protocol Reference
+      </div>
+    </div>
+
+    <div class="content-wrapper limiter">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name" data-name="Guides">
+            <a class="small-heading" href="../Guides.html">Guides<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Navigation SDK" data-url="navigation-sdk.html">
+                <a title="Navigation SDK" class="nav-group-task-link" href="../navigation-sdk.html">Navigation SDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Getting Directions">
+            <a class="small-heading" href="../Getting Directions.html">Getting Directions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Directions" data-url="Classes/Directions.html">
+                <a title="Directions" class="nav-group-task-link" href="../Classes/Directions.html">Directions</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteOptions" data-url="Classes/RouteOptions.html">
+                <a title="RouteOptions" class="nav-group-task-link" href="../Classes/RouteOptions.html">RouteOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Waypoint" data-url="Classes/Waypoint.html">
+                <a title="Waypoint" class="nav-group-task-link" href="../Classes/Waypoint.html">Waypoint</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Map Matching">
+            <a class="small-heading" href="../Map Matching.html">Map Matching<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MatchOptions" data-url="Classes/MatchOptions.html">
+                <a title="MatchOptions" class="nav-group-task-link" href="../Classes/MatchOptions.html">MatchOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="Tracepoint" data-url="Classes/Tracepoint.html">
+                <a title="Tracepoint" class="nav-group-task-link" href="../Classes/Tracepoint.html">Tracepoint</a>
+              </li>
+              <li class="nav-group-task" data-name="Match" data-url="Classes/Match.html">
+                <a title="Match" class="nav-group-task-link" href="../Classes/Match.html">Match</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Results">
+            <a class="small-heading" href="../Results.html">Results<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Route" data-url="Classes/Route.html">
+                <a title="Route" class="nav-group-task-link" href="../Classes/Route.html">Route</a>
+              </li>
+              <li class="nav-group-task" data-name="– RefreshParameters" data-url="Classes/Route/RefreshParameters.html">
+                <a title="– RefreshParameters" class="nav-group-task-link" href="../Classes/Route/RefreshParameters.html">– RefreshParameters</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLeg" data-url="Classes/RouteLeg.html">
+                <a title="RouteLeg" class="nav-group-task-link" href="../Classes/RouteLeg.html">RouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="– Closure" data-url="Classes/RouteLeg/Closure.html">
+                <a title="– Closure" class="nav-group-task-link" href="../Classes/RouteLeg/Closure.html">– Closure</a>
+              </li>
+              <li class="nav-group-task" data-name="– Attributes" data-url="Classes/RouteLeg/Attributes.html">
+                <a title="– Attributes" class="nav-group-task-link" href="../Classes/RouteLeg/Attributes.html">– Attributes</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteStep" data-url="Classes/RouteStep.html">
+                <a title="RouteStep" class="nav-group-task-link" href="../Classes/RouteStep.html">RouteStep</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Classes">
+            <a class="small-heading" href="../Other Classes.html">Other Classes<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsOptions" data-url="Classes/DirectionsOptions.html">
+                <a title="DirectionsOptions" class="nav-group-task-link" href="../Classes/DirectionsOptions.html">DirectionsOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsResult" data-url="Classes/DirectionsResult.html">
+                <a title="DirectionsResult" class="nav-group-task-link" href="../Classes/DirectionsResult.html">DirectionsResult</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneOptions" data-url="Classes/IsochroneOptions.html">
+                <a title="IsochroneOptions" class="nav-group-task-link" href="../Classes/IsochroneOptions.html">IsochroneOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="– ContourFormat" data-url="Classes/IsochroneOptions/ContourFormat.html">
+                <a title="– ContourFormat" class="nav-group-task-link" href="../Classes/IsochroneOptions/ContourFormat.html">– ContourFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="– Contours" data-url="Classes/IsochroneOptions/Contours.html">
+                <a title="– Contours" class="nav-group-task-link" href="../Classes/IsochroneOptions/Contours.html">– Contours</a>
+              </li>
+              <li class="nav-group-task" data-name="Isochrones" data-url="Classes/Isochrones.html">
+                <a title="Isochrones" class="nav-group-task-link" href="../Classes/Isochrones.html">Isochrones</a>
+              </li>
+              <li class="nav-group-task" data-name="SpokenInstruction" data-url="Classes/SpokenInstruction.html">
+                <a title="SpokenInstruction" class="nav-group-task-link" href="../Classes/SpokenInstruction.html">SpokenInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstruction" data-url="Classes/VisualInstruction.html">
+                <a title="VisualInstruction" class="nav-group-task-link" href="../Classes/VisualInstruction.html">VisualInstruction</a>
+              </li>
+              <li class="nav-group-task" data-name="– Component" data-url="Classes/VisualInstruction/Component.html">
+                <a title="– Component" class="nav-group-task-link" href="../Classes/VisualInstruction/Component.html">– Component</a>
+              </li>
+              <li class="nav-group-task" data-name="VisualInstructionBanner" data-url="Classes/VisualInstructionBanner.html">
+                <a title="VisualInstructionBanner" class="nav-group-task-link" href="../Classes/VisualInstructionBanner.html">VisualInstructionBanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Global Variables">
+            <a class="small-heading" href="../Other Global Variables.html">Other Global Variables<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="MBDirectionsErrorDomain" data-url="Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">
+                <a title="MBDirectionsErrorDomain" class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:16MapboxDirections23MBDirectionsErrorDomainSSvp">MBDirectionsErrorDomain</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Enumerations">
+            <a class="small-heading" href="../Other Enumerations.html">Other Enumerations<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CongestionLevel" data-url="Enums/CongestionLevel.html">
+                <a title="CongestionLevel" class="nav-group-task-link" href="../Enums/CongestionLevel.html">CongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="CustomOptionComparisonPolicy" data-url="Enums/CustomOptionComparisonPolicy.html">
+                <a title="CustomOptionComparisonPolicy" class="nav-group-task-link" href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsCodingError" data-url="Enums/DirectionsCodingError.html">
+                <a title="DirectionsCodingError" class="nav-group-task-link" href="../Enums/DirectionsCodingError.html">DirectionsCodingError</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsError" data-url="Enums/DirectionsError.html">
+                <a title="DirectionsError" class="nav-group-task-link" href="../Enums/DirectionsError.html">DirectionsError</a>
+              </li>
+              <li class="nav-group-task" data-name="DrivingSide" data-url="Enums/DrivingSide.html">
+                <a title="DrivingSide" class="nav-group-task-link" href="../Enums/DrivingSide.html">DrivingSide</a>
+              </li>
+              <li class="nav-group-task" data-name="IsochroneError" data-url="Enums/IsochroneError.html">
+                <a title="IsochroneError" class="nav-group-task-link" href="../Enums/IsochroneError.html">IsochroneError</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverDirection" data-url="Enums/ManeuverDirection.html">
+                <a title="ManeuverDirection" class="nav-group-task-link" href="../Enums/ManeuverDirection.html">ManeuverDirection</a>
+              </li>
+              <li class="nav-group-task" data-name="ManeuverType" data-url="Enums/ManeuverType.html">
+                <a title="ManeuverType" class="nav-group-task-link" href="../Enums/ManeuverType.html">ManeuverType</a>
+              </li>
+              <li class="nav-group-task" data-name="MapboxStreetsRoadClass" data-url="Enums/MapboxStreetsRoadClass.html">
+                <a title="MapboxStreetsRoadClass" class="nav-group-task-link" href="../Enums/MapboxStreetsRoadClass.html">MapboxStreetsRoadClass</a>
+              </li>
+              <li class="nav-group-task" data-name="MeasurementSystem" data-url="Enums/MeasurementSystem.html">
+                <a title="MeasurementSystem" class="nav-group-task-link" href="../Enums/MeasurementSystem.html">MeasurementSystem</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeFormat" data-url="Enums/RouteShapeFormat.html">
+                <a title="RouteShapeFormat" class="nav-group-task-link" href="../Enums/RouteShapeFormat.html">RouteShapeFormat</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteShapeResolution" data-url="Enums/RouteShapeResolution.html">
+                <a title="RouteShapeResolution" class="nav-group-task-link" href="../Enums/RouteShapeResolution.html">RouteShapeResolution</a>
+              </li>
+              <li class="nav-group-task" data-name="SignStandard" data-url="Enums/SignStandard.html">
+                <a title="SignStandard" class="nav-group-task-link" href="../Enums/SignStandard.html">SignStandard</a>
+              </li>
+              <li class="nav-group-task" data-name="TransportType" data-url="Enums/TransportType.html">
+                <a title="TransportType" class="nav-group-task-link" href="../Enums/TransportType.html">TransportType</a>
+              </li>
+              <li class="nav-group-task" data-name="Weight" data-url="Other%20Enums.html#/s:16MapboxDirections6WeightO">
+                <a title="Weight" class="nav-group-task-link" href="../Other%20Enums.html#/s:16MapboxDirections6WeightO">Weight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Extensions">
+            <a class="small-heading" href="../Other Extensions.html">Other Extensions<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="Array" data-url="Extensions/Array.html">
+                <a title="Array" class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task" data-name="BoundingBox" data-url="Extensions/BoundingBox.html">
+                <a title="BoundingBox" class="nav-group-task-link" href="../Extensions/BoundingBox.html">BoundingBox</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Protocols">
+            <a class="small-heading" href="../Other Protocols.html">Other Protocols<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="CustomValueOptionSet" data-url="Protocols/CustomValueOptionSet.html">
+                <a title="CustomValueOptionSet" class="nav-group-task-link" href="../Protocols/CustomValueOptionSet.html">CustomValueOptionSet</a>
+              </li>
+              <li class="nav-group-task" data-name="ForeignMemberContainerClass" data-url="Protocols/ForeignMemberContainerClass.html">
+                <a title="ForeignMemberContainerClass" class="nav-group-task-link" href="../Protocols/ForeignMemberContainerClass.html">ForeignMemberContainerClass</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteLegRefreshSource" data-url="Other%20Protocols.html#/s:16MapboxDirections21RouteLegRefreshSourceP">
+                <a title="RouteLegRefreshSource" class="nav-group-task-link" href="../Other%20Protocols.html#/s:16MapboxDirections21RouteLegRefreshSourceP">RouteLegRefreshSource</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshSource" data-url="Other%20Protocols.html#/s:16MapboxDirections18RouteRefreshSourceP">
+                <a title="RouteRefreshSource" class="nav-group-task-link" href="../Other%20Protocols.html#/s:16MapboxDirections18RouteRefreshSourceP">RouteRefreshSource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Structures">
+            <a class="small-heading" href="../Other Structures.html">Other Structures<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="AdministrativeRegion" data-url="Structs/AdministrativeRegion.html">
+                <a title="AdministrativeRegion" class="nav-group-task-link" href="../Structs/AdministrativeRegion.html">AdministrativeRegion</a>
+              </li>
+              <li class="nav-group-task" data-name="AttributeOptions" data-url="Structs/AttributeOptions.html">
+                <a title="AttributeOptions" class="nav-group-task-link" href="../Structs/AttributeOptions.html">AttributeOptions</a>
+              </li>
+              <li class="nav-group-task" data-name="BlockedLanes" data-url="Structs/BlockedLanes.html">
+                <a title="BlockedLanes" class="nav-group-task-link" href="../Structs/BlockedLanes.html">BlockedLanes</a>
+              </li>
+              <li class="nav-group-task" data-name="DirectionsPriority" data-url="Structs/DirectionsPriority.html">
+                <a title="DirectionsPriority" class="nav-group-task-link" href="../Structs/DirectionsPriority.html">DirectionsPriority</a>
+              </li>
+              <li class="nav-group-task" data-name="GuidanceViewImageRepresentation" data-url="Structs/GuidanceViewImageRepresentation.html">
+                <a title="GuidanceViewImageRepresentation" class="nav-group-task-link" href="../Structs/GuidanceViewImageRepresentation.html">GuidanceViewImageRepresentation</a>
+              </li>
+              <li class="nav-group-task" data-name="Incident" data-url="Structs/Incident.html">
+                <a title="Incident" class="nav-group-task-link" href="../Structs/Incident.html">Incident</a>
+              </li>
+              <li class="nav-group-task" data-name="– Kind" data-url="Structs/Incident/Kind.html">
+                <a title="– Kind" class="nav-group-task-link" href="../Structs/Incident/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task" data-name="– Impact" data-url="Structs/Incident/Impact.html">
+                <a title="– Impact" class="nav-group-task-link" href="../Structs/Incident/Impact.html">– Impact</a>
+              </li>
+              <li class="nav-group-task" data-name="Intersection" data-url="Structs/Intersection.html">
+                <a title="Intersection" class="nav-group-task-link" href="../Structs/Intersection.html">Intersection</a>
+              </li>
+              <li class="nav-group-task" data-name="LaneIndication" data-url="Structs/LaneIndication.html">
+                <a title="LaneIndication" class="nav-group-task-link" href="../Structs/LaneIndication.html">LaneIndication</a>
+              </li>
+              <li class="nav-group-task" data-name="MapMatchingResponse" data-url="Structs/MapMatchingResponse.html">
+                <a title="MapMatchingResponse" class="nav-group-task-link" href="../Structs/MapMatchingResponse.html">MapMatchingResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="ProfileIdentifier" data-url="Structs/ProfileIdentifier.html">
+                <a title="ProfileIdentifier" class="nav-group-task-link" href="../Structs/ProfileIdentifier.html">ProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRoute" data-url="Structs/RefreshedRoute.html">
+                <a title="RefreshedRoute" class="nav-group-task-link" href="../Structs/RefreshedRoute.html">RefreshedRoute</a>
+              </li>
+              <li class="nav-group-task" data-name="RefreshedRouteLeg" data-url="Structs/RefreshedRouteLeg.html">
+                <a title="RefreshedRouteLeg" class="nav-group-task-link" href="../Structs/RefreshedRouteLeg.html">RefreshedRouteLeg</a>
+              </li>
+              <li class="nav-group-task" data-name="RestStop" data-url="Structs/RestStop.html">
+                <a title="RestStop" class="nav-group-task-link" href="../Structs/RestStop.html">RestStop</a>
+              </li>
+              <li class="nav-group-task" data-name="– StopType" data-url="Structs/RestStop/StopType.html">
+                <a title="– StopType" class="nav-group-task-link" href="../Structs/RestStop/StopType.html">– StopType</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClassExclusionViolation" data-url="Structs/RoadClassExclusionViolation.html">
+                <a title="RoadClassExclusionViolation" class="nav-group-task-link" href="../Structs/RoadClassExclusionViolation.html">RoadClassExclusionViolation</a>
+              </li>
+              <li class="nav-group-task" data-name="RoadClasses" data-url="Structs/RoadClasses.html">
+                <a title="RoadClasses" class="nav-group-task-link" href="../Structs/RoadClasses.html">RoadClasses</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteRefreshResponse" data-url="Structs/RouteRefreshResponse.html">
+                <a title="RouteRefreshResponse" class="nav-group-task-link" href="../Structs/RouteRefreshResponse.html">RouteRefreshResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="RouteResponse" data-url="Structs/RouteResponse.html">
+                <a title="RouteResponse" class="nav-group-task-link" href="../Structs/RouteResponse.html">RouteResponse</a>
+              </li>
+              <li class="nav-group-task" data-name="SilentWaypoint" data-url="Structs/SilentWaypoint.html">
+                <a title="SilentWaypoint" class="nav-group-task-link" href="../Structs/SilentWaypoint.html">SilentWaypoint</a>
+              </li>
+              <li class="nav-group-task" data-name="TollCollection" data-url="Structs/TollCollection.html">
+                <a title="TollCollection" class="nav-group-task-link" href="../Structs/TollCollection.html">TollCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name" data-name="Other Type Aliases">
+            <a class="small-heading" href="../Other Type Aliases.html">Other Type Aliases<span class="anchor-icon" /></a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task" data-name="DirectionsProfileIdentifier" data-url="Other%20Typealiases.html#/s:16MapboxDirections0B17ProfileIdentifiera">
+                <a title="DirectionsProfileIdentifier" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections0B17ProfileIdentifiera">DirectionsProfileIdentifier</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/LocationAccuracy">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationAccuracy">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationAccuracy" data-url="Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">
+                <a title="LocationAccuracy" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections16LocationAccuracya">LocationAccuracy</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/LocationSpeed">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/LocationSpeed">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="LocationSpeed" data-url="Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">
+                <a title="LocationSpeed" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections13LocationSpeeda">LocationSpeed</a>
+              </li>
+              <li class="nav-group-task" data-name="NumericCongestionLevel" data-url="Other%20Typealiases.html#/s:16MapboxDirections22NumericCongestionLevela">
+                <a title="NumericCongestionLevel" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections22NumericCongestionLevela">NumericCongestionLevel</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/Scale">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/Scale">Scale</a>
+              </li>
+              <li class="nav-group-task" data-name="Scale" data-url="Other%20Typealiases.html#/s:16MapboxDirections5Scalea">
+                <a title="Scale" class="nav-group-task-link" href="../Other%20Typealiases.html#/s:16MapboxDirections5Scalea">Scale</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <a href="#/CustomValueOptionSet"><h1 id="CustomValueOptionSet">CustomValueOptionSet<span class="anchor-icon" /></h1></a>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CustomValueOptionSet</span> <span class="p">:</span> <span class="kt">OptionSet</span> <span class="k">where</span> <span class="k">Self</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">RawValue</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span></code></pre>
+
+                </div>
+              </div>
+            <p>Option set implementation which allows each option to have custom string value attached.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp"></a>
+                    <a name="//apple_ref/swift/Property/customOptionsByRawValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp"><span class="token-name">customOptionsByRawValue</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Provides a text value description for user-provided options.</p>
+
+<p>The option set will recognize a custom option if it&rsquo;s unique <code>rawValue</code> flag is set and <code>customOptionsByRawValue</code> contains a description for that flag.
+Use the <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP6update06customE016comparisonPolicyxSg03RawD0Qz_0cD0Qzt_AA0ce10ComparisonJ0OtF">update(customOption:comparisonPolicy:)</a></code> method to append a custom option.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">customOptionsByRawValue</span><span class="p">:</span> <span class="p">[</span><span class="kt">RawValue</span> <span class="p">:</span> <span class="kt">CustomValue</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L42">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP8contains_16comparisonPolicySbx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/contains(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP8contains_16comparisonPolicySbx_AA0ce10ComparisonI0OtF"><span class="token-name">contains(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether the given element exists
+in the set.</p>
+
+<p>This example uses the <code><a href="../Protocols/CustomValueOptionSet.html#/s:s10SetAlgebraP8containsySb7ElementQzF">contains(_:)</a></code> method to test whether an integer is
+a member of a set of prime numbers.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">primes</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">x</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="k">if</span> <span class="n">primes</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">x</span><span class="se">)</span><span class="s"> is prime!"</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">x</span><span class="se">)</span><span class="s">. Not prime."</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// Prints "5 is prime!"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">contains</span><span class="p">(</span><span class="n">_</span> <span class="nv">member</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  member
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An element to look for in the set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if <code>member</code> exists in the set; otherwise, <code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L64">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP5union_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/union(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP5union_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"><span class="token-name">union(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a new set with the elements of both this and the given set.</p>
+
+<p>In the following example, the <code>attendeesAndVisitors</code> set is made up
+of the elements of the <code>attendees</code> and <code>visitors</code> sets:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">visitors</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Marcia"</span><span class="p">,</span> <span class="s">"Nathaniel"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">attendeesAndVisitors</span> <span class="o">=</span> <span class="n">attendees</span><span class="o">.</span><span class="nf">union</span><span class="p">(</span><span class="n">visitors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">attendeesAndVisitors</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Nathaniel", "Bethany", "Alicia", "Marcia"]"</span>
+</code></pre>
+
+<p>If the set already contains one or more elements that are also in
+<code>other</code>, the existing members are kept.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">initialIndices</span> <span class="o">=</span> <span class="kt">Set</span><span class="p">(</span><span class="mi">0</span><span class="o">..&lt;</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">expandedIndices</span> <span class="o">=</span> <span class="n">initialIndices</span><span class="o">.</span><span class="nf">union</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">expandedIndices</span><span class="p">)</span>
+<span class="c1">// Prints "[2, 4, 6, 7, 0, 1, 3]"</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>if this set and <code>other</code> contain elements that are equal but
+distinguishable (e.g. via <code>===</code>), which of these elements is present
+in the result is unspecified.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">union</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new set with the unique elements of this set and <code>other</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L91">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP9formUnion_16comparisonPolicyyx_AA0ce10ComparisonJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/formUnion(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP9formUnion_16comparisonPolicyyx_AA0ce10ComparisonJ0OtF"><span class="token-name">formUnion(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Adds the elements of the given set to the set.</p>
+
+<p>In the following example, the elements of the <code>visitors</code> set are added to
+the <code>attendees</code> set:</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">visitors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Marcia"</span><span class="p">,</span> <span class="s">"Nathaniel"</span><span class="p">]</span>
+<span class="n">attendees</span><span class="o">.</span><span class="nf">formUnion</span><span class="p">(</span><span class="n">visitors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">attendees</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Nathaniel", "Bethany", "Alicia", "Marcia"]"</span>
+</code></pre>
+
+<p>If the set already contains one or more elements that are also in
+<code>other</code>, the existing members are kept.</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">initialIndices</span> <span class="o">=</span> <span class="kt">Set</span><span class="p">(</span><span class="mi">0</span><span class="o">..&lt;</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">initialIndices</span><span class="o">.</span><span class="nf">formUnion</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">initialIndices</span><span class="p">)</span>
+<span class="c1">// Prints "[2, 4, 6, 7, 0, 1, 3]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formUnion</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L113">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP12intersection_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/intersection(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP12intersection_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"><span class="token-name">intersection(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a new set with the elements that are common to both this set and
+the given set.</p>
+
+<p>In the following example, the <code>bothNeighborsAndEmployees</code> set is made up
+of the elements that are in <em>both</em> the <code>employees</code> and <code>neighbors</code> sets.
+Elements that are in only one or the other are left out of the result of
+the intersection.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">,</span> <span class="s">"Greta"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">bothNeighborsAndEmployees</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="nf">intersection</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">bothNeighborsAndEmployees</span><span class="p">)</span>
+<span class="c1">// Prints "["Bethany", "Eric"]"</span>
+</code></pre>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>if this set and <code>other</code> contain elements that are equal but
+distinguishable (e.g. via <code>===</code>), which of these elements is present
+in the result is unspecified.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">intersection</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new set.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L135">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP16formIntersection_16comparisonPolicyyx_AA0ce10ComparisonJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/formIntersection(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP16formIntersection_16comparisonPolicyyx_AA0ce10ComparisonJ0OtF"><span class="token-name">formIntersection(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Removes the elements of this set that aren&rsquo;t also in the given set.</p>
+
+<p>In the following example, the elements of the <code>employees</code> set that are
+not also members of the <code>neighbors</code> set are removed. In particular, the
+names <code>&quot;Alicia&quot;</code>, <code>&quot;Chris&quot;</code>, and <code>&quot;Diana&quot;</code> are removed.</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">,</span> <span class="s">"Greta"</span><span class="p">]</span>
+<span class="n">employees</span><span class="o">.</span><span class="nf">formIntersection</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span>
+<span class="c1">// Prints "["Bethany", "Eric"]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formIntersection</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L150">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP19symmetricDifference_16comparisonPolicyxx_AA0ce10ComparisonJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/symmetricDifference(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP19symmetricDifference_16comparisonPolicyxx_AA0ce10ComparisonJ0OtF"><span class="token-name">symmetricDifference(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a new set with the elements that are either in this set or in the
+given set, but not in both.</p>
+
+<p>In the following example, the <code>eitherNeighborsOrEmployees</code> set is made up
+of the elements of the <code>employees</code> and <code>neighbors</code> sets that are not in
+both <code>employees</code> <em>and</em> <code>neighbors</code>. In particular, the names <code>&quot;Bethany&quot;</code>
+and <code>&quot;Eric&quot;</code> do not appear in <code>eitherNeighborsOrEmployees</code>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">eitherNeighborsOrEmployees</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="nf">symmetricDifference</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">eitherNeighborsOrEmployees</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Forlani", "Alicia"]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">symmetricDifference</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new set.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L168">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP23formSymmetricDifference_16comparisonPolicyyx_AA0ce10ComparisonK0OtF"></a>
+                    <a name="//apple_ref/swift/Method/formSymmetricDifference(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP23formSymmetricDifference_16comparisonPolicyyx_AA0ce10ComparisonK0OtF"><span class="token-name">formSymmetricDifference(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Removes the elements of the set that are also in the given set and adds
+the members of the given set that are not already in the set.</p>
+
+<p>In the following example, the elements of the <code>employees</code> set that are
+also members of <code>neighbors</code> are removed from <code>employees</code>, while the
+elements of <code>neighbors</code> that are not members of <code>employees</code> are added to
+<code>employees</code>. In particular, the names <code>&quot;Bethany&quot;</code> and <code>&quot;Eric&quot;</code> are
+removed from <code>employees</code> while the name <code>&quot;Forlani&quot;</code> is added.</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">]</span>
+<span class="n">employees</span><span class="o">.</span><span class="nf">formSymmetricDifference</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Forlani", "Alicia"]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formSymmetricDifference</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L186">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP11subtracting_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/subtracting(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP11subtracting_16comparisonPolicyxx_AA0ce10ComparisonI0OtF"><span class="token-name">subtracting(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a new set containing the elements of this set that do not occur
+in the given set.</p>
+
+<p>In the following example, the <code>nonNeighbors</code> set is made up of the
+elements of the <code>employees</code> set that are not elements of <code>neighbors</code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">,</span> <span class="s">"Greta"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">nonNeighbors</span> <span class="o">=</span> <span class="n">employees</span><span class="o">.</span><span class="nf">subtracting</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">nonNeighbors</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Chris", "Alicia"]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">subtracting</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new set.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L202">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP8subtract_16comparisonPolicyyx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/subtract(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP8subtract_16comparisonPolicyyx_AA0ce10ComparisonI0OtF"><span class="token-name">subtract(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Removes the elements of the given set from this set.</p>
+
+<p>In the following example, the elements of the <code>employees</code> set that are
+also members of the <code>neighbors</code> set are removed. In particular, the
+names <code>&quot;Bethany&quot;</code> and <code>&quot;Eric&quot;</code> are removed from <code>employees</code>.</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">neighbors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">,</span> <span class="s">"Forlani"</span><span class="p">,</span> <span class="s">"Greta"</span><span class="p">]</span>
+<span class="n">employees</span><span class="o">.</span><span class="nf">subtract</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="p">)</span>
+<span class="c1">// Prints "["Diana", "Chris", "Alicia"]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">subtract</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L217">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP6insert_16comparisonPolicySb8inserted_x17memberAfterInserttx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/insert(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP6insert_16comparisonPolicySb8inserted_x17memberAfterInserttx_AA0ce10ComparisonI0OtF"><span class="token-name">insert(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Inserts the given element in the set if it is not already present.</p>
+
+<p>If an element equal to <code>newMember</code> is already contained in the set, this
+method has no effect. In this example, a new element is inserted into
+<code>classDays</code>, a set of days of the week. When an existing element is
+inserted, the <code>classDays</code> set does not change.</p>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">DayOfTheWeek</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">sunday</span><span class="p">,</span> <span class="n">monday</span><span class="p">,</span> <span class="n">tuesday</span><span class="p">,</span> <span class="n">wednesday</span><span class="p">,</span> <span class="n">thursday</span><span class="p">,</span>
+        <span class="n">friday</span><span class="p">,</span> <span class="n">saturday</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="nv">classDays</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">DayOfTheWeek</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">wednesday</span><span class="p">,</span> <span class="o">.</span><span class="n">friday</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">classDays</span><span class="o">.</span><span class="nf">insert</span><span class="p">(</span><span class="o">.</span><span class="n">monday</span><span class="p">))</span>
+<span class="c1">// Prints "(true, .monday)"</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">classDays</span><span class="p">)</span>
+<span class="c1">// Prints "[.friday, .wednesday, .monday]"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">classDays</span><span class="o">.</span><span class="nf">insert</span><span class="p">(</span><span class="o">.</span><span class="n">friday</span><span class="p">))</span>
+<span class="c1">// Prints "(false, .friday)"</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">classDays</span><span class="p">)</span>
+<span class="c1">// Prints "[.friday, .wednesday, .monday]"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">insert</span><span class="p">(</span><span class="n">_</span> <span class="nv">newMember</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">inserted</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">memberAfterInsert</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  newMember
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An element to insert into the set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>(true, newMember)</code> if <code>newMember</code> was not contained in the
+set. If an element equal to <code>newMember</code> was already contained in the
+set, the method returns <code>(false, oldMember)</code>, where <code>oldMember</code> is the
+element that was equal to <code>newMember</code>. In some cases, <code>oldMember</code> may
+be distinguishable from <code>newMember</code> by identity comparison or some
+other means.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L249">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP6remove_16comparisonPolicyxSgx_AA0ce10ComparisonI0OtF"></a>
+                    <a name="//apple_ref/swift/Method/remove(_:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP6remove_16comparisonPolicyxSgx_AA0ce10ComparisonI0OtF"><span class="token-name">remove(_:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Removes the given element and any elements subsumed by the given element.</p>
+
+<p>For sets where the set type and element type are the same, like
+  <code>OptionSet</code> types, this method returns any intersection between the set
+  and <code>[member]</code>, or <code>nil</code> if the intersection is empty.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="n">_</span> <span class="nv">member</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  member
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The element of the set to remove.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>For ordinary sets, an element equal to <code>member</code> if <code>member</code> is
+contained in the set; otherwise, <code>nil</code>. In some cases, a returned
+element may be distinguishable from <code>member</code> by identity comparison
+or some other means.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L262">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP6update4with16comparisonPolicyxSgx_AA0ce10ComparisonJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/update(with:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP6update4with16comparisonPolicyxSgx_AA0ce10ComparisonJ0OtF"><span class="token-name">update(with:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Inserts the given element into the set unconditionally.</p>
+
+<p>If an element equal to <code>newMember</code> is already contained in the set,
+<code>newMember</code> replaces the existing element. In this example, an existing
+element is inserted into <code>classDays</code>, a set of days of the week.</p>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">DayOfTheWeek</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">sunday</span><span class="p">,</span> <span class="n">monday</span><span class="p">,</span> <span class="n">tuesday</span><span class="p">,</span> <span class="n">wednesday</span><span class="p">,</span> <span class="n">thursday</span><span class="p">,</span>
+        <span class="n">friday</span><span class="p">,</span> <span class="n">saturday</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="nv">classDays</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">DayOfTheWeek</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">monday</span><span class="p">,</span> <span class="o">.</span><span class="n">wednesday</span><span class="p">,</span> <span class="o">.</span><span class="n">friday</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">classDays</span><span class="o">.</span><span class="nf">update</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="o">.</span><span class="n">monday</span><span class="p">))</span>
+<span class="c1">// Prints "Optional(.monday)"</span>
+</code></pre>
+
+<p>For sets where the set type and element type are the same, like
+  <code>OptionSet</code> types, this method returns any intersection between the
+  set and <code>[newMember]</code>, or <code>nil</code> if the intersection is empty.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="n">with</span> <span class="nv">newMember</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  newMember
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An element to insert into the set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>For ordinary sets, an element equal to <code>newMember</code> if the set
+already contained such a member; otherwise, <code>nil</code>. In some cases, the
+returned element may be distinguishable from <code>newMember</code> by identity
+comparison or some other means.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L288">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP6update06customE016comparisonPolicyxSg03RawD0Qz_0cD0Qzt_AA0ce10ComparisonJ0OtF"></a>
+                    <a name="//apple_ref/swift/Method/update(customOption:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP6update06customE016comparisonPolicyxSg03RawD0Qz_0cD0Qzt_AA0ce10ComparisonJ0OtF"><span class="token-name">update(customOption:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Inserts the given element into the set unconditionally.</p>
+
+<p>If an element equal to <code>customOption</code> is already contained in the set,
+<code>customOption</code> replaces the existing element. Otherwise - updates the set contents and fills <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code> accordingly.</p>
+
+<p>For sets where the set type and element type are the same, like
+  <code>OptionSet</code> types, this method returns any intersection between the
+  set and <code>[customOption]</code>, or <code>nil</code> if the intersection is empty.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">mutating</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">customOption</span><span class="p">:</span> <span class="p">(</span><span class="kt">RawValue</span><span class="p">,</span> <span class="kt">CustomValue</span><span class="p">),</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  customOption
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An element to insert into the set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>For ordinary sets, an element equal to <code>customOption</code> if the set
+already contained such a member; otherwise, <code>nil</code>. In some cases, the
+returned element may be distinguishable from <code>customOption</code> by identity
+comparison or some other means.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L304">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP8isSubset2of16comparisonPolicySbx_AA0ce10ComparisonK0OtF"></a>
+                    <a name="//apple_ref/swift/Method/isSubset(of:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP8isSubset2of16comparisonPolicySbx_AA0ce10ComparisonK0OtF"><span class="token-name">isSubset(of:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether the set is a subset of
+another set.</p>
+
+<p>Set <em>A</em> is a subset of another set <em>B</em> if every member of <em>A</em> is also a
+member of <em>B</em>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">attendees</span><span class="o">.</span><span class="nf">isSubset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">employees</span><span class="p">))</span>
+<span class="c1">// Prints "true"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isSubset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the set is a subset of <code>other</code>; otherwise, <code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L319">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP10isSuperset2of16comparisonPolicySbx_AA0ce10ComparisonK0OtF"></a>
+                    <a name="//apple_ref/swift/Method/isSuperset(of:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP10isSuperset2of16comparisonPolicySbx_AA0ce10ComparisonK0OtF"><span class="token-name">isSuperset(of:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether the set is a superset of
+the given set.</p>
+
+<p>Set <em>A</em> is a superset of another set <em>B</em> if every member of <em>B</em> is also a
+member of <em>A</em>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="o">.</span><span class="nf">isSuperset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">attendees</span><span class="p">))</span>
+<span class="c1">// Prints "true"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isSuperset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the set is a superset of <code>possibleSubset</code>;
+otherwise, <code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L335">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP14isStrictSubset2of16comparisonPolicySbx_AA0ce10ComparisonL0OtF"></a>
+                    <a name="//apple_ref/swift/Method/isStrictSubset(of:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP14isStrictSubset2of16comparisonPolicySbx_AA0ce10ComparisonL0OtF"><span class="token-name">isStrictSubset(of:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether this set is a strict
+subset of the given set.</p>
+
+<p>Set <em>A</em> is a strict subset of another set <em>B</em> if every member of <em>A</em> is
+also a member of <em>B</em> and <em>B</em> contains at least one element that is not a
+member of <em>A</em>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">attendees</span><span class="o">.</span><span class="nf">isStrictSubset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">employees</span><span class="p">))</span>
+<span class="c1">// Prints "true"</span>
+
+<span class="c1">// A set is never a strict subset of itself:</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">attendees</span><span class="o">.</span><span class="nf">isStrictSubset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">attendees</span><span class="p">))</span>
+<span class="c1">// Prints "false"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isStrictSubset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the set is a strict subset of <code>other</code>; otherwise,
+<code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L356">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP16isStrictSuperset2of16comparisonPolicySbx_AA0ce10ComparisonL0OtF"></a>
+                    <a name="//apple_ref/swift/Method/isStrictSuperset(of:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP16isStrictSuperset2of16comparisonPolicySbx_AA0ce10ComparisonL0OtF"><span class="token-name">isStrictSuperset(of:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether this set is a strict
+superset of the given set.</p>
+
+<p>Set <em>A</em> is a strict superset of another set <em>B</em> if every member of <em>B</em> is
+also a member of <em>A</em> and <em>A</em> contains at least one element that is <em>not</em>
+a member of <em>B</em>.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">attendees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="o">.</span><span class="nf">isStrictSuperset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">attendees</span><span class="p">))</span>
+<span class="c1">// Prints "true"</span>
+
+<span class="c1">// A set is never a strict superset of itself:</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="o">.</span><span class="nf">isStrictSuperset</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="n">employees</span><span class="p">))</span>
+<span class="c1">// Prints "false"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isStrictSuperset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the set is a strict superset of <code>other</code>; otherwise,
+<code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L377">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16MapboxDirections20CustomValueOptionSetP10isDisjoint4with16comparisonPolicySbx_AA0ce10ComparisonK0OtF"></a>
+                    <a name="//apple_ref/swift/Method/isDisjoint(with:comparisonPolicy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16MapboxDirections20CustomValueOptionSetP10isDisjoint4with16comparisonPolicySbx_AA0ce10ComparisonK0OtF"><span class="token-name">isDisjoint(with:comparisonPolicy:)</span><span class="token-icon" /></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        <p>Returns a Boolean value that indicates whether the set has no members in
+common with the given set.</p>
+
+<p>In the following example, the <code>employees</code> set is disjoint with the
+<code>visitors</code> set because no name appears in both sets.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">employees</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alicia"</span><span class="p">,</span> <span class="s">"Bethany"</span><span class="p">,</span> <span class="s">"Chris"</span><span class="p">,</span> <span class="s">"Diana"</span><span class="p">,</span> <span class="s">"Eric"</span><span class="p">]</span>
+<span class="k">let</span> <span class="nv">visitors</span><span class="p">:</span> <span class="kt">Set</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Marcia"</span><span class="p">,</span> <span class="s">"Nathaniel"</span><span class="p">,</span> <span class="s">"Olivia"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">employees</span><span class="o">.</span><span class="nf">isDisjoint</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">visitors</span><span class="p">))</span>
+<span class="c1">// Prints "true"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isDisjoint</span><span class="p">(</span><span class="n">with</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">,</span> <span class="nv">comparisonPolicy</span><span class="p">:</span> <span class="kt"><a href="../Enums/CustomOptionComparisonPolicy.html">CustomOptionComparisonPolicy</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                  other
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A set of the same type as the current set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                  comparisonPolicy
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>comparison method to be used for <code><a href="../Protocols/CustomValueOptionSet.html#/s:16MapboxDirections20CustomValueOptionSetP018customOptionsByRawD0SDy0jD0Qz0cD0QzGvp">customOptionsByRawValue</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the set has no elements in common with <code>other</code>;
+otherwise, <code>false</code>.</p>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L393">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/SetAlgebra%20implementation"></a>
+                <a name="//apple_ref/swift/Section/SetAlgebra implementation" class="dashAnchor"></a>
+                <a href="#/SetAlgebra%20implementation">
+                  <h3 id="SetAlgebra%20implementation" class="section-name">SetAlgebra implementation<span class="anchor-icon" /></h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP8containsySb7ElementQzF"></a>
+                    <a name="//apple_ref/swift/Method/contains(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP8containsySb7ElementQzF"><span class="token-name">contains(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">contains</span><span class="p">(</span><span class="n">_</span> <span class="nv">member</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L576-L578">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP5unionyxxnF"></a>
+                    <a name="//apple_ref/swift/Method/union(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP5unionyxxnF"><span class="token-name">union(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">union</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L580-L582">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP12intersectionyxxF"></a>
+                    <a name="//apple_ref/swift/Method/intersection(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP12intersectionyxxF"><span class="token-name">intersection(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">intersection</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L584-L586">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP19symmetricDifferenceyxxnF"></a>
+                    <a name="//apple_ref/swift/Method/symmetricDifference(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP19symmetricDifferenceyxxnF"><span class="token-name">symmetricDifference(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">symmetricDifference</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L588-L590">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP6insertySb8inserted_7ElementQz17memberAfterInserttAFnF"></a>
+                    <a name="//apple_ref/swift/Method/insert(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP6insertySb8inserted_7ElementQz17memberAfterInserttAFnF"><span class="token-name">insert(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">insert</span><span class="p">(</span><span class="n">_</span> <span class="nv">newMember</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">inserted</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">memberAfterInsert</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L592-L594">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP6removey7ElementQzSgAEF"></a>
+                    <a name="//apple_ref/swift/Method/remove(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP6removey7ElementQzSgAEF"><span class="token-name">remove(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="n">_</span> <span class="nv">member</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L596-L598">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP6update4with7ElementQzSgAFn_tF"></a>
+                    <a name="//apple_ref/swift/Method/update(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP6update4with7ElementQzSgAFn_tF"><span class="token-name">update(with:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="n">with</span> <span class="nv">newMember</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L600-L602">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP9formUnionyyxnF"></a>
+                    <a name="//apple_ref/swift/Method/formUnion(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP9formUnionyyxnF"><span class="token-name">formUnion(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formUnion</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L604-L606">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP16formIntersectionyyxF"></a>
+                    <a name="//apple_ref/swift/Method/formIntersection(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP16formIntersectionyyxF"><span class="token-name">formIntersection(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formIntersection</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L608-L610">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP23formSymmetricDifferenceyyxnF"></a>
+                    <a name="//apple_ref/swift/Method/formSymmetricDifference(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP23formSymmetricDifferenceyyxnF"><span class="token-name">formSymmetricDifference(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">formSymmetricDifference</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L612-L614">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP11subtractingyxxF"></a>
+                    <a name="//apple_ref/swift/Method/subtracting(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP11subtractingyxxF"><span class="token-name">subtracting(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">subtracting</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L616-L618">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP8isSubset2ofSbx_tF"></a>
+                    <a name="//apple_ref/swift/Method/isSubset(of:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP8isSubset2ofSbx_tF"><span class="token-name">isSubset(of:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">isSubset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L620-L622">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP10isDisjoint4withSbx_tF"></a>
+                    <a name="//apple_ref/swift/Method/isDisjoint(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP10isDisjoint4withSbx_tF"><span class="token-name">isDisjoint(with:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">isDisjoint</span><span class="p">(</span><span class="n">with</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L624-L626">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP10isSuperset2ofSbx_tF"></a>
+                    <a name="//apple_ref/swift/Method/isSuperset(of:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP10isSuperset2ofSbx_tF"><span class="token-name">isSuperset(of:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@inlinable</span>
+<span class="kd">func</span> <span class="nf">isSuperset</span><span class="p">(</span><span class="n">of</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L628-L630">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10SetAlgebraP8subtractyyxF"></a>
+                    <a name="//apple_ref/swift/Method/subtract(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10SetAlgebraP8subtractyyxF"><span class="token-name">subtract(_:)</span><span class="token-icon" /></a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <section class="section">
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language keyline-blue">
+                          <p  style="background: rgba(65, 131, 196, 0.15);" class="aside-title text-blue">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@inlinable</span>
+<span class="k">mutating</span> <span class="kd">func</span> <span class="nf">subtract</span><span class="p">(</span><span class="n">_</span> <span class="nv">other</span><span class="p">:</span> <span class="k">Self</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="show-on-github">
+                        <a href="https://github.com/mapbox/mapbox-directions-swift/tree/v2.8.0/Sources/MapboxDirections/CustomValueOptionSet.swift#L632-L634">
+                          <img style="margin-bottom: 1px;" class="show-on-github-icon" src="../img/github.svg"/>
+                          View Source on GitHub
+                        </a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer limiter">
+      <p>© 2014–2022 <a class="link" href="https://www.mapbox.com/" target="_blank" rel="external noopener">Mapbox</a>. See <a class="link" href="https://github.com/mapbox/mapbox-directions-swift/blob/master/LICENSE.md" target="_blank" rel="external noopener">license</a> for more details.</p> Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.
+    </section>
+  </body>
+</div>
+</html>
