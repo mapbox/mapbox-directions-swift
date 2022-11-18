@@ -20,8 +20,8 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
-        .package(name: "Turf", url: "https://github.com/mapbox/turf-swift.git", "2.4.0"..<"2.6.0"),
+        .package(url: "https://github.com/raphaelmor/Polyline.git", "5.0.3"..<"5.1.0"),
+        .package(name: "Turf", url: "https://github.com/mapbox/turf-swift.git", "2.5.0"..<"2.6.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0")
     ],

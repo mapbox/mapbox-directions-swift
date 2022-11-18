@@ -1,2 +1,2 @@
-github "raphaelmor/Polyline" == 5.0.3
-github "mapbox/turf-swift" ~> 2.4
+github "raphaelmor/Polyline" ~> 5.0.3
+github "mapbox/turf-swift" ~> 2.5.0
