@@ -542,6 +542,10 @@
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponseTests.swift; sourceTree = "<group>"; };
 		8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		8A586D1B2927061B00679A54 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		8A586D1C2927061B00679A54 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
+		8A586D1D2927061B00679A54 /* Cartfile.private */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.private; sourceTree = "<group>"; };
+		8A586D1E2927061B00679A54 /* MapboxDirections.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = MapboxDirections.podspec; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -743,6 +747,10 @@
 		438BFEBF233D804600457294 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
+				8A586D1B2927061B00679A54 /* Cartfile */,
+				8A586D1D2927061B00679A54 /* Cartfile.private */,
+				8A586D1C2927061B00679A54 /* Cartfile.resolved */,
+				8A586D1E2927061B00679A54 /* MapboxDirections.podspec */,
 				8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */,
 				438BFEBC233D7FA900457294 /* Package.swift */,
 				438BFEC0233D805500457294 /* README.md */,
