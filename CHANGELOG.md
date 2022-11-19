@@ -1,5 +1,11 @@
 # Changes to Mapbox Directions for Swift
 
+## 2.7.1
+
+### Packaging
+
+* This release of MapboxDirections requires Turf v2.5._x_ to work around a dependency resolution failure. If you use Carthage, it requires Turf v2.5.0 exactly. ([#766](https://github.com/mapbox/mapbox-directions-swift/pull/766))
+
 ## 2.7.0
 
 ### Packaging
