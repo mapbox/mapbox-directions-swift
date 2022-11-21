@@ -109,6 +109,7 @@ GEM
 
 PLATFORMS
   universal-darwin-21
+  x86_64-darwin-20
 
 DEPENDENCIES
   jazzy (~> 0.14)
