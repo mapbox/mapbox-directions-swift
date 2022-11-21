@@ -35,6 +35,7 @@ mkdir -p "./$FOLDER"
 mv -v $OUTPUT/* "./$FOLDER"
 
 step "Switching branch to publisher-production"
+git checkout Gemfile.lock
 git checkout origin/publisher-production
 
 step "Committing API docs for $VERSION"
