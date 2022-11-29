@@ -37,7 +37,7 @@ commands:
                 command: |
                   xcrun llvm-cov export -arch $(uname -m) -format="lcov" \
                     -instr-profile=$(find "${HOME}/Library/Developer/Xcode/DerivedData" -name '*.profdata' | head -n 1) \
-                    $(find build -name "MapboxDirections.o") > coverage.lcov
+                    $(find "${HOME}/Library/Developer/Xcode/DerivedData" -ipath "*MapboxDirections.framework/MapboxDirections" | head -1) > coverage.lcov
             - run:
                 name: Send code coverage
                 command: |
