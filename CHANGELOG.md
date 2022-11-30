@@ -38,6 +38,12 @@
 * `RouteOptions(url:)` now returns `nil` if given a Mapbox Map Matching API request URL, and `MatchOptions(url:)` returns `nil` if given a Mapbox Directions API request URL. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
 * Added the `Directions.refreshRoute(responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:completionHandler:)` method, which takes the index into the route geometry at which to begin refreshing, as well as corresponding `Directions.urlRequest(forRefreshing responseIdentifier:routeIndex:fromLegAtIndex:currentRouteShapeIndex:)`, `RouteRefreshResponse.refreshLegAttributes(from:legIndex:legShapeIndex:)`, and `RouteRefreshResponse.refreshLegIncidents(from:legIndex:legShapeIndex:)` methods. ([#733](https://github.com/mapbox/mapbox-directions-swift/pull/733/files))
 
+## v2.6.1
+
+### Packaging
+
+* This release of MapboxDirections requires Turf v2.5._x_ to work around a dependency resolution failure. If you use Carthage, it requires Turf v2.5.0 exactly. ([#771](https://github.com/mapbox/mapbox-directions-swift/pull/771))
+
 ## v2.6.0
 
 * MapboxDirections now requires [Turf v2.4](https://github.com/mapbox/turf-swift/releases/tag/v2.4.0). ([#703](https://github.com/mapbox/mapbox-directions-swift/pull/703))
