@@ -253,18 +253,8 @@ workflows:
           name: "SPM Ubuntu build"
       - example-app-build:
           name: "Build example app"
-      - approve-publish-documentation:
-          name: "Approve Publish Documentation"
-          type: approval
-          filters: &filters-tag-push
-            tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?$/
-            branches:
-              ignore: /.*/
       - publish-documentation:
           name: "Publish Documentation"
-          requires:
-            - "Approve Publish Documentation"
-          filters: 
-            <<: *filters-tag-push
-        
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+(-.+)?$/
