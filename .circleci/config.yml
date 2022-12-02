@@ -361,6 +361,8 @@ workflows:
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+(-.+)?$/
+            branches:
+              ignore: /.*/
   update-version-workflow:
     jobs:
       - update-version-job:
