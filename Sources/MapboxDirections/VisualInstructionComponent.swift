@@ -385,10 +385,8 @@ extension VisualInstruction.Component: Codable {
             if let imageURLString = try container.decodeIfPresent(String.self, forKey: .imageURL) {
                 imageURL = URL(string: imageURLString)
             }
-            
-            let subType = try container.decodeIfPresent(SubType.self, forKey: .subType)
-            
             let guidanceViewImageRepresentation = GuidanceViewImageRepresentation(imageURL: imageURL)
+            let subType = try container.decodeIfPresent(SubType.self, forKey: .subType)
             self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation, subType: subType)
         }
     }
