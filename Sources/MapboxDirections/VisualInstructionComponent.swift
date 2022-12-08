@@ -276,16 +276,71 @@ extension VisualInstruction.Component: Codable {
         case lane
     }
     
+    /**
+     Subtype that provides more context about the component guidance view that may help in visual
+     markup and display choices.
+     */
     public enum SubType: String, Codable {
+        
+        /**
+         Junction view. Bird’s-eye artist’s rendition view of the overhead signage and
+         preferred road lane arrow on motorways where the road bifurcates into 2 or
+         more motorway trunk roads.
+         */
         case jct = "jct"
+        
+        /**
+         Advanced 2D signboard (vendor enhanced detailed signboard).
+         */
         case signboard = "signboard"
+        
+        /**
+         Service area/parking area guide map. Vertical artist’s rendition guide map of an SAPA rest area
+         showing various facilities icons such as restaurants, restrooms and parking areas.
+         The scale is approximately 1 to 5K.
+         */
         case sapaGuideMap = "sapaguidemap"
+        
+        /**
+         Service area/parking area. Bird’s-eye artist’s rendition view of the overhead
+         signage and preferred road lane arrow at a rest area ramp where the route
+         leaves the main road.
+         */
         case sapa = "sapa"
+        
+        /**
+         Sign image after a toll gate. Used immediately after exiting a toll gate containing just the
+         overhead signboard. The preferred road (not the lane) arrow is highlighted on the signboard.
+         */
         case afterToll = "aftertoll"
+        
+        /**
+         3D city real. Bird’s-eye artist’s rendition view of a general road intersection
+         and preferred road lane arrow. There is no overhead signage.
+         */
         case cityReal = "cityreal"
+        
+        /**
+         Expressway entrance. Bird’s-eye artist’s rendition view of the overhead signage and
+         preferred road lane arrow at an entrance ramp onto an expressway.
+         */
         case expresswayEntrance = "ent"
+        
+        /**
+         Expressway exit. Bird’s-eye artist’s rendition view of the overhead signage and
+         preferred road lane arrow at an exit ramp from an expressway.
+         */
         case expresswayExit = "exit"
+        
+        /**
+         Branched image after a toll gate. Bird’s-eye artist’s rendition view of the overhead
+         signage and preferred road lane arrow immediately after exiting a toll gate.
+         */
         case tollBranch = "tollbranch"
+        
+        /**
+         Direction signboard guidance view.
+         */
         case directionBoard = "directionboard"
     }
     
