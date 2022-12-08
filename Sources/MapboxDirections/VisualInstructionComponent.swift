@@ -324,7 +324,7 @@ extension VisualInstruction.Component: Codable {
          Expressway entrance. Bird’s-eye artist’s rendition view of the overhead signage and
          preferred road lane arrow at an entrance ramp onto an expressway.
          */
-        case expresswayEntrance = "ent"
+        case expresswayEntrance = "entrance"
         
         /**
          Expressway exit. Bird’s-eye artist’s rendition view of the overhead signage and
