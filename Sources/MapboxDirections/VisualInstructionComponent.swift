@@ -51,7 +51,7 @@ public extension VisualInstruction {
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
          */
-        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation)
+        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation, subType: SubType?)
         
         /**
          The component contains the localized word for “Exit”.
@@ -254,6 +254,7 @@ public struct GuidanceViewImageRepresentation: Equatable {
 extension VisualInstruction.Component: Codable {
     private enum CodingKeys: String, CodingKey {
         case kind = "type"
+        case subType = "subType"
         case text
         case abbreviatedText = "abbr"
         case abbreviatedTextPriority = "abbr_priority"
@@ -273,6 +274,19 @@ extension VisualInstruction.Component: Codable {
         case exit
         case exitCode = "exit-number"
         case lane
+    }
+    
+    public enum SubType: String, Codable {
+        case jct = "jct"
+        case signboard = "signboard"
+        case sapaGuideMap = "sapaguidemap"
+        case sapa = "sapa"
+        case afterToll = "aftertoll"
+        case cityReal = "cityreal"
+        case expresswayEntrance = "ent"
+        case expresswayExit = "exit"
+        case tollBranch = "tollbranch"
+        case directionBoard = "directionboard"
     }
     
     public init(from decoder: Decoder) throws {
@@ -316,8 +330,11 @@ extension VisualInstruction.Component: Codable {
             if let imageURLString = try container.decodeIfPresent(String.self, forKey: .imageURL) {
                 imageURL = URL(string: imageURLString)
             }
+            
+            let subType = try container.decodeIfPresent(SubType.self, forKey: .subType)
+            
             let guidanceViewImageRepresentation = GuidanceViewImageRepresentation(imageURL: imageURL)
-            self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation)
+            self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation, subType: subType)
         }
     }
     
@@ -349,10 +366,11 @@ extension VisualInstruction.Component: Codable {
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
             try container.encodeIfPresent(preferredDirection, forKey: .activeDirection)
-        case .guidanceView(let image, let alternativeText):
+        case .guidanceView(let image, let alternativeText, let subType):
             try container.encode(Kind.guidanceView, forKey: .kind)
             textRepresentation = alternativeText
             try container.encodeIfPresent(image.imageURL?.absoluteString, forKey: .imageURL)
+            try container.encodeIfPresent(subType, forKey: .subType)
         }
         
         if let textRepresentation = textRepresentation {
@@ -375,10 +393,11 @@ extension VisualInstruction.Component: Equatable {
               let .image(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-        case (let .guidanceView(lhsURL, lhsAlternativeText),
-              let .guidanceView(rhsURL, rhsAlternativeText)):
+        case (let .guidanceView(lhsURL, lhsAlternativeText, lhsSubType),
+              let .guidanceView(rhsURL, rhsAlternativeText, rhsSubType)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
+                && lhsSubType == rhsSubType
         case (let .lane(lhsIndications, lhsIsUsable, lhsPreferredDirection),
               let .lane(rhsIndications, rhsIsUsable, rhsPreferredDirection)):
             return lhsIndications == rhsIndications
