@@ -181,6 +181,10 @@
 		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		8A3B4C9B24EB55F60085DA64 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
+		8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A47418E2947D1E100F231F9 /* AmenityTests.swift */; };
+		8A4741912947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
+		8A4741922947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
+		8A4741932947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
 		8A65DDF12944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
 		8A65DDF22944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
 		8A65DDF32944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
@@ -568,6 +572,8 @@
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponseTests.swift; sourceTree = "<group>"; };
 		8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		8A47418E2947D1E100F231F9 /* AmenityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenityTests.swift; sourceTree = "<group>"; };
+		8A4741902947D22900F231F9 /* amenities.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = amenities.json; sourceTree = "<group>"; };
 		8A65DDF02944043B00029C0C /* Amenity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amenity.swift; sourceTree = "<group>"; };
 		8A65DDF52944045F00029C0C /* AmenityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenityType.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
@@ -948,6 +954,7 @@
 				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
 				912DF1A5240507640095D3D2 /* TransportTypeTests.swift */,
 				8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */,
+				8A47418E2947D1E100F231F9 /* AmenityTests.swift */,
 			);
 			name = MapboxDirectionsTests;
 			path = Tests/MapboxDirectionsTests;
@@ -958,6 +965,7 @@
 			children = (
 				2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */,
 				2BA2E745257A667500D7AFC6 /* incidents.json */,
+				8A4741902947D22900F231F9 /* amenities.json */,
 				2B540803245B09B2006C820B /* RouteRefresh */,
 				35DBF017217F387F0009D2AE /* Offline */,
 				C5DAACB2201AA97D001F9261 /* Match */,
@@ -1338,6 +1346,7 @@
 				2B540801245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				8A4741922947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540806245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1374,6 +1383,7 @@
 				2B540802245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				8A4741932947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540807245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1417,6 +1427,7 @@
 				2B540800245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				8A4741912947D22900F231F9 /* amenities.json in Resources */,
 				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540805245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1829,6 +1840,7 @@
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2B5407FC245B070A006C820B /* RouteRefreshTests.swift in Sources */,
+				8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
 				DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */,
