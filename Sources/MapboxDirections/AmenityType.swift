@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- Types of `Amenity`.
+ Type of the `Amenity`.
  */
 public enum AmenityType: String, Codable {
     
