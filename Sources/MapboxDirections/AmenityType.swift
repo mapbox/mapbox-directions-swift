@@ -13,12 +13,12 @@ public enum AmenityType: String, Codable {
     /**
      Gas station amenity type.
      */
-    case gasStation
+    case gasStation = "gas_station"
     
     /**
      Electric charging station amenity type.
      */
-    case electricChargingStation
+    case electricChargingStation = "electric_charging_station"
     
     /**
      Toilet amenity type.
@@ -53,12 +53,12 @@ public enum AmenityType: String, Codable {
     /**
      Baby care amenity type.
      */
-    case babyCare
+    case babyCare = "baby_care"
     
     /**
      Facilities for disabled amenity type.
      */
-    case facilitiesForDisabled
+    case facilitiesForDisabled = "facilities_for_disabled"
     
     /**
      Shop amenity type.
@@ -78,7 +78,7 @@ public enum AmenityType: String, Codable {
     /**
      Hot spring amenity type.
      */
-    case hotSpring
+    case hotSpring = "hotspring"
     
     /**
      Shower amenity type.
@@ -88,7 +88,7 @@ public enum AmenityType: String, Codable {
     /**
      Picnic shelter amenity type.
      */
-    case picnicShelter
+    case picnicShelter = "picnic_shelter"
     
     /**
      Post amenity type.
@@ -99,27 +99,4 @@ public enum AmenityType: String, Codable {
      Fax amenity type.
      */
     case fax
-    
-    private enum CodingKeys: String, CodingKey {
-        
-        case undefined
-        case gasStation = "gas_station"
-        case electricChargingStation = "electric_charging_station"
-        case toilet
-        case coffee
-        case restaurant
-        case snack
-        case ATM
-        case info
-        case babyCare = "baby_care"
-        case facilitiesForDisabled = "facilities_for_disabled"
-        case shop
-        case telephone
-        case hotel
-        case hotSpring = "hotspring"
-        case shower
-        case picnicShelter = "picnic_shelter"
-        case post
-        case fax
-    }
 }
