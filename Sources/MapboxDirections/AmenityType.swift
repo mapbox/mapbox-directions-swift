@@ -109,7 +109,7 @@ public enum AmenityType: String, Codable {
         case coffee
         case restaurant
         case snack
-        case ATM = "atm"
+        case ATM
         case info
         case babyCare = "baby_care"
         case facilitiesForDisabled = "facilities_for_disabled"
