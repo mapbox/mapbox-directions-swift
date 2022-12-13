@@ -7,11 +7,17 @@ import Turf
 public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     public var foreignMembers: JSONObject = [:]
 
-    /// A kind of rest stop.
+    /**
+     A kind of rest stop.
+     */
     public enum StopType: String, Codable {
-        /// A primitive rest stop that provides parking but no additional services.
+        /**
+         A primitive rest stop that provides parking but no additional services.
+         */
         case serviceArea = "service_area"
-        /// A major rest stop that provides amenities such as fuel and food.
+        /**
+         A major rest stop that provides amenities such as fuel and food.
+         */
         case restArea = "rest_area"
     }
 

@@ -1,6 +1,10 @@
 # Changes to Mapbox Directions for Swift
 
-## 2.8.0
+## v2.9.0
+
+* Added the `RestStop.amenities` property that describes useful and important facilities. Facilities include gas stations, restaurants, ATMs and more. ([#780](https://github.com/mapbox/mapbox-directions-swift/pull/780))
+
+## v2.8.0
 
 ### Packaging
 
@@ -14,13 +18,13 @@
 * Added the `RouteLeg.closures` property containing information about road closures based on live traffic conditions. This information requires adding `AttributeOptions.closures` to the `RouteOptions.attributeOptions` property and setting the `DirectionsOptions.profileIdentifier` property to `ProfileIdentifier.automobileAvoidingTraffic`. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
 * Added the `Route.refresh(from:refreshParameters:)` method as a single entry point for refreshing various parameters of the `Route` object. ([#755](https://github.com/mapbox/mapbox-directions-swift/pull/755))
 
-## 2.7.1
+## v2.7.1
 
 ### Packaging
 
 * This release of MapboxDirections requires Turf v2.5._x_ to work around a dependency resolution failure. If you use Carthage, it requires Turf v2.5.0 exactly. ([#766](https://github.com/mapbox/mapbox-directions-swift/pull/766))
 
-## 2.7.0
+## v2.7.0
 
 ### Packaging
 
