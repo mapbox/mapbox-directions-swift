@@ -78,6 +78,28 @@ final class AmenityTests: XCTestCase {
         XCTAssertEqual(encode(undefinedAmenity), "{\"brand\":null,\"name\":null,\"type\":\"undefined\"}")
     }
     
+    func testAmenityEquality() {
+        var firstEmenity = Amenity(type: .coffee)
+        var secondEmenity = Amenity(type: .coffee)
+        XCTAssertEqual(firstEmenity, secondEmenity)
+        
+        firstEmenity = Amenity(type: .coffee,
+                               name: "name",
+                               brand: "brand")
+        secondEmenity = Amenity(type: .coffee,
+                                name: "name",
+                                brand: "brand")
+        XCTAssertEqual(firstEmenity, secondEmenity)
+        
+        firstEmenity = Amenity(type: .undefined,
+                               name: "undefined_name",
+                               brand: "brand")
+        secondEmenity = Amenity(type: .babyCare,
+                                name: "name",
+                                brand: "brand")
+        XCTAssertNotEqual(firstEmenity, secondEmenity)
+    }
+    
     func encode(_ amenity: Amenity) -> String? {
         var jsonData: Data?
         let encoder = JSONEncoder()
