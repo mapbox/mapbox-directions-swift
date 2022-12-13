@@ -60,7 +60,7 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
      - parameter name: The name of the rest stop.
      - parameter amenities: Facilities associated with the rest stop.
      */
-    public init(type: StopType, name: String?, amenities: [Amenity]?) {
+    public init(type: StopType, name: String?, amenities: [Amenity]? = nil) {
         self.type = type
         self.name = name
         self.amenities = amenities
