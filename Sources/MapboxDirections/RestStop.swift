@@ -32,6 +32,7 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     public let name: String?
     
     /**
+     :nodoc:
      Facilities associated with the rest stop, if available.
      */
     public let amenities: [Amenity]?
@@ -54,6 +55,7 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     }
     
     /**
+     :nodoc:
      Initializes an optionally named rest stop of a certain kind.
      
      - parameter type: The kind of rest stop.

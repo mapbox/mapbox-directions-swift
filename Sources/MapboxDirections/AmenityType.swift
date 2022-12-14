@@ -1,6 +1,7 @@
 import Foundation
 
 /**
+ :nodoc:
  Type of the `Amenity`.
  */
 public enum AmenityType: String, Codable {

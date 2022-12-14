@@ -1,21 +1,25 @@
 import Foundation
 
 /**
+ :nodoc:
  Provides information about amenity that is available at a given `RestStop`.
  */
 public struct Amenity: Codable, Equatable {
     
     /**
+     :nodoc:
      Name of the amenity, if available.
      */
     public let name: String?
     
     /**
+     :nodoc:
      Brand of the amenity, if available.
      */
     public let brand: String?
     
     /**
+     :nodoc:
      Type of the amenity.
      */
     public let type: AmenityType
@@ -27,6 +31,7 @@ public struct Amenity: Codable, Equatable {
     }
     
     /**
+     :nodoc:
      Initializes an `Amenity`.
      
      - parameter type: Type of the amenity.
