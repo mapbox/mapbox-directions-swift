@@ -54,8 +54,8 @@ public struct Amenity: Codable, Equatable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
-        try container.encode(name, forKey: .name)
-        try container.encode(brand, forKey: .brand)
+        try container.encodeIfPresent(name, forKey: .name)
+        try container.encodeIfPresent(brand, forKey: .brand)
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
