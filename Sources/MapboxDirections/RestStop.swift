@@ -7,11 +7,17 @@ import Turf
 public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     public var foreignMembers: JSONObject = [:]
 
-    /// A kind of rest stop.
+    /**
+     A kind of rest stop.
+     */
     public enum StopType: String, Codable {
-        /// A primitive rest stop that provides parking but no additional services.
+        /**
+         A primitive rest stop that provides parking but no additional services.
+         */
         case serviceArea = "service_area"
-        /// A major rest stop that provides amenities such as fuel and food.
+        /**
+         A major rest stop that provides amenities such as fuel and food.
+         */
         case restArea = "rest_area"
     }
 
@@ -20,12 +26,21 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
      */
     public let type: StopType
     
-    /// The name of the rest stop, if available.
+    /**
+     The name of the rest stop, if available.
+     */
     public let name: String?
-
+    
+    /**
+     :nodoc:
+     Facilities associated with the rest stop, if available.
+     */
+    public let amenities: [Amenity]?
+    
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+        case amenities
     }
     
     /**
@@ -36,23 +51,28 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     public init(type: StopType) {
         self.type = type
         self.name = nil
+        self.amenities = nil
     }
     
     /**
+     :nodoc:
      Initializes an optionally named rest stop of a certain kind.
      
      - parameter type: The kind of rest stop.
      - parameter name: The name of the rest stop.
+     - parameter amenities: Facilities associated with the rest stop.
      */
-    public init(type: StopType, name: String?) {
+    public init(type: StopType, name: String?, amenities: [Amenity]? = nil) {
         self.type = type
         self.name = name
+        self.amenities = amenities
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(StopType.self, forKey: .type)
         name = try container.decodeIfPresent(String.self, forKey: .name)
+        amenities = try container.decodeIfPresent([Amenity].self, forKey: .amenities)
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
@@ -61,11 +81,14 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encodeIfPresent(name, forKey: .name)
+        try container.encodeIfPresent(amenities, forKey: .amenities)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.type == rhs.type && lhs.name == rhs.name
+        return lhs.type == rhs.type
+        && lhs.name == rhs.name
+        && lhs.amenities == rhs.amenities
     }
 }

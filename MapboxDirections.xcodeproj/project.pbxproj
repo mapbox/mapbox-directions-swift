@@ -181,6 +181,18 @@
 		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		8A3B4C9B24EB55F60085DA64 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
+		8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A47418E2947D1E100F231F9 /* AmenityTests.swift */; };
+		8A4741912947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
+		8A4741922947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
+		8A4741932947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
+		8A65DDF12944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
+		8A65DDF22944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
+		8A65DDF32944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
+		8A65DDF42944043B00029C0C /* Amenity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF02944043B00029C0C /* Amenity.swift */; };
+		8A65DDF62944045F00029C0C /* AmenityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF52944045F00029C0C /* AmenityType.swift */; };
+		8A65DDF72944045F00029C0C /* AmenityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF52944045F00029C0C /* AmenityType.swift */; };
+		8A65DDF82944045F00029C0C /* AmenityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF52944045F00029C0C /* AmenityType.swift */; };
+		8A65DDF92944045F00029C0C /* AmenityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A65DDF52944045F00029C0C /* AmenityType.swift */; };
 		8D381B611FD9F5B1008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
 		8D381B631FDB01D1008D5A58 /* apiDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B621FDB01D1008D5A58 /* apiDestinationName.json */; };
 		8D381B641FDB0898008D5A58 /* noDestinationName.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D381B601FD9F5B1008D5A58 /* noDestinationName.json */; };
@@ -560,6 +572,10 @@
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
 		8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponseTests.swift; sourceTree = "<group>"; };
 		8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		8A47418E2947D1E100F231F9 /* AmenityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenityTests.swift; sourceTree = "<group>"; };
+		8A4741902947D22900F231F9 /* amenities.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = amenities.json; sourceTree = "<group>"; };
+		8A65DDF02944043B00029C0C /* Amenity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amenity.swift; sourceTree = "<group>"; };
+		8A65DDF52944045F00029C0C /* AmenityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenityType.swift; sourceTree = "<group>"; };
 		8D381B601FD9F5B1008D5A58 /* noDestinationName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = noDestinationName.json; sourceTree = "<group>"; };
 		8D381B621FDB01D1008D5A58 /* apiDestinationName.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = apiDestinationName.json; sourceTree = "<group>"; };
 		8D381B691FDB101F008D5A58 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -895,6 +911,8 @@
 				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
 				2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */,
+				8A65DDF02944043B00029C0C /* Amenity.swift */,
+				8A65DDF52944045F00029C0C /* AmenityType.swift */,
 			);
 			name = MapboxDirections;
 			path = Sources/MapboxDirections;
@@ -936,6 +954,7 @@
 				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
 				912DF1A5240507640095D3D2 /* TransportTypeTests.swift */,
 				8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */,
+				8A47418E2947D1E100F231F9 /* AmenityTests.swift */,
 			);
 			name = MapboxDirectionsTests;
 			path = Tests/MapboxDirectionsTests;
@@ -946,6 +965,7 @@
 			children = (
 				2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */,
 				2BA2E745257A667500D7AFC6 /* incidents.json */,
+				8A4741902947D22900F231F9 /* amenities.json */,
 				2B540803245B09B2006C820B /* RouteRefresh */,
 				35DBF017217F387F0009D2AE /* Offline */,
 				C5DAACB2201AA97D001F9261 /* Match */,
@@ -1326,6 +1346,7 @@
 				2B540801245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				8A4741922947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540806245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1362,6 +1383,7 @@
 				2B540802245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				8A4741932947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540807245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1405,6 +1427,7 @@
 				2B540800245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				8A4741912947D22900F231F9 /* amenities.json in Resources */,
 				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540805245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1467,12 +1490,14 @@
 				431E93C0234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9B2019167C001F9261 /* Match.swift in Sources */,
 				2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
+				8A65DDF22944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024628EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
+				8A65DDF72944045F00029C0C /* AmenityType.swift in Sources */,
 				35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E01273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
@@ -1568,12 +1593,14 @@
 				431E93C1234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9C2019167D001F9261 /* Match.swift in Sources */,
 				2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
+				8A65DDF32944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024728EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
+				8A65DDF82944045F00029C0C /* AmenityType.swift in Sources */,
 				35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E02273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
@@ -1669,12 +1696,14 @@
 				431E93C2234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9D2019167E001F9261 /* Match.swift in Sources */,
 				2B5407F02451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
+				8A65DDF42944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024828EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
+				8A65DDF92944045F00029C0C /* AmenityType.swift in Sources */,
 				35828CA1217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E03273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
@@ -1733,12 +1762,14 @@
 				431E93BF234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C51538CC1E807FF00093FF3E /* AttributeOptions.swift in Sources */,
 				2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
+				8A65DDF12944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024528EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
+				8A65DDF62944045F00029C0C /* AmenityType.swift in Sources */,
 				35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */,
 				2B5F0E00273BEB3600CC2C1A /* RoadClassExclusionViolation.swift in Sources */,
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
@@ -1809,6 +1840,7 @@
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */,
 				2B5407FC245B070A006C820B /* RouteRefreshTests.swift in Sources */,
+				8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
 				DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */,
