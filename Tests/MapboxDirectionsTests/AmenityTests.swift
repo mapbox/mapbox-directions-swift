@@ -75,7 +75,7 @@ final class AmenityTests: XCTestCase {
         XCTAssertEqual(encode(coffeeAmenity), "{\"brand\":\"amenity_brand\",\"name\":\"amenity_name\",\"type\":\"coffee\"}")
         
         let undefinedAmenity = Amenity(type: .undefined)
-        XCTAssertEqual(encode(undefinedAmenity), "{\"brand\":null,\"name\":null,\"type\":\"undefined\"}")
+        XCTAssertEqual(encode(undefinedAmenity), "{\"type\":\"undefined\"}")
     }
     
     func testAmenityEquality() {
