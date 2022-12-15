@@ -9,6 +9,28 @@
 /* Begin PBXBuildFile section */
 		2B01E4B92746ABBC0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B01E4BA2746ABBD0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
+		2B0BA051294B542900402F81 /* matrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B0BA050294B542900402F81 /* matrix.json */; };
+		2B0BA052294B542900402F81 /* matrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B0BA050294B542900402F81 /* matrix.json */; };
+		2B0BA053294B542900402F81 /* matrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B0BA050294B542900402F81 /* matrix.json */; };
+		2B0BA058294B544E00402F81 /* MatrixOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA054294B544E00402F81 /* MatrixOptions.swift */; };
+		2B0BA059294B544E00402F81 /* MatrixOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA054294B544E00402F81 /* MatrixOptions.swift */; };
+		2B0BA05A294B544E00402F81 /* MatrixOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA054294B544E00402F81 /* MatrixOptions.swift */; };
+		2B0BA05B294B544E00402F81 /* MatrixOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA054294B544E00402F81 /* MatrixOptions.swift */; };
+		2B0BA05C294B544E00402F81 /* MatrixResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA055294B544E00402F81 /* MatrixResponse.swift */; };
+		2B0BA05D294B544E00402F81 /* MatrixResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA055294B544E00402F81 /* MatrixResponse.swift */; };
+		2B0BA05E294B544E00402F81 /* MatrixResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA055294B544E00402F81 /* MatrixResponse.swift */; };
+		2B0BA05F294B544E00402F81 /* MatrixResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA055294B544E00402F81 /* MatrixResponse.swift */; };
+		2B0BA060294B544E00402F81 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA056294B544E00402F81 /* Matrix.swift */; };
+		2B0BA061294B544E00402F81 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA056294B544E00402F81 /* Matrix.swift */; };
+		2B0BA062294B544E00402F81 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA056294B544E00402F81 /* Matrix.swift */; };
+		2B0BA063294B544E00402F81 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA056294B544E00402F81 /* Matrix.swift */; };
+		2B0BA064294B544E00402F81 /* MatrixError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA057294B544E00402F81 /* MatrixError.swift */; };
+		2B0BA065294B544E00402F81 /* MatrixError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA057294B544E00402F81 /* MatrixError.swift */; };
+		2B0BA066294B544E00402F81 /* MatrixError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA057294B544E00402F81 /* MatrixError.swift */; };
+		2B0BA067294B544E00402F81 /* MatrixError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA057294B544E00402F81 /* MatrixError.swift */; };
+		2B0BA069294B546300402F81 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA068294B546300402F81 /* MatrixTests.swift */; };
+		2B0BA06A294B546300402F81 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA068294B546300402F81 /* MatrixTests.swift */; };
+		2B0BA06B294B546300402F81 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0BA068294B546300402F81 /* MatrixTests.swift */; };
 		2B28E22327EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22427EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22527EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
@@ -521,6 +543,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B0BA050294B542900402F81 /* matrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = matrix.json; sourceTree = "<group>"; };
+		2B0BA054294B544E00402F81 /* MatrixOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixOptions.swift; sourceTree = "<group>"; };
+		2B0BA055294B544E00402F81 /* MatrixResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixResponse.swift; sourceTree = "<group>"; };
+		2B0BA056294B544E00402F81 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2B0BA057294B544E00402F81 /* MatrixError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixError.swift; sourceTree = "<group>"; };
+		2B0BA068294B546300402F81 /* MatrixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
 		2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignMemberContainerTests.swift; sourceTree = "<group>"; };
 		2B39DD3F270F034700ED68E4 /* CodingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodingOperation.swift; path = Sources/MapboxDirectionsCLI/CodingOperation.swift; sourceTree = "<group>"; };
 		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
@@ -893,6 +921,10 @@
 				DAD06E3823A008EB001A917D /* QuickLook.swift */,
 				C59426061F1EA6C400C8E59C /* RoadClasses.swift */,
 				2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */,
+				2B0BA056294B544E00402F81 /* Matrix.swift */,
+				2B0BA057294B544E00402F81 /* MatrixError.swift */,
+				2B0BA054294B544E00402F81 /* MatrixOptions.swift */,
+				2B0BA055294B544E00402F81 /* MatrixResponse.swift */,
 				DAC05F171CFC075300FA0071 /* Route.swift */,
 				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
 				2B5407F6245302AB006C820B /* RouteLegAttributes.swift */,
@@ -950,6 +982,7 @@
 				DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */,
 				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
 				4376A52623FB13D400C6038D /* MatchOptionsTests.swift */,
+				2B0BA068294B546300402F81 /* MatrixTests.swift */,
 				F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */,
 				DAABF78D2395ABA900CEEB61 /* SpokenInstructionTests.swift */,
 				DA6C9DAB1CAEC72800094FBC /* V5Tests.swift */,
@@ -970,6 +1003,7 @@
 			children = (
 				2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */,
 				2BA2E745257A667500D7AFC6 /* incidents.json */,
+				2B0BA050294B542900402F81 /* matrix.json */,
 				8A4741902947D22900F231F9 /* amenities.json */,
 				2B540803245B09B2006C820B /* RouteRefresh */,
 				35DBF017217F387F0009D2AE /* Offline */,
@@ -1352,6 +1386,7 @@
 				2B540801245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01A217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				2B0BA052294B542900402F81 /* matrix.json in Resources */,
 				8A4741922947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
@@ -1390,6 +1425,7 @@
 				2B540802245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35DBF01B217F38A30009D2AE /* versions.json in Resources */,
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
+				2B0BA053294B542900402F81 /* matrix.json in Resources */,
 				8A4741932947D22900F231F9 /* amenities.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
@@ -1435,6 +1471,7 @@
 				2B540800245B097D006C820B /* routeRefreshResponse.json in Resources */,
 				35D92FF0218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
+				2B0BA051294B542900402F81 /* matrix.json in Resources */,
 				8A4741912947D22900F231F9 /* amenities.json in Resources */,
 				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
@@ -1503,6 +1540,7 @@
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
+				2B0BA061294B544E00402F81 /* Matrix.swift in Sources */,
 				C52552BA1FA15D5E00B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024628EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
 				8A65DDF72944045F00029C0C /* AmenityType.swift in Sources */,
@@ -1520,9 +1558,11 @@
 				C584E3F71F201C7B00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617123DBA58E0062BFFE /* (null) in Sources */,
+				2B0BA059294B544E00402F81 /* MatrixOptions.swift in Sources */,
 				2B5407F8245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
+				2B0BA05D294B544E00402F81 /* MatrixResponse.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* Route.swift in Sources */,
 				2B5407F32452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1551,6 +1591,7 @@
 				2BF398C627620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
+				2B0BA065294B544E00402F81 /* MatrixError.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1566,6 +1607,7 @@
 				912DF1A7240507640095D3D2 /* TransportTypeTests.swift in Sources */,
 				C53A02291E92C27A009837BD /* AnnotationTests.swift in Sources */,
 				4376A52823FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
+				2B0BA06A294B546300402F81 /* MatrixTests.swift in Sources */,
 				2B01E4B92746ABBC0002A5F7 /* RouteResponseTests.swift in Sources */,
 				DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				2B9F389B272AE28D001DBA12 /* IsochroneTests.swift in Sources */,
@@ -1606,6 +1648,7 @@
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
+				2B0BA062294B544E00402F81 /* Matrix.swift in Sources */,
 				C52552BB1FA15D5F00B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024728EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
 				8A65DDF82944045F00029C0C /* AmenityType.swift in Sources */,
@@ -1623,9 +1666,11 @@
 				C584E3F81F201C7C00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617223DBA58E0062BFFE /* (null) in Sources */,
+				2B0BA05A294B544E00402F81 /* MatrixOptions.swift in Sources */,
 				2B5407F9245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
+				2B0BA05E294B544E00402F81 /* MatrixResponse.swift in Sources */,
 				DA1A10F01D010247009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* Route.swift in Sources */,
 				2B5407F42452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1654,6 +1699,7 @@
 				2BF398C727620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
+				2B0BA066294B544E00402F81 /* MatrixError.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1669,6 +1715,7 @@
 				912DF1A8240507640095D3D2 /* TransportTypeTests.swift in Sources */,
 				C53A022A1E92C27B009837BD /* AnnotationTests.swift in Sources */,
 				4376A52923FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
+				2B0BA06B294B546300402F81 /* MatrixTests.swift in Sources */,
 				2B01E4BA2746ABBD0002A5F7 /* RouteResponseTests.swift in Sources */,
 				DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				2B9F389C272AE28E001DBA12 /* IsochroneTests.swift in Sources */,
@@ -1709,6 +1756,7 @@
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
+				2B0BA063294B544E00402F81 /* Matrix.swift in Sources */,
 				C52552BC1FA15D6000B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024828EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
 				8A65DDF92944045F00029C0C /* AmenityType.swift in Sources */,
@@ -1726,9 +1774,11 @@
 				C584E3F91F201C7D00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MatchOptions.swift in Sources */,
 				43D6617323DBA58E0062BFFE /* (null) in Sources */,
+				2B0BA05B294B544E00402F81 /* MatrixOptions.swift in Sources */,
 				2B5407FA245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
+				2B0BA05F294B544E00402F81 /* MatrixResponse.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* RouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* Route.swift in Sources */,
 				2B5407F52452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1757,6 +1807,7 @@
 				2BF398C827620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
+				2B0BA067294B544E00402F81 /* MatrixError.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1775,6 +1826,7 @@
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
+				2B0BA060294B544E00402F81 /* Matrix.swift in Sources */,
 				C52552B91FA15D5900B1545C /* VisualInstructionBanner.swift in Sources */,
 				2B46024528EDB1670008A624 /* CustomValueOptionSet.swift in Sources */,
 				8A65DDF62944045F00029C0C /* AmenityType.swift in Sources */,
@@ -1792,9 +1844,11 @@
 				C57D55081DB58C0200B94B74 /* Lane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* Route.swift in Sources */,
 				43D6617023DBA58E0062BFFE /* (null) in Sources */,
+				2B0BA058294B544E00402F81 /* MatrixOptions.swift in Sources */,
 				2B5407F7245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,
+				2B0BA05C294B544E00402F81 /* MatrixResponse.swift in Sources */,
 				C5434B8C200695A50069E887 /* MatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B5407F22452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1823,6 +1877,7 @@
 				2BF398C527620CD7000C9A72 /* RouteRefreshSource.swift in Sources */,
 				2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
+				2B0BA064294B544E00402F81 /* MatrixError.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1851,6 +1906,7 @@
 				8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA6C9DB21CAECA0E00094FBC /* Fixture.swift in Sources */,
+				2B0BA069294B546300402F81 /* MatrixTests.swift in Sources */,
 				DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				2B28E22327EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */,

@@ -198,7 +198,25 @@ isochrones.calculate(isochroneOptions) { session, result in
     }
 }
 ```
-...
+
+### Retrieve a distance or duration matrix
+
+See the travel times or distances between many points using the Matrix API. `Matrix` uses the same access token initialization as `Directions`. Once that is configured, you need to fill  `MatrixOptions` parameters to calculate the desired matrix:
+
+``` swift
+let matrix = Matrix(credentials: Credentials(accessToken: "<#your access token#>")
+let waypoints = [
+    Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.751668, longitude: -122.418408), name: "Mission Street"),
+    Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.755184, longitude: -122.422959), name: "22nd Street"),
+    Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
+]
+let matrixOptions = MatrixOptions(waypoints: , profileIdentifier: .automobile)
+matrix.calculate(matrixOptions) { session, result in
+    if case .success(let response) = result {
+        print("Expected route duration from '\(waypoints[0].name)' to '\(waypoints[1].name)' is \(response.travelTime(from:0, to: 1)! / 60) minutes.")
+    }
+}
+```
 
 ## Usage with other Mapbox libraries
 
