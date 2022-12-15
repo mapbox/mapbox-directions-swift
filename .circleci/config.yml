@@ -50,14 +50,14 @@ commands:
         steps:
             - run:
                 name: Dependencies
-                command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks   
+                command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks
     install-mbx-ci:
       steps:
         - run:
             name: "Install MBX CI"
             command: |
               curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-darwin-amd64 > /usr/local/bin/mbx-ci
-              chmod 755 /usr/local/bin/mbx-ci  
+              chmod 755 /usr/local/bin/mbx-ci
     setup-write-repo-access:
         steps:
             - run:
@@ -68,6 +68,51 @@ commands:
                     git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/mapbox/mapbox-directions-swift.git"
                     git config user.email "release-bot@mapbox.com"
                     git config user.name "Mapbox Releases"
+
+step-library:
+  - &restore-cache-gems
+      restore_cache:
+        keys:
+          - 1-gems-{{ checksum "Gemfile.lock" }}
+
+  - &install-gems
+      run:
+        name: Install Gems
+        command: |
+          bundle config set path 'vendor/bundle'
+          bundle check || bundle install
+
+  - &save-cache-gems
+      save_cache:
+          key: 1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  - &restore-cache-podmaster
+      restore_cache:
+        keys:
+          - podmaster-cache
+
+  - &save-cache-podmaster
+      save_cache:
+        key: podmaster-cache
+        paths:
+          - "~/.cocoapods/repos/master"
+
+  - &prepare-netrc-file
+      run:
+        name: Prepare .netrc file
+        command: |
+          echo "machine api.mapbox.com" >> ~/.netrc
+          echo "login mapbox" >> ~/.netrc
+          echo "password $SDK_REGISTRY_TOKEN" >> ~/.netrc
+          chmod 0600 ~/.netrc
+
+  - &add-github-to-known-hosts
+      run:
+        name: Add GitHub to known hosts
+        command: |
+          for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
 
 jobs:
   detect-breaking-changes:
@@ -238,6 +283,64 @@ jobs:
           command: |
             git push origin $(git rev-parse --abbrev-ref HEAD):publisher-production
 
+  update-version-job:
+    parameters:
+      xcode:
+        type: string
+        default: "13.4.1"
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - *restore-cache-gems
+      - *restore-cache-podmaster
+      - *install-gems
+      - *prepare-netrc-file
+      - *add-github-to-known-hosts
+      - install-mbx-ci
+      - run:
+          name: Update version
+          command: |
+            export GITHUB_WRITER_TOKEN=$(mbx-ci github writer public token)
+            git remote set-url origin "https://x-access-token:$GITHUB_WRITER_TOKEN@github.com/mapbox/mapbox-directions-swift"
+            git config --global user.email no-reply@mapbox.com && git config --global user.name mapbox-ci
+            VERSION=$( echo << pipeline.git.branch >> | sed 's/^trigger-update-version-//' )
+            ./scripts/update-version.sh v$VERSION
+      - *save-cache-podmaster
+      - *save-cache-gems
+
+  distribute-version-job:
+    parameters:
+      xcode:
+        type: string
+        default: "13.4.1"
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - *restore-cache-gems
+      - *restore-cache-podmaster
+      - *install-gems
+      - *prepare-netrc-file
+      - *add-github-to-known-hosts
+      - install-mbx-ci
+      - run:
+          name: Update version
+          command: |
+            VERSION=$( echo << pipeline.git.branch >> | sed 's/^trigger-distribute-version-//' )
+            if [[ $VERSION == *alpha* || $VERSION == *beta* || $VERSION == *rc* ]]; then
+                pod repo update && pod trunk push MapboxDirections-pre.podspec
+              else
+                pod repo update && pod trunk push MapboxDirections.podspec
+            fi
+            pod repo update && pod trunk push MapboxDirections.podspec
+      - *save-cache-podmaster
+      - *save-cache-gems
+
 workflows:
   workflow:
     jobs:
@@ -261,18 +364,22 @@ workflows:
           name: "SPM Ubuntu build"
       - example-app-build:
           name: "Build example app"
-      - approve-publish-documentation:
-          name: "Approve Publish Documentation"
-          type: approval
-          filters: &filters-tag-push
+      - publish-documentation:
+          name: "Publish Documentation"
+          filters:
             tags:
               only: /^v\d+\.\d+\.\d+(-.+)?$/
             branches:
               ignore: /.*/
-      - publish-documentation:
-          name: "Publish Documentation"
-          requires:
-            - "Approve Publish Documentation"
-          filters: 
-            <<: *filters-tag-push
-        
+  update-version-workflow:
+    jobs:
+      - update-version-job:
+          filters:
+            branches:
+              only: /^trigger-update-version-.*/
+  distribute-version-workflow:
+    jobs:
+      - distribute-version-job:
+          filters:
+            branches:
+              only: /^trigger-distribute-version-.*/
