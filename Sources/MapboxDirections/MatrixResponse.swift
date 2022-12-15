@@ -2,9 +2,10 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Turf
 
 public struct MatrixResponse {
-    public typealias DistanceMatrix = [[CLLocationDistance?]]
+    public typealias DistanceMatrix = [[LocationDistance?]]
     public typealias DurationMatrix = [[TimeInterval?]]
     
     public let httpResponse: HTTPURLResponse?
@@ -37,7 +38,7 @@ public struct MatrixResponse {
      - parameter destinationIndex: Index of a waypoint in `destinations` array.
      - returns Calculated route distance between the points or `null` if it is not available.
      */
-    public func distance(from sourceIndex: Int, to destinationIndex: Int) -> CLLocationDistance? {
+    public func distance(from sourceIndex: Int, to destinationIndex: Int) -> LocationDistance? {
         guard sources?.indices.contains(sourceIndex) ?? false &&
                 destinations?.indices.contains(destinationIndex) ?? false else {
             return nil
@@ -92,7 +93,7 @@ extension MatrixResponse: Codable {
         
         if let decodedDistances = try container.decodeIfPresent([[Double?]].self, forKey: .distances) {
             decodedDistances.forEach { distanceArray in
-                var distances: Array<CLLocationDistance?> = []
+                var distances: Array<LocationDistance?> = []
                 distanceArray.forEach { distance in
                     distances.append(distance)
                 }
