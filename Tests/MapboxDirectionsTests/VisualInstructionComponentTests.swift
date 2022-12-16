@@ -260,4 +260,37 @@ class VisualInstructionComponentTests: XCTestCase {
         
         XCTAssertEqual(thirdStepSubType, .jct)
     }
+    
+    func testInstructionComponentsSubTypeEncoding() {
+        let subTypes: [VisualInstruction.Component.SubType] = VisualInstruction.Component.SubType.allCases
+        
+        subTypes.forEach { subType in
+            let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")),
+                                                                              alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil),
+                                                                              subType: subType)
+            let encodedGuideViewComponent = encode(guideViewComponent)
+            XCTAssertEqual(subType.rawValue, encodedGuideViewComponent?["subType"] as? String)
+        }
+    }
+    
+    func encode(_ component: VisualInstruction.Component) -> [String: Any]? {
+        var jsonData: Data?
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        
+        XCTAssertNoThrow(jsonData = try encoder.encode(component))
+        XCTAssertNotNil(jsonData)
+        
+        guard let jsonData = jsonData else {
+            XCTFail("Encoded component should be valid.")
+            return nil
+        }
+        
+        guard let jsonDictionary = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any] else {
+            XCTFail("Encoded component should be valid.")
+            return nil
+        }
+        
+        return jsonDictionary
+    }
 }

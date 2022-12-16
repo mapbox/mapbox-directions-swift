@@ -281,7 +281,7 @@ extension VisualInstruction.Component: Codable {
      Subtype that provides more context about the component guidance view that may help in visual
      markup and display choices.
      */
-    public enum SubType: String, Codable {
+    public enum SubType: String, Codable, CaseIterable {
         
         /**
          Junction view. Bird’s-eye artist’s rendition view of the overhead signage and
