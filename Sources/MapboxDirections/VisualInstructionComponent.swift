@@ -51,7 +51,7 @@ public extension VisualInstruction {
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
          */
-        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation, subType: SubType?)
+        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation, subType: SubType? = nil)
         
         /**
          The component contains the localized word for “Exit”.
@@ -277,6 +277,7 @@ extension VisualInstruction.Component: Codable {
     }
     
     /**
+     :nodoc:
      Subtype that provides more context about the component guidance view that may help in visual
      markup and display choices.
      */
