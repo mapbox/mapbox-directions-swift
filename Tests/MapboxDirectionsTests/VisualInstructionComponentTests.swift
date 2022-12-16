@@ -1,5 +1,6 @@
 import XCTest
 @testable import MapboxDirections
+import Turf
 
 class VisualInstructionComponentTests: XCTestCase {
     func testTextComponent() {
@@ -210,5 +211,53 @@ class VisualInstructionComponentTests: XCTestCase {
                 XCTFail("Component of unrecognized type should be decoded as text component.")
             }
         }
+    }
+    
+    func testInstructionComponentsWithSubTypes() {
+        let routeData = try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: "instructionComponentsWithSubType",
+                                                                                      ofType: "json")!))
+        let routeOptions = RouteOptions(coordinates: [
+            LocationCoordinate2D(latitude: 35.652935, longitude: 139.745061),
+            LocationCoordinate2D(latitude: 35.650312, longitude: 139.737655),
+        ])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = routeOptions
+        decoder.userInfo[.credentials] = Credentials(accessToken: "access_token",
+                                                     host: URL(string: "http://test_host.com"))
+        
+        let routeResponse = try! decoder.decode(RouteResponse.self, from: routeData)
+        
+        guard let leg = routeResponse.routes?.first?.legs.first else {
+            XCTFail("Route leg should be valid.")
+            return
+        }
+        
+        let expectedStepsCount = 5
+        if leg.steps.count != expectedStepsCount {
+            XCTFail("Route should have two steps.")
+            return
+        }
+        
+        guard case let .guidanceView(_, _, firstStepSubType) = leg.steps[0].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(firstStepSubType, .cityReal)
+        
+        guard case let .guidanceView(_, _, secondStepSubType) = leg.steps[1].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(secondStepSubType, .expresswayEntrance)
+        
+        guard case let .guidanceView(_, _, thirdStepSubType) = leg.steps[2].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(thirdStepSubType, .jct)
     }
 }

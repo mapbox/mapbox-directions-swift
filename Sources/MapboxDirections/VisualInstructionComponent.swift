@@ -254,7 +254,7 @@ public struct GuidanceViewImageRepresentation: Equatable {
 extension VisualInstruction.Component: Codable {
     private enum CodingKeys: String, CodingKey {
         case kind = "type"
-        case subType = "subType"
+        case subType
         case text
         case abbreviatedText = "abbr"
         case abbreviatedTextPriority = "abbr_priority"
