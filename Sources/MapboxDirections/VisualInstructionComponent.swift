@@ -447,11 +447,11 @@ extension VisualInstruction.Component: Equatable {
               let .image(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-        case (let .guidanceView(lhsURL, lhsAlternativeText, lhsSubType),
-              let .guidanceView(rhsURL, rhsAlternativeText, rhsSubType)):
+        case (let .guidanceView(lhsURL, lhsAlternativeText, lhsKind),
+              let .guidanceView(rhsURL, rhsAlternativeText, rhsKind)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-                && lhsSubType == rhsSubType
+                && lhsKind == rhsKind
         case (let .lane(lhsIndications, lhsIsUsable, lhsPreferredDirection),
               let .lane(rhsIndications, rhsIsUsable, rhsPreferredDirection)):
             return lhsIndications == rhsIndications
