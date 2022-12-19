@@ -67,7 +67,7 @@ class VisualInstructionsTests: XCTestCase {
         
         let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")),
                                                                           alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil),
-                                                                          subType: .cityReal)
+                                                                          kind: .realisticUrbanIntersection)
         XCTAssert(componentGuidanceViewImage == guideViewComponent)
         let quaternaryInstruction = VisualInstruction(text: "CA01610_1_E", maneuverType: .reachFork, maneuverDirection: .right, components: [guideViewComponent])
         

@@ -213,7 +213,7 @@ class VisualInstructionComponentTests: XCTestCase {
         }
     }
     
-    func testInstructionComponentsWithSubTypes() {
+    func testInstructionComponentsWithGuidanceViewKinds() {
         let routeData = try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: "instructionComponentsWithSubType",
                                                                                       ofType: "json")!))
         let routeOptions = RouteOptions(coordinates: [
@@ -239,37 +239,37 @@ class VisualInstructionComponentTests: XCTestCase {
             return
         }
         
-        guard case let .guidanceView(_, _, firstStepSubType) = leg.steps[0].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+        guard case let .guidanceView(_, _, firstStepGuidanceViewKind) = leg.steps[0].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
             XCTFail("Component should be valid.")
             return
         }
         
-        XCTAssertEqual(firstStepSubType, .cityReal)
+        XCTAssertEqual(firstStepGuidanceViewKind, .realisticUrbanIntersection)
         
-        guard case let .guidanceView(_, _, secondStepSubType) = leg.steps[1].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+        guard case let .guidanceView(_, _, secondStepGuidanceViewKind) = leg.steps[1].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
             XCTFail("Component should be valid.")
             return
         }
         
-        XCTAssertEqual(secondStepSubType, .expresswayEntrance)
+        XCTAssertEqual(secondStepGuidanceViewKind, .motorwayEntrance)
         
-        guard case let .guidanceView(_, _, thirdStepSubType) = leg.steps[2].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+        guard case let .guidanceView(_, _, thirdStepGuidanceViewKind) = leg.steps[2].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
             XCTFail("Component should be valid.")
             return
         }
         
-        XCTAssertEqual(thirdStepSubType, .jct)
+        XCTAssertEqual(thirdStepGuidanceViewKind, .fork)
     }
     
-    func testInstructionComponentsSubTypeEncoding() {
-        let subTypes: [VisualInstruction.Component.SubType] = VisualInstruction.Component.SubType.allCases
+    func testInstructionComponentsGuidanceViewKindEncoding() {
+        let kinds: [VisualInstruction.Component.GuidanceViewKind] = VisualInstruction.Component.GuidanceViewKind.allCases
         
-        subTypes.forEach { subType in
+        kinds.forEach { kind in
             let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")),
                                                                               alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil),
-                                                                              subType: subType)
+                                                                              kind: kind)
             let encodedGuideViewComponent = encode(guideViewComponent)
-            XCTAssertEqual(subType.rawValue, encodedGuideViewComponent?["subType"] as? String)
+            XCTAssertEqual(kind.rawValue, encodedGuideViewComponent?["subType"] as? String)
         }
     }
     

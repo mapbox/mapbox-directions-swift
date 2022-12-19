@@ -1,10 +1,5 @@
 # Changes to Mapbox Directions for Swift
 
-## v2.9.0
-
-* Added the `RestStop.amenities` property that describes useful and important facilities such as gas stations, restaurants, and ATMs. ([#780](https://github.com/mapbox/mapbox-directions-swift/pull/780))
-* Added the `VisualInstruction.Component.SubType` that provides more context about the component guidance view. ([#778](https://github.com/mapbox/mapbox-directions-swift/pull/778))
-
 ## v2.8.0
 
 ### Packaging
