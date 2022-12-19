@@ -1,5 +1,6 @@
 import XCTest
 @testable import MapboxDirections
+import Turf
 
 class VisualInstructionComponentTests: XCTestCase {
     func testTextComponent() {
@@ -210,5 +211,86 @@ class VisualInstructionComponentTests: XCTestCase {
                 XCTFail("Component of unrecognized type should be decoded as text component.")
             }
         }
+    }
+    
+    func testInstructionComponentsWithGuidanceViewKinds() {
+        let routeData = try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: "instructionComponentsWithSubType",
+                                                                                      ofType: "json")!))
+        let routeOptions = RouteOptions(coordinates: [
+            LocationCoordinate2D(latitude: 35.652935, longitude: 139.745061),
+            LocationCoordinate2D(latitude: 35.650312, longitude: 139.737655),
+        ])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = routeOptions
+        decoder.userInfo[.credentials] = Credentials(accessToken: "access_token",
+                                                     host: URL(string: "http://test_host.com"))
+        
+        let routeResponse = try! decoder.decode(RouteResponse.self, from: routeData)
+        
+        guard let leg = routeResponse.routes?.first?.legs.first else {
+            XCTFail("Route leg should be valid.")
+            return
+        }
+        
+        let expectedStepsCount = 5
+        if leg.steps.count != expectedStepsCount {
+            XCTFail("Route should have two steps.")
+            return
+        }
+        
+        guard case let .guidanceView(_, _, firstStepGuidanceViewKind) = leg.steps[0].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(firstStepGuidanceViewKind, .realisticUrbanIntersection)
+        
+        guard case let .guidanceView(_, _, secondStepGuidanceViewKind) = leg.steps[1].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(secondStepGuidanceViewKind, .motorwayEntrance)
+        
+        guard case let .guidanceView(_, _, thirdStepGuidanceViewKind) = leg.steps[2].instructionsDisplayedAlongStep?.first?.quaternaryInstruction?.components.first else {
+            XCTFail("Component should be valid.")
+            return
+        }
+        
+        XCTAssertEqual(thirdStepGuidanceViewKind, .fork)
+    }
+    
+    func testInstructionComponentsGuidanceViewKindEncoding() {
+        let kinds: [VisualInstruction.Component.GuidanceViewKind] = VisualInstruction.Component.GuidanceViewKind.allCases
+        
+        kinds.forEach { kind in
+            let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")),
+                                                                              alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil),
+                                                                              kind: kind)
+            let encodedGuideViewComponent = encode(guideViewComponent)
+            XCTAssertEqual(kind.rawValue, encodedGuideViewComponent?["subType"] as? String)
+        }
+    }
+    
+    func encode(_ component: VisualInstruction.Component) -> [String: Any]? {
+        var jsonData: Data?
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        
+        XCTAssertNoThrow(jsonData = try encoder.encode(component))
+        XCTAssertNotNil(jsonData)
+        
+        guard let jsonData = jsonData else {
+            XCTFail("Encoded component should be valid.")
+            return nil
+        }
+        
+        guard let jsonDictionary = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any] else {
+            XCTFail("Encoded component should be valid.")
+            return nil
+        }
+        
+        return jsonDictionary
     }
 }
