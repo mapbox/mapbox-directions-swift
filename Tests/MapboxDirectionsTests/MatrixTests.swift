@@ -37,7 +37,7 @@ class MatrixTests: XCTestCase {
         let options = MatrixOptions(sources: waypoints,
                                     destinations: waypoints,
                                     profileIdentifier: .automobile)
-        options.attributeOptions = [.distance, .travelTime]
+        options.attributeOptions = [.distance, .expectedTravelTime]
 
         let matrices = Matrix(credentials: MatrixBogusCredentials)
         let url = matrices.url(forCalculating: options)
@@ -88,7 +88,6 @@ class MatrixTests: XCTestCase {
         
         XCTAssertTrue(queryItems.contains(where: { $0.name == "approaches" && $0.value == "curb;unrestricted;unrestricted"}))
     }
-    
 
     func testUnknownBadResponse() {
         let message = "Lorem ipsum."
@@ -186,7 +185,7 @@ class MatrixTests: XCTestCase {
         let options = MatrixOptions(sources: waypoints,
                                     destinations: waypoints,
                                     profileIdentifier: .automobile)
-        options.attributeOptions = [.distance, .travelTime]
+        options.attributeOptions = [.distance, .expectedTravelTime]
 
         let matrix = Matrix(credentials: MatrixBogusCredentials)
         let expectation = expectation(description: "Handler should be called.")

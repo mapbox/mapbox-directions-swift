@@ -38,7 +38,7 @@ public class MatrixOptions: Codable {
     /**
      Attribute options for the matrix.
 
-     Empty `attributeOptions` will result in default values assumed.
+     Only `distance` and `expectedTravelTime` are supported. Empty `attributeOptions` will result in default values assumed.
      */
     public var attributeOptions: AttributeOptions = []
     
@@ -81,7 +81,7 @@ public class MatrixOptions: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(profileIdentifier, forKey: .profileIdentifier)
-        try container.encode(attributeOptions.queryDescription, forKey: .attributeOptions)
+        try container.encode(attributeOptions, forKey: .attributeOptions)
         try container.encodeIfPresent(destinations, forKey: .destinations)
         try container.encodeIfPresent(sources, forKey: .sources)
     }
@@ -89,9 +89,7 @@ public class MatrixOptions: Codable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         profileIdentifier = try container.decode(ProfileIdentifier.self, forKey: .profileIdentifier)
-        if let annotations = try container.decodeIfPresent(String.self, forKey: .attributeOptions) {
-            attributeOptions = Set<AttributeOption>(from: annotations)
-        }
+        self.attributeOptions = try container.decodeIfPresent(AttributeOptions.self, forKey: .attributeOptions) ?? []
         let destinations = try container.decodeIfPresent([Waypoint].self, forKey: .destinations) ?? []
         let sources = try container.decodeIfPresent([Waypoint].self, forKey: .sources) ?? []
         self.waypointsData = .init(sources: sources,
@@ -131,9 +129,8 @@ public class MatrixOptions: Codable {
     public var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = []
         
-        let annotations = self.attributeOptions
-        if !annotations.isEmpty && annotations.isSubset(of: [.distance, .travelTime]) {
-            queryItems.append((URLQueryItem(name: "annotations", value: annotations.queryDescription)))
+        if !attributeOptions.isEmpty {
+            queryItems.append((URLQueryItem(name: "annotations", value: attributeOptions.description)))
         }
         
         let mustArriveOnDrivingSide = !waypoints.filter { !$0.allowsArrivingOnOppositeSide }.isEmpty
@@ -153,61 +150,6 @@ public class MatrixOptions: Codable {
         }
         
         return queryItems
-    }
-}
-
-extension MatrixOptions {
-    
-    /**
-     Attributes are metadata information for requesting matricies.
-     
-     Options selected affect the contents of the resulting `MatrixResponse`.
-     */
-    public typealias AttributeOptions = Set<AttributeOption>
-    
-    public struct AttributeOption: Hashable, RawRepresentable {
-        public typealias RawValue = String
-        
-        /**
-         Textual representation of an option.
-         
-         Used to compose an URL request.
-         */
-        public var rawValue: RawValue
-        
-        /**
-         Creates new `AttributeOption`.
-         */
-        public init(rawValue: RawValue) {
-            self.rawValue = rawValue
-        }
-        
-        /**
-         Used to specify the resulting matrices to contain distances matrix.
-         
-         If this attribute is specified, the `MatrixResponse.distances` will contain distance values for each source - destination route.
-         */
-        public static let distance: AttributeOption = .init(rawValue: "distance")
-        
-        /**
-         Used to specify the resulting matrices to contain expected travel times matrix.
-         
-         If this attribute is specified, the `MatrixResponse.distances` will contain duration values for each source - destination route.
-         */
-        public static let travelTime: AttributeOption = .init(rawValue: "duration")
-    }
-}
-
-extension MatrixOptions.AttributeOptions {
-    var queryDescription: String {
-        return map { $0.rawValue }.joined(separator:",")
-    }
-    
-    init(from description: String) {
-        self.init()
-        description.split(separator: ",").forEach {
-            self.insert(MatrixOptions.AttributeOption(rawValue: String($0)))
-        }
     }
 }
 
