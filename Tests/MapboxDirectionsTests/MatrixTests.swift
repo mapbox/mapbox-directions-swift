@@ -34,9 +34,9 @@ class MatrixTests: XCTestCase {
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
         ]
         
-        let options = MatrixOptions(waypoints: waypoints, profileIdentifier: .automobile)
-        options.destinations = [0, 1, 2]
-        options.sources = [0, 1, 2]
+        let options = MatrixOptions(sources: waypoints,
+                                    destinations: waypoints,
+                                    profileIdentifier: .automobile)
         options.attributeOptions = [.distance, .travelTime]
 
         let matrices = Matrix(credentials: MatrixBogusCredentials)
@@ -46,7 +46,7 @@ class MatrixTests: XCTestCase {
         guard let components = URLComponents(string: url.absoluteString),
               let queryItems = components.queryItems else { XCTFail("Invalid url"); return }
 
-        XCTAssertEqual(queryItems.count, 4)
+        XCTAssertEqual(queryItems.count, 2)
         XCTAssertTrue(components.path.contains(waypoints.compactMap { $0.coordinate.requestDescription
         }.joined(separator: ";")))
         XCTAssertTrue(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }))
@@ -55,11 +55,38 @@ class MatrixTests: XCTestCase {
             return $0.name == "annotations" &&
                    annotations == Set(["distance", "duration"])
         }))
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "destinations" && $0.value == "0;1;2"}))
-        XCTAssertTrue(queryItems.contains(where: { $0.name == "sources" && $0.value == "0;1;2"}))
         
         XCTAssertEqual(request.httpMethod, "GET")
         XCTAssertEqual(request.url, url)
+    }
+    
+    func testWaypointParameters() {
+        let waypoints = [
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.751668, longitude: -122.418408), name: "Mission Street"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.755184, longitude: -122.422959), name: "22nd Street"),
+            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
+        ]
+        
+        waypoints[1].allowsArrivingOnOppositeSide = false
+        
+        let options = MatrixOptions(sources: Array(waypoints[1...2]),
+                                    destinations: Array(waypoints[0...1]),
+                                    profileIdentifier: .automobile)
+        
+        let matrices = Matrix(credentials: MatrixBogusCredentials)
+        let url = matrices.url(forCalculating: options)
+        
+        for waypoint in waypoints {
+            XCTAssertTrue(options.waypoints.contains(where: { $0 == waypoint }), "Waypoints are not composed correctly")
+        }
+        
+        guard let components = URLComponents(string: url.absoluteString),
+              let queryItems = components.queryItems else { XCTFail("Invalid url"); return }
+
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "sources" && $0.value == "0;1"}))
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "destinations" && $0.value == "0;2"}))
+        
+        XCTAssertTrue(queryItems.contains(where: { $0.name == "approaches" && $0.value == "curb;unrestricted;unrestricted"}))
     }
     
 
@@ -76,7 +103,9 @@ class MatrixTests: XCTestCase {
         let waypoints = [Waypoint(location: one), Waypoint(location: two)]
         
         let matrix = Matrix(credentials: MatrixBogusCredentials)
-        let options = MatrixOptions(waypoints: waypoints, profileIdentifier: .automobile)
+        let options = MatrixOptions(sources: waypoints,
+                                    destinations: waypoints,
+                                    profileIdentifier: .automobile)
         matrix.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
 
@@ -108,7 +137,9 @@ class MatrixTests: XCTestCase {
         let waypoints = [Waypoint(location: one), Waypoint(location: two)]
         
         let matrix = Matrix(credentials: MatrixBogusCredentials)
-        let options = MatrixOptions(waypoints: waypoints, profileIdentifier: .automobile)
+        let options = MatrixOptions(sources: waypoints,
+                                    destinations: waypoints,
+                                    profileIdentifier: .automobile)
         
         matrix.calculate(options, completionHandler: { (session, result) in
             defer { expectation.fulfill() }
@@ -152,9 +183,9 @@ class MatrixTests: XCTestCase {
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
         ]
         
-        let options = MatrixOptions(waypoints: waypoints, profileIdentifier: .automobile)
-        options.destinations = [0, 1, 2]
-        options.sources = [0, 1, 2]
+        let options = MatrixOptions(sources: waypoints,
+                                    destinations: waypoints,
+                                    profileIdentifier: .automobile)
         options.attributeOptions = [.distance, .travelTime]
 
         let matrix = Matrix(credentials: MatrixBogusCredentials)
