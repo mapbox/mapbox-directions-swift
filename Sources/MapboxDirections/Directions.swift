@@ -9,69 +9,6 @@ typealias JSONDictionary = [String: Any]
 public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
 
 
-/// The user agent string for any HTTP requests performed directly within this library.
-let userAgent: String = {
-    var components: [String] = []
-    
-    if let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        components.append("\(appName)/\(version)")
-    }
-    
-    let libraryBundle: Bundle? = Bundle(for: Directions.self)
-    
-    if let libraryName = libraryBundle?.infoDictionary?["CFBundleName"] as? String, let version = libraryBundle?.infoDictionary?["CFBundleShortVersionString"] as? String {
-        components.append("\(libraryName)/\(version)")
-    }
-    
-    // `ProcessInfo().operatingSystemVersionString` can replace this when swift-corelibs-foundaton is next released:
-    // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/Foundation/ProcessInfo.swift#L104-L202
-    let system: String
-    #if os(macOS)
-        system = "macOS"
-    #elseif os(iOS)
-        system = "iOS"
-    #elseif os(watchOS)
-        system = "watchOS"
-    #elseif os(tvOS)
-        system = "tvOS"
-    #elseif os(Linux)
-        system = "Linux"
-    #else
-        system = "unknown"
-    #endif
-    let systemVersion = ProcessInfo.processInfo.operatingSystemVersion
-    components.append("\(system)/\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)")
-    
-    let chip: String
-    #if arch(x86_64)
-        chip = "x86_64"
-    #elseif arch(arm)
-        chip = "arm"
-    #elseif arch(arm64)
-        chip = "arm64"
-    #elseif arch(i386)
-        chip = "i386"
-    #else
-        // Maybe fall back on `uname(2).machine`?
-        chip = "unrecognized"
-    #endif
-    
-    var simulator: String? = nil
-    #if targetEnvironment(simulator)
-    simulator = "Simulator"
-    #endif
-    
-    let otherComponents = [
-        chip,
-        simulator
-    ].compactMap({ $0 })
-    
-    components.append("(\(otherComponents.joined(separator: "; ")))")
-    
-    return components.joined(separator: " ")
-}()
-
 /**
  A `Directions` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.
  
@@ -572,7 +509,7 @@ open class Directions: NSObject {
 
         let getURL = components.url!
         var request = URLRequest(url: getURL)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        request.setupUserAgentString()
         return request
     }
 
@@ -604,7 +541,7 @@ open class Directions: NSObject {
         var params = (includesQuery ? options.urlQueryItems : [])
         params.append(contentsOf: authenticationParams)
 
-        let unparameterizedURL = URL(string: includesQuery ? options.path : options.abridgedPath, relativeTo: credentials.host)!
+        let unparameterizedURL = URL(path: includesQuery ? options.path : options.abridgedPath, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!
@@ -632,7 +569,7 @@ open class Directions: NSObject {
             request.httpMethod = "POST"
             request.httpBody = body
         }
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        request.setupUserAgentString()
         return request
     }
 }

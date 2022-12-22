@@ -46,7 +46,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     /**
      Current average speed (in meters per second) along the segment.
      
-     When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests
+     When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests.
      */
     public static let speed = AttributeOptions(rawValue: 1 << 3)
     
@@ -62,7 +62,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     /**
      The maximum speed limit along the segment.
      
-     When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests
+     When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests.
      */
     public static let maximumSpeedLimit = AttributeOptions(rawValue: 1 << 5)
 

@@ -124,6 +124,10 @@
 		2BBBD08E257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
 		2BBBD08F257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
 		2BBBD090257FA1CD004EB3D6 /* BlockedLanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */; };
+		2BD2553429544D19006C9106 /* URL+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD2553329544D19006C9106 /* URL+Request.swift */; };
+		2BD2553529544D19006C9106 /* URL+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD2553329544D19006C9106 /* URL+Request.swift */; };
+		2BD2553629544D19006C9106 /* URL+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD2553329544D19006C9106 /* URL+Request.swift */; };
+		2BD2553729544D19006C9106 /* URL+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD2553329544D19006C9106 /* URL+Request.swift */; };
 		2BEA240427CFAD2000EE05D9 /* ForeignMemberContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA240327CFAD2000EE05D9 /* ForeignMemberContainer.swift */; };
 		2BEA240527CFAD2000EE05D9 /* ForeignMemberContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA240327CFAD2000EE05D9 /* ForeignMemberContainer.swift */; };
 		2BEA240627CFAD2000EE05D9 /* ForeignMemberContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEA240327CFAD2000EE05D9 /* ForeignMemberContainer.swift */; };
@@ -578,6 +582,7 @@
 		2BA98970253F007600B643F6 /* mapbox-directions-swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mapbox-directions-swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BBBD05D257E61ED004EB3D6 /* MapboxStreetsRoadClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxStreetsRoadClass.swift; sourceTree = "<group>"; };
 		2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedLanes.swift; sourceTree = "<group>"; };
+		2BD2553329544D19006C9106 /* URL+Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Request.swift"; sourceTree = "<group>"; };
 		2BEA240327CFAD2000EE05D9 /* ForeignMemberContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignMemberContainer.swift; sourceTree = "<group>"; };
 		2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshSource.swift; sourceTree = "<group>"; };
 		2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentWaypoint.swift; sourceTree = "<group>"; };
@@ -840,6 +845,7 @@
 				35DBF00E217E17A30009D2AE /* HTTPURLResponse.swift */,
 				DAE7EA93230B5FD10003B211 /* Measurement.swift */,
 				8D381B691FDB101F008D5A58 /* String.swift */,
+				2BD2553329544D19006C9106 /* URL+Request.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1553,6 +1559,7 @@
 				2B79D3E728E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
 				431E93C423466B0F00A71B44 /* GeoJSON.swift in Sources */,
+				2BD2553529544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4A2045E72800D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00C207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* RoadClasses.swift in Sources */,
@@ -1661,6 +1668,7 @@
 				2B79D3E828E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
 				431E93C523466B1000A71B44 /* GeoJSON.swift in Sources */,
+				2BD2553629544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4B2045E72900D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00D207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* RoadClasses.swift in Sources */,
@@ -1769,6 +1777,7 @@
 				2B79D3E928E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
 				431E93C623466B1100A71B44 /* GeoJSON.swift in Sources */,
+				2BD2553729544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4C2045E72A00D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00E207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* RoadClasses.swift in Sources */,
@@ -1839,6 +1848,7 @@
 				2B79D3E628E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
 				431E93C323466B0E00A71B44 /* GeoJSON.swift in Sources */,
+				2BD2553429544D19006C9106 /* URL+Request.swift in Sources */,
 				35EFD00B207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
 				DAC05F161CFBFAC400FA0071 /* Waypoint.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* Lane.swift in Sources */,

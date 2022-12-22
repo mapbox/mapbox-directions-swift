@@ -27,6 +27,12 @@ open class Matrix {
     public typealias MatrixCompletionHandler = (_ session: Session, _ result: Result<MatrixResponse, MatrixError>) -> Void
     
     // MARK: Creating an Matrix Object
+    
+    /**
+     The Authorization & Authentication credentials that are used for this service.
+     
+     If nothing is provided, the default behavior is to read credential values from the developer's Info.plist.
+     */
     public let credentials: Credentials
     private let urlSession: URLSession
     private let processingQueue: DispatchQueue
@@ -150,7 +156,7 @@ open class Matrix {
         var params = options.urlQueryItems
         params.append(URLQueryItem(name: "access_token", value: credentials.accessToken))
 
-        let unparameterizedURL = URL(string: options.path, relativeTo: credentials.host)!
+        let unparameterizedURL = URL(path: options.path, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!
@@ -165,7 +171,7 @@ open class Matrix {
     open func urlRequest(forCalculating options: MatrixOptions) -> URLRequest {
         let getURL = self.url(forCalculating: options)
         var request = URLRequest(url: getURL)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        request.setupUserAgentString()
         return request
     }
 }

@@ -210,10 +210,11 @@ let waypoints = [
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.755184, longitude: -122.422959), name: "22nd Street"),
     Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
 ]
-let matrixOptions = MatrixOptions(waypoints: , profileIdentifier: .automobile)
+let matrixOptions = MatrixOptions(sources: waypoints, destinations: waypoints, profileIdentifier: .automobile)
 matrix.calculate(matrixOptions) { session, result in
-    if case .success(let response) = result {
-        print("Expected route duration from '\(waypoints[0].name)' to '\(waypoints[1].name)' is \(response.travelTime(from:0, to: 1)! / 60) minutes.")
+    if case .success(let response) = result,
+       let expectedTravelTime = response.travelTime(from: 0, to: 1) {
+        print("Expected route duration from '\(waypoints[0].name)' to '\(waypoints[1].name)' is \(expectedTravelTime / 60) minutes.")
     }
 }
 ```

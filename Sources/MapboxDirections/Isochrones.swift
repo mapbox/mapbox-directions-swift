@@ -149,7 +149,7 @@ open class Isochrones {
         var params = options.urlQueryItems
         params.append(URLQueryItem(name: "access_token", value: credentials.accessToken))
 
-        let unparameterizedURL = URL(string: options.path, relativeTo: credentials.host)!
+        let unparameterizedURL = URL(path: options.path, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!
@@ -164,7 +164,7 @@ open class Isochrones {
     open func urlRequest(forCalculating options: IsochroneOptions) -> URLRequest {
         let getURL = self.url(forCalculating: options)
         var request = URLRequest(url: getURL)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        request.setupUserAgentString()
         return request
     }
 }
