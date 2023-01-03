@@ -29,16 +29,17 @@ class VisualInstructionsTests: XCTestCase {
             ],
             "secondary": nil,
             "view": [
-              "text": "CA01610_1_E",
-              "components": [
-                [
-                  "text": "CA01610_1_E",
-                  "type": "guidance-view",
-                  "imageURL": "https://www.mapbox.com/navigation"
+                "text": "CA01610_1_E",
+                "components": [
+                    [
+                        "text": "CA01610_1_E",
+                        "type": "guidance-view",
+                        "imageURL": "https://www.mapbox.com/navigation",
+                        "subType": "cityreal"
                     ],
-              ],
-              "type": "fork",
-              "modifier": "right"
+                ],
+                "type": "fork",
+                "modifier": "right"
             ],
         ]
         let bannerData = try! JSONSerialization.data(withJSONObject: bannerJSON, options: [])
@@ -64,7 +65,9 @@ class VisualInstructionsTests: XCTestCase {
         let component = VisualInstruction.Component.text(text: .init(text: "Weinstock Strasse", abbreviation: nil, abbreviationPriority: nil))
         let primaryInstruction = VisualInstruction(text: "Weinstock Strasse", maneuverType: .turn, maneuverDirection: .right, components: [component])
         
-        let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")), alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil))
+        let guideViewComponent = VisualInstruction.Component.guidanceView(image: GuidanceViewImageRepresentation(imageURL: URL(string: "https://www.mapbox.com/navigation")),
+                                                                          alternativeText: VisualInstruction.Component.TextRepresentation(text: "CA01610_1_E", abbreviation: nil, abbreviationPriority: nil),
+                                                                          kind: .realisticUrbanIntersection)
         XCTAssert(componentGuidanceViewImage == guideViewComponent)
         let quaternaryInstruction = VisualInstruction(text: "CA01610_1_E", maneuverType: .reachFork, maneuverDirection: .right, components: [guideViewComponent])
         
