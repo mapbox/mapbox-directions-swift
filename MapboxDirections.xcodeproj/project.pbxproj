@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -393,13 +393,9 @@
 		DAE9E0F41EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F51EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
 		DAE9E0F61EB7DE2E001E8E8B /* RouteOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */; };
-		DAF08AAB25C0E96E00ABA8F3 /* MapboxDirections.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; };
-		DAF08AAC25C0E96E00ABA8F3 /* MapboxDirections.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E232F8A8266513E90038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
 		E232F8A9266513EE0038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
 		E232F8AA266513F10038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
-		E232F8AC266513FF0038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
-		E232F8AD266513FF0038CAF3 /* Polyline.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E232F8B2266516640038CAF3 /* Turf.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F8AE2665141F0038CAF3 /* Turf.xcframework */; };
 		E232F8B32665166D0038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
 		E232F8B4266516950038CAF3 /* Polyline.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232F899266513C20038CAF3 /* Polyline.xcframework */; };
@@ -465,13 +461,6 @@
 			remoteGlobalIDString = DA6C9D871CAE442B00094FBC;
 			remoteInfo = MapboxDirections;
 		};
-		DADD27F91E5AC8E900D31FAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD6254461AE70C1700017857 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DA6C9D871CAE442B00094FBC;
-			remoteInfo = MapboxDirections;
-		};
 		E232F8C72665173C0038CAF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DD6254461AE70C1700017857 /* Project object */;
@@ -501,18 +490,6 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-		};
-		DAF08AAD25C0E96E00ABA8F3 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				DAF08AAC25C0E96E00ABA8F3 /* MapboxDirections.framework in Embed Frameworks */,
-				E232F8AD266513FF0038CAF3 /* Polyline.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -637,7 +614,6 @@
 		DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsErrorTests.swift; sourceTree = "<group>"; };
 		DAD06E3823A008EB001A917D /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		DAD31BC224D4A8D100A1654D /* match-polyline6.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "match-polyline6.json"; sourceTree = "<group>"; };
-		DADD27B51E5AAAD800D31FAD /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE2DF6723AECB120065057A /* QuickLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookTests.swift; sourceTree = "<group>"; };
 		DAE2DF6B23AED2280065057A /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		DAE33A1A1F215DF600C06039 /* IntersectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntersectionTests.swift; sourceTree = "<group>"; };
@@ -716,15 +692,6 @@
 			files = (
 				E232F8A8266513E90038CAF3 /* Polyline.xcframework in Frameworks */,
 				E232F8BD266516EF0038CAF3 /* OHHTTPStubs.xcframework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DADD27B21E5AAAD800D31FAD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DAF08AAB25C0E96E00ABA8F3 /* MapboxDirections.framework in Frameworks */,
-				E232F8AC266513FF0038CAF3 /* Polyline.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,7 +973,6 @@
 				DA1A10D51D0101ED009F82FA /* MapboxDirections.framework */,
 				DA1A10DE1D0101ED009F82FA /* MapboxDirectionsTests.xctest */,
 				DA1A10FB1D010361009F82FA /* MapboxDirections.framework */,
-				DADD27B51E5AAAD800D31FAD /* Example.app */,
 				2BA98970253F007600B643F6 /* mapbox-directions-swift */,
 			);
 			name = Products;
@@ -1196,26 +1162,6 @@
 			productReference = DA6C9D911CAE442B00094FBC /* MapboxDirectionsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DADD27B41E5AAAD800D31FAD /* Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DADD27C61E5AAAD800D31FAD /* Build configuration list for PBXNativeTarget "Example" */;
-			buildPhases = (
-				DADD27B11E5AAAD800D31FAD /* Sources */,
-				DADD27B21E5AAAD800D31FAD /* Frameworks */,
-				DADD27B31E5AAAD800D31FAD /* Resources */,
-				DA3DFB08236973E9003AE57F /* Apply Mapbox Access Token */,
-				DAF08AAD25C0E96E00ABA8F3 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DADD27FA1E5AC8E900D31FAD /* PBXTargetDependency */,
-			);
-			name = Example;
-			productName = "Directions Example";
-			productReference = DADD27B51E5AAAD800D31FAD /* Example.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1260,11 +1206,6 @@
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 1100;
 					};
-					DADD27B41E5AAAD800D31FAD = {
-						CreatedOnToolsVersion = 8.2.1;
-						LastSwiftMigration = 1100;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = DD6254491AE70C1700017857 /* Build configuration list for PBXProject "MapboxDirections" */;
@@ -1280,7 +1221,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DADD27B41E5AAAD800D31FAD /* Example */,
 				DA6C9D871CAE442B00094FBC /* MapboxDirections */,
 				DA6C9D901CAE442B00094FBC /* MapboxDirectionsTests */,
 				DA1A10AE1D00F8FF009F82FA /* MapboxDirectionsMac */,
@@ -1415,37 +1355,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DADD27B31E5AAAD800D31FAD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		DA3DFB08236973E9003AE57F /* Apply Mapbox Access Token */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
-			);
-			name = "Apply Mapbox Access Token";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Look for a global file named 'mapbox' or '.mapbox' within the home directory\ntoken_file=~/.mapbox\ntoken_file2=~/mapbox\ntoken=\"$(cat $token_file 2>/dev/null || cat $token_file2 2>/dev/null)\"\nif [ \"$token\" ]; then\n  plutil -replace MGLMapboxAccessToken -string $token \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nelse\n  echo 'warning: Missing Mapbox access token'\n  open 'https://account.mapbox.com/access-tokens/'\n  echo \"warning: Get an access token from <https://account.mapbox.com/access-tokens/>, then create a new file at $token_file or $token_file2 that contains the access token.\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2BA9896C253F007600B643F6 /* Sources */ = {
@@ -1833,13 +1743,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DADD27B11E5AAAD800D31FAD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1862,11 +1765,6 @@
 			isa = PBXTargetDependency;
 			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
 			targetProxy = DA6C9D931CAE442B00094FBC /* PBXContainerItemProxy */;
-		};
-		DADD27FA1E5AC8E900D31FAD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DA6C9D871CAE442B00094FBC /* MapboxDirections */;
-			targetProxy = DADD27F91E5AC8E900D31FAD /* PBXContainerItemProxy */;
 		};
 		E232F8C82665173C0038CAF3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2316,50 +2214,6 @@
 			};
 			name = Release;
 		};
-		DADD27C41E5AAAD800D31FAD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = GJZR2MEM28;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Directions Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.Directions;
-				PRODUCT_MODULE_NAME = DirectionsExampleSwift;
-				PRODUCT_NAME = Example;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-			};
-			name = Debug;
-		};
-		DADD27C51E5AAAD800D31FAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = GJZR2MEM28;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Directions Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mapbox.Directions;
-				PRODUCT_MODULE_NAME = DirectionsExampleSwift;
-				PRODUCT_NAME = Example;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-			};
-			name = Release;
-		};
 		DD62546B1AE70C1700017857 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2551,15 +2405,6 @@
 			buildConfigurations = (
 				DA6C9DA41CAE442B00094FBC /* Debug */,
 				DA6C9DA51CAE442B00094FBC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DADD27C61E5AAAD800D31FAD /* Build configuration list for PBXNativeTarget "Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DADD27C41E5AAAD800D31FAD /* Debug */,
-				DADD27C51E5AAAD800D31FAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
