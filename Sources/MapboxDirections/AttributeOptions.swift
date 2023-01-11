@@ -23,7 +23,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
       
       When this attribute is specified, the `RouteLeg.closures` property is filled with relevant data.
       
-      This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`.
+      This attribute requires `ProfileIdentifier.automobileAvoidingTraffic` and is supported only by Directions and Map Matching requests.
      */
     public static let closures = AttributeOptions(rawValue: 1)
     
@@ -31,6 +31,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
      Distance (in meters) along the segment.
      
      When this attribute is specified, the `RouteLeg.segmentDistances` property contains one value for each segment in the leg’s full geometry.
+     When used in Matrix request - will produce a distances matrix in response.
      */
     public static let distance = AttributeOptions(rawValue: 1 << 1)
     
@@ -38,13 +39,14 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
      Expected travel time (in seconds) along the segment.
      
      When this attribute is specified, the `RouteLeg.expectedSegmentTravelTimes` property contains one value for each segment in the leg’s full geometry.
+     When used in Matrix request - will produce a durations matrix in response.
      */
     public static let expectedTravelTime = AttributeOptions(rawValue: 1 << 2)
 
     /**
      Current average speed (in meters per second) along the segment.
      
-     When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry.
+     When this attribute is specified, the `RouteLeg.segmentSpeeds` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests.
      */
     public static let speed = AttributeOptions(rawValue: 1 << 3)
     
@@ -53,14 +55,14 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
      
      When this attribute is specified, the `RouteLeg.congestionLevels` property contains one value for each segment in the leg’s full geometry.
      
-     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
+     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic` and is supported only by Directions and Map Matching requests. Any other profile identifier produces `CongestionLevel.unknown` for each segment along the route.
      */
     public static let congestionLevel = AttributeOptions(rawValue: 1 << 4)
     
     /**
      The maximum speed limit along the segment.
      
-     When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry.
+     When this attribute is specified, the `RouteLeg.segmentMaximumSpeedLimits` property contains one value for each segment in the leg’s full geometry. This attribute is supported only by Directions and Map Matching requests.
      */
     public static let maximumSpeedLimit = AttributeOptions(rawValue: 1 << 5)
 
@@ -69,7 +71,7 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
 
      When this attribute is specified, the `RouteLeg.numericCongestionLevels` property contains one value for each segment in the leg’s full geometry.
 
-     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic`. Any other profile identifier produces `nil` for each segment along the route.
+     This attribute requires `ProfileIdentifier.automobileAvoidingTraffic` and is supported only by Directions and Map Matching requests. Any other profile identifier produces `nil` for each segment along the route.
      */
     public static let numericCongestionLevel = AttributeOptions(rawValue: 1 << 6)
     
