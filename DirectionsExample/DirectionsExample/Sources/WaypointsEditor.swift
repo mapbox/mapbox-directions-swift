@@ -85,7 +85,7 @@ struct WaypointView: View {
 
     init(waypoint: Binding<Waypoint>) {
         _waypoint = waypoint
-        _latitudeString = State<String>(initialValue: waypoint.wrappedValue.latitude.description)
+        _latitudeString = .init(initialValue: waypoint.wrappedValue.latitude.description)
         _longitudeString = .init(initialValue: waypoint.wrappedValue.longitude.description)
     }
 

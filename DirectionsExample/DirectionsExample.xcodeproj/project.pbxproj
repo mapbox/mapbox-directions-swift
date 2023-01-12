@@ -10,7 +10,7 @@
 		E2E47CC227F62E06003C859F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E47CC127F62E06003C859F /* Assets.xcassets */; };
 		E2E47CC527F62E06003C859F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E47CC427F62E06003C859F /* Preview Assets.xcassets */; };
 		E2E47CE127F62E8F003C859F /* QueriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDA27F62E8F003C859F /* QueriesList.swift */; };
-		E2E47CE227F62E8F003C859F /* DirectionsPlayground.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDB27F62E8F003C859F /* DirectionsPlayground.swift */; };
+		E2E47CE227F62E8F003C859F /* DirectionsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDB27F62E8F003C859F /* DirectionsExample.swift */; };
 		E2E47CE327F62E8F003C859F /* RoutesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDC27F62E8F003C859F /* RoutesView.swift */; };
 		E2E47CE427F62E8F003C859F /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDD27F62E8F003C859F /* Query.swift */; };
 		E2E47CE527F62E8F003C859F /* QueryEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E47CDE27F62E8F003C859F /* QueryEditor.swift */; };
@@ -21,18 +21,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E2E47CBA27F62E05003C859F /* DirectionsPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectionsPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2E47CBA27F62E05003C859F /* DirectionsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DirectionsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E47CC127F62E06003C859F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2E47CC427F62E06003C859F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E2E47CDA27F62E8F003C859F /* QueriesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueriesList.swift; sourceTree = "<group>"; };
-		E2E47CDB27F62E8F003C859F /* DirectionsPlayground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsPlayground.swift; sourceTree = "<group>"; };
+		E2E47CDB27F62E8F003C859F /* DirectionsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsExample.swift; sourceTree = "<group>"; };
 		E2E47CDC27F62E8F003C859F /* RoutesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutesView.swift; sourceTree = "<group>"; };
 		E2E47CDD27F62E8F003C859F /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		E2E47CDE27F62E8F003C859F /* QueryEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryEditor.swift; sourceTree = "<group>"; };
 		E2E47CDF27F62E8F003C859F /* WaypointsEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaypointsEditor.swift; sourceTree = "<group>"; };
 		E2E47CE027F62E8F003C859F /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		E2E47CE827F62EAE003C859F /* mapbox-directions-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "mapbox-directions-swift"; path = ..; sourceTree = "<group>"; };
-		E2E47CED27F630BE003C859F /* DirectionsPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DirectionsPlayground.entitlements; sourceTree = "<group>"; };
+		E2E47CED27F630BE003C859F /* DirectionsExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DirectionsExample.entitlements; sourceTree = "<group>"; };
 		E2E47CEE27F6EF7D003C859F /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,7 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E47CE827F62EAE003C859F /* mapbox-directions-swift */,
-				E2E47CBC27F62E05003C859F /* DirectionsPlayground */,
+				E2E47CBC27F62E05003C859F /* DirectionsExample */,
 				E2E47CBB27F62E05003C859F /* Products */,
 				E2E47CE927F62EB7003C859F /* Frameworks */,
 			);
@@ -61,20 +61,20 @@
 		E2E47CBB27F62E05003C859F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E2E47CBA27F62E05003C859F /* DirectionsPlayground.app */,
+				E2E47CBA27F62E05003C859F /* DirectionsExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E2E47CBC27F62E05003C859F /* DirectionsPlayground */ = {
+		E2E47CBC27F62E05003C859F /* DirectionsExample */ = {
 			isa = PBXGroup;
 			children = (
-				E2E47CED27F630BE003C859F /* DirectionsPlayground.entitlements */,
+				E2E47CED27F630BE003C859F /* DirectionsExample.entitlements */,
 				E2E47CD927F62E78003C859F /* Sources */,
 				E2E47CC127F62E06003C859F /* Assets.xcassets */,
 				E2E47CC327F62E06003C859F /* Preview Content */,
 			);
-			path = DirectionsPlayground;
+			path = DirectionsExample;
 			sourceTree = "<group>";
 		};
 		E2E47CC327F62E06003C859F /* Preview Content */ = {
@@ -88,7 +88,7 @@
 		E2E47CD927F62E78003C859F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E2E47CDB27F62E8F003C859F /* DirectionsPlayground.swift */,
+				E2E47CDB27F62E8F003C859F /* DirectionsExample.swift */,
 				E2E47CDA27F62E8F003C859F /* QueriesList.swift */,
 				E2E47CDD27F62E8F003C859F /* Query.swift */,
 				E2E47CDE27F62E8F003C859F /* QueryEditor.swift */,
@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E2E47CB927F62E05003C859F /* DirectionsPlayground */ = {
+		E2E47CB927F62E05003C859F /* DirectionsExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2E47CC827F62E06003C859F /* Build configuration list for PBXNativeTarget "DirectionsPlayground" */;
+			buildConfigurationList = E2E47CC827F62E06003C859F /* Build configuration list for PBXNativeTarget "DirectionsExample" */;
 			buildPhases = (
 				E2E47CB627F62E05003C859F /* Sources */,
 				E2E47CB727F62E05003C859F /* Frameworks */,
@@ -123,12 +123,12 @@
 			);
 			dependencies = (
 			);
-			name = DirectionsPlayground;
+			name = DirectionsExample;
 			packageProductDependencies = (
 				E2E47CEA27F62EB7003C859F /* MapboxDirections */,
 			);
 			productName = DirectionsPlayground;
-			productReference = E2E47CBA27F62E05003C859F /* DirectionsPlayground.app */;
+			productReference = E2E47CBA27F62E05003C859F /* DirectionsExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -147,7 +147,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E2E47CB527F62E05003C859F /* Build configuration list for PBXProject "DirectionsPlayground" */;
+			buildConfigurationList = E2E47CB527F62E05003C859F /* Build configuration list for PBXProject "DirectionsExample" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -160,7 +160,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E2E47CB927F62E05003C859F /* DirectionsPlayground */,
+				E2E47CB927F62E05003C859F /* DirectionsExample */,
 			);
 		};
 /* End PBXProject section */
@@ -208,7 +208,7 @@
 				E2E47CE727F62E8F003C859F /* Storage.swift in Sources */,
 				E2E47CE427F62E8F003C859F /* Query.swift in Sources */,
 				E2E47CEF27F6EF7D003C859F /* InfoButton.swift in Sources */,
-				E2E47CE227F62E8F003C859F /* DirectionsPlayground.swift in Sources */,
+				E2E47CE227F62E8F003C859F /* DirectionsExample.swift in Sources */,
 				E2E47CE327F62E8F003C859F /* RoutesView.swift in Sources */,
 				E2E47CE127F62E8F003C859F /* QueriesList.swift in Sources */,
 				E2E47CE627F62E8F003C859F /* WaypointsEditor.swift in Sources */,
@@ -338,10 +338,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = DirectionsPlayground/DirectionsPlayground.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DirectionsExample/DirectionsExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DirectionsPlayground/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DirectionsExample/Preview Content\"";
 				DEVELOPMENT_TEAM = GJZR2MEM28;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -356,7 +356,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mapbox.DirectionsPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = mapbox.DirectionsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -372,10 +372,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = DirectionsPlayground/DirectionsPlayground.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DirectionsExample/DirectionsExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DirectionsPlayground/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DirectionsExample/Preview Content\"";
 				DEVELOPMENT_TEAM = GJZR2MEM28;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -390,7 +390,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = mapbox.DirectionsPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = mapbox.DirectionsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -402,7 +402,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E2E47CB527F62E05003C859F /* Build configuration list for PBXProject "DirectionsPlayground" */ = {
+		E2E47CB527F62E05003C859F /* Build configuration list for PBXProject "DirectionsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2E47CC627F62E06003C859F /* Debug */,
@@ -411,7 +411,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2E47CC827F62E06003C859F /* Build configuration list for PBXNativeTarget "DirectionsPlayground" */ = {
+		E2E47CC827F62E06003C859F /* Build configuration list for PBXNativeTarget "DirectionsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2E47CC927F62E06003C859F /* Debug */,

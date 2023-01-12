@@ -1,8 +1,8 @@
-# Directions Playground
+# Directions Example
 
 Shows how to obtain directions using "MapboxDirection" library.
 
-## Requirements 
+## Requirements
 
-- Xcode 13.3 
+- Xcode 13.3
 - iOS 15

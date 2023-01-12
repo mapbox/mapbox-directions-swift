@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct DirectionsPlayground: App {
+struct DirectionsExample: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {

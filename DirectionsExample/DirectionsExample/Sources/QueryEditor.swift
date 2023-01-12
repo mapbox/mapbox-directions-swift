@@ -22,13 +22,13 @@ struct QueryEditor: View {
                             destination: RoutesView(routes: routes),
                             isActive: $showRoutes,
                             label: {
-                                Button("Calculate") {
+                                Button("Directions") {
                                     loadRoutes(for: query)
                                 }.buttonStyle(.borderless)
                             })
                     }
                 })
-                .navigationTitle("Edit Route Waypoints")
+                .navigationTitle(query.name)
 
         }
         .alert(isPresented: .constant(error != nil), error: error) {

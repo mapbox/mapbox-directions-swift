@@ -13,8 +13,14 @@ struct QueriesList: View {
                 NavigationLink(
                     destination: QueryEditor(query: $query),
                     label: {
-                        Text(query.name)
+                        TextField("Query Name", text: $query.name)
                     })
+            }
+            .onMove { indices, newOffset in
+                queries.move(fromOffsets: indices, toOffset: newOffset)
+            }
+            .onDelete { indexSet in
+                queries.remove(atOffsets: indexSet)
             }
         }
         .onAppear { loadQueries() }
@@ -23,13 +29,16 @@ struct QueriesList: View {
                 Button { newQuery() }
                     label: { Image(systemName: "plus") }
             }
+            ToolbarItem(placement: ToolbarItemPlacement.automatic) {
+                EditButton()
+            }
         }
         .navigationTitle("Saved Queries")
     }
 
     private func loadQueries() {
         do {
-            queries = try Storage.shared.load() ?? []
+            queries = try Storage.shared.load() ?? [.default]
         }
         catch {
             print(error)
