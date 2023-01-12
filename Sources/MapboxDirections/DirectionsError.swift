@@ -110,7 +110,12 @@ public enum DirectionsError: LocalizedError {
      */
     
     case unknown(response: URLResponse?, underlying: Error?, code: String?, message: String?)
-    
+
+    public var errorDescription: String? {
+        guard let failureReason = failureReason else { return nil }
+        return failureReason.appending(recoverySuggestion ?? "")
+    }
+
     public var failureReason: String? {
         switch self {
         case .network(_):

@@ -198,12 +198,9 @@ jobs:
     steps:
       - checkout
       - install-mapbox-token
-      - install-carthage
-      - restore-cache
-      - carthage-bootstrap
       - run:
           name: "Build example app"
-          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13 Pro Max' clean build
+          command: xcodebuild -sdk iphonesimulator -project DirectionsPlayground/DirectionsPlayground.xcodeproj -scheme 'DirectionsPlayground' -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13 Pro Max' clean build
       - save-cache
 
   build-job:
