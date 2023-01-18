@@ -1,9 +1,12 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.10.0
+
+* Added `Matrix` API wrapper. The [Mapbox Matrix API](https://docs.mapbox.com/api/navigation/matrix/) computes travel times between many points, and returns a matrix of all travel times between the locations. [#626](https://github.com/mapbox/mapbox-directions-swift/pull/626)
+
 ## v2.9.0
 
 * Added the `RestStop.amenities` property that describes useful and important facilities such as gas stations, restaurants, and ATMs. ([#780](https://github.com/mapbox/mapbox-directions-swift/pull/780))
-* Added `Matrix` API wrapper. The [Mapbox Matrix API](https://docs.mapbox.com/api/navigation/matrix/) computes travel times between many points, and returns a matrix of all travel times between the locations. [#626](https://github.com/mapbox/mapbox-directions-swift/pull/626)
 
 ## v2.8.0
 
