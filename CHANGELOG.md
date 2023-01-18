@@ -36,7 +36,7 @@
 
 ### Command line tool
 
-* Removed the `--config` option. Instead, pass in either the path to a JSON configuration file or the full URL to a Mapbox Directions API or Mapbox Map Matching API request. ([#726](https://github.com/mapbox/mapbox-directions-swift/pull/726)) 
+* Removed the `--config` option. Instead, pass in either the path to a JSON configuration file or the full URL to a Mapbox Directions API or Mapbox Map Matching API request. ([#726](https://github.com/mapbox/mapbox-directions-swift/pull/726))
 * When the `MAPBOX_ACCESS_TOKEN` environment variable is unset, the tool exits with an error code instead of crashing. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
 * The tool now connects to the API endpoint in the `MAPBOX_HOST` environment variable, if specified. ([#728](https://github.com/mapbox/mapbox-directions-swift/pull/728))
 
@@ -65,7 +65,7 @@
 * Added the `TollCollection.name` property. ([#691](https://github.com/mapbox/mapbox-directions-swift/pull/691))
 * Types that correspond to objects in the Mapbox Directions API response, such as `RouteResponse`, `RouteRefreshResponse`, `MatchResponse`, and `RouteStep`, now conform to the `ForeignMemberContainer` and `ForeignMemberClassContainer` protocols. Types that conform to these protocols can persist unrecognized properties in the response, such as properties that are in beta, even after coding and decoding. You can access these properties using the `ForeignMemberContainer.foreignMembers` and `ForeignMemberClassContainer.foreignMembers` properties. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
 * Fixed an issue where `RouteStep.distance`, `RouteStep.expectedTravelTime` and `RouteStep.typicalTravelTime` were rounded to one decimal place when being encoded. ([#697](https://github.com/mapbox/mapbox-directions-swift/pull/697))
-* Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669)) 
+* Fixed an issue where decoding a `RouteResponse` incorrectly set the `Waypoint.snappedDistance` property to `nil`. ([#669](https://github.com/mapbox/mapbox-directions-swift/pull/669))
 * The `mapbox-directions-swift` command line tool now requests routes from the Mapbox Directions API if no input file is specified. ([#576](https://github.com/mapbox/mapbox-directions-swift/pull/576))
 
 ## v2.4.0
