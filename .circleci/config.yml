@@ -337,7 +337,6 @@ jobs:
               else
                 pod repo update && pod trunk push MapboxDirections.podspec
             fi
-            pod repo update && pod trunk push MapboxDirections.podspec
       - *save-cache-podmaster
       - *save-cache-gems
 
