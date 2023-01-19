@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7E6230E22978F262009577FE /* mapbox-directions-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "mapbox-directions-swift"; path = ..; sourceTree = "<group>"; };
+		7E6230E42978FA04009577FE /* mapbox-directions-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "mapbox-directions-swift"; path = ..; sourceTree = "<group>"; };
 		E28CE3A8285B901B00262066 /* MapboxNavigationSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapboxNavigationSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28CE3AB285B901B00262066 /* MapboxNavigationSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxNavigationSwiftUIApp.swift; sourceTree = "<group>"; };
 		E28CE3AD285B901B00262066 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,9 +44,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E6230E32978FA04009577FE /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				7E6230E42978FA04009577FE /* mapbox-directions-swift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		E28CE39F285B901B00262066 = {
 			isa = PBXGroup;
 			children = (
+				7E6230E32978FA04009577FE /* Packages */,
 				E28CE3AA285B901B00262066 /* MapboxNavigationSwiftUI */,
 				E28CE3A9285B901B00262066 /* Products */,
 				E2B5006D285C60F8002BAE73 /* Frameworks */,
@@ -87,7 +96,6 @@
 		E2B5006D285C60F8002BAE73 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7E6230E22978F262009577FE /* mapbox-directions-swift */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -408,7 +416,7 @@
 			repositoryURL = "https://github.com/mapbox/mapbox-navigation-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.9.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
