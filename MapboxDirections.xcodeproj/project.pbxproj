@@ -180,9 +180,6 @@
 		43F89F942350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F952350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
 		43F89F962350F952007B591E /* MapMatchingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F89F922350F952007B591E /* MapMatchingResponse.swift */; };
-		8A2CD31E294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CD31D294CFA54006C0AF6 /* instructionComponentsWithSubType.json */; };
-		8A2CD31F294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CD31D294CFA54006C0AF6 /* instructionComponentsWithSubType.json */; };
-		8A2CD320294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CD31D294CFA54006C0AF6 /* instructionComponentsWithSubType.json */; };
 		8A3B4C9B24EB55F60085DA64 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A47418E2947D1E100F231F9 /* AmenityTests.swift */; };
 		8A4741912947D22900F231F9 /* amenities.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A4741902947D22900F231F9 /* amenities.json */; };
@@ -573,7 +570,6 @@
 		4392557523440EC2006EEE88 /* DirectionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsError.swift; sourceTree = "<group>"; };
 		43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsTests.swift; sourceTree = "<group>"; };
 		43F89F922350F952007B591E /* MapMatchingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMatchingResponse.swift; sourceTree = "<group>"; };
-		8A2CD31D294CFA54006C0AF6 /* instructionComponentsWithSubType.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = instructionComponentsWithSubType.json; sourceTree = "<group>"; };
 		8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteResponseTests.swift; sourceTree = "<group>"; };
 		8A41B0FC24F5C2390021FFDC /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		8A47418E2947D1E100F231F9 /* AmenityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmenityTests.swift; sourceTree = "<group>"; };
@@ -840,7 +836,6 @@
 				C5D1D7EF1F6AF91700A1C4F1 /* instructions.json */,
 				AEAB390C20D7F4F4008F4E54 /* subLaneInstructions.json */,
 				AEAB391020D94699008F4E54 /* subVisualInstructions.json */,
-				8A2CD31D294CFA54006C0AF6 /* instructionComponentsWithSubType.json */,
 			);
 			name = Instructions;
 			sourceTree = "<group>";
@@ -1336,7 +1331,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
-				8A2CD31F294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */,
 				2BA2E747257A667500D7AFC6 /* incidents.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080A245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
@@ -1374,7 +1368,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
-				8A2CD320294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */,
 				2BA2E748257A667500D7AFC6 /* incidents.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080B245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
@@ -1419,7 +1412,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
-				8A2CD31E294CFA54006C0AF6 /* instructionComponentsWithSubType.json in Resources */,
 				2BA2E746257A667500D7AFC6 /* incidents.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				2B540809245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
