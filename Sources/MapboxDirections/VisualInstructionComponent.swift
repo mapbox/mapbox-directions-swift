@@ -51,7 +51,7 @@ public extension VisualInstruction {
         /**
          The component is an image of a zoomed junction, with a fallback text representation.
          */
-        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation, kind: GuidanceViewKind? = nil)
+        case guidanceView(image: GuidanceViewImageRepresentation, alternativeText: TextRepresentation)
         
         /**
          The component contains the localized word for “Exit”.
@@ -254,7 +254,6 @@ public struct GuidanceViewImageRepresentation: Equatable {
 extension VisualInstruction.Component: Codable {
     private enum CodingKeys: String, CodingKey {
         case kind = "type"
-        case guidanceViewKind = "subType"
         case text
         case abbreviatedText = "abbr"
         case abbreviatedTextPriority = "abbr_priority"
@@ -274,75 +273,6 @@ extension VisualInstruction.Component: Codable {
         case exit
         case exitCode = "exit-number"
         case lane
-    }
-    
-    /**
-     :nodoc:
-     Kind of the guidance view that provides more context about the component guidance view that may help in visual
-     markup and display choices.
-     */
-    public enum GuidanceViewKind: String, Codable, CaseIterable {
-        
-        /**
-         Junction view. Bird’s-eye artist’s rendition view of the overhead signage and
-         preferred road lane arrow on motorways where the road bifurcates into 2 or
-         more motorway trunk roads.
-         */
-        case fork = "jct"
-        
-        /**
-         Advanced 2D signboard (vendor enhanced detailed signboard).
-         */
-        case signboard = "signboard"
-        
-        /**
-         Service area/parking area guide map. Vertical artist’s rendition guide map of an SAPA rest area
-         showing various facilities icons such as restaurants, restrooms and parking areas.
-         The scale is approximately 1 to 5K.
-         */
-        case serviceAreaGuideMap = "sapaguidemap"
-        
-        /**
-         Service area/parking area. Bird’s-eye artist’s rendition view of the overhead
-         signage and preferred road lane arrow at a rest area ramp where the route
-         leaves the main road.
-         */
-        case serviceArea = "sapa"
-        
-        /**
-         Sign image after a toll gate. Used immediately after exiting a toll gate containing just the
-         overhead signboard. The preferred road (not the lane) arrow is highlighted on the signboard.
-         */
-        case afterToll = "aftertoll"
-        
-        /**
-         3D city real. Bird’s-eye artist’s rendition view of a general road intersection
-         and preferred road lane arrow. There is no overhead signage.
-         */
-        case realisticUrbanIntersection = "cityreal"
-        
-        /**
-         Motorway entrance. Bird’s-eye artist’s rendition view of the overhead signage and
-         preferred road lane arrow at an entrance ramp onto a motorway.
-         */
-        case motorwayEntrance = "entrance"
-        
-        /**
-         Motorway exit. Bird’s-eye artist’s rendition view of the overhead signage and
-         preferred road lane arrow at an exit ramp from a motorway.
-         */
-        case motorwayExit = "exit"
-        
-        /**
-         Branched image after a toll gate. Bird’s-eye artist’s rendition view of the overhead
-         signage and preferred road lane arrow immediately after exiting a toll gate.
-         */
-        case tollBranch = "tollbranch"
-        
-        /**
-         Direction signboard guidance view.
-         */
-        case directionBoard = "directionboard"
     }
     
     public init(from decoder: Decoder) throws {
@@ -387,8 +317,7 @@ extension VisualInstruction.Component: Codable {
                 imageURL = URL(string: imageURLString)
             }
             let guidanceViewImageRepresentation = GuidanceViewImageRepresentation(imageURL: imageURL)
-            let guidanceViewKind = try container.decodeIfPresent(GuidanceViewKind.self, forKey: .guidanceViewKind)
-            self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation, kind: guidanceViewKind)
+            self = .guidanceView(image: guidanceViewImageRepresentation, alternativeText: textRepresentation)
         }
     }
     
@@ -420,11 +349,10 @@ extension VisualInstruction.Component: Codable {
             try container.encode(indications, forKey: .directions)
             try container.encode(isUsable, forKey: .isActive)
             try container.encodeIfPresent(preferredDirection, forKey: .activeDirection)
-        case .guidanceView(let image, let alternativeText, let kind):
+        case .guidanceView(let image, let alternativeText):
             try container.encode(Kind.guidanceView, forKey: .kind)
             textRepresentation = alternativeText
             try container.encodeIfPresent(image.imageURL?.absoluteString, forKey: .imageURL)
-            try container.encodeIfPresent(kind, forKey: .guidanceViewKind)
         }
         
         if let textRepresentation = textRepresentation {
@@ -447,11 +375,10 @@ extension VisualInstruction.Component: Equatable {
               let .image(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-        case (let .guidanceView(lhsURL, lhsAlternativeText, lhsKind),
-              let .guidanceView(rhsURL, rhsAlternativeText, rhsKind)):
+        case (let .guidanceView(lhsURL, lhsAlternativeText),
+              let .guidanceView(rhsURL, rhsAlternativeText)):
             return lhsURL == rhsURL
                 && lhsAlternativeText == rhsAlternativeText
-                && lhsKind == rhsKind
         case (let .lane(lhsIndications, lhsIsUsable, lhsPreferredDirection),
               let .lane(rhsIndications, rhsIsUsable, rhsPreferredDirection)):
             return lhsIndications == rhsIndications

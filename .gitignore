@@ -16,3 +16,4 @@ Carthage/Checkouts
 .vscode
 
 vendor/bundle/ruby/
+IntegrationWithNavigationSDK/MapboxNavigationSwiftUI.xcodeproj.disabled/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
