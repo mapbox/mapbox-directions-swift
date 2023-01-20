@@ -170,7 +170,7 @@ jobs:
     steps:
       - checkout
       - run: swift build
-  
+
   carthage-integration-test:
     parameters:
       xcode:
@@ -185,7 +185,7 @@ jobs:
       - run:
           name: "Create integration Cartfile"
           command: |
-            echo 'github "mapbox/mapbox-directions-swift"' \"$CIRCLE_SHA1\" > Cartfile 
+            echo 'github "mapbox/mapbox-directions-swift"' \"$CIRCLE_SHA1\" > Cartfile
       - run:
           name: "Build"
           command: |
@@ -340,6 +340,27 @@ jobs:
       - *save-cache-podmaster
       - *save-cache-gems
 
+  integration-test-with-navigation-sdk:
+    parameters:
+      xcode:
+        type: string
+    macos:
+      xcode: << parameters.xcode >>
+    environment:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+    steps:
+      - checkout
+      - install-mapbox-token
+      - *prepare-netrc-file
+      - run:
+          name: "Build IntegrationWithNavigationSDK"
+          command: |
+            cd ..
+            mv project mapbox-directions-swift
+            cd mapbox-directions-swift/IntegrationWithNavigationSDK
+            mv MapboxNavigationSwiftUI.xcodeproj.disabled MapboxNavigationSwiftUI.xcodeproj
+            xcodebuild -resolvePackageDependencies
+            xcodebuild -scheme MapboxNavigationSwiftUI -destination 'generic/platform=iOS Simulator' -sdk iphonesimulator -configuration Release
 workflows:
   workflow:
     jobs:
@@ -358,11 +379,14 @@ workflows:
           xcode: "13.3.1"
       - spm-job:
           name: "SPM build 14.0.0"
-          xcode: "14.0.0"
+          xcode: "14.1.0"
       - spm-linux-job:
           name: "SPM Ubuntu build"
       - example-app-build:
           name: "Build example app"
+      - integration-test-with-navigation-sdk:
+          name: "Integration Test With Navigation SDK"
+          xcode: "14.2.0"
       - publish-documentation:
           name: "Publish Documentation"
           filters:

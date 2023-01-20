@@ -62,10 +62,24 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
      - parameter name: The name of the rest stop.
      - parameter amenities: Facilities associated with the rest stop.
      */
-    public init(type: StopType, name: String?, amenities: [Amenity]? = nil) {
+    public init(type: StopType, name: String?, amenities: [Amenity]?) {
         self.type = type
         self.name = name
         self.amenities = amenities
+    }
+
+    /**
+     :nodoc:
+     Initializes an optionally named rest stop of a certain kind.
+
+     - parameter type: The kind of rest stop.
+     - parameter name: The name of the rest stop.
+     */
+    @available(*, deprecated, renamed: "init(type:name:amenities:)")
+    public init(type: StopType, name: String?) {
+        self.type = type
+        self.name = name
+        self.amenities = nil
     }
     
     public init(from decoder: Decoder) throws {
