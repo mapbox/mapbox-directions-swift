@@ -34,6 +34,10 @@
 		2B28E22327EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22427EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
 		2B28E22527EDB2AA0029E4C1 /* ForeignMemberContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */; };
+		2B36B3E22980202600ED1E47 /* TrafficTendency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36B3E12980202600ED1E47 /* TrafficTendency.swift */; };
+		2B36B3E32980202600ED1E47 /* TrafficTendency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36B3E12980202600ED1E47 /* TrafficTendency.swift */; };
+		2B36B3E42980202600ED1E47 /* TrafficTendency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36B3E12980202600ED1E47 /* TrafficTendency.swift */; };
+		2B36B3E52980202600ED1E47 /* TrafficTendency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B36B3E12980202600ED1E47 /* TrafficTendency.swift */; };
 		2B39DD40270F034700ED68E4 /* CodingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B39DD3F270F034700ED68E4 /* CodingOperation.swift */; };
 		2B4383022549C22700A3E38B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4383002549C22700A3E38B /* main.swift */; };
 		2B46024528EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
@@ -551,6 +555,7 @@
 		2B0BA057294B544E00402F81 /* MatrixError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixError.swift; sourceTree = "<group>"; };
 		2B0BA068294B546300402F81 /* MatrixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
 		2B28E22227EDB2A90029E4C1 /* ForeignMemberContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignMemberContainerTests.swift; sourceTree = "<group>"; };
+		2B36B3E12980202600ED1E47 /* TrafficTendency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficTendency.swift; sourceTree = "<group>"; };
 		2B39DD3F270F034700ED68E4 /* CodingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodingOperation.swift; path = Sources/MapboxDirectionsCLI/CodingOperation.swift; sourceTree = "<group>"; };
 		2B4383002549C22700A3E38B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/MapboxDirectionsCLI/main.swift; sourceTree = "<group>"; };
 		2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomValueOptionSet.swift; sourceTree = "<group>"; };
@@ -945,6 +950,7 @@
 				DAC05F151CFBFAC400FA0071 /* Waypoint.swift */,
 				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
 				2B79D3E528E5EB3900B3F127 /* TollPrice.swift */,
+				2B36B3E12980202600ED1E47 /* TrafficTendency.swift */,
 				F4F508372524D6F10044F2D0 /* RestStop.swift */,
 				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
@@ -1530,6 +1536,7 @@
 			files = (
 				2B9F3892272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3923ED463100E010D4 /* ResponseDisposition.swift in Sources */,
+				2B36B3E32980202600ED1E47 /* TrafficTendency.swift in Sources */,
 				431E93C0234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9B2019167C001F9261 /* Match.swift in Sources */,
 				2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
@@ -1639,6 +1646,7 @@
 			files = (
 				2B9F3893272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3A23ED463200E010D4 /* ResponseDisposition.swift in Sources */,
+				2B36B3E42980202600ED1E47 /* TrafficTendency.swift in Sources */,
 				431E93C1234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9C2019167D001F9261 /* Match.swift in Sources */,
 				2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
@@ -1748,6 +1756,7 @@
 			files = (
 				2B9F3894272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3B23ED463400E010D4 /* ResponseDisposition.swift in Sources */,
+				2B36B3E52980202600ED1E47 /* TrafficTendency.swift in Sources */,
 				431E93C2234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C5DAAC9D2019167E001F9261 /* Match.swift in Sources */,
 				2B5407F02451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
@@ -1819,6 +1828,7 @@
 			files = (
 				2B9F3891272AE23A001DBA12 /* Isochrones.swift in Sources */,
 				43538E3823ED463100E010D4 /* ResponseDisposition.swift in Sources */,
+				2B36B3E22980202600ED1E47 /* TrafficTendency.swift in Sources */,
 				431E93BF234664A200A71B44 /* DrivingSide.swift in Sources */,
 				C51538CC1E807FF00093FF3E /* AttributeOptions.swift in Sources */,
 				2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,

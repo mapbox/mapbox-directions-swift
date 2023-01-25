@@ -322,6 +322,9 @@ class RouteRefreshTests: XCTestCase {
                         ],
                         "congestion_numeric": [
                             100,
+                        ],
+                        "traffic_tendency": [
+                            0,
                         ]
                     ],
                 ],
@@ -340,13 +343,19 @@ class RouteRefreshTests: XCTestCase {
             XCTAssertEqual(leg.attributes.segmentSpeeds, [0])
             XCTAssertEqual(leg.attributes.segmentCongestionLevels, [.severe])
             XCTAssertEqual(leg.attributes.segmentNumericCongestionLevels, [100])
+            XCTAssertEqual(leg.attributes.trafficTendencies, [.unknown])
             XCTAssertNil(leg.attributes.segmentMaximumSpeedLimits)
         }
     }
     
     func testEncoding() {
         let leg = RefreshedRouteLeg(attributes:
-            .init(segmentDistances: [0], expectedSegmentTravelTimes: [0], segmentSpeeds: [0], segmentCongestionLevels: [CongestionLevel.severe], segmentMaximumSpeedLimits: [Measurement(value: 1, unit: UnitSpeed.milesPerHour)]))
+                .init(segmentDistances: [0],
+                      expectedSegmentTravelTimes: [0],
+                      segmentSpeeds: [0],
+                      segmentCongestionLevels: [CongestionLevel.severe],
+                      segmentMaximumSpeedLimits: [Measurement(value: 1, unit: UnitSpeed.milesPerHour)],
+                      trafficTendencies: [.constant]))
         let route = RefreshedRoute(legs: [leg])
         
         var encodedRouteData: Data?
@@ -369,6 +378,7 @@ class RouteRefreshTests: XCTestCase {
                     XCTAssertEqual(annotationJSON["duration"] as? [TimeInterval], [0])
                     XCTAssertEqual(annotationJSON["speed"] as? [LocationSpeed], [0])
                     XCTAssertEqual(annotationJSON["congestion"] as? [String], ["severe"])
+                    XCTAssertEqual(annotationJSON["traffic_tendency"] as? [Int], [TrafficTendency.constant.rawValue])
                     
                     let maxspeedsJSON = annotationJSON["maxspeed"] as? [[String: Any?]]
                     XCTAssertNotNil(maxspeedsJSON)
