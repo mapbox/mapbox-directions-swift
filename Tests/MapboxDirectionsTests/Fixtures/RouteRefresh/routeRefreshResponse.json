@@ -6,7 +6,7 @@
                 "closures": [
                     {
                         "geometry_index_start": 8,
-                        "geometry_index_end": 20,
+                        "geometry_index_end": 20
                     }
                 ],
                 "incidents": [
@@ -22,7 +22,10 @@
                         "alertc_codes": [
                             1
                         ],
-                        "lanes_blocked": ["RIGHT", "SIDE"],
+                        "lanes_blocked": [
+                            "RIGHT",
+                            "SIDE"
+                        ],
                         "geometry_index_start": 10,
                         "geometry_index_end": 15,
                         "iso_3166_1_alpha3": "DEU",
@@ -39,6 +42,69 @@
                     }
                 ],
                 "annotation": {
+                    "traffic_tendency": [
+                        0,
+                        2,
+                        2,
+                        1,
+                        4,
+                        4,
+                        1,
+                        4,
+                        0,
+                        4,
+                        4,
+                        4,
+                        5,
+                        3,
+                        4,
+                        4,
+                        3,
+                        0,
+                        3,
+                        2,
+                        5,
+                        2,
+                        2,
+                        1,
+                        3,
+                        3,
+                        3,
+                        2,
+                        4,
+                        3,
+                        5,
+                        4,
+                        3,
+                        1,
+                        1,
+                        4,
+                        1,
+                        5,
+                        2,
+                        2,
+                        3,
+                        5,
+                        4,
+                        2,
+                        1,
+                        4,
+                        0,
+                        1,
+                        1,
+                        3,
+                        0,
+                        5,
+                        0,
+                        1,
+                        5,
+                        3,
+                        2,
+                        3,
+                        3,
+                        5,
+                        3
+                    ],
                     "duration": [
                         34.3,
                         3.5,
@@ -391,7 +457,7 @@
                 "closures": [
                     {
                         "geometry_index_start": 6,
-                        "geometry_index_end": 18,
+                        "geometry_index_end": 18
                     }
                 ],
                 "incidents": [
@@ -415,6 +481,48 @@
                     }
                 ],
                 "annotation": {
+                    "traffic_tendency": [
+                        4,
+                        3,
+                        1,
+                        3,
+                        3,
+                        4,
+                        5,
+                        3,
+                        5,
+                        0,
+                        2,
+                        5,
+                        0,
+                        1,
+                        1,
+                        4,
+                        0,
+                        1,
+                        5,
+                        4,
+                        3,
+                        0,
+                        0,
+                        1,
+                        1,
+                        3,
+                        4,
+                        5,
+                        5,
+                        5,
+                        4,
+                        3,
+                        3,
+                        5,
+                        5,
+                        1,
+                        0,
+                        2,
+                        0,
+                        1
+                    ],
                     "duration": [
                         4.9,
                         4.7,

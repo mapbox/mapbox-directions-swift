@@ -76,6 +76,12 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     public static let numericCongestionLevel = AttributeOptions(rawValue: 1 << 6)
     
     /**
+     :nodoc:
+     The tendency value conveys the changing state of traffic congestion (increasing, decreasing, constant etc).
+     */
+    public static let trafficTendency = AttributeOptions(rawValue: 1 << 7)
+    
+    /**
      Creates an AttributeOptions from the given description strings.
      */
     public init?(descriptions: [String]) {
@@ -96,6 +102,8 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
                 attributeOptions.update(with: .maximumSpeedLimit)
             case "congestion_numeric":
                 attributeOptions.update(with: .numericCongestionLevel)
+            case "traffic_tendency":
+                attributeOptions.update(with: .trafficTendency)
             case "":
                 continue
             default:
@@ -127,6 +135,9 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
         }
         if contains(.numericCongestionLevel) {
             descriptions.append("congestion_numeric")
+        }
+        if contains(.trafficTendency) {
+            descriptions.append("traffic_tendency")
         }
         for (key, value) in customOptionsByRawValue {
             if rawValue & key != 0 {

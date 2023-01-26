@@ -271,6 +271,12 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     open var closures: [Closure]?
     
     /**
+     :nodoc:
+     The tendency value conveys the changing state of traffic congestion (increasing, decreasing, constant etc).
+     */
+    open var trafficTendencies: [TrafficTendency]?
+    
+    /**
      The full collection of attributes along the leg.
      */
     var attributes: Attributes {
@@ -280,7 +286,8 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
                               segmentSpeeds: segmentSpeeds,
                               segmentCongestionLevels: segmentCongestionLevels,
                               segmentNumericCongestionLevels: segmentNumericCongestionLevels,
-                              segmentMaximumSpeedLimits: segmentMaximumSpeedLimits)
+                              segmentMaximumSpeedLimits: segmentMaximumSpeedLimits,
+                              trafficTendencies: trafficTendencies)
         }
         set {
             segmentDistances = newValue.segmentDistances
@@ -289,6 +296,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
             segmentCongestionLevels = newValue.segmentCongestionLevels
             segmentNumericCongestionLevels = newValue.segmentNumericCongestionLevels
             segmentMaximumSpeedLimits = newValue.segmentMaximumSpeedLimits
+            trafficTendencies = newValue.trafficTendencies
         }
     }
 
@@ -301,6 +309,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         segmentCongestionLevels?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentCongestionLevels)
         segmentNumericCongestionLevels?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentNumericCongestionLevels)
         segmentMaximumSpeedLimits?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentMaximumSpeedLimits)
+        trafficTendencies?.replaceIfPossible(subrange: refreshRange, with: newAttributes.trafficTendencies)
     }
     
     private func adjustShapeIndexRange(_ range: Range<Int>, startLegShapeIndex: Int) -> Range<Int> {
@@ -424,6 +433,7 @@ extension RouteLeg: Equatable {
             lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
             lhs.segmentNumericCongestionLevels == rhs.segmentNumericCongestionLevels &&
             lhs.segmentMaximumSpeedLimits == rhs.segmentMaximumSpeedLimits &&
+            lhs.trafficTendencies == rhs.trafficTendencies &&
             lhs.name == rhs.name &&
             lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&

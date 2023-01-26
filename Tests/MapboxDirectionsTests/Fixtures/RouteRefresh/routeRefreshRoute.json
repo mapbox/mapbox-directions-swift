@@ -5,6 +5,69 @@
             "legs": [
                 {
                     "annotation": {
+                        "traffic_tendency": [
+                            2,
+                            4,
+                            1,
+                            2,
+                            1,
+                            2,
+                            5,
+                            1,
+                            0,
+                            2,
+                            5,
+                            1,
+                            5,
+                            2,
+                            3,
+                            0,
+                            5,
+                            2,
+                            1,
+                            3,
+                            0,
+                            1,
+                            3,
+                            1,
+                            0,
+                            5,
+                            1,
+                            2,
+                            5,
+                            4,
+                            5,
+                            1,
+                            3,
+                            4,
+                            4,
+                            2,
+                            2,
+                            2,
+                            4,
+                            5,
+                            5,
+                            0,
+                            0,
+                            0,
+                            4,
+                            0,
+                            1,
+                            0,
+                            0,
+                            0,
+                            0,
+                            4,
+                            5,
+                            5,
+                            3,
+                            1,
+                            5,
+                            2,
+                            0,
+                            5,
+                            4
+                        ],
                         "duration": [
                             14.3,
                             3.5,
@@ -1118,14 +1181,60 @@
                             "distance": 0,
                             "speedLimitSign": "mutcd",
                             "speedLimitUnit": "mph",
-                            "voiceInstructions": [],
-                            "bannerInstructions": []
+                            "voiceInstructions": [
+
+                            ],
+                            "bannerInstructions": [
+
+                            ]
                         }
                     ],
                     "distance": 1440.6
                 },
                 {
                     "annotation": {
+                        "traffic_tendency": [
+                            3,
+                            4,
+                            1,
+                            4,
+                            3,
+                            1,
+                            4,
+                            3,
+                            3,
+                            2,
+                            0,
+                            1,
+                            2,
+                            0,
+                            1,
+                            3,
+                            1,
+                            3,
+                            4,
+                            5,
+                            5,
+                            5,
+                            4,
+                            3,
+                            4,
+                            0,
+                            2,
+                            2,
+                            2,
+                            1,
+                            1,
+                            0,
+                            3,
+                            2,
+                            0,
+                            1,
+                            0,
+                            2,
+                            2,
+                            0
+                        ],
                         "duration": [
                             2.3,
                             4.7,
@@ -1863,8 +1972,12 @@
                             "distance": 0,
                             "speedLimitSign": "mutcd",
                             "speedLimitUnit": "mph",
-                            "voiceInstructions": [],
-                            "bannerInstructions": []
+                            "voiceInstructions": [
+
+                            ],
+                            "bannerInstructions": [
+
+                            ]
                         }
                     ],
                     "distance": 1217.2

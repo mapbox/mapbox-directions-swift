@@ -65,6 +65,12 @@ extension RouteLeg {
          This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.maximumSpeedLimit`.
          */
         public var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
+        
+        /**
+         :nodoc:
+         The tendency value conveys the changing state of traffic congestion (increasing, decreasing, constant etc).
+         */
+        public var trafficTendencies: [TrafficTendency]?
     }
 }
 
@@ -76,6 +82,7 @@ extension RouteLeg.Attributes: Codable {
         case segmentCongestionLevels = "congestion"
         case segmentNumericCongestionLevels = "congestion_numeric"
         case segmentMaximumSpeedLimits = "maxspeed"
+        case trafficTendencies = "traffic_tendency"
     }
     
     public init(from decoder: Decoder) throws {
@@ -93,6 +100,8 @@ extension RouteLeg.Attributes: Codable {
             segmentMaximumSpeedLimits = nil
         }
         
+        trafficTendencies = try container.decodeIfPresent([TrafficTendency].self, forKey: .trafficTendencies)
+        
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
@@ -109,6 +118,8 @@ extension RouteLeg.Attributes: Codable {
             try container.encode(speedLimitDescriptors, forKey: .segmentMaximumSpeedLimits)
         }
         
+        try container.encodeIfPresent(trafficTendencies, forKey: .trafficTendencies)
+        
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
@@ -121,6 +132,7 @@ extension RouteLeg.Attributes: Codable {
             segmentSpeeds == nil &&
             segmentCongestionLevels == nil &&
             segmentNumericCongestionLevels == nil &&
-            segmentMaximumSpeedLimits == nil
+            segmentMaximumSpeedLimits == nil &&
+            trafficTendencies == nil
     }
 }
