@@ -363,12 +363,34 @@ class RouteOptionsTests: XCTestCase {
         let expectedIncludeQueryItem = URLQueryItem(name: "include", value: "hov2,hov3,hot")
         XCTAssertTrue(options.urlQueryItems.contains(expectedIncludeQueryItem))
     }
-    
-    func testNoWaypointsAndOneWaypoint() {
+
+    func testReturnPathIfNoWaypointsAndOneWaypoint() {
         let noWaypointOptions = RouteOptions(coordinates: [])
         XCTAssertEqual(noWaypointOptions.path, noWaypointOptions.abridgedPath)
+
         let oneWaypointOptions = RouteOptions(coordinates: [LocationCoordinate2D(latitude: 0.0, longitude: 0.0)])
         XCTAssertEqual(oneWaypointOptions.path, oneWaypointOptions.abridgedPath)
+
+        let waypoints = [
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 0.0, longitude: 0.0), name: "name")
+        ]
+        let oneWaypointOptionsWithNonNilName = RouteOptions(waypoints: waypoints)
+        XCTAssertEqual(oneWaypointOptionsWithNonNilName.path, oneWaypointOptionsWithNonNilName.abridgedPath)
+    }
+
+    func testReturnUrlQueryWaypoinNameItemsIfNoWaypointsAndOneWaypoint() {
+        let noWaypointOptions = RouteOptions(coordinates: [])
+        XCTAssertFalse(noWaypointOptions.urlQueryItems.map { $0.name }.contains("waypoint_names"))
+
+        let oneWaypointOptionsWithNilName = RouteOptions(coordinates: [LocationCoordinate2D(latitude: 0.0, longitude: 0.0)])
+        XCTAssertFalse(oneWaypointOptionsWithNilName.urlQueryItems.map { $0.name }.contains("waypoint_names"))
+
+        let waypoints = [
+            Waypoint(coordinate: LocationCoordinate2D(latitude: 0.0, longitude: 0.0), name: "name")
+        ]
+
+        let oneWaypointOptionsWithNonNilName = RouteOptions(waypoints: waypoints)
+        XCTAssertFalse(oneWaypointOptionsWithNonNilName.urlQueryItems.map { $0.name }.contains("waypoint_names"))
     }
 }
 

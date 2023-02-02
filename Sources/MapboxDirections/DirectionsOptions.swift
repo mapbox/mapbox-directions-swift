@@ -324,6 +324,8 @@ open class DirectionsOptions: Codable {
      */
     var legSeparators: [Waypoint] {
         var waypoints = self.waypoints
+        guard waypoints.count > 1 else { return [] }
+
         let source = waypoints.removeFirst()
         let destination = waypoints.removeLast()
         return [source] + waypoints.filter { $0.separatesLegs } + [destination]
@@ -563,7 +565,7 @@ open class DirectionsOptions: Codable {
     }
     
     private var waypointNames: String? {
-        if waypoints.compactMap({ $0.name }).isEmpty {
+        guard !waypoints.compactMap({ $0.name }).isEmpty, waypoints.count > 1 else {
             return nil
         }
         return legSeparators.map({ $0.name ?? "" }).joined(separator: ";")
