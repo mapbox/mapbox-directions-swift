@@ -22,7 +22,9 @@ class IntersectionTests: XCTestCase {
                 "railway_crossing": true,
                 "traffic_signal": true,
                 "stop_sign": false,
-                "yield_sign": false
+                "yield_sign": false,
+                "ic": ["name": "IC test"],
+                "jct": ["name": "JCT test"],
             ],
             [
                 "out": 1,
@@ -88,7 +90,9 @@ class IntersectionTests: XCTestCase {
                          railroadCrossing: true,
                          trafficSignal: true,
                          stopSign: false,
-                         yieldSign: false),
+                         yieldSign: false,
+                         interchange: Interchange(name: "IC test"),
+                         junction: Junction(name: "JCT test")),
             Intersection(location: LocationCoordinate2D(latitude: 52.508022, longitude: 13.426688),
                          headings: [30.0, 120.0, 300.0],
                          approachIndex: 2,
@@ -131,5 +135,28 @@ class IntersectionTests: XCTestCase {
 
             XCTAssert(JSONSerialization.objectsAreEqual(intersectionsJSON, encodedIntersectionsJSON, approximate: true))
         }
+    }
+
+    func testJunctionDecoding() {
+        let routeData = try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: "intersections",
+                                                                                      ofType: "json")!))
+        let routeOptions = RouteOptions(coordinates: [
+            LocationCoordinate2D(latitude: 37.78, longitude: -122.42),
+            LocationCoordinate2D(latitude: 38.91, longitude: -77.03),
+        ])
+        
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = routeOptions
+        decoder.userInfo[.credentials] = Credentials(accessToken: "access_token", host: URL(string: "http://test_host.com"))
+        
+        let routeResponse = try! decoder.decode(RouteResponse.self, from: routeData)
+        guard let steps = routeResponse.routes?.first?.legs.first?.steps,
+              steps.count > 1,
+              let intersections = steps[1].intersections else {
+            XCTFail("Should have intersections.")
+            return
+        }
+        XCTAssertEqual(intersections.first?.junction?.name, "JCT NAME")
+        XCTAssertEqual(intersections.first?.interchange?.name, "IC NAME")
     }
 }
