@@ -140,6 +140,17 @@
 		2BF398C627620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
 		2BF398C727620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
 		2BF398C827620CD7000C9A72 /* RouteRefreshSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */; };
+		2C295ABB299BE2B800FC74E8 /* Interchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABA299BE2B800FC74E8 /* Interchange.swift */; };
+		2C295ABC299BE2B800FC74E8 /* Interchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABA299BE2B800FC74E8 /* Interchange.swift */; };
+		2C295ABD299BE2B800FC74E8 /* Interchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABA299BE2B800FC74E8 /* Interchange.swift */; };
+		2C295ABE299BE2B800FC74E8 /* Interchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABA299BE2B800FC74E8 /* Interchange.swift */; };
+		2C295AC0299BE2CE00FC74E8 /* Junction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABF299BE2CE00FC74E8 /* Junction.swift */; };
+		2C295AC1299BE2CE00FC74E8 /* Junction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABF299BE2CE00FC74E8 /* Junction.swift */; };
+		2C295AC2299BE2CE00FC74E8 /* Junction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABF299BE2CE00FC74E8 /* Junction.swift */; };
+		2C295AC3299BE2CE00FC74E8 /* Junction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C295ABF299BE2CE00FC74E8 /* Junction.swift */; };
+		2C295AC5299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
+		2C295AC6299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
+		2C295AC7299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
 		2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
 		2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
 		2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
@@ -587,6 +598,9 @@
 		2BD2553329544D19006C9106 /* URL+Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Request.swift"; sourceTree = "<group>"; };
 		2BEA240327CFAD2000EE05D9 /* ForeignMemberContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignMemberContainer.swift; sourceTree = "<group>"; };
 		2BF398C427620CD7000C9A72 /* RouteRefreshSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshSource.swift; sourceTree = "<group>"; };
+		2C295ABA299BE2B800FC74E8 /* Interchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interchange.swift; sourceTree = "<group>"; };
+		2C295ABF299BE2CE00FC74E8 /* Junction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Junction.swift; sourceTree = "<group>"; };
+		2C295AC4299BE99100FC74E8 /* intersections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intersections.json; sourceTree = "<group>"; };
 		2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentWaypoint.swift; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
@@ -957,6 +971,8 @@
 				2BBBD08C257FA1CD004EB3D6 /* BlockedLanes.swift */,
 				8A65DDF02944043B00029C0C /* Amenity.swift */,
 				8A65DDF52944045F00029C0C /* AmenityType.swift */,
+				2C295ABA299BE2B800FC74E8 /* Interchange.swift */,
+				2C295ABF299BE2CE00FC74E8 /* Junction.swift */,
 			);
 			name = MapboxDirections;
 			path = Sources/MapboxDirections;
@@ -1008,6 +1024,7 @@
 		DA6C9DAD1CAEC93800094FBC /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				2C295AC4299BE99100FC74E8 /* intersections.json */,
 				2B5F0DFB273ACE3B00CC2C1A /* tollAndFerryDirectionsRoute.json */,
 				2BA2E745257A667500D7AFC6 /* incidents.json */,
 				2B0BA050294B542900402F81 /* matrix.json */,
@@ -1378,6 +1395,7 @@
 			files = (
 				DA737EE51D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				2BA2E747257A667500D7AFC6 /* incidents.json in Resources */,
+				2C295AC6299BE99100FC74E8 /* intersections.json in Resources */,
 				DA1A10CF1D00F975009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080A245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				2B46DB0D27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */,
@@ -1416,6 +1434,7 @@
 			files = (
 				DA737EE61D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				2BA2E748257A667500D7AFC6 /* incidents.json in Resources */,
+				2C295AC7299BE99100FC74E8 /* intersections.json in Resources */,
 				DA1A10F31D010251009F82FA /* v5_driving_dc_polyline.json in Resources */,
 				2B54080B245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				2B46DB0E27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */,
@@ -1461,6 +1480,7 @@
 			files = (
 				DA737EE41D05F91E005BDA16 /* v5_driving_dc_geojson.json in Resources */,
 				2BA2E746257A667500D7AFC6 /* incidents.json in Resources */,
+				2C295AC5299BE99100FC74E8 /* intersections.json in Resources */,
 				DAC05F1C1CFC1E5300FA0071 /* v5_driving_dc_polyline.json in Resources */,
 				2B540809245B23BE006C820B /* incorrectRouteRefreshResponse.json in Resources */,
 				2B46DB0C27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json in Resources */,
@@ -1542,6 +1562,7 @@
 				2B5407EE2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
 				8A65DDF22944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF010217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				2C295ABC299BE2B800FC74E8 /* Interchange.swift in Sources */,
 				8D43467A219E15C3008B7BF3 /* Double.swift in Sources */,
 				C53A02261E92C26E009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10C91D00F969009F82FA /* RouteLeg.swift in Sources */,
@@ -1565,6 +1586,7 @@
 				C5DAACA220195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617123DBA58E0062BFFE /* (null) in Sources */,
 				2B0BA059294B544E00402F81 /* MatrixOptions.swift in Sources */,
+				2C295AC1299BE2CE00FC74E8 /* Junction.swift in Sources */,
 				2B5407F8245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
@@ -1652,6 +1674,7 @@
 				2B5407EF2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
 				8A65DDF32944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF011217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				2C295ABD299BE2B800FC74E8 /* Interchange.swift in Sources */,
 				8D43467B219E15C4008B7BF3 /* Double.swift in Sources */,
 				C53A02271E92C26F009837BD /* AttributeOptions.swift in Sources */,
 				DA1A10EF1D010247009F82FA /* RouteLeg.swift in Sources */,
@@ -1675,6 +1698,7 @@
 				C5DAACA320195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617223DBA58E0062BFFE /* (null) in Sources */,
 				2B0BA05A294B544E00402F81 /* MatrixOptions.swift in Sources */,
+				2C295AC2299BE2CE00FC74E8 /* Junction.swift in Sources */,
 				2B5407F9245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
@@ -1762,6 +1786,7 @@
 				2B5407F02451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
 				8A65DDF42944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF012217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				2C295ABE299BE2B800FC74E8 /* Interchange.swift in Sources */,
 				8D43467C219E15C6008B7BF3 /* Double.swift in Sources */,
 				C53A02281E92C271009837BD /* AttributeOptions.swift in Sources */,
 				DA1A11061D0103A3009F82FA /* RouteLeg.swift in Sources */,
@@ -1785,6 +1810,7 @@
 				C5DAACA420195AB3001F9261 /* MatchOptions.swift in Sources */,
 				43D6617323DBA58E0062BFFE /* (null) in Sources */,
 				2B0BA05B294B544E00402F81 /* MatrixOptions.swift in Sources */,
+				2C295AC3299BE2CE00FC74E8 /* Junction.swift in Sources */,
 				2B5407FA245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
@@ -1834,6 +1860,7 @@
 				2B5407ED2451B17E006C820B /* RouteRefreshResponse.swift in Sources */,
 				8A65DDF12944043B00029C0C /* Amenity.swift in Sources */,
 				35DBF00F217E17A30009D2AE /* HTTPURLResponse.swift in Sources */,
+				2C295ABB299BE2B800FC74E8 /* Interchange.swift in Sources */,
 				8D434679219E1167008B7BF3 /* Double.swift in Sources */,
 				DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */,
 				C582BA2E2073ED6300647DAA /* Array.swift in Sources */,
@@ -1857,6 +1884,7 @@
 				DAC05F181CFC075300FA0071 /* Route.swift in Sources */,
 				43D6617023DBA58E0062BFFE /* (null) in Sources */,
 				2B0BA058294B544E00402F81 /* MatrixOptions.swift in Sources */,
+				2C295AC0299BE2CE00FC74E8 /* Junction.swift in Sources */,
 				2B5407F7245302AB006C820B /* RouteLegAttributes.swift in Sources */,
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,

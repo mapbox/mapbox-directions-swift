@@ -29,7 +29,9 @@ public struct Intersection: ForeignMemberContainer {
                 railroadCrossing: Bool? = nil,
                 trafficSignal: Bool? = nil,
                 stopSign: Bool? = nil,
-                yieldSign: Bool? = nil) {
+                yieldSign: Bool? = nil,
+                interchange: Interchange? = nil,
+                junction: Junction? = nil) {
         self.location = location
         self.headings = headings
         self.approachIndex = approachIndex
@@ -50,6 +52,8 @@ public struct Intersection: ForeignMemberContainer {
         self.trafficSignal = trafficSignal
         self.stopSign = stopSign
         self.yieldSign = yieldSign
+        self.interchange = interchange
+        self.junction = junction
     }
     
     // MARK: Getting the Location of the Intersection
@@ -205,6 +209,14 @@ public struct Intersection: ForeignMemberContainer {
      If such information is not available for an intersection, this property’s value is `nil`.
      */
     public let yieldSign: Bool?
+
+    /// An object containing information about routing and passing interchange along the route.
+    /// If such information is not available for an intersection, this property’s value is `nil`.
+    public let interchange: Interchange?
+
+    /// An object containing information about routing and passing junction along the route.
+    /// If such information is not available for an intersection, this property’s value is `nil`.
+    public let junction: Junction?
 }
 
 extension Intersection: Codable {
@@ -227,6 +239,8 @@ extension Intersection: Codable {
         case trafficSignal = "traffic_signal"
         case stopSign = "stop_sign"
         case yieldSign = "yield_sign"
+        case interchange = "ic"
+        case junction = "jct"
     }
     
     /// Used to code `Intersection.outletMapboxStreetsRoadClass`
@@ -379,10 +393,13 @@ extension Intersection: Codable {
         if let stopSign = stopSign {
             try container.encode(stopSign, forKey: .stopSign)
         }
-        
+
         if let yieldSign = yieldSign {
             try container.encode(yieldSign, forKey: .yieldSign)
         }
+
+        try container.encodeIfPresent(interchange, forKey: .interchange)
+        try container.encodeIfPresent(junction, forKey: .junction)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
@@ -432,6 +449,9 @@ extension Intersection: Codable {
         trafficSignal = try container.decodeIfPresent(Bool.self, forKey: .trafficSignal)
         stopSign = try container.decodeIfPresent(Bool.self, forKey: .stopSign)
         yieldSign = try container.decodeIfPresent(Bool.self, forKey: .yieldSign)
+
+        interchange = try container.decodeIfPresent(Interchange.self, forKey: .interchange)
+        junction = try container.decodeIfPresent(Junction.self, forKey: .junction)
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
@@ -458,6 +478,8 @@ extension Intersection: Equatable {
             lhs.railroadCrossing == rhs.railroadCrossing &&
             lhs.trafficSignal == rhs.trafficSignal &&
             lhs.stopSign == rhs.stopSign &&
-            lhs.yieldSign == rhs.yieldSign
+            lhs.yieldSign == rhs.yieldSign &&
+            lhs.interchange == rhs.interchange &&
+            lhs.junction == rhs.junction
     }
 }
