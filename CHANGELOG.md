@@ -5,6 +5,7 @@
 * Added `Matrix` API wrapper. The [Mapbox Matrix API](https://docs.mapbox.com/api/navigation/matrix/) computes travel times between many points, and returns a matrix of all travel times between the locations. [#626](https://github.com/mapbox/mapbox-directions-swift/pull/626)
 * Fixed a crash that could occur if only one `Waypoint` with a nonnull `name` was used in the Directions request. [#797](https://github.com/mapbox/mapbox-directions-swift/pull/797)
 * Added `Interchange` and `Junction` structs describing IC and JCT. [#799](https://github.com/mapbox/mapbox-directions-swift/pull/799)
+* Fixed an issue where using `cashTollOnly` for road class exclusions failed the directions request. ([#801](https://github.com/mapbox/mapbox-directions-swift/pull/801))
 
 ## v2.9.0
 
