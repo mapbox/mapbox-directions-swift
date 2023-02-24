@@ -357,7 +357,7 @@ class RouteOptionsTests: XCTestCase {
         options.roadClassesToAvoid = [.toll, .motorway, .ferry, .unpaved, .cashTollOnly]
         options.roadClassesToAllow = [.highOccupancyVehicle2, .highOccupancyVehicle3, .highOccupancyToll]
 
-        let expectedExcludeQueryItem = URLQueryItem(name: "exclude", value: "toll,motorway,ferry,unpaved,cash_only_toll")
+        let expectedExcludeQueryItem = URLQueryItem(name: "exclude", value: "toll,motorway,ferry,unpaved,cash_only_tolls")
         XCTAssertTrue(options.urlQueryItems.contains(expectedExcludeQueryItem))
 
         let expectedIncludeQueryItem = URLQueryItem(name: "include", value: "hov2,hov3,hot")
