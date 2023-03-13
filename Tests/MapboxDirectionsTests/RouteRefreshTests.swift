@@ -112,7 +112,7 @@ class RouteRefreshTests: XCTestCase {
                     return
                 }
                 
-                let route = routeResponse.routes?[routeIndex]
+                var route = routeResponse.routes?[routeIndex]
                 route?.refresh(from: refresh.route)
                 
                 XCTAssertEqual(refresh.route.legs[0].attributes, route?.legs[0].attributes, "Route legs attributes are not refreshed")
@@ -135,7 +135,7 @@ class RouteRefreshTests: XCTestCase {
                 case let .success(response):
                     XCTAssertNotNil(response.route)
                     XCTAssertEqual(response.route.legs.count, 2)
-                    let route = routeResponse.routes?[routeIndex]
+                    var route = routeResponse.routes?[routeIndex]
                     route?.refresh(from: response.route)
                     XCTAssertEqual(route?.legs[0].attributes, response.route.legs[0].attributes, "Route legs attributes are not refreshed correctly")
                     XCTAssertEqual(route?.legs[1].attributes, response.route.legs[1].attributes, "Route legs attributes are not refreshed correctly")
@@ -169,7 +169,7 @@ class RouteRefreshTests: XCTestCase {
                     return
                 }
                 
-                let route = routeResponse.routes?[routeIndex]
+                var route = routeResponse.routes?[routeIndex]
                 let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
                 let originalIncidents = route!.legs.map(\.incidents)
                 let originalClosures = route!.legs.map(\.closures)
@@ -263,7 +263,7 @@ class RouteRefreshTests: XCTestCase {
                     return
                 }
                 
-                let route = routeResponse.routes?[routeIndex]
+                var route = routeResponse.routes?[routeIndex]
                 let originalCongestions = route!.legs[0].attributes.segmentCongestionLevels!
                 
                 // should remain the same

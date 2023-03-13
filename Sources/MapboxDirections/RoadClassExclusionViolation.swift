@@ -4,7 +4,7 @@ import Foundation
 /**
  Exact `RoadClass` exclusion violation case.
  */
-public struct RoadClassExclusionViolation {
+public struct RoadClassExclusionViolation: Equatable {
     /**
      `RoadClasses` that were violated at this point.
      */

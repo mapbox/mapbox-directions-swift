@@ -2,95 +2,39 @@ import Foundation
 import Polyline
 import Turf
 
+public enum DirectionsResultCodingKeys: String, CodingKey, CaseIterable {
+    case shape = "geometry"
+    case legs
+    case distance
+    case expectedTravelTime = "duration"
+    case typicalTravelTime = "duration_typical"
+    case directionsOptions
+    case speechLocale = "voiceLocale"
+}
+
+public struct DirectionsCodingKey: CodingKey {
+    public var intValue: Int? { nil }
+    public init?(intValue: Int) {
+        nil
+    }
+
+    public let stringValue: String
+    public init(stringValue: String) {
+        self.stringValue = stringValue
+    }
+
+    public static func directionsResult(_ key: DirectionsResultCodingKeys) -> Self {
+        .init(stringValue: key.rawValue)
+    }
+}
+
+
 /**
  A `DirectionsResult` represents a result returned from either the Mapbox Directions service.
  
  You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-open class DirectionsResult: Codable, ForeignMemberContainerClass {
-    public var foreignMembers: JSONObject = [:]
-    
-    private enum CodingKeys: String, CodingKey, CaseIterable {
-        case shape = "geometry"
-        case legs
-        case distance
-        case expectedTravelTime = "duration"
-        case typicalTravelTime = "duration_typical"
-        case directionsOptions
-        case speechLocale = "voiceLocale"
-    }
-    
-    // MARK: Creating a Directions Result
-    
-    init(legs: [RouteLeg], shape: LineString?, distance: Turf.LocationDistance, expectedTravelTime: TimeInterval, typicalTravelTime: TimeInterval? = nil) {
-        self.legs = legs
-        self.shape = shape
-        self.distance = distance
-        self.expectedTravelTime = expectedTravelTime
-        self.typicalTravelTime = typicalTravelTime
-        self.responseContainsSpeechLocale = false
-    }
-    
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        guard let options = decoder.userInfo[.options] else {
-            throw DirectionsCodingError.missingOptions
-        }
-        
-        legs = try container.decode([RouteLeg].self, forKey: .legs)
-        
-        //populate legs with origin and destination
-        if let options = options as? DirectionsOptions {
-            let legSeparators = options.legSeparators
-            legs.populate(waypoints: legSeparators)
-        } else {
-            throw DirectionsCodingError.missingOptions
-        }
-        
-        distance = try container.decode(Turf.LocationDistance.self, forKey: .distance)
-        expectedTravelTime = try container.decode(TimeInterval.self, forKey: .expectedTravelTime)
-        typicalTravelTime = try container.decodeIfPresent(TimeInterval.self, forKey: .typicalTravelTime)
-    
-        if let polyLineString = try container.decodeIfPresent(PolyLineString.self, forKey: .shape) {
-            shape = try LineString(polyLineString: polyLineString)
-            
-        } else {
-            shape = nil
-        }
-        
-        if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
-            speechLocale = Locale(identifier: identifier)
-        } else {
-            speechLocale = nil
-        }
-
-        responseContainsSpeechLocale = container.contains(.speechLocale)
-        
-        try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
-    }
-    
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(legs, forKey: .legs)
-        if let shape = shape {
-            let options = encoder.userInfo[.options] as? DirectionsOptions
-            let shapeFormat = options?.shapeFormat ?? .default
-            let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
-            try container.encode(polyLineString, forKey: .shape)
-        }
-        try container.encode(distance, forKey: .distance)
-        try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
-        try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
-
-        if responseContainsSpeechLocale {
-            try container.encode(speechLocale?.identifier, forKey: .speechLocale)
-        }
-        
-        try encodeForeignMembers(to: encoder)
-    }
-    
+public protocol DirectionsResult: Codable, ForeignMemberContainer, Equatable {
     // MARK: Getting the Shape of the Route
     
     /**
@@ -100,7 +44,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      Using the [Mapbox Maps SDK for iOS](https://docs.mapbox.com/ios/maps/) or [Mapbox Maps SDK for macOS](https://mapbox.github.io/mapbox-gl-native/macos/), you can create an `MGLPolyline` object using these coordinates to display an overview of the route on an `MGLMapView`.
      */   
-    public let shape: LineString?
+    var shape: LineString? { get }
         
     // MARK: Getting the Legs Along the Route
     
@@ -111,20 +55,8 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      To determine the name of the route, concatenate the names of the route’s legs.
      */
-    public let legs: [RouteLeg]
-    
-    public var legSeparators: [Waypoint?] {
-        get {
-            return legs.isEmpty ? [] : ([legs[0].source] + legs.map { $0.destination })
-        }
-        set {
-            let endpointsByLeg = zip(newValue, newValue.suffix(from: 1))
-            for (leg, (source, destination)) in zip(legs, endpointsByLeg) {
-                leg.source = source
-                leg.destination = destination
-            }
-        }
-    }
+    var legs: [RouteLeg] { get set }
+
     
     // MARK: Getting Statistics About the Route
     
@@ -133,7 +65,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      The value of this property accounts for the distance that the user must travel to traverse the path of the route. It is the sum of the `distance` properties of the route’s legs, not the sum of the direct distances between the route’s waypoints. You should not assume that the user would travel along this distance at a fixed speed.
      */
-    public let distance: Turf.LocationDistance
+    var distance: Turf.LocationDistance { get }
     
     /**
      The route’s expected travel time, measured in seconds.
@@ -142,7 +74,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular travel times, use the `RouteLeg.expectedTravelTime` or `RouteStep.expectedTravelTime`. For even more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    open var expectedTravelTime: TimeInterval
+    var expectedTravelTime: TimeInterval { get set }
     
     /**
      The route’s typical travel time, measured in seconds.
@@ -151,7 +83,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteLeg.typicalTravelTime` or `RouteStep.typicalTravelTime`.
      */
-    open var typicalTravelTime: TimeInterval?
+    var typicalTravelTime: TimeInterval? { get set }
     
     // MARK: Configuring Speech Synthesis
     
@@ -160,7 +92,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      This locale is specific to Mapbox Voice API. If `nil` is returned, the instruction should be spoken with an alternative speech synthesizer.
      */
-    open var speechLocale: Locale?
+    var speechLocale: Locale? { get set }
     
     // MARK: Auditing the Server Response
     
@@ -171,7 +103,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      This property does not persist after encoding and decoding.
      */
-    open var fetchStartDate: Date?
+    var fetchStartDate: Date? { get set }
     
     /**
      The time immediately before a `Directions` object received the last byte of this result.
@@ -180,7 +112,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
      
      This property does not persist after encoding and decoding.
      */
-    open var responseEndDate: Date?
+    var responseEndDate: Date? { get set }
 
     /**
      Internal indicator of whether response contained the `voiceLocale` entry.
@@ -189,20 +121,125 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
 
      This property persists after encoding and decoding.
      */
-    internal let responseContainsSpeechLocale: Bool
+    var responseContainsSpeechLocale: Bool { get }
+
+    var legSeparators: [Waypoint?] { get set }
 }
 
-extension DirectionsResult: CustomStringConvertible {
-    public var description: String {
-        return legs.map { $0.name }.joined(separator: " – ")
-    }
-}
-
-extension DirectionsResult: CustomQuickLookConvertible {
-    func debugQuickLookObject() -> Any? {
-        guard let shape = shape else {
-            return nil
+extension DirectionsResult {
+    public var legSeparators: [Waypoint?] {
+        get {
+            return legs.isEmpty ? [] : ([legs[0].source] + legs.map { $0.destination })
         }
-        return debugQuickLookURL(illustrating: shape, profileIdentifier: .automobile)
+        set {
+            let endpointsByLeg = zip(newValue, newValue.suffix(from: 1))
+            var legIdx = legs.startIndex
+            for endpoint in endpointsByLeg where legIdx != legs.endIndex {
+                legs[legIdx].source = endpoint.0
+                legs[legIdx].destination = endpoint.1
+                legIdx = legs.index(after: legIdx)
+            }
+        }
+    }
+
+    // MARK: - Decode
+
+    static func decodeLegs(using container: KeyedDecodingContainer<DirectionsCodingKey>,
+                                  options: DirectionsOptions) throws -> [RouteLeg] {
+        var legs = try container.decode([RouteLeg].self, forKey: .directionsResult(.legs))
+        legs.populate(waypoints: options.legSeparators)
+        return legs
+    }
+
+    static func decodeDistance(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> Turf.LocationDistance {
+        try container.decode(Turf.LocationDistance.self, forKey: .directionsResult(.distance))
+    }
+
+    static func decodeExpectedTravelTime(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> TimeInterval {
+        try container.decode(TimeInterval.self, forKey: .directionsResult(.expectedTravelTime))
+    }
+
+    static func decodeTypicalTravelTime(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> TimeInterval? {
+        try container.decodeIfPresent(TimeInterval.self, forKey: .directionsResult(.typicalTravelTime))
+    }
+
+    static func decodeShape(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> LineString? {
+        try container.decodeIfPresent(PolyLineString.self, forKey: .directionsResult(.shape))
+            .map(LineString.init(polyLineString:))
+    }
+
+    static func decodeSpeechLocale(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> Locale? {
+        try container.decodeIfPresent(String.self, forKey: .directionsResult(.speechLocale))
+            .map(Locale.init(identifier:))
+    }
+
+    static func decodeResponseContainsSpeechLocale(
+        using container: KeyedDecodingContainer<DirectionsCodingKey>
+    ) throws -> Bool {
+        container.contains(.directionsResult(.speechLocale))
+    }
+
+    // MARK: - Encode
+
+    func encodeLegs(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>
+    ) throws {
+        try container.encode(legs, forKey: .directionsResult(.legs))
+    }
+
+    func encodeShape(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>,
+        options: DirectionsOptions?
+    ) throws {
+        guard let shape = shape else { return }
+
+        let shapeFormat = options?.shapeFormat ?? .default
+        let polyLineString = PolyLineString(lineString: shape, shapeFormat: shapeFormat)
+        try container.encode(polyLineString, forKey: .directionsResult(.shape))
+    }
+
+    func encodeDistance(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>
+    ) throws {
+        try container.encode(distance, forKey: .directionsResult(.distance))
+    }
+
+    func encodeExpectedTravelTime(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>
+    ) throws {
+        try container.encode(expectedTravelTime, forKey: .directionsResult(.expectedTravelTime))
+    }
+
+    func encodeTypicalTravelTime(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>
+    ) throws {
+        try container.encodeIfPresent(typicalTravelTime, forKey: .directionsResult(.typicalTravelTime))
+    }
+
+    func encodeSpeechLocale(
+        into container: inout KeyedEncodingContainer<DirectionsCodingKey>
+    ) throws {
+        if responseContainsSpeechLocale {
+            try container.encode(speechLocale?.identifier, forKey: .directionsResult(.speechLocale))
+        }
     }
 }
+
+//extension DirectionsResult: CustomQuickLookConvertible {
+//    func debugQuickLookObject() -> Any? {
+//        guard let shape = shape else {
+//            return nil
+//        }
+//        return debugQuickLookURL(illustrating: shape, profileIdentifier: .automobile)
+//    }
+//}

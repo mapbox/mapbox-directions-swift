@@ -27,7 +27,7 @@ public extension VisualInstruction {
     /**
      A unit of information displayed to the user as part of a `VisualInstruction`.
      */
-    enum Component {
+    enum Component: Equatable {
         /**
          The component separates two other destination components.
          
@@ -149,30 +149,13 @@ public extension VisualInstruction.Component {
          - parameter format: The file format of the image. If this argument is unspecified, PNG is used.
          - returns: A remote URL to the image.
          */
-        public func imageURL(scale: Scale? = nil, format: Format = .png) -> URL? {
+        public func imageURL(scale: Scale, format: Format = .png) -> URL? {
             guard let imageBaseURL = imageBaseURL,
                 var imageURLComponents = URLComponents(url: imageBaseURL, resolvingAgainstBaseURL: false) else {
                 return nil
             }
-            imageURLComponents.path += "@\(Int(scale ?? ImageRepresentation.currentScale))x.\(format)"
+            imageURLComponents.path += "@\(Int(scale))x.\(format)"
             return imageURLComponents.url
-        }
-        
-        /**
-         Returns the current screen’s native scale factor.
-         */
-        static var currentScale: Scale {
-            let scale: Scale
-            #if os(iOS) || os(tvOS)
-            scale = UIScreen.main.scale
-            #elseif os(macOS)
-            scale = NSScreen.main?.backingScaleFactor ?? 1
-            #elseif os(watchOS)
-            scale = WKInterfaceDevice.current().screenScale
-            #elseif os(Linux)
-            scale = 1
-            #endif
-            return scale
         }
     }
     
@@ -363,7 +346,7 @@ extension VisualInstruction.Component: Codable {
     }
 }
 
-extension VisualInstruction.Component: Equatable {
+extension VisualInstruction.Component {
     public static func ==(lhs: VisualInstruction.Component, rhs: VisualInstruction.Component) -> Bool {
         switch (lhs, rhs) {
         case (let .delimiter(lhsText), let .delimiter(rhsText)),

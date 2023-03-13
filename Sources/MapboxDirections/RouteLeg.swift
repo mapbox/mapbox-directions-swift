@@ -8,7 +8,7 @@ import Turf
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 
-open class RouteLeg: Codable, ForeignMemberContainerClass {
+public struct RouteLeg: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     /**
@@ -68,7 +68,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `RouteOptions` or `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
      - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `RouteLeg` object.
      */
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
         destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
@@ -143,8 +143,8 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         if let viaWaypoints = viaWaypoints {
             try container.encode(viaWaypoints, forKey: .viaWaypoints)
         }
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     // MARK: Getting the Endpoints of the Leg
@@ -208,7 +208,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.distance`.
      */
-    open var segmentDistances: [Turf.LocationDistance]?
+    public var segmentDistances: [Turf.LocationDistance]?
 
     /**
      An array containing the expected travel time (measured in seconds) between each coordinate in the route leg geometry.
@@ -217,7 +217,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.expectedTravelTime`.
      */
-    open var expectedSegmentTravelTimes: [TimeInterval]?
+    public var expectedSegmentTravelTimes: [TimeInterval]?
 
     /**
      An array containing the expected average speed (measured in meters per second) between each coordinate in the route leg geometry.
@@ -226,7 +226,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.speed`.
      */
-    open var segmentSpeeds: [LocationSpeed]?
+    public var segmentSpeeds: [LocationSpeed]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry.
@@ -237,7 +237,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.congestionLevel`.
      */
-    open var segmentCongestionLevels: [CongestionLevel]?
+    public var segmentCongestionLevels: [CongestionLevel]?
 
     /**
      An array containing the traffic congestion level along each road segment in the route leg geometry in numeric form.
@@ -250,7 +250,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.numericCongestionLevel`.
      */
-    open var segmentNumericCongestionLevels: [NumericCongestionLevel?]?
+    public var segmentNumericCongestionLevels: [NumericCongestionLevel?]?
     
     /**
      An array containing the maximum speed limit along each road segment along the route leg’s shape.
@@ -261,20 +261,20 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      
      This property is set if the `RouteOptions.attributeOptions` property contains `AttributeOptions.maximumSpeedLimit`.
      */
-    open var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
+    public var segmentMaximumSpeedLimits: [Measurement<UnitSpeed>?]?
     
     /**
      An array of `Closure` objects describing live-traffic related closures that occur along the route.
      
      This information is only available for the `mapbox/driving-traffic` profile and when `RouteOptions.attributeOptions` property contains `AttributeOptions.closures`.
      */
-    open var closures: [Closure]?
+    public var closures: [Closure]?
     
     /**
      :nodoc:
      The tendency value conveys the changing state of traffic congestion (increasing, decreasing, constant etc).
      */
-    open var trafficTendencies: [TrafficTendency]?
+    public var trafficTendencies: [TrafficTendency]?
     
     /**
      The full collection of attributes along the leg.
@@ -300,7 +300,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         }
     }
 
-    func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
+    mutating func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
         let refreshRange = PartialRangeFrom(startLegShapeIndex)
 
         segmentDistances?.replaceIfPossible(subrange: refreshRange, with: newAttributes.segmentDistances)
@@ -318,7 +318,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         return startIndex..<endIndex
     }
     
-    func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
+    mutating func refreshIncidents(newIncidents: [Incident]?, startLegShapeIndex: Int = 0) {
         incidents = newIncidents?.map { incident in
             var adjustedIncident = incident
             adjustedIncident.shapeIndexRange = adjustShapeIndexRange(incident.shapeIndexRange,
@@ -327,7 +327,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         }
     }
 
-    func refreshClosures(newClosures: [Closure]?, startLegShapeIndex: Int = 0) {
+    mutating func refreshClosures(newClosures: [Closure]?, startLegShapeIndex: Int = 0) {
         closures = newClosures?.map { closure in
             var adjustedClosure = closure
             adjustedClosure.shapeIndexRange = adjustShapeIndexRange(closure.shapeIndexRange,
@@ -377,7 +377,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
      Do not assume that the user would travel along the leg at a fixed speed. For the expected travel time on each individual segment along the leg, use the `RouteStep.expectedTravelTimes` property. For more granularity, specify the `AttributeOptions.expectedTravelTime` option and use the `expectedSegmentTravelTimes` property.
      */
-    open var expectedTravelTime: TimeInterval
+    public var expectedTravelTime: TimeInterval
 
     /**
      The administrative regions through which the leg passes.
@@ -386,7 +386,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      This property is set to `nil` if no administrative region data is available.
      You can alse refer to `Incident.regionCode` to get corresponding region string code.
      */
-    open var administrativeRegions: [AdministrativeRegion]?
+    public var administrativeRegions: [AdministrativeRegion]?
 
     /**
      Contains `Incident`s data which occur during current `RouteLeg`.
@@ -394,14 +394,14 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      Items are ordered by appearance, most recent one is at the beginning.
      This property is set to `nil` if incidents data is not available.
      */
-    open var incidents: [Incident]?
+    public var incidents: [Incident]?
 
     /**
      Describes where a particular `Waypoint` passed to `RouteOptions` matches to the route along a `RouteLeg`.
 
      The property is non-nil when for one or several `Waypoint` objects passed to `RouteOptions` have `separatesLegs` property set to `false`.
      */
-    open var viaWaypoints: [SilentWaypoint]?
+    public var viaWaypoints: [SilentWaypoint]?
     
     /**
      The route leg’s typical travel time, measured in seconds.
@@ -410,7 +410,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      
      Do not assume that the user would travel along the route at a fixed speed. For more granular typical travel times, use the `RouteStep.typicalTravelTime` property.
      */
-    open var typicalTravelTime: TimeInterval?
+    public var typicalTravelTime: TimeInterval?
     
     // MARK: Reproducing the Route
     
@@ -420,29 +420,6 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
      The value of this property depends on the `RouteOptions.profileIdentifier` property of the original `RouteOptions` object. This property reflects the primary mode of transportation used for the route leg. Individual steps along the route leg might use different modes of transportation as necessary.
      */
     public let profileIdentifier: ProfileIdentifier
-}
-
-extension RouteLeg: Equatable {
-    public static func == (lhs: RouteLeg, rhs: RouteLeg) -> Bool {
-        return lhs.source == rhs.source &&
-            lhs.destination == rhs.destination &&
-            lhs.steps == rhs.steps &&
-            lhs.segmentDistances == rhs.segmentDistances &&
-            lhs.expectedSegmentTravelTimes == rhs.expectedSegmentTravelTimes &&
-            lhs.segmentSpeeds == rhs.segmentSpeeds &&
-            lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
-            lhs.segmentNumericCongestionLevels == rhs.segmentNumericCongestionLevels &&
-            lhs.segmentMaximumSpeedLimits == rhs.segmentMaximumSpeedLimits &&
-            lhs.trafficTendencies == rhs.trafficTendencies &&
-            lhs.name == rhs.name &&
-            lhs.distance == rhs.distance &&
-            lhs.expectedTravelTime == rhs.expectedTravelTime &&
-            lhs.administrativeRegions == rhs.administrativeRegions &&
-            lhs.incidents == rhs.incidents &&
-            lhs.viaWaypoints == rhs.viaWaypoints &&
-            lhs.typicalTravelTime == rhs.typicalTravelTime &&
-            lhs.profileIdentifier == rhs.profileIdentifier
-    }
 }
 
 extension RouteLeg: CustomStringConvertible {
@@ -503,12 +480,17 @@ public extension Array where Element == RouteLeg {
     /**
      Populates source and destination information for each leg with waypoint information, typically gathered from `DirectionsOptions`.
      */
-    func populate(waypoints: [Waypoint]) {
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), self)
+    mutating func populate(waypoints: [Waypoint]) {
+        guard !isEmpty else { return }
 
-        for (endpoints, leg) in legInfo {
-            leg.source = endpoints.0
-            leg.destination = endpoints.1
+        let endpoints = zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1))
+
+        var legIndex: Index = startIndex
+        for endpoint in endpoints where legIndex != endIndex {
+            self[legIndex].source = endpoint.0
+            self[legIndex].destination = endpoint.1
+
+            legIndex = self.index(after: legIndex)
         }
     }
 }
@@ -522,5 +504,28 @@ private extension Array {
         
         let adjustedSubrange = subrange.lowerBound..<upperBound
         replaceSubrange(adjustedSubrange, with: newElements)
+    }
+}
+
+extension RouteLeg {
+    public static func == (lhs: RouteLeg, rhs: RouteLeg) -> Bool {
+        return lhs.source == rhs.source &&
+            lhs.destination == rhs.destination &&
+            lhs.steps == rhs.steps &&
+            lhs.segmentDistances == rhs.segmentDistances &&
+            lhs.expectedSegmentTravelTimes == rhs.expectedSegmentTravelTimes &&
+            lhs.segmentSpeeds == rhs.segmentSpeeds &&
+            lhs.segmentCongestionLevels == rhs.segmentCongestionLevels &&
+            lhs.segmentNumericCongestionLevels == rhs.segmentNumericCongestionLevels &&
+            lhs.segmentMaximumSpeedLimits == rhs.segmentMaximumSpeedLimits &&
+            lhs.trafficTendencies == rhs.trafficTendencies &&
+            lhs.name == rhs.name &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.administrativeRegions == rhs.administrativeRegions &&
+            lhs.incidents == rhs.incidents &&
+            lhs.viaWaypoints == rhs.viaWaypoints &&
+            lhs.typicalTravelTime == rhs.typicalTravelTime &&
+            lhs.profileIdentifier == rhs.profileIdentifier
     }
 }

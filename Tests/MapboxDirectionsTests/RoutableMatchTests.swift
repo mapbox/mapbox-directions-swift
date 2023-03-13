@@ -12,8 +12,9 @@ class RoutableMatchTest: XCTestCase {
         HTTPStubs.removeAllStubs()
         super.tearDown()
     }
-    
-    func testRoutableMatch() {
+
+    @MainActor
+    func testRoutableMatch() throws {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
                          CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
@@ -36,12 +37,11 @@ class RoutableMatchTest: XCTestCase {
         matchOptions.shapeFormat = .polyline6
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
-        for waypoint in matchOptions.waypoints[1..<(locations.count - 1)] {
-            waypoint.separatesLegs = false
+        for index in 1..<(locations.count - 1) {
+            matchOptions.waypoints[index].separatesLegs = false
         }
-        
+
         let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (session, result) in
-            
             switch (result) {
             case let .failure(error):
                 XCTFail("Error: \(error)")
@@ -49,15 +49,14 @@ class RoutableMatchTest: XCTestCase {
                 routeResponse = response
                 expectation.fulfill()
             }
-                        
         }
         XCTAssertNotNil(task)
-        
-        waitForExpectations(timeout: 200000) { (error) in
+
+        waitForExpectations(timeout: 20) { (error) in
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+        _ = try XCTUnwrap(routeResponse)
         let route = routeResponse.routes!.first!
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)

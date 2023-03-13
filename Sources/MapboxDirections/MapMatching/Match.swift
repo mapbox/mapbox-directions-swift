@@ -42,18 +42,39 @@ public enum Weight: Equatable {
  
  Typically, you do not create instances of this class directly. Instead, you receive match objects when you pass a `MatchOptions` object into the `Directions.calculate(_:completionHandler:)` method.
  */
-open class Match: DirectionsResult {
-    private enum CodingKeys: String, CodingKey, CaseIterable {
+public struct Match: DirectionsResult {
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case confidence
         case weight
         case weightName = "weight_name"
     }
     
+    public var shape: Turf.LineString?
+
+    public var legs: [RouteLeg]
+
+    public var distance: Turf.LocationDistance
+
+    public var expectedTravelTime: TimeInterval
+
+    public var typicalTravelTime: TimeInterval?
+
+    public var speechLocale: Locale?
+
+    public var fetchStartDate: Date?
+
+    public var responseEndDate: Date?
+
+    public var responseContainsSpeechLocale: Bool
+
+    public var foreignMembers: Turf.JSONObject = [:]
+
+    #warning("imp")
     /**
      Initializes a match.
-     
+
      Typically, you do not create instances of this class directly. Instead, you receive match objects when you request matches using the `Directions.calculate(_:completionHandler:)` method.
-     
+
      - parameter legs: The legs that are traversed in order.
      - parameter shape: The matching roads or paths as a contiguous polyline.
      - parameter distance: The matched path’s cumulative distance, measured in meters.
@@ -61,10 +82,21 @@ open class Match: DirectionsResult {
      - parameter confidence: A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      - parameter weight: A `Weight` enum, which represents the weight given to a specific `Match`.
      */
-    public init(legs: [RouteLeg], shape: LineString?, distance: LocationDistance, expectedTravelTime: TimeInterval, confidence: Float, weight: Weight) {
+    public init(
+        legs: [RouteLeg],
+        shape: LineString?,
+        distance: LocationDistance,
+        expectedTravelTime: TimeInterval,
+        confidence: Float,
+        weight: Weight
+    ) {
         self.confidence = confidence
         self.weight = weight
-        super.init(legs: legs, shape: shape, distance: distance, expectedTravelTime: expectedTravelTime)
+        self.legs = legs
+        self.shape = shape
+        self.distance = distance
+        self.expectedTravelTime = expectedTravelTime
+        self.responseContainsSpeechLocale = false
     }
     
     /**
@@ -73,48 +105,65 @@ open class Match: DirectionsResult {
      - precondition: If the decoder is decoding JSON data from an API response, the `Decoder.userInfo` dictionary must contain a `MatchOptions` object in the `CodingUserInfoKey.options` key. If it does not, a `DirectionsCodingError.missingOptions` error is thrown.
      - parameter decoder: The decoder of JSON-formatted API response data or a previously encoded `Match` object.
      */
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        confidence = try container.decode(Float.self, forKey: .confidence)
-        let weightValue = try container.decode(Float.self, forKey: .weight)
-        let weightMetric = try container.decode(String.self, forKey: .weightName)
+    public init(from decoder: Decoder) throws {
+        guard let options = decoder.userInfo[.options] as? DirectionsOptions else {
+            throw DirectionsCodingError.missingOptions
+        }
+
+        let container = try decoder.container(keyedBy: DirectionsCodingKey.self)
+        legs = try Self.decodeLegs(using: container, options: options)
+        distance = try Self.decodeDistance(using: container)
+        expectedTravelTime = try Self.decodeExpectedTravelTime(using: container)
+        typicalTravelTime = try Self.decodeTypicalTravelTime(using: container)
+        shape = try Self.decodeShape(using: container)
+        speechLocale = try Self.decodeSpeechLocale(using: container)
+        responseContainsSpeechLocale = try Self.decodeResponseContainsSpeechLocale(using: container)
+
+        confidence = try container.decode(Float.self, forKey: .match(.confidence))
+        let weightValue = try container.decode(Float.self, forKey: .match(.weight))
+        let weightMetric = try container.decode(String.self, forKey: .match(.weightName))
         
         weight = Weight(value: weightValue, metric: weightMetric)
         
-        try super.init(from: decoder)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
-    public override func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(confidence, forKey: .confidence)
-        try container.encode(weight.value, forKey: .weight)
-        try container.encode(weight.metric, forKey: .weightName)
-        
-        try super.encode(to: encoder)
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: DirectionsCodingKey.self)
+        try container.encode(confidence, forKey: .match(.confidence))
+        try container.encode(weight.value, forKey: .match(.weight))
+        try container.encode(weight.metric, forKey: .match(.weightName))
+
+        try encodeLegs(into: &container)
+        try encodeShape(into: &container, options: encoder.userInfo[.options] as? DirectionsOptions)
+        try encodeDistance(into: &container)
+        try encodeExpectedTravelTime(into: &container)
+        try encodeTypicalTravelTime(into: &container)
+        try encodeSpeechLocale(into: &container)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     /**
      A `Weight` enum, which represents the weight given to a specific `Match`.
      */
-    open var weight: Weight
+    public var weight: Weight
     
     /**
      A number between 0 and 1 that indicates the Map Matching API’s confidence that the match is accurate. A higher confidence means the match is more likely to be accurate.
      */
-    open var confidence: Float
+    public var confidence: Float
     
 }
 
-extension Match: Equatable {
-    public static func ==(lhs: Match, rhs: Match) -> Bool {
-        return lhs.distance == rhs.distance &&
-            lhs.expectedTravelTime == rhs.expectedTravelTime &&
-            lhs.speechLocale == rhs.speechLocale &&
-            lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&
-            lhs.confidence == rhs.confidence &&
-            lhs.weight == rhs.weight &&
-            lhs.legs == rhs.legs &&
-            lhs.shape == rhs.shape
+extension Match: CustomStringConvertible {
+    public var description: String {
+        return legs.map { $0.name }.joined(separator: " – ")
+    }
+}
+
+extension DirectionsCodingKey {
+    public static func match(_ key: Match.CodingKeys) -> Self {
+        .init(stringValue: key.stringValue)
     }
 }

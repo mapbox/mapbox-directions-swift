@@ -1,7 +1,7 @@
 import Foundation
 
 /// Describes how `customOptionsByRawValue` component is compared during logical operations in `CustomValueOptionSet`.
-public enum CustomOptionComparisonPolicy {
+public enum CustomOptionComparisonPolicy: Equatable {
     /// Custom options are equal if `customOptions` key-value pairs are strictly equal
     ///
     /// Example:

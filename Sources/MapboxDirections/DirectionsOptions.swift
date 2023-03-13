@@ -13,7 +13,7 @@ let MaximumURLLength = 1024 * 8
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
-public enum RouteShapeFormat: String, Codable {
+public enum RouteShapeFormat: String, Codable, Equatable {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
 
@@ -39,7 +39,7 @@ public enum RouteShapeFormat: String, Codable {
 /**
  A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
  */
-public enum RouteShapeResolution: String, Codable {
+public enum RouteShapeResolution: String, Codable, Equatable {
     /**
      The route’s shape is omitted.
 
@@ -63,7 +63,7 @@ public enum RouteShapeResolution: String, Codable {
 /**
  A system of units of measuring distances and other quantities.
  */
-public enum MeasurementSystem: String, Codable {
+public enum MeasurementSystem: String, Codable, Equatable {
     /**
      U.S. customary and British imperial units.
 
@@ -85,7 +85,7 @@ public typealias MBDirectionsPriority = DirectionsPriority
 /**
  A number that influences whether a route should prefer or avoid roadways or pathways of a given type.
  */
-public struct DirectionsPriority: Hashable, RawRepresentable, Codable {
+public struct DirectionsPriority: Hashable, RawRepresentable, Codable, Equatable {
     public init(rawValue: Double) {
         self.rawValue = rawValue
     }
@@ -126,10 +126,11 @@ open class DirectionsOptions: Codable {
      - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
     required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
-        self.waypoints = waypoints
+        var waypoints = waypoints
         self.profileIdentifier = profileIdentifier ?? .automobile
         
         guard let queryItems = queryItems else {
+            self.waypoints = waypoints
             return
         }
         
@@ -172,8 +173,8 @@ open class DirectionsOptions: Codable {
         if let mappedValue = mappedQueryItems["waypoints"] {
             let indicies = mappedValue.components(separatedBy: ";").compactMap { Int($0) }
             if !indicies.isEmpty {
-                waypoints.enumerated().forEach {
-                    $0.element.separatesLegs = indicies.contains($0.offset)
+                for index in waypoints.indices {
+                    waypoints[index].separatesLegs = indicies.contains(index)
                 }
             }
         }
@@ -193,34 +194,41 @@ open class DirectionsOptions: Codable {
             return nil
         }
         
-        waypoints.enumerated().forEach {
-            if let approach = getElement(waypointsData[0], $0.offset) {
-                $0.element.allowsArrivingOnOppositeSide = approach == "unrestricted" ? true : false
+        for waypointIndex in waypoints.indices {
+            if let approach = getElement(waypointsData[0], waypointIndex) {
+                waypoints[waypointIndex].allowsArrivingOnOppositeSide = approach == "unrestricted" ? true : false
             }
             
-            if let descriptions = getElement(waypointsData[1], $0.offset)?.components(separatedBy: ",") {
-                $0.element.heading = LocationDirection(descriptions.first!)
-                $0.element.headingAccuracy = LocationDirection(descriptions.last!)
+            if let descriptions = getElement(waypointsData[1], waypointIndex)?.components(separatedBy: ",") {
+                waypoints[waypointIndex].heading = LocationDirection(descriptions.first!)
+                waypoints[waypointIndex].headingAccuracy = LocationDirection(descriptions.last!)
             }
             
-            if let accuracy = getElement(waypointsData[2], $0.offset) {
-                $0.element.coordinateAccuracy = LocationAccuracy(accuracy)
+            if let accuracy = getElement(waypointsData[2], waypointIndex) {
+                waypoints[waypointIndex].coordinateAccuracy = LocationAccuracy(accuracy)
             }
             
-            if let snaps = getElement(waypointsData[4], $0.offset) {
-                $0.element.allowsSnappingToClosedRoad = snaps == "true"
+            if let snaps = getElement(waypointsData[4], waypointIndex) {
+                waypoints[waypointIndex].allowsSnappingToClosedRoad = snaps == "true"
             }
 
-            if let snapsToStaticallyClosed = getElement(waypointsData[5], $0.offset) {
-                $0.element.allowsSnappingToStaticallyClosedRoad = snapsToStaticallyClosed == "true"
+            if let snapsToStaticallyClosed = getElement(waypointsData[5], waypointIndex) {
+                waypoints[waypointIndex].allowsSnappingToStaticallyClosedRoad = snapsToStaticallyClosed == "true"
             }
         }
-        
-        waypoints.filter { $0.separatesLegs }.enumerated().forEach {
-            if let name = getElement(waypointsData[3], $0.offset) {
-                $0.element.name = name
+
+
+        var separatesLegIndex: Int = 0
+        for waypointIndex in waypoints.indices {
+            guard waypoints[waypointIndex].separatesLegs else { continue }
+
+            if let name = getElement(waypointsData[3], separatesLegIndex) {
+                waypoints[waypointIndex].name = name
             }
+            separatesLegIndex += 1
         }
+
+        self.waypoints = waypoints
     }
     
     /**
@@ -317,8 +325,8 @@ open class DirectionsOptions: Codable {
 
      The array should contain at least two waypoints (the source and destination) and at most 25 waypoints.
      */
-    open var waypoints: [Waypoint]
-    
+    public var waypoints: [Waypoint]
+
     /**
      The waypoints that separate legs.
      */
@@ -338,7 +346,7 @@ open class DirectionsOptions: Codable {
 
      The default value of this property is `ProfileIdentifier.automobile`, which specifies driving directions.
      */
-    open var profileIdentifier: ProfileIdentifier
+    public var profileIdentifier: ProfileIdentifier
 
     // MARK: Specifying the Response Format
 
@@ -351,7 +359,7 @@ open class DirectionsOptions: Codable {
 
      The default value of this property is `false`.
      */
-    open var includesSteps = false
+    public var includesSteps = false
 
     /**
      Format of the data from which the shapes of the returned route and its steps are derived.
@@ -360,7 +368,7 @@ open class DirectionsOptions: Codable {
 
      The default value of this property is `polyline`.
      */
-    open var shapeFormat = RouteShapeFormat.polyline
+    public var shapeFormat = RouteShapeFormat.polyline
 
     /**
      Resolution of the shape of the returned route.
@@ -369,14 +377,14 @@ open class DirectionsOptions: Codable {
 
      The default value of this property is `low`, specifying a low-resolution route shape.
      */
-    open var routeShapeResolution = RouteShapeResolution.low
+    public var routeShapeResolution = RouteShapeResolution.low
 
     /**
      AttributeOptions for the route. Any combination of `AttributeOptions` can be specified.
 
      By default, no attribute options are specified. It is recommended that `routeShapeResolution` be set to `.full`.
      */
-    open var attributeOptions: AttributeOptions = []
+    public var attributeOptions: AttributeOptions = []
 
     /**
      The locale in which the route’s instructions are written.
@@ -387,7 +395,7 @@ open class DirectionsOptions: Codable {
 
      By default, this property is set to the current system locale.
      */
-    open var locale = Locale.current {
+    public var locale = Locale.current {
         didSet {
             self.distanceMeasurementSystem = locale.usesMetricSystem ? .metric : .imperial
         }
@@ -398,7 +406,7 @@ open class DirectionsOptions: Codable {
 
      If this option is set to true, the `RouteStep.instructionsSpokenAlongStep` property is set to an array of `SpokenInstructions`.
      */
-    open var includesSpokenInstructions = false
+    public var includesSpokenInstructions = false
 
     /**
      The measurement system used in spoken instructions included in route steps.
@@ -407,14 +415,14 @@ open class DirectionsOptions: Codable {
 
      You should choose a measurement system appropriate for the current region. You can also allow the user to indicate their preferred measurement system via a setting.
      */
-    open var distanceMeasurementSystem: MeasurementSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+    public var distanceMeasurementSystem: MeasurementSystem = Locale.current.usesMetricSystem ? .metric : .imperial
 
     /**
      If true, each `RouteStep` will contain the property `visualInstructionsAlongStep`.
 
      `visualInstructionsAlongStep` contains an array of `VisualInstruction` objects used for visually conveying information about a given `RouteStep`.
      */
-    open var includesVisualInstructions = false
+    public var includesVisualInstructions = false
     
     /**
      The time immediately before a `Directions` object fetched this result.
@@ -423,7 +431,7 @@ open class DirectionsOptions: Codable {
      
      This property does not persist after encoding and decoding.
      */
-    open var fetchStartDate: Date?
+    public var fetchStartDate: Date?
     
 
     
@@ -460,7 +468,7 @@ open class DirectionsOptions: Codable {
      
      The query items are included in the URL of a GET request or the body of a POST request.
      */
-    open var urlQueryItems: [URLQueryItem] {
+    public var urlQueryItems: [URLQueryItem] {
         var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "geometries", value: shapeFormat.rawValue),
             URLQueryItem(name: "overview", value: routeShapeResolution.rawValue),

@@ -20,7 +20,8 @@ class MatchTests: XCTestCase {
     }
     
     #if !os(Linux)
-    func testMatch() {
+    @MainActor
+    func testMatch() throws {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.712041, longitude: -117.172836),
                          CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
@@ -59,8 +60,9 @@ class MatchTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        
-        let match = response.matches!.first!
+
+        _ = try XCTUnwrap(response)
+        let match = try XCTUnwrap(response.matches?.first)
         let opts = response.options
         XCTAssert(matchOptions == opts)
         
@@ -107,8 +109,9 @@ class MatchTests: XCTestCase {
         XCTAssertEqual(round(coordinate.latitude), 33)
         XCTAssertEqual(round(coordinate.longitude), -117)
     }
-    
-    func testMatchWithNullTracepoints() {
+
+    @MainActor
+    func testMatchWithNullTracepoints() throws {
         let expectation = self.expectation(description: "calculating directions should return results")
         let locations = [CLLocationCoordinate2D(latitude: 32.70949, longitude: -117.17747),
                          CLLocationCoordinate2D(latitude: 32.712256, longitude: -117.17291),
@@ -145,7 +148,8 @@ class MatchTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+
+        _ = try XCTUnwrap(response)
         let match = response.matches!.first!
         XCTAssertNotNil(match)
         let tracepoints = response.tracepoints!
@@ -160,7 +164,7 @@ class MatchTests: XCTestCase {
         
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = matchOptions
-        let unarchivedMatch = try! decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
+        let unarchivedMatch = try decoder.decode(Match.self, from: encodedString.data(using: .utf8)!)
         
         XCTAssertEqual(match.confidence, unarchivedMatch.confidence)
     }

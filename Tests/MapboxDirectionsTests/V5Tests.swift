@@ -16,7 +16,11 @@ class V5Tests: XCTestCase {
     
     typealias JSONTransformer = ((JSONDictionary) -> JSONDictionary)
     
-    func test(shapeFormat: RouteShapeFormat, transformer: JSONTransformer? = nil, filePath: String? = nil) {
+    @MainActor func test(
+        shapeFormat: RouteShapeFormat,
+        transformer: JSONTransformer? = nil,
+        filePath: String? = nil
+    ) throws {
         let expectation = self.expectation(description: "calculating directions should return results")
         
         let queryParams: [String: String?] = [
@@ -68,11 +72,9 @@ class V5Tests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+        _ = try XCTUnwrap(response)
         XCTAssertEqual(response.waypoints?.count, 2)
         XCTAssertEqual(response.routes?.count, 2)
-        
-        
         
         test(response.routes!.first!)
     }
@@ -156,18 +158,21 @@ class V5Tests: XCTestCase {
         XCTAssertNil(leg?.steps[58].destinationCodes)
         XCTAssertNil(leg?.steps[58].destinations)
     }
-    
-    func testGeoJSON() {
+
+    @MainActor
+    func testGeoJSON() throws {
         XCTAssertEqual(RouteShapeFormat.geoJSON.rawValue, "geojson")
-        test(shapeFormat: .geoJSON)
+        try test(shapeFormat: .geoJSON)
     }
 
-    func testPolyline() {
+    @MainActor
+    func testPolyline() throws {
         XCTAssertEqual(RouteShapeFormat.polyline.rawValue, "polyline")
-        test(shapeFormat: .polyline)
+        try test(shapeFormat: .polyline)
     }
-    
-    func testPolyline6() {
+
+    @MainActor
+    func testPolyline6() throws {
         XCTAssertEqual(RouteShapeFormat.polyline6.rawValue, "polyline6")
         
         // Transform polyline5 to polyline6
@@ -204,9 +209,10 @@ class V5Tests: XCTestCase {
             return transformed
         }
         
-        test(shapeFormat: .polyline6, transformer: transformer, filePath: "v5_driving_dc_polyline")
+        try test(shapeFormat: .polyline6, transformer: transformer, filePath: "v5_driving_dc_polyline")
     }
-    
+
+    @MainActor
     func testViaPoints() {
         let expectation = self.expectation(description: "calculating directions should return results")
         
@@ -232,13 +238,13 @@ class V5Tests: XCTestCase {
                 return HTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let waypoints = [
+        var waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.33841036211459, longitude: -85.20623174166413), coordinateAccuracy: -1, name: "From"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34181048315713, longitude: -85.20399062653789), coordinateAccuracy: -1, name: "Via"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34204769474999, longitude: -85.19969651878529), coordinateAccuracy: -1, name: "To"),
         ]
-        for waypoint in waypoints {
-            waypoint.separatesLegs = false
+        for index in waypoints.indices {
+            waypoints[index].separatesLegs = false
         }
         
         let options = RouteOptions(waypoints: waypoints)
@@ -287,7 +293,7 @@ class V5Tests: XCTestCase {
         XCTAssertEqual(silentWaypoint?.shapeCoordinateIndex, 21)
     }
     
-    func testCoding() {
+    func testCoding() throws {
         let path = Bundle.module.path(forResource: "v5_driving_dc_polyline", ofType: "json")
         let filePath = URL(fileURLWithPath: path!)
         let data = try! Data(contentsOf: filePath)
@@ -299,7 +305,7 @@ class V5Tests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = options
         decoder.userInfo[.credentials] = Credentials(accessToken: "foo", host: URL(string: "http://sample.website"))
-        let result = try! decoder.decode(RouteResponse.self, from: data)
+        let result = try decoder.decode(RouteResponse.self, from: data)
         
         let routes = result.routes
         let route = routes!.first!

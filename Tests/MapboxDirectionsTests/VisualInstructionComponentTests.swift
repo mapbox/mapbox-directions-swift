@@ -21,7 +21,8 @@ class VisualInstructionComponentTests: XCTestCase {
             }
         }
     }
-    
+
+    @MainActor
     func testImageComponent() {
         let componentJSON: [String : Any] = [
             "text": "I 95",

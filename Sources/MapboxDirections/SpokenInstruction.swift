@@ -8,7 +8,7 @@ import Turf
 
  The `distanceAlongStep` property is measured from the beginning of the step associated with this object. By contrast, the `text` and `ssmlText` properties refer to the details in the following step. It is also possible for the instruction to refer to two following steps simultaneously when needed for safe navigation.
  */
-open class SpokenInstruction: Codable, ForeignMemberContainerClass {
+public struct SpokenInstruction: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
@@ -32,7 +32,7 @@ open class SpokenInstruction: Codable, ForeignMemberContainerClass {
         self.ssmlText = ssmlText
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         distanceAlongStep = try container.decode(LocationDistance.self, forKey: .distanceAlongStep)
         text = try container.decode(String.self, forKey: .text)
@@ -41,13 +41,13 @@ open class SpokenInstruction: Codable, ForeignMemberContainerClass {
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
-    open func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
         try container.encode(text, forKey: .text)
         try container.encode(ssmlText, forKey: .ssmlText)
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     // MARK: Timing When to Say the Instruction
@@ -76,7 +76,7 @@ open class SpokenInstruction: Codable, ForeignMemberContainerClass {
     public let ssmlText: String
 }
 
-extension SpokenInstruction: Equatable {
+extension SpokenInstruction {
     public static func == (lhs: SpokenInstruction, rhs: SpokenInstruction) -> Bool {
         return lhs.distanceAlongStep == rhs.distanceAlongStep &&
             lhs.text == rhs.text &&

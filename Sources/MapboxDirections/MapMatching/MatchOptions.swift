@@ -44,30 +44,12 @@ open class MatchOptions: DirectionsOptions {
 
     public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
-        
-        guard let queryItems = queryItems else {
-            return
-        }
-        
-        let mappedQueryItems = Dictionary<String, String>(queryItems.compactMap {
-            guard let value = $0.value else { return nil }
-            return ($0.name, value)
-        },
-                   uniquingKeysWith: { (_, latestValue) in
-            return latestValue
-        })
-        
-        if mappedQueryItems[CodingKeys.resamplesTraces.stringValue] == "true" {
+
+        if queryItems?.contains(where: { queryItem in
+            queryItem.name == CodingKeys.resamplesTraces.stringValue &&
+            queryItem.value == "true"
+        }) == true {
             self.resamplesTraces = true
-        }
-        
-        if let mappedValue = mappedQueryItems["waypoints"] {
-            let indicies = mappedValue.components(separatedBy: ";").compactMap { Int($0) }
-            if !indicies.isEmpty {
-                waypoints.enumerated().forEach {
-                    $0.element.separatesLegs = indicies.contains($0.offset)
-                }
-            }
         }
     }
     

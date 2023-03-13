@@ -88,8 +88,9 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssert(JSONSerialization.objectsAreEqual(bannerJSON, encodedBannerJSON, approximate: false))
         }
     }
-    
-    func testPrimaryAndSecondaryInstructions() {
+
+    @MainActor
+    func testPrimaryAndSecondaryInstructions() throws {
         let expectation = self.expectation(description: "calculating directions with primary and secondary instructions should return results")
         
         let queryParams: [String: String?] = [
@@ -140,7 +141,7 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+        _ = try XCTUnwrap(response)
         guard let route = response.routes?.first else {
             XCTFail("No routes in response")
             return
@@ -194,8 +195,9 @@ class VisualInstructionsTests: XCTestCase {
         let arrivalVisualInstructions = arrivalStep.instructionsDisplayedAlongStep!
         XCTAssertEqual(arrivalVisualInstructions.first?.secondaryInstruction?.text, "the gym")
     }
-    
-    func testSubWithLaneInstructions() {
+
+    @MainActor
+    func testSubWithLaneInstructions() throws {
         let expectation = self.expectation(description: "calculating directions with tertiary lane instructions should return results")
         let queryParams: [String: String?] = [
             "geometries": "polyline",
@@ -234,7 +236,8 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+
+        _ = try XCTUnwrap(response)
         guard let route = response.routes?.first else {
             XCTFail("No routes in response")
             return
@@ -270,8 +273,9 @@ class VisualInstructionsTests: XCTestCase {
             }
         }
     }
-    
-    func testSubWithVisualInstructions() {
+
+    @MainActor
+    func testSubWithVisualInstructions() throws {
         let expectation = self.expectation(description: "calculating directions with tertiary visual instructions should return results")
         let queryParams: [String: String?] = [
             "geometries": "polyline",
@@ -296,7 +300,6 @@ class VisualInstructionsTests: XCTestCase {
         
         var response: RouteResponse!
         let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
-            
             guard case let .success(resp) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return
@@ -312,7 +315,8 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             XCTAssertEqual(task.state, .completed)
         }
-        
+
+        _ = try XCTUnwrap(response)
         guard let route = response.routes?.first else {
             XCTFail("No routes in response")
             return

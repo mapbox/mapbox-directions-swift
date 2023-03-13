@@ -62,7 +62,7 @@ class RouteTests: XCTestCase {
         decoder.userInfo[.options] = options
         XCTAssertNoThrow(route = try decoder.decode(Route.self, from: routeData))
         
-        let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262, profileIdentifier: .automobileAvoidingTraffic)
+        var expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262, profileIdentifier: .automobileAvoidingTraffic)
         expectedLeg.source = options.waypoints[0]
         expectedLeg.destination = options.waypoints[1]
         let expectedTollPrices = [
@@ -87,9 +87,8 @@ class RouteTests: XCTestCase {
                       category: .standard,
                       amount: 125),
         ]
-        let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
+        var expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4, typicalTravelTime: 1483.262)
         expectedRoute.tollPrices = expectedTollPrices
-        
         XCTAssertEqual(route, expectedRoute)
         
         if let route = route {

@@ -5,7 +5,7 @@ import Turf
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
-public enum TransportType: String, Codable {
+public enum TransportType: String, Codable, Equatable {
     // Possible transport types when the `profileIdentifier` is `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`
 
     /**
@@ -89,7 +89,7 @@ public enum TransportType: String, Codable {
 
  To avoid a complex series of if-else-if statements or switch statements, use pattern matching with a single switch statement on a tuple that consists of the maneuver type and maneuver direction.
  */
-public enum ManeuverType: String, Codable {
+public enum ManeuverType: String, Codable, Equatable {
     /**
      The step requires the user to depart from a waypoint.
 
@@ -221,7 +221,7 @@ public enum ManeuverType: String, Codable {
 /**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
-public enum ManeuverDirection: String, Codable {
+public enum ManeuverDirection: String, Codable, Equatable {
     /**
      The maneuver requires a sharp turn to the right.
      */
@@ -270,7 +270,7 @@ public enum ManeuverDirection: String, Codable {
  
  A sign standard can affect how a user interface should display information related to the road. For example, a speed limit from the `RouteLeg.segmentMaximumSpeedLimits` property may appear in a different-looking view depending on the `RouteStep.speedLimitSign` property.
  */
-public enum SignStandard: String, Codable {
+public enum SignStandard: String, Codable, Equatable {
     /**
      The [Manual on Uniform Traffic Control Devices](https://en.wikipedia.org/wiki/Manual_on_Uniform_Traffic_Control_Devices).
      
@@ -301,7 +301,7 @@ extension Array where Element == String {
 /**
  Encapsulates all the information about a road.
  */
-struct Road {
+struct Road: Equatable {
     let names: [String]?
     let codes: [String]?
     let exitCodes: [String]?
@@ -398,7 +398,7 @@ extension Road: Codable {
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-open class RouteStep: Codable, ForeignMemberContainerClass {
+public struct RouteStep: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     public var maneuverForeignMembers: JSONObject = [:]
     
@@ -420,7 +420,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         case transportType = "mode"
     }
     
-    private struct Maneuver: Codable, ForeignMemberContainer {
+    private struct Maneuver: Codable, ForeignMemberContainer, Equatable {
         var foreignMembers: JSONObject = [:]
         
         private enum CodingKeys: String, CodingKey {
@@ -607,8 +607,8 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
             let unit = SpeedLimitDescriptor.UnitDescriptor(unit: speedLimitUnit) {
             try container.encode(unit, forKey: .speedLimitUnit)
         }
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     static func decode(from decoder: Decoder, administrativeRegions: [AdministrativeRegion]) throws -> [RouteStep] {
@@ -666,7 +666,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
     }
 
     
-    public required convenience init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         try self.init(from: decoder, administrativeRegions: nil)
     }
     
@@ -694,10 +694,11 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
   
         instructionsSpokenAlongStep = try container.decodeIfPresent([SpokenInstruction].self, forKey: .instructionsSpokenAlongStep)
         
-        if let visuals = try container.decodeIfPresent([VisualInstructionBanner].self, forKey: .instructionsDisplayedAlongStep) {
-            for instruction in visuals {
-                instruction.drivingSide = drivingSide
+        if var visuals = try container.decodeIfPresent([VisualInstructionBanner].self, forKey: .instructionsDisplayedAlongStep) {
+            for index in visuals.indices {
+                visuals[index].drivingSide = drivingSide
             }
+
             instructionsDisplayedAlongStep = visuals
         } else {
             instructionsDisplayedAlongStep = nil
@@ -825,7 +826,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
      
      In some cases, the number of exits leading to a maneuver may be more useful to the user than the distance to the maneuver.
      */
-    open var exitIndex: Int?
+    public var exitIndex: Int?
     
     /**
      Any [exit numbers](https://en.wikipedia.org/wiki/Exit_number) assigned to the highway exit at the maneuver.
@@ -870,7 +871,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
      
      Do not assume that the user would travel along the step at a fixed speed. For the expected travel time on each individual segment along the leg, specify the `AttributeOptions.expectedTravelTime` option and use the `RouteLeg.expectedSegmentTravelTimes` property.
      */
-    open var expectedTravelTime: TimeInterval
+    public var expectedTravelTime: TimeInterval
     
     /**
      The step’s typical travel time, measured in seconds.
@@ -879,7 +880,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
      
      Do not assume that the user would travel along the step at a fixed speed.
      */
-    open var typicalTravelTime: TimeInterval?
+    public var typicalTravelTime: TimeInterval?
     
     /**
      The names of the road or path leading from this step’s maneuver to the next step’s maneuver.
@@ -982,44 +983,6 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
     public let instructionsDisplayedAlongStep: [VisualInstructionBanner]?
 }
 
-extension RouteStep: Equatable {
-    public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
-        // Compare all the properties, from cheapest to most expensive to compare.
-        return lhs.initialHeading == rhs.initialHeading &&
-            lhs.finalHeading == rhs.finalHeading &&
-            lhs.instructions == rhs.instructions &&
-            lhs.exitIndex == rhs.exitIndex &&
-            lhs.distance == rhs.distance &&
-            lhs.expectedTravelTime == rhs.expectedTravelTime &&
-            lhs.typicalTravelTime == rhs.typicalTravelTime &&
-            
-            lhs.maneuverType == rhs.maneuverType &&
-            lhs.maneuverDirection == rhs.maneuverDirection &&
-            lhs.drivingSide == rhs.drivingSide &&
-            lhs.transportType == rhs.transportType &&
-            
-            lhs.maneuverLocation == rhs.maneuverLocation &&
-            
-            lhs.exitCodes == rhs.exitCodes &&
-            lhs.exitNames == rhs.exitNames &&
-            lhs.phoneticExitNames == rhs.phoneticExitNames &&
-            lhs.names == rhs.names &&
-            lhs.phoneticNames == rhs.phoneticNames &&
-            lhs.codes == rhs.codes &&
-            lhs.destinationCodes == rhs.destinationCodes &&
-            lhs.destinations == rhs.destinations &&
-            
-            lhs.speedLimitSignStandard == rhs.speedLimitSignStandard &&
-            lhs.speedLimitUnit == rhs.speedLimitUnit &&
-            
-            lhs.intersections == rhs.intersections &&
-            lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
-            lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
-            
-            lhs.shape == rhs.shape
-    }
-}
-
 extension RouteStep: CustomStringConvertible {
     public var description: String {
         return instructions
@@ -1032,5 +995,43 @@ extension RouteStep: CustomQuickLookConvertible {
             return nil
         }
         return debugQuickLookURL(illustrating: shape)
+    }
+}
+
+extension RouteStep {
+    public static func == (lhs: RouteStep, rhs: RouteStep) -> Bool {
+        // Compare all the properties, from cheapest to most expensive to compare.
+        return lhs.initialHeading == rhs.initialHeading &&
+            lhs.finalHeading == rhs.finalHeading &&
+            lhs.instructions == rhs.instructions &&
+            lhs.exitIndex == rhs.exitIndex &&
+            lhs.distance == rhs.distance &&
+            lhs.expectedTravelTime == rhs.expectedTravelTime &&
+            lhs.typicalTravelTime == rhs.typicalTravelTime &&
+
+            lhs.maneuverType == rhs.maneuverType &&
+            lhs.maneuverDirection == rhs.maneuverDirection &&
+            lhs.drivingSide == rhs.drivingSide &&
+            lhs.transportType == rhs.transportType &&
+
+            lhs.maneuverLocation == rhs.maneuverLocation &&
+
+            lhs.exitCodes == rhs.exitCodes &&
+            lhs.exitNames == rhs.exitNames &&
+            lhs.phoneticExitNames == rhs.phoneticExitNames &&
+            lhs.names == rhs.names &&
+            lhs.phoneticNames == rhs.phoneticNames &&
+            lhs.codes == rhs.codes &&
+            lhs.destinationCodes == rhs.destinationCodes &&
+            lhs.destinations == rhs.destinations &&
+
+            lhs.speedLimitSignStandard == rhs.speedLimitSignStandard &&
+            lhs.speedLimitUnit == rhs.speedLimitUnit &&
+
+            lhs.intersections == rhs.intersections &&
+            lhs.instructionsSpokenAlongStep == rhs.instructionsSpokenAlongStep &&
+            lhs.instructionsDisplayedAlongStep == rhs.instructionsDisplayedAlongStep &&
+
+            lhs.shape == rhs.shape
     }
 }

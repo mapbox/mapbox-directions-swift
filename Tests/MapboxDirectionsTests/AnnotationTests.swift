@@ -12,7 +12,8 @@ class AnnotationTests: XCTestCase {
         HTTPStubs.removeAllStubs()
         super.tearDown()
     }
-    
+
+    @MainActor
     func testAnnotation() {
         let expectation = self.expectation(description: "calculating directions should return results")
         

@@ -5,7 +5,7 @@ import Foundation
  
  When any of the attributes are specified, the resulting route leg contains one attribute value for each segment in leg, where a segment is the straight line between two coordinates in the route leg’s full geometry.
  */
-public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
+public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible, Equatable {
     public var rawValue: Int
     
     public var customOptionsByRawValue: [Int: String] = [:]

@@ -4,7 +4,7 @@ import Foundation
 /// The tendency value conveys the changing state of traffic congestion (increasing, decreasing, constant etc).
 ///
 /// New values could be introduced in the future without an API version change.
-public enum TrafficTendency: Int, Codable, CaseIterable {
+public enum TrafficTendency: Int, Codable, CaseIterable, Equatable {
     /// Congestion tendency is unknown.
     case unknown = 0
     /// Congestion tendency is not changing.

@@ -137,7 +137,7 @@ class IntersectionTests: XCTestCase {
         }
     }
 
-    func testJunctionDecoding() {
+    func testJunctionDecoding() throws {
         let routeData = try! Data(contentsOf: URL(fileURLWithPath: Bundle.module.path(forResource: "intersections",
                                                                                       ofType: "json")!))
         let routeOptions = RouteOptions(coordinates: [
@@ -149,7 +149,7 @@ class IntersectionTests: XCTestCase {
         decoder.userInfo[.options] = routeOptions
         decoder.userInfo[.credentials] = Credentials(accessToken: "access_token", host: URL(string: "http://test_host.com"))
         
-        let routeResponse = try! decoder.decode(RouteResponse.self, from: routeData)
+        let routeResponse = try decoder.decode(RouteResponse.self, from: routeData)
         guard let steps = routeResponse.routes?.first?.legs.first?.steps,
               steps.count > 1,
               let intersections = steps[1].intersections else {

@@ -24,7 +24,7 @@ public struct MapMatchingResponse: ForeignMemberContainer {
      An array of `Tracepoint` objects that represent the location an input point was matched with, in the order in which they were matched.
      This property will be `nil` if a trace point is omitted by the Map Matching API because it is an outlier.
      */
-    public var tracepoints: [Tracepoint?]?
+    public var tracepoints: [Match.Tracepoint?]?
     
     /**
      The criteria for the map matching response.
@@ -52,7 +52,7 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
 
-     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Tracepoint]? = nil, options: MatchOptions, credentials: Credentials) {
+    public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Match.Tracepoint]? = nil, options: MatchOptions, credentials: Credentials) {
         self.httpResponse = httpResponse
         self.matches = matches
         self.tracepoints = tracepoints
@@ -75,7 +75,7 @@ extension MapMatchingResponse: Codable {
         }
         self.credentials = credentials
         
-        tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
+        tracepoints = try container.decodeIfPresent([Match.Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)

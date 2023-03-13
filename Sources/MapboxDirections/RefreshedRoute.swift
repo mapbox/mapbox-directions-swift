@@ -4,7 +4,7 @@ import Turf
 /**
  A skeletal route containing only the information about the route that has been refreshed.
  */
-public struct RefreshedRoute: ForeignMemberContainer {
+public struct RefreshedRoute: ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     /**
@@ -36,7 +36,7 @@ extension RefreshedRoute: Codable {
 /**
  A skeletal route leg containing only the information about the route leg that has been refreshed.
  */
-public struct RefreshedRouteLeg: ForeignMemberContainer {
+public struct RefreshedRouteLeg: ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     public var attributes: RouteLeg.Attributes

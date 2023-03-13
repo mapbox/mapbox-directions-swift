@@ -5,14 +5,14 @@ import Turf
 class RouteOptionsTests: XCTestCase {
     func testCoding() {
         let options = testRouteOptions
-        
+
         let encoded: Data = try! JSONEncoder().encode(options)
         let optionsString: String = String(data: encoded, encoding: .utf8)!
-        
+
         let unarchivedOptions: RouteOptions = try! JSONDecoder().decode(RouteOptions.self, from: optionsString.data(using: .utf8)!)
-        
+
         XCTAssertNotNil(unarchivedOptions)
-        
+
         let coordinates = testCoordinates
         let unarchivedWaypoints = unarchivedOptions.waypoints
         XCTAssertEqual(unarchivedWaypoints.count, coordinates.count)
@@ -24,7 +24,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedWaypoints[2].coordinate.longitude, coordinates[2].longitude)
         XCTAssertEqual(unarchivedWaypoints[0].layer, -1)
         XCTAssertEqual(unarchivedWaypoints[2].layer, 3)
-        
+
         XCTAssertEqual(unarchivedOptions.profileIdentifier, options.profileIdentifier)
         XCTAssertEqual(unarchivedOptions.locale, options.locale)
         XCTAssertEqual(unarchivedOptions.includesSpokenInstructions, options.includesSpokenInstructions)
@@ -40,7 +40,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.speed, options.speed)
         XCTAssertEqual(unarchivedOptions.includesTollPrices, options.includesTollPrices)
     }
-    
+
     func testCodingWithRawCodingKeys() {
         let routeOptionsJSON: [String: Any?] = [
             "waypoints": [
@@ -72,11 +72,11 @@ class RouteOptionsTests: XCTestCase {
             "walkway_bias": DirectionsPriority.high.rawValue,
             "compute_toll_cost": true
         ]
-        
+
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
         var routeOptions: RouteOptions!
         XCTAssertNoThrow(routeOptions = try! JSONDecoder().decode(RouteOptions.self, from: routeOptionsData))
-        
+
         XCTAssertEqual(routeOptions.profileIdentifier, .automobileAvoidingTraffic)
         XCTAssertEqual(routeOptions.includesSteps, true)
         XCTAssertEqual(routeOptions.shapeFormat, .polyline)
@@ -97,12 +97,12 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
         XCTAssertEqual(routeOptions.maximumWeight, Measurement(value: 3.5, unit: .metricTons))
         XCTAssertEqual(routeOptions.includesTollPrices, true)
-        
+
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
-        
+
         let unarchivedOptions: RouteOptions = try! JSONDecoder().decode(RouteOptions.self, from: optionsString.data(using: .utf8)!)
-        
+
         XCTAssertNotNil(unarchivedOptions)
         XCTAssertEqual(unarchivedOptions.profileIdentifier, routeOptions.profileIdentifier)
         XCTAssertEqual(unarchivedOptions.includesSteps, routeOptions.includesSteps)
@@ -124,35 +124,36 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
         XCTAssertEqual(unarchivedOptions.includesTollPrices, routeOptions.includesTollPrices)
     }
-    
+
     func testURLCoding() throws {
-        
+
         let originalOptions = testRouteOptions
         originalOptions.includesAlternativeRoutes = true
         originalOptions.includesExitRoundaboutManeuver = true
         originalOptions.refreshingEnabled = true
-        
-        originalOptions.waypoints.enumerated().forEach {
-            $0.element.allowsArrivingOnOppositeSide = $0.offset == 2
-            $0.element.coordinateAccuracy = LocationAccuracy($0.offset)
-            $0.element.heading = LocationDirection($0.offset * 10)
-            $0.element.headingAccuracy = LocationDirection($0.offset)
-            $0.element.separatesLegs = $0.offset != 1
-            if $0.element.separatesLegs {
-                $0.element.name = "name_\($0.offset)"
-                $0.element.targetCoordinate = $0.element.coordinate
+
+        for index in originalOptions.waypoints.indices {
+            originalOptions.waypoints[index].allowsArrivingOnOppositeSide = index == 2
+            originalOptions.waypoints[index].coordinateAccuracy = LocationAccuracy(index)
+            originalOptions.waypoints[index].heading = LocationDirection(index * 10)
+            originalOptions.waypoints[index].headingAccuracy = LocationDirection(index)
+            originalOptions.waypoints[index].separatesLegs = index != 1
+            if originalOptions.waypoints[index].separatesLegs {
+                originalOptions.waypoints[index].name = "name_\(index)"
+                originalOptions.waypoints[index].targetCoordinate = originalOptions.waypoints[index].coordinate
             }
-            $0.element.allowsSnappingToClosedRoad = $0.offset == 1
-            $0.element.allowsSnappingToStaticallyClosedRoad = $0.offset == 1
+            originalOptions.waypoints[index].allowsSnappingToClosedRoad = index == 1
+            originalOptions.waypoints[index].allowsSnappingToStaticallyClosedRoad = index == 1
         }
-        
+
+
         let url = Directions(credentials: BogusCredentials).url(forCalculating: originalOptions)
-        
+
         guard let decodedOptions = RouteOptions(url: url) else {
             XCTFail("Could not decode `RouteOptions`")
             return
         }
-        
+
         let decodedWaypoints = decodedOptions.waypoints
         XCTAssertEqual(decodedWaypoints.count, testCoordinates.count)
         XCTAssertEqual(decodedWaypoints[0].coordinate.latitude, testCoordinates[0].latitude)
@@ -161,7 +162,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(decodedWaypoints[1].coordinate.longitude, testCoordinates[1].longitude)
         XCTAssertEqual(decodedWaypoints[2].coordinate.latitude, testCoordinates[2].latitude)
         XCTAssertEqual(decodedWaypoints[2].coordinate.longitude, testCoordinates[2].longitude)
-        
+
         zip(decodedWaypoints, originalOptions.waypoints).forEach {
             XCTAssertEqual($0.0.allowsSnappingToClosedRoad, $0.1.allowsSnappingToClosedRoad)
             XCTAssertEqual($0.0.allowsSnappingToStaticallyClosedRoad, $0.1.allowsSnappingToStaticallyClosedRoad)
@@ -173,7 +174,7 @@ class RouteOptionsTests: XCTestCase {
             XCTAssertEqual($0.0.headingAccuracy, $0.1.headingAccuracy)
             XCTAssertEqual($0.0.name, $0.1.name)
         }
-        
+
         XCTAssertEqual(decodedOptions.includesAlternativeRoutes, originalOptions.includesAlternativeRoutes)
         XCTAssertEqual(decodedOptions.includesExitRoundaboutManeuver, originalOptions.includesExitRoundaboutManeuver)
         XCTAssertEqual(decodedOptions.refreshingEnabled, originalOptions.refreshingEnabled)
@@ -198,21 +199,21 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertNil(decodedOptions.arriveBy)
         // URL encoding skips seconds, so we check that dates are within 1 minute delta
         XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)
-        
+
         let routeURL = try XCTUnwrap(URL(string: "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/-121.913565,37.331832;-121.916282,37.328707.json"))
         XCTAssertNotNil(RouteOptions(url: routeURL))
         XCTAssertNil(MatchOptions(url: routeURL))
     }
-    
+
     // MARK: API name-handling tests
-    
+
     private static var testWaypoints: [Waypoint] {
         return [
             Waypoint(coordinate: LocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
             Waypoint(coordinate: LocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
         ]
     }
-    
+
     private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
         let testBundle = Bundle.module
         guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else {
@@ -223,7 +224,7 @@ class RouteOptionsTests: XCTestCase {
             XCTFail()
             return nil
         }
-    
+
         let subject = RouteOptions(waypoints: waypoints)
         let decoder = JSONDecoder()
         decoder.userInfo[.options] = subject
@@ -231,7 +232,7 @@ class RouteOptionsTests: XCTestCase {
         var response: RouteResponse?
         XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
         XCTAssertNotNil(response)
-        
+
         if let response = response {
             XCTAssertNotNil(response.waypoints)
             XCTAssertNotNil(response.routes)
@@ -241,44 +242,44 @@ class RouteOptionsTests: XCTestCase {
         }
         return (waypoints: waypoints, route: route)
     }
-    
-    func testResponseWithoutDestinationName() {
+
+    func testResponseWithoutDestinationName() throws {
         // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.412115,39.272675?overview=false&steps=false&access_token=pk.feedcafedeadbeef
-        let response = self.response(for: "noDestinationName")!
+        let response = try XCTUnwrap(self.response(for: "noDestinationName"))
         XCTAssertNil(response.route.legs.last?.destination?.name, "Empty-string waypoint name in API responds should be represented as nil.")
     }
-    
-    func testResponseWithDestinationName() {
+
+    func testResponseWithDestinationName() throws {
         // https://api.mapbox.com/directions/v5/mapbox/driving/-84.411389,39.27665;-84.41195,39.27260?overview=false&steps=false&access_token=pk.feedcafedeadbeef
-        let response = self.response(for: "apiDestinationName")!
+        let response = try XCTUnwrap(self.response(for: "apiDestinationName"))
         XCTAssertEqual(response.route.legs.last?.destination?.name, "Reading Road", "Waypoint name in fixture response not parsed correctly.")
     }
-    
-    func testResponseWithManuallySetDestinationName() {
-        let manuallySet = RouteOptionsTests.testWaypoints
-        manuallySet.last!.name = "manuallyset"
-        
-        let response = self.response(for: "apiDestinationName", waypoints: manuallySet)!
+
+    func testResponseWithManuallySetDestinationName() throws {
+        var manuallySet = RouteOptionsTests.testWaypoints
+        manuallySet[manuallySet.endIndex - 1].name = "manuallyset"
+
+        let response = try XCTUnwrap(self.response(for: "apiDestinationName", waypoints: manuallySet))
         XCTAssertEqual(response.route.legs.last?.destination?.name, "manuallyset", "Waypoint with manually set name should override any computed name.")
     }
-    
+
     func testApproachesURLQueryParams() {
         let coordinate = LocationCoordinate2D(latitude: 0, longitude: 0)
-        let wp1 = Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+        var wp1 = Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         wp1.allowsArrivingOnOppositeSide = false
         let waypoints = [
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
             wp1,
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         ]
-        
+
         let routeOptions = RouteOptions(waypoints: waypoints)
         routeOptions.includesSteps = true
         let urlQueryItems = routeOptions.urlQueryItems
         let approaches = urlQueryItems.filter { $0.name == "approaches" }.first!
         XCTAssertEqual(approaches.value!, "unrestricted;curb;unrestricted", "waypoints[1] should be restricted to curb")
     }
-    
+
     func testMissingApproaches() {
         let coordinate = LocationCoordinate2D(latitude: 0, longitude: 0)
         let waypoints = [
@@ -286,52 +287,52 @@ class RouteOptionsTests: XCTestCase {
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
             Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         ]
-        
+
         let routeOptions = RouteOptions(waypoints: waypoints)
         routeOptions.includesSteps = true
         let urlQueryItems = routeOptions.urlQueryItems
         let hasApproaches = !urlQueryItems.filter { $0.name == "approaches" }.isEmpty
         XCTAssertFalse(hasApproaches, "approaches query param should be omitted unless any waypoint is restricted to curb")
     }
-    
+
     func testDecimalPrecision() {
         let start = LocationCoordinate2D(latitude: 9.945497000000003, longitude: 53.03218800000006)
         let end = LocationCoordinate2D(latitude: 10.945497000000003, longitude: 54.03218800000006)
-        
+
         let answer = [start.requestDescription, end.requestDescription]
         let correct = ["53.032188,9.945497", "54.032188,10.945497"]
         XCTAssert(answer == correct, "Coordinates should be truncated.")
     }
-    
+
     func testWaypointSerialization() {
         let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
-        let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        var destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
         destination.targetCoordinate = LocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
         let options = RouteOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
     }
-    
+
     func testWaypointLayers(){
-        let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        var from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
-        let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        var to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         from.layer = -1
         to.layer = 3
         let options = RouteOptions(waypoints: [from, through, to])
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "layers", value: "-1;;3")))
     }
-    
+
     func testInitialManeuverAvoidanceRadiusSerialization() {
         let options = RouteOptions(coordinates: testCoordinates)
-        
+
         options.initialManeuverAvoidanceRadius = 123.456
-        
+
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "avoid_maneuver_radius", value: "123.456")))
-        
+
         options.initialManeuverAvoidanceRadius = nil
-        
+
         XCTAssertFalse(options.urlQueryItems.contains(URLQueryItem(name: "avoid_maneuver_radius", value: nil)))
     }
 
@@ -344,7 +345,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_width", value: String(widthValue))))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "max_height", value: String(heightValue))))
     }
-    
+
     func testMaximumWeightSerialization() {
         let options = RouteOptions(coordinates: [])
         let weightValue = 13.3
@@ -401,10 +402,10 @@ fileprivate let testCoordinates = [
 ]
 
 var testRouteOptions: RouteOptions {
-    let waypoints = testCoordinates.map { Waypoint(coordinate: $0)}
+    var waypoints = testCoordinates.map { Waypoint(coordinate: $0)}
     waypoints[0].layer = -1
     waypoints[2].layer = 3
-    
+
     let opts = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
     opts.locale = Locale(identifier: "en_US")
     opts.allowsUTurnAtWaypoint = true

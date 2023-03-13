@@ -8,9 +8,9 @@ internal extension CodingUserInfoKey {
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.
  */
-open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
+public struct VisualInstructionBanner: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
-    
+
     private enum CodingKeys: String, CodingKey, CaseIterable {
         case distanceAlongStep = "distanceAlongGeometry"
         case primaryInstruction = "primary"
@@ -19,9 +19,9 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
         case quaternaryInstruction = "view"
         case drivingSide
     }
-    
+
     // MARK: Creating a Visual Instruction Banner
-    
+
     /**
      Initializes a visual instruction banner with the given instructions.
      */
@@ -33,7 +33,7 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
         quaternaryInstruction = quaternary
         self.drivingSide = drivingSide
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
@@ -42,11 +42,11 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
         try container.encodeIfPresent(tertiaryInstruction, forKey: .tertiaryInstruction)
         try container.encodeIfPresent(quaternaryInstruction, forKey: .quaternaryInstruction)
         try container.encode(drivingSide, forKey: .drivingSide)
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
-    
-    required public init(from decoder: Decoder) throws {
+
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         distanceAlongStep = try container.decode(LocationDistance.self, forKey: .distanceAlongStep)
         primaryInstruction = try container.decode(VisualInstruction.self, forKey: .primaryInstruction)
@@ -58,19 +58,19 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
         } else {
             drivingSide = .default
         }
-        
+
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
-    
+
     // MARK: Timing When to Display the Banner
-    
+
     /**
      The distance at which the visual instruction should be shown, measured in meters from the beginning of the step.
      */
     public let distanceAlongStep: LocationDistance
-    
+
     // MARK: Getting the Instructions to Display
-    
+
     /**
      The most important information to convey to the user about the `RouteStep`.
      */
@@ -87,22 +87,22 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
      This instruction could either contain the visual layout information or the lane information about the upcoming maneuver.
      */
     public let tertiaryInstruction: VisualInstruction?
-    
+
     /**
      A visual instruction that is presented to provide information about the incoming junction.
      This instruction displays a zoomed image of incoming junction.
      */
     public let quaternaryInstruction: VisualInstruction?
-    
+
     // MARK: Respecting Regional Driving Rules
-    
+
     /**
      Which side of a bidirectional road the driver should drive on, also known as the rule of the road.
      */
     public var drivingSide: DrivingSide
 }
 
-extension VisualInstructionBanner: Equatable {
+extension VisualInstructionBanner {
     public static func == (lhs: VisualInstructionBanner, rhs: VisualInstructionBanner) -> Bool {
         return lhs.distanceAlongStep == rhs.distanceAlongStep &&
             lhs.primaryInstruction == rhs.primaryInstruction &&

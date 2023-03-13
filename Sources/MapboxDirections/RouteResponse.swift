@@ -152,9 +152,9 @@ extension RouteResponse: Codable {
                 
         if let decodedWaypoints = decodedWaypoints {
             // The response lists the same number of tracepoints as the waypoints in the request, whether or not a given waypoint is leg-separating.
-            waypoints = zip(decodedWaypoints, optionsWaypoints).map { (pair) -> Waypoint in
+            var waypoints = zip(decodedWaypoints, optionsWaypoints).map { (pair) -> Waypoint in
                 let (decodedWaypoint, waypointInOptions) = pair
-                let waypoint = Waypoint(coordinate: decodedWaypoint.coordinate,
+                var waypoint = Waypoint(coordinate: decodedWaypoint.coordinate,
                                         coordinateAccuracy: waypointInOptions.coordinateAccuracy,
                                         name: waypointInOptions.name?.nonEmptyString ?? decodedWaypoint.name)
                 waypoint.snappedDistance = decodedWaypoint.snappedDistance
@@ -168,18 +168,26 @@ extension RouteResponse: Codable {
                 
                 return waypoint
             }
-            waypoints?.first?.separatesLegs = true
-            waypoints?.last?.separatesLegs = true
+
+            if waypoints.startIndex < waypoints.endIndex {
+                waypoints[waypoints.startIndex].separatesLegs = true
+            }
+            let lastIndex = waypoints.endIndex - 1
+            if waypoints.indices.contains(lastIndex) {
+                waypoints[lastIndex].separatesLegs = true
+            }
+
+            self.waypoints = waypoints
         } else {
             waypoints = decodedWaypoints
         }
         
-        if let routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
+        if var routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
             // Postprocess each route.
-            for route in routes {
+            for routeIndex in routes.indices {
                 // Imbue each route’s legs with the waypoints refined above.
                 if let waypoints = waypoints {
-                    route.legSeparators = waypoints.filter { $0.separatesLegs }
+                    routes[routeIndex].legSeparators = waypoints.filter { $0.separatesLegs }
                 }
             }
             self.routes = routes

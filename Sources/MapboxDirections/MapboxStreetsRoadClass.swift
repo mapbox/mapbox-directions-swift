@@ -2,7 +2,7 @@
 import Foundation
 
 /// A road classification according to the [Mapbox Streets source](https://docs.mapbox.com/vector-tiles/reference/mapbox-streets-v8/#road) , version 8.
-public enum MapboxStreetsRoadClass: String, Codable {
+public enum MapboxStreetsRoadClass: String, Codable, Equatable {
     /// High-speed, grade-separated highways
     case motorway = "motorway"
     /// Link roads/lanes/ramps connecting to motorways

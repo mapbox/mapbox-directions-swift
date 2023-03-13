@@ -6,7 +6,7 @@ import Turf
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */
-public class Waypoint: Codable, ForeignMemberContainerClass {
+public struct Waypoint: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     private enum CodingKeys: String, CodingKey, CaseIterable {
@@ -24,7 +24,7 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
     
     // MARK: Creating a Waypoint
     
-    required public init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         coordinate = try container.decode(LocationCoordinate2DCodable.self, forKey: .coordinate).decodedCoordinates
@@ -73,8 +73,8 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(snappedDistance, forKey: .snappedDistance)
         try container.encodeIfPresent(layer, forKey: .layer)
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
     /**
@@ -231,7 +231,7 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
      This property has no effect if `DirectionsOptions.includesSteps` is set to `false`.
      This property corresponds to the [`approaches`](https://www.mapbox.com/api-documentation/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
-    open var allowsArrivingOnOppositeSide = true
+    public var allowsArrivingOnOppositeSide = true
     
     // MARK: Identifying the Waypoint
     
@@ -254,12 +254,6 @@ public class Waypoint: Codable, ForeignMemberContainerClass {
      This property corresponds to the [`approaches`](https://docs.mapbox.com/api/navigation/#retrieve-directions) query parameter in the Mapbox Directions and Map Matching APIs.
      */
     public var separatesLegs: Bool = true
-}
-
-extension Waypoint: Equatable {
-    public static func == (lhs: Waypoint, rhs: Waypoint) -> Bool {
-        return lhs.coordinate == rhs.coordinate && lhs.name == rhs.name && lhs.coordinateAccuracy == rhs.coordinateAccuracy
-    }
 }
 
 extension Waypoint: CustomStringConvertible {

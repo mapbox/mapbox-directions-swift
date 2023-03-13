@@ -4,7 +4,7 @@ import Turf
 /**
  A single cross street along a step.
  */
-public struct Intersection: ForeignMemberContainer {
+public struct Intersection: ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     public var lanesForeignMembers: [JSONObject] = []
     
@@ -457,7 +457,7 @@ extension Intersection: Codable {
     }
 }
 
-extension Intersection: Equatable {
+extension Intersection {
     public static func == (lhs: Intersection, rhs: Intersection) -> Bool {
         return lhs.location == rhs.location &&
             lhs.headings == rhs.headings &&

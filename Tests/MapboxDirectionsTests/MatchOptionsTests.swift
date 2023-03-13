@@ -27,15 +27,14 @@ class MatchOptionsTests: XCTestCase {
     }
     
     func testURLCoding() throws {
-        
         let originalOptions = testMatchOptions
         originalOptions.resamplesTraces = true
-        
-        originalOptions.waypoints.enumerated().forEach {
-            $0.element.separatesLegs = $0.offset != 1
-            if $0.element.separatesLegs {
-                $0.element.name = "name_\($0.offset)"
-                $0.element.targetCoordinate = $0.element.coordinate
+
+        for index in originalOptions.waypoints.indices {
+            originalOptions.waypoints[index].separatesLegs = index != 1
+            if originalOptions.waypoints[index].separatesLegs {
+                originalOptions.waypoints[index].name = "name_\(index)"
+                originalOptions.waypoints[index].targetCoordinate = originalOptions.waypoints[index].coordinate
             }
         }
         
@@ -70,10 +69,10 @@ class MatchOptionsTests: XCTestCase {
     
     // MARK: API name-handling tests
     
-    private static var testTracepoints: [Tracepoint] {
+    private static var testTracepoints: [Match.Tracepoint] {
         let one = LocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)
         let two = LocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)
-        return [one, two].map { Tracepoint(coordinate: $0, countOfAlternatives: 0, name: nil) }
+        return [one, two].map { Match.Tracepoint(coordinate: $0, countOfAlternatives: 0, name: nil) }
     }
 
     

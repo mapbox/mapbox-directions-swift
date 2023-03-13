@@ -38,7 +38,7 @@ class IsochroneTests: XCTestCase {
         let radius2 = Measurement(value: 0.2, unit: UnitLength.kilometers)
         
         #if !os(Linux)
-        let options = IsochroneOptions(centerCoordinate: location,
+        var options = IsochroneOptions(centerCoordinate: location,
                                        contours: .byDistances([
                                         .init(value: radius1, color: .init(red: 0.1, green: 0.2, blue: 0.3, alpha: 1.0)),
                                         .init(value: radius2, color: .init(red: 0.4, green: 0.5, blue: 0.6, alpha: 1.0))

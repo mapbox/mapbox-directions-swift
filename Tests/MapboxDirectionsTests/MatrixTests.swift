@@ -61,7 +61,7 @@ class MatrixTests: XCTestCase {
     }
     
     func testWaypointParameters() {
-        let waypoints = [
+        var waypoints = [
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.751668, longitude: -122.418408), name: "Mission Street"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.755184, longitude: -122.422959), name: "22nd Street"),
             Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.759695, longitude: -122.426911))
@@ -205,8 +205,10 @@ class MatrixTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(response.destinations, options.waypoints)
-            XCTAssertEqual(response.sources, options.waypoints)
+            XCTAssertEqual(response.destinations?.removingSnappedDistances(),
+                           options.waypoints)
+            XCTAssertEqual(response.sources?.removingSnappedDistances(),
+                           options.waypoints)
             XCTAssertNil(response.distance(from: 0, to: 1))
             XCTAssertNil(response.travelTime(from: 0, to: 1))
             XCTAssertEqual(response.travelTime(from: 1, to: 2), 597.0)
@@ -220,3 +222,13 @@ class MatrixTests: XCTestCase {
     }
 }
 #endif
+
+extension Collection where Element == Waypoint {
+    func removingSnappedDistances() -> [Element] {
+        map {
+            var waypoint = $0
+            waypoint.snappedDistance = nil
+            return waypoint
+        }
+    }
+}

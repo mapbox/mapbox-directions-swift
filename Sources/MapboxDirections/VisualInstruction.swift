@@ -4,7 +4,7 @@ import Turf
 /**
  The contents of a banner that should be displayed as added visual guidance for a route. The banner instructions are children of the steps during which they should be displayed, but they refer to the maneuver in the following step.
  */
-open class VisualInstruction: Codable, ForeignMemberContainerClass {
+public struct VisualInstruction: Codable, ForeignMemberContainer, Equatable {
     public var foreignMembers: JSONObject = [:]
     
     // MARK: Creating a Visual Instruction
@@ -35,11 +35,11 @@ open class VisualInstruction: Codable, ForeignMemberContainerClass {
         try container.encodeIfPresent(maneuverDirection, forKey: .maneuverDirection)
         try container.encode(components, forKey: .components)
         try container.encodeIfPresent(finalHeading, forKey: .finalHeading)
-        
-        try encodeForeignMembers(to: encoder)
+
+        try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
     
-    public required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         text = try container.decodeIfPresent(String.self, forKey: .text)
         maneuverType = try container.decodeIfPresent(ManeuverType.self, forKey: .maneuverType)
@@ -86,7 +86,7 @@ open class VisualInstruction: Codable, ForeignMemberContainerClass {
     public var finalHeading: LocationDegrees?
 }
 
-extension VisualInstruction: Equatable {
+extension VisualInstruction {
     public static func == (lhs: VisualInstruction, rhs: VisualInstruction) -> Bool {
         return lhs.text == rhs.text &&
             lhs.maneuverType == rhs.maneuverType &&

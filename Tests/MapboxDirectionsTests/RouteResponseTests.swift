@@ -6,7 +6,7 @@ class RouteResponseTests: XCTestCase {
     
     func testRouteResponseEncodingAndDecoding() {
         let originCoordinate = LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182)
-        let originWaypoint = Waypoint(coordinate: originCoordinate, name: "Test origin waypoint")
+        var originWaypoint = Waypoint(coordinate: originCoordinate, name: "Test origin waypoint")
         originWaypoint.targetCoordinate = originCoordinate
         originWaypoint.coordinateAccuracy = 1.0
         originWaypoint.heading = 120.0

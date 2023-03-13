@@ -73,9 +73,9 @@ class WaypointTests: XCTestCase {
     
     func testSeparatesLegs() {
         let one = Waypoint(coordinate: LocationCoordinate2D(latitude: 1, longitude: 1))
-        let two = Waypoint(coordinate: LocationCoordinate2D(latitude: 2, longitude: 2))
+        var two = Waypoint(coordinate: LocationCoordinate2D(latitude: 2, longitude: 2))
         let three = Waypoint(coordinate: LocationCoordinate2D(latitude: 3, longitude: 3))
-        let four = Waypoint(coordinate: LocationCoordinate2D(latitude: 4, longitude: 4))
+        var four = Waypoint(coordinate: LocationCoordinate2D(latitude: 4, longitude: 4))
         
         let routeOptions = RouteOptions(waypoints: [one, two, three, four])
         let matchOptions = MatchOptions(waypoints: [one, two, three, four], profileIdentifier: nil)
@@ -83,8 +83,8 @@ class WaypointTests: XCTestCase {
         XCTAssertNil(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         XCTAssertNil(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         
-        two.separatesLegs = false
-        
+        routeOptions.waypoints[1].separatesLegs = false
+        matchOptions.waypoints[1].separatesLegs = false
         XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         
@@ -95,7 +95,7 @@ class WaypointTests: XCTestCase {
     }
     
     func testHeading() {
-        let waypoint = Waypoint(coordinate: LocationCoordinate2D(latitude: -180, longitude: -180))
+        var waypoint = Waypoint(coordinate: LocationCoordinate2D(latitude: -180, longitude: -180))
         XCTAssertEqual(waypoint.headingDescription, "")
         
         waypoint.heading = 0
@@ -126,10 +126,10 @@ class WaypointTests: XCTestCase {
     }
     
     func testTracepointEquality() {
-        let left = Tracepoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0), countOfAlternatives: 0, name: nil)
+        var left = Match.Tracepoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0), countOfAlternatives: 0, name: nil)
         XCTAssertEqual(left, left)
         
-        let right = Tracepoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0), countOfAlternatives: 0, name: nil)
+        let right = Match.Tracepoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0), countOfAlternatives: 0, name: nil)
         XCTAssertEqual(left, right)
         
         // FIXME: Only Waypoint.==(_:_:) ever gets called: <https://stackoverflow.com/a/28794214/4585461>. This will be moot once Tracepoint becomes a struct that doesn’t inherit from Waypoint: <https://github.com/mapbox/mapbox-directions-swift/pull/388>.
@@ -144,17 +144,15 @@ class WaypointTests: XCTestCase {
     }
     
     func testAccuracies() {
-        let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
+        var from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let to = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let options = RouteOptions(waypoints: [from, to])
         XCTAssertNil(options.bearings)
         XCTAssertNil(options.radiuses)
-        
-        from.heading = 90
-        from.headingAccuracy = 45
+        options.waypoints[0].heading = 90
+        options.waypoints[0].headingAccuracy = 45
         XCTAssertEqual(options.bearings, "90.0,45.0;")
-        
-        from.coordinateAccuracy = 5
+        options.waypoints[0].coordinateAccuracy = 5
         XCTAssertEqual(options.radiuses, "5.0;unlimited")
     }
     
@@ -166,8 +164,10 @@ class WaypointTests: XCTestCase {
         let routeOptions = RouteOptions(waypoints: [from, through, to])
         let matchOptions = MatchOptions(waypoints: [from, through, to], profileIdentifier: nil)
 
-        through.allowsSnappingToClosedRoad = true
-        through.allowsSnappingToStaticallyClosedRoad = true
+        routeOptions.waypoints[1].allowsSnappingToClosedRoad = true
+        matchOptions.waypoints[1].allowsSnappingToClosedRoad = true
+        routeOptions.waypoints[1].allowsSnappingToStaticallyClosedRoad = true
+        matchOptions.waypoints[1].allowsSnappingToStaticallyClosedRoad = true
 
         XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "snapping_include_closures" }?.value, ";true;")
