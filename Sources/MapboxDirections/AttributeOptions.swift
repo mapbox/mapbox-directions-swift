@@ -82,6 +82,12 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
     public static let trafficTendency = AttributeOptions(rawValue: 1 << 7)
     
     /**
+     :nodoc:
+     Indicates if the information about route violations should be put into the Nav API response.
+     */
+    public static let restrictionsViolations = AttributeOptions(rawValue: 1 << 8)
+    
+    /**
      Creates an AttributeOptions from the given description strings.
      */
     public init?(descriptions: [String]) {
@@ -104,6 +110,8 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
                 attributeOptions.update(with: .numericCongestionLevel)
             case "traffic_tendency":
                 attributeOptions.update(with: .trafficTendency)
+            case "violation":
+                attributeOptions.update(with: .restrictionsViolations)
             case "":
                 continue
             default:
@@ -138,6 +146,9 @@ public struct AttributeOptions: CustomValueOptionSet, CustomStringConvertible {
         }
         if contains(.trafficTendency) {
             descriptions.append("traffic_tendency")
+        }
+        if contains(.restrictionsViolations) {
+            descriptions.append("violation")
         }
         for (key, value) in customOptionsByRawValue {
             if rawValue & key != 0 {

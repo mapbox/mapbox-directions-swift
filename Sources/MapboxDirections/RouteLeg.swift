@@ -34,6 +34,7 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         case incidents
         case viaWaypoints = "via_waypoints"
         case closures = "closures"
+        case notifications = "notifications"
     }
     
     // MARK: Creating a Leg
@@ -109,6 +110,10 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
             self.viaWaypoints = viaWaypoints
         }
         
+        if let notifications = try container.decodeIfPresent([RouteLeg.Notification].self, forKey: .notifications) {
+            self.notifications = notifications
+        }
+        
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
@@ -142,6 +147,10 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
 
         if let viaWaypoints = viaWaypoints {
             try container.encode(viaWaypoints, forKey: .viaWaypoints)
+        }
+        
+        if let notifications = notifications {
+            try container.encode(notifications, forKey: .notifications)
         }
         
         try encodeForeignMembers(to: encoder)
@@ -300,6 +309,12 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
         }
     }
 
+    /**
+     :nodoc:
+     Notifications that contain information and locations of unavoidable violated route restrictions.
+     */
+    open var notifications: [RouteLeg.Notification]?
+    
     func refreshAttributes(newAttributes: Attributes, startLegShapeIndex: Int = 0) {
         let refreshRange = PartialRangeFrom(startLegShapeIndex)
 
