@@ -33,4 +33,67 @@ class RouteLegTests: XCTestCase {
         XCTAssertEqual(leg.segmentRangesByStep.last?.upperBound, leg.segmentDistances?.count)
         XCTAssertEqual(leg.typicalTravelTime, typicalTravelTime)
     }
+    
+    func testNotificationsCoding() {
+        guard let fixtureURL = Bundle.module.url(forResource: "RouteResponseWithNotifications",
+                                                 withExtension:"json") else {
+            XCTFail()
+            return
+        }
+        guard let fixtureData = try? Data(contentsOf: fixtureURL, options:.mappedIfSafe) else {
+            XCTFail()
+            return
+        }
+    
+        var fixtureJSON: [String: Any?]?
+        XCTAssertNoThrow(fixtureJSON = try JSONSerialization.jsonObject(with: fixtureData, options: []) as? [String: Any?])
+        
+        let options = RouteOptions(coordinates: [.init(latitude: 0,
+                                                       longitude: 0),
+                                                 .init(latitude: 1,
+                                                       longitude: 1)])
+        options.shapeFormat = .geoJSON
+        let decoder = JSONDecoder()
+        decoder.userInfo[.options] = options
+        decoder.userInfo[.credentials] = BogusCredentials
+        var response: RouteResponse?
+        XCTAssertNoThrow(response = try decoder.decode(RouteResponse.self, from: fixtureData))
+        
+        let encoder = JSONEncoder()
+        encoder.userInfo[.options] = options
+        encoder.userInfo[.credentials] = BogusCredentials
+        
+        let notifications = response?.routes?.first?.legs.first?.notifications
+        XCTAssertNotNil(notifications)
+        XCTAssertEqual(notifications?.count, 5)
+        
+        var encodedResponse: Data?
+        var encodedRouteResponseJSON: [String: Any?]?
+        
+        XCTAssertNoThrow(encodedResponse = try encoder.encode(response))
+        XCTAssertNoThrow(encodedRouteResponseJSON = try JSONSerialization.jsonObject(with: encodedResponse!, options: []) as? [String: Any?])
+        XCTAssertNotNil(encodedRouteResponseJSON)
+        
+        // Remove default keys not found in the original API response.
+        if var encodedRoutesJSON = encodedRouteResponseJSON?["routes"] as? [[String: Any?]] {
+            if var encodedLegJSON = encodedRoutesJSON[0]["legs"] as? [[String: Any?]] {
+                encodedLegJSON[0].removeValue(forKey: "source")
+                encodedLegJSON[0].removeValue(forKey: "destination")
+                encodedLegJSON[0].removeValue(forKey: "profileIdentifier")
+                
+                encodedRoutesJSON[0]["legs"] = encodedLegJSON
+                encodedRouteResponseJSON?["routes"] = encodedRoutesJSON
+            }
+        }
+        if var encodedWaypointsJSON = encodedRouteResponseJSON?["waypoints"] as? [[String: Any?]] {
+            encodedWaypointsJSON[0].removeValue(forKey: "separatesLegs")
+            encodedWaypointsJSON[0].removeValue(forKey: "allowsArrivingOnOppositeSide")
+            encodedWaypointsJSON[1].removeValue(forKey: "separatesLegs")
+            encodedWaypointsJSON[1].removeValue(forKey: "allowsArrivingOnOppositeSide")
+            
+            encodedRouteResponseJSON?["waypoints"] = encodedWaypointsJSON
+        }
+        
+        XCTAssertTrue(JSONSerialization.objectsAreEqual(fixtureJSON, encodedRouteResponseJSON, approximate: true))
+    }
 }

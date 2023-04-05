@@ -11,6 +11,9 @@
 		0BE2402429DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
 		0BE2402529DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
 		0BE2402629DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
+		0BE2402C29DDCD4D00E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
+		0BE2402D29DDCD4E00E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
+		0BE2402E29DDCD5000E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
 		2B01E4B92746ABBC0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B01E4BA2746ABBD0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B0BA051294B542900402F81 /* matrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B0BA050294B542900402F81 /* matrix.json */; };
@@ -564,6 +567,7 @@
 
 /* Begin PBXFileReference section */
 		0BE2402229DD61F600E78939 /* RouteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteNotification.swift; sourceTree = "<group>"; };
+		0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RouteResponseWithNotifications.json; sourceTree = "<group>"; };
 		2B0BA050294B542900402F81 /* matrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = matrix.json; sourceTree = "<group>"; };
 		2B0BA054294B544E00402F81 /* MatrixOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixOptions.swift; sourceTree = "<group>"; };
 		2B0BA055294B544E00402F81 /* MatrixResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixResponse.swift; sourceTree = "<group>"; };
@@ -847,6 +851,7 @@
 			children = (
 				2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */,
 				2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */,
+				0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */,
 				8D381B601FD9F5B1008D5A58 /* noDestinationName.json */,
 				8D381B621FDB01D1008D5A58 /* apiDestinationName.json */,
 			);
@@ -1418,6 +1423,7 @@
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				2B0BA052294B542900402F81 /* matrix.json in Resources */,
 				8A4741922947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402D29DDCD4E00E78939 /* RouteResponseWithNotifications.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540806245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1457,6 +1463,7 @@
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				2B0BA053294B542900402F81 /* matrix.json in Resources */,
 				8A4741932947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402E29DDCD5000E78939 /* RouteResponseWithNotifications.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540807245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1503,6 +1510,7 @@
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B0BA051294B542900402F81 /* matrix.json in Resources */,
 				8A4741912947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402C29DDCD4D00E78939 /* RouteResponseWithNotifications.json in Resources */,
 				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540805245B09E1006C820B /* routeRefreshRoute.json in Resources */,

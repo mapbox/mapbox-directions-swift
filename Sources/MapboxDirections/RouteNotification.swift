@@ -114,6 +114,11 @@ extension RouteLeg.Notification {
     
     public class Violation: Codable, ForeignMemberContainerClass {
         public var foreignMembers: JSONObject = [:]
+        
+        enum CodingKeys: String, CodingKey, CaseIterable {
+            case message
+        }
+        
         /// The optional message of the notification
         public fileprivate(set) var message: String?
     }
@@ -126,6 +131,7 @@ extension RouteLeg.Notification {
             case message
         }
         
+        private let unit = "meters"
         /// The optional requested value in the request.
         public let requestedValue: Measurement<UnitLength>?
         /// The optional actual value associated with the property of the road
@@ -146,6 +152,7 @@ extension RouteLeg.Notification {
         
         public override func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(unit, forKey: .unit)
             try container.encodeIfPresent(requestedValue?.converted(to: .meters).value, forKey: .requestedValue)
             try container.encodeIfPresent(actualValue?.converted(to: .meters).value, forKey: .actualValue)
             
@@ -161,6 +168,8 @@ extension RouteLeg.Notification {
             case message
         }
         
+        private let unit = "meters"
+        
         /// The optional requested value in the request.
         public let requestedValue: Measurement<UnitLength>?
         /// The optional actual value associated with the property of the road
@@ -181,6 +190,7 @@ extension RouteLeg.Notification {
         
         public override func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(unit, forKey: .unit)
             try container.encodeIfPresent(requestedValue?.converted(to: .meters).value, forKey: .requestedValue)
             try container.encodeIfPresent(actualValue?.converted(to: .meters).value, forKey: .actualValue)
             
@@ -195,6 +205,8 @@ extension RouteLeg.Notification {
             case unit
             case message
         }
+        
+        private let unit = "metric tons"
         
         /// The optional requested value in the request.
         public let requestedValue: Measurement<UnitMass>?
@@ -216,6 +228,7 @@ extension RouteLeg.Notification {
         
         public override func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(unit, forKey: .unit)
             try container.encodeIfPresent(requestedValue?.converted(to: .metricTons).value, forKey: .requestedValue)
             try container.encodeIfPresent(actualValue?.converted(to: .metricTons).value, forKey: .actualValue)
             
@@ -242,6 +255,14 @@ extension RouteLeg.Notification {
             self.actualValue = try container.decode(String.self, forKey: .actualValue)
             
             try super.init(from: decoder)
+        }
+        
+        public override func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(requestedValue, forKey: .requestedValue)
+            try container.encodeIfPresent(actualValue, forKey: .actualValue)
+            
+            try super.encode(to: encoder)
         }
     }
     
