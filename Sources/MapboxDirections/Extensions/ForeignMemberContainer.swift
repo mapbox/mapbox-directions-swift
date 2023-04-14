@@ -24,6 +24,8 @@ extension ForeignMemberContainer {
      Decodes any foreign members using the given decoder.
      */
     mutating func decodeForeignMembers<WellKnownCodingKeys>(notKeyedBy _: WellKnownCodingKeys.Type, with decoder: Decoder) throws where WellKnownCodingKeys: CodingKey {
+        guard (decoder.userInfo[.includesForeignMembers] as? Bool) == true else { return }
+
         let foreignMemberContainer = try decoder.container(keyedBy: AnyCodingKey.self)
         for key in foreignMemberContainer.allKeys {
             if WellKnownCodingKeys(stringValue: key.stringValue) == nil {
@@ -36,6 +38,8 @@ extension ForeignMemberContainer {
      Encodes any foreign members using the given encoder.
      */
     func encodeForeignMembers<WellKnownCodingKeys>(notKeyedBy _: WellKnownCodingKeys.Type, to encoder: Encoder) throws where WellKnownCodingKeys: CodingKey {
+        guard (encoder.userInfo[.includesForeignMembers] as? Bool) == true else { return }
+
         var foreignMemberContainer = encoder.container(keyedBy: AnyCodingKey.self)
         for (key, value) in foreignMembers {
             if let key = AnyCodingKey(stringValue: key),
@@ -58,6 +62,8 @@ public protocol ForeignMemberContainerClass: AnyObject {
      Foreign members to round-trip to JSON.
      
      Foreign members are unrecognized properties, similar to [foreign members](https://datatracker.ietf.org/doc/html/rfc7946#section-6.1) in GeoJSON. This library does not officially support any property that is documented as a “beta” property in the Mapbox Directions API response format, but you can get and set it as an element of this `JSONObject`.
+
+     Members are coded only if used `JSONEncoder` or `JSONDecoder` has `userInfo[.includesForeignMembers] = true`.
      */
     var foreignMembers: JSONObject { get set }
     
@@ -65,7 +71,7 @@ public protocol ForeignMemberContainerClass: AnyObject {
      Decodes any foreign members using the given decoder.
      
      - parameter codingKeys: `CodingKeys` type which describes all properties declared  in current subclass.
-     - parameter decoder: `Decoder` instance, which perfroms the decoding process.
+     - parameter decoder: `Decoder` instance, which performs the decoding process.
      */
     func decodeForeignMembers<WellKnownCodingKeys>(notKeyedBy codingKeys: WellKnownCodingKeys.Type, with decoder: Decoder) throws where WellKnownCodingKeys: CodingKey & CaseIterable
     
@@ -82,6 +88,8 @@ public protocol ForeignMemberContainerClass: AnyObject {
 extension ForeignMemberContainerClass {
 
     public func decodeForeignMembers<WellKnownCodingKeys>(notKeyedBy _: WellKnownCodingKeys.Type, with decoder: Decoder) throws where WellKnownCodingKeys: CodingKey & CaseIterable {
+        guard (decoder.userInfo[.includesForeignMembers] as? Bool) == true else { return }
+
         if foreignMembers.isEmpty {
             let foreignMemberContainer = try decoder.container(keyedBy: AnyCodingKey.self)
             for key in foreignMemberContainer.allKeys {
@@ -96,6 +104,8 @@ extension ForeignMemberContainerClass {
     }
     
     public func encodeForeignMembers(to encoder: Encoder) throws {
+        guard (encoder.userInfo[.includesForeignMembers] as? Bool) == true else { return }
+
         var foreignMemberContainer = encoder.container(keyedBy: AnyCodingKey.self)
         for (key, value) in foreignMembers {
             if let key = AnyCodingKey(stringValue: key) {
