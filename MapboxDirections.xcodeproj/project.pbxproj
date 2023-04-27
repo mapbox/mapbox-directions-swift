@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BE2402329DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
+		0BE2402429DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
+		0BE2402529DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
+		0BE2402629DD61F600E78939 /* RouteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2402229DD61F600E78939 /* RouteNotification.swift */; };
+		0BE2402C29DDCD4D00E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
+		0BE2402D29DDCD4E00E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
+		0BE2402E29DDCD5000E78939 /* RouteResponseWithNotifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */; };
 		2B01E4B92746ABBC0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B01E4BA2746ABBD0002A5F7 /* RouteResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */; };
 		2B0BA051294B542900402F81 /* matrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B0BA050294B542900402F81 /* matrix.json */; };
@@ -559,6 +566,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0BE2402229DD61F600E78939 /* RouteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteNotification.swift; sourceTree = "<group>"; };
+		0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RouteResponseWithNotifications.json; sourceTree = "<group>"; };
 		2B0BA050294B542900402F81 /* matrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = matrix.json; sourceTree = "<group>"; };
 		2B0BA054294B544E00402F81 /* MatrixOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixOptions.swift; sourceTree = "<group>"; };
 		2B0BA055294B544E00402F81 /* MatrixResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixResponse.swift; sourceTree = "<group>"; };
@@ -842,6 +851,7 @@
 			children = (
 				2B67F68127EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json */,
 				2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */,
+				0BE2402729DDCAF600E78939 /* RouteResponseWithNotifications.json */,
 				8D381B601FD9F5B1008D5A58 /* noDestinationName.json */,
 				8D381B621FDB01D1008D5A58 /* apiDestinationName.json */,
 			);
@@ -947,6 +957,7 @@
 				2B0BA055294B544E00402F81 /* MatrixResponse.swift */,
 				DAC05F171CFC075300FA0071 /* Route.swift */,
 				DAC05F191CFC077C00FA0071 /* RouteLeg.swift */,
+				0BE2402229DD61F600E78939 /* RouteNotification.swift */,
 				2B5407F6245302AB006C820B /* RouteLegAttributes.swift */,
 				DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */,
 				43208BAC2343FF5500D8BD89 /* RouteResponse.swift */,
@@ -1412,6 +1423,7 @@
 				35D92FF1218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				2B0BA052294B542900402F81 /* matrix.json in Resources */,
 				8A4741922947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402D29DDCD4E00E78939 /* RouteResponseWithNotifications.json in Resources */,
 				AEAB391220D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68327EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540806245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1451,6 +1463,7 @@
 				35D92FF2218203AB000C78CB /* 2018-10-16-Liechtenstein.tar in Resources */,
 				2B0BA053294B542900402F81 /* matrix.json in Resources */,
 				8A4741932947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402E29DDCD5000E78939 /* RouteResponseWithNotifications.json in Resources */,
 				AEAB391320D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B67F68427EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540807245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1497,6 +1510,7 @@
 				AEAB391120D9469A008F4E54 /* subVisualInstructions.json in Resources */,
 				2B0BA051294B542900402F81 /* matrix.json in Resources */,
 				8A4741912947D22900F231F9 /* amenities.json in Resources */,
+				0BE2402C29DDCD4D00E78939 /* RouteResponseWithNotifications.json in Resources */,
 				DACCFCA92225359600110FC9 /* v5_driving_oldenburg_polyline.json in Resources */,
 				2B67F68227EDC2EF007BD6D2 /* RouteResponseWithForeignMembers.json in Resources */,
 				2B540805245B09E1006C820B /* routeRefreshRoute.json in Resources */,
@@ -1582,6 +1596,7 @@
 				2BD2553529544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4A2045E72800D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00C207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
+				0BE2402429DD61F600E78939 /* RouteNotification.swift in Sources */,
 				C584E3F71F201C7B00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA220195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617123DBA58E0062BFFE /* (null) in Sources */,
@@ -1694,6 +1709,7 @@
 				2BD2553629544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4B2045E72900D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00D207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
+				0BE2402529DD61F600E78939 /* RouteNotification.swift in Sources */,
 				C584E3F81F201C7C00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA320195AB2001F9261 /* MatchOptions.swift in Sources */,
 				43D6617223DBA58E0062BFFE /* (null) in Sources */,
@@ -1806,6 +1822,7 @@
 				2BD2553729544D19006C9106 /* URL+Request.swift in Sources */,
 				C5990B4C2045E72A00D7DFD4 /* DirectionsResult.swift in Sources */,
 				35EFD00E207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
+				0BE2402629DD61F600E78939 /* RouteNotification.swift in Sources */,
 				C584E3F91F201C7D00BBC9BB /* RoadClasses.swift in Sources */,
 				C5DAACA420195AB3001F9261 /* MatchOptions.swift in Sources */,
 				43D6617323DBA58E0062BFFE /* (null) in Sources */,
@@ -1880,6 +1897,7 @@
 				2BD2553429544D19006C9106 /* URL+Request.swift in Sources */,
 				35EFD00B207DFACA00BF3873 /* VisualInstruction.swift in Sources */,
 				DAC05F161CFBFAC400FA0071 /* Waypoint.swift in Sources */,
+				0BE2402329DD61F600E78939 /* RouteNotification.swift in Sources */,
 				C57D55081DB58C0200B94B74 /* Lane.swift in Sources */,
 				DAC05F181CFC075300FA0071 /* Route.swift in Sources */,
 				43D6617023DBA58E0062BFFE /* (null) in Sources */,

@@ -39,6 +39,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.walkwayPriority, options.walkwayPriority)
         XCTAssertEqual(unarchivedOptions.speed, options.speed)
         XCTAssertEqual(unarchivedOptions.includesTollPrices, options.includesTollPrices)
+        XCTAssertEqual(unarchivedOptions.notifications, options.notifications)
     }
     
     func testCodingWithRawCodingKeys() {
@@ -70,7 +71,8 @@ class RouteOptionsTests: XCTestCase {
             "max_height": 3,
             "alley_bias": DirectionsPriority.low.rawValue,
             "walkway_bias": DirectionsPriority.high.rawValue,
-            "compute_toll_cost": true
+            "compute_toll_cost": true,
+            "notifications": "none"
         ]
         
         let routeOptionsData = try! JSONSerialization.data(withJSONObject: routeOptionsJSON, options: [])
@@ -97,6 +99,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(routeOptions.maximumHeight, Measurement(value: 3, unit: .meters))
         XCTAssertEqual(routeOptions.maximumWeight, Measurement(value: 3.5, unit: .metricTons))
         XCTAssertEqual(routeOptions.includesTollPrices, true)
+        XCTAssertEqual(routeOptions.notifications, .none)
         
         let encodedRouteOptions: Data = try! JSONEncoder().encode(routeOptions)
         let optionsString: String = String(data: encodedRouteOptions, encoding: .utf8)!
@@ -123,6 +126,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(unarchivedOptions.maximumWidth, routeOptions.maximumWidth)
         XCTAssertEqual(unarchivedOptions.maximumHeight, routeOptions.maximumHeight)
         XCTAssertEqual(unarchivedOptions.includesTollPrices, routeOptions.includesTollPrices)
+        XCTAssertEqual(unarchivedOptions.notifications, routeOptions.notifications)
     }
     
     func testURLCoding() throws {
@@ -131,6 +135,7 @@ class RouteOptionsTests: XCTestCase {
         originalOptions.includesAlternativeRoutes = true
         originalOptions.includesExitRoundaboutManeuver = true
         originalOptions.refreshingEnabled = true
+        originalOptions.notifications = .none
         
         originalOptions.waypoints.enumerated().forEach {
             $0.element.allowsArrivingOnOppositeSide = $0.offset == 2
@@ -195,6 +200,7 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertEqual(decodedOptions.walkwayPriority, originalOptions.walkwayPriority)
         XCTAssertEqual(decodedOptions.speed, originalOptions.speed)
         XCTAssertEqual(decodedOptions.includesTollPrices, originalOptions.includesTollPrices)
+        XCTAssertEqual(decodedOptions.notifications, originalOptions.notifications)
         XCTAssertNil(decodedOptions.arriveBy)
         // URL encoding skips seconds, so we check that dates are within 1 minute delta
         XCTAssertTrue(abs(decodedOptions.departAt!.timeIntervalSince(originalOptions.departAt!)) < 60)

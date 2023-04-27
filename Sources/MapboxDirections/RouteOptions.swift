@@ -110,6 +110,11 @@ open class RouteOptions: DirectionsOptions {
         if mappedQueryItems[CodingKeys.includesTollPrices.stringValue] == "true" {
             self.includesTollPrices = true
         }
+        
+        if let mappedValue = mappedQueryItems[CodingKeys.notifications.stringValue],
+           mappedValue != NotificationsSelection.all.rawValue {
+            self.notifications = NotificationsSelection(rawValue: mappedValue)
+        }
     }
 
     #if canImport(CoreLocation)
@@ -159,6 +164,7 @@ open class RouteOptions: DirectionsOptions {
         case departAt = "depart_at"
         case layers = "layers"
         case includesTollPrices = "compute_toll_cost"
+        case notifications
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -188,6 +194,10 @@ open class RouteOptions: DirectionsOptions {
         
         if includesTollPrices {
             try container.encode(includesTollPrices, forKey: .includesTollPrices)
+        }
+        
+        if notifications != .all {
+            try container.encode(notifications.rawValue, forKey: .notifications)
         }
     }
     
@@ -234,6 +244,8 @@ open class RouteOptions: DirectionsOptions {
         }
         
         includesTollPrices = try container.decodeIfPresent(Bool.self, forKey: .includesTollPrices) ?? false
+        
+        notifications = try container.decodeIfPresent(NotificationsSelection.self, forKey: .notifications) ?? .all
         
         try super.init(from: decoder)
     }
@@ -412,6 +424,12 @@ open class RouteOptions: DirectionsOptions {
      */
     open var includesTollPrices = false
     
+    /// :nodoc:
+    /// Control the flow of notifications.
+    ///
+    /// Some types of notifications can be ignored in the response body by changing this value. Defaults to `all`.
+    open var notifications: NotificationsSelection = .all
+    
     // MARK: Getting the Request URL
     
     override open var urlQueryItems: [URLQueryItem] {
@@ -498,6 +516,11 @@ open class RouteOptions: DirectionsOptions {
                                        value: includesTollPrices.queryString))
         }
         
+        if notifications != .all {
+            params.append(URLQueryItem(name: CodingKeys.notifications.stringValue,
+                                       value: notifications.rawValue))
+        }
+        
         return params + super.urlQueryItems
     }
     
@@ -545,5 +568,25 @@ extension DateFormatter {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
+    }
+}
+
+
+extension RouteOptions {
+    /// :nodoc:
+    /// Control the flow of notifications on the route.
+    public struct NotificationsSelection: Hashable, RawRepresentable, Codable {
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+        
+        public var rawValue: String
+        
+        /// Include all notifications.
+        public static let all = NotificationsSelection(rawValue: "all")
+        
+        /// Ignore all notifications.
+        public static let none = NotificationsSelection(rawValue: "none")
+        
     }
 }

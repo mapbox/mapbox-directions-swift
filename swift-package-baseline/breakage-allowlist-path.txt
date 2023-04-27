@@ -1,1 +1,2 @@
 API breakage: constructor Intersection.init(location:headings:approachIndex:outletIndex:outletIndexes:approachLanes:usableApproachLanes:preferredApproachLanes:usableLaneIndication:outletRoadClasses:tollCollection:tunnelName:restStop:isUrban:regionCode:outletMapboxStreetsRoadClass:railroadCrossing:trafficSignal:stopSign:yieldSign:) has been removed
+API breakage: enumelement RouteLeg.CodingKeys.notifications has been added as a new enum case
