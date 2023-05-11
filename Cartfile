@@ -1,1 +1,1 @@
-github "raphaelmor/Polyline" ~> 4.2
+github "raphaelmor/Polyline" == 5.1.0
