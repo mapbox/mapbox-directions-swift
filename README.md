@@ -1,11 +1,8 @@
-# MapboxDirections
+# MaplibreDirections
 
-[📱&nbsp;![iOS Build Status](https://app.bitrise.io/app/2f82077d3f083479/status.svg?token=mC783nGMKA3XrvcMCJAOLg&branch=master)](https://www.bitrise.io/app/2f82077d3f083479) &nbsp;&nbsp;&nbsp;
-[🖥💻&nbsp;![macOS Build Status](https://app.bitrise.io/app/3e18d5c284ee7fe4/status.svg?token=YCPg5FTvNCSoRBvECdFWtg&branch=master)](https://www.bitrise.io/app/3e18d5c284ee7fe4) &nbsp;&nbsp;&nbsp;
-[📺&nbsp;![tvOS Build Status](https://app.bitrise.io/app/0dd69f13a42252d6/status.svg?token=jin7-oeLn35GfZqWaqumtA&branch=master)](https://www.bitrise.io/app/0dd69f13a42252d6) &nbsp;&nbsp;&nbsp;
-[⌚️&nbsp;![watchOS Build Status](https://app.bitrise.io/app/6db52b89a8fbfb40/status.svg?token=v645xdLSJWX0uYxLU7CA3g&branch=master)](https://www.bitrise.io/app/6db52b89a8fbfb40) &nbsp;&nbsp;&nbsp;
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) &nbsp;&nbsp;&nbsp;
-[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxDirections.swift.svg)](http://cocoadocs.org/docsets/MapboxDirections.swift/)
+Copyright (c) 2023 MapLibre contributors
+
+The MaplibreDirections SDK for iOS is built on a for of the MapboxDirections SDK v.023.
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/) and [Mapbox Map Matching API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine.
 
@@ -13,7 +10,19 @@ Despite its name, MapboxDirections.swift works in Objective-C and Cocoa-AppleScr
 
 MapboxDirections.swift pairs well with [MapboxGeocoder.swift](https://github.com/mapbox/MapboxGeocoder.swift), [MapboxStatic.swift](https://github.com/mapbox/MapboxStatic.swift), the [Mapbox Navigation SDK for iOS](https://github.com/mapbox/mapbox-navigation-ios/), and the [Mapbox Maps SDK for iOS](https://www.mapbox.com/ios-sdk/) or [macOS SDK](https://mapbox.github.io/mapbox-gl-native/macos/).
 
+# Why have we forked
+
+1. We wanted to upgrade the SDK from iOS 9.0 to 12.0.
+
+# What have we changed
+
+- Upgrade iOS version from 9.0 to 12.0.
+- Upgraded Polyline SDK from v4.2.0 to v5.1.0. 
+- Removed private cartfile.
+
 ## Getting started
+
+If you are looking to include this inside your project, you have to follow the the following steps:
 
 Specify the following dependency in your [Carthage](https://github.com/Carthage/Carthage) Cartfile:
 
