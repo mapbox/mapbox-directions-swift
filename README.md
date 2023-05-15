@@ -1,7 +1,5 @@
 # MaplibreDirections
 
-Copyright (c) 2023 MapLibre contributors
-
 The MaplibreDirections SDK for iOS is built on a for of the MapboxDirections SDK v.023.
 
 MapboxDirections.swift makes it easy to connect your iOS, macOS, tvOS, or watchOS application to the [Mapbox Directions API](https://www.mapbox.com/directions/) and [Mapbox Map Matching API](https://www.mapbox.com/directions/). Quickly get driving, cycling, or walking directions, whether the trip is nonstop or it has multiple stopping points, all using a simple interface reminiscent of MapKit’s `MKDirections` API. Fit a GPX trace to the [OpenStreetMap](https://www.openstreetmap.org/) road network. The Mapbox Directions and Map Matching APIs are powered by the [OSRM](http://project-osrm.org/) routing engine.
@@ -351,3 +349,5 @@ To run the included unit tests, you need to use [Carthage](https://github.com/Ca
 1. `carthage build --platform iOS`
 1. `open MapboxDirections.xcodeproj`
 1. Go to Product ‣ Test.
+
+Copyright (c) 2023 MapLibre contributors
