@@ -123,6 +123,9 @@ private protocol MatchOptionsDeprecations {
 
 extension MatchOptions: MatchOptionsDeprecations {}
 
+@available(*, unavailable)
+extension MatchOptions : @unchecked Sendable {}
+
 // MARK: - Equatable
 public extension MatchOptions {
     static func == (lhs: MatchOptions, rhs: MatchOptions) -> Bool {

@@ -56,7 +56,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(directions.credentials, BogusCredentials)
     }
     
-    let maximumCoordinateCount = 794
+    let maximumCoordinateCount = 10000
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength
@@ -111,7 +111,7 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (session, result) in
+        directions.calculate(opts, completionHandler: {(result) in
 
             guard case let .failure(error) = result else {
                 XCTFail("Expecting error, none returned.")
@@ -137,7 +137,7 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (session, result) in
+        directions.calculate(opts, completionHandler: { (result) in
             defer { expectation.fulfill() }
             
             guard case let .failure(error) = result else {
@@ -184,7 +184,7 @@ class DirectionsTests: XCTestCase {
         
         let directions = Directions(credentials: BogusCredentials)
         let opts = RouteOptions(locations: [one, two])
-        directions.calculate(opts, completionHandler: { (session, result) in
+        directions.calculate(opts, completionHandler: { (result) in
             defer { expectation.fulfill() }
             
             guard case let .failure(error) = result else {

@@ -104,11 +104,11 @@ extension Route {
     /**
      Configuration for applying `RouteRefreshSource` updates to a route.
      */
-    public struct RefreshParameters {
+    public struct RefreshParameters: Sendable {
         /**
          Configuration for type of information to be merged during refreshing.
          */
-        public struct PropertiesToMerge: OptionSet {
+        public struct PropertiesToMerge: OptionSet, Sendable {
             public var rawValue: Int
             public init(rawValue: Int) {
                 self.rawValue = rawValue
@@ -134,7 +134,7 @@ extension Route {
         /**
          Configures starting point to run the partial route refreshing.
          */
-        public struct StartingIndex {
+        public struct StartingIndex: Sendable {
             /**
              The index of a leg, from which to start applying the refreshed data.
              */

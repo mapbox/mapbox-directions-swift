@@ -3,7 +3,7 @@ import Foundation
 /**
  Options determining the primary mode of transportation.
  */
-public struct ProfileIdentifier: Codable, Hashable, RawRepresentable {
+public struct ProfileIdentifier: Codable, Hashable, RawRepresentable, Sendable {
     public init(rawValue: String) {
         self.rawValue = rawValue
     }

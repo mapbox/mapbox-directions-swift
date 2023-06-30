@@ -2,7 +2,7 @@
 import Foundation
 
 /// Defines a lane affected by the `Incident`
-public struct BlockedLanes: OptionSet, CustomStringConvertible, Equatable {
+public struct BlockedLanes: OptionSet, CustomStringConvertible, Equatable, Sendable {
     public var rawValue: Int
     var stringKey: String?
     

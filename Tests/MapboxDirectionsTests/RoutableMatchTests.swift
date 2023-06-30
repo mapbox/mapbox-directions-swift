@@ -31,8 +31,9 @@ class RoutableMatchTest: XCTestCase {
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var routeResponse: RouteResponse!
-        
+        var waypoints: [Waypoint]!
+        var route: Route!
+
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.shapeFormat = .polyline6
         matchOptions.includesSteps = true
@@ -41,13 +42,16 @@ class RoutableMatchTest: XCTestCase {
             matchOptions.waypoints[index].separatesLegs = false
         }
 
-        let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (session, result) in
+        let task = Directions(credentials: BogusCredentials).calculateRoutes(matching: matchOptions) { (result) in
             switch (result) {
             case let .failure(error):
                 XCTFail("Error: \(error)")
             case let .success(response):
-                routeResponse = response
-                expectation.fulfill()
+                Task { @MainActor [r = response.routes?.first, w = response.waypoints] in
+                    waypoints = w
+                    route = r
+                    expectation.fulfill()
+                }
             }
         }
         XCTAssertNotNil(task)
@@ -56,14 +60,11 @@ class RoutableMatchTest: XCTestCase {
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        _ = try XCTUnwrap(routeResponse)
-        let route = routeResponse.routes!.first!
-        XCTAssertNotNil(route)
+        _ = try XCTUnwrap(route)
+        _ = try XCTUnwrap(waypoints)
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 19)
         
-        let waypoints = routeResponse.waypoints!
-        XCTAssertNotNil(waypoints)
         XCTAssertEqual(waypoints.first!.name, "North Harbor Drive")
         XCTAssertEqual(waypoints.last!.name, "West G Street")
         XCTAssertNotNil(waypoints.last!.coordinate)

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Contains information about routing and passing interchange along the route.
-public struct Interchange: Codable, Equatable {
+public struct Interchange: Codable, Equatable, Sendable {
     /// The name of the interchange, if available.
     public let name: String?
 

@@ -6,7 +6,7 @@ import Foundation
  
  A Lane object has zero or more indications that usually correspond to arrows on signs or pavement markings. If no options are specified, it may be the case that no maneuvers are indicated on signage or pavement markings for the lane.
  */
-public struct LaneIndication: OptionSet, CustomStringConvertible {
+public struct LaneIndication: OptionSet, CustomStringConvertible, Sendable {
     public var rawValue: Int
     
     public init(rawValue: Int) {

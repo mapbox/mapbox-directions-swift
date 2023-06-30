@@ -4,7 +4,7 @@ import Foundation
  :nodoc:
  Type of the `Amenity`.
  */
-public enum AmenityType: String, Codable, Equatable {
+public enum AmenityType: String, Codable, Equatable, Sendable {
     
     /**
      Undefined amenity type.

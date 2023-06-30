@@ -7,7 +7,7 @@ import FoundationNetworking
 /**
  Computes distances and durations between origin-destination pairs, and returns the resulting distances in meters and durations in seconds.
  */
-open class Matrix {
+open class Matrix: @unchecked Sendable {
     /**
      A tuple type representing the matrix session that was generated from the request.
      
@@ -24,8 +24,10 @@ open class Matrix {
      
      - parameter result: A `Result` enum that represents the (RETURN TYPE) if the request returned successfully, or the error if it did not.
      */
-    public typealias MatrixCompletionHandler = (_ session: Session, _ result: Result<MatrixResponse, MatrixError>) -> Void
-    
+    public typealias MatrixCompletionHandler = @Sendable (
+        _ result: Result<MatrixResponse, MatrixError>
+    ) -> Void
+
     // MARK: Creating an Matrix Object
     
     /**
@@ -42,8 +44,8 @@ open class Matrix {
      
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MBXAccessToken` key in the main application bundle’s Info.plist.
      */
-    public static let shared = Matrix()
-    
+    public static let shared: Matrix = .init()
+
     /**
      Creates a new instance of Matrix object.
      - Parameters:
@@ -69,29 +71,28 @@ open class Matrix {
      - parameter completionHandler: The closure (block) to call with the resulting matrices. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting matrices, cancel this task.
      */
-    @discardableResult open func calculate(_ options: MatrixOptions, completionHandler: @escaping MatrixCompletionHandler) -> URLSessionDataTask {
-        let session = (options: options, credentials: self.credentials)
+    @discardableResult
+    open func calculate(
+        _ options: MatrixOptions,
+        completionHandler: @escaping MatrixCompletionHandler
+    ) -> URLSessionDataTask {
         let request = urlRequest(forCalculating: options)
+        let callCompletion = { @Sendable (_ result: Result<MatrixResponse, MatrixError>) -> Void in
+            completionHandler(result)
+        }
         let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
-            
             if let urlError = possibleError as? URLError {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.network(urlError)))
-                }
+                callCompletion(.failure(.network(urlError)))
                 return
             }
             
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.invalidResponse(possibleResponse)))
-                }
+                callCompletion(.failure(.invalidResponse(possibleResponse)))
                 return
             }
             
             guard let data = possibleData else {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.noData))
-                }
+                callCompletion(.failure(.noData))
                 return
             }
             
@@ -102,39 +103,29 @@ open class Matrix {
                     guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
                         let apiError = MatrixError(code: nil, message: nil, response: response, underlyingError: possibleError)
                         
-                        DispatchQueue.main.async {
-                            completionHandler(session, .failure(apiError))
-                        }
+                        callCompletion(.failure(apiError))
                         return
                     }
                     
                     guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
                         let apiError = MatrixError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
                         
-                        DispatchQueue.main.async {
-                            completionHandler(session, .failure(apiError))
-                        }
+                        callCompletion(.failure(apiError))
                         return
                     }
                     
                     let result = try decoder.decode(MatrixResponse.self, from: data)
                     
                     guard result.distances != nil || result.travelTimes != nil else {
-                        DispatchQueue.main.async {
-                            completionHandler(session, .failure(.noRoute))
-                        }
+                        callCompletion(.failure(.noRoute))
                         return
                     }
                     
-                    DispatchQueue.main.async {
-                        completionHandler(session, .success(result))
-                    }
-                    
+                    callCompletion(.success(result))
+
                 } catch {
-                    DispatchQueue.main.async {
-                        let bailError = MatrixError(code: nil, message: nil, response: response, underlyingError: error)
-                        completionHandler(session, .failure(bailError))
-                    }
+                    let bailError = MatrixError(code: nil, message: nil, response: response, underlyingError: error)
+                    callCompletion(.failure(bailError))
                 }
             }
         }
@@ -151,8 +142,7 @@ open class Matrix {
      - parameter options: A `MatrixOptions` object specifying the requirements for the resulting contours.
      - returns: The URL to send the request to.
      */
-    open func url(forCalculating options: MatrixOptions) -> URL {
-        
+    open func url(forCalculating options: MatrixOptions) -> URL {        
         var params = options.urlQueryItems
         params.append(URLQueryItem(name: "access_token", value: credentials.accessToken))
 

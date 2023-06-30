@@ -32,6 +32,7 @@ class CredentialsTests: XCTestCase {
     }
 
 #if !os(Linux)
+    @MainActor
     func testSkuToken() {
         let expectedToken = "a token"
         MBXAccounts.serviceSkuToken = expectedToken

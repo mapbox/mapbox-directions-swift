@@ -8,7 +8,7 @@ import Turf
  
  - seealso: `Intersection.regionCode`, `RouteStep.regionCode(atStepIndex:, intersectionIndex:)`
  */
-public struct AdministrativeRegion: Codable, Equatable, ForeignMemberContainer {
+public struct AdministrativeRegion: Codable, Equatable, ForeignMemberContainer, Sendable {
     public var foreignMembers: JSONObject = [:]
 
     private enum CodingKeys: String, CodingKey {

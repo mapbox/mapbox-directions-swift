@@ -11,8 +11,8 @@ import AppKit
 /**
  Options for calculating contours from the Mapbox Isochrone service.
 */
-public struct IsochroneOptions: Equatable {
-    
+public struct IsochroneOptions: Equatable, Sendable {
+
     public init(centerCoordinate: LocationCoordinate2D, contours: Contours, profileIdentifier: ProfileIdentifier = .automobile) {
         self.centerCoordinate = centerCoordinate
         self.contours = contours
@@ -24,7 +24,7 @@ public struct IsochroneOptions: Equatable {
     /**
      Contours GeoJSON format.
      */
-    public enum ContourFormat: Equatable {
+    public enum ContourFormat: Equatable, Sendable {
         /**
          Requested contour will be presented as GeoJSON LineString.
          */
@@ -139,12 +139,12 @@ extension IsochroneOptions {
     /**
      Definition of contours limits.
      */
-    public enum Contours: Equatable {
-        
+    public enum Contours: Equatable, Sendable {
+
         /**
          Describes Individual contour bound and color.
          */
-        public struct Definition<Unt: Dimension>: Equatable {
+        public struct Definition<Unt: Dimension & Sendable>: Equatable, Sendable {
             /**
              Bound measurement value.
              */

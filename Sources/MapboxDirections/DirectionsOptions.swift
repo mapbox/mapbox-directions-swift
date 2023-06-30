@@ -13,7 +13,7 @@ let MaximumURLLength = 1024 * 8
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.
  */
-public enum RouteShapeFormat: String, Codable, Equatable {
+public enum RouteShapeFormat: String, Codable, Equatable, Sendable {
     /**
      The route’s shape is delivered in [GeoJSON](http://geojson.org/) format.
 
@@ -39,7 +39,7 @@ public enum RouteShapeFormat: String, Codable, Equatable {
 /**
  A `RouteShapeResolution` indicates the level of detail in a route’s shape, or whether the shape is present at all.
  */
-public enum RouteShapeResolution: String, Codable, Equatable {
+public enum RouteShapeResolution: String, Codable, Equatable, Sendable {
     /**
      The route’s shape is omitted.
 
@@ -63,7 +63,7 @@ public enum RouteShapeResolution: String, Codable, Equatable {
 /**
  A system of units of measuring distances and other quantities.
  */
-public enum MeasurementSystem: String, Codable, Equatable {
+public enum MeasurementSystem: String, Codable, Equatable, Sendable {
     /**
      U.S. customary and British imperial units.
 
@@ -85,7 +85,7 @@ public typealias MBDirectionsPriority = DirectionsPriority
 /**
  A number that influences whether a route should prefer or avoid roadways or pathways of a given type.
  */
-public struct DirectionsPriority: Hashable, RawRepresentable, Codable, Equatable {
+public struct DirectionsPriority: Hashable, RawRepresentable, Codable, Equatable, Sendable {
     public init(rawValue: Double) {
         self.rawValue = rawValue
     }
@@ -621,3 +621,6 @@ extension DirectionsOptions: Equatable {
             lhs.includesVisualInstructions == rhs.includesVisualInstructions
     }
 }
+
+@available(*, unavailable)
+extension DirectionsOptions : @unchecked Sendable {}

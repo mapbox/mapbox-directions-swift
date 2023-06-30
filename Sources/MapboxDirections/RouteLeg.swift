@@ -8,7 +8,7 @@ import Turf
  You do not create instances of this class directly. Instead, you receive route leg objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method.
  */
 
-public struct RouteLeg: Codable, ForeignMemberContainer, Equatable {
+public struct RouteLeg: Codable, ForeignMemberContainer, Equatable, Sendable {
     public var foreignMembers: JSONObject = [:]
     
     /**

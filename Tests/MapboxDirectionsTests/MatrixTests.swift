@@ -105,7 +105,7 @@ class MatrixTests: XCTestCase {
         let options = MatrixOptions(sources: waypoints,
                                     destinations: waypoints,
                                     profileIdentifier: .automobile)
-        matrix.calculate(options, completionHandler: { (session, result) in
+        matrix.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {
@@ -140,7 +140,7 @@ class MatrixTests: XCTestCase {
                                     destinations: waypoints,
                                     profileIdentifier: .automobile)
         
-        matrix.calculate(options, completionHandler: { (session, result) in
+        matrix.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {
@@ -197,7 +197,7 @@ class MatrixTests: XCTestCase {
             return HTTPStubsResponse(data: response.data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        matrix.calculate(options, completionHandler: { (session, result) in
+        matrix.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
 
             guard case let .success(response) = result else {

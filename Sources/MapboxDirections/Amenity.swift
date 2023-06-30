@@ -4,7 +4,7 @@ import Foundation
  :nodoc:
  Provides information about amenity that is available at a given `RestStop`.
  */
-public struct Amenity: Codable, Equatable {
+public struct Amenity: Codable, Equatable, Sendable {
     
     /**
      :nodoc:

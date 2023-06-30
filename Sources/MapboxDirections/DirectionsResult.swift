@@ -34,7 +34,7 @@ public struct DirectionsCodingKey: CodingKey {
  
  You do not create instances of this class directly. Instead, you receive `Route` or `Match` objects when you request directions using the `Directions.calculate(_:completionHandler:)` or `Directions.calculateRoutes(matching:completionHandler:)` method.
  */
-public protocol DirectionsResult: Codable, ForeignMemberContainer, Equatable {
+public protocol DirectionsResult: Codable, ForeignMemberContainer, Equatable, Sendable {
     // MARK: Getting the Shape of the Route
     
     /**

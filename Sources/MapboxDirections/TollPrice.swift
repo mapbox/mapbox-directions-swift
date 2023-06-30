@@ -5,7 +5,7 @@ import Turf
  :nodoc:
  Information about toll payment method.
  */
-public struct TollPaymentMethod: Hashable, Equatable {
+public struct TollPaymentMethod: Hashable, Equatable, Sendable {
     /**
      Method identifier.
      */
@@ -25,7 +25,7 @@ public struct TollPaymentMethod: Hashable, Equatable {
  :nodoc:
  Categories by which toll fees are divided.
  */
-public struct TollCategory: Hashable, Equatable {
+public struct TollCategory: Hashable, Equatable, Sendable {
     /**
      Category name.
      */
@@ -102,7 +102,7 @@ public struct TollPrice: Equatable, Hashable, ForeignMemberContainer {
 
 
 
-internal struct TollPriceCoder: Codable {
+internal struct TollPriceCoder: Codable, Sendable {
     let tollPrices: [TollPrice]
     
     init(tollPrices: [TollPrice]) {

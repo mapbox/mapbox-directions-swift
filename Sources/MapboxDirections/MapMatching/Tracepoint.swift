@@ -3,7 +3,7 @@ import Turf
 
 extension Match {
     /// A tracepoint represents a location matched to the road network.
-    public struct Tracepoint: Codable, Equatable {
+    public struct Tracepoint: Codable, Equatable, Sendable {
         private enum CodingKeys: String, CodingKey {
             case coordinate = "location"
             case countOfAlternatives = "alternatives_count"

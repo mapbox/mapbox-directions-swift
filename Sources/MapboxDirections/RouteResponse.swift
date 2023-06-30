@@ -9,6 +9,9 @@ public enum ResponseOptions {
     case match(MatchOptions)
 }
 
+@available(*, unavailable)
+extension ResponseOptions : @unchecked Sendable {}
+
 /**
  A `RouteResponse` object is a structure that corresponds to a directions response returned by the Mapbox Directions API.
  */
@@ -70,6 +73,9 @@ public struct RouteResponse: ForeignMemberContainer {
      */
     public private(set) var roadClassExclusionViolations: [RoadClassExclusionViolation]?
 }
+
+@available(*, unavailable)
+extension RouteResponse : @unchecked Sendable {}
 
 extension RouteResponse: Codable {
     enum CodingKeys: String, CodingKey {

@@ -153,6 +153,9 @@ public class MatrixOptions: Codable {
     }
 }
 
+@available(*, unavailable)
+extension MatrixOptions : @unchecked Sendable {}
+
 extension MatrixOptions: Equatable {
     public static func == (lhs: MatrixOptions, rhs: MatrixOptions) -> Bool {
         return lhs.profileIdentifier == rhs.profileIdentifier &&

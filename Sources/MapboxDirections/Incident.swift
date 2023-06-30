@@ -34,7 +34,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
     /// Defines known types of incidents.
     ///
     /// Each incident may or may not have specific set of data, depending on it's `kind`
-    public enum Kind: String {
+    public enum Kind: String, Sendable {
         /// Accident
         case accident = "accident"
         /// Congestion
@@ -62,7 +62,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
     }
 
     /// Represents the impact of the incident on local traffic.
-    public enum Impact: String, Codable {
+    public enum Impact: String, Codable, Sendable {
         /// Unknown impact
         case unknown
         /// Critical impact
@@ -75,7 +75,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         case low
     }
 
-    private struct CongestionContainer: Codable, ForeignMemberContainer {
+    private struct CongestionContainer: Codable, ForeignMemberContainer, Sendable {
         var foreignMembers: JSONObject = [:]
         
         // `Directions` define this as service value to indicate "no congestion calculated"

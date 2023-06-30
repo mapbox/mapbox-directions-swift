@@ -3,7 +3,7 @@ import Foundation
 /**
 Option set that contains attributes of a road segment.
 */
-public struct RoadClasses: OptionSet, CustomStringConvertible {
+public struct RoadClasses: OptionSet, CustomStringConvertible, Sendable {
     public var rawValue: Int
     
     public init(rawValue: Int) {

@@ -38,21 +38,23 @@ class MatchTests: XCTestCase {
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var response: MapMatchingResponse!
+        var match: Match!
+        var tracepoints: [Match.Tracepoint?]!
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (session, result) in
-            
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (result) in
             guard case let .success(resp) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return
             }
                     
-            response = resp
-            
-            expectation.fulfill()
+            Task { @MainActor [m = resp.matches?.first, t = resp.tracepoints] in
+                match = m
+                tracepoints = t
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         
@@ -61,19 +63,15 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
 
-        _ = try XCTUnwrap(response)
-        let match = try XCTUnwrap(response.matches?.first)
-        let opts = response.options
-        XCTAssert(matchOptions == opts)
+        _ = try XCTUnwrap(match)
+        _ = try XCTUnwrap(tracepoints)
         
         XCTAssertNotNil(match)
         XCTAssertNotNil(match.shape)
         XCTAssertEqual(match.shape!.coordinates.count, 18)
         
-        let tracePoints = response.tracepoints
-        XCTAssertNotNil(tracePoints)
-        XCTAssertEqual(tracePoints!.first!!.countOfAlternatives, 0)
-        XCTAssertEqual(tracePoints!.last!!.name, "West G Street")
+        XCTAssertEqual(tracepoints.first!!.countOfAlternatives, 0)
+        XCTAssertEqual(tracepoints.last!!.name, "West G Street")
 
         // confirming actual decoded values is important because the Directions API
         // uses an atypical precision level for polyline encoding
@@ -128,19 +126,22 @@ class MatchTests: XCTestCase {
                 return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        var response: MapMatchingResponse!
+        var match: Match!
+        var tracepoints: [Match.Tracepoint?]!
         let matchOptions = MatchOptions(coordinates: locations)
         matchOptions.includesSteps = true
         matchOptions.routeShapeResolution = .full
         
-        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (session, result) in
+        let task = Directions(credentials: BogusCredentials).calculate(matchOptions) { (result) in
             guard case let .success(resp) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return
             }
-            
-            response = resp
-            expectation.fulfill()
+            Task { @MainActor [m = resp.matches?.first, t = resp.tracepoints] in
+                match = m
+                tracepoints = t
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         
@@ -149,10 +150,8 @@ class MatchTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
 
-        _ = try XCTUnwrap(response)
-        let match = response.matches!.first!
-        XCTAssertNotNil(match)
-        let tracepoints = response.tracepoints!
+        _ = try XCTUnwrap(match)
+        _ = try XCTUnwrap(tracepoints)
         XCTAssertEqual(tracepoints.count, 7)
         XCTAssertEqual(tracepoints.first!, nil)
         

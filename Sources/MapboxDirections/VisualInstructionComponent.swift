@@ -27,7 +27,7 @@ public extension VisualInstruction {
     /**
      A unit of information displayed to the user as part of a `VisualInstruction`.
      */
-    enum Component: Equatable {
+    enum Component: Equatable, Sendable {
         /**
          The component separates two other destination components.
          
@@ -82,7 +82,7 @@ public extension VisualInstruction.Component {
     /**
      A textual representation of a visual instruction component.
      */
-    struct TextRepresentation: Equatable {
+    struct TextRepresentation: Equatable, Sendable {
         /**
          Initializes a text representation bearing the given abbreviatable text.
          */
@@ -113,11 +113,11 @@ public extension VisualInstruction.Component {
     /**
      An image representation of a visual instruction component.
      */
-    struct ImageRepresentation: Equatable {
+    struct ImageRepresentation: Equatable, Sendable {
         /**
          File formats of visual instruction component images.
          */
-        public enum Format: String {
+        public enum Format: String, Sendable {
             /// Portable Network Graphics (PNG)
             case png
             /// Scalable Vector Graphics (SVG)
@@ -162,7 +162,7 @@ public extension VisualInstruction.Component {
     /**
      A mapbox shield representation of a visual instruction component.
      */
-    struct ShieldRepresentation: Equatable, Codable {
+    struct ShieldRepresentation: Equatable, Codable, Sendable {
         /**
          Initializes a mapbox shield with the given name, text color, and display ref.
          */
@@ -219,7 +219,7 @@ public extension VisualInstruction.Component {
 }
 
 /// A guidance view image representation of a visual instruction component.
-public struct GuidanceViewImageRepresentation: Equatable {
+public struct GuidanceViewImageRepresentation: Equatable, Sendable {
     /**
      Initializes an image representation bearing the image at the given URL.
      */
@@ -248,7 +248,7 @@ extension VisualInstruction.Component: Codable {
         case activeDirection = "active_direction"
     }
     
-    enum Kind: String, Codable {
+    enum Kind: String, Codable, Sendable {
         case delimiter
         case text
         case image = "icon"

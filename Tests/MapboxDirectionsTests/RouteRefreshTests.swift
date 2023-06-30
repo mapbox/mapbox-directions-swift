@@ -45,13 +45,13 @@ class RouteRefreshTests: XCTestCase {
         super.tearDown()
     }
     
-    func fetchStubbedRoute(_ completion: @escaping (RouteResponse) -> ()) {
+    func fetchStubbedRoute(_ completion: @escaping @Sendable (RouteResponse) -> ()) {
         let routeOptions = RouteOptions(coordinates: [.init(latitude: 0, longitude: 0),
                                                       .init(latitude: 1, longitude: 1)])
         routeOptions.refreshingEnabled = true
         routeOptions.profileIdentifier = .automobileAvoidingTraffic
         
-        Directions(credentials: BogusCredentials).calculate(routeOptions) { (session, result) in
+        Directions(credentials: BogusCredentials).calculate(routeOptions) { (result) in
             guard case let .success(response) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return

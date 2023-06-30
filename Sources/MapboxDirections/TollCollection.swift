@@ -4,10 +4,10 @@ import Turf
 /**
  `TollCollection` describes corresponding object on the route.
  */
-public struct TollCollection: Codable, Equatable, ForeignMemberContainer {
+public struct TollCollection: Codable, Equatable, ForeignMemberContainer, Sendable {
     public var foreignMembers: JSONObject = [:]
 
-    public enum CollectionType: String, Codable {
+    public enum CollectionType: String, Codable, Sendable {
         case booth = "toll_booth"
         case gantry = "toll_gantry"
     }

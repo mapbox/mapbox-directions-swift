@@ -5,7 +5,7 @@ import Turf
 /**
  A `TransportType` specifies the mode of transportation used for part of a route.
  */
-public enum TransportType: String, Codable, Equatable {
+public enum TransportType: String, Codable, Equatable, Sendable {
     // Possible transport types when the `profileIdentifier` is `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`
 
     /**
@@ -89,7 +89,7 @@ public enum TransportType: String, Codable, Equatable {
 
  To avoid a complex series of if-else-if statements or switch statements, use pattern matching with a single switch statement on a tuple that consists of the maneuver type and maneuver direction.
  */
-public enum ManeuverType: String, Codable, Equatable {
+public enum ManeuverType: String, Codable, Equatable, Sendable {
     /**
      The step requires the user to depart from a waypoint.
 
@@ -221,7 +221,7 @@ public enum ManeuverType: String, Codable, Equatable {
 /**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
-public enum ManeuverDirection: String, Codable, Equatable {
+public enum ManeuverDirection: String, Codable, Equatable, Sendable {
     /**
      The maneuver requires a sharp turn to the right.
      */
@@ -270,7 +270,7 @@ public enum ManeuverDirection: String, Codable, Equatable {
  
  A sign standard can affect how a user interface should display information related to the road. For example, a speed limit from the `RouteLeg.segmentMaximumSpeedLimits` property may appear in a different-looking view depending on the `RouteStep.speedLimitSign` property.
  */
-public enum SignStandard: String, Codable, Equatable {
+public enum SignStandard: String, Codable, Equatable, Sendable {
     /**
      The [Manual on Uniform Traffic Control Devices](https://en.wikipedia.org/wiki/Manual_on_Uniform_Traffic_Control_Devices).
      
@@ -301,7 +301,7 @@ extension Array where Element == String {
 /**
  Encapsulates all the information about a road.
  */
-struct Road: Equatable {
+struct Road: Equatable, Sendable {
     let names: [String]?
     let codes: [String]?
     let exitCodes: [String]?
@@ -398,7 +398,7 @@ extension Road: Codable {
  
  You do not create instances of this class directly. Instead, you receive route step objects as part of route objects when you request directions using the `Directions.calculate(_:completionHandler:)` method, setting the `includesSteps` option to `true` in the `RouteOptions` object that you pass into that method.
  */
-public struct RouteStep: Codable, ForeignMemberContainer, Equatable {
+public struct RouteStep: Codable, ForeignMemberContainer, Equatable, Sendable {
     public var foreignMembers: JSONObject = [:]
     public var maneuverForeignMembers: JSONObject = [:]
     
@@ -420,7 +420,7 @@ public struct RouteStep: Codable, ForeignMemberContainer, Equatable {
         case transportType = "mode"
     }
     
-    private struct Maneuver: Codable, ForeignMemberContainer, Equatable {
+    private struct Maneuver: Codable, ForeignMemberContainer, Equatable, Sendable {
         var foreignMembers: JSONObject = [:]
         
         private enum CodingKeys: String, CodingKey {
@@ -626,8 +626,8 @@ public struct RouteStep: Codable, ForeignMemberContainer, Equatable {
     
     
     /// Used to Decode `Intersection.admin_index`
-    private struct AdministrativeAreaIndex: Codable {
-        
+    private struct AdministrativeAreaIndex: Codable, Sendable {
+
         private enum CodingKeys: String, CodingKey {
             case administrativeRegionIndex = "admin_index"
         }
@@ -646,8 +646,8 @@ public struct RouteStep: Codable, ForeignMemberContainer, Equatable {
     }
     
     /// Used to Decode `Intersection.geometry_index`
-    private struct IntersectionShapeIndex: Codable {
-        
+    private struct IntersectionShapeIndex: Codable, Sendable {
+
         private enum CodingKeys: String, CodingKey {
             case geometryIndex = "geometry_index"
         }

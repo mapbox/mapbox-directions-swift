@@ -21,7 +21,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
-        .package(url: "https://github.com/mapbox/turf-swift.git", from: "2.6.1"),
+        .package(url: "https://github.com/mapbox/turf-swift.git", branch: "feature/sendable"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0")
     ],
@@ -60,6 +60,8 @@ for target in package.targets {
     .unsafeFlags([
       "-Xfrontend", "-warn-concurrency",
       "-Xfrontend", "-enable-actor-data-race-checks",
+      "-Xfrontend", "-require-explicit-sendable",
+      "-Xllvm", "-sil-cross-module-serialize-all",
 //      "-enable-library-evolution",
     ])
   )

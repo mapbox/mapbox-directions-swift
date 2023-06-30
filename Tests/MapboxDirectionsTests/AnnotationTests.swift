@@ -43,17 +43,18 @@ class AnnotationTests: XCTestCase {
         options.routeShapeResolution = .full
         options.attributeOptions = [.distance, .expectedTravelTime, .speed, .congestionLevel, .numericCongestionLevel, .maximumSpeedLimit]
         var route: Route?
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, disposition) in
-            
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (disposition) in
             switch disposition {
             case let .failure(error):
                 XCTFail("Error! \(error)")
             case let .success(response):
                 XCTAssertNotNil(response.routes)
                 XCTAssertEqual(response.routes!.count, 1)
-                route = response.routes!.first!
-                
-                expectation.fulfill()
+                let _route = response.routes!.first!
+                Task { @MainActor in
+                    route = _route
+                    expectation.fulfill()
+                }
             }
 
         }

@@ -103,7 +103,7 @@ class IsochroneTests: XCTestCase {
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
                                        contours: .byDistances([.init(value: 100,
                                                                      unit: .meters)]))
-        isochrones.calculate(options, completionHandler: { (session, result) in
+        isochrones.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
                 
             guard case let .success(featureCollection) = result else {
@@ -130,7 +130,7 @@ class IsochroneTests: XCTestCase {
         let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
                                        contours: .byDistances([.init(value: 100, unit: .meters)]))
-        isochrones.calculate(options, completionHandler: { (session, result) in
+        isochrones.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {
@@ -159,7 +159,7 @@ class IsochroneTests: XCTestCase {
         let isochrones = Isochrones(credentials: IsochroneBogusCredentials)
         let options = IsochroneOptions(centerCoordinate: LocationCoordinate2D(latitude: 0, longitude: 1),
                                        contours: .byDistances([.init(value: 100, unit: .meters)]))
-        isochrones.calculate(options, completionHandler: { (session, result) in
+        isochrones.calculate(options, completionHandler: { (result) in
             defer { expectation.fulfill() }
 
             guard case let .failure(error) = result else {

@@ -55,15 +55,18 @@ class V5Tests: XCTestCase {
         options.includesSpokenInstructions = true
         options.locale = Locale(identifier: "en_US")
         options.includesExitRoundaboutManeuver = true
-        var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
-            
+        var waypoints: [Waypoint]?
+        var routes: [Route]?
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (result) in
             switch result {
             case let .failure(error):
                 XCTFail("Error: \(error)")
             case let .success(resp):
-                response = resp
-                expectation.fulfill()
+                Task { @MainActor [r = resp.routes, w = resp.waypoints] in
+                    routes = r
+                    waypoints = w
+                    expectation.fulfill()
+                }
             }
         }
         XCTAssertNotNil(task)
@@ -72,11 +75,10 @@ class V5Tests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!)")
             XCTAssertEqual(task.state, .completed)
         }
-        _ = try XCTUnwrap(response)
-        XCTAssertEqual(response.waypoints?.count, 2)
-        XCTAssertEqual(response.routes?.count, 2)
-        
-        test(response.routes!.first!)
+        XCTAssertEqual(waypoints?.count, 2)
+        XCTAssertEqual(routes?.count, 2)
+
+        test(try XCTUnwrap(XCTUnwrap(routes).first))
     }
     
     func test(_ route: Route?) {
@@ -257,7 +259,7 @@ class V5Tests: XCTestCase {
         options.includesExitRoundaboutManeuver = true
         
         var route: Route?
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (result) in
             guard case let .success(response) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return
@@ -266,9 +268,10 @@ class V5Tests: XCTestCase {
             
             XCTAssertNotNil(response.routes)
             XCTAssertEqual(response.routes!.count, 1)
-            route = response.routes!.first!
-            
-            expectation.fulfill()
+            Task { @MainActor [r = response.routes!.first!] in
+                route = r
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         

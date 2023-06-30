@@ -4,7 +4,7 @@ import FoundationNetworking
 #endif
 import Turf
 
-public struct MatrixResponse {
+public struct MatrixResponse: Sendable {
     public typealias DistanceMatrix = [[LocationDistance?]]
     public typealias DurationMatrix = [[TimeInterval?]]
     

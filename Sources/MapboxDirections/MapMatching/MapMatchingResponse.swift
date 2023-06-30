@@ -89,3 +89,6 @@ extension MapMatchingResponse: Codable {
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
 }
+
+@available(*, unavailable)
+extension MapMatchingResponse : @unchecked Sendable {}

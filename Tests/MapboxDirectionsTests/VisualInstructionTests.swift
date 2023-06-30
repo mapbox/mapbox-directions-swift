@@ -123,15 +123,16 @@ class VisualInstructionsTests: XCTestCase {
         options.includesSpokenInstructions = true
         options.distanceMeasurementSystem = .imperial
         options.includesVisualInstructions = true
-        var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
-            
+        var route: Route!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (result) in
             switch result {
             case let .failure(error):
                 XCTFail("Error! \(error)")
             case let .success(resp):
-                response = resp
-                expectation.fulfill()
+                Task { @MainActor [r = resp.routes?.first] in
+                    route = r
+                    expectation.fulfill()
+                }
             }
             
         }
@@ -141,11 +142,7 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertNil(error, "Error: \(error!.localizedDescription)")
             XCTAssertEqual(task.state, .completed)
         }
-        _ = try XCTUnwrap(response)
-        guard let route = response.routes?.first else {
-            XCTFail("No routes in response")
-            return
-        }
+        _ = try XCTUnwrap(route)
         
         XCTAssertNotNil(route)
         
@@ -220,14 +217,16 @@ class VisualInstructionsTests: XCTestCase {
         options.includesAlternativeRoutes = false
         options.includesVisualInstructions = true
         
-        var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+        var route: Route!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (result) in
              switch result {
             case let .failure(error):
                 XCTFail("Error! \(error)")
             case let .success(resp):
-                response = resp
-                expectation.fulfill()
+                 Task { @MainActor [r = resp.routes?.first] in
+                     route = r
+                     expectation.fulfill()
+                 }
             }
         }
         XCTAssertNotNil(task)
@@ -237,11 +236,7 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
 
-        _ = try XCTUnwrap(response)
-        guard let route = response.routes?.first else {
-            XCTFail("No routes in response")
-            return
-        }
+        _ = try XCTUnwrap(route)
         
         XCTAssertNotNil(route)
         
@@ -298,16 +293,16 @@ class VisualInstructionsTests: XCTestCase {
         options.includesAlternativeRoutes = false
         options.includesVisualInstructions = true
         
-        var response: RouteResponse!
-        let task = Directions(credentials: BogusCredentials).calculate(options) { (session, result) in
+        var route: Route!
+        let task = Directions(credentials: BogusCredentials).calculate(options) { (result) in
             guard case let .success(resp) = result else {
                 XCTFail("Encountered unexpected error. \(result)")
                 return
             }
-            
-            response = resp
-            
-            expectation.fulfill()
+            Task { @MainActor [r = resp.routes?.first] in
+                route = r
+                expectation.fulfill()
+            }
         }
         XCTAssertNotNil(task)
         
@@ -316,13 +311,7 @@ class VisualInstructionsTests: XCTestCase {
             XCTAssertEqual(task.state, .completed)
         }
 
-        _ = try XCTUnwrap(response)
-        guard let route = response.routes?.first else {
-            XCTFail("No routes in response")
-            return
-          }
-        
-        XCTAssertNotNil(route)
+        _ = try XCTUnwrap(route)
         
         let step = route.legs.first!.steps.first!
         let visualInstructions = step.instructionsDisplayedAlongStep

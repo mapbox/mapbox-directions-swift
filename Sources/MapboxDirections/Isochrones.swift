@@ -7,7 +7,7 @@ import Turf
 /**
  Computes areas that are reachable within a specified amount of time or distance from a location, and returns the reachable regions as contours of polygons or lines that you can display on a map. 
  */
-open class Isochrones {
+open class Isochrones: @unchecked Sendable {
 
     /**
      A tuple type representing the isochrone session that was generated from the request.
@@ -25,7 +25,9 @@ open class Isochrones {
      
      - parameter result: A `Result` enum that represents the `FeatureCollection` if the request returned successfully, or the error if it did not.
      */
-    public typealias IsochroneCompletionHandler = (_ session: Session, _ result: Result<FeatureCollection, IsochroneError>) -> Void
+    public typealias IsochroneCompletionHandler = @MainActor @Sendable (
+        _ result: Result<FeatureCollection, IsochroneError>
+    ) -> Void
 
     // MARK: Creating an Isochrones Object
     
@@ -43,8 +45,8 @@ open class Isochrones {
      
      To use this object, a Mapbox [access token](https://docs.mapbox.com/help/glossary/access-token/) should be specified in the `MBXAccessToken` key in the main application bundle’s Info.plist.
      */
-    public static let shared = Isochrones()
-    
+    public static let shared: Isochrones = .init()
+
     /**
      Creates a new instance of Isochrones object.
      - Parameters:
@@ -71,28 +73,30 @@ open class Isochrones {
      - parameter completionHandler: The closure (block) to call with the resulting contours. This closure is executed on the application’s main thread.
      - returns: The data task used to perform the HTTP request. If, while waiting for the completion handler to execute, you no longer want the resulting contours, cancel this task.
      */
-    @discardableResult open func calculate(_ options: IsochroneOptions, completionHandler: @escaping IsochroneCompletionHandler) -> URLSessionDataTask {
-        let session = (options: options, credentials: self.credentials)
+    @discardableResult
+    open func calculate(
+        _ options: IsochroneOptions,
+        completionHandler: @escaping IsochroneCompletionHandler
+    ) -> URLSessionDataTask {
         let request = urlRequest(forCalculating: options)
+        let callCompletion = { @Sendable (_ result: Result<FeatureCollection, IsochroneError>) -> Void in
+            Task { @MainActor in
+                completionHandler(result)
+            }
+        }
         let requestTask = urlSession.dataTask(with: request) { (possibleData, possibleResponse, possibleError) in
             if let urlError = possibleError as? URLError {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.network(urlError)))
-                }
+                callCompletion(.failure(.network(urlError)))
                 return
             }
             
             guard let response = possibleResponse, ["application/json", "text/html"].contains(response.mimeType) else {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.invalidResponse(possibleResponse)))
-                }
+                callCompletion(.failure(.invalidResponse(possibleResponse)))
                 return
             }
             
             guard let data = possibleData else {
-                DispatchQueue.main.async {
-                    completionHandler(session, .failure(.noData))
-                }
+                callCompletion(.failure(.noData))
                 return
             }
             
@@ -103,30 +107,22 @@ open class Isochrones {
                     guard let disposition = try? decoder.decode(ResponseDisposition.self, from: data) else {
                         let apiError = IsochroneError(code: nil, message: nil, response: possibleResponse, underlyingError: possibleError)
 
-                        DispatchQueue.main.async {
-                            completionHandler(session, .failure(apiError))
-                        }
+                        callCompletion(.failure(apiError))
                         return
                     }
                     
                     guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
                         let apiError = IsochroneError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
-                        DispatchQueue.main.async {
-                            completionHandler(session, .failure(apiError))
-                        }
+                        callCompletion(.failure(apiError))
                         return
                     }
                     
                     let result = try decoder.decode(FeatureCollection.self, from: data)
                     
-                    DispatchQueue.main.async {
-                        completionHandler(session, .success(result))
-                    }
+                    callCompletion(.success(result))
                 } catch {
-                    DispatchQueue.main.async {
-                        let bailError = IsochroneError(code: nil, message: nil, response: response, underlyingError: error)
-                        completionHandler(session, .failure(bailError))
-                    }
+                    let bailError = IsochroneError(code: nil, message: nil, response: response, underlyingError: error)
+                    callCompletion(.failure(bailError))
                 }
             }
         }
@@ -168,3 +164,6 @@ open class Isochrones {
         return request
     }
 }
+
+@available(*, unavailable)
+extension Isochrones : @unchecked Sendable {}

@@ -10,7 +10,7 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
     /**
      A kind of rest stop.
      */
-    public enum StopType: String, Codable {
+    public enum StopType: String, Codable, Sendable {
         /**
          A primitive rest stop that provides parking but no additional services.
          */
@@ -66,20 +66,6 @@ public struct RestStop: Codable, Equatable, ForeignMemberContainer {
         self.type = type
         self.name = name
         self.amenities = amenities
-    }
-
-    /**
-     :nodoc:
-     Initializes an optionally named rest stop of a certain kind.
-
-     - parameter type: The kind of rest stop.
-     - parameter name: The name of the rest stop.
-     */
-    @available(*, deprecated, renamed: "init(type:name:amenities:)")
-    public init(type: StopType, name: String?) {
-        self.type = type
-        self.name = name
-        self.amenities = nil
     }
     
     public init(from decoder: Decoder) throws {

@@ -518,8 +518,10 @@ open class RouteOptions: DirectionsOptions {
 
         return params + super.urlQueryItems
     }
-
 }
+
+@available(*, unavailable)
+extension RouteOptions : @unchecked Sendable {}
 
 extension Bool {
     var queryString: String {
