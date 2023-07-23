@@ -1,3 +1,8 @@
+import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
+
 /**
  A `Waypoint` object indicates a location along a route. It may be the route’s origin or destination, or it may be another location that the route visits. A waypoint object indicates the location’s geographic location along with other optional information, such as a name or the user’s direction approaching the waypoint. You create a `RouteOptions` object using waypoint objects and also receive waypoint objects in the completion handler of the `Directions.calculate(_:completionHandler:)` method.
  */

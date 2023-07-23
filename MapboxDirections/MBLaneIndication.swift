@@ -1,4 +1,7 @@
 import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 public typealias LaneIndication = MBLaneIndication
 

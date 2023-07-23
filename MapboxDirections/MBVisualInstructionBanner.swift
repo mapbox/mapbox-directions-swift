@@ -1,4 +1,7 @@
 import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  A visual instruction banner contains all the information necessary for creating a visual cue about a given `RouteStep`.

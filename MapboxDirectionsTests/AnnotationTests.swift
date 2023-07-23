@@ -1,10 +1,12 @@
 import XCTest
+import OHHTTPStubsSwift
 import OHHTTPStubs
 @testable import MapboxDirections
+import CoreLocation
 
 class AnnotationTests: XCTestCase {
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -24,7 +26,7 @@ class AnnotationTests: XCTestCase {
         stub(condition: isHost("api.mapbox.com")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "annotation", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let options = RouteOptions(coordinates: [

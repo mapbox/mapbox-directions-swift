@@ -1,4 +1,8 @@
 import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
+
 /**
  A `Tracepoint` represents a location matched to the road network.
  */

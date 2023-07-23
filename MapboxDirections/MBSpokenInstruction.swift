@@ -1,4 +1,7 @@
 import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  An instruction about an upcoming `RouteStep`’s maneuver, optimized for speech synthesis.

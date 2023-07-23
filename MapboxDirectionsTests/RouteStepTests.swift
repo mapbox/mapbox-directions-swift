@@ -1,5 +1,6 @@
 import XCTest
 @testable import MapboxDirections
+import CoreLocation
 
 class RoadTests: XCTestCase {
     func testEmpty() {

@@ -1,10 +1,12 @@
 import XCTest
+import OHHTTPStubsSwift
 import OHHTTPStubs
 @testable import MapboxDirections
+import CoreLocation
 
 class RoutableMatchTest: XCTestCase {
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -22,7 +24,7 @@ class RoutableMatchTest: XCTestCase {
             && isMethodPOST()
             && isPath("/matching/v5/mapbox/driving")) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "match", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         var route: Route!

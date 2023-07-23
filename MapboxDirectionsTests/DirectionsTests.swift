@@ -1,4 +1,5 @@
 import XCTest
+import OHHTTPStubsSwift
 import OHHTTPStubs
 @testable import MapboxDirections
 
@@ -11,7 +12,7 @@ class DirectionsTests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     

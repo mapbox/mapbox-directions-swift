@@ -1,10 +1,12 @@
 import XCTest
+import OHHTTPStubsSwift
 import OHHTTPStubs
 @testable import MapboxDirections
+import CoreLocation
 
 class V4Tests: XCTestCase {
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
     
@@ -22,7 +24,7 @@ class V4Tests: XCTestCase {
             && isPath("/v4/directions/mapbox.driving/-122.42,37.78;-77.03,38.91.json")
             && containsQueryParams(queryParams)) { _ in
                 let path = Bundle(for: type(of: self)).path(forResource: "v4_driving_dc_\(shapeFormat)", ofType: "json")
-                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
+                return HTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
         let options = RouteOptionsV4(coordinates: [

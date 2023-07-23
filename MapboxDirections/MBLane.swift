@@ -1,4 +1,7 @@
 import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  A lane on the road approaching an intersection.

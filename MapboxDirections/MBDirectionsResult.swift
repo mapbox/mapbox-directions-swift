@@ -1,4 +1,7 @@
+import Foundation
 import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  A `DirectionsResult` represents a result returned from either the Mapbox Directions service.

@@ -1,3 +1,8 @@
+import Foundation
+import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
+
 /**
 A component that represents a lane  representation of an instruction.
  */

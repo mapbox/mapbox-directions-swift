@@ -1,5 +1,7 @@
 import Foundation
 import Polyline
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  A `RouteShapeFormat` indicates the format of a route or match shape in the raw HTTP response.

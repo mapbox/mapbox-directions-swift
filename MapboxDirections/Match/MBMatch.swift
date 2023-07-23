@@ -1,4 +1,7 @@
 import Polyline
+import Foundation
+import CoreLocation
+import MapboxDirectionsObjc
 
 /**
  A `Match` object defines a single route that was created from a series of points that were matched against a road network.
