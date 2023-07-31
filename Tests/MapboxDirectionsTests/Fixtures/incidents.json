@@ -24364,7 +24364,11 @@
                             "affected_road_names": [
                                 "A96",
                                 "test"
-                            ]
+                            ],
+                            "traffic_codes": {
+                                "jartic_cause_code": 1,
+                                "jartic_regulation_code": 2
+                            }
                         },
                         {
                             "id": "12779545487967908590",
@@ -24382,7 +24386,11 @@
                             ],
                             "geometry_index_start": 476,
                             "geometry_index_end": 566,
-                            "closed": true
+                            "closed": true,
+                            "traffic_codes": {
+                                "jartic_cause_code": 3,
+                                "jartic_regulation_code": 4
+                            }
                         },
                         {
                             "id": "2113169574233653303",

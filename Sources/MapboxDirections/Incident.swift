@@ -29,6 +29,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         case numberOfBlockedLanes = "num_lanes_blocked"
         case congestionLevel = "congestion"
         case affectedRoadNames = "affected_road_names"
+        case trafficCodes = "traffic_codes"
     }
     
     /// Defines known types of incidents.
@@ -61,6 +62,22 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         case weather = "weather"
     }
 
+    /// Holds information about traffic codes.
+    public struct TrafficCodes: ForeignMemberContainer, Codable, Equatable {
+        public var foreignMembers: JSONObject = [:]
+        
+        private enum CodingKeys: String, CodingKey {
+            case jarticCauseCode = "jartic_cause_code"
+            case jarticRegulationCode = "jartic_regulation_code"
+        }
+        
+        /// Jartic cause code value.
+        public var jarticCauseCode: UInt32
+
+        /// Jartic regulation code value.
+        public var jarticRegulationCode: UInt32
+    }
+    
     /// Represents the impact of the incident on local traffic.
     public enum Impact: String, Codable {
         /// Unknown impact
@@ -161,6 +178,8 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
     public var lanesBlocked: BlockedLanes?
     /// The range of segments within the overall leg, where the incident spans.
     public var shapeIndexRange: Range<Int>
+    /// Map of traffic code attributes to values.
+    public var trafficCodes: TrafficCodes?
     
     public init(identifier: String,
                 type: Kind,
@@ -180,7 +199,8 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
                 longDescription: String? = nil,
                 numberOfBlockedLanes: Int? = nil,
                 congestionLevel: NumericCongestionLevel? = nil,
-                affectedRoadNames: [String]? = nil) {
+                affectedRoadNames: [String]? = nil,
+                trafficCodes: TrafficCodes? = nil) {
         self.identifier = identifier
         self.rawKind = type.rawValue
         self.description = description
@@ -200,6 +220,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         self.numberOfBlockedLanes = numberOfBlockedLanes
         self.congestionLevel = congestionLevel
         self.affectedRoadNames = affectedRoadNames
+        self.trafficCodes = trafficCodes
     }
     
     public init(from decoder: Decoder) throws {
@@ -253,6 +274,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         congestionLevel = congestionContainer?.clampedValue
         congestionForeignMembers = congestionContainer?.foreignMembers ?? [:]
         affectedRoadNames = try container.decodeIfPresent([String].self, forKey: .affectedRoadNames)
+        trafficCodes = try container.decodeIfPresent(TrafficCodes.self, forKey: .trafficCodes)
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
@@ -284,6 +306,7 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
             try container.encode(congestionContainer, forKey: .congestionLevel)
         }
         try container.encodeIfPresent(affectedRoadNames, forKey: .affectedRoadNames)
+        try container.encodeIfPresent(trafficCodes, forKey: .trafficCodes)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
