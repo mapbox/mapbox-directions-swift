@@ -346,6 +346,10 @@ class RouteStepTests: XCTestCase {
             XCTAssert(leg.incidents![2].numberOfBlockedLanes == 1)
             XCTAssertNil(leg.incidents![2].roadIsClosed)
             XCTAssert(leg.incidents!.first! == leg.incidents!.first!)
+            XCTAssert(leg.incidents![0].trafficCodes?.jarticCauseCode == 1)
+            XCTAssert(leg.incidents![0].trafficCodes?.jarticRegulationCode == 2)
+            XCTAssert(leg.incidents![0].trafficCodes != leg.incidents![1].trafficCodes)
+            XCTAssertNil(leg.incidents![2].trafficCodes)
 
             XCTAssert(leg.steps.contains(where: { $0.exitIndex != nil }))
         }
