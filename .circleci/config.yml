@@ -117,7 +117,7 @@ step-library:
 jobs:
   detect-breaking-changes:
     macos:
-      xcode: 13.3.0
+      xcode: 13.4.1
     steps:
       - checkout
       - install-mapbox-token
@@ -369,16 +369,16 @@ workflows:
       - build-job:
           name: "Dev Build: Xcode 13.4.1"
       - carthage-integration-test:
-          name: "Carthage Integration Test 13.0.0"
-          xcode: "13.0.0"
+          name: "Carthage Integration Test 13.4.1"
+          xcode: "13.4.1"
       - carthage-integration-test:
           name: "Carthage Integration Test 14.0.0"
           xcode: "14.0.0"
       - spm-job:
-          name: "SPM build 13.3.1"
-          xcode: "13.3.1"
+          name: "SPM build 13.4.1"
+          xcode: "13.4.1"
       - spm-job:
-          name: "SPM build 14.0.0"
+          name: "SPM build 14.1.0"
           xcode: "14.1.0"
       - spm-linux-job:
           name: "SPM Ubuntu build"
