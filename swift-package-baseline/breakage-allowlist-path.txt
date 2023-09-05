@@ -1,2 +1,8 @@
 API breakage: constructor Intersection.init(location:headings:approachIndex:outletIndex:outletIndexes:approachLanes:usableApproachLanes:preferredApproachLanes:usableLaneIndication:outletRoadClasses:tollCollection:tunnelName:restStop:isUrban:regionCode:outletMapboxStreetsRoadClass:railroadCrossing:trafficSignal:stopSign:yieldSign:) has been removed
 API breakage: constructor Incident.init(identifier:type:description:creationDate:startDate:endDate:impact:subtype:subtypeDescription:alertCodes:lanesBlocked:shapeIndexRange:countryCodeAlpha3:countryCode:roadIsClosed:longDescription:numberOfBlockedLanes:congestionLevel:affectedRoadNames:) has been removed
+API breakage: var Incident.TrafficCodes.jarticCauseCode has declared type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticCauseCode.Get() has return type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticCauseCode.Set() has parameter 0 type change from Swift.UInt32 to Swift.UInt32?
+API breakage: var Incident.TrafficCodes.jarticRegulationCode has declared type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticRegulationCode.Get() has return type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticRegulationCode.Set() has parameter 0 type change from Swift.UInt32 to Swift.UInt32?
