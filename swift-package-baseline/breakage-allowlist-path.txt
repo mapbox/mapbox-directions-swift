@@ -1,1 +1,6 @@
-
+API breakage: var Incident.TrafficCodes.jarticCauseCode has declared type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticCauseCode.Get() has return type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticCauseCode.Set() has parameter 0 type change from Swift.UInt32 to Swift.UInt32?
+API breakage: var Incident.TrafficCodes.jarticRegulationCode has declared type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticRegulationCode.Get() has return type change from Swift.UInt32 to Swift.UInt32?
+API breakage: accessor Incident.TrafficCodes.jarticRegulationCode.Set() has parameter 0 type change from Swift.UInt32 to Swift.UInt32?
