@@ -72,10 +72,10 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         }
         
         /// Jartic cause code value.
-        public var jarticCauseCode: UInt32
+        public var jarticCauseCode: UInt32?
 
         /// Jartic regulation code value.
-        public var jarticRegulationCode: UInt32
+        public var jarticRegulationCode: UInt32?
     }
     
     /// Represents the impact of the incident on local traffic.
