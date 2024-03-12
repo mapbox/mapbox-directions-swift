@@ -267,7 +267,7 @@ jobs:
 
   publish-documentation:
     macos:
-      xcode: "12.5.1"
+      xcode: "14.1.0"
     steps:
       - checkout
       - install-mapbox-token
