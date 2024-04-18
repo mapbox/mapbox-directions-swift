@@ -307,3 +307,4 @@ For further details, see the [MapboxDirectionsCLI documentation](CommandLineTool
 ## Pricing
 
 API calls made to the Directions API are individually billed by request. Review the [pricing information](https://docs.mapbox.com/api/navigation/directions/#directions-api-pricing) and the [pricing page](https://www.mapbox.com/pricing/#directions) for current rates.
+
