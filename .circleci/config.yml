@@ -117,7 +117,7 @@ step-library:
 jobs:
   detect-breaking-changes:
     macos:
-      xcode: 13.4.1
+      xcode: 14.3.1
     steps:
       - checkout
       - install-mapbox-token
@@ -192,7 +192,7 @@ jobs:
             carthage bootstrap --platform all --use-netrc --use-xcframeworks
   example-app-build:
     macos:
-      xcode: "13.4.1"
+      xcode: "14.3.1"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
@@ -210,19 +210,19 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "13.4.1"
+        default: "14.3.1"
       device:
         type: string
         default: "iPhone 13"
       iOS:
         type: string
-        default: "15.5"
+        default: "16.4"
       watchOS:
         type: string
-        default: "8.5"
+        default: "9.4"
       tvOS:
         type: string
-        default: "15.4"
+        default: "16.4"
       test:
         type: boolean
         default: true
@@ -287,7 +287,7 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "13.4.1"
+        default: "14.3.1"
     macos:
       xcode: << parameters.xcode >>
     environment:
@@ -315,7 +315,7 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "13.4.1"
+        default: "14.3.1"
     macos:
       xcode: << parameters.xcode >>
     environment:
@@ -367,16 +367,16 @@ workflows:
       - detect-breaking-changes:
           name: "Detect Breaking Changes"
       - build-job:
-          name: "Dev Build: Xcode 13.4.1"
+          name: "Dev Build: Xcode 14.3.1"
       - carthage-integration-test:
-          name: "Carthage Integration Test 13.4.1"
-          xcode: "13.4.1"
+          name: "Carthage Integration Test 14.3.1"
+          xcode: "14.3.1"
       - carthage-integration-test:
           name: "Carthage Integration Test 14.0.0"
           xcode: "14.0.0"
       - spm-job:
-          name: "SPM build 13.4.1"
-          xcode: "13.4.1"
+          name: "SPM build 14.3.1"
+          xcode: "14.3.1"
       - spm-job:
           name: "SPM build 14.1.0"
           xcode: "14.1.0"
