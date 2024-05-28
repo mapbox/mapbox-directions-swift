@@ -1,5 +1,14 @@
 # Changes to Mapbox Directions for Swift
 
+
+## v2.13.0
+
+* This library now depends on Turf v2.8.x. ([#825](https://github.com/mapbox/mapbox-directions-swift/pull/825))
+
+## v2.12.0
+
+* This library now depends on Turf v2.7.x. ([#819](https://github.com/mapbox/mapbox-directions-swift/pull/819))
+
 ## v2.11.0
 
 * Added `Incident.trafficCodes` and corresponding `TrafficCodes` struct to hold jartic codes. ([#808](https://github.com/mapbox/mapbox-directions-swift/pull/808))
