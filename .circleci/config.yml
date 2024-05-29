@@ -267,7 +267,7 @@ jobs:
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
       - run:
           name: watchOS
-          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 5 - 44mm,OS=<< parameters.watchOS >>' clean build
+          command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 7 - 44mm,OS=<< parameters.watchOS >>' clean build
       - save-cache
 
   publish-documentation:
