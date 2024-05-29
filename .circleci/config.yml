@@ -50,7 +50,11 @@ commands:
         steps:
             - run:
                 name: Dependencies
-                command: carthage bootstrap --platform all --cache-builds --configuration Debug --use-xcframeworks
+                command: |
+                  carthage checkout
+                  # Workaround for OHHTTPStubs not supporting Xcode 14.3+
+                  sed -i '' 's/MACOSX_DEPLOYMENT_TARGET = 10.9/MACOSX_DEPLOYMENT_TARGET = 10.13/g' Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs.xcodeproj/project.pbxproj
+                  carthage build --platform all --cache-builds --configuration Debug --use-xcframeworks
     install-mbx-ci:
       steps:
         - run:
