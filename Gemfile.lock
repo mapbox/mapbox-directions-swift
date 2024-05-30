@@ -109,9 +109,10 @@ GEM
 
 PLATFORMS
   universal-darwin-21
+  x86_64-darwin-22
 
 DEPENDENCIES
   jazzy (~> 0.14)
 
 BUNDLED WITH
-   2.3.17
+   2.4.13
