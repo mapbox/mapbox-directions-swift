@@ -454,7 +454,11 @@ open class Directions: NSObject {
                     }
                     
                     guard (disposition.code == nil && disposition.message == nil) || disposition.code == "Ok" else {
-                        let apiError = DirectionsError(code: disposition.code, message: disposition.message, response: response, underlyingError: possibleError)
+                        let apiError = DirectionsError(code: disposition.code,
+                                                       message: disposition.message,
+                                                       response: response,
+                                                       underlyingError: possibleError,
+                                                       refreshTTL: disposition.refreshTTL)
                         DispatchQueue.main.async {
                             completionHandler(self.credentials, .failure(apiError))
                         }

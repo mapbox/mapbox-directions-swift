@@ -18,6 +18,7 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertEqual(DirectionsError.invalidInput(message: nil).failureReason, nil)
         XCTAssertEqual(DirectionsError.invalidInput(message: "").failureReason, "")
         XCTAssertNotNil(DirectionsError.rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: nil).failureReason)
+        XCTAssertNotNil(DirectionsError.refreshExpired.failureReason)
         XCTAssertNotNil(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil).failureReason)
     }
     
@@ -33,6 +34,7 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertNil(DirectionsError.invalidInput(message: nil).recoverySuggestion)
         XCTAssertNil(DirectionsError.rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: nil).recoverySuggestion)
         XCTAssertNotNil(DirectionsError.rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: .distantFuture).recoverySuggestion)
+        XCTAssertNotNil(DirectionsError.refreshExpired.recoverySuggestion)
         XCTAssertNil(DirectionsError.unknown(response: nil, underlying: nil, code: nil, message: nil).recoverySuggestion)
         
         let underlyingError = NSError(domain: "com.example", code: 02134, userInfo: [NSLocalizedRecoverySuggestionErrorKey: "Try harder"])
@@ -63,6 +65,7 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertNotEqual(DirectionsError.rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: nil),
                           .rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: .distantPast))
         
+        XCTAssertEqual(DirectionsError.refreshExpired, .refreshExpired)
         enum BogusError: Error {
             case bug
         }
@@ -85,6 +88,16 @@ class DirectionsErrorTests: XCTestCase {
         XCTAssertNotEqual(DirectionsError.noData, .requestTooLarge)
         XCTAssertNotEqual(DirectionsError.noData, .invalidInput(message: nil))
         XCTAssertNotEqual(DirectionsError.noData, .rateLimited(rateLimitInterval: nil, rateLimit: nil, resetTime: nil))
+        XCTAssertNotEqual(DirectionsError.noData, .refreshExpired)
         XCTAssertNotEqual(DirectionsError.noData, .unknown(response: nil, underlying: nil, code: nil, message: ""))
+    }
+    
+    func testRefreshExpiredError() {
+        XCTAssertNotEqual(DirectionsError(code: nil, message: nil, response: nil, underlyingError: nil, refreshTTL: 5),
+                          .refreshExpired)
+        XCTAssertNotEqual(DirectionsError(code: nil, message: nil, response: nil, underlyingError: nil, refreshTTL: nil),
+                          .refreshExpired)
+        XCTAssertEqual(DirectionsError(code: nil, message: nil, response: nil, underlyingError: nil, refreshTTL: 0),
+                       .refreshExpired)
     }
 }

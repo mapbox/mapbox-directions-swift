@@ -8,7 +8,11 @@ import FoundationNetworking
  */
 public enum DirectionsError: LocalizedError {
     
-    public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?) {
+    public init(code: String?, message: String?, response: URLResponse?, underlyingError error: Error?, refreshTTL: Int? = nil) {
+        guard refreshTTL == nil || refreshTTL != 0 else {
+            self = .refreshExpired
+            return
+        }
         if let response = response as? HTTPURLResponse {
             switch (response.statusCode, code ?? "") {
             case (200, "NoRoute"):
@@ -106,6 +110,13 @@ public enum DirectionsError: LocalizedError {
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
     /**
+     Current route may no longer be refreshed.
+     
+     Route's refresh TTL has expired and it is not possible to refresh it anymore. Try requesting a new one instead.
+     */
+    case refreshExpired
+
+    /**
      Unknown error case. Look at associated values for more details.
      */
     
@@ -146,6 +157,8 @@ public enum DirectionsError: LocalizedError {
             #endif
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
+        case .refreshExpired:
+            return "Current routes can no longer be refreshed due to it's TTL expiration."
         case let .unknown(_, underlying: error, _, message):
             return message
                 ?? (error as NSError?)?.userInfo[NSLocalizedFailureReasonErrorKey] as? String
@@ -175,6 +188,8 @@ public enum DirectionsError: LocalizedError {
             }
             let formattedDate: String = DateFormatter.localizedString(from: rolloverTime, dateStyle: .long, timeStyle: .long)
             return "Wait until \(formattedDate) before retrying."
+        case .refreshExpired:
+            return "Try making a new route request."
         case let .unknown(_, underlying: error, _, _):
             return (error as NSError?)?.userInfo[NSLocalizedRecoverySuggestionErrorKey] as? String
         }
@@ -190,7 +205,8 @@ extension DirectionsError: Equatable {
              (.tooManyCoordinates, .tooManyCoordinates),
              (.unableToLocate, .unableToLocate),
              (.profileNotFound, .profileNotFound),
-             (.requestTooLarge, .requestTooLarge):
+             (.requestTooLarge, .requestTooLarge),
+             (.refreshExpired, .refreshExpired):
             return true
         case let (.network(lhsError), .network(rhsError)):
             return lhsError == rhsError
