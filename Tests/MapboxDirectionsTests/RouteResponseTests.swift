@@ -98,4 +98,18 @@ class RouteResponseTests: XCTestCase {
         XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
         XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
     }
+    
+    func testRefreshTTL() {
+        let options = RouteOptions(coordinates: [])
+        let refreshTTL: TimeInterval = 60
+        let response = RouteResponse(httpResponse: nil,
+                                     options: .route(options),
+                                     credentials: BogusCredentials,
+                                     refreshTTL: refreshTTL)
+        
+        XCTAssertNotNil(response.refreshTTL)
+        XCTAssertNotNil(response.refreshInvalidationDate)
+        
+        XCTAssertEqual(response.refreshInvalidationDate, response.created.addingTimeInterval(refreshTTL))
+    }
 }
