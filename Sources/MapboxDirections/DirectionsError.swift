@@ -110,7 +110,7 @@ public enum DirectionsError: LocalizedError {
     case rateLimited(rateLimitInterval: TimeInterval?, rateLimit: UInt?, resetTime: Date?)
     
     /**
-     Current route may no longer be refreshed.
+     The current route may no longer be refreshed.
      
      Route's refresh TTL has expired and it is not possible to refresh it anymore. Try requesting a new one instead.
      */
@@ -158,7 +158,7 @@ public enum DirectionsError: LocalizedError {
             let formattedCount = NumberFormatter.localizedString(from: NSNumber(value: limit), number: .decimal)
             return "More than \(formattedCount) requests have been made with this access token within a period of \(formattedInterval)."
         case .refreshExpired:
-            return "Current routes can no longer be refreshed due to it's TTL expiration."
+            return "Current routes can no longer be refreshed due to their TTL expiration."
         case let .unknown(_, underlying: error, _, message):
             return message
                 ?? (error as NSError?)?.userInfo[NSLocalizedFailureReasonErrorKey] as? String
