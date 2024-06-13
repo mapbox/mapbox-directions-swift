@@ -1,1 +1,3 @@
-
+API breakage: enumelement DirectionsError.refreshExpired has been added as a new enum case
+API breakage: constructor DirectionsError.init(code:message:response:underlyingError:) has been removed
+API breakage: constructor RouteResponse.init(httpResponse:identifier:routes:waypoints:options:credentials:) has been removed

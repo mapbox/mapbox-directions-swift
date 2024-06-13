@@ -24,7 +24,8 @@ class RouteResponseTests: XCTestCase {
         let routeResponse = RouteResponse(httpResponse: nil,
                                           waypoints: waypoints,
                                           options: responseOptions,
-                                          credentials: BogusCredentials)
+                                          credentials: BogusCredentials,
+                                          refreshTTL: 12.34)
         
         do {
             let encodedRouteResponse = try JSONEncoder().encode(routeResponse)
@@ -58,6 +59,7 @@ class RouteResponseTests: XCTestCase {
             XCTAssertEqual(originWaypoint.separatesLegs, false, "originWaypoint should have separatesLegs set to false.")
             XCTAssertEqual(decodedSeparatesLegs, true, "First and last decoded waypoints should have separatesLegs value set to true.")
             XCTAssertEqual(originWaypoint.allowsArrivingOnOppositeSide, decodedAllowsArrivingOnOppositeSide, "Original and decoded allowsArrivingOnOppositeSides should be equal.")
+            XCTAssertEqual(routeResponse.refreshTTL, decodedRouteResponse.refreshTTL, "Original and decoded refreshTTL should be equal.")
         } catch {
             XCTFail("Failed with error: \(error)")
         }
@@ -95,5 +97,19 @@ class RouteResponseTests: XCTestCase {
         XCTAssertEqual(roadClassesViolations?.count, 77, "Incorrect number of RoadClassViolations found")
         XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 9, intersectionIndex: 0).first!.roadClasses, .ferry)
         XCTAssertEqual(unwrappedResponse.exclusionViolations(routeIndex: 0, legIndex: 0, stepIndex: 24, intersectionIndex: 7).first!.roadClasses, .toll)
+    }
+    
+    func testRefreshTTL() {
+        let options = RouteOptions(coordinates: [])
+        let refreshTTL: TimeInterval = 60
+        let response = RouteResponse(httpResponse: nil,
+                                     options: .route(options),
+                                     credentials: BogusCredentials,
+                                     refreshTTL: refreshTTL)
+        
+        XCTAssertNotNil(response.refreshTTL)
+        XCTAssertNotNil(response.refreshInvalidationDate)
+        
+        XCTAssertEqual(response.refreshInvalidationDate, response.created.addingTimeInterval(refreshTTL))
     }
 }

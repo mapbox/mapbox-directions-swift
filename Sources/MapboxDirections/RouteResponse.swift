@@ -61,6 +61,22 @@ public struct RouteResponse: ForeignMemberContainer {
      */
     public var created: Date = Date()
     
+    /*
+     A time period during which the routes from this ``RouteResponse`` are eligable for refreshing.
+     
+     `nil` value indicates that route refreshing is not available for related routes.
+     */
+    public let refreshTTL: TimeInterval?
+    
+    /*
+     A deadline after which  the routes from this ``RouteResponse`` are eligable for refreshing.
+     
+     `nil` value indicates that route refreshing is not available for related routes.
+     */
+    public var refreshInvalidationDate: Date? {
+        refreshTTL.map { created.addingTimeInterval($0) }
+    }
+    
     /**
      Managed array of `RoadClasses` restrictions specified to `RouteOptions.roadClassesToAvoid` which were violated during route calculation.
      
@@ -78,15 +94,17 @@ extension RouteResponse: Codable {
         case identifier = "uuid"
         case routes
         case waypoints
+        case refreshTTL = "refresh_ttl"
     }
     
-    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: Credentials) {
+    public init(httpResponse: HTTPURLResponse?, identifier: String? = nil, routes: [Route]? = nil, waypoints: [Waypoint]? = nil, options: ResponseOptions, credentials: Credentials, refreshTTL: TimeInterval? = nil) {
         self.httpResponse = httpResponse
         self.identifier = identifier
         self.options = options
         self.routes = routes
         self.waypoints = waypoints
         self.credentials = credentials
+        self.refreshTTL = refreshTTL
         
         updateRoadClassExclusionViolations()
     }
@@ -187,6 +205,8 @@ extension RouteResponse: Codable {
             routes = nil
         }
         
+        self.refreshTTL = try container.decodeIfPresent(TimeInterval.self, forKey: .refreshTTL)
+
         updateRoadClassExclusionViolations()
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
@@ -197,6 +217,7 @@ extension RouteResponse: Codable {
         try container.encodeIfPresent(identifier, forKey: .identifier)
         try container.encodeIfPresent(routes, forKey: .routes)
         try container.encodeIfPresent(waypoints, forKey: .waypoints)
+        try container.encodeIfPresent(refreshTTL, forKey: .refreshTTL)
         
         try encodeForeignMembers(notKeyedBy: CodingKeys.self, to: encoder)
     }
