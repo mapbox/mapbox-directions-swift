@@ -56,7 +56,7 @@ class DirectionsTests: XCTestCase {
         XCTAssertEqual(directions.credentials, BogusCredentials)
     }
     
-    let maximumCoordinateCount = 794
+    let maximumCoordinateCount = 991
     
     func testGETRequest() {
         // Bumps right up against MaximumURLLength
