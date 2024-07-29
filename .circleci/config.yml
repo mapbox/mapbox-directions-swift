@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  macos: circleci/macos@2.4.1
+  gh: circleci/github-cli@2.0
+
 commands:
     install-mapbox-token:
          steps:
@@ -58,6 +62,7 @@ commands:
                   carthage build --platform all --cache-builds --configuration Debug --use-xcframeworks
     install-mbx-ci:
       steps:
+        - macos/install-rosetta
         - run:
             name: "Install MBX CI"
             command: |
@@ -122,7 +127,7 @@ step-library:
 jobs:
   detect-breaking-changes:
     macos:
-      xcode: 14.3.1
+      xcode: 15.2.0
     steps:
       - checkout
       - install-mapbox-token
@@ -186,6 +191,7 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - install-mapbox-token
+      - macos/install-rosetta
       - install-carthage
       - run:
           name: "Create integration Cartfile"
@@ -203,6 +209,7 @@ jobs:
     steps:
       - checkout
       - install-mapbox-token
+      - macos/install-rosetta
       - install-carthage
       - restore-cache
       - carthage-bootstrap
@@ -215,19 +222,19 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "14.3.1"
+        default: "15.2.0"
       device:
         type: string
-        default: "iPhone 14"
+        default: "iPhone 15 Pro"
       iOS:
         type: string
-        default: "16.4"
+        default: "17.2"
       watchOS:
         type: string
-        default: "9.4"
+        default: "10.2"
       tvOS:
         type: string
-        default: "16.4"
+        default: "17.2"
       test:
         type: boolean
         default: true
@@ -241,6 +248,7 @@ jobs:
     steps:
       - checkout
       - install-mapbox-token
+      - macos/install-rosetta
       - install-carthage
       - restore-cache
       - run:
@@ -272,12 +280,12 @@ jobs:
 
   publish-documentation:
     macos:
-      xcode: "14.1.0"
+      xcode: "15.2.0"
     steps:
       - checkout
       - install-mapbox-token
-      - install-carthage
       - install-mbx-ci
+      - install-carthage
       - run:
           name: Generate Documentation
           command: |
@@ -292,7 +300,7 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "14.3.1"
+        default: "15.2.0"
     macos:
       xcode: << parameters.xcode >>
     environment:
@@ -320,7 +328,7 @@ jobs:
     parameters:
       xcode:
         type: string
-        default: "14.3.1"
+        default: "15.2.0"
     macos:
       xcode: << parameters.xcode >>
     environment:
@@ -372,16 +380,16 @@ workflows:
       - detect-breaking-changes:
           name: "Detect Breaking Changes"
       - build-job:
-          name: "Dev Build: Xcode 14.3.1"
+          name: "Dev Build: Xcode 15.2"
       - carthage-integration-test:
-          name: "Carthage Integration Test 14.3.1"
-          xcode: "14.3.1"
+          name: "Carthage Integration Test 15.2"
+          xcode: "15.2.0"
       - carthage-integration-test:
           name: "Carthage Integration Test 14.0.0"
           xcode: "14.0.0"
       - spm-job:
-          name: "SPM build 14.3.1"
-          xcode: "14.3.1"
+          name: "SPM build 15.2"
+          xcode: "15.2.0"
       - spm-job:
           name: "SPM build 14.1.0"
           xcode: "14.1.0"
@@ -391,7 +399,7 @@ workflows:
           name: "Build example app"
       - integration-test-with-navigation-sdk:
           name: "Integration Test With Navigation SDK"
-          xcode: "14.2.0"
+          xcode: "15.2.0"
       - publish-documentation:
           name: "Publish Documentation"
           filters:
