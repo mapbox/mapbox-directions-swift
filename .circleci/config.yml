@@ -34,8 +34,11 @@ commands:
                     curl -OL "https://github.com/Carthage/Carthage/releases/download/0.38.0/Carthage.pkg"
                     sudo installer -pkg Carthage.pkg -target /
 
-    publish-codecov:
+    publish-coverage:
         steps:
+            - run:
+                name: Install lcov
+                command: brew install lcov
             - run:
                 name: Generate code coverage report
                 command: |
@@ -43,13 +46,15 @@ commands:
                     -instr-profile=$(find "${HOME}/Library/Developer/Xcode/DerivedData" -name '*.profdata' | head -n 1) \
                     $(find "${HOME}/Library/Developer/Xcode/DerivedData" -ipath "*MapboxDirections.framework/MapboxDirections" | head -1) > coverage.lcov
             - run:
-                name: Send code coverage
+                name: Generate html report
                 command: |
-                  curl -Os https://uploader.codecov.io/latest/macos/codecov
-                  chmod +x codecov
-                  ./codecov
+                  genhtml coverage.lcov --output-directory coverage
             - store_artifacts:
-                path: coverage.lcov
+                path: coverage
+                destination: coverage-report
+            - store_test_results:
+                path: test-results
+                when: always
     carthage-bootstrap:
         steps:
             - run:
@@ -258,18 +263,14 @@ jobs:
       - carthage-bootstrap
       - run:
           name: iOS
-          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES"<</ parameters.codecoverage >>
+          command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES" | xcpretty --report junit --output test-results/junit.xml<</ parameters.codecoverage >>
       - when:
           condition: << parameters.codecoverage >>
           steps:
-            - publish-codecov
+            - publish-coverage
       - run:
           name: tvOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections tvOS' -destination 'platform=tvOS Simulator,name=Apple TV,OS=<< parameters.tvOS >>' clean build <<# parameters.test >>test <</ parameters.test >> <<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>
-      - when:
-          condition: << parameters.codecoverage >>
-          steps:
-            - publish-codecov
       - run:
           name: macOS
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections Mac' clean build<<# parameters.test >> test <</ parameters.test >><<# parameters.codecoverage >>-enableCodeCoverage YES<</ parameters.codecoverage >>

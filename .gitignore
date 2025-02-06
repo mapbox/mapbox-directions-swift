@@ -15,5 +15,9 @@ Carthage/Checkouts
 .build
 .vscode
 
+coverage
+coverage.lcov
+junit.xml
+
 vendor/bundle/ruby/
 IntegrationWithNavigationSDK/MapboxNavigationSwiftUI.xcodeproj.disabled/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
