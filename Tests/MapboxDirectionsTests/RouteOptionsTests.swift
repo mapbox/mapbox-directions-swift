@@ -302,7 +302,7 @@ class RouteOptionsTests: XCTestCase {
         let correct = ["53.032188,9.945497", "54.032188,10.945497"]
         XCTAssert(answer == correct, "Coordinates should be truncated.")
     }
-    
+
     func testWaypointSerialization() {
         let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
         let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
@@ -312,7 +312,52 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_targets", value: ";-84.51619,39.13115")))
     }
-    
+
+    func testRefreshingEnabledInitializationWithQueryItems() {
+        let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182))
+        let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638))
+
+        let options = RouteOptions(waypoints: [origin, destination], profileIdentifier: .automobile)
+        options.refreshingEnabled = true
+        XCTAssertFalse(options.urlQueryItems.contains(URLQueryItem(name: "enable_refresh", value: "true")))
+
+        options.profileIdentifier = .init(rawValue: "custom/driving")
+        XCTAssertFalse(options.urlQueryItems.contains(URLQueryItem(name: "enable_refresh", value: "true")))
+
+        options.profileIdentifier = .automobileAvoidingTraffic
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "enable_refresh", value: "true")))
+
+        options.profileIdentifier = .init(rawValue: "custom/driving-traffic")
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "enable_refresh", value: "true")))
+    }
+
+    func testRefreshingEnabledUrlQueryItems() {
+        let origin = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.15031, longitude: -84.47182))
+        let destination = Waypoint(coordinate: LocationCoordinate2D(latitude: 39.12971, longitude: -84.51638))
+        let queryItems: [URLQueryItem] = [.init(name: "enable_refresh", value: "true")]
+
+        let options1 = RouteOptions(
+            waypoints: [origin, destination],
+            profileIdentifier: .automobile,
+            queryItems: queryItems
+        )
+        XCTAssertFalse(options1.refreshingEnabled)
+
+        let options2 = RouteOptions(
+            waypoints: [origin, destination],
+            profileIdentifier: .automobileAvoidingTraffic,
+            queryItems: queryItems
+        )
+        XCTAssertTrue(options2.refreshingEnabled)
+
+        let options3 = RouteOptions(
+            waypoints: [origin, destination],
+            profileIdentifier: .init(rawValue: "custom/driving-traffic"),
+            queryItems: queryItems
+        )
+        XCTAssertTrue(options3.refreshingEnabled)
+    }
+
     func testWaypointLayers(){
         let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))

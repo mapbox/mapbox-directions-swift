@@ -62,7 +62,8 @@ open class RouteOptions: DirectionsOptions {
            let roadClassesToAllow = RoadClasses(descriptions:mappedValue.components(separatedBy: ",")) {
             self.roadClassesToAllow = roadClassesToAllow
         }
-        if mappedQueryItems[CodingKeys.refreshingEnabled.stringValue] == "true" && profileIdentifier == .automobileAvoidingTraffic {
+        if mappedQueryItems[CodingKeys.refreshingEnabled.stringValue] == "true"
+            && profileIdentifier?.isAutomobileAvoidingTraffic ?? false {
             self.refreshingEnabled = true
         }
         if let mappedValue = mappedQueryItems[CodingKeys.waypointTargets.stringValue] {
@@ -445,7 +446,7 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.roadClassesToAllow.stringValue, value: parameterValue))
         }
         
-        if refreshingEnabled && profileIdentifier == .automobileAvoidingTraffic {
+        if refreshingEnabled && profileIdentifier.isAutomobileAvoidingTraffic {
             params.append(URLQueryItem(name: CodingKeys.refreshingEnabled.stringValue, value: refreshingEnabled.queryString))
         }
         
