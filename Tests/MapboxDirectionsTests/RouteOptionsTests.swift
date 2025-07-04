@@ -358,6 +358,65 @@ class RouteOptionsTests: XCTestCase {
         XCTAssertTrue(options3.refreshingEnabled)
     }
 
+    func testAllowsUTurnAtWaypoint() {
+        let options1 = RouteOptions(coordinates: testCoordinates, profileIdentifier: .automobile)
+        XCTAssertFalse(options1.allowsUTurnAtWaypoint)
+        
+        let options2 = RouteOptions(coordinates: testCoordinates, profileIdentifier: .automobileAvoidingTraffic)
+        XCTAssertFalse(options2.allowsUTurnAtWaypoint)
+        
+        let options3 = RouteOptions(
+            coordinates: testCoordinates,
+            profileIdentifier: ProfileIdentifier(rawValue: "custom/driving-traffic")
+        )
+        XCTAssertFalse(options3.allowsUTurnAtWaypoint)
+        
+        let options4 = RouteOptions(
+            coordinates: testCoordinates,
+            profileIdentifier: ProfileIdentifier(rawValue: "custom/driving")
+        )
+        XCTAssertFalse(options4.allowsUTurnAtWaypoint)
+        
+        let options5 = RouteOptions(coordinates: testCoordinates, profileIdentifier: .walking)
+        XCTAssertTrue(options5.allowsUTurnAtWaypoint)
+        
+        let options6 = RouteOptions(coordinates: testCoordinates, profileIdentifier: .cycling)
+        XCTAssertTrue(options6.allowsUTurnAtWaypoint)
+    }
+
+    func testArriveByUrlQueryItems() {
+        let options = RouteOptions(coordinates: testCoordinates, profileIdentifier: .automobile)
+        options.arriveBy = Date(timeIntervalSince1970: 600)
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "arrive_by", value: "1970-01-01T00:10")))
+        
+        options.profileIdentifier = ProfileIdentifier(rawValue: "custom/driving")
+        XCTAssertTrue(options.urlQueryItems.map { $0.name }.contains("arrive_by"))
+        
+        options.profileIdentifier = .automobileAvoidingTraffic
+        XCTAssertFalse(options.urlQueryItems.map { $0.name }.contains("arrive_by"))
+        
+        options.profileIdentifier = .walking
+        XCTAssertFalse(options.urlQueryItems.map { $0.name }.contains("arrive_by"))
+    }
+
+    func testDepartAtUrlQueryItems() {
+        let options = RouteOptions(coordinates: testCoordinates, profileIdentifier: .automobile)
+        options.departAt = Date(timeIntervalSince1970: 600)
+        XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "depart_at", value: "1970-01-01T00:10")))
+        
+        options.profileIdentifier = ProfileIdentifier(rawValue: "custom/driving")
+        XCTAssertTrue(options.urlQueryItems.map { $0.name }.contains("depart_at"))
+        
+        options.profileIdentifier = .automobileAvoidingTraffic
+        XCTAssertTrue(options.urlQueryItems.map { $0.name }.contains("depart_at"))
+        
+        options.profileIdentifier = ProfileIdentifier(rawValue: "custom/driving-traffic")
+        XCTAssertTrue(options.urlQueryItems.map { $0.name }.contains("depart_at"))
+        
+        options.profileIdentifier = .walking
+        XCTAssertFalse(options.urlQueryItems.map { $0.name }.contains("depart_at"))
+    }
+
     func testWaypointLayers(){
         let from = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))
         let through = Waypoint(coordinate: LocationCoordinate2D(latitude: 0, longitude: 0))

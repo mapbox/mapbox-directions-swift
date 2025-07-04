@@ -20,8 +20,9 @@ open class RouteOptions: DirectionsOptions {
      - parameter queryItems: URL query items to be parsed and applied as configuration to the resulting options.
      */
     public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
-        let profilesDisallowingUTurns: [ProfileIdentifier] = [.automobile, .automobileAvoidingTraffic]
-        allowsUTurnAtWaypoint = !profilesDisallowingUTurns.contains(profileIdentifier ?? .automobile)
+        let profile = profileIdentifier ?? .automobile
+        let disallowsUTurns = profile.isAutomobileAvoidingTraffic || profile.isAutomobile
+        allowsUTurnAtWaypoint = !disallowsUTurns
         super.init(waypoints: waypoints, profileIdentifier: profileIdentifier, queryItems: queryItems)
         
         guard let queryItems = queryItems else {
@@ -479,7 +480,7 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.maximumWeight.stringValue, value: String(weightInTonnes)))
         }
 
-        if [ProfileIdentifier.automobile, .automobileAvoidingTraffic].contains(profileIdentifier) {
+        if profileIdentifier.isAutomobile || profileIdentifier.isAutomobileAvoidingTraffic {
             let formatter = DateFormatter.ISO8601DirectionsFormatter()
             
             if let departAt = departAt {
@@ -487,7 +488,7 @@ open class RouteOptions: DirectionsOptions {
                                            value: String(formatter.string(from: departAt))))
             }
             
-            if profileIdentifier == .automobile,
+            if profileIdentifier.isAutomobile,
                let arriveBy = arriveBy {
                 params.append(URLQueryItem(name: CodingKeys.arriveBy.stringValue,
                                            value: String(formatter.string(from: arriveBy))))
