@@ -2,8 +2,7 @@
 
 ## v2.14.1
 
-* Fixed `ProfileIdentifier` comparison for the custom profile identifiers. ([#827](https://github.com/mapbox/mapbox-directions-swift/pull/827))
-
+* Fixed `ProfileIdentifier` comparison for the custom profile identifiers. ([#833](https://github.com/mapbox/mapbox-directions-swift/pull/833))
 
 ## v2.14.0
 
