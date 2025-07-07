@@ -151,6 +151,9 @@
 		2C295AC5299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
 		2C295AC6299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
 		2C295AC7299BE99100FC74E8 /* intersections.json in Resources */ = {isa = PBXBuildFile; fileRef = 2C295AC4299BE99100FC74E8 /* intersections.json */; };
+		2C39F3632E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C39F3622E1812770045B5E4 /* ProfileIdentifierTests.swift */; };
+		2C39F3642E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C39F3622E1812770045B5E4 /* ProfileIdentifierTests.swift */; };
+		2C39F3652E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C39F3622E1812770045B5E4 /* ProfileIdentifierTests.swift */; };
 		2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
 		2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
 		2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */; };
@@ -601,6 +604,7 @@
 		2C295ABA299BE2B800FC74E8 /* Interchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interchange.swift; sourceTree = "<group>"; };
 		2C295ABF299BE2CE00FC74E8 /* Junction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Junction.swift; sourceTree = "<group>"; };
 		2C295AC4299BE99100FC74E8 /* intersections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = intersections.json; sourceTree = "<group>"; };
+		2C39F3622E1812770045B5E4 /* ProfileIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIdentifierTests.swift; sourceTree = "<group>"; };
 		2E44711627C4C80B0041CB84 /* SilentWaypoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentWaypoint.swift; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
@@ -1016,6 +1020,7 @@
 				912DF1A5240507640095D3D2 /* TransportTypeTests.swift */,
 				8A3B4C9A24EB55F60085DA64 /* RouteResponseTests.swift */,
 				8A47418E2947D1E100F231F9 /* AmenityTests.swift */,
+				2C39F3622E1812770045B5E4 /* ProfileIdentifierTests.swift */,
 			);
 			name = MapboxDirectionsTests;
 			path = Tests/MapboxDirectionsTests;
@@ -1658,6 +1663,7 @@
 				2B46025728EDB63A0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7932395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
+				2C39F3632E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */,
 				F4D785F01DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1770,6 +1776,7 @@
 				2B46025828EDB63B0008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7942395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
+				2C39F3642E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */,
 				F4D785F11DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1933,6 +1940,7 @@
 				912DF1A6240507640095D3D2 /* TransportTypeTests.swift in Sources */,
 				C5247D711E818A24004B6154 /* AnnotationTests.swift in Sources */,
 				4376A52723FB13D400C6038D /* MatchOptionsTests.swift in Sources */,
+				2C39F3652E1812770045B5E4 /* ProfileIdentifierTests.swift in Sources */,
 				DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */,
 				2B9F389A272AE28B001DBA12 /* IsochroneTests.swift in Sources */,
 				DAD06E35239F0B19001A917D /* DirectionsErrorTests.swift in Sources */,

@@ -1,5 +1,12 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.14.1
+
+* Fixed `ProfileIdentifier` comparison for the custom profile identifiers. ([#833](https://github.com/mapbox/mapbox-directions-swift/pull/833))
+
+## v2.14.0
+
+* Added route response refresh TTL field and a DirectionsError to signal refreshing has expired. ([#827](https://github.com/mapbox/mapbox-directions-swift/pull/827))
 
 ## v2.13.0
 
