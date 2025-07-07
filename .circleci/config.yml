@@ -417,6 +417,9 @@ workflows:
   distribute-version-workflow:
     jobs:
       - distribute-version-job:
+          context:
+            - SDK Registry Token
+            - CocoaPods trunk token
           filters:
             branches:
               only: /^trigger-distribute-version-.*/
