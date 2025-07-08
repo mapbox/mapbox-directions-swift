@@ -347,9 +347,9 @@ jobs:
           command: |
             VERSION=$( echo << pipeline.git.branch >> | sed 's/^trigger-distribute-version-//' )
             if [[ $VERSION == *alpha* || $VERSION == *beta* || $VERSION == *rc* ]]; then
-                pod repo update && pod trunk push MapboxDirections-pre.podspec
+                pod repo update && pod trunk push MapboxDirections-pre.podspec --allow-warnings
               else
-                pod repo update && pod trunk push MapboxDirections.podspec
+                pod repo update && pod trunk push MapboxDirections.podspec --allow-warnings
             fi
       - *save-cache-podmaster
       - *save-cache-gems
@@ -417,6 +417,9 @@ workflows:
   distribute-version-workflow:
     jobs:
       - distribute-version-job:
+          context:
+            - SDK Registry Token
+            - CocoaPods trunk token
           filters:
             branches:
               only: /^trigger-distribute-version-.*/
