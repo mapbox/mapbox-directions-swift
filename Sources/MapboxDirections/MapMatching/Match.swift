@@ -85,7 +85,7 @@ open class Match: DirectionsResult {
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    open override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(confidence, forKey: .confidence)
         try container.encode(weight.value, forKey: .weight)
