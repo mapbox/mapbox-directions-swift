@@ -71,7 +71,7 @@ open class DirectionsResult: Codable, ForeignMemberContainerClass {
     }
     
     
-    public func encode(to encoder: Encoder) throws {
+    open func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(legs, forKey: .legs)
         if let shape = shape {

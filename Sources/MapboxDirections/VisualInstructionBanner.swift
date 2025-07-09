@@ -34,7 +34,7 @@ open class VisualInstructionBanner: Codable, ForeignMemberContainerClass {
         self.drivingSide = drivingSide
     }
     
-    public func encode(to encoder: Encoder) throws {
+    open func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(distanceAlongStep, forKey: .distanceAlongStep)
         try container.encode(primaryInstruction, forKey: .primaryInstruction)

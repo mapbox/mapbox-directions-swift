@@ -552,7 +552,7 @@ open class RouteStep: Codable, ForeignMemberContainerClass {
         self.segmentIndicesByIntersection = segmentIndicesByIntersection
     }
     
-    public func encode(to encoder: Encoder) throws {
+    open func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(instructionsSpokenAlongStep, forKey: .instructionsSpokenAlongStep)
         try container.encodeIfPresent(instructionsDisplayedAlongStep, forKey: .instructionsDisplayedAlongStep)

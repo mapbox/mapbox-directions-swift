@@ -38,7 +38,7 @@ open class Route: DirectionsResult {
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    open override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(tollPrices.map { TollPriceCoder(tollPrices: $0) }, forKey: .tollPrices)
         
