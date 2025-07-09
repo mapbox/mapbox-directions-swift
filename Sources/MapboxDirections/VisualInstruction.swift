@@ -28,7 +28,7 @@ open class VisualInstruction: Codable, ForeignMemberContainerClass {
         self.finalHeading = degrees
     }
     
-    public func encode(to encoder: Encoder) throws {
+    open func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(text, forKey: .text)
         try container.encodeIfPresent(maneuverType, forKey: .maneuverType)

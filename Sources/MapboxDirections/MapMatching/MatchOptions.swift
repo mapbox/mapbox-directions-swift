@@ -75,7 +75,7 @@ open class MatchOptions: DirectionsOptions {
         case resamplesTraces = "tidy"
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    open override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(resamplesTraces, forKey: .resamplesTraces)
         try super.encode(to: encoder)
