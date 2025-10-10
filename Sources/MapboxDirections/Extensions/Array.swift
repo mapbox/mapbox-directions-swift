@@ -19,7 +19,8 @@ extension Collection {
 
 extension [URLQueryItem] {
     mutating func override(with params: [URLQueryItem]) {
-        removeAll { Set(params.map(\.name)).contains($0.name) }
+        let names = Set(params.map(\.name))
+        removeAll { names.contains($0.name) }
         append(contentsOf: params)
     }
 }
