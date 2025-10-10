@@ -25,7 +25,7 @@ carthage checkout
 # Workaround for OHHTTPStubs not supporting Xcode 14.3+
 sed -i '' 's/MACOSX_DEPLOYMENT_TARGET = 10.9/MACOSX_DEPLOYMENT_TARGET = 10.13/g' Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs.xcodeproj/project.pbxproj
 sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 8.0/IPHONEOS_DEPLOYMENT_TARGET = 12.0/g' Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs.xcodeproj/project.pbxproj
-carthage build --platform all --cache-builds --configuration Debug --use-xcframeworks
+carthage build --platform iOS --cache-builds --configuration Release --use-xcframeworks
 
 step "Updating jazzy…"
 bundle install
