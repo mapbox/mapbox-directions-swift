@@ -154,7 +154,7 @@ open class Matrix {
     open func url(forCalculating options: MatrixOptions) -> URL {
         
         var params = options.urlQueryItems
-        params.append(URLQueryItem(name: "access_token", value: credentials.accessToken))
+        params.override(with: [URLQueryItem(name: "access_token", value: credentials.accessToken)])
 
         let unparameterizedURL = URL(path: options.path, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!

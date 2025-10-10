@@ -16,3 +16,10 @@ extension Collection {
         return IndexSet(try enumerated().filter { try predicate($0.element) }.map { $0.offset })
     }
 }
+
+extension [URLQueryItem] {
+    mutating func override(with params: [URLQueryItem]) {
+        removeAll { Set(params.map(\.name)).contains($0.name) }
+        append(contentsOf: params)
+    }
+}
