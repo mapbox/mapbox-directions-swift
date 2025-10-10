@@ -543,7 +543,7 @@ open class Directions: NSObject {
     open func url(forCalculating options: DirectionsOptions, httpMethod: String) -> URL {
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
-        params.append(contentsOf: authenticationParams)
+        params.override(with: authenticationParams)
 
         let unparameterizedURL = URL(path: includesQuery ? options.path : options.abridgedPath, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
