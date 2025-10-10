@@ -219,5 +219,83 @@ class DirectionsTests: XCTestCase {
         XCTAssertTrue(queryItems.contains(where: { $0.name == "access_token" && $0.value == BogusToken }))
     }
 
+    func testGETWithAuthRequest() {
+        let accessTokenKey = "access_token"
+        let accessTokenValue = "wrong_token"
+        let customTokenkey = "custom_token"
+        let customTokenValue = "correct_token"
+        let coordinate = LocationCoordinate2D(latitude: 0, longitude: 0)
+        let options = TestRouteOptions(waypoints: [
+            Waypoint(coordinate: coordinate),
+            Waypoint(coordinate: coordinate),
+        ], extraItems: [
+            URLQueryItem(name: accessTokenKey, value: accessTokenValue),
+            URLQueryItem(name: customTokenkey, value: customTokenValue),
+        ])
+
+        let directions = Directions(credentials: BogusCredentials)
+        let url = directions.url(forCalculating: options, httpMethod: "GET")
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let accessTokenCount = components?.queryItems?.count {
+            $0.name == accessTokenKey
+        }
+        XCTAssert(accessTokenCount == 1)
+
+        let actualTokenValue = components?.queryItems?.first(where: {
+            $0.name == accessTokenKey
+        })
+        XCTAssertEqual(actualTokenValue?.value, BogusCredentials.accessToken)
+
+        let customTokenCount = components?.queryItems?.count {
+            $0.name == customTokenkey
+        }
+        XCTAssert(accessTokenCount == 1)
+
+        let actualCustomTokenValue = components?.queryItems?.first(where: {
+            $0.name == customTokenkey
+        })
+        XCTAssertEqual(actualCustomTokenValue?.value, customTokenValue)
+    }
+
 }
+
+fileprivate final class TestRouteOptions: RouteOptions {
+    private let extraItems: [URLQueryItem]
+
+    init(waypoints: [Waypoint],
+         profileIdentifier: ProfileIdentifier? = nil,
+         extraItems: [URLQueryItem] = []) {
+        self.extraItems = extraItems
+
+        super.init(waypoints: waypoints,
+                   profileIdentifier: profileIdentifier,
+                   queryItems: extraItems)
+    }
+
+    required init(waypoints: [Waypoint],
+                  profileIdentifier: ProfileIdentifier? = nil,
+                  queryItems: [URLQueryItem]? = nil) {
+        self.extraItems = queryItems ?? []
+        super.init(waypoints: waypoints,
+                   profileIdentifier: profileIdentifier,
+                   queryItems: extraItems)
+    }
+
+    required init(from decoder: any Decoder) throws {
+        self.extraItems = []
+        try super.init(from: decoder)
+    }
+
+    override var urlQueryItems: [URLQueryItem] {
+        var combined = super.urlQueryItems
+
+        for item in extraItems {
+            combined.removeAll { $0.name == item.name }
+            combined.append(item)
+        }
+        return combined
+    }
+}
+
+
 #endif

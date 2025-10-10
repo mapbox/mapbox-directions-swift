@@ -152,7 +152,6 @@ open class Matrix {
      - returns: The URL to send the request to.
      */
     open func url(forCalculating options: MatrixOptions) -> URL {
-        
         var params = options.urlQueryItems
         params.override(with: [URLQueryItem(name: "access_token", value: credentials.accessToken)])
 
