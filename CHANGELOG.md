@@ -1,5 +1,9 @@
 # Changes to Mapbox Directions for Swift
 
+## v2.14.3
+
+* Fixed an issue where authentication route request parameters could be duplicated when using a custom `DirectionsOptions` subclass. ([#840](https://github.com/mapbox/mapbox-directions-swift/pull/840))
+
 ## v2.14.2
 
 * The `encode(to:)` methods in `DirectionsOptions`, `MatchOptions`, `RouteOptions`, and others open classes are now declared as open instead of public. ([#837](https://github.com/mapbox/mapbox-directions-swift/pull/837))
