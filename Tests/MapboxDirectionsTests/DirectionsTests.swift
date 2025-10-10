@@ -249,7 +249,7 @@ class DirectionsTests: XCTestCase {
         let customTokenCount = components?.queryItems?.count {
             $0.name == customTokenkey
         }
-        XCTAssert(accessTokenCount == 1)
+        XCTAssert(customTokenCount == 1)
 
         let actualCustomTokenValue = components?.queryItems?.first(where: {
             $0.name == customTokenkey
