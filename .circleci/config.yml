@@ -287,11 +287,11 @@ jobs:
       - install-mapbox-token
       - install-mbx-ci
       - install-carthage
+      - setup-write-repo-access
       - run:
           name: Generate Documentation
           command: |
             ./scripts/publish-documentation.sh << pipeline.git.tag >>
-      - setup-write-repo-access
       - run:
           name: "Push Generated Documentation"
           command: |

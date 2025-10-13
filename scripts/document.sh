@@ -42,7 +42,7 @@ bundle exec jazzy \
     --root-url "${BASE_URL}/directions/api/${RELEASE_VERSION}/" \
     --theme ${THEME} \
     --output ${OUTPUT} \
-    --build-tool-arguments CODE_SIGN_IDENTITY=,CODE_SIGNING_REQUIRED=NO,CODE_SIGNING_ALLOWED=NO
+    --build-tool-arguments CODE_SIGN_IDENTITY=,CODE_SIGNING_REQUIRED=NO,CODE_SIGNING_ALLOWED=NO,-target,MapboxDirections
     
 # Link to turf documentation
 TURF_VERSION=$(python3 -c "import json; print(list(filter(lambda x:x['package']=='Turf', json.loads(open('Package.resolved').read())['object']['pins']))[0]['state']['version'])")
