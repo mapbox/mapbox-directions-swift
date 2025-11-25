@@ -488,6 +488,17 @@
 		F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
 		F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
 		F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
+		F6DD8F5B2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5C2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5D2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5E2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F602ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
+		F6DD8F612ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
+		F6DD8F622ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
+		F6DD8F632ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
+		F6DD8F652ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F662ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F672ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -725,6 +736,9 @@
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
 		F4F508372524D6F10044F2D0 /* RestStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStop.swift; sourceTree = "<group>"; };
 		F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrativeRegion.swift; sourceTree = "<group>"; };
+		F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryItem.swift; sourceTree = "<group>"; };
+		F6DD8F5F2ED62D7D0001502C /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		F6DD8F642ED62DCC0001502C /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -877,6 +891,7 @@
 				DAE7EA93230B5FD10003B211 /* Measurement.swift */,
 				8D381B691FDB101F008D5A58 /* String.swift */,
 				2BD2553329544D19006C9106 /* URL+Request.swift */,
+				F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -981,6 +996,7 @@
 				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
 				2B79D3E528E5EB3900B3F127 /* TollPrice.swift */,
 				2B36B3E12980202600ED1E47 /* TrafficTendency.swift */,
+				F6DD8F5F2ED62D7D0001502C /* Utils.swift */,
 				F4F508372524D6F10044F2D0 /* RestStop.swift */,
 				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
@@ -1003,6 +1019,7 @@
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
 				2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */,
+				F6DD8F642ED62DCC0001502C /* Common.swift */,
 				43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */,
 				2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */,
 				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
@@ -1595,6 +1612,7 @@
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5E2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E728E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
@@ -1611,6 +1629,7 @@
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
 				2B0BA05D294B544E00402F81 /* MatrixResponse.swift in Sources */,
+				F6DD8F632ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* Route.swift in Sources */,
 				2B5407F32452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1652,6 +1671,7 @@
 				DAE2DF6D23AED2280065057A /* RouteTests.swift in Sources */,
 				43D992FE2437B93F008A2D74 /* CredentialsTests.swift in Sources */,
 				2CD0A0972E992AF8008706B8 /* CustomRouteOptions.swift in Sources */,
+				F6DD8F652ED62DCC0001502C /* Common.swift in Sources */,
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				2C6473202E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
 				912DF1A7240507640095D3D2 /* TransportTypeTests.swift in Sources */,
@@ -1711,6 +1731,7 @@
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5B2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E828E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
@@ -1727,6 +1748,7 @@
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
 				2B0BA05E294B544E00402F81 /* MatrixResponse.swift in Sources */,
+				F6DD8F622ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A10F01D010247009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* Route.swift in Sources */,
 				2B5407F42452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1768,6 +1790,7 @@
 				DAE2DF6E23AED2280065057A /* RouteTests.swift in Sources */,
 				43D992FF2437B940008A2D74 /* CredentialsTests.swift in Sources */,
 				2CD0A0992E992AF8008706B8 /* CustomRouteOptions.swift in Sources */,
+				F6DD8F672ED62DCC0001502C /* Common.swift in Sources */,
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				2C64731F2E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
 				912DF1A8240507640095D3D2 /* TransportTypeTests.swift in Sources */,
@@ -1827,6 +1850,7 @@
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5C2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E928E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
@@ -1843,6 +1867,7 @@
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
 				2B0BA05F294B544E00402F81 /* MatrixResponse.swift in Sources */,
+				F6DD8F602ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* RouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* Route.swift in Sources */,
 				2B5407F52452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1901,6 +1926,7 @@
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
+				F6DD8F5D2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E628E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
@@ -1917,6 +1943,7 @@
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,
 				2B0BA05C294B544E00402F81 /* MatrixResponse.swift in Sources */,
+				F6DD8F612ED62D7D0001502C /* Utils.swift in Sources */,
 				C5434B8C200695A50069E887 /* MatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B5407F22452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1987,6 +2014,7 @@
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				2B46025628EDB6390008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				2C64731E2E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
+				F6DD8F662ED62DCC0001502C /* Common.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,

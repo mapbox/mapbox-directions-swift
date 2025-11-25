@@ -2,7 +2,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-
+#if canImport(OSLog)
+import OSLog
+#endif
 
 /**
  Computes distances and durations between origin-destination pairs, and returns the resulting distances in meters and durations in seconds.
@@ -154,6 +156,16 @@ open class Matrix {
     open func url(forCalculating options: MatrixOptions) -> URL {
         var params = options.urlQueryItems
         params.override(with: [URLQueryItem(name: "access_token", value: credentials.accessToken)])
+        
+        if let duplicates = params.removeDuplicates() {
+            let message = "Matrix - duplicated paremeters found: \(duplicates.sorted().joined(separator: ", "))"
+#if canImport(OSLog)
+            let errorLog: OSLog = .init(subsystem: "com.mapbox.navigation", category: "request")
+            os_log("%{public}@", log: errorLog, type: .error, "\(message)")
+#else
+            print("ERROR: " + message, to: &errorStream)
+#endif
+        }
 
         let unparameterizedURL = URL(path: options.path, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!

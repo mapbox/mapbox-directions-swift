@@ -2,12 +2,14 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+#if canImport(OSLog)
+import OSLog
+#endif
 
 typealias JSONDictionary = [String: Any]
 
 /// Indicates that an error occurred in MapboxDirections.
 public let MBDirectionsErrorDomain = "com.mapbox.directions.ErrorDomain"
-
 
 /**
  A `Directions` object provides you with optimal directions between different locations, or waypoints. The directions object passes your request to the [Mapbox Directions API](https://docs.mapbox.com/api/navigation/#directions) and returns the requested information to a closure (block) that you provide. A directions object can handle multiple simultaneous requests. A `RouteOptions` object specifies criteria for the results, such as intermediate waypoints, a mode of transportation, or the level of detail to be returned.
@@ -544,6 +546,16 @@ open class Directions: NSObject {
         let includesQuery = httpMethod != "POST"
         var params = (includesQuery ? options.urlQueryItems : [])
         params.override(with: authenticationParams)
+        
+        if let duplicates = params.removeDuplicates() {
+            let message = "Directions - duplicated paremeters found: \(duplicates.sorted().joined(separator: ", "))"
+#if canImport(OSLog)
+            let errorLog: OSLog = .init(subsystem: "com.mapbox.navigation", category: "request")
+            os_log("%{public}@", log: errorLog, type: .error, "\(message)")
+#else
+            print("ERROR: " + message, to: &errorStream)
+#endif
+        }
 
         let unparameterizedURL = URL(path: includesQuery ? options.path : options.abridgedPath, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!

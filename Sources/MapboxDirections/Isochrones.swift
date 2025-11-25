@@ -2,6 +2,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+#if canImport(OSLog)
+import OSLog
+#endif
 import Turf
 
 /**
@@ -148,7 +151,17 @@ open class Isochrones {
         
         var params = options.urlQueryItems
         params.override(with: [URLQueryItem(name: "access_token", value: credentials.accessToken)])
-
+        
+        if let duplicates = params.removeDuplicates() {
+            let message = "Isochrones - duplicated paremeters found: \(duplicates.sorted().joined(separator: ", "))"
+#if canImport(OSLog)
+            let errorLog: OSLog = .init(subsystem: "com.mapbox.navigation", category: "request")
+            os_log("%{public}@", log: errorLog, type: .error, "\(message)")
+#else
+            print("ERROR: " + message, to: &errorStream)
+#endif
+        }
+        
         let unparameterizedURL = URL(path: options.path, host: credentials.host)
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
