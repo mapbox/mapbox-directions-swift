@@ -492,13 +492,13 @@
 		F6DD8F5C2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
 		F6DD8F5D2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
 		F6DD8F5E2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
-		F6DD8F602ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
-		F6DD8F612ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
-		F6DD8F622ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
-		F6DD8F632ED62D7D0001502C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5F2ED62D7D0001502C /* Utils.swift */; };
 		F6DD8F652ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
 		F6DD8F662ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
 		F6DD8F672ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F692ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6A2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6B2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6C2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -737,8 +737,8 @@
 		F4F508372524D6F10044F2D0 /* RestStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStop.swift; sourceTree = "<group>"; };
 		F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrativeRegion.swift; sourceTree = "<group>"; };
 		F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryItem.swift; sourceTree = "<group>"; };
-		F6DD8F5F2ED62D7D0001502C /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F6DD8F642ED62DCC0001502C /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -955,6 +955,7 @@
 				2B9F387F272AE23A001DBA12 /* Credentials.swift */,
 				2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
+				F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
 				C59094BE203B800300EB2417 /* DirectionsOptions.swift */,
 				C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */,
@@ -996,7 +997,6 @@
 				F4CF2C562523B66300A6D0B6 /* TollCollection.swift */,
 				2B79D3E528E5EB3900B3F127 /* TollPrice.swift */,
 				2B36B3E12980202600ED1E47 /* TrafficTendency.swift */,
-				F6DD8F5F2ED62D7D0001502C /* Utils.swift */,
 				F4F508372524D6F10044F2D0 /* RestStop.swift */,
 				F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */,
 				F457FA79252B9E29007DAEB1 /* Incident.swift */,
@@ -1629,7 +1629,6 @@
 				DA1A10CC1D00F969009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3D23A00A01001A917D /* QuickLook.swift in Sources */,
 				2B0BA05D294B544E00402F81 /* MatrixResponse.swift in Sources */,
-				F6DD8F632ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A10CA1D00F969009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10C81D00F969009F82FA /* Route.swift in Sources */,
 				2B5407F32452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1659,6 +1658,7 @@
 				2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA065294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6A2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1748,7 +1748,6 @@
 				DA1A10F21D010247009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3E23A00A02001A917D /* QuickLook.swift in Sources */,
 				2B0BA05E294B544E00402F81 /* MatrixResponse.swift in Sources */,
-				F6DD8F622ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A10F01D010247009F82FA /* RouteOptions.swift in Sources */,
 				DA1A10EE1D010247009F82FA /* Route.swift in Sources */,
 				2B5407F42452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1778,6 +1777,7 @@
 				2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA066294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F692ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1867,7 +1867,6 @@
 				DA1A11091D0103A3009F82FA /* Waypoint.swift in Sources */,
 				DAD06E3F23A00A02001A917D /* QuickLook.swift in Sources */,
 				2B0BA05F294B544E00402F81 /* MatrixResponse.swift in Sources */,
-				F6DD8F602ED62D7D0001502C /* Utils.swift in Sources */,
 				DA1A11071D0103A3009F82FA /* RouteOptions.swift in Sources */,
 				DA1A11051D0103A3009F82FA /* Route.swift in Sources */,
 				2B5407F52452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1897,6 +1896,7 @@
 				2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA067294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6B2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1943,7 +1943,6 @@
 				C59094BF203B800300EB2417 /* DirectionsOptions.swift in Sources */,
 				DAD06E3C23A00A01001A917D /* QuickLook.swift in Sources */,
 				2B0BA05C294B544E00402F81 /* MatrixResponse.swift in Sources */,
-				F6DD8F612ED62D7D0001502C /* Utils.swift in Sources */,
 				C5434B8C200695A50069E887 /* MatchOptions.swift in Sources */,
 				DAA76D681DD127CB0015EC78 /* LaneIndication.swift in Sources */,
 				2B5407F22452FA8C006C820B /* RefreshedRoute.swift in Sources */,
@@ -1973,6 +1972,7 @@
 				2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA064294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6C2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
