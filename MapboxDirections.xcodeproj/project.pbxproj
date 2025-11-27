@@ -488,6 +488,17 @@
 		F4F5084C2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
 		F4F5084D2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
 		F4F5084E2524DC280044F2D0 /* AdministrativeRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */; };
+		F6DD8F5B2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5C2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5D2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F5E2ED62D390001502C /* URLQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */; };
+		F6DD8F652ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F662ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F672ED62DCC0001502C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F642ED62DCC0001502C /* Common.swift */; };
+		F6DD8F692ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6A2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6B2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
+		F6DD8F6C2ED71C6E0001502C /* DirectionsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -725,6 +736,9 @@
 		F4D785EE1DDD82C100FF4665 /* RouteStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStepTests.swift; sourceTree = "<group>"; };
 		F4F508372524D6F10044F2D0 /* RestStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStop.swift; sourceTree = "<group>"; };
 		F4F5084A2524DC280044F2D0 /* AdministrativeRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdministrativeRegion.swift; sourceTree = "<group>"; };
+		F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryItem.swift; sourceTree = "<group>"; };
+		F6DD8F642ED62DCC0001502C /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -877,6 +891,7 @@
 				DAE7EA93230B5FD10003B211 /* Measurement.swift */,
 				8D381B691FDB101F008D5A58 /* String.swift */,
 				2BD2553329544D19006C9106 /* URL+Request.swift */,
+				F6DD8F5A2ED62D390001502C /* URLQueryItem.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -940,6 +955,7 @@
 				2B9F387F272AE23A001DBA12 /* Credentials.swift */,
 				2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */,
 				DD6254731AE70CB700017857 /* Directions.swift */,
+				F6DD8F682ED71C6A0001502C /* DirectionsLog.swift */,
 				4392557523440EC2006EEE88 /* DirectionsError.swift */,
 				C59094BE203B800300EB2417 /* DirectionsOptions.swift */,
 				C59094C0203DE6BC00EB2417 /* DirectionsResult.swift */,
@@ -1003,6 +1019,7 @@
 				DA6C9DAD1CAEC93800094FBC /* Fixtures */,
 				C5247D701E818A24004B6154 /* AnnotationTests.swift */,
 				2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */,
+				F6DD8F642ED62DCC0001502C /* Common.swift */,
 				43D992FB2437B8D2008A2D74 /* CredentialsTests.swift */,
 				2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */,
 				DAD06E34239F0B19001A917D /* DirectionsErrorTests.swift */,
@@ -1595,6 +1612,7 @@
 				DAE7EA95230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711827C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAAC9F20195AAE001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5E2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3882272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E728E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CC23466C2500A71B44 /* RouteResponse.swift in Sources */,
@@ -1640,6 +1658,7 @@
 				2B9F3886272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255792344113D006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA065294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6A2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A10C71D00F969009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1652,6 +1671,7 @@
 				DAE2DF6D23AED2280065057A /* RouteTests.swift in Sources */,
 				43D992FE2437B93F008A2D74 /* CredentialsTests.swift in Sources */,
 				2CD0A0972E992AF8008706B8 /* CustomRouteOptions.swift in Sources */,
+				F6DD8F652ED62DCC0001502C /* Common.swift in Sources */,
 				35DBF015217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				2C6473202E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
 				912DF1A7240507640095D3D2 /* TransportTypeTests.swift in Sources */,
@@ -1711,6 +1731,7 @@
 				DAE7EA96230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711927C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA020195AAF001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5B2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3883272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E828E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CD23466C2700A71B44 /* RouteResponse.swift in Sources */,
@@ -1756,6 +1777,7 @@
 				2B9F3887272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557A2344113E006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA066294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F692ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A10ED1D010247009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1768,6 +1790,7 @@
 				DAE2DF6E23AED2280065057A /* RouteTests.swift in Sources */,
 				43D992FF2437B940008A2D74 /* CredentialsTests.swift in Sources */,
 				2CD0A0992E992AF8008706B8 /* CustomRouteOptions.swift in Sources */,
+				F6DD8F672ED62DCC0001502C /* Common.swift in Sources */,
 				35DBF016217E199E0009D2AE /* OfflineDirectionsTests.swift in Sources */,
 				2C64731F2E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
 				912DF1A8240507640095D3D2 /* TransportTypeTests.swift in Sources */,
@@ -1827,6 +1850,7 @@
 				DAE7EA97230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711A27C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C5DAACA120195AAF001F9261 /* Tracepoint.swift in Sources */,
+				F6DD8F5C2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3884272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E928E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CE23466C2800A71B44 /* RouteResponse.swift in Sources */,
@@ -1872,6 +1896,7 @@
 				2B9F3888272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				4392557B2344113F006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA067294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6B2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA1A11041D0103A3009F82FA /* Directions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1901,6 +1926,7 @@
 				DAE7EA94230B5FD10003B211 /* Measurement.swift in Sources */,
 				2E44711727C4C80B0041CB84 /* SilentWaypoint.swift in Sources */,
 				C59426071F1EA6C400C8E59C /* RoadClasses.swift in Sources */,
+				F6DD8F5D2ED62D390001502C /* URLQueryItem.swift in Sources */,
 				2B9F3881272AE23A001DBA12 /* ProfileIdentifier.swift in Sources */,
 				2B79D3E628E5EB3900B3F127 /* TollPrice.swift in Sources */,
 				431E93CB23466C2400A71B44 /* RouteResponse.swift in Sources */,
@@ -1946,6 +1972,7 @@
 				2B9F3885272AE23A001DBA12 /* IsochroneOptions.swift in Sources */,
 				439255772344113B006EEE88 /* DirectionsError.swift in Sources */,
 				2B0BA064294B544E00402F81 /* MatrixError.swift in Sources */,
+				F6DD8F6C2ED71C6E0001502C /* DirectionsLog.swift in Sources */,
 				DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1987,6 +2014,7 @@
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				2B46025628EDB6390008A624 /* CustomStringOptionSetTests.swift in Sources */,
 				2C64731E2E9946B4008C0D11 /* CustomIsochroneOptions.swift in Sources */,
+				F6DD8F662ED62DCC0001502C /* Common.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
