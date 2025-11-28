@@ -1,7 +1,7 @@
 import Foundation
 
 extension [URLQueryItem] {
-    var duplicatedNames: [String] {
+    var duplicatedNames: Set<String> {
         var seen = Set<String>()
         var duplicates = Set<String>()
         
@@ -12,7 +12,7 @@ extension [URLQueryItem] {
                 seen.insert(param.name)
             }
         }
-        return duplicates.sorted()
+        return duplicates
     }
 
     mutating func override(with params: [URLQueryItem]) {
