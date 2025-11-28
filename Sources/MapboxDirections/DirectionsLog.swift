@@ -26,22 +26,23 @@ enum DirectionsLog {
     }
     
     private static func log(_ message: String, type: LogType, category: Category) {
-    #if canImport(OSLog)
-        osLog(message, type: type, category: category.rawValue)
-    #else
         let logLevel: String
         switch type {
         case .debug:
-            logLevel = "DEBUG"
+            logLevel = "Debug"
         case .info:
-            logLevel = "INFO"
+            logLevel = "Info"
         case .error:
-            logLevel = "ERROR"
+            logLevel = "Error"
         case .fault:
-            logLevel = "FAULT"
+            logLevel = "Fault"
         }
-        stderrLog(logLevel + ": " + message)
-    #endif
+        let logMessage = "[\(logLevel)), directions-swift]: \(message)"
+#if canImport(OSLog)
+        osLog(logMessage, type: type, category: category.rawValue)
+#else
+        stderrLog(logMessage)
+#endif
     }
 
 #if canImport(OSLog)
@@ -54,7 +55,9 @@ enum DirectionsLog {
     private static func stderrLog(_ message: String) {
         DirectionsLog.stderrLock.lock()
         defer { DirectionsLog.stderrLock.unlock() }
-        FileHandle.standardError.write("\(message)\n".data(using: .utf8) ?? Data())
+        if let data = "\(message)\n".data(using: .utf8) {
+            FileHandle.standardError.write(data)
+        }
     }
 }
 

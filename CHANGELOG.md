@@ -1,7 +1,8 @@
 # Changes to Mapbox Directions for Swift
 
 ## v2.14.4
-* Added detection of duplicated URL request parameters derived from `DirectionsOptions`, `IsochroneOptions` and `MatrixOptions` - an error is logged when duplicates are found.
+
+* Added detection of duplicated URL request parameters derived from `DirectionsOptions`, `IsochroneOptions`, and `MatrixOptions` - an error is logged when duplicates are found.
 
 ## v2.14.3
 
