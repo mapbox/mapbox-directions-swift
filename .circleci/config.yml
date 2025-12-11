@@ -66,7 +66,7 @@ commands:
           default: Debug
       steps:
         - run:
-            name: Carthage Dependencies
+            name: Carthage dependencies
             command: |
               ./scripts/carthage-dependencies.sh << parameters.platform >> << parameters.configuration >>
     install-mbx-ci:
@@ -313,11 +313,11 @@ jobs:
           platform: iOS
           configuration: Release
       - run:
-          name: Generate Documentation
+          name: Generate documentation
           command: |
             TAG="<< pipeline.git.tag >>"
             if [ -n "$TAG" ]; then
-              VERSION=${TAG#test_v}
+              VERSION=${TAG#v}
             else
               # Dummy version for non-tagged builds.
               VERSION=0.0.0
@@ -346,10 +346,10 @@ jobs:
     resource_class: small
     environment:
       MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
-      TARGET_ENVIRONMENT: docs.mapbox.com-staging
+      TARGET_ENVIRONMENT: docs.mapbox.com
     steps:
       - when:
-          condition: << pipeline.git.tag >> =~ /^test_v\d+\.\d+\.\d+(-.+)?$/
+          condition: << pipeline.git.tag >> =~ /^v\d+\.\d+\.\d+(-.+)?$/
           steps:
           - checkout
           - *add-github-to-known-hosts
@@ -358,14 +358,14 @@ jobs:
           - install-linux-mbx-ci
           - install-linux-s5cmd
           - run:
-              name: Publish docs
+              name: Publish documentation
               command: |
                 TAG="<< pipeline.git.tag >>"
                 if [ -z "$TAG" ]; then
                   echo "ERROR: Missing git tag. A tag is required to publish documentation."
                   exit 1
                 fi
-                VERSION=${TAG#test_v}
+                VERSION=${TAG#v}
 
                 if ! mbx-ci aws setup; then
                   echo "ERROR: Could not setup AWS credentials."
@@ -483,14 +483,14 @@ workflows:
           name: "Generate Documentation"
           filters:
               tags:
-                only: /^test_v\d+\.\d+\.\d+(-.+)?$/
+                only: /^v\d+\.\d+\.\d+(-.+)?$/
       - publish-docs:
           name: "Publish Documentation"
           requires:
               - Generate Documentation
           filters:
             tags:
-              only: /^test_v\d+\.\d+\.\d+(-.+)?$/
+              only: /^v\d+\.\d+\.\d+(-.+)?$/
             branches:
               ignore: /.*/
   update-version-workflow:
