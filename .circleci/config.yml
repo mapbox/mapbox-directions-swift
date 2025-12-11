@@ -28,6 +28,7 @@ commands:
 
     install-carthage:
         steps:
+            - macos/install-rosetta
             - run:
                 name: Install Carthage
                 command: |
@@ -55,16 +56,19 @@ commands:
             - store_test_results:
                 path: test-results
                 when: always
-    carthage-bootstrap:
-        steps:
-            - run:
-                name: Dependencies
-                command: |
-                  carthage checkout
-                  # Workaround for OHHTTPStubs not supporting Xcode 14.3+
-                  sed -i '' 's/MACOSX_DEPLOYMENT_TARGET = 10.9/MACOSX_DEPLOYMENT_TARGET = 10.13/g' Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs.xcodeproj/project.pbxproj
-                  sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 8.0/IPHONEOS_DEPLOYMENT_TARGET = 12.0/g' Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs.xcodeproj/project.pbxproj
-                  carthage build --platform all --cache-builds --configuration Debug --use-xcframeworks
+    carthage-dependencies:
+      parameters:
+        platform:
+          type: string
+          default: all
+        configuration:
+          type: string
+          default: Debug
+      steps:
+        - run:
+            name: Carthage Dependencies
+            command: |
+              ./scripts/carthage-dependencies.sh << parameters.platform >> << parameters.configuration >>
     install-mbx-ci:
       steps:
         - macos/install-rosetta
@@ -73,6 +77,24 @@ commands:
             command: |
               curl -Ls https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-darwin-amd64 > /usr/local/bin/mbx-ci
               chmod 755 /usr/local/bin/mbx-ci
+    install-linux-mbx-ci:
+      steps:
+        - run:
+            name: "Install mbx-ci"
+            command: |
+              mkdir -p ./bin
+              curl -fsSL https://mapbox-release-engineering.s3.amazonaws.com/mbx-ci/latest/mbx-ci-linux-amd64 > mbx-ci
+              sudo mv mbx-ci /usr/local/bin/
+              chmod 755 /usr/local/bin/mbx-ci
+              echo "mbx-ci version: $(mbx-ci --version)"
+    install-linux-s5cmd:
+      steps:
+        - run:
+            name: "Install s5cmd"
+            command: |
+              curl -fsSL https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-64bit.tar.gz | tar xvz
+              sudo mv s5cmd /usr/local/bin/
+              echo "s5cmd version: $(s5cmd version)"
     setup-write-repo-access:
         steps:
             - run:
@@ -196,7 +218,6 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - install-mapbox-token
-      - macos/install-rosetta
       - install-carthage
       - run:
           name: "Create integration Cartfile"
@@ -214,10 +235,9 @@ jobs:
     steps:
       - checkout
       - install-mapbox-token
-      - macos/install-rosetta
       - install-carthage
       - restore-cache
-      - carthage-bootstrap
+      - carthage-dependencies
       - run:
           name: "Build example app"
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'Example' -destination 'platform=iOS Simulator,OS=15.5,name=iPhone 13 Pro Max' clean build
@@ -253,14 +273,13 @@ jobs:
     steps:
       - checkout
       - install-mapbox-token
-      - macos/install-rosetta
       - install-carthage
       - restore-cache
       - run:
           name: Install prerequisites
           command: |
             if [ $(xcversion simulators | grep -cF "iOS << parameters.iOS >> Simulator (installed)") -eq 0 ]; then xcversion simulators --install="iOS << parameters.iOS >>" || true; fi
-      - carthage-bootstrap
+      - carthage-dependencies
       - run:
           name: iOS
           command: xcodebuild -sdk iphonesimulator -project MapboxDirections.xcodeproj -scheme 'MapboxDirections iOS' -destination 'platform=iOS Simulator,OS=<< parameters.iOS >>,name=<< parameters.device >>' clean build <<# parameters.test >>test<</ parameters.test >><<# parameters.codecoverage >> -enableCodeCoverage "YES" | xcpretty --report junit --output test-results/junit.xml<</ parameters.codecoverage >>
@@ -279,23 +298,82 @@ jobs:
           command: xcodebuild -project MapboxDirections.xcodeproj -scheme 'MapboxDirections watchOS' -destination 'platform=watchOS Simulator,name=Apple Watch Series 7 (41mm),OS=<< parameters.watchOS >>' clean build
       - save-cache
 
-  publish-documentation:
+  generate-docs:
     macos:
       xcode: "15.4.0"
     steps:
       - checkout
       - install-mapbox-token
-      - install-mbx-ci
+      - *add-github-to-known-hosts
+      - *restore-cache-gems
+      - *install-gems
       - install-carthage
-      - setup-write-repo-access
+      - restore-cache
+      - carthage-dependencies:
+          platform: iOS
+          configuration: Release
       - run:
           name: Generate Documentation
           command: |
-            ./scripts/publish-documentation.sh << pipeline.git.tag >>
+            TAG="<< pipeline.git.tag >>"
+            if [ -n "$TAG" ]; then
+              VERSION=${TAG#test_v}
+            else
+              # Dummy version for non-tagged builds.
+              VERSION=0.0.0
+            fi
+            OUTPUT_PATH="build/docs/$VERSION"
+            echo "export OUTPUT_PATH=$OUTPUT_PATH" >> $BASH_ENV
+            ./scripts/generate-docs.sh $VERSION $OUTPUT_PATH
+      - save-cache
+      - *save-cache-gems
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - build/docs
       - run:
-          name: "Push Generated Documentation"
+          name: Compress docs
           command: |
-            git push origin $(git rev-parse --abbrev-ref HEAD):publisher-production
+            mkdir -p build/archives
+            tar -cvzf build/archives/directions-swift-docs.tar $OUTPUT_PATH
+      - store_artifacts:
+          path: build/archives/directions-swift-docs.tar
+          destination: directions-swift-docs
+
+  publish-docs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    environment:
+      MBX_CI_DOMAIN: o619qyc20d.execute-api.us-east-1.amazonaws.com
+      TARGET_ENVIRONMENT: docs.mapbox.com-staging
+    steps:
+      - when:
+          condition: << pipeline.git.tag >> =~ /^test_v\d+\.\d+\.\d+(-.+)?$/
+          steps:
+          - checkout
+          - *add-github-to-known-hosts
+          - attach_workspace:
+              at: .
+          - install-linux-mbx-ci
+          - install-linux-s5cmd
+          - run:
+              name: Publish docs
+              command: |
+                TAG="<< pipeline.git.tag >>"
+                if [ -z "$TAG" ]; then
+                  echo "ERROR: Missing git tag. A tag is required to publish documentation."
+                  exit 1
+                fi
+                VERSION=${TAG#test_v}
+
+                if ! mbx-ci aws setup; then
+                  echo "ERROR: Could not setup AWS credentials."
+                  exit 1
+                fi
+
+                SOURCE_PATH="build/docs/$VERSION"
+                ./scripts/publish-docs.sh "$VERSION" "$TARGET_ENVIRONMENT" "$SOURCE_PATH"
 
   update-version-job:
     parameters:
@@ -401,11 +479,18 @@ workflows:
       - integration-test-with-navigation-sdk:
           name: "Integration Test With Navigation SDK"
           xcode: "15.4.0"
-      - publish-documentation:
+      - generate-docs:
+          name: "Generate Documentation"
+          filters:
+              tags:
+                only: /^test_v\d+\.\d+\.\d+(-.+)?$/
+      - publish-docs:
           name: "Publish Documentation"
+          requires:
+              - Generate Documentation
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?$/
+              only: /^test_v\d+\.\d+\.\d+(-.+)?$/
             branches:
               ignore: /.*/
   update-version-workflow:
