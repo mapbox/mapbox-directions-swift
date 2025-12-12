@@ -21,7 +21,7 @@ pod 'MapboxDirections', '~> ${MINOR_VERSION}'
 Or in your [Swift Package Manager](https://swift.org/package-manager/) Package.swift:
 
 ```swift
-.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "0.30.0")
+.package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "${SHORT_VERSION}")
 ```
 
 Then `import MapboxDirections`.
