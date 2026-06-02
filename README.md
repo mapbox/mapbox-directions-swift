@@ -22,6 +22,13 @@ github "mapbox/mapbox-directions-swift" "v2.11.0-alpha.1"
 
 Or in your [CocoaPods](http://cocoapods.org/) Podfile:
 
+> [!IMPORTANT]
+> **CocoaPods support is being sunset by December 2026.**
+>
+> Mapbox plans to discontinue distributing the Mapbox Directions for iOS via CocoaPods by **December 2026**. After that date, no new releases will be published to CocoaPods and the existing podspec will no longer be maintained.
+>
+> We strongly recommend migrating to [Swift Package Manager (SPM)](https://www.swift.org/documentation/package-manager/), which is Mapbox's preferred and actively supported distribution channel for iOS. Please plan your migration ahead of the December 2026 deadline.
+
 ```podspec
 # Latest stable release
 pod 'MapboxDirections', '~> 2.14'
