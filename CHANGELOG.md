@@ -3,6 +3,7 @@
 ## v2.14.4
 
 * Added detection of duplicated URL request parameters derived from `DirectionsOptions`, `IsochroneOptions`, and `MatrixOptions` - an error is logged when duplicates are found.
+* Fixed a crash that could occur when decoding malformed traffic incident or road closure data in route responses.
 
 ## v2.14.3
 
