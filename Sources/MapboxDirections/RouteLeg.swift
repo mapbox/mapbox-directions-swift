@@ -313,8 +313,11 @@ open class RouteLeg: Codable, ForeignMemberContainerClass {
     }
     
     private func adjustShapeIndexRange(_ range: Range<Int>, startLegShapeIndex: Int) -> Range<Int> {
-        let startIndex = startLegShapeIndex + range.lowerBound
-        let endIndex = startLegShapeIndex + range.upperBound
+        let (startIndex, startOverflow) = startLegShapeIndex.addingReportingOverflow(range.lowerBound)
+        let (endIndex, endOverflow) = startLegShapeIndex.addingReportingOverflow(range.upperBound)
+        // Refresh offsets may come from decoded payloads; collapse invalid math to an empty range.
+        guard !startOverflow, !endOverflow, startIndex >= 0, startIndex <= endIndex else { return 0..<0 }
+
         return startIndex..<endIndex
     }
     
@@ -483,6 +486,16 @@ extension RouteLeg {
             
             let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
             let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
+            guard geometryIndexStart >= 0, geometryIndexStart <= geometryIndexEnd else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .geometryIndexEnd,
+                    in: container,
+                    debugDescription: """
+                    geometry_index_start (\(geometryIndexStart)) must be non-negative \
+                    and less than or equal to geometry_index_end (\(geometryIndexEnd)).
+                    """
+                )
+            }
             shapeIndexRange = geometryIndexStart..<geometryIndexEnd
             
             try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
@@ -516,9 +529,9 @@ public extension Array where Element == RouteLeg {
 private extension Array {
     mutating func replaceIfPossible(subrange: PartialRangeFrom<Int>, with newElements: Array?) {
         guard let newElements = newElements, !newElements.isEmpty else { return }
-        let upperBound = subrange.lowerBound + newElements.count
+        let (upperBound, overflow) = subrange.lowerBound.addingReportingOverflow(newElements.count)
         
-        guard count >= upperBound else { return }
+        guard subrange.lowerBound >= 0, !overflow, count >= upperBound else { return }
         
         let adjustedSubrange = subrange.lowerBound..<upperBound
         replaceSubrange(adjustedSubrange, with: newElements)
