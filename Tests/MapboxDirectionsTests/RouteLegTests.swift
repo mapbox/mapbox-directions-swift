@@ -34,6 +34,20 @@ class RouteLegTests: XCTestCase {
         XCTAssertEqual(leg.typicalTravelTime, typicalTravelTime)
     }
 
+    func testDecodingSucceedsWhenClosureGeometryIndexRangeIsEmpty() throws {
+        let data = try makeRouteLegData(overriding: [
+            "closures": [
+                [
+                    "geometry_index_start": 5,
+                    "geometry_index_end": 5,
+                ],
+            ],
+        ])
+
+        let leg = try makeRouteLegDecoder().decode(RouteLeg.self, from: data)
+        XCTAssertEqual(leg.closures?.first?.shapeIndexRange, 5..<5)
+    }
+
     func testDecodingFailsWhenClosureGeometryIndexRangeIsInverted() throws {
         let data = try makeRouteLegData(overriding: [
             "closures": [
@@ -70,6 +84,28 @@ class RouteLegTests: XCTestCase {
         )
 
         XCTAssertEqual(leg.closures?.first?.shapeIndexRange, 0..<0)
+    }
+
+    func testRefreshIncidentsUsesEmptyRangeWhenAdjustedShapeIndexOverflows() throws {
+        let leg = try makeRouteLegDecoder().decode(RouteLeg.self, from: makeRouteLegData())
+        let incident = Incident(
+            identifier: "test_id",
+            type: .accident,
+            description: "Test description",
+            creationDate: Date(),
+            startDate: Date(),
+            endDate: Date(),
+            impact: nil,
+            subtype: nil,
+            subtypeDescription: nil,
+            alertCodes: [],
+            lanesBlocked: nil,
+            shapeIndexRange: 1..<2
+        )
+
+        leg.refreshIncidents(newIncidents: [incident], startLegShapeIndex: Int.max)
+
+        XCTAssertEqual(leg.incidents?.first?.shapeIndexRange, 0..<0)
     }
 
     func testRefreshAttributesDoesNotReplaceWhenStartIndexIsNegative() throws {

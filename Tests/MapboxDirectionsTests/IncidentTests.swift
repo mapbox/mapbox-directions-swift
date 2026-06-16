@@ -2,6 +2,16 @@ import XCTest
 @testable import MapboxDirections
 
 final class IncidentTests: XCTestCase {
+    func testDecodingSucceedsWhenGeometryIndexRangeIsEmpty() throws {
+        let data = try makeIncidentData(overriding: [
+            "geometry_index_start": 5,
+            "geometry_index_end": 5,
+        ])
+
+        let incident = try JSONDecoder().decode(Incident.self, from: data)
+        XCTAssertEqual(incident.shapeIndexRange, 5..<5)
+    }
+
     func testDecodingFailsWhenGeometryIndexRangeIsInverted() throws {
         let data = try makeIncidentData(overriding: [
             "geometry_index_start": 5,

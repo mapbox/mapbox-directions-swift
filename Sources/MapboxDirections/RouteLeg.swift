@@ -486,7 +486,6 @@ extension RouteLeg {
             
             let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
             let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
-            // Validate before constructing Range: Swift traps on inverted bounds instead of throwing.
             guard geometryIndexStart >= 0, geometryIndexStart <= geometryIndexEnd else {
                 throw DecodingError.dataCorruptedError(
                     forKey: .geometryIndexEnd,
