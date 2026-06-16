@@ -263,6 +263,16 @@ public struct Incident: Codable, Equatable, ForeignMemberContainer {
         
         let geometryIndexStart = try container.decode(Int.self, forKey: .geometryIndexStart)
         let geometryIndexEnd = try container.decode(Int.self, forKey: .geometryIndexEnd)
+        guard geometryIndexStart >= 0, geometryIndexStart <= geometryIndexEnd else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .geometryIndexEnd,
+                in: container,
+                debugDescription: """
+                geometry_index_start (\(geometryIndexStart)) must be non-negative \
+                and less than or equal to geometry_index_end (\(geometryIndexEnd)).
+                """
+            )
+        }
         shapeIndexRange = geometryIndexStart..<geometryIndexEnd
         
         countryCodeAlpha3 = try container.decodeIfPresent(String.self, forKey: .countryCodeAlpha3)
