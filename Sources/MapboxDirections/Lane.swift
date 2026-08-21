@@ -59,7 +59,15 @@ extension Lane: Codable {
         indications = try container.decode(LaneIndication.self, forKey: .indications)
         isValid = try container.decode(Bool.self, forKey: .valid)
         isActive = try container.decodeIfPresent(Bool.self, forKey: .active)
-        validIndication = try container.decodeIfPresent(ManeuverDirection.self, forKey: .preferred)
+        // The Directions API may report an empty `valid_indication` for a lane that has no applicable
+        // indication, which is equivalent to omitting the field.
+        if let validIndicationString = try container.decodeIfPresent(String.self, forKey: .preferred),
+           !validIndicationString.isEmpty,
+           let validIndication = ManeuverDirection(rawValue: validIndicationString) {
+            self.validIndication = validIndication
+        } else {
+            self.validIndication = nil
+        }
         
         try decodeForeignMembers(notKeyedBy: CodingKeys.self, with: decoder)
     }

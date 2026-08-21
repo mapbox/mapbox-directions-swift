@@ -1,5 +1,12 @@
 # Changes to Mapbox Directions for Swift
 
+## Unreleased
+
+* Decoding an `Intersection` whose lanes report differing `valid_indication` values no longer fails. Lanes at the same intersection may legitimately disagree, for example one lane indicating a straight maneuver and an adjacent lane indicating a slight turn.
+* Added `Intersection.laneValidIndications`, which contains each lane’s own applicable `ManeuverDirection`, parallel to `Intersection.approachLanes`.
+* Deprecated `Intersection.usableLaneIndication`, as well as the `Intersection` initializer that takes it, in favor of `Intersection.laneValidIndications`. The deprecated property collapses the lanes to a single value, preferring a preferred lane’s indication, then a usable lane’s, then the first lane’s.
+* An empty `valid_indication` on a lane now decodes as no indication for that lane instead of failing to decode the route.
+
 ## v2.14.4
 
 * Added detection of duplicated URL request parameters derived from `DirectionsOptions`, `IsochroneOptions`, and `MatrixOptions` - an error is logged when duplicates are found.
