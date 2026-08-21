@@ -62,10 +62,8 @@ extension Lane: Codable {
         // The Directions API may report an empty `valid_indication` for a lane that has no applicable
         // indication, which is equivalent to omitting the field.
         if let validIndicationString = try container.decodeIfPresent(String.self, forKey: .preferred),
-           !validIndicationString.isEmpty {
-            guard let validIndication = ManeuverDirection(rawValue: validIndicationString) else {
-                throw DecodingError.dataCorruptedError(forKey: .preferred, in: container, debugDescription: "Cannot initialize ManeuverDirection from invalid String value \(validIndicationString)")
-            }
+           !validIndicationString.isEmpty,
+           let validIndication = ManeuverDirection(rawValue: validIndicationString) {
             self.validIndication = validIndication
         } else {
             self.validIndication = nil

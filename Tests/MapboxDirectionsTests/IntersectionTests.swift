@@ -320,11 +320,12 @@ class IntersectionTests: XCTestCase {
         XCTAssertNil(intersection.usableLaneIndication)
     }
 
-    /// An unrecognized, non-empty `valid_indication` remains malformed data and still throws.
-    func testUnrecognizedValidIndicationThrows() {
-        XCTAssertThrowsError(try decodeIntersectionWithLanes([
+    /// An unrecognized, non-empty `valid_indication` ignores malformed data.
+    func testUnrecognizedValidIndication() throws {
+        let intersection = try decodeIntersectionWithLanes([
             LaneJSON(indications: ["straight"], validIndication: "sideways", isValid: true, isActive: true),
-        ]))
+        ])
+        XCTAssertEqual(intersection.laneValidIndications, [nil])
     }
 
     /// The optional `active` field may be missing, in which case no lane is preferred.
