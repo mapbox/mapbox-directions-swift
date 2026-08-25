@@ -55,13 +55,13 @@ open class RouteOptions: DirectionsOptions {
            let speed = LocationSpeed(mappedValue) {
             self.speed = speed
         }
-        if let mappedValue = mappedQueryItems[CodingKeys.roadClassesToAvoid.stringValue],
-           let roadClassesToAvoid = RoadClasses(descriptions:mappedValue.components(separatedBy: ",")) {
-            self.roadClassesToAvoid = roadClassesToAvoid
+        if let mappedValue = mappedQueryItems[CodingKeys.elementsToExclude.stringValue] {
+            let excludeComponents = mappedValue.components(separatedBy: ",")
+            self.excludedLocations = excludeComponents.compactMap(LocationCoordinate2D.init(wktPointDescription:))
+            self.roadClassesToAvoid = RoadClasses(from: excludeComponents)
         }
-        if let mappedValue = mappedQueryItems[CodingKeys.roadClassesToAllow.stringValue],
-           let roadClassesToAllow = RoadClasses(descriptions:mappedValue.components(separatedBy: ",")) {
-            self.roadClassesToAllow = roadClassesToAllow
+        if let mappedValue = mappedQueryItems[CodingKeys.roadClassesToAllow.stringValue] {
+            self.roadClassesToAllow = RoadClasses(from: mappedValue.components(separatedBy: ","))
         }
         if mappedQueryItems[CodingKeys.refreshingEnabled.stringValue] == "true"
             && profileIdentifier?.isAutomobileAvoidingTraffic ?? false {
@@ -146,7 +146,7 @@ open class RouteOptions: DirectionsOptions {
         case allowsUTurnAtWaypoint = "continue_straight"
         case includesAlternativeRoutes = "alternatives"
         case includesExitRoundaboutManeuver = "roundabout_exits"
-        case roadClassesToAvoid = "exclude"
+        case elementsToExclude = "exclude"
         case roadClassesToAllow = "include"
         case refreshingEnabled = "enable_refresh"
         case initialManeuverAvoidanceRadius = "avoid_maneuver_radius"
@@ -169,7 +169,9 @@ open class RouteOptions: DirectionsOptions {
         try container.encode(allowsUTurnAtWaypoint, forKey: .allowsUTurnAtWaypoint)
         try container.encode(includesAlternativeRoutes, forKey: .includesAlternativeRoutes)
         try container.encode(includesExitRoundaboutManeuver, forKey: .includesExitRoundaboutManeuver)
-        try container.encode(roadClassesToAvoid, forKey: .roadClassesToAvoid)
+        // Matching the API concept of sharing the `exclude` key for `roadClassesToAvoid` and `excludedLocations`
+        try container.encode(roadClassesToAvoid.descriptionTokens + excludedLocations.map { $0.wktPointDescription },
+                             forKey: .elementsToExclude)
         try container.encode(roadClassesToAllow, forKey: .roadClassesToAllow)
         try container.encode(refreshingEnabled, forKey: .refreshingEnabled)
         try container.encodeIfPresent(initialManeuverAvoidanceRadius, forKey: .initialManeuverAvoidanceRadius)
@@ -201,9 +203,11 @@ open class RouteOptions: DirectionsOptions {
 
         includesExitRoundaboutManeuver = try container.decode(Bool.self, forKey: .includesExitRoundaboutManeuver)
     
-        roadClassesToAvoid = try container.decode(RoadClasses.self, forKey: .roadClassesToAvoid)
+        let excludeTokens = (try? container.decode([String].self, forKey: .elementsToExclude)) ?? []
+        excludedLocations = excludeTokens.compactMap(LocationCoordinate2D.init(wktPointDescription:))
+        roadClassesToAvoid = RoadClasses(from: excludeTokens)
         
-        roadClassesToAllow = try container.decode(RoadClasses.self, forKey: .roadClassesToAllow)
+        roadClassesToAllow = RoadClasses(from: (try? container.decode([String].self, forKey: .roadClassesToAllow)) ?? [])
         
         refreshingEnabled = try container.decode(Bool.self, forKey: .refreshingEnabled)
         
@@ -276,7 +280,7 @@ open class RouteOptions: DirectionsOptions {
     /**
      The route classes that the calculated routes will avoid.
      
-     Currently, you can only specify a single road class to avoid.
+     Exclusions are best-effort. When an excluded road type cannot be avoided (for example, it is the only way to reach a waypoint), the route may still use it. These cases are reported by `RouteResponse.roadClassExclusionViolations`, which you can check to detect when an exclusion was not honored.
      */
     open var roadClassesToAvoid: RoadClasses = []
     
@@ -286,6 +290,19 @@ open class RouteOptions: DirectionsOptions {
      This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`.
     */
     open var roadClassesToAllow: RoadClasses = []
+    
+    /**
+     Custom locations that the calculated routes will avoid.
+     
+     Each location is snapped to the nearest road, and that road segment is excluded from routing. This is useful for avoiding dangerous entry/exit points, bridges, tunnels, low quality roads, and cross-border roads that aren’t otherwise captured by `roadClassesToAvoid`.
+     
+     Exclusions are best-effort: if a location can’t be avoided (for example, it’s the only way to reach a waypoint), the route may still pass through it. You can specify at most 50 locations.
+     
+     This property has no effect unless the profile identifier is set to `ProfileIdentifier.automobile` or `ProfileIdentifier.automobileAvoidingTraffic`.
+     
+     - note: This is a beta feature of the Directions API and is subject to change.
+     */
+    open var excludedLocations: [LocationCoordinate2D] = []
     
     /**
      The number that influences whether the route should prefer or avoid alleys or narrow service roads between buildings.
@@ -437,9 +454,10 @@ open class RouteOptions: DirectionsOptions {
             params.append(URLQueryItem(name: CodingKeys.speed.stringValue, value: String(speed)))
         }
 
-        if !roadClassesToAvoid.isEmpty {
-            let roadClasses = roadClassesToAvoid.description
-            params.append(URLQueryItem(name: CodingKeys.roadClassesToAvoid.stringValue, value: roadClasses))
+        let excludedLocationsString = excludedLocations.map { $0.wktPointDescription }.joined(separator: ",")
+        let excludeValue = [roadClassesToAvoid.description, excludedLocationsString].filter { !$0.isEmpty }.joined(separator: ",")
+        if !excludeValue.isEmpty {
+            params.append(URLQueryItem(name: CodingKeys.elementsToExclude.stringValue, value: excludeValue))
         }
         
         if !roadClassesToAllow.isEmpty {

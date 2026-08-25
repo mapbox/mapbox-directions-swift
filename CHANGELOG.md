@@ -6,6 +6,8 @@
 * Added `Intersection.laneValidIndications`, which contains each lane’s own applicable `ManeuverDirection`, parallel to `Intersection.approachLanes`.
 * Deprecated `Intersection.usableLaneIndication`, as well as the `Intersection` initializer that takes it, in favor of `Intersection.laneValidIndications`. The deprecated property collapses the lanes to a single value, preferring a preferred lane’s indication, then a usable lane’s, then the first lane’s.
 * An empty `valid_indication` on a lane now decodes as no indication for that lane instead of failing to decode the route.
+* Added `RouteOptions.excludedLocations` allowing you to exclude custom locations (such as dangerous entry/exit points, low quality roads, etc.) from routing by coordinate, in addition to the existing road-class-based `RouteOptions.roadClassesToAvoid`. This experimental feature maps to the Directions API's beta `exclude=point(longitude latitude)` parameter and is currently limited to the `mapbox/driving` and `mapbox/driving-traffic` profiles, with at most 50 locations per request.
+* Fixed `RouteOptions.roadClassesToAvoid`/`roadClassesToAllow` parsing (from a URL or from an archived/persisted `RouteOptions`) so that a single unrecognized road-class value no longer discards every other recognized value alongside it, and no longer fails decoding the entire `RouteOptions` object. Surrounding whitespace is now ignored as well, so an `exclude` or `include` parameter written the way the Directions API documents it (`toll, motorway`) is recognized in full.
 
 ## v2.14.4
 

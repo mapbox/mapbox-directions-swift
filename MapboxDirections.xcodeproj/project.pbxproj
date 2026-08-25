@@ -45,6 +45,9 @@
 		2B46024728EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
 		2B46024828EDB1670008A624 /* CustomValueOptionSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */; };
 		2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
+		2CD0A1012E992AF6008706B8 /* RoadClassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD0A1002E992AF6008706B8 /* RoadClassesTests.swift */; };
+		2CD0A1022E992AF6008706B8 /* RoadClassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD0A1002E992AF6008706B8 /* RoadClassesTests.swift */; };
+		2CD0A1032E992AF6008706B8 /* RoadClassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD0A1002E992AF6008706B8 /* RoadClassesTests.swift */; };
 		2B46025428EDB62F0008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
 		2B46025528EDB6300008A624 /* AttributeOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */; };
 		2B46025628EDB6390008A624 /* CustomStringOptionSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */; };
@@ -595,6 +598,7 @@
 		2B46024428EDB1670008A624 /* CustomValueOptionSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomValueOptionSet.swift; sourceTree = "<group>"; };
 		2B46024928EDB18B0008A624 /* CustomStringOptionSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStringOptionSetTests.swift; sourceTree = "<group>"; };
 		2B46024A28EDB18B0008A624 /* AttributeOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeOptionsTests.swift; sourceTree = "<group>"; };
+		2CD0A1002E992AF6008706B8 /* RoadClassesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoadClassesTests.swift; sourceTree = "<group>"; };
 		2B46DB0B27EDF8580068C893 /* RouteRefreshResponseWithForeignMembers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RouteRefreshResponseWithForeignMembers.json; sourceTree = "<group>"; };
 		2B5407EC2451B17E006C820B /* RouteRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRefreshResponse.swift; sourceTree = "<group>"; };
 		2B5407F12452FA8C006C820B /* RefreshedRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshedRoute.swift; sourceTree = "<group>"; };
@@ -1039,6 +1043,7 @@
 				C59666382048A20E00C45CE5 /* RoutableMatchTests.swift */,
 				DAE2DF6B23AED2280065057A /* RouteTests.swift */,
 				DA8F3A7123B56D3B00B56786 /* RouteLegTests.swift */,
+				2CD0A1002E992AF6008706B8 /* RoadClassesTests.swift */,
 				DAE9E0F31EB7DE2E001E8E8B /* RouteOptionsTests.swift */,
 				4376A52623FB13D400C6038D /* MatchOptionsTests.swift */,
 				2B0BA068294B546300402F81 /* MatrixTests.swift */,
@@ -1687,6 +1692,7 @@
 				DA1A10CD1D00F972009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1C1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				2B46025428EDB62F0008A624 /* AttributeOptionsTests.swift in Sources */,
+				2CD0A1012E992AF6008706B8 /* RoadClassesTests.swift in Sources */,
 				2B5407FD245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				C5DAACB0201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10CE1D00F972009F82FA /* Fixture.swift in Sources */,
@@ -1806,6 +1812,7 @@
 				DA1A10F41D010251009F82FA /* V5Tests.swift in Sources */,
 				DAE33A1D1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				2B46025528EDB6300008A624 /* AttributeOptionsTests.swift in Sources */,
+				2CD0A1022E992AF6008706B8 /* RoadClassesTests.swift in Sources */,
 				2B5407FE245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				C5DAACB1201AA92B001F9261 /* MatchTests.swift in Sources */,
 				DA1A10F51D010251009F82FA /* Fixture.swift in Sources */,
@@ -1999,6 +2006,7 @@
 				DAE33A1B1F215DF600C06039 /* IntersectionTests.swift in Sources */,
 				2C64731B2E994478008C0D11 /* CustomMatrixOptions.swift in Sources */,
 				2B46025328EDB62E0008A624 /* AttributeOptionsTests.swift in Sources */,
+				2CD0A1032E992AF6008706B8 /* RoadClassesTests.swift in Sources */,
 				2B5407FC245B070A006C820B /* RouteRefreshTests.swift in Sources */,
 				8A47418F2947D1E100F231F9 /* AmenityTests.swift in Sources */,
 				C5DAACAF201AA92B001F9261 /* MatchTests.swift in Sources */,
